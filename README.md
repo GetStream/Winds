@@ -7,7 +7,7 @@
 [![Coverage Status](https://img.shields.io/coveralls/GetStream/stream-sails-rss-personalization.svg)](https://coveralls.io/r/GetStream/stream-sails-rss-personalization?branch=master)
 [![Dependencies up to date](https://david-dm.org/GetStream/stream-sails-rss-personalization.png)](https://david-dm.org/getstream/stream-sails-rss-personalization)
 
-Open source &amp; beautiful RSS reader built using React/Redux/Sails and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, Quora - powered by [getstream.io API](https://getstream.io/)). This tutorial explains how the personalization API works (blogpost). Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
+Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, Quora - powered by [getstream.io API](https://getstream.io/)). This tutorial explains how the personalization API works (blogpost). Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
 
 Note: We've launched this project in November this year. We're actively working on it and contributions are much appreciated!
 
@@ -25,7 +25,7 @@ Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
 
 ## Installation
 
-### Step 0 - Git clone
+### Step 0 - Git clone 
 
 ```bash
 git clone git@github.com:GetStream/stream-sails-rss-personalization.git
@@ -36,7 +36,7 @@ git clone git@github.com:GetStream/stream-sails-rss-personalization.git
 ```bash
 cd stream-sails-rss-personalization
 brew install nvm
-nvm install 6.8.0
+nvm install 7.0.0
 npm install .
 npm install -g sails pm2
 ```
