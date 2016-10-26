@@ -1,0 +1,30 @@
+{
+    "apps" : [{
+        "name"            : "app",
+        "script"          : "app.js",
+        "watch"           : true,
+        "log_date_format" : "YYYY-MM-DD HH:mm Z",
+        "env" : {
+            "NODE_ENV": "production",
+            "PORT": 80,
+        }
+    },
+    {
+        "name"            : "feeds",
+        "script"          : "scrape_feeds.js",
+        "watch"           : true,
+        "log_date_format" : "YYYY-MM-DD HH:mm Z",
+        "autorestart"     : true,
+        "max_restarts"    : 10,
+        "cron_restart"    : "*/5 * * * *",
+    },
+    {
+        "name"            : "favicons",
+        "script"          : "scrape_favicons.js",
+        "watch"           : true,
+        "log_date_format" : "YYYY-MM-DD HH:mm Z",
+        "autorestart"     : true,
+        "max_restarts"    : 10,
+        "cron_restart"    : "*/5 * * * *",
+    }]
+}

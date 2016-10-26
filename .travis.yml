@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+    - '6.9.1'
+install:
+    - npm install
+script:
+    - NODE_ENV=travis mocha test/bootstrap.test.js test/integration/**/**

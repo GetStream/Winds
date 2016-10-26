@@ -1,0 +1,304 @@
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 56px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.sidebar {
+
+    transition: transform 0.3s ease-out;
+
+    &.profile {
+        transform: translateX(-550px);
+        transition: transform 0.3s ease-out;
+    }
+
+    .profile {
+
+        margin-top: 10px;
+
+        img {
+            margin-top: 6px;
+        }
+
+        .email {
+            font-size: 14px;
+            color: #2A3754;
+            letter-spacing: 0px;
+            max-width: 205px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .edit {
+
+            a {
+                margin-left: 15px;
+                font-size: 12px;
+                color: rgba(42,54,83,0.70);
+                letter-spacing: 0px;
+                line-height: 16px;
+                text-decoration: none;
+
+                &:hover,
+                &.active {
+                    color: #16C98D;
+                }
+
+                &:last-child {
+                    margin-left: 0px;
+                }
+
+            }
+
+            .pipe {
+                font-size: 12px;
+                color: rgba(42,54,83,0.70);
+                letter-spacing: 0px;
+                line-height: 16px;
+                text-decoration: none;
+            }
+
+        }
+
+    }
+
+    &.animating {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 2000;
+
+        .sidebar-modal {
+            z-index: 2000;
+        }
+    }
+
+    .sidebar-modal {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        opacity: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        transition: opacity 0.2s cubic-bezier(0.4, 0.0, 1, 1);
+    }
+
+    .content {
+
+        width: 1467px;
+        position: absolute;
+        z-index: 2001;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        overflow-y: auto;
+
+        background-color: #FFFFFF;
+        box-shadow: rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px;
+
+        transform: translateX(1467px);
+        transition: transform 0.3s cubic-bezier(0.4, 0.0, 1, 1);
+
+        display: flex;
+
+        .sidebar-main {
+            padding-left: 50px;
+            padding-right: 50px;
+            border-right: 1px solid #E0E0E0;
+        }
+
+        .sidebar-profile {
+
+            width: 510px;
+            height: 100%;
+            padding: 50px;
+
+            form {
+
+                margin-top: 6px;
+
+                label {
+                    font-size: 12px;
+                    font-weight: 400;
+                    color: #99A9B3;
+                    letter-spacing: 1px;
+                    line-height: 12px;
+                    text-transform: uppercase;
+                    margin-top: 25px;
+                }
+
+                input {
+                    height: 30px;
+                    padding-left: 0px;
+                    border-top: none;
+                    border-left: none;
+                    border-right: none;
+                    border-bottom: 1px solid #99A9B3;
+                    border-radius: 0px;
+                }
+
+                .form-control:disabled,
+                .form-control[readonly],
+                fieldset[disabled] .form-control {
+                    background-color: transparent !important;
+                }
+
+                .form-group:last-of-type {
+                    margin-bottom: 80px;
+                }
+
+                button {
+                    float: right;
+                    background-color: transparent;
+                    border-radius: 0px;
+                    outline: none;
+                }
+
+                button[type="button"] {
+                    border: 0px;
+                    font-size: 14px;
+                    color: #99A9B3;
+                    letter-spacing: 2px;
+                    line-height: 15px;
+                    height: 40px;
+                }
+
+                button[type="submit"] {
+                    border: 1px solid #16C98D;
+                    font-size: 14px;
+                    color: #16C98D;
+                    letter-spacing: 2px;
+                    line-height: 15px;
+                    height: 40px;
+                }
+
+            }
+
+        }
+
+    }
+
+    &.open {
+        z-index: 2000;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+
+        .sidebar-modal {
+            display: block;
+            z-index: 2000;
+            opacity: 1;
+        }
+
+        .content {
+            top: 0;
+            bottom: 0;
+            right: 0;
+
+            transform: translateX(1142px);
+            transition: transform 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
+        }
+    }
+
+    .sidebar-following,
+    .sidebar-subscriptions {
+
+        width: 250px;
+
+        h3 {
+            font-size: 12px;
+            font-weight: 400;
+            color: #99A9B3;
+            letter-spacing: 1px;
+            line-height: 12px;
+            text-transform: uppercase;
+            margin-left: 10px;
+            margin-top: 25px;
+        }
+
+        ul {
+            margin-top: 30px;
+
+            li {
+                font-weight: 300;
+                margin-left: 10px;
+                margin-bottom: 12px;
+                text-transform: capitalize;
+
+                i {
+                    font-size: 16px;
+                    top: 3px;
+                    margin-right: 6px;
+                    position: relative;
+                }
+
+                img {
+                    margin-right: 8px;
+                    position: relative;
+                }
+
+                &:hover,
+                &.active {
+                    cursor: pointer;
+                    color: #16C98D;
+                }
+
+            }
+
+        }
+
+        a {
+            font-size: 14px;
+            color: rgba(42,54,83,0.70);
+            line-height: 16px;
+            text-decoration: none;
+        }
+
+        a:hover,
+        a.active {
+            color: #16C98D;
+            text-decoration: none;
+        }
+
+        svg {
+            position: relative;
+            left: -5px;
+            float: right;
+        }
+
+    }
+
+    .sidebar-subscriptions {
+        li {
+            text-transform: none !important;
+        }
+    }
+
+    .subscriptions {
+        h3 {
+            margin-top: 25px;
+        }
+    }
+
+}

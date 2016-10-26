@@ -1,0 +1,177 @@
+.personalization {
+
+    padding: 28px 0 28px 0;
+    background-color: #FFFFFF;
+
+    h4 {
+        font-size: 14px;
+        color: rgba(42,54,83,0.60);
+        letter-spacing: 1.16px;
+        line-height: 12px;
+        text-transform: uppercase;
+
+        a,
+        a:active {
+            color: rgba(42, 54, 83, 0.6);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #16C98D;
+        }
+
+        span {
+            font-weight: 300;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+    }
+
+    .exit {
+        position: absolute;
+        right: 12px;
+        top: -22px;
+        width: 55px;
+        height: 55px;
+        cursor: pointer;
+    }
+
+    .following,
+    .engagement,
+    .learn {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .following {
+        p {
+            font-family: 'Merriweather';
+            font-size: 13px;
+            color: #16C98D;
+            letter-spacing: 0px;
+            line-height: 21px;
+            text-transform: capitalize;
+        }
+    }
+
+    .engagement {
+        p {
+            font-size: 12px;
+            color: #2A3754;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+    }
+
+    .learn {
+
+        p {
+            font-family: 'Merriweather';
+            font-size: 13px;
+            color: rgba(42,54,83,0.60);
+            letter-spacing: 0px;
+            line-height: 20px;
+            margin-bottom: 4px;
+        }
+
+        p:last-child {
+            font-family: 'Rubik';
+            font-size: 13px;
+            color: rgba(42,54,83,0.60);
+            line-height: 20px;
+            margin-bottom: 4px;
+        }
+
+        svg {
+            margin-top: 8px;
+
+            #circle {
+                -webkit-animation-name: spin;
+                -webkit-animation-duration: 3000ms;
+                -webkit-animation-iteration-count: infinite;
+                -webkit-animation-timing-function: linear;
+                -moz-animation-name: spin;
+                -moz-animation-duration: 3000ms;
+                -moz-animation-iteration-count: infinite;
+                -moz-animation-timing-function: linear;
+                -ms-animation-name: spin;
+                -ms-animation-duration: 3000ms;
+                -ms-animation-iteration-count: infinite;
+                -ms-animation-timing-function: linear;
+
+                animation-name: spin;
+                animation-duration: 3000ms;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+
+                @-ms-keyframes spin {
+                    from {
+                        -ms-transform: rotate(0deg);
+                        -ms-transform-origin: center center;
+                    }
+                    to {
+                        -ms-transform: rotate(360deg);
+                        -ms-transform-origin: center center;
+                    }
+                }
+                @-moz-keyframes spin {
+                    from {
+                        -moz-transform: rotate(0deg);
+                        -moz-transform-origin: center center;
+                    }
+                    to {
+                        -moz-transform: rotate(360deg);
+                        -moz-transform-origin: center center;
+                    }
+                }
+                @-webkit-keyframes spin {
+                    from {
+                        -webkit-transform: rotate(0deg);
+                        -webkit-transform-origin: center center;
+                    }
+                    to {
+                        -webkit-transform: rotate(360deg);
+                        -webkit-transform-origin: center center;
+                    }
+                }
+                @keyframes spin {
+                    from {
+                        transform:rotate(0deg);
+                        transform-origin: center center;
+                    }
+                    to {
+                        transform:rotate(360deg);
+                        transform-origin: center center;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}
+
+.personalization-enter {
+    transform: translateY(-100%);
+}
+
+.personalization-enter.personalization-enter-active {
+    transform: translateY(0);
+    transition: transform 300ms cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.personalization-leave {
+  transform: translateY(0);
+}
+
+.personalization-leave.personalization-leave-active {
+  transform: translateY(-100%);
+  transition: transform 300ms cubic-bezier(0.4, 0.0, 1, 1);
+}

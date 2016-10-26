@@ -1,0 +1,112 @@
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 56px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+::-webkit-input-placeholder {
+   color: #737373;
+}
+
+:-moz-placeholder {
+   color: #737373;
+}
+
+::-moz-placeholder {
+   color: #737373;
+}
+
+:-ms-input-placeholder {
+   color: #737373;
+}
+
+form {
+
+    width: 100%;
+    margin-top: 15%;
+
+    input {
+        outline: none;
+        color: #737373;
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 2px solid #D8D8D8;
+        background-color: transparent;
+        line-height: 200px;
+        font-weight: 300 !important;
+        font-size: 45px;
+        width: 100%;
+        height: 70px;
+
+        &:valid {
+            color: #3884FF;
+        }
+
+        &:valid + button {
+            height: 40px;
+            width: 156px;
+            border: 1px solid #16C98D;
+            font-size: 14px;
+            color: #16C98D;
+            letter-spacing: 2px;
+            line-height: 15px;
+            border-radius: 0px;
+            background-color: transparent;
+            display: block;
+            outline: none;
+            &:hover,
+            &:active {
+                outline: none;
+                color: #16C98D;
+                border: 1px solid #16C98D;
+                background-color: transparent;
+            }
+        }
+
+    }
+
+    .url-container {
+        position: relative;
+    }
+
+    .add-feed {
+        position: absolute;
+        right: 0;
+        bottom: 15px;
+        outline: none;
+        display: none;
+    }
+
+    .adding-feed {
+        position: absolute;
+        right: 0;
+        bottom: 15px;
+        color: #FFFFFF !important;
+        background-color: #D8D8D8 !important;
+        border: 1px solid #D8D8D8 !important;
+        outline: none !important;
+    }
+
+    .invalid-feed {
+        position: absolute;
+        right: 0;
+        bottom: 15px;
+        color: red !important;
+        border: 1px solid red !important;
+        outline: none !important;
+    }
+
+}

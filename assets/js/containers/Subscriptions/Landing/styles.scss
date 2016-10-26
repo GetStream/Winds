@@ -1,0 +1,156 @@
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 56px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.subscriptions {
+
+    margin-top: 10px;
+
+    .container-fluid {
+        margin-top: 30px;
+        margin-left: 18px;
+        margin-right: 18px;
+    }
+
+    .appending-loader {
+        position: fixed;
+        bottom: 55px;
+        left: 50%;
+    }
+
+    .mark-all-read {
+
+        margin-bottom: 30px;
+        margin-left: 20px;
+
+        a {
+            font-size: 13px;
+            color: #99A9B3;
+            text-decoration: none;
+
+            &.read, &:hover {
+                color: #16C98D;
+            }
+
+            &::before {
+                @extend .material-icons;
+                content: "\E5CA";
+                position: relative;
+                font-size: 16px !important;
+                top: 3px;
+                right: 12px;
+            }
+
+        }
+
+    }
+
+    .following {
+
+        a,
+        a:hover,
+        a:active {
+            text-decoration: none;
+        }
+
+        li {
+            font-size: 14px;
+            color: rgba(42,54,83,0.70);
+            line-height: 16px;
+            margin-left: 10px;
+            margin-bottom: 10px;
+
+            img {
+                margin-right: 10px;
+            }
+
+        }
+
+    }
+
+    ul.article {
+
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        margin-right: 10px;
+        margin-bottom: -8px;
+        background-color: #FFFFFF;
+        border-radius: 2px;
+        padding: 20px 10px 20px 10px;
+
+        &.read,
+        &:hover {
+            background-color: #F2F2F2;
+            transition: background 0.3s linear;
+        }
+
+        li {
+
+            color: #7B868C;
+            font-size: 12px;
+            font-weight: 400;
+            font-size: 16px;
+            overflow: hidden;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &:nth-child(1) {
+                margin-left: 2px;
+                margin-right: 10px;
+            }
+
+            &:nth-child(3) {
+                margin-left: auto;
+                font-style: italic;
+                font-weight: 300;
+                cursor: default;
+                font-size: 12px;
+                font-family: 'Merriweather';
+
+                span {
+                    color: #99A9B3;
+
+                }
+
+                a,
+                a:hover,
+                a:active {
+                    color: #2F7DEB;
+                    text-decoration: none;
+                }
+
+            }
+
+            a,
+            a:active {
+                color: #2A3754;
+                font-weight: 400;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: #16C98D;
+            }
+
+        }
+
+    }
+
+}

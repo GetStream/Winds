@@ -1,0 +1,60 @@
+.site-feed-list {
+
+    .subscriptions ul.article {
+        margin-right: 0;
+    }
+
+    .site-feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 30px 30px 0 30px;
+
+        a,
+        a:active {
+            font-size: 18px;
+            color: #2A3754;
+            line-height: 12px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            font-size: 18px;
+            color: #16C98D;
+            line-height: 12px;
+            text-decoration: none;
+        }
+
+    }
+
+    .options {
+
+        a,
+        a:active {
+
+            &:first-of-type {
+                margin-right: 40px;
+            }
+
+            font-size: 13px;
+            color: #99A9B3;
+            text-decoration: none;
+
+        }
+
+        a:hover {
+            color: #16C98D;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+    }
+
+    .appending-loader {
+        position: fixed;
+        bottom: 55px;
+        margin-left: 50%;
+    }
+
+}

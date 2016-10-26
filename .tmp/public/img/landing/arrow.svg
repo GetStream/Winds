@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="12px" height="10px" viewBox="0 0 12 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Right_4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Landing" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="-landing" transform="translate(-647.000000, -506.000000)" fill="#FFFFFF">
+            <g id="hero" transform="translate(0.000000, -3.000000)">
+                <g id="continue-btn-disabled" transform="translate(435.000000, 483.000000)">
+                    <path d="M212.5,32.00025 L220.484,32.00025 L218.142,34.42025 C217.953,34.61725 217.953,34.93825 218.142,35.13525 L218.826,35.85225 C219.014,36.04925 219.32,36.04925 219.51,35.85225 L223.86,31.34625 C224.048,31.14725 224.048,30.82625 223.86,30.62925 L219.538,26.14925 C219.349,25.95025 219.042,25.95025 218.854,26.14925 L218.17,26.86625 C217.981,27.06325 217.981,27.38525 218.17,27.58225 L220.511,30.00125 L212.5,30.00125 C212.224,30.00125 212,30.22425 212,30.50125 L212,31.50125 C212,31.77525 212.224,32.00025 212.5,32.00025 L212.5,32.00025 Z" id="Right_4"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

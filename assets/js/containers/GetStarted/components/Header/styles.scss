@@ -1,0 +1,43 @@
+.simple-header {
+
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-right: 30px;
+    padding-left: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+    z-index: 2000;
+
+    a,
+    a:hover,
+    a:active {
+        color: #16C98D;
+        text-decoration: none;
+        margin-right: 30px;
+        font-weight: 300;
+        font-size: 14px;
+    }
+
+    button {
+        background: #16C98D;
+        text-transform: uppercase;
+        font-size: 14px;
+        color: #FFFFFF;
+        letter-spacing: 2px;
+        height: 60px;
+        width: 270px;
+        border: none;
+        outline: none;
+            @media (max-height: 799px) {
+              height: 40px
+            }
+
+        &:disabled {
+            background: rgba(42,55,84,0.20);
+        }
+    }
+
+}

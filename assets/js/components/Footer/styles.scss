@@ -1,0 +1,26 @@
+footer {
+
+    font-size: 13px;
+    font-weight: 300;
+    color: #99A9B3;
+    margin: 100px 18px 35px 18px;
+
+    a,
+    a:hover,
+    a:active {
+        color: #2F7DEB;
+        text-decoration: none;
+    }
+
+    i {
+        margin-right: 14px;
+        font-size: 22px;
+        color: #99A9B3;
+
+        &:hover {
+            color: #2F7DEB;
+        }
+
+    }
+
+}

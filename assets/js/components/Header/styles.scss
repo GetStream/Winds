@@ -1,0 +1,101 @@
+.navbar {
+    height: 60px;
+    background: rgba(255,255,255,0.98);
+    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.04), 0px 0px 11px 0px rgba(0,0,0,0.10);
+    position: fixed !important;
+    top: 0;
+    min-width: 420px;
+}
+
+.navbar-content {
+    padding: 0 30px 0 25px;
+        @media (max-width: 500px) {
+          padding: 0;
+        }
+}
+
+.navbar,
+.navbar a {
+    position: relative;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #99A9B3;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 400;
+
+
+    a:hover,
+    &.active {
+        color: #16C98D;
+        // font-weight: 500;
+        border-bottom: 1px solid #16C98D;
+        padding-bottom: 18px;
+
+    }
+    &.no-border{
+        border: none
+    }
+
+}
+
+.navbar a > svg:first-child {
+    margin-top: -6px;
+}
+
+.navbar-content {
+    margin-top: 15px;
+}
+
+.navbar-left {
+    float: left;
+}
+
+.navbar-left > a {
+    float: left;
+    clear: right;
+    margin-right: 30px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+}
+
+.navbar-right {
+    float: right;
+    margin-right: 18px;
+}
+
+.navbar-right > a {
+    float: left;
+    clear: right;
+    margin-right: 22px;
+}
+
+.navbar img {
+    position: fixed;
+    margin-top: -12px;
+    border-bottom: none;
+}
+
+.navbar svg {
+    top: 2px;
+    position: relative;
+
+}
+
+.navbar svg.personalization-icon,
+.navbar svg.rss-add-icon {
+
+    &:hover > g > *,
+    &:active > g > * {
+        fill: #16C98D;
+    }
+
+    &:hover > polygon,
+    &:active > polygon {
+        fill: #16C98D;
+    }
+
+}

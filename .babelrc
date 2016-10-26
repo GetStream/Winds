@@ -1,0 +1,13 @@
+{
+  "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+  ],
+  "plugins": [
+      "transform-runtime",
+      "transform-decorators-legacy",
+      "transform-es2015-block-scoping",
+      "transform-es2015-constants"
+  ]
+}

@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css?family=Rubik:300,400,500,700");
+@import url("https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i");
+
+body {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
+    background-color: #FAFAFA;
+    overflow-x: hidden;
+}
+
+#root {
+    padding-top: 60px;
+}
+
+.img-circle {
+    height: 40px;
+    width: 40px;
+}
+
+.loader {
+    position: fixed;
+    left: 50%;
+    top: 25%;
+}

@@ -1,0 +1,284 @@
+.masonry {
+    .col-lg-3{
+        margin-bottom: 60px;
+    }
+
+    .col-sm-6{
+        margin-bottom: 30px;
+    }
+
+    .read-blog{
+        background-image: url('/img/app/stream-blog-bg.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+
+        height: 100px;
+        bottom: 0;
+        left: 0;
+        color: white;
+        text-align: center;
+        display: flex;
+        align-items: center;
+
+        .btn-outline-primary{
+            margin: auto;
+            background: none;
+            border-radius: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+            border: 1px solid #FFFFFF;
+            color: #FFFFFF;
+        }
+
+    }
+    .row {
+
+
+
+        &:first-of-type {
+            margin-top: 60px;
+        }
+
+    }
+    .row-1{
+        min-height: 390px;
+        // margin-bottom: 60px;
+
+
+        .b1{
+            background: #16C98D;
+            display: box;
+            height: 290px;
+            color: white;
+            padding: 30px;
+            @media (max-width: 1025px){
+                padding: 15px;
+            }
+            @media (max-width: 990px){
+                padding: 30px;
+            }
+            h1{
+                margin-bottom: 10px;
+                font-size: 20px;
+                color: #FFFFFF;
+                letter-spacing: 0px;
+            }
+            p{
+                font-style: normal;
+                color: white;
+                font-size: 14px;
+            }
+            a{
+                color: white;
+                text-decoration: underline;
+            }
+
+
+        }
+        .b2{
+            width: 100%;
+            height: 290px;
+            margin-bottom: 100px;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .b3{
+            width: 100%;
+            height: 200px;
+            margin-bottom: 170px;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+    }
+    .row-2{
+
+        .b4{
+            width: 100%;
+            height: 290px;
+            margin-bottom: 100px;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .b5{
+            width: 100%;
+            height: 290px;
+            margin-bottom: 100px;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+    }
+    .row-3{
+
+        .b6{
+            width: 100%;
+            height: 290px;
+            margin-bottom: 100px;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .b7{
+            width: 100%;
+            height: 210px;
+            margin-bottom: 160px;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .b8{
+            width: 100%;
+            height: 210px;
+            margin-bottom: 160px;
+            display: block;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+    }
+    .meta{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: #FAFAFA;
+        padding-right: 30px;
+        padding-top: 30px;
+
+        p{
+            margin-bottom: -4px;
+        }
+    }
+
+    h3 > a {
+        font-family: 'Rubik';
+        font-size: 18px;
+        color: #16C98D;
+        letter-spacing: 0px;
+        font-weight: 100;
+        font-style: normal;
+        text-decoration: none;
+
+    }
+    h2 > a {
+        font-family: 'Rubik';
+        font-size: 27px;
+        color: #16C98D;
+        letter-spacing: 0px;
+        font-weight: 300;
+        font-style: normal;
+        text-decoration: none;
+        line-height: 31px;
+    }
+
+    p {
+        color: #8E989E;
+        font-style: italic;
+        font-size: 12px;
+        font-family: 'Merriweather';
+        font-weight: 100;
+        padding-top: 12px;
+
+        a {
+            font-family: 'Merriweather';
+            font-weight: 300;
+            color: #3884FF;
+            text-decoration: none;
+        }
+
+        &.summary {
+            font-family: 'Merriweather';
+            font-style: normal;
+        }
+
+    }
+
+}
+
+.articles {
+
+    .appending-loader {
+        position: fixed;
+        bottom: 55px;
+    }
+
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .article {
+
+        width: 270px;
+        margin-right: 2%;
+
+        img {
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            line-height: 21px;
+            margin-bottom: 15px;
+        }
+
+        h2 > a {
+            font-family: 'Rubik';
+            font-size: 18px;
+            color: #16C98D;
+            letter-spacing: 0px;
+            font-weight: 300;
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        p {
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+
+        a {
+            font-family: 'Merriweather';
+            font-size: 12px;
+            font-weight: 300;
+            font-style: italic;
+            color: #3884FF;
+            text-decoration: none;
+
+            p {
+                color: #373a3c;
+                font-style: normal;
+            }
+
+        }
+
+        .article-inner {
+            padding: 10px;
+            height: 400px;
+        }
+
+    }
+}
