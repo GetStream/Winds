@@ -5,3 +5,9 @@ install:
     - npm install
 script:
     - NODE_ENV=travis mocha test/bootstrap.test.js test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.8
