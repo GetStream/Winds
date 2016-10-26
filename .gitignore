@@ -1,6 +1,7 @@
 # Logs
 logs
 *.log
+.DS_Store
 npm-debug.log*
 .tmp/public/styles/styles.css
 # Runtime data
