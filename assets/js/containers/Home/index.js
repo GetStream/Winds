@@ -64,7 +64,7 @@ class Home extends Component {
                                         {moment(this.props.articles[0].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
                                         <a href={normalizeUrl(this.props.articles[0].object.articleUrl)} target="_blank">
-                                            <Hostname>{this.props.articles[0].object.articleUrl}</Hostname>
+                                            {this.props.articles[0].site.name || this.props.articles[0].site.siteUrl}
                                         </a>
                                     </p>
                                 </div>
@@ -83,14 +83,14 @@ class Home extends Component {
                                 <div className="meta">
                                     <h3>
                                         <a href={this.props.articles[1].object.articleUrl} target="_blank">
-                                         {this.props.articles[1].object.title}
+                                            {this.props.articles[1].object.title}
                                         </a>
                                     </h3>
                                     <p>
                                         {moment(this.props.articles[1].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
                                         <a href={normalizeUrl(this.props.articles[1].object.articleUrl)} target="_blank">
-                                            <Hostname>{this.props.articles[1].object.articleUrl}</Hostname>
+                                            {this.props.articles[1].site.name || this.props.articles[1].site.siteUrl}
                                         </a>
                                     </p>
                                     <Summary>{this.props.articles[1].object.summary}</Summary>
@@ -119,7 +119,7 @@ class Home extends Component {
                                     {moment(this.props.articles[2].object.createdAt).fromNow()}
                                     &nbsp;from&nbsp;
                                     <a href={normalizeUrl(this.props.articles[2].object.articleUrl)} target="_blank">
-                                        <Hostname>{this.props.articles[2].object.articleUrl}</Hostname>
+                                        {this.props.articles[2].site.name || this.props.articles[2].site.siteUrl}
                                     </a>
                                 </p>
                                 </div>
@@ -143,7 +143,7 @@ class Home extends Component {
                                     {moment(this.props.articles[3].object.createdAt).fromNow()}
                                     &nbsp;from&nbsp;
                                     <a href={normalizeUrl(this.props.articles[3].object.articleUrl)} target="_blank">
-                                        <Hostname>{this.props.articles[3].object.articleUrl}</Hostname>
+                                        {this.props.articles[3].site.name || this.props.articles[3].site.siteUrl}
                                     </a>
                                 </p>
                                 </div>
@@ -164,14 +164,14 @@ class Home extends Component {
                                 <div className="meta">
                                     <h3>
                                         <a href={this.props.articles[5].object.articleUrl} target="_blank">
-                                         {this.props.articles[5].object.title}
+                                            {this.props.articles[5].object.title}
                                         </a>
                                     </h3>
                                     <p>
                                         {moment(this.props.articles[5].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
                                         <a href={normalizeUrl(this.props.articles[5].object.articleUrl)} target="_blank">
-                                            <Hostname>{this.props.articles[5].object.articleUrl}</Hostname>
+                                            {this.props.articles[5].site.name || this.props.articles[5].site.siteUrl}
                                         </a>
                                     </p>
                                     <Summary>{this.props.articles[5].object.summary}</Summary>
@@ -196,7 +196,7 @@ class Home extends Component {
                                             {moment(this.props.articles[4].object.createdAt).fromNow()}
                                             &nbsp;from&nbsp;
                                             <a href={normalizeUrl(this.props.articles[4].object.articleUrl)} target="_blank">
-                                                <Hostname>{this.props.articles[4].object.articleUrl}</Hostname>
+                                                {this.props.articles[4].site.name || this.props.articles[4].site.siteUrl}
                                             </a>
                                         </p>
                                     </div>
@@ -222,7 +222,7 @@ class Home extends Component {
                                     {moment(this.props.articles[6].object.createdAt).fromNow()}
                                     &nbsp;from&nbsp;
                                     <a href={normalizeUrl(this.props.articles[6].object.articleUrl)} target="_blank">
-                                        <Hostname>{this.props.articles[6].object.articleUrl}</Hostname>
+                                        {this.props.articles[6].site.name || this.props.articles[6].site.siteUrl}
                                     </a>
                                 </p>
                                 <Summary>{this.props.articles[6].object.summary}</Summary>
