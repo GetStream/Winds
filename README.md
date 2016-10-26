@@ -25,7 +25,7 @@ Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
 
 ## Installation
 
-### Step 0 - Git clone
+### Step 0 - Git clone 
 
 ```bash
 git clone git@github.com:GetStream/stream-sails-rss-personalization.git
