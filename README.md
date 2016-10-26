@@ -4,7 +4,6 @@
 # Winds - Open Source RSS Reader
 
 [![Build Status](https://travis-ci.com/GetStream/stream-sails-rss-personalization.svg?token=5jsp8KtoQUy4Y6Tu7cSH&branch=master)](https://travis-ci.com/GetStream/stream-sails-rss-personalization)
-
 [![Coverage Status](https://img.shields.io/coveralls/GetStream/stream-sails-rss-personalization.svg)](https://coveralls.io/r/GetStream/stream-sails-rss-personalization?branch=master)
 [![Dependencies up to date](https://david-dm.org/GetStream/stream-sails-rss-personalization.png)](https://david-dm.org/getstream/stream-sails-rss-personalization)
 
