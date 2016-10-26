@@ -3,6 +3,8 @@
 
 # Winds - Open Source RSS Reader
 
+[![Build Status](https://travis-ci.com/GetStream/stream-sails-rss-personalization.svg?token=5jsp8KtoQUy4Y6Tu7cSH&branch=master)](https://travis-ci.com/GetStream/stream-sails-rss-personalization)
+
 Open source &amp; beautiful RSS reader built using React/Redux/Sails and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, Quora - powered by [getstream.io API](https://getstream.io/)). This tutorial explains how the personalization API works (blogpost). Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
 
 Note: We've launched this project in November this year. We're actively working on it and contributions are much appreciated!
