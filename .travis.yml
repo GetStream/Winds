@@ -4,4 +4,4 @@ node_js:
 install:
     - npm install
 script:
-    - NODE_ENV=travis mocha test/bootstrap.test.js test/integration/**/**
+    - NODE_ENV=travis mocha test/bootstrap.test.js test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
