@@ -98,6 +98,7 @@ form {
         background-color: #D8D8D8 !important;
         border: 1px solid #D8D8D8 !important;
         outline: none !important;
+        display: none;
     }
 
     .invalid-feed {
@@ -107,6 +108,7 @@ form {
         color: red !important;
         border: 1px solid red !important;
         outline: none !important;
+        display: none;
     }
 
 }

@@ -16,11 +16,14 @@ class Header extends Component {
     state = {
         addFeedOpen: false,
         loading: false,
+
     }
 
     handleAddFeed = values => {
+
         this.setState({
             loading: true,
+            error: false,
         })
 
         this.props.dispatch(FeedActions.add(values))
@@ -28,14 +31,15 @@ class Header extends Component {
                 this.setState({
                     addFeedOpen: false,
                     loading: false,
+                    error: false,
                 })
-                // TODO: browserHistory
-                window.location.reload()
             }).catch(err => {
                 this.setState({
                     loading: false,
+                    error: true,
                 })
             })
+
     }
 
     handleOpenSidebar = (e) => {
@@ -112,6 +116,7 @@ class Header extends Component {
                     open={this.state.addFeedOpen}
                     onSubmit={this.handleAddFeed}
                     loading={this.state.loading}
+                    error={this.state.error}
                     onRequestClose={() => this.setState({ addFeedOpen: false, })} />
             </nav>
 

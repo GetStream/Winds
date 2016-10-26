@@ -26,6 +26,8 @@ class Article extends Component {
 
     render() {
 
+        console.log(this.props.object.site)
+
         return (
             <div className="article">
                 <div className="article-inner">

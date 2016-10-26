@@ -9,6 +9,7 @@ class AddFeedDialog extends Component {
         onSubmit: () => {},
 
         loading: false,
+        error: false,
     }
 
     state = {
@@ -24,6 +25,15 @@ class AddFeedDialog extends Component {
         this.props.onSubmit({
             url: this.state.url,
         })
+    }
+
+    renderBtn(e) {
+
+        if (!!this.props.error) return <button type="submit" className="btn text-uppercase invalid-feed">Bad URL</button>
+        if (this.props.loading) return <button type="submit" className="btn text-uppercase adding-feed">Checking...</button>
+
+        return <button type="submit" className="btn text-uppercase add-feed">Add Feed</button>
+
     }
 
     render() {
@@ -45,7 +55,7 @@ class AddFeedDialog extends Component {
                                         required={true}
                                         value={this.state.url}
                                         onChange={e => this.setState({ url: e.target.value, })} />
-                                    {this.props.loading ? <button type="submit" className="btn text-uppercase adding-feed">Checking...</button> : <button type="submit" className="btn text-uppercase add-feed">Add Feed</button>}
+                                    {this.renderBtn()}
                                 </div>
                             </form>
                         </div>
