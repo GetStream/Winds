@@ -1,7 +1,7 @@
 {
-  "name": "RSS-Reader",
-  "version": "0.0.1",
-  "description": "Sails and React integration example with RSS feeds. Also uses Bower for web package management and RequireJS for AMD.",
+  "name": "Winds",
+  "version": "0.1.0",
+  "description": "Open source & beautiful RSS reader built using React/Redux/Sails and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, Quora - powered by getstream.io API). This tutorial explains how the personalization API works (blogpost). Check out the hosted demo: winds.getstream.io",
   "keywords": [],
   "dependencies": {
     "async": "^2.0.1",
@@ -90,11 +90,13 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.5.0",
+    "coveralls": "^2.11.14",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^2.0.1",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.4.1",
+    "mocha-lcov-reporter": "^1.2.0",
     "supertest": "^2.0.0"
   }
 }
