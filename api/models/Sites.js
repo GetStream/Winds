@@ -17,6 +17,9 @@ module.exports = {
         },
         faviconUrl: {
             type: 'url'
+        },
+        lastScraped: {
+            type: 'datetime'
         }
     },
 };

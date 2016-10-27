@@ -62,15 +62,14 @@ app.load({
         var scrapeInterval = moment().subtract('minutes', 3).toISOString();
         sails.log.info(`scraping all feeds that are older than ${scrapeInterval}`)
         Feeds.find({
-            where: {
-                lastScraped: {
-                    '<': scrapeInterval }
-                },
-                or: [{
-                    lastScraped: {
-                        '=': null
+                or: [
+                    {
+                        lastScraped: {'<': scrapeInterval}
+                    },
+                    {
+                        lastScraped: null
                     }
-                }]
+                ]
             }).exec(scrapeFeedsBound);
     }
  });

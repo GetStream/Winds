@@ -6,7 +6,9 @@
 [![Coverage Status](https://img.shields.io/coveralls/GetStream/Winds.svg)](https://coveralls.io/r/GetStream/Winds?branch=master)
 [![Dependencies up to date](https://david-dm.org/GetStream/Winds.png)](https://david-dm.org/getstream/Winds)
 
-Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, Quora - powered by [getstream.io API](https://getstream.io/)). This tutorial explains how the personalization API works (blogpost). Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
+Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, and Quora - powered by the [getstream.io API](https://getstream.io/)). 
+
+This tutorial explains how the personalization API works ([blogpost](http://bit.ly/personalization-winds)). Check out the hosted demo at [http://winds.getstream.io](http://winds.getstream.io/).
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
@@ -60,15 +62,15 @@ API_BASE_URL = 'http://localhost:1337'
 
 Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. Signup at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials
 
-**(optional) Email**
+**Email (optional)**
 
 To send email create an account on [sendgrid.com](https://sendgrid.com/) and add your username and password. You can use other providers by customizing config/emails.js
 
-**(optional) Error Reporting**
+**Error Reporting (optional)**
 
 To track errors create an account on [sentry.io](https://sentry.io/). Next add your Sentry DSN in the .env file.
 
-**(optional) Database**
+**Database (optional)**
 
 Sails uses an ORM called Waterline, which supports [many databases](https://github.com/balderdashy/waterline-docs#supported-adapters). If you don't provide the Mongo URI it will store your data on local disk. This is fine for trying out the app. The full details are available in config/connections.js
 
@@ -115,11 +117,12 @@ The API is located in /api. It uses [sails](http://sailsjs.org/), so their docum
 
 The [Sketch](https://www.sketchapp.com/) files are available in /sketch.
 
-### Ideas for improvements
+### Ideas for Improvements
 
 Contributions are much appreciated. Here are some ideas for improvements:
 
 * Follow suggestions (we're working on this)
+* A deploy to heroku button
 * Lightweight task queuing system for emails and discover endpoint
 * Keyboard shortcuts
 * Android & iOS apps
@@ -128,7 +131,7 @@ Contributions are much appreciated. Here are some ideas for improvements:
 * Folders/Groups
 * scrape_feeds and scrape_favicons don't have any help output. we should find a nicer library to handle that.
 
-### Adding support for your favorite feeds
+### Adding Support for Your Favorite Feeds
 
 Unfortunately RSS is more of a guideline than a standard. There is a good chance that the feed you're trying to add isn't correctly parsed. If this happens, there are 2 things you can do:
 
@@ -144,21 +147,16 @@ Next you'll want to open up ScrapingService.js and DiscoverService.js. Most of t
 
 ### Running the Test Cycle
 
-We use Mocha for the test cycle. It's a pretty default setup for Sails. The only tricky bit is that you to specify the NODE_ENV as testing. You also need to load test/bootstrap.test.js before executing other tests. Here are some examples:
+We use Mocha for the test cycle. It's a pretty default setup for Sails. The only tricky bit is that you to specify the NODE_ENV as testing. You also need to load test/bootstrap.test.js before executing other tests. Here is an example:
 
 Run all tests:
 ```bash
 NODE_ENV=testing mocha test/bootstrap.test.js test/integration/**/**
 ```
 
-Run a specif test
-```bash
-NODE_ENV=testing mocha test/bootstrap.test.js test/integration/**/*follow* -g dofollow
-```
-
 ### Style Guide
 
-Running js beautify
+Running JS Beautify
 
 ```bash
 find . -name '*.js' | grep -v node_modules | grep -v tmp | xargs -n 1 js-beautify -r
