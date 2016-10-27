@@ -4,7 +4,6 @@ node_js:
     - '6.9.0'
 install:
     - npm install -g node-gyp
-    - node-gyp rebuild
     - npm install bcrypt
     - npm install
 script:
