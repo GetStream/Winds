@@ -44,7 +44,7 @@ class Home extends Component {
                                     <p>We've written a technical deep dive on our blog:</p>
                                 </div>
                                 <div className="read-blog">
-                                    <a href="http://blog.getstream.io/winds-rss-reader-with-personalization" target="_blank" className="btn btn-outline-primary text-uppercase">Our Winds Post</a>
+                                    <a href="http://bit.ly/personalization-winds" target="_blank" className="btn btn-outline-primary text-uppercase">Winds &amp; Personalization</a>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" onClick={() => this.trackEngagement(this.props.articles[0].object.id, 0)}>
