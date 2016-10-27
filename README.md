@@ -6,7 +6,9 @@
 [![Coverage Status](https://img.shields.io/coveralls/GetStream/Winds.svg)](https://coveralls.io/r/GetStream/Winds?branch=master)
 [![Dependencies up to date](https://david-dm.org/GetStream/Winds.png)](https://david-dm.org/getstream/Winds)
 
-Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, Quora - powered by [getstream.io API](https://getstream.io/)). This tutorial explains how the personalization API works (blogpost). Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
+Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, and Quora - powered by the [getstream.io API](https://getstream.io/)). 
+
+This tutorial explains how the personalization API works ([blogpost](http://blog.getstream.io/winds-rss-reader-with-personalization)). Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
