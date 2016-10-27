@@ -16,7 +16,9 @@
         "log_date_format" : "YYYY-MM-DD HH:mm Z",
         "autorestart"     : true,
         "max_restarts"    : 1,
+        "instances"       : "max",
         "cron_restart"    : "*/5 * * * *",
+        "exec_mode"       : "cluster",
     },
     {
         "name"            : "favicons",
@@ -25,6 +27,8 @@
         "log_date_format" : "YYYY-MM-DD HH:mm Z",
         "autorestart"     : true,
         "max_restarts"    : 1,
+        "instances"       : "max",
         "cron_restart"    : "*/5 * * * *",
+        "exec_mode"       : "cluster"
     }]
 }
