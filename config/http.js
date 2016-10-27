@@ -30,8 +30,8 @@ module.exports.http = {
     // (the Sails router is invoked by the "router" middleware below.)
     order: [
       'startRequestTimer',
-    //   'cookieParser',
-    //   'session',
+      //'cookieParser',
+      //'session',
       'passportInit',
       'passportSession',
       'jwtAuthenticate',

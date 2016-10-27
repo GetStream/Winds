@@ -9,13 +9,7 @@
  * http://links.sailsjs.org/docs/config/bootstrap
  */
 
-const fs = require('fs')
-
-fs.stat('.env', function(err) {
-    if (!err) {
-        require('dotenv').config()
-    }
-})
+require('dotenv').config()
 
 module.exports.bootstrap = function(cb) {
   sails.log.info('loading environment variables...')
