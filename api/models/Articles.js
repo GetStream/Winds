@@ -47,14 +47,12 @@ module.exports = {
             defaultsTo: new Date(),
         },
         imageSrc: {
-            type: 'url',
-            required: true
+            type: 'url'
         },
         categories: {
             type: 'array',
             defaultsTo: []
         },
-        // popularity related Fields
         canonicalUrl: {
             type: 'url',
             required: true

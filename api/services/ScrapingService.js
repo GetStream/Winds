@@ -224,9 +224,7 @@ function isValidArticle(article) {
 
     if (article) {
 
-        if (!article.imageSrc) {
-            valid = false
-        } else if (!article.link) {
+        if (!article.link) {
             valid = false
         }
     }
