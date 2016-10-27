@@ -1,7 +1,5 @@
 {
   "hooks": {
-    "grunt": false,
-    "sockets": false,
-    "pubsub": false
+    "grunt": false
   }
 }
