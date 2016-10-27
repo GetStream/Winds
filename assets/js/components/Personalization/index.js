@@ -46,7 +46,7 @@ class Learning extends Component {
         if (!this.state.learning) {
             return (
                 <p>
-                    <em>We've added a few new articles based on your interest in {combine(this.props.learning)} trends.</em>
+                    <em>Looks like you're interested in {combine(this.props.learning)}.</em>
                 </p>
             )
         }
@@ -71,7 +71,7 @@ class Learning extends Component {
                     <p>
                         <em>Still learning... Keep engaging</em>
                     </p>
-                    <p>Add a feed or read something below</p>
+                    <p>Click an article below</p>
                 </div>
             </div>
         )
