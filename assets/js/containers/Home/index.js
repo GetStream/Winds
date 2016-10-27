@@ -23,8 +23,8 @@ class Home extends Component {
         ArticleActions.impression(id)
     )
 
-    handleImgLoadErr = (e) => {
-
+    handleImgLoadErr = (id) => {
+        document.getElementById(id).style.backgroundImage = 'url("../img/app/placeholder.png")'
     }
 
     render() {
@@ -52,7 +52,10 @@ class Home extends Component {
                                     this.trackImpression(this.props.articles[0].object.id)
                                 }} />
                                 <a href={this.props.articles[0].object.articleUrl} target="_blank">
-                                    <img src={this.props.articles[0].object.imageSrc} style={{ display: 'none' }} onError={this.handleImgLoadErr} />
+                                    <img
+                                        src={this.props.articles[0].object.imageSrc}
+                                        style={{ display: 'none' }}
+                                        onError={() => this.handleImgLoadErr(this.props.articles[0].object.id)} />
                                     <div className="b2"
                                         style={{
                                             'backgroundImage': `url(${this.props.articles[0].object.imageSrc})`,
@@ -80,10 +83,15 @@ class Home extends Component {
                                     this.trackImpression(this.props.articles[1].object.id)
                                 }} />
                                 <a href={this.props.articles[1].object.articleUrl} target="_blank">
+                                    <img
+                                        src={this.props.articles[1].object.imageSrc}
+                                        style={{ display: 'none' }}
+                                        onError={() => this.handleImgLoadErr(this.props.articles[1].object.id)} />
                                     <div className="b3"
                                         style={{
                                             'backgroundImage': `url(${this.props.articles[1].object.imageSrc})`,
                                         }}
+                                        id={this.props.articles[1].object.id}
                                     />
                                 </a>
                                 <div className="meta">
@@ -109,10 +117,15 @@ class Home extends Component {
                                     this.trackImpression(this.props.articles[2].object.id)
                                 }} />
                                 <a href={this.props.articles[2].object.articleUrl} target="_blank">
+                                    <img
+                                        src={this.props.articles[2].object.imageSrc}
+                                        style={{ display: 'none' }}
+                                        onError={() => this.handleImgLoadErr(this.props.articles[2].object.id)} />
                                     <div className="b4"
                                         style={{
                                             'backgroundImage': `url(${this.props.articles[2].object.imageSrc})`,
                                         }}
+                                        id={this.props.articles[2].object.id}
                                     />
                                 </a>
                                 <div className="meta">
@@ -135,10 +148,15 @@ class Home extends Component {
                                     this.trackImpression(this.props.articles[3].object.id)
                                 }} />
                                 <a href={this.props.articles[3].object.articleUrl} target="_blank">
+                                    <img
+                                        src={this.props.articles[3].object.imageSrc}
+                                        style={{ display: 'none' }}
+                                        onError={() => this.handleImgLoadErr(this.props.articles[3].object.id)} />
                                     <div className="b5"
                                         style={{
                                             'backgroundImage': `url(${this.props.articles[3].object.imageSrc})`,
                                         }}
+                                        id={this.props.articles[3].object.id}
                                     />
                                 </a>
                                 <div className="meta">
@@ -161,10 +179,15 @@ class Home extends Component {
                                     this.trackImpression(this.props.articles[4].object.id)
                                 }} />
                                 <a href={this.props.articles[5].object.articleUrl} target="_blank">
+                                    <img
+                                        src={this.props.articles[5].object.imageSrc}
+                                        style={{ display: 'none' }}
+                                        onError={() => this.handleImgLoadErr(this.props.articles[5].object.id)} />
                                     <div className="b7"
                                         style={{
                                             'backgroundImage': `url(${this.props.articles[5].object.imageSrc})`,
                                         }}
+                                        id={this.props.articles[5].object.id}
                                     />
                                 </a>
                                 <div className="meta">
@@ -188,10 +211,15 @@ class Home extends Component {
                                         this.trackImpression(this.props.articles[5].object.id)
                                     }} />
                                     <a href={this.props.articles[5].object.articleUrl} target="_blank">
+                                        <img
+                                            src={this.props.articles[4].object.imageSrc}
+                                            style={{ display: 'none' }}
+                                            onError={() => this.handleImgLoadErr(this.props.articles[4].object.id)} />
                                         <div className="b6"
                                             style={{
                                                 'backgroundImage': `url(${this.props.articles[4].object.imageSrc})`,
                                             }}
+                                            id={this.props.articles[4].object.id}
                                         />
                                     </a>
                                     <div className="meta">
@@ -212,16 +240,21 @@ class Home extends Component {
                                 this.trackImpression(this.props.articles[6].object.id)
                             }} />
                             <a href={this.props.articles[6].object.articleUrl} target="_blank">
+                                <img
+                                    src={this.props.articles[6].object.imageSrc}
+                                    style={{ display: 'none' }}
+                                    onError={() => this.handleImgLoadErr(this.props.articles[6].object.id)} />
                                 <div className="b8"
                                     style={{
                                         'backgroundImage': `url(${this.props.articles[6].object.imageSrc})`,
                                     }}
+                                    id={this.props.articles[6].object.id}
                                 />
                             </a>
-                                <div className="meta">
+                            <div className="meta">
                                 <h3>
                                     <a href={this.props.articles[6].object.articleUrl} target="_blank">
-                                     {this.props.articles[6].object.title}
+                                        {this.props.articles[6].object.title}
                                     </a>
                                 </h3>
                                 <p>
