@@ -23,5 +23,3 @@ if (process.env.MONGO_URL) {
         migrate: 'safe'
     };
 }
-
-console.log(module.exports.models)

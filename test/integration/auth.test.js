@@ -26,7 +26,6 @@ describe('Auth test', function() {
               .post('/api/register')
               .send({'email': testEmail})
               .expect(200, function(err, result) {
-                  console.log(err, result.body)
                   assert(result.body.token)
                   assert(result.body.id)
                   done()
