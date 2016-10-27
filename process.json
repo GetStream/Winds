@@ -15,7 +15,7 @@
         "watch"           : true,
         "log_date_format" : "YYYY-MM-DD HH:mm Z",
         "autorestart"     : true,
-        "max_restarts"    : 10,
+        "max_restarts"    : 1,
         "cron_restart"    : "*/5 * * * *",
     },
     {
@@ -24,7 +24,7 @@
         "watch"           : true,
         "log_date_format" : "YYYY-MM-DD HH:mm Z",
         "autorestart"     : true,
-        "max_restarts"    : 10,
+        "max_restarts"    : 1,
         "cron_restart"    : "*/5 * * * *",
     }]
 }
