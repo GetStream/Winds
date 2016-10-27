@@ -8,6 +8,7 @@ install:
     - npm install bcrypt
     - npm install
 script:
+    - python --version
     - NODE_ENV=travis mocha test/bootstrap.test.js test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 addons:
   apt:
