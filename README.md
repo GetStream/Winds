@@ -115,7 +115,7 @@ The API is located in /api. It uses [sails](http://sailsjs.org/), so their docum
 
 The [Sketch](https://www.sketchapp.com/) files are available in /sketch.
 
-### Ideas for improvements
+### Ideas for Improvements
 
 Contributions are much appreciated. Here are some ideas for improvements:
 
@@ -128,7 +128,7 @@ Contributions are much appreciated. Here are some ideas for improvements:
 * Folders/Groups
 * scrape_feeds and scrape_favicons don't have any help output. we should find a nicer library to handle that.
 
-### Adding support for your favorite feeds
+### Adding Support for Your Favorite Feeds
 
 Unfortunately RSS is more of a guideline than a standard. There is a good chance that the feed you're trying to add isn't correctly parsed. If this happens, there are 2 things you can do:
 
