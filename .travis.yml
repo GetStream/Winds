@@ -14,5 +14,4 @@ addons:
     packages:
     - g++-4.8
 env:
-  - CXX=g++-4.8
-  - NODE_ENV=travis
+  - CXX=g++-4.8 NODE_ENV=travis
