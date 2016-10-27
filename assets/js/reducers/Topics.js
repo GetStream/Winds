@@ -12,7 +12,7 @@ function Topics(state = [], action) {
         case TopicActions.FOLLOW:
             return state.map(t => {
                 if (t.id == action.data.follow[0]) {
-                    return {...t, followed: true}
+                    return {...t, followed: true }
                 }
                 return t
             })
@@ -20,14 +20,19 @@ function Topics(state = [], action) {
         case TopicActions.UNFOLLOW:
             return state.map(t => {
                 if (t.id == action.data.unfollow[0]) {
-                    return {...t, followed: false}
+                    return {...t, followed: false }
                 }
                 return t
             })
 
+        case UserActions.LOGOUT:
+            return state.map(t => ({ ...t, followed: false }))
+
+
     }
 
     return state
+    
 }
 
 export default Topics

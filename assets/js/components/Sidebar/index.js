@@ -58,10 +58,8 @@ class Sidebar extends Component {
         e.preventDefault()
 
         localStorage.clear()
-
         this.props.dispatch(UserActions.logout())
-
-        window.location.href = '/app/getting-started'
+        browserHistory.replace('/app/getting-started')
 
     }
 

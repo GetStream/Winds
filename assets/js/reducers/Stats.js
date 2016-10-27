@@ -16,9 +16,12 @@ function Stats(state = initialState, action) {
             }
             return state
 
+        case UserActions.LOGOUT:
+            return []
+            
         default:
             return state
-            
+
     }
 
 }

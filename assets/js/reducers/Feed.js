@@ -18,12 +18,13 @@ function Feed(state = [], action) {
                 return sub
             })
 
+        case UserActions.LOGOUT:
         case SiteActions.CLEAR_ARTICLES:
             return []
 
         default:
             return state
-            
+
     }
 }
 

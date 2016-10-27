@@ -4,7 +4,7 @@ import * as UserActions from 'actions/User'
 function Sidebar(state = false, action) {
 
     switch (action.type) {
-        
+
         case SidebarActions.OPEN:
             return true
 
@@ -13,6 +13,9 @@ function Sidebar(state = false, action) {
 
         case UserActions.LOGIN:
             return false
+
+        case UserActions.LOGOUT:
+            return []
 
     }
 

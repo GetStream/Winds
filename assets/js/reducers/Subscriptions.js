@@ -11,6 +11,7 @@ function Subscriptions(state = [], action) {
             }
             return state
 
+        case UserActions.LOGOUT:
         case SubscriptionActions.CLEAR:
             return []
 

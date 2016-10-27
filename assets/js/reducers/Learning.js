@@ -9,11 +9,14 @@ function Learning(state = [], action) {
             if (action.response) return [...action.response.results]
             return []
 
+        case UserActions.LOGOUT:
+            return []
+
         default:
             return state
 
     }
-    
+
 }
 
 export default Learning

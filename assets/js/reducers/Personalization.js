@@ -20,10 +20,13 @@ function Personalization(state = initialState, action) {
         case PersonalizationActions.TOGGLE:
             return { open: !state.open, }
 
+        case UserActions.LOGOUT:
+            return []
+
         default:
             return state
     }
-    
+
 }
 
 export default Personalization
