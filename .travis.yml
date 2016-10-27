@@ -5,7 +5,7 @@ install:
     - npm install -g node-gyp mocha
     - npm install
 script:
-    - NODE_ENV=travis mocha test/bootstrap.test.js test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
+    - NODE_ENV=travis mocha ./test/bootstrap.test.js ./test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 addons:
   apt:
     sources:
