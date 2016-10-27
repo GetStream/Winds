@@ -8,7 +8,7 @@
 
 Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, and Quora - powered by the [getstream.io API](https://getstream.io/)). 
 
-This tutorial explains how the personalization API works ([blogpost](http://blog.getstream.io/winds-rss-reader-with-personalization)). Check out the hosted demo at [http://winds.getstream.io](http://winds.getstream.io/).
+This tutorial explains how the personalization API works ([blogpost](http://bit.ly/personalization-winds)). Check out the hosted demo at [http://winds.getstream.io](http://winds.getstream.io/).
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
@@ -122,6 +122,7 @@ The [Sketch](https://www.sketchapp.com/) files are available in /sketch.
 Contributions are much appreciated. Here are some ideas for improvements:
 
 * Follow suggestions (we're working on this)
+* A deploy to heroku button
 * Lightweight task queuing system for emails and discover endpoint
 * Keyboard shortcuts
 * Android & iOS apps
