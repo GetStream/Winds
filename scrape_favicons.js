@@ -15,6 +15,10 @@ var argv = require('yargs')
     .number('c')
     .default('c', 30)
     .describe('c', 'the number of feeds to scrape concurrently. for debugging set this to 1')
+    .alias('f', 'force')
+    .boolean('f')
+    .default('f', false)
+    .describe('f', 'scrape all sites, not just those without a favicon')
     .alias('q', 'query')
     .string('q')
     .describe('q', 'search for a feed url containing this value')
@@ -40,9 +44,22 @@ app.load({
     if (argv.q) {
         sails.log.info(`searching for a site matching ${argv.q}`)
         Sites.find({ siteUrl: {'contains': argv.q} }).exec(scrapeFavicons);
-    } else {
+    } else if (argv.f) {
         sails.log.info(`scraping all sites`)
         Sites.find({}).limit(1000).exec(scrapeFavicons)
+    } else {
+        let scrapeInterval = moment().subtract('minutes', 60 * 24).toISOString();
+        sails.log.info(`scraping site we didnt update in a day`)
+        Sites.find({
+                or: [
+                    {
+                        lastScraped: {'<': scrapeInterval}
+                    },
+                    {
+                        lastScraped: null
+                    }
+                ]
+            }).limit(1000).exec(scrapeFavicons)
     }
  });
 
@@ -63,19 +80,19 @@ function scrapeFavicon(site, callback) {
             } else {
                 sails.log.error('favicon not found', client.favicon)
             }
-            if (site.faviconUrl != client.favicon) {
-                sails.models.sites.update({id: site.id}, {'faviconUrl': client.favicon}).exec(function(err, result) {
-                    if (err) {
-                        callback(err)
-                        return
-                    }
-                    sails.log.info('updated for site', site.siteUrl)
-                    callback(null, site)
-                })
-            } else {
-                sails.log.info('no need to update for site', url)
+            const now = new Date()
+            sails.models.sites.update({id: site.id}, {'faviconUrl': client.favicon, lastScraped: now}).exec(function(err, result) {
+                if (err) {
+                    callback(err)
+                    return
+                }
+                if (client.favicon == site.faviconUrl) {
+                    sails.log.info('favicon for site didnt change', site.siteUrl)
+                } else {
+                    sails.log.info('updated favicon for site', site.siteUrl)
+                }
                 callback(null, site)
-            }
+            })
         }
 
         if (client.favicon) {
