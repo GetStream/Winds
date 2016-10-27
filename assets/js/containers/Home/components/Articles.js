@@ -6,6 +6,7 @@ import Hostname from 'components/Hostname'
 import Summary from 'components/Summary'
 
 import Waypoint from 'react-waypoint'
+import ProgressiveImage from 'react-progressive-image'
 
 import * as ArticleActions from 'actions/Articles'
 
@@ -20,10 +21,6 @@ class Article extends Component {
         ArticleActions.impression(this.props.object.id)
     )
 
-    handleImgLoadErr = (id) => {
-        document.getElementById(id).src = '/img/app/placeholder.png'
-    }
-
     render() {
 
         return (
@@ -33,7 +30,9 @@ class Article extends Component {
                         this.trackImpression(this.props.object.id)
                     }} />
                     <a href={this.props.object.articleUrl} target="_blank" data-id={this.props.object.id} data-position={this.props.index} onClick={this.trackEngagement}>
-                        <img src={this.props.object.imageSrc} id={this.props.object.id} height="180" width="270" onError={() => this.handleImgLoadErr(this.props.object.id)} />
+                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='/img/app/placeholder.png'>
+                            {(src) => <img src={src} alt={this.props.object.articleUrl} height="180" width="270" />}
+                        </ProgressiveImage>
                     </a>
                     <h2>
                         <a href={this.props.object.articleUrl} target="_blank" onClick={this.trackEngagement}>{this.props.object.title}</a>
