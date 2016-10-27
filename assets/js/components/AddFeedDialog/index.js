@@ -27,10 +27,10 @@ class AddFeedDialog extends Component {
         })
     }
 
-    renderBtn(e) {
+    renderBtn() {
 
-        if (!!this.props.error) return <button type="submit" className="btn text-uppercase invalid-feed">Bad URL</button>
-        if (this.props.loading) return <button type="submit" className="btn text-uppercase adding-feed">Checking...</button>
+        if (this.props.error == true) return <button type="submit" className="btn text-uppercase invalid-feed">Feed Missing</button>
+        if (this.props.loading == true) return <button type="submit" className="btn text-uppercase adding-feed">Checking...</button>
 
         return <button type="submit" className="btn text-uppercase add-feed">Add Feed</button>
 
