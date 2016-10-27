@@ -7,6 +7,7 @@ class AddFeedDialog extends Component {
 
     static defaultProps = {
         onSubmit: () => {},
+        onReset: () => {},
 
         loading: false,
         error: false,
@@ -20,6 +21,13 @@ class AddFeedDialog extends Component {
         if (this.props.open) this.refs.url.focus()
     }
 
+    handleChange = e => {
+        this.setState({
+            url: e.target.value,
+        })
+        this.props.onReset()
+    }
+
     handleSubmit = e => {
         e.preventDefault()
         this.props.onSubmit({
@@ -29,10 +37,31 @@ class AddFeedDialog extends Component {
 
     renderBtn() {
 
-        if (this.props.error == true) return <button type="submit" className="btn text-uppercase invalid-feed">Feed Missing</button>
-        if (this.props.loading == true) return <button type="submit" className="btn text-uppercase adding-feed">Checking...</button>
+        if (this.props.error == true)
+            return (
+                <button
+                    type="submit"
+                    className="btn text-uppercase invalid-feed">
+                    Feed Missing
+                </button>
+            )
 
-        return <button type="submit" className="btn text-uppercase add-feed">Add Feed</button>
+        if (this.props.loading == true)
+            return (
+                <button
+                    type="submit"
+                    className="btn text-uppercase adding-feed">
+                    Checking...
+                </button>
+            )
+
+        return (
+            <button
+                type="submit"
+                className="btn text-uppercase add-feed">
+                Add Feed
+            </button>
+        )
 
     }
 
@@ -54,7 +83,7 @@ class AddFeedDialog extends Component {
                                         placeholder="Enter a valid site or feed URL"
                                         required={true}
                                         value={this.state.url}
-                                        onChange={e => this.setState({ url: e.target.value, })} />
+                                        onChange={this.handleChange} />
                                     {this.renderBtn()}
                                 </div>
                             </form>

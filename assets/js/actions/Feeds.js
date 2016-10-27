@@ -32,7 +32,6 @@ export const add = (data) => dispatch => {
         browserHistory.replace(`/app/subscriptions/${res.response.feed_id}`)
         return dispatch(AppActions.reload())
     }, err => {
-        console.log(err)
         document.getElementsByClassName('url')[0].focus()
         throw err
     })

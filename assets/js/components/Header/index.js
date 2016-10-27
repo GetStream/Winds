@@ -115,6 +115,7 @@ class Header extends Component {
                 <AddFeedDialog
                     open={this.state.addFeedOpen}
                     onSubmit={this.handleAddFeed}
+                    onReset={() => this.setState({ loading: false, error: false, })}
                     loading={this.state.loading}
                     error={this.state.error}
                     onRequestClose={() => this.setState({ addFeedOpen: false, })} />
