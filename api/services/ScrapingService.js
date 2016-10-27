@@ -163,7 +163,6 @@ function getMetaInformation(articleUrl, callback) {
     function absolute(url) {
         return makeUrlAbsolute(articleUrl, url)
     }
-    console.log('url', articleUrl)
 
     let options = {
         uri: articleUrl,
@@ -188,41 +187,45 @@ function getMetaInformation(articleUrl, callback) {
                 parsedDocument;
             try {
                 parsedDocument = cheerio.load(body)
+
+                // image
+                meta.image = absolute(parsedDocument("meta[property='og:image']").attr("content"))
+                // keywords
+                let keywordsString = parsedDocument("meta[name='keywords']").attr("content");
+                if(keywordsString) {
+                    meta.keywords = keywordsString.split(',')
+                } else {
+                    meta.keywords = []
+                }
+                // ogDescription
+                meta.ogDescription = parsedDocument("meta[property='og:description']").attr("content")
+
+                // favicon detection
+                let patt = /icon/i
+                parsedDocument("link").each(function(i, elem) {
+                    let match = patt.test(elem.attribs.rel)
+                    if (match) {
+                        meta.favicon = elem.attribs.href
+                        return false
+                    }
+                })
+                meta.favicon = absolute(meta.favicon)
+
+                // canonicalUrl, og url or the last url we were redirected to
+                meta.canonical = parsedDocument("link[rel='canonical']").attr("href")
+                meta.ogUrl = parsedDocument("meta[property='og:url']").attr("content")
+                meta.canonicalUrl = meta.canonical || meta.ogUrl || response.url
+                meta.canonicalUrl = absolute(meta.canonicalUrl)
+                sails.log.verbose('found meta for url', articleUrl, meta)
+                callback(null, meta)
+
             } catch(e) {
+                // common errors include exceeding the max call stack
                 sails.log.error('failed to parse body using cheerio', e)
                 return callback(e)
             }
-            // image
-            meta.image = absolute(parsedDocument("meta[property='og:image']").attr("content"))
-            // keywords
-            let keywordsString = parsedDocument("meta[name='keywords']").attr("content");
-            if(keywordsString) {
-                meta.keywords = keywordsString.split(',')
-            } else {
-                meta.keywords = []
-            }
-            // ogDescription
-            meta.ogDescription = parsedDocument("meta[property='og:description']").attr("content")
 
-            // favicon detection
-            let patt = /icon/i
-            parsedDocument("link").each(function(i, elem) {
-                let match = patt.test(elem.attribs.rel)
-                if (match) {
-                    meta.favicon = elem.attribs.href
-                    return false
-                }
-            })
-            meta.favicon = absolute(meta.favicon)
 
-            // canonicalUrl, og url or the last url we were redirected to
-            meta.canonical = parsedDocument("link[rel='canonical']").attr("href")
-            meta.ogUrl = parsedDocument("meta[property='og:url']").attr("content")
-            meta.canonicalUrl = meta.canonical || meta.ogUrl || response.url
-            meta.canonicalUrl = absolute(meta.canonicalUrl)
-            sails.log.verbose('found meta for url', articleUrl, meta)
-
-            callback(null, meta)
         }
     })
 
