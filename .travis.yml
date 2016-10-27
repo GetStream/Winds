@@ -6,7 +6,7 @@ install:
     - npm install
 script:
     - ls -la
-    - mocha ./test/bootstrap.test.js ./test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
+    - mocha ./test/bootstrap.test.js ./test/integration/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 addons:
   apt:
     sources:

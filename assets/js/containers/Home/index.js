@@ -23,6 +23,10 @@ class Home extends Component {
         ArticleActions.impression(id)
     )
 
+    handleImgLoadErr = (e) => {
+
+    }
+
     render() {
 
         if (!this.props.articles.length) return null
@@ -36,11 +40,11 @@ class Home extends Component {
                                 <div className="b1">
                                     <h1>Feed Personalization</h1>
                                     <p>Winds is an open source RSS Reader that we built to showcase&nbsp;
-                                    <a href="https://getstream.io/personalization/" target="_blank">personalized feeds</a>.</p>
+                                    <a href="https://getstream.io/personalization/" target="_blank">Personalized Feeds</a>.</p>
                                     <p>We've written a technical deep dive on our blog:</p>
                                 </div>
                                 <div className="read-blog">
-                                    <a href="http://blog.getstream.io/winds-rss-reader-with-personalization" target="_blank" className="btn btn-outline-primary">OUR WINDS POST</a>
+                                    <a href="http://blog.getstream.io/winds-rss-reader-with-personalization" target="_blank" className="btn btn-outline-primary text-uppercase">Our Winds Post</a>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" onClick={() => this.trackEngagement(this.props.articles[0].object.id, 0)}>
@@ -48,10 +52,12 @@ class Home extends Component {
                                     this.trackImpression(this.props.articles[0].object.id)
                                 }} />
                                 <a href={this.props.articles[0].object.articleUrl} target="_blank">
+                                    <img src={this.props.articles[0].object.imageSrc} style={{ display: 'none' }} onError={this.handleImgLoadErr} />
                                     <div className="b2"
                                         style={{
                                             'backgroundImage': `url(${this.props.articles[0].object.imageSrc})`,
                                         }}
+                                        id={this.props.articles[0].object.id}
                                     />
                                 </a>
                                 <div className="meta">
