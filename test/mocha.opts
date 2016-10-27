@@ -1,1 +1,2 @@
---timeout 20s
+--timeout 60s
+--globals test

@@ -1,8 +1,12 @@
-let sails = require('sails'),
+let sails   = require('sails'),
     request = require('supertest'),
-    path = require('path'),
-    fs = require('fs')
+    Chance  = require('chance'),
+    chance  = new Chance(),
+    path    = require('path'),
+    env     = require('dotenv'),
+    fs      = require('fs')
 
+require('dotenv').config()
 
 function isLocalConnection(connection) {
     let local = false
@@ -15,53 +19,58 @@ function isLocalConnection(connection) {
 }
 
 before(function(done) {
-  // Increase the Mocha timeout so that Sails has enough time to lift.
+
   sails.lift({
       hooks: { grunt: false },
       log: { level: 'warn' }
   }, function(err, server) {
-    if (err) return done(err);
 
-    // Verify we are running on the local database
-    let connectionName = sails.config.models.connection
-        connection = sails.config.connections[connectionName]
+    if (err) return done(err)
+
+    let connectionName = sails.config.models.connection,
+        connection     = sails.config.connections[connectionName]
+
     sails.log.info('test is running against connection', connection)
+
     if (false && !isLocalConnection(connection)) {
-        let err = 'you cant run test suite against the production db'
+        let err = 'You cant run test suite against the production database'
         sails.log.error(err, connection)
         return done(err)
     }
 
-    // Trash the database
-    let dbPath = path.join(__dirname, '../', '.tmp', 'localTestDiskDb.db')
-    let nodeEnv = process.env['NODE_ENV']
-    sails.log.info('removing local test db with path', dbPath)
-    try{
+    let dbPath  = path.join(__dirname, '../', '.tmp', 'localTestDiskDb.db'),
+        nodeEnv = process.env.NODE_ENV
+
+    sails.log.info('Removing local test database with path', dbPath)
+
+    try {
         if (isLocalConnection(connection)) {
             fs.unlinkSync(dbPath)
         }
     } catch(e) {
-        sails.log.warn('failed to delete test db', e)
+        sails.log.warn('Failed to delete local test database because it does not exist')
     }
 
-    // Setup a user account for testing
-    let password = '123456abc',
-        email = 'thierry+133334aa@getstream.io'
-    sails.test = {}
+    let email    = chance.email(),
+        password = chance.string({length: 6})
+
+    global.test = {}
+
     request(sails.hooks.http.app)
       .post('/api/register')
       .send({'email': email, 'password': password})
       .expect(200, function(err, result) {
-          if (err) {
-              console.log('bootstrap register failed with error', err, result.body)
-          }
-          sails.test.token = result.body.token
-          done(err, sails);
+          if (err) console.log('Bootstrap registration failed with error:', result.body)
+          sails.log.info('Registered an account, providing token now', result.body.token)
+          test.token = result.body.token
+          test.email = email
+          test.password = password
+          done(err, sails)
       })
-  });
-});
+  })
+
+})
 
 after(function(done) {
-  // here you can clear fixtures, etc.
-  sails.lower(done);
-});
+  sails.lower(done)
+})

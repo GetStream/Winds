@@ -8,10 +8,17 @@
  * For more information on bootstrapping your app, check out:
  * http://links.sailsjs.org/docs/config/bootstrap
  */
-require('dotenv').config()
+
+const fs = require('fs')
+
+fs.stat('.env', function(err) {
+    if (!err) {
+        require('dotenv').config()
+    }
+})
 
 module.exports.bootstrap = function(cb) {
-    sails.log.info('Loading .env environment variables...')
+  sails.log.info('loading environment variables...')
   // It's very important to trigger this callack method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();
