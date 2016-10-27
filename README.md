@@ -144,7 +144,7 @@ Next you'll want to open up ScrapingService.js and DiscoverService.js. Most of t
 
 ### Running the Test Cycle
 
-We use Mocha for the test cycle. It's a pretty default setup for Sails. The only tricky bit is that you to specify the NODE_ENV as testing. You also need to load test/bootstrap.test.js before executing other tests. Here are some examples:
+We use Mocha for the test cycle. It's a pretty default setup for Sails. The only tricky bit is that you to specify the NODE_ENV as testing. You also need to load test/bootstrap.test.js before executing other tests. Here is an example:
 
 Run all tests:
 ```bash
