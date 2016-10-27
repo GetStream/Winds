@@ -53,7 +53,6 @@ describe('Stream', function() {
                 .get('/api/stream/personalized')
                 .set('Authorization', `JWT ${sails.test.token}`)
                 .expect(200, function(err, result) {
-                    console.log('err', err, result.body)
                     done()
                 })
         });
@@ -97,7 +96,6 @@ describe('Stream', function() {
                 })
                 .set('Authorization', `JWT ${sails.test.token}`)
                 .expect(200, function(err, result) {
-                    console.log(result.body)
                     done()
                 })
         });
@@ -109,7 +107,6 @@ describe('Stream', function() {
                 .get('/api/stream/interest_profile')
                 .set('Authorization', `JWT ${sails.test.token}`)
                 .expect(200, function(err, result) {
-                    console.log('err', err, result.body)
                     done()
                 })
         });
@@ -121,7 +118,6 @@ describe('Stream', function() {
                 .get('/api/stream/event_counts')
                 .set('Authorization', `JWT ${sails.test.token}`)
                 .expect(200, function(err, result) {
-                    console.log('err', err, result.body)
                     done()
                 })
         });
