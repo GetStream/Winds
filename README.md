@@ -151,14 +151,9 @@ Run all tests:
 NODE_ENV=testing mocha test/bootstrap.test.js test/integration/**/**
 ```
 
-Run a specif test
-```bash
-NODE_ENV=testing mocha test/bootstrap.test.js test/integration/**/*follow* -g dofollow
-```
-
 ### Style Guide
 
-Running js beautify
+Running JS Beautify
 
 ```bash
 find . -name '*.js' | grep -v node_modules | grep -v tmp | xargs -n 1 js-beautify -r
