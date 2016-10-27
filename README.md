@@ -13,11 +13,11 @@ Note: We've launched this project in November this year. We're actively working 
 
 ## Screenshots
 
-![Winds - Open source RSS reader - Personalized feed](https://github.com/GetStream/stream-sails-rss-personalization/raw/master/screenshots/ss-2.png "Winds - Open source RSS reader")
+![Winds - Open source RSS reader - Personalized feed](https://github.com/GetStream/Winds/raw/master/screenshots/ss-2.png "Winds - Open source RSS reader")
 
-![Winds - Open source RSS reader - Chronological feed](https://github.com/GetStream/stream-sails-rss-personalization/raw/master/screenshots/ss-3.png "Winds - Open source RSS reader")
+![Winds - Open source RSS reader - Chronological feed](https://github.com/GetStream/Winds/raw/master/screenshots/ss-3.png "Winds - Open source RSS reader")
 
-![Winds - Open source RSS reader - Select topics](https://github.com/GetStream/stream-sails-rss-personalization/raw/master/screenshots/ss-1.png "Winds - Open source RSS reader")
+![Winds - Open source RSS reader - Select topics](https://github.com/GetStream/Winds/raw/master/screenshots/ss-1.png "Winds - Open source RSS reader")
 
 ## Demo
 
@@ -28,7 +28,7 @@ Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
 ### Step 0 - Git clone 
 
 ```bash
-git clone git@github.com:GetStream/stream-sails-rss-personalization.git
+git clone git@github.com:GetStream/Winds.git
 ```
 
 ### Step 1 - Node & requirements
