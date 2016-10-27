@@ -6,7 +6,7 @@ install:
     - npm install
 script:
     - ls -la
-    - mocha ./test/bootstrap.test.js ./test/integration/**/**  --reporter mocha-lcov-reporter
+    - mocha ./test/bootstrap.test.js ./test/integration/**
 addons:
   apt:
     sources:
