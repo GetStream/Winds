@@ -21,6 +21,12 @@ class Article extends Component {
         ArticleActions.impression(this.props.object.id)
     )
 
+    handleImgLoad = (src, id) => {
+        if (src == null || src.indexOf('track') != -1) {
+            document.getElementById(id).src = '../img/app/placeholder.png'
+        }
+    }
+
     render() {
 
         return (
@@ -29,18 +35,46 @@ class Article extends Component {
                     <Waypoint onEnter={() => {
                         this.trackImpression(this.props.object.id)
                     }} />
-                    <a href={this.props.object.articleUrl} target="_blank" data-id={this.props.object.id} data-position={this.props.index} onClick={this.trackEngagement}>
-                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='/img/app/placeholder.png'>
-                            {(src) => <img src={src} alt={this.props.object.articleUrl} height="180" width="270" />}
+                    <a
+                        href={this.props.object.articleUrl}
+                        target="_blank"
+                        data-id={this.props.object.id}
+                        data-position={this.props.index}
+                        onClick={this.trackEngagement}>
+                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='../img/app/placeholder.png'>
+                            {(src) =>
+                                <img
+                                    src={src}
+                                    alt={this.props.object.articleUrl}
+                                    height="180"
+                                    width="270"
+                                    onLoad={() => this.handleImgLoad(src, this.props.object.id)}
+                                    id={this.props.object.id} />
+                            }
                         </ProgressiveImage>
                     </a>
                     <h2>
-                        <a href={this.props.object.articleUrl} target="_blank" onClick={this.trackEngagement}>{this.props.object.title}</a>
+                        <a
+                            href={this.props.object.articleUrl}
+                            target="_blank"
+                            onClick={this.trackEngagement}>
+                            {this.props.object.title}
+                        </a>
                     </h2>
-                    <a href={this.props.object.articleUrl} target="_blank" data-id={this.props.object.id} data-position={this.props.index} onClick={this.trackEngagement}>
+                    <a
+                        href={this.props.object.articleUrl}
+                        target="_blank"
+                        data-id={this.props.object.id}
+                        data-position={this.props.index}
+                        onClick={this.trackEngagement}>
                         <Summary limit={100}>{this.props.object.summary}</Summary>
                     </a>
-                    <a href={this.props.object.articleUrl} target="_blank" data-id={this.props.object.id} data-position={this.props.index} onClick={this.trackEngagement}>
+                    <a
+                        href={this.props.object.articleUrl}
+                        target="_blank"
+                        data-id={this.props.object.id}
+                        data-position={this.props.index}
+                        onClick={this.trackEngagement}>
                         {this.props.site.name || this.props.site.siteUrl}
                     </a>
                 </div>
