@@ -6,7 +6,7 @@ install:
     - npm install
 script:
     - ls -la
-    - NODE_ENV=travis mocha ./test/bootstrap.test.js ./test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
+    - mocha ./test/bootstrap.test.js ./test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 addons:
   apt:
     sources:
@@ -15,3 +15,4 @@ addons:
     - g++-4.8
 env:
   - CXX=g++-4.8
+  - NODE_ENV=travis
