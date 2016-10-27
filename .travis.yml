@@ -1,7 +1,7 @@
 sudo: true
 language: node_js
 node_js:
-    - '7.0.0'
+    - '6.9.0'
 install:
     - npm install -g node-gyp
     - node-gyp rebuild
