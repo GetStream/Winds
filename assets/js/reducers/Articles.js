@@ -12,12 +12,13 @@ function Articles(state = [], action) {
             }
             return state
 
+        case UserActions.LOGOUT:
         case ArticleActions.CLEAR:
             return []
     }
 
     return state
-    
+
 }
 
 export default Articles

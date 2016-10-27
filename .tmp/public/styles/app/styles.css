@@ -124,7 +124,7 @@ form {
     position: absolute;
     right: 0;
     bottom: 15px;
-    outline: none;
+    outline: none !important;
     display: none; }
   form .adding-feed {
     position: absolute;
@@ -133,14 +133,16 @@ form {
     color: #FFFFFF !important;
     background-color: #D8D8D8 !important;
     border: 1px solid #D8D8D8 !important;
-    outline: none !important; }
+    outline: none !important;
+    display: none; }
   form .invalid-feed {
     position: absolute;
     right: 0;
     bottom: 15px;
     color: red !important;
     border: 1px solid red !important;
-    outline: none !important; }
+    outline: none !important;
+    display: none; }
 .navbar {
   height: 60px;
   background: rgba(255, 255, 255, 0.98);

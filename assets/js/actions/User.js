@@ -1,4 +1,5 @@
 import * as AppActions from 'actions/App'
+import * as TopicActions from 'actions/Topics'
 
 export const ME = 'USER_ME'
 export const me = () => dispatch => {
@@ -22,6 +23,8 @@ export const me = () => dispatch => {
 
         return dispatch(AppActions.reload())
 
+    }).then(() => {
+        return dispatch(TopicActions.load())
     })
 
 }
@@ -58,8 +61,10 @@ export const create = (user) => dispatch => {
 
         client.setUser({ id: res.response.id, alias: res.response.email })
 
-        dispatch(AppActions.reload())
+        return dispatch(AppActions.reload())
 
+    }).then(() => {
+        return dispatch(TopicActions.load())
     }, err => {
         alert('Email already exists. Please login with your existing email and password or new credentials.')
         throw err
@@ -85,8 +90,10 @@ export const login = (email, password) => dispatch => {
 
         client.setUser({ id: res.response.user.id, alias: res.response.user.email })
 
-        dispatch(AppActions.reload())
+        return dispatch(AppActions.reload())
 
+    }).then(() => {
+        return dispatch(TopicActions.load())
     }, err => {
         throw err
     })

@@ -2,13 +2,15 @@ language: node_js
 node_js:
     - '7.0.0'
 install:
-    - npm install -g node-gyp
+    - npm install -g node-gyp mocha
     - npm install
 script:
-    - NODE_ENV=travis mocha test/bootstrap.test.js test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
+    - NODE_ENV=travis mocha ./test/bootstrap.test.js ./test/integration/**/**  --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - gcc-4.8
+    - g++-4.8
+env:
+  - CXX=g++-4.8

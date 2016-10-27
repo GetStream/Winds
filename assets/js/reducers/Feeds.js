@@ -13,10 +13,13 @@ function Feeds(state = [], action) {
             if (action.response) return [...state, action.response]
             return {...state }
 
+        case UserActions.LOGOUT:
+            return []
+
     }
 
     return state
-    
+
 }
 
 export default Feeds

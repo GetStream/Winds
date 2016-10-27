@@ -12,11 +12,14 @@ function Sites(state = [], action) {
         case SiteActions.UNSUBSCRIBE:
             return state.filter(s => s.feed.id != action.data.feed_id)
 
+        case UserActions.LOGOUT:
+            return []
+            
         default:
             return state
 
     }
-    
+
 }
 
 export default Sites

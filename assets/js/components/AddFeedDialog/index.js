@@ -7,8 +7,10 @@ class AddFeedDialog extends Component {
 
     static defaultProps = {
         onSubmit: () => {},
+        onReset: () => {},
 
         loading: false,
+        error: false,
     }
 
     state = {
@@ -19,11 +21,48 @@ class AddFeedDialog extends Component {
         if (this.props.open) this.refs.url.focus()
     }
 
+    handleChange = e => {
+        this.setState({
+            url: e.target.value,
+        })
+        this.props.onReset()
+    }
+
     handleSubmit = e => {
         e.preventDefault()
         this.props.onSubmit({
             url: this.state.url,
         })
+    }
+
+    renderBtn() {
+
+        if (this.props.error == true)
+            return (
+                <button
+                    type="submit"
+                    className="btn text-uppercase invalid-feed">
+                    Feed Missing
+                </button>
+            )
+
+        if (this.props.loading == true)
+            return (
+                <button
+                    type="submit"
+                    className="btn text-uppercase adding-feed">
+                    Checking...
+                </button>
+            )
+
+        return (
+            <button
+                type="submit"
+                className="btn text-uppercase add-feed">
+                Add Feed
+            </button>
+        )
+
     }
 
     render() {
@@ -44,8 +83,8 @@ class AddFeedDialog extends Component {
                                         placeholder="Enter a valid site or feed URL"
                                         required={true}
                                         value={this.state.url}
-                                        onChange={e => this.setState({ url: e.target.value, })} />
-                                    {this.props.loading ? <button type="submit" className="btn text-uppercase adding-feed">Checking...</button> : <button type="submit" className="btn text-uppercase add-feed">Add Feed</button>}
+                                        onChange={this.handleChange} />
+                                    {this.renderBtn()}
                                 </div>
                             </form>
                         </div>

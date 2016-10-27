@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import { browserHistory, Router, Route, IndexRoute, IndexRedirect } from 'react-router'
 import thunk from 'redux-thunk'
 
@@ -15,7 +15,7 @@ export const store = createStore(
         ...reducers,
         routing: routerReducer
     }),
-    applyMiddleware(
+    compose(applyMiddleware(
 
         store => next => action => Promise.resolve(action).then(next),
         thunk,
@@ -24,7 +24,7 @@ export const store = createStore(
             baseURL: apiBaseUrl,
         }),
 
-    ),
+    ), window.devToolsExtension ? window.devToolsExtension() : f => f),
 )
 
 import * as AppActions from 'actions/App'

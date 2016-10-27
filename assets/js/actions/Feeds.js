@@ -32,8 +32,6 @@ export const add = (data) => dispatch => {
         browserHistory.replace(`/app/subscriptions/${res.response.feed_id}`)
         return dispatch(AppActions.reload())
     }, err => {
-        alert('Sorry, we could not fetch the provided RSS feed. Please try a different URL.')
-        document.getElementsByClassName('url')[0].value = ''
         document.getElementsByClassName('url')[0].focus()
         throw err
     })

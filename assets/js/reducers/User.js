@@ -13,6 +13,9 @@ function User(state = {}, action) {
             if (action.response) return {...action.response.user, loading: false, }
             return {...state, loading: true, }
 
+        case UserActions.LOGOUT:
+            return []
+
         default:
             return state
 

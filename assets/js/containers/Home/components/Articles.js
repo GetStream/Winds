@@ -42,7 +42,7 @@ class Article extends Component {
                         <Summary limit={100}>{this.props.object.summary}</Summary>
                     </a>
                     <a href={this.props.object.articleUrl} target="_blank" data-id={this.props.object.id} data-position={this.props.index} onClick={this.trackEngagement}>
-                        <Hostname>{this.props.object.articleUrl}</Hostname>
+                        {this.props.site.name || this.props.site.siteUrl}
                     </a>
                 </div>
             </div>
