@@ -62,15 +62,15 @@ API_BASE_URL = 'http://localhost:1337'
 
 Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. Signup at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials
 
-**(optional) Email**
+**Email (optional)**
 
 To send email create an account on [sendgrid.com](https://sendgrid.com/) and add your username and password. You can use other providers by customizing config/emails.js
 
-**(optional) Error Reporting**
+**Error Reporting (optional)**
 
 To track errors create an account on [sentry.io](https://sentry.io/). Next add your Sentry DSN in the .env file.
 
-**(optional) Database**
+**Database (optional)**
 
 Sails uses an ORM called Waterline, which supports [many databases](https://github.com/balderdashy/waterline-docs#supported-adapters). If you don't provide the Mongo URI it will store your data on local disk. This is fine for trying out the app. The full details are available in config/connections.js
 
