@@ -37,7 +37,6 @@
     "md5": "^2.2.1",
     "moment": "^2.15.2",
     "mongoose": "^4.6.5",
-    "node-metainspector": "^1.3.0",
     "node-sass": "^3.10.1",
     "nodemailer-html-to-text": "^2.1.0",
     "normalize-html-whitespace": "^0.2.0",

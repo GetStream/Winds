@@ -3,6 +3,7 @@ const parse     = require('./parse'),
       moment    = require('moment'),
       async     = require('async'),
       cheerio   = require('cheerio'),
+      request   = require('request'),
       URI       = require('urijs')
 
 module.exports = {
@@ -159,62 +160,74 @@ function makeUrlAbsolute(baseUrl, url) {
 
 function getMetaInformation(articleUrl, callback) {
 
-    const MetaInspector = require('node-metainspector')
-    let client
-
-    try {
-        client = new MetaInspector(articleUrl, {
-            timeout: 10000,
-            maxRedirects: 25,
-            jar: true,
-            headers: {
-              'User-Agent': 'Mozilla/5.0 (Macintosh Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
-              'accept': 'text/html,application/xhtml+xml'
-            }
-        })
-
-    } catch (e) {
-        sails.log.error('bummer, cant read meta for', articleUrl)
-        return callback(e)
+    function absolute(url) {
+        return makeUrlAbsolute(articleUrl, url)
     }
 
+    let options = {
+        uri: articleUrl,
+        timeout: 10000,
+        maxRedirects: 25,
+        jar: true,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
+          'accept': 'text/html,application/xhtml+xml'
+        }
+    }
+    request(options, function(err, response, body) {
+        if (err || response.statusCode != 200) {
+            sails.log.error('failed to get meta', err)
 
+            // handle corner cases where the library fails without an error
+            err = err || 'failed to get meta'
 
-    client.on('fetch', function() {
+            return callback(err)
+        } else {
+            let meta = {},
+                parsedDocument;
+            try {
+                parsedDocument = cheerio.load(body)
 
-        let canonical = this.parsedDocument("link[rel='canonical']").attr("href")
-        client.ogUrl = this.parsedDocument("meta[property='og:url']").attr("content")
+                // image
+                meta.image = absolute(parsedDocument("meta[property='og:image']").attr("content"))
+                // keywords
+                let keywordsString = parsedDocument("meta[name='keywords']").attr("content");
+                if(keywordsString) {
+                    meta.keywords = keywordsString.split(',')
+                } else {
+                    meta.keywords = []
+                }
+                // ogDescription
+                meta.ogDescription = parsedDocument("meta[property='og:description']").attr("content")
 
-        let patt = /icon/i
-        this.parsedDocument("link").each(function(i, elem) {
-            let match = patt.test(elem.attribs.rel)
-            if (match) {
-                client.favicon = elem.attribs.href
-                return false
+                // favicon detection
+                let patt = /icon/i
+                parsedDocument("link").each(function(i, elem) {
+                    let match = patt.test(elem.attribs.rel)
+                    if (match) {
+                        meta.favicon = elem.attribs.href
+                        return false
+                    }
+                })
+                meta.favicon = absolute(meta.favicon)
+
+                // canonicalUrl, og url or the last url we were redirected to
+                meta.canonical = parsedDocument("link[rel='canonical']").attr("href")
+                meta.ogUrl = parsedDocument("meta[property='og:url']").attr("content")
+                meta.canonicalUrl = meta.canonical || meta.ogUrl || response.url
+                meta.canonicalUrl = absolute(meta.canonicalUrl)
+                sails.log.verbose('found meta for url', articleUrl, meta)
+                callback(null, meta)
+
+            } catch(e) {
+                // common errors include exceeding the max call stack
+                sails.log.error('failed to parse body using cheerio', e)
+                return callback(e)
             }
-        })
 
-        client.favicon = makeUrlAbsolute(articleUrl, client.favicon)
 
-        client.canonicalUrl = canonical || client.ogUrl || this.response.url
-        client.canonicalUrl = makeUrlAbsolute(articleUrl, client.canonicalUrl)
-
-        callback(null, client)
-
+        }
     })
-
-    client.on('error', function(err) {
-
-        sails.log.error('failed to get meta', err)
-
-        // handle corner cases where the library fails without an error
-        err = err || 'failed to get meta'
-
-        return callback(err)
-
-    })
-
-    client.fetch()
 
 }
 

@@ -282,7 +282,7 @@ class GetStarted extends Component {
                         <div className="read-blog">
                             <div className="aligner">
                                 <p>Read the technical deep-dive about personalization</p>
-                                <a href="http://blog.getstream.io/winds-rss-reader-with-personalization" target="_blank" className="btn btn-outline-primary">Read More</a>
+                                <a href="http://bit.ly/personalization-winds" target="_blank" className="btn btn-outline-primary">Read More</a>
                             </div>
                         </div>
                     </aside>

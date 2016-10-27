@@ -204,7 +204,14 @@
                     color: #FFFFFF;
 
                     transform: scale(1);
+                    -webkit-transform: scale(1);
+                    -moz-transform: scale(1);
+                    -ms-transform: scale(1);
+
                     transition: transform 0.3s ease-out;
+                    -webkit-transition: transform 0.3s ease-out;
+                    -moz-transition: transform 0.3s ease-out;
+                    -ms-transition: transform 0.3s ease-out;
 
                     @media (max-height: 799px) {
                       margin-bottom: 20px;
@@ -213,7 +220,13 @@
                     &:hover{
                         box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.10);
                         transform: scale(1.02);
+                        -webkit-transform: scale(1.02);
+                        -moz-transform: scale(1.02);
+                        -ms-transform: scale(1.02);
                         transition: transform 0.1s ease-out;
+                        -webkit-transition: transform 0.1s ease-out;
+                        -moz-transition: transform 0.1s ease-out;
+                        -ms-transition: transform 0.1s ease-out;
                     }
 
                     &::before {
@@ -252,12 +265,21 @@
                     }
 
                     span {
-                        position: absolute;
+                        // position: absolute;
                         z-index: 1001;
                     }
 
                     transition: transform 0.3s ease-out;
+                    -webkit-transition: transform 0.3s ease-out;
+                    -moz-transition: transform 0.3s ease-out;
+                    -ms-transition: transform 0.3s ease-out;
+
+
                     transform: scale(0.9);
+                    -webkit-transform: scale(0.9);
+                    -moz-transform: scale(0.9);
+                    -ms-transform: scale(0.9);
+
 
                 }
 
@@ -302,12 +324,13 @@
                 border-bottom: 1px solid #FFFFFF;
                 padding-left: 50px;
                 padding-right: 50px;
-                color: #FFFFFF;
+                color: #FFFFFF ;
                 font-size: 16px;
                 text-align: center;
+                line-height: 30px;
 
                 &::-webkit-input-placeholder {
-                  color: #FFFFFF;
+                  color: #FFFFFF ;
                 }
 
                 &::-moz-placeholder {
