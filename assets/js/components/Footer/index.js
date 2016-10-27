@@ -17,7 +17,7 @@ class Footer extends Component {
                                 &nbsp;|&nbsp;
                                 Powered with <a href="https://getstream.io/docs_analytics/#introductionp" target="_blank">Personalization</a>
                                 &nbsp;|&nbsp;
-                                100% Open Source on <a href="https://github.com/GetStream/stream-sails-rss-personalization" target="_blank">Github</a>
+                                100% Open Source on <a href="https://github.com/GetStream/Winds" target="_blank">Github</a>
                             </em>
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
