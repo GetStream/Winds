@@ -96,6 +96,21 @@ describe('Discover', function() {
         .expect(400, done)
     })
 
+    it('gets the meta information for producthunt', function(done) {
+        ScrapingService.getMetaInformation('https://www.producthunt.com/r/ad762e0562240c/80616?app_id=339', function(err, meta) {
+            done()
+        })
+    })
+
+    it('fails to find the producthunt rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'https://www.producthunt.com/'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(400, done)
+    })
+
     it('finds the sentry rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
