@@ -2,8 +2,7 @@
 
 
 # Winds - Open Source RSS Reader
-
-[![Build Status](https://travis-ci.com/GetStream/Winds.svg?token=5jsp8KtoQUy4Y6Tu7cSH&branch=master)](https://travis-ci.com/GetStream/Winds)
+[![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
 [![Coverage Status](https://img.shields.io/coveralls/GetStream/Winds.svg)](https://coveralls.io/r/GetStream/Winds?branch=master)
 [![Dependencies up to date](https://david-dm.org/GetStream/Winds.png)](https://david-dm.org/getstream/Winds)
 
