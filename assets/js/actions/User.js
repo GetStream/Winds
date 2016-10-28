@@ -100,46 +100,29 @@ export const login = (email, password) => dispatch => {
 }
 
 export const UPDATE_PASSWORD = 'USER_UPDATE_PASSWORD'
-export const updatePassword = (email, password) => dispatch => {
+export const updatePassword = (email, password) => ({
+    type: UPDATE_PASSWORD,
 
-    return dispatch({
-        type: UPDATE_PASSWORD,
+    data: { id, password },
 
-        data: { id, password },
+    sync: {
+        method: 'PUT',
+        url: '/api/pasword_update',
+    },
+})
 
-        sync: {
-            method: 'PUT',
-            url: '/api/pasword_update',
-        },
-    }).then(res => {
-        alert('Your password has been successfully updated.')
-    }, err => {
-        alert('Sorry, an unknown error has occurred. Please try again at a later time.')
-        throw err
-    })
-
-}
 
 export const RESET_PASSWORD = 'USER_RESET_PASSWORD'
-export const resetPassword = (email) => dispatch => {
+export const resetPassword = (email) => ({
+    type: RESET_PASSWORD,
 
-    return dispatch({
-        type: RESET_PASSWORD,
+    data: { email, },
 
-        data: { email, },
-
-        sync: {
-            method: 'POST',
-            url: '/api/password_reset',
-        },
-    }).then(res => {
-        alert('Your password has been successfully reset. Please check your email.')
-    }, err => {
-        alert('Sorry, an unknown error has occurred. Please try again at a later time.')
-        throw err
-    })
-
-}
+    sync: {
+        method: 'POST',
+        url: '/api/password_reset',
+    },
+})
 
 export const LOGOUT = 'USER_LOGOUT'
 export const logout = () => ({

@@ -7,6 +7,7 @@ import * as UserActions from 'actions/User'
 import Header from 'containers/GetStarted/components/Header'
 
 import Footer from 'components/Footer'
+import Dialog from 'components/Dialog'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
@@ -47,6 +48,68 @@ class Topics extends Component {
     }
 }
 
+class ForgotPassword extends Component {
+
+    static defaultProps = {
+        onSubmit: () => {},
+        sent: false,
+    }
+
+    state = {
+        email: '',
+    }
+
+    handleSubmit = e => {
+        e.preventDefault()
+        this.props.onSubmit(this.state.email)
+    }
+
+    renderButton = () => {
+
+        if (this.props.sent)
+            return (
+                <button
+                    type="submit"
+                    className="btn text-uppercase adding-feed">
+                    Check Your Email
+                </button>
+            )
+
+        return (
+            <button
+                type="submit"
+                className="btn text-uppercase add-feed">
+                Reset Password
+            </button>
+        )
+    }
+
+    render() {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="url-container">
+                                <input
+                                    id="url-input"
+                                    type="email"
+                                    ref="email"
+                                    className="url"
+                                    placeholder="Please enter your email address"
+                                    required={true}
+                                    value={this.state.email}
+                                    onChange={e => this.setState({ email: e.target.value, })} />
+                                {this.renderButton()}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
 class CreateAccount extends Component {
 
     static defaultProps = {
@@ -79,7 +142,7 @@ class CreateAccount extends Component {
             this.setState({ email: '', password: '', })
             setTimeout(() => {
                 this[this.props.create ? '_createEmail' : '_loginEmail'].focus()
-            }, 150) 
+            }, 150)
         }
     }
 
@@ -113,13 +176,13 @@ class CreateAccount extends Component {
         this.props.onHaveAccount()
     }
 
-    handleResetPassword = e => {
-        e.preventDefault()
-        const email = prompt('Please enter your email address.')
-        if (email != '') {
-            this.props.onResetPassword(email, '')
-        }
-    }
+    // handleResetPassword = e => {
+    //     e.preventDefault()
+    //     const email = prompt('Please enter your email address.')
+    //     if (email != '') {
+    //         this.props.onResetPassword(email, '')
+    //     }
+    // }
 
     getButtonText = () => {
         if (this.props.loading) return 'Logging In'
@@ -164,7 +227,7 @@ class CreateAccount extends Component {
             <div>
                 <header>
                     <h1>Your Account</h1>
-                    <p>Forgot your password? <a href="#" onClick={this.handleResetPassword} className="reset-password">Send a new one.</a></p>
+                    <p>Forgot your password? <a href="#" onClick={this.props.onResetPassword} className="reset-password">Send a new one.</a></p>
                 </header>
                 <main className="text-center">
                     <form onSubmit={this.handleSignIn}>
@@ -219,6 +282,8 @@ class GetStarted extends Component {
         selected: [],
         creating: false,
         loadingAccount: false,
+        forgotPasswordDialog: false,
+        emailSent: false,
 
         error: false,
 
@@ -295,22 +360,33 @@ class GetStarted extends Component {
                         error: 'Invalid email or password.',
                     })
                     setTimeout(() => this.setState({ error: false, }), 3000)
-                    // alert('Invalid email or password.')
                 }
             )
     }
 
-    handleResetPassword = (email, password) =>
+    handleResetPassword = () => this.setState({ forgotPasswordDialog: true, creating: false, })
+    handleResetPasswordSubmit = (email, password) =>
         this.props.dispatch(UserActions.resetPassword(email, password))
+            .then(() => this.setState({ emailSent: true, }))
 
     render() {
         return (
             <div className="getting-started">
+
+                <Dialog
+                    onRequestClose={() => this.setState({ forgotPasswordDialog: false, })}
+                    open={this.state.forgotPasswordDialog}>
+                    <ForgotPassword
+                        onSubmit={this.handleResetPasswordSubmit}
+                        sent={this.state.emailSent} />
+                </Dialog>
+
                 <Header
                     onSignIn={this.handleSignIn}
                     topics={3}
                     selected={this.state.selected.length}
                     onContinue={this.handleContinue} />
+
                 <main className="container-fluid">
                     <aside className="col-lg-3 hidden-md-down">
                         <div className="header text-center">

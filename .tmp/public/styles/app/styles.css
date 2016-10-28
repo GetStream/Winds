@@ -982,6 +982,8 @@ body {
   min-width: 545px; }
   .getting-started footer {
     margin: -30px 0 0 0; }
+  .getting-started .dialog button[type=submit] {
+    width: auto; }
   .getting-started .create-account {
     background-color: #16C98D;
     position: fixed;

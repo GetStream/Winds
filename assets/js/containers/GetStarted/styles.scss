@@ -7,6 +7,12 @@
         margin: -30px 0 0 0;
     }
 
+    .dialog {
+        button[type=submit] {
+            width: auto;
+        }
+    }
+
     .create-account {
         background-color: #16C98D;
         position: fixed;
