@@ -21,9 +21,12 @@ class Article extends Component {
         ArticleActions.impression(this.props.object.id)
     )
 
-    handleImgLoad = (src, id) => {
+    handleImgLoad = (src, id, err) => {
         if (src == null || src.indexOf('track') != -1) {
-            document.getElementById(id).src = '../img/app/placeholder.png'
+            document.getElementById(id).src = 'img/app/placeholder.png'
+        }
+        if (err) {
+            document.getElementById(id).src = 'img/app/placeholder.png'
         }
     }
 
@@ -49,6 +52,7 @@ class Article extends Component {
                                     height="180"
                                     width="270"
                                     onLoad={() => this.handleImgLoad(src, this.props.object.id)}
+                                    onError={() => this.handleImgLoad(src, this.props.object.id, true)}
                                     id={this.props.object.id} />
                             }
                         </ProgressiveImage>
