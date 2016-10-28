@@ -44,7 +44,7 @@ class Article extends Component {
                         data-id={this.props.object.id}
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
-                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='../img/app/placeholder.png'>
+                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='./img/app/placeholder.png'>
                             {(src) =>
                                 <img
                                     src={src}
