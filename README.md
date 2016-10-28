@@ -43,7 +43,7 @@ npm install -g sails pm2
 
 ### Step 2 - Secrets
 
-Create a file called **.env** with your secrets
+Create a file called `.env` with the following secrets:
 
 ```bash
 STREAM_APP_ID = ''
