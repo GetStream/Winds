@@ -23,19 +23,21 @@ module.exports = {
             .then(function(feedResponse) {
 
                 StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities){
+
                     if (err) {
                         sails.log.error('Enrichment failed:', err)
-                        res.badRequest('Sorry, failed to load the feed.')
-                    } else {
-                        feedResponse.results = enrichedActivities
-                        delete feedResponse.next
-                        return res.ok(feedResponse)
+                        return res.badRequest('Sorry, failed to load the feed.')
                     }
+
+                    feedResponse.results = enrichedActivities
+                    delete feedResponse.next
+                    return res.ok(feedResponse)
+
                 })
 
             }).catch(err => {
                 sails.log.error('Failed to read the feed from Stream', err)
-                res.badRequest('Sorry, failed to load the feed.')
+                return res.badRequest('Sorry, failed to load the feed.')
             })
 
     },
@@ -43,11 +45,11 @@ module.exports = {
     personalized: function(req, res, next) {
 
         const userId = req.user.id,
-            url      = `https://reader.getstream.io/reader/personalized/${userId}`,
-            token    = StreamService.getJwtToken(userId),
-            offset   = req.param('offset'),
-            version  = req.param('version'),
-            limit    = req.param('limit') || 25
+              url      = `https://reader.getstream.io/reader/personalized/${userId}`,
+              token    = StreamService.getJwtToken(userId),
+              offset   = req.param('offset'),
+              version  = req.param('version'),
+              limit    = req.param('limit') || 25
 
         request({
             url: url,
@@ -72,14 +74,16 @@ module.exports = {
             }
 
             StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities){
+
                 if (err) {
                     sails.log.error('Enrichment failed:', err)
-                    res.badRequest('Sorry, failed to load the feed.')
-                } else {
-                    feedResponse.results = enrichedActivities
-                    delete feedResponse.next
-                    return res.ok(feedResponse)
+                    return res.badRequest('Sorry, failed to load the feed.')
                 }
+
+                feedResponse.results = enrichedActivities
+                delete feedResponse.next
+                return res.ok(feedResponse)
+
             })
 
         })
