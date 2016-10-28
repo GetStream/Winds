@@ -24,13 +24,13 @@
 
         .btn-outline-primary{
             margin: auto;
-            background: none;
+            background: #FFF;
             border-radius: 0;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-size: 14px;
-            border: 1px solid #FFFFFF;
-            color: #FFFFFF;
+
+            color: #16C98D;
         }
 
     }
@@ -45,7 +45,7 @@
     }
     .row-1{
         min-height: 390px;
-        // margin-bottom: 60px;
+        margin-bottom: 19px;
 
 
         .b1{
@@ -101,7 +101,8 @@
 
     }
     .row-2{
-
+        min-height: 390px;
+        margin-bottom: 29px;
         .b4{
             width: 100%;
             height: 290px;
@@ -124,7 +125,8 @@
         }
     }
     .row-3{
-
+        min-height: 390px;
+        margin-bottom: 19px;
         .b6{
             width: 100%;
             height: 290px;
@@ -230,6 +232,7 @@
     -webkit-justify-content: center;
     justify-content: center;
     flex-wrap: wrap;
+    background: #F0F0F0;
 
     .article {
 

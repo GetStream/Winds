@@ -49,7 +49,7 @@ class Home extends Component {
                                     <p>We've written a technical deep dive on our blog:</p>
                                 </div>
                                 <div className="read-blog">
-                                    <a href="http://bit.ly/personalization-winds" target="_blank" className="btn btn-outline-primary text-uppercase">Winds &amp; Personalization</a>
+                                    <a href="http://bit.ly/personalization-winds" target="_blank" className="btn btn-outline-primary text-uppercase">HOW IT WORKS &rarr;</a>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" onClick={() => this.trackEngagement(this.props.articles[0].object.id, 0)}>
@@ -183,7 +183,7 @@ class Home extends Component {
                             </div>
                         </div>
                         <div className="row row-3">
-                            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3" onClick={() => this.trackEngagement(this.props.articles[4].object.id, 4)}>
+                            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[4].object.id, 4)}>
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[4].object.id)
                                 }} />
@@ -216,7 +216,7 @@ class Home extends Component {
                                     <Summary>{this.props.articles[5].object.summary}</Summary>
                                     </div>
                                 </div>
-                                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" onClick={() => this.trackEngagement(this.props.articles[5].object.id, 5)}>
+                                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[5].object.id, 5)}>
                                     <Waypoint onEnter={() => {
                                         this.trackImpression(this.props.articles[5].object.id)
                                     }} />
@@ -246,7 +246,7 @@ class Home extends Component {
                                         </p>
                                     </div>
                                 </div>
-                            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3" onClick={() => this.trackEngagement(this.props.articles[6].object.id, 6)}>
+                            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[6].object.id, 6)}>
                             <Waypoint onEnter={() => {
                                 this.trackImpression(this.props.articles[6].object.id)
                             }} />
@@ -281,8 +281,9 @@ class Home extends Component {
                             </div>
                         </div>
                     </div>
-                    <Articles />
+
                 </div>
+                <Articles />
             </div>
         )
     }

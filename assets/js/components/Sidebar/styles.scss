@@ -19,10 +19,16 @@
 .sidebar {
 
     transition: transform 0.3s ease-out;
+    -webkit-transition: transform 0.3s ease-out;
+    -moz-transition: transform 0.3s ease-out;
+    -ms-transition: transform 0.3s ease-out;
 
     &.profile {
         transform: translateX(-550px);
         transition: transform 0.3s ease-out;
+        -webkit-transition: transform 0.3s ease-out;
+        -moz-transition: transform 0.3s ease-out;
+        -ms-transition: transform 0.3s ease-out;
     }
 
     .profile {
@@ -109,7 +115,7 @@
         z-index: 2001;
         top: 0;
         bottom: 0;
-        right: 0;
+        right: -10px;
         overflow-y: auto;
 
         background-color: #FFFFFF;
