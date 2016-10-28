@@ -25,7 +25,9 @@
     font-weight: 400;
 
 
-    a:hover,
+    a:hover{
+        border-bottom: none;
+    }
     &.active {
         color: #16C98D;
         // font-weight: 500;

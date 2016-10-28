@@ -166,8 +166,10 @@ form {
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 400; }
-  .navbar a:hover, .navbar.active,
-  .navbar a a:hover,
+  .navbar a:hover,
+  .navbar a a:hover {
+    border-bottom: none; }
+  .navbar.active,
   .navbar a.active {
     color: #16C98D;
     border-bottom: 1px solid #16C98D;
