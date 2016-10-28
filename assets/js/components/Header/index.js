@@ -16,7 +16,7 @@ class Header extends Component {
     state = {
         addFeedOpen: false,
         loading: false,
-
+        url: false,
     }
 
     handleAddFeed = values => {

@@ -66,7 +66,6 @@ export const create = (user) => dispatch => {
     }).then(() => {
         return dispatch(TopicActions.load())
     }, err => {
-        alert('Email already exists. Please login with your existing email and password or new credentials.')
         throw err
     })
 }
