@@ -23,10 +23,10 @@ class Article extends Component {
 
     handleImgLoad = (src, id, err) => {
         if (src == null || src.indexOf('track') != -1) {
-            document.getElementById(id).src = 'img/app/placeholder.png'
+            document.getElementById(id).src = '../img/app/placeholder.png'
         }
         if (err) {
-            document.getElementById(id).src = 'img/app/placeholder.png'
+            document.getElementById(id).src = '../img/app/placeholder.png'
         }
     }
 
@@ -44,7 +44,7 @@ class Article extends Component {
                         data-id={this.props.object.id}
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
-                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='../../img/app/placeholder.png'>
+                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='../img/app/placeholder.png'>
                             {(src) =>
                                 <img
                                     src={src}
