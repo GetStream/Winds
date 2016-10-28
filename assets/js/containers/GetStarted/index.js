@@ -184,7 +184,7 @@ class CreateAccount extends Component {
         }
 
         if (this.props.loading) return 'Logging In'
-        if (this.props.error) return 'Invalid email or Password'
+        if (this.props.error) return 'Invalid Email or Password'
         return 'Log In Now'
     }
 
