@@ -176,17 +176,15 @@ class CreateAccount extends Component {
         this.props.onHaveAccount()
     }
 
-    // handleResetPassword = e => {
-    //     e.preventDefault()
-    //     const email = prompt('Please enter your email address.')
-    //     if (email != '') {
-    //         this.props.onResetPassword(email, '')
-    //     }
-    // }
-
     getButtonText = () => {
+
+        if (this.props.create) {
+            if (this.props.loading) return 'Creating Account'
+            return 'Sign Up Now'
+        }
+
         if (this.props.loading) return 'Logging In'
-        if (this.props.error) return 'Invalid email or password'
+        if (this.props.error) return 'Invalid email or Password'
         return 'Log In Now'
     }
 
@@ -208,7 +206,7 @@ class CreateAccount extends Component {
                                 onChange={e => this.setState({ email: e.target.value, })}/>
                         </div>
                         <div>
-                            <button type="submit">Sign Up Now</button>
+                            <button type="submit">{this.getButtonText()}</button>
                         </div>
                         <div className="existing-user">
                             <p>Have an account?</p>
@@ -314,7 +312,7 @@ class GetStarted extends Component {
     }
 
     handleCreateAccount = user => {
-        this.setState({ creatingAccount: true, })
+        this.setState({ creatingAccount: true, loadingAccount: true, })
         this.props.dispatch(UserActions.create({
             ...user,
             topics: this.state.selected.map(t => t.id),
@@ -322,12 +320,14 @@ class GetStarted extends Component {
 
             this.setState({
                 creatingAccount: false,
+                loadingAccount: false,
             })
 
             setTimeout(function() {
                 browserHistory.replace('/app')
-            }, 750)
-        }, err => this.setState({ creating: false, creatingAccount: false, }))
+            }, 250)
+
+        }, err => this.setState({ creating: false, creatingAccount: false, loadingAccount: false, }))
     }
 
     componentDidUpdate(oldProps, oldState) {
