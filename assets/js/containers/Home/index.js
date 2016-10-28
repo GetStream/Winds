@@ -25,10 +25,10 @@ class Home extends Component {
 
     handleImgLoad = (src, id, err) => {
         if (err) {
-            return document.getElementById(id).style.backgroundImage = 'url("../img/app/placeholder.png")'
+            return document.getElementById(id).style.backgroundImage = 'url("http://i.imgur.com/GPfS63U.png")'
         }
         if (src == null || src.indexOf('track') != -1) {
-            document.getElementById(id).style.backgroundImage = 'url("../img/app/placeholder.png")'
+            document.getElementById(id).style.backgroundImage = 'url("http://i.imgur.com/GPfS63U.png")'
         }
     }
 
