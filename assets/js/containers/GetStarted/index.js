@@ -58,6 +58,7 @@ class CreateAccount extends Component {
 
         create: true,
         error: false,
+        loading: false,
     }
 
     state = {
@@ -72,6 +73,13 @@ class CreateAccount extends Component {
             } else {
                 document.getElementById('root').classList.remove('creating-account')
             }
+        }
+
+        if (props.error != this.props.error && !props.error) {
+            this.setState({ email: '', password: '', })
+            setTimeout(() => {
+                this[this.props.create ? '_createEmail' : '_loginEmail'].focus()
+            }, 150) 
         }
     }
 
@@ -113,6 +121,12 @@ class CreateAccount extends Component {
         }
     }
 
+    getButtonText = () => {
+        if (this.props.loading) return 'Logging In'
+        if (this.props.error) return 'Invalid email or password'
+        return 'Log In Now'
+    }
+
     renderCreate = () => {
         return (
             <div>
@@ -126,6 +140,7 @@ class CreateAccount extends Component {
                             <label>Email Address</label>
                             <input
                                 type="email"
+                                ref={c => this._createEmail = c}
                                 value={this.state.email}
                                 onChange={e => this.setState({ email: e.target.value, })}/>
                         </div>
@@ -144,6 +159,7 @@ class CreateAccount extends Component {
     }
 
     renderSignIn = () => {
+
         return (
             <div>
                 <header>
@@ -156,6 +172,7 @@ class CreateAccount extends Component {
                             <label>Email Address</label>
                             <input
                                 type="email"
+                                ref={c => this._loginEmail = c}
                                 value={this.state.email}
                                 onChange={e => this.setState({ email: e.target.value, })}/>
                         </div>
@@ -168,7 +185,14 @@ class CreateAccount extends Component {
                                 value={this.state.password}
                                 onChange={e => this.setState({ password: e.target.value, })}/>
                         </div>
-                        <button type="submit">Log In Now</button>
+
+                        <button
+                            type="submit"
+                            disabled={this.props.loading}>
+                            {this.getButtonText()}
+
+                        </button>
+
                         <div className="existing-user">
                             <p>Need an account?</p>
                             <a href="#" onClick={this.handleNeedAccount}>Sign Up</a>
@@ -194,6 +218,7 @@ class GetStarted extends Component {
     state = {
         selected: [],
         creating: false,
+        loadingAccount: false,
 
         error: false,
 
@@ -224,14 +249,20 @@ class GetStarted extends Component {
     }
 
     handleCreateAccount = user => {
+        this.setState({ creatingAccount: true, })
         this.props.dispatch(UserActions.create({
             ...user,
             topics: this.state.selected.map(t => t.id),
         })).then(() => {
+
+            this.setState({
+                creatingAccount: false,
+            })
+
             setTimeout(function() {
                 browserHistory.replace('/app')
             }, 750)
-        }, err => this.setState({ creating: false, }))
+        }, err => this.setState({ creating: false, creatingAccount: false, }))
     }
 
     componentDidUpdate(oldProps, oldState) {
@@ -248,12 +279,26 @@ class GetStarted extends Component {
         this.setState({ creating: (this.state.selected.length >= 3) })
     }
 
-    handleSignInSubmit = data =>
+    handleSignInSubmit = data => {
+
+        this.setState({ loadingAccount: true, })
+
         this.props.dispatch(UserActions.login(data.email, data.password))
             .then(
-                () => browserHistory.replace('/app'),
-                err => alert('Invalid email or password.')
+                () => {
+                    this.setState({ loadingAccount: false, })
+                    browserHistory.replace('/app')
+                },
+                err => {
+                    this.setState({
+                        loadingAccount: false,
+                        error: 'Invalid email or password.',
+                    })
+                    setTimeout(() => this.setState({ error: false, }), 3000)
+                    // alert('Invalid email or password.')
+                }
             )
+    }
 
     handleResetPassword = (email, password) =>
         this.props.dispatch(UserActions.resetPassword(email, password))
@@ -293,6 +338,7 @@ class GetStarted extends Component {
                     open={this.state.creating}
                     onNeedAccount={this.handleNeedAccount}
                     error={this.state.error}
+                    loading={this.state.loadingAccount}
                     onHaveAccount={() => this.setState({ signin: true, })}
                     onResetPassword={this.handleResetPassword}
                     onSignIn={this.handleSignInSubmit}
