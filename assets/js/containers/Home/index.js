@@ -92,7 +92,7 @@ class Home extends Component {
                                     <img
                                         src={this.props.articles[1].object.imageSrc}
                                         style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.articles[0].object.imageSrc, this.props.articles[0].object.id)}
+                                        onLoad={() => this.handleImgLoad(this.props.articles[1].object.imageSrc, this.props.articles[1].object.id)}
                                         onError={() => this.handleImgLoad(this.props.articles[1].object.imageSrc, this.props.articles[1].object.id, true)} />
                                     <div className="b3"
                                         style={{
