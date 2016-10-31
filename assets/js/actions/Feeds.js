@@ -29,8 +29,8 @@ export const add = (data) => dispatch => {
             url: '/api/rss/discover',
         }
     }).then(res => {
-        browserHistory.replace(`/app/subscriptions/${res.response.feed_id}`)
-        return dispatch(AppActions.reload())
+        dispatch(AppActions.reload())
+        return window.location.href = `/app/subscriptions/${res.response.feed_id}`
     }, err => {
         document.getElementsByClassName('url')[0].focus()
         throw err
