@@ -8,17 +8,26 @@ module.exports = {
     findRSS: findRSS
 }
 
-function validateRssLinks(links) {
+function validateRSSLinks(links) {
+
     let validLinks = []
+
     links.forEach(link => {
+
+        sails.log('REL: ' + link.rel)
+
         let wrongType = !link.type || (link.type.indexOf('rss') == -1 && link.type.indexOf('xml') == -1 && link.type.indexOf('atom') == -1)
+
         if (link.media && wrongType) {
-            // not valid
+            return callback('No RSS feed found.', null)
         } else {
             validLinks.push(link)
         }
+
     })
+
     return validLinks
+
 }
 
 function findRSS(humanizedUrl, callback) {
@@ -29,10 +38,11 @@ function findRSS(humanizedUrl, callback) {
     try {
         url = normalize(humanizedUrl) // e.g. translate spacex.com into http://spacex.com
     } catch (err) {
+        sails.log(err)
         callback(err, null)
     }
 
-    let options = {
+    rssDiscover({
         url: url,
         timeout: 10000,
         maxRedirects: 25,
@@ -41,16 +51,16 @@ function findRSS(humanizedUrl, callback) {
           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
           'accept': 'text/html,application/xhtml+xml'
         }
-    }
-    rssDiscover(options, function(err, results) {
+    }, function(err, results) {
 
         if (err) {
+            sails.log(err)
             return callback(err, null)
         }
 
         let links = []
         if (results && results.links) {
-            links = validateRssLinks(results.links)
+            links = validateRSSLinks(results.links)
         }
 
         if (links && links.length) {
@@ -58,7 +68,6 @@ function findRSS(humanizedUrl, callback) {
             let feedUrl = results.links[0].href
                 feedUrl = new URI(feedUrl).absoluteTo(url).normalize().toString()
 
-            // get the title
             parse.fetch(feedUrl, function(err, meta, articles) {
                 callback(null, url, feedUrl, meta)
             })
@@ -67,6 +76,6 @@ function findRSS(humanizedUrl, callback) {
             return callback('No RSS feed found.', null)
         }
 
-
     })
+
 }
