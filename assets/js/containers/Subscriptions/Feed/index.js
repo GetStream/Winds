@@ -21,8 +21,8 @@ class FeedItems extends Component {
 
 const Header = props => (
     <div className="site-feed-header">
-        <Link to="/app/subscriptions">
-            <svg width="18px" height="12px" viewBox="30 99 18 12">
+        <Link to="/app/subscriptions" >
+            <svg width="18px" height="12px" viewBox="30 99 18 12" className="svg-icon">
                 <polygon id="Shape" stroke="none" fill="#99A9B3" fillRule="evenodd" points="48 104 33.83 104 37.41 100.41 36 99 30 105 36 111 37.41 109.59 33.83 106 48 106"></polygon>
             </svg>&nbsp;
             {!!props.site.name ? props.site.name : props.site.siteUrl}

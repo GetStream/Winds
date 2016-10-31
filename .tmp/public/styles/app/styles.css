@@ -883,7 +883,6 @@ body {
     border-radius: 2px;
     padding: 20px 10px 20px 10px; }
     .subscriptions ul.article.read, .subscriptions ul.article:hover {
-      background-color: #F2F2F2;
       transition: background 0.3s linear; }
     .subscriptions ul.article li {
       color: #7B868C;
@@ -937,6 +936,8 @@ body {
     color: #16C98D;
     line-height: 12px;
     text-decoration: none; }
+  .site-feed-list .site-feed-header .svg-icon {
+    margin-right: 20px; }
 
 .site-feed-list .options a,
 .site-feed-list .options a:active {
