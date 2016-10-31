@@ -449,6 +449,7 @@ footer {
     .sidebar .sidebar-subscriptions svg {
       position: relative;
       left: -5px;
+      top: 3px;
       float: right; }
   .sidebar .sidebar-subscriptions li {
     text-transform: none !important; }

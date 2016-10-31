@@ -133,12 +133,10 @@ class Sidebar extends Component {
                                             <img src={!!site.feed.site.faviconUrl ? site.feed.site.faviconUrl : '../img/app/default-favicon.png'} height="20" width="20" />&nbsp;
                                             {!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}
                                         </a>
-                                        <svg width="16px" height="16px" viewBox="255 0 16 16" onClick={() => this.handleUnsubscribe(site)}>
-                                            <g id="trash" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(255.000000, 0.000000)">
-                                                <path d="M6.5,7 L5.5,7 C5.224,7 5,7.224 5,7.5 L5,11.5 C5,11.776 5.224,12 5.5,12 L6.5,12 C6.776,12 7,11.776 7,11.5 L7,7.5 C7,7.224 6.776,7 6.5,7 L6.5,7 Z" id="Shape" fill="#99A9B3"></path>
-                                                <path d="M10.5,7 L9.5,7 C9.224,7 9,7.224 9,7.5 L9,11.5 C9,11.776 9.224,12 9.5,12 L10.5,12 C10.776,12 11,11.776 11,11.5 L11,7.5 C11,7.224 10.776,7 10.5,7 L10.5,7 Z" id="Shape" fill="#99A9B3"></path>
-                                                <path d="M12,1 C12,0.447 11.553,0 11,0 L5,0 C4.447,0 4,0.447 4,1 L4,3 L1,3 C0.447,3 0,3.447 0,4 L0,4 C0,4.553 0.447,5 1,5 L1,5 L1,14 L1,15 C1,15.553 1.447,16 2,16 L14,16 C14.553,16 15,15.553 15,15 L15,5 C15.553,5 16,4.553 16,4 L16,4 C16,3.447 15.553,3 15,3 L12,3 L12,1 L12,1 Z M6,2 L10,2 L10,3 L6,3 L6,2 L6,2 Z M13,14 L3,14 L3,5 L13,5 L13,14 L13,14 Z" id="Shape" fill="#99A9B3"></path>
-                                            </g>
+                                        <svg fill="#000000" height="16px" viewBox="0 0 24 24" width="24" onClick={() => this.handleUnsubscribe(site)}>
+                                            <path d="M0 0h24v24H0V0z" fill="none"/>
+                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+                                            <path d="M0 0h24v24H0z" fill="none"/>
                                         </svg>
                                     </li>
                                 ))}
