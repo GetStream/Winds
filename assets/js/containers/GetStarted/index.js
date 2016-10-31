@@ -186,6 +186,7 @@ class CreateAccount extends Component {
         if (this.props.loading) return 'Logging In'
         if (this.props.error) return 'Invalid Email or Password'
         return 'Log In Now'
+
     }
 
     renderCreate = () => {
@@ -249,9 +250,9 @@ class CreateAccount extends Component {
 
                         <button
                             type="submit"
-                            disabled={this.props.loading}>
+                            disabled={this.props.loading}
+                            className={this.getButtonText().toLowerCase().replace(/ /g, '-')}>
                             {this.getButtonText()}
-
                         </button>
 
                         <div className="existing-user">
@@ -357,7 +358,7 @@ class GetStarted extends Component {
                 err => {
                     this.setState({
                         loadingAccount: false,
-                        error: 'Invalid email or password.',
+                        error: 'Invalid Email or Password.',
                     })
                     setTimeout(() => this.setState({ error: false, }), 3000)
                 }

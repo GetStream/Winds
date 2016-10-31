@@ -14,6 +14,7 @@
     }
 
     .create-account {
+
         background-color: #16C98D;
         position: fixed;
         left: 100%;
@@ -58,7 +59,8 @@
             }
 
         }
-        .form-group-two{
+
+        .form-group-two {
             margin-top: 50px;
         }
 
@@ -70,6 +72,7 @@
             padding-right: 0;
 
         }
+
         aside {
             background-color: #16C98D;
             height: 83vh;
@@ -102,7 +105,6 @@
                 @media (max-height: 799px) {
                   margin-top: 30px;
                 }
-
 
                 h2:first-child {
                     margin-top: 0px;
@@ -256,7 +258,6 @@
 
                 }
 
-
                 input:checked + label {
 
                     &::before {
@@ -285,7 +286,6 @@
                     -webkit-transform: scale(0.9);
                     -moz-transform: scale(0.9);
                     -ms-transform: scale(0.9);
-
 
                 }
 
@@ -365,6 +365,12 @@
                 border: none;
                 outline: none;
                 text-transform: uppercase;
+
+                &.invalid-email-or-password {
+                    background-color: #FF5452;
+                    color: #FFFFFF;
+                }
+
             }
 
             .existing-user {

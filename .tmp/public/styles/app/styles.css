@@ -1239,6 +1239,9 @@ body {
       border: none;
       outline: none;
       text-transform: uppercase; }
+      .create-account main form button.invalid-email-or-password {
+        background-color: #FF5452;
+        color: #FFFFFF; }
     .create-account main form .existing-user {
       margin-top: 35px; }
       .create-account main form .existing-user p {
