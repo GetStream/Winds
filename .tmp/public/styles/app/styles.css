@@ -935,6 +935,8 @@ body {
     color: #16C98D;
     line-height: 12px;
     text-decoration: none; }
+  .site-feed-list .site-feed-header .svg-icon {
+    margin-right: 20px; }
 
 .site-feed-list .options a,
 .site-feed-list .options a:active {
@@ -947,7 +949,6 @@ body {
 
 .site-feed-list .options a:hover {
   color: #16C98D;
-  background: #FFFFFF;
   font-size: 13px;
   text-decoration: none; }
 
