@@ -612,13 +612,13 @@ body {
   height: 100px;
   bottom: 0;
   left: 0;
-  color: white;
+  color: #FFFFFF;
   text-align: center;
   display: flex;
   align-items: center; }
   .masonry .read-blog .btn-outline-primary {
     margin: auto;
-    background: #FFF;
+    background: #FFFFFF;
     border-radius: 0;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -635,7 +635,7 @@ body {
     background: #16C98D;
     display: box;
     height: 290px;
-    color: white;
+    color: #FFFFFF;
     padding: 30px; }
     @media (max-width: 1025px) {
       .masonry .row-1 .b1 {
@@ -653,7 +653,7 @@ body {
       color: white;
       font-size: 14px; }
     .masonry .row-1 .b1 a {
-      color: white;
+      color: #FFFFFF;
       text-decoration: underline; }
   .masonry .row-1 .b2 {
     width: 100%;
@@ -995,7 +995,7 @@ body {
   .getting-started footer {
     margin: -30px 0 0 0; }
   .getting-started .dialog button[type=submit] {
-    width: auto; }
+    width: auto !important; }
   .getting-started .create-account {
     background-color: #16C98D;
     position: fixed;
@@ -1189,6 +1189,60 @@ body {
       background-color: rgba(22, 201, 141, 0.8); }
     .getting-started > main main .topic input:checked + label span {
       z-index: 1001; }
+  .getting-started form.reset-password {
+    width: 100%;
+    margin-top: 15%; }
+    .getting-started form.reset-password input {
+      outline: none;
+      color: #737373;
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+      border-bottom: 2px solid #D8D8D8;
+      background-color: transparent;
+      line-height: 200px;
+      font-weight: 300 !important;
+      font-size: 45px;
+      width: 100%;
+      height: 70px; }
+      .getting-started form.reset-password input:valid {
+        color: #3884FF; }
+      .getting-started form.reset-password input.email-sent:valid {
+        color: #D8D8D8; }
+      .getting-started form.reset-password input:valid + button {
+        height: 40px;
+        width: 156px;
+        border: 1px solid #16C98D;
+        font-size: 14px;
+        color: #16C98D;
+        letter-spacing: 2px;
+        line-height: 15px;
+        border-radius: 0px;
+        background-color: transparent;
+        display: block;
+        outline: none; }
+        .getting-started form.reset-password input:valid + button:hover, .getting-started form.reset-password input:valid + button:active {
+          outline: none;
+          color: #16C98D;
+          border: 1px solid #16C98D;
+          background-color: transparent; }
+    .getting-started form.reset-password .email-container {
+      position: relative; }
+    .getting-started form.reset-password .reset-pw {
+      position: absolute;
+      right: 0;
+      bottom: 15px;
+      outline: none !important;
+      display: none; }
+    .getting-started form.reset-password .pw-reset {
+      position: absolute;
+      right: 0;
+      bottom: 15px;
+      color: #FFFFFF !important;
+      background-color: #D8D8D8 !important;
+      border: 1px solid #D8D8D8 !important;
+      outline: none !important;
+      display: none; }
 
 #root {
   transition: transform 0.3s ease-out; }
