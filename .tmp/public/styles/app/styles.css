@@ -612,13 +612,13 @@ body {
   height: 100px;
   bottom: 0;
   left: 0;
-  color: white;
+  color: #FFFFFF;
   text-align: center;
   display: flex;
   align-items: center; }
   .masonry .read-blog .btn-outline-primary {
     margin: auto;
-    background: #FFF;
+    background: #FFFFFF;
     border-radius: 0;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -635,7 +635,7 @@ body {
     background: #16C98D;
     display: box;
     height: 290px;
-    color: white;
+    color: #FFFFFF;
     padding: 30px; }
     @media (max-width: 1025px) {
       .masonry .row-1 .b1 {
@@ -653,7 +653,7 @@ body {
       color: white;
       font-size: 14px; }
     .masonry .row-1 .b1 a {
-      color: white;
+      color: #FFFFFF;
       text-decoration: underline; }
   .masonry .row-1 .b2 {
     width: 100%;

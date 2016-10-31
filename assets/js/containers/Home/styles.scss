@@ -7,7 +7,8 @@
         margin-bottom: 30px;
     }
 
-    .read-blog{
+    .read-blog {
+
         background-image: url('/img/app/stream-blog-bg.png');
         background-repeat: no-repeat;
         background-size: cover;
@@ -17,42 +18,42 @@
         height: 100px;
         bottom: 0;
         left: 0;
-        color: white;
+        color: #FFFFFF;
         text-align: center;
         display: flex;
         align-items: center;
 
-        .btn-outline-primary{
+        .btn-outline-primary {
+
             margin: auto;
-            background: #FFF;
+            background: #FFFFFF;
             border-radius: 0;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-size: 14px;
 
             color: #16C98D;
+
         }
 
     }
     .row {
-
-
 
         &:first-of-type {
             margin-top: 60px;
         }
 
     }
-    .row-1{
+
+    .row-1 {
         min-height: 390px;
         margin-bottom: 19px;
 
-
-        .b1{
+        .b1 {
             background: #16C98D;
             display: box;
             height: 290px;
-            color: white;
+            color: #FFFFFF;
             padding: 30px;
             @media (max-width: 1025px){
                 padding: 15px;
@@ -60,25 +61,28 @@
             @media (max-width: 990px){
                 padding: 30px;
             }
-            h1{
+
+            h1 {
                 margin-bottom: 10px;
                 font-size: 20px;
                 color: #FFFFFF;
                 letter-spacing: 0px;
             }
-            p{
+
+            p {
                 font-style: normal;
                 color: white;
                 font-size: 14px;
             }
-            a{
-                color: white;
+
+            a {
+                color: #FFFFFF;
                 text-decoration: underline;
             }
 
-
         }
-        .b2{
+
+        .b2 {
             width: 100%;
             height: 290px;
             margin-bottom: 100px;
@@ -88,7 +92,8 @@
             background-repeat: no-repeat;
             position: relative;
         }
-        .b3{
+
+        .b3 {
             width: 100%;
             height: 200px;
             margin-bottom: 170px;
@@ -100,10 +105,13 @@
         }
 
     }
-    .row-2{
+
+    .row-2 {
+
         min-height: 390px;
         margin-bottom: 29px;
-        .b4{
+
+        .b4 {
             width: 100%;
             height: 290px;
             margin-bottom: 100px;
@@ -113,7 +121,8 @@
             background-repeat: no-repeat;
             position: relative;
         }
-        .b5{
+
+        .b5 {
             width: 100%;
             height: 290px;
             margin-bottom: 100px;
@@ -123,11 +132,15 @@
             background-repeat: no-repeat;
             position: relative;
         }
+
     }
-    .row-3{
+
+    .row-3 {
+
         min-height: 390px;
         margin-bottom: 19px;
-        .b6{
+
+        .b6 {
             width: 100%;
             height: 290px;
             margin-bottom: 100px;
@@ -137,7 +150,8 @@
             background-repeat: no-repeat;
             position: relative;
         }
-        .b7{
+
+        .b7 {
             width: 100%;
             height: 210px;
             margin-bottom: 160px;
@@ -147,7 +161,8 @@
             background-repeat: no-repeat;
             position: relative;
         }
-        .b8{
+
+        .b8 {
             width: 100%;
             height: 210px;
             margin-bottom: 160px;
@@ -157,8 +172,10 @@
             background-repeat: no-repeat;
             position: relative;
         }
+
     }
-    .meta{
+
+    .meta {
         position: absolute;
         bottom: 0;
         width: 100%;
@@ -166,9 +183,10 @@
         padding-right: 30px;
         padding-top: 30px;
 
-        p{
+        p {
             margin-bottom: -4px;
         }
+
     }
 
     h3 > a {
@@ -181,6 +199,7 @@
         text-decoration: none;
 
     }
+
     h2 > a {
         font-family: 'Rubik';
         font-size: 27px;
@@ -264,6 +283,7 @@
         }
 
         a {
+
             font-family: 'Merriweather';
             font-size: 12px;
             font-weight: 300;
