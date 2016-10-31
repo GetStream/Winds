@@ -22,12 +22,23 @@ class Article extends Component {
     )
 
     handleImgLoad = (src, id, err) => {
+
         if (src == null || src.indexOf('track') != -1) {
             document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
         }
+
+        if (!err) {
+            let img = new Image()
+                img.src = src
+            if (img.naturalWidth <= 10 || img.naturalHeight <= 10) {
+                document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
+            }
+        }
+
         if (err) {
             document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
         }
+
     }
 
     render() {
