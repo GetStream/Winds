@@ -70,7 +70,7 @@ class ForgotPassword extends Component {
             return (
                 <button
                     type="submit"
-                    className="btn text-uppercase password-reset">
+                    className="btn text-uppercase pw-reset">
                     Check Your Email
                 </button>
             )
@@ -78,10 +78,11 @@ class ForgotPassword extends Component {
         return (
             <button
                 type="submit"
-                className="btn text-uppercase reset-password">
+                className="btn text-uppercase reset-pw">
                 Reset Password
             </button>
         )
+
     }
 
     render() {
@@ -89,13 +90,13 @@ class ForgotPassword extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <form onSubmit={this.handleSubmit}>
+                        <form onSubmit={this.handleSubmit} className="reset-password">
                             <div className="email-container">
                                 <input
                                     id="email-input"
                                     type="email"
                                     ref="email"
-                                    className="email"
+                                    className={this.props.sent ? 'email-sent' : 'email'}
                                     placeholder="Please enter your email address"
                                     required={true}
                                     value={this.state.email}
