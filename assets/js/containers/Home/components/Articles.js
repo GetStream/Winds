@@ -83,7 +83,7 @@ class Article extends Component {
                         data-id={this.props.object.id}
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
-                        <Summary limit={50}>{this.props.object.summary}</Summary>
+                        <Summary limit={80}>{this.props.object.summary}</Summary>
                     </a>
                     <a
                         href={this.props.object.articleUrl}
