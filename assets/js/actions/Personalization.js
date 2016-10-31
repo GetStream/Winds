@@ -1,3 +1,5 @@
+import * as AppActions from 'actions/App'
+
 export const OPEN = 'PERSONALIZATION_OPEN'
 export const open = () => dispatch => {
     localStorage.removeItem('personalizationClosed')
@@ -25,11 +27,17 @@ export const toggle = () => (dispatch, getState) => {
 }
 
 export const GET_STATS = 'PERSONALIZATION_GET_STATS'
-export const getStats = () => ({
-    type: GET_STATS,
+export const getStats = () => dispatch => {
 
-    sync: {
-        method: 'GET',
-        url: '/api/stream/event_counts',
-    },
-})
+    return dispatch({
+        type: GET_STATS,
+
+        sync: {
+            method: 'GET',
+            url: '/api/stream/event_counts',
+        },
+    }, err => {
+        throw err
+    })
+
+}

@@ -21,6 +21,7 @@ export const clear = () => ({
 
 export const MARK_READ = 'SUBSCRIPTIONS_MARK_READ'
 export const markRead = ids => (dispatch, getState) => {
+
     if (!ids) ids = getState().Subscriptions.map(sub => sub.object.id)
 
     return dispatch({
@@ -33,10 +34,12 @@ export const markRead = ids => (dispatch, getState) => {
             method: 'post',
         }
     })
+
 }
 
 export const ENGAGE = 'SUBSCRIPTION_ENGAGE'
 export const engage = (id, index) => dispatch => {
+
     client.trackEngagement({
         label: 'click',
         content: {
@@ -51,10 +54,12 @@ export const engage = (id, index) => dispatch => {
 
         data: { id, index, },
     }).then(() => dispatch(markRead([id])))
+
 }
 
 export const IMPRESSION = 'SUBSCRIPTION_IMPRESSION'
 export const impression = id => (dispatch, getState) => {
+
     const userID = getState().User.id
 
     client.trackImpression({
@@ -67,4 +72,5 @@ export const impression = id => (dispatch, getState) => {
         type: IMPRESSION,
         data: { id, userID, }
     })
+    
 }

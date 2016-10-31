@@ -4,7 +4,7 @@ import * as Personalization from 'actions/Personalization'
 export const LOAD = 'ARTICLES_LOAD'
 export const load = (page = 1, limit = 20, version = null) => dispatch => {
 
-    let v = version || localStorage.getItem('version')
+    //let v = version || localStorage.getItem('version')
 
     return dispatch({
         type: LOAD,
@@ -12,7 +12,7 @@ export const load = (page = 1, limit = 20, version = null) => dispatch => {
         data: {
             limit,
             offset: (page - 1) * limit,
-            version: v,
+            //version: v,
         },
 
         sync: {

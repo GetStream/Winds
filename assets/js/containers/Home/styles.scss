@@ -197,7 +197,6 @@
         font-weight: 100;
         font-style: normal;
         text-decoration: none;
-
     }
 
     h2 > a {
@@ -257,6 +256,7 @@
 
         width: 270px;
         margin-right: 2%;
+        margin-bottom: 25px;
 
         img {
             margin-bottom: 25px;
@@ -301,6 +301,10 @@
         .article-inner {
             padding: 10px;
             height: 400px;
+        }
+
+        &:last-child {
+            margin-bottom: 50px;
         }
 
     }

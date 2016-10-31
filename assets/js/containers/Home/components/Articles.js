@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 import Hostname from 'components/Hostname'
+import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
 
 import Waypoint from 'react-waypoint'
@@ -73,7 +74,7 @@ class Article extends Component {
                             href={this.props.object.articleUrl}
                             target="_blank"
                             onClick={this.trackEngagement}>
-                            {this.props.object.title}
+                            <StripEntities>{this.props.object.title}</StripEntities>
                         </a>
                     </h2>
                     <a
@@ -82,7 +83,7 @@ class Article extends Component {
                         data-id={this.props.object.id}
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
-                        <Summary limit={100}>{this.props.object.summary}</Summary>
+                        <Summary limit={50}>{this.props.object.summary}</Summary>
                     </a>
                     <a
                         href={this.props.object.articleUrl}

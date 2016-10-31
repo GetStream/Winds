@@ -789,7 +789,8 @@ body {
     bottom: 55px; }
   .articles .article {
     width: 270px;
-    margin-right: 2%; }
+    margin-right: 2%;
+    margin-bottom: 25px; }
     .articles .article img {
       margin-bottom: 25px; }
     .articles .article h2 {
@@ -819,6 +820,8 @@ body {
     .articles .article .article-inner {
       padding: 10px;
       height: 400px; }
+    .articles .article:last-child {
+      margin-bottom: 50px; }
 .material-icons, .subscriptions .mark-all-read a::before {
   font-family: 'Material Icons';
   font-weight: normal;

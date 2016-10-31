@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import normalizeUrl from 'normalize-url'
 import Hostname from '../../components/Hostname'
+import StripEntities from 'components/StripEntities'
 import Summary from '../../components/Summary'
 
 import Personalization from '../../components/Personalization'
@@ -83,7 +84,7 @@ class Home extends Component {
                                 <div className="meta">
                                     <h2>
                                         <a href={this.props.articles[0].object.articleUrl} target="_blank">
-                                            {this.props.articles[0].object.title}
+                                            <StripEntities>{this.props.articles[0].object.title}</StripEntities>
                                         </a>
                                     </h2>
                                     <p>
@@ -115,7 +116,7 @@ class Home extends Component {
                                 <div className="meta">
                                     <h3>
                                         <a href={this.props.articles[1].object.articleUrl} target="_blank">
-                                            {this.props.articles[1].object.title}
+                                            <StripEntities>{this.props.articles[1].object.title}</StripEntities>
                                         </a>
                                     </h3>
                                     <p>
@@ -150,7 +151,7 @@ class Home extends Component {
                                 <div className="meta">
                                     <h2>
                                         <a href={this.props.articles[2].object.articleUrl} target="_blank">
-                                            {this.props.articles[2].object.title}
+                                            <StripEntities>{this.props.articles[2].object.title}</StripEntities>
                                         </a>
                                     </h2>
                                     <p>
@@ -181,7 +182,9 @@ class Home extends Component {
                                 </a>
                                 <div className="meta">
                                     <h2>
-                                        <a href={this.props.articles[3].object.articleUrl} target="_blank">{this.props.articles[3].object.title}</a>
+                                        <a href={this.props.articles[3].object.articleUrl} target="_blank">
+                                            <StripEntities>{this.props.articles[3].object.title}</StripEntities>
+                                        </a>
                                     </h2>
                                     <p>
                                     {moment(this.props.articles[3].object.createdAt).fromNow()}
@@ -214,7 +217,7 @@ class Home extends Component {
                                 <div className="meta">
                                     <h3>
                                         <a href={this.props.articles[5].object.articleUrl} target="_blank">
-                                            {this.props.articles[5].object.title}
+                                            <StripEntities>{this.props.articles[5].object.title}</StripEntities>
                                         </a>
                                     </h3>
                                     <p>
@@ -246,7 +249,9 @@ class Home extends Component {
                                     </a>
                                     <div className="meta">
                                         <h2>
-                                            <a href={this.props.articles[4].object.articleUrl} target="_blank">{this.props.articles[4].object.title}</a>
+                                            <a href={this.props.articles[4].object.articleUrl} target="_blank">
+                                                <StripEntities>{this.props.articles[4].object.title}</StripEntities>
+                                            </a>
                                         </h2>
                                         <p>
                                             {moment(this.props.articles[4].object.createdAt).fromNow()}
@@ -277,7 +282,7 @@ class Home extends Component {
                             <div className="meta">
                                 <h3>
                                     <a href={this.props.articles[6].object.articleUrl} target="_blank">
-                                        {this.props.articles[6].object.title}
+                                        <StripEntities>{this.props.articles[6].object.title}</StripEntities>
                                     </a>
                                 </h3>
                                 <p>
