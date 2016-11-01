@@ -7,7 +7,6 @@ import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
 
 import Waypoint from 'react-waypoint'
-//import ProgressiveImage from 'react-progressive-image'
 
 import * as ArticleActions from 'actions/Articles'
 
@@ -42,6 +41,24 @@ class Article extends Component {
     //
     // }
 
+    onError = () => {
+
+        let url = this.props.object.imageSrc
+
+        if (!url) {
+            document.querySelectorAll('div[data-src="' + url + '"]').style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
+        }
+
+    }
+
+    onLoad = () => {
+        let url = this.props.object.imageSrc
+        if (!url) {
+            console.log(url)
+            document.querySelectorAll('.image').style.backgroundImage = 'http://i.imgur.com/GPfS63U.png'
+        }
+    }
+
     render() {
 
         return (
@@ -50,32 +67,22 @@ class Article extends Component {
                     <Waypoint onEnter={() => {
                         this.trackImpression(this.props.object.id)
                     }} />
-                    {/* <a
-                        href={this.props.object.articleUrl}
-                        target="_blank"
-                        data-id={this.props.object.id}
-                        data-position={this.props.index}
-                        onClick={this.trackEngagement}>
-                        <ProgressiveImage src={this.props.object.imageSrc} placeholder='http://i.imgur.com/GPfS63U.png'>
-                            {(src) =>
-                                <img
-                                    src={src}
-                                    alt={this.props.object.articleUrl}
-                                    height="180"
-                                    width="270"
-                                    onLoad={() => this.handleImgLoad(src, this.props.object.id)}
-                                    onError={() => this.handleImgLoad(src, this.props.object.id, true)}
-                                    id={this.props.object.id} />
-                            }
-                        </ProgressiveImage>
-                    </a> */}
                     <a
                         href={this.props.object.articleUrl}
                         target="_blank"
                         data-id={this.props.object.id}
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
-                        <div className="image" />
+                        <div
+                            className="image"
+                            style={{ backgroundImage: `url('${this.props.object.imageSrc}')`}}
+                            data-src={this.props.object.imageSrc} />
+                        <img
+                            onError={this.onError}
+                            onLoad={this.onLoad}
+                            src={this.props.object.imageSrc}
+                            data-src={this.props.object.imageSrc}
+                            style={{ display: 'none' }} />
                     </a>
                     <h2>
                         <a

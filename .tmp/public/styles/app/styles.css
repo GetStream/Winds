@@ -794,7 +794,11 @@ body {
     .articles .article .image {
       height: 180px;
       width: 270px;
-      background-color: lime; }
+      margin-bottom: 25px;
+      background-color: #FFFFFF;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat; }
     .articles .article h2 {
       line-height: 21px;
       margin-bottom: 15px; }

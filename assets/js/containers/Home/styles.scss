@@ -260,14 +260,14 @@
         margin-right: 2%;
         margin-bottom: 25px;
 
-        // img {
-        //     margin-bottom: 25px;
-        // }
-
         .image {
             height: 180px;
             width: 270px;
-            background-color: lime;
+            margin-bottom: 25px;
+            background-color: #FFFFFF;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         h2 {
