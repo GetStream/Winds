@@ -7,7 +7,7 @@ import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
 
 import Waypoint from 'react-waypoint'
-import ProgressiveImage from 'react-progressive-image'
+//import ProgressiveImage from 'react-progressive-image'
 
 import * as ArticleActions from 'actions/Articles'
 
@@ -22,25 +22,25 @@ class Article extends Component {
         ArticleActions.impression(this.props.object.id)
     )
 
-    handleImgLoad = (src, id, err) => {
-
-        if (src == null || src.indexOf('track') != -1) {
-            document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
-        }
-
-        if (!err) {
-            let img = new Image()
-                img.src = src
-            if (img.naturalWidth <= 10 || img.naturalHeight <= 10) {
-                document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
-            }
-        }
-
-        if (err) {
-            document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
-        }
-
-    }
+    // handleImgLoad = (src, id, err) => {
+    //
+    //     if (src == null || src.indexOf('track') != -1) {
+    //         document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
+    //     }
+    //
+    //     if (!err) {
+    //         let img = new Image()
+    //             img.src = src
+    //         if (img.naturalWidth <= 10 || img.naturalHeight <= 10) {
+    //             document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
+    //         }
+    //     }
+    //
+    //     if (err) {
+    //         document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
+    //     }
+    //
+    // }
 
     render() {
 
@@ -50,7 +50,7 @@ class Article extends Component {
                     <Waypoint onEnter={() => {
                         this.trackImpression(this.props.object.id)
                     }} />
-                    <a
+                    {/* <a
                         href={this.props.object.articleUrl}
                         target="_blank"
                         data-id={this.props.object.id}
@@ -68,6 +68,14 @@ class Article extends Component {
                                     id={this.props.object.id} />
                             }
                         </ProgressiveImage>
+                    </a> */}
+                    <a
+                        href={this.props.object.articleUrl}
+                        target="_blank"
+                        data-id={this.props.object.id}
+                        data-position={this.props.index}
+                        onClick={this.trackEngagement}>
+                        <div className="image" />
                     </a>
                     <h2>
                         <a

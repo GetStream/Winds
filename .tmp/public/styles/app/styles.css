@@ -791,8 +791,10 @@ body {
     width: 270px;
     margin-right: 2%;
     margin-bottom: 25px; }
-    .articles .article img {
-      margin-bottom: 25px; }
+    .articles .article .image {
+      height: 180px;
+      width: 270px;
+      background-color: lime; }
     .articles .article h2 {
       line-height: 21px;
       margin-bottom: 15px; }
