@@ -120,15 +120,17 @@ The [Sketch File](https://www.sketchapp.com/) files are available in the `/sketc
 
 Contributions are much appreciated. Here are some ideas for improvements:
 
+* Secondary links (ie comments link for HNews and Lobsters)
 * Follow suggestions (we're working on this)
 * Deploy to Heroku button
 * Lightweight task queuing system for emails and discover endpoint
 * Keyboard shortcuts
+* GraphQL style APIs so you have more flexibility for building your own mobile apps
 * Android & iOS apps
 * Support more sites (RSS data quality is pretty poor and often needs custom logic per site/feed)
 * Search article's you've read using [Algolia](https://www.algolia.com/)
 * Folders/Groups
-* Better solution for `scrape_feeds.js` and `scrape_favicons.js`
+
 
 ### Adding Support for Your Favorite Feeds
 
