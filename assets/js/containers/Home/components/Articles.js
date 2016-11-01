@@ -21,21 +21,6 @@ class Article extends Component {
         ArticleActions.impression(this.props.object.id)
     )
 
-    // onError = () => {
-    //     let url = this.props.object.imageSrc
-    //     document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
-    //     console.log('error!')s
-    // }
-    //
-    // onLoad = () => {
-    //     let url = this.props.object.imageSrc
-    //     if (!url) {
-    //         console.log(url)
-    //         document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
-    //     }
-    //     console.log('load!')
-    // }
-
     render() {
 
         return (
@@ -53,12 +38,6 @@ class Article extends Component {
                         <div
                             className="image"
                             style={{ backgroundImage: `url('${!this.props.object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.object.imageSrc }')`}} />
-                        {/* <img
-                            onError={this.onError}
-                            onLoad={this.onLoad}
-                            src={this.props.object.imageSrc}
-                            data-src={this.props.object.imageSrc}
-                            style={{ display: 'none' }} /> */}
                     </a>
                     <h2>
                         <a
