@@ -632,6 +632,8 @@ body {
 .masonry .row-1 {
   min-height: 390px;
   margin-bottom: 19px; }
+  .masonry .row-1 .margin-btm {
+    margin-bottom: 60px; }
   .masonry .row-1 .b1 {
     background: #16C98D;
     display: box;
@@ -971,6 +973,14 @@ body {
   align-items: center;
   height: 10vh;
   z-index: 2000; }
+  @media (max-width: 414px) {
+    .simple-header {
+      padding-left: 15px;
+      padding-right: 15px; } }
+  @media (max-width: 414px) {
+    .simple-header div:first-of-type {
+      width: 30px;
+      overflow: hidden; } }
   .simple-header a,
   .simple-header a:hover,
   .simple-header a:active {
@@ -978,7 +988,19 @@ body {
     text-decoration: none;
     margin-right: 30px;
     font-weight: 300;
-    font-size: 14px; }
+    font-size: 14px;
+    display: inline-block; }
+  @media (max-width: 414px) {
+    .simple-header a,
+    .simple-header a:hover,
+    .simple-header a:active {
+      color: #16C98D;
+      text-decoration: none;
+      margin-right: 20px;
+      padding-top: 10px;
+      font-weight: 300;
+      font-size: 14px;
+      display: inline-block; } }
   .simple-header button {
     background: #16C98D;
     text-transform: uppercase;
@@ -992,11 +1014,15 @@ body {
     @media (max-height: 799px) {
       .simple-header button {
         height: 40px; } }
+    @media (max-width: 414px) {
+      .simple-header button {
+        width: 180px;
+        float: right;
+        height: 50px; } }
     .simple-header button:disabled {
       background: rgba(42, 55, 84, 0.2); }
 .getting-started {
-  margin-top: -60px;
-  min-width: 545px; }
+  margin-top: -60px; }
   .getting-started footer {
     margin: -30px 0 0 0; }
   .getting-started .dialog button[type=submit] {
@@ -1009,6 +1035,10 @@ body {
     bottom: 0;
     width: 530px;
     height: 100vh; }
+    @media (max-width: 414px) {
+      .getting-started .create-account {
+        width: 394px;
+        padding-left: 20px; } }
     .getting-started .create-account .logo {
       background-image: url("/img/app/logo-lg.png");
       background-repeat: no-repeat;
@@ -1254,7 +1284,16 @@ body {
 
 #root.creating-account {
   transform: translateX(-530px);
-  transition: transform 0.3s ease-out; }
+  -webkit-transform: translateX(-530px);
+  -moz-transform: translateX(-530px);
+  transition: transform 0.3s ease-out;
+  -webkit-transition: transform 0.3s ease-out;
+  -moz-transition: transform 0.3s ease-out; }
+  @media (max-width: 414px) {
+    #root.creating-account {
+      transform: translateX(-394px);
+      -webkit-transform: translateX(-394px);
+      -moz-transform: translateX(-394px); } }
 
 .create-account main {
   background-color: #16C98D;

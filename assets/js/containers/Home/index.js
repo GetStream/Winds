@@ -53,7 +53,7 @@ class Home extends Component {
                 <div className="container-fluid">
                     <div className="container-fluid masonry">
                         <div className="row row-1">
-                            <div className="col-lg-3 col-md-6 col-sm-6">
+                            <div className="col-lg-3 col-md-12 col-sm-12">
                                 <div className="b1">
                                     <h1>Feed Personalization</h1>
                                     <p>Winds is an open source RSS Reader that we built to showcase&nbsp;
@@ -64,7 +64,7 @@ class Home extends Component {
                                     <a href="http://bit.ly/personalization-winds" target="_blank" className="btn btn-outline-primary text-uppercase">HOW IT WORKS &rarr;</a>
                                 </div>
                             </div>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" onClick={() => this.trackEngagement(this.props.articles[0].object.id, 0)}>
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 margin-btm" onClick={() => this.trackEngagement(this.props.articles[0].object.id, 0)}>
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[0].object.id)
                                 }} />

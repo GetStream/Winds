@@ -71,7 +71,7 @@ body {
     .left-ui {
       transition: .2s;
       height: 430px; } }
-  @media (max-width: 765px) {
+  @media (max-width: 768px) {
     .left-ui {
       transition: .2s;
       left: -100px; } }
@@ -92,7 +92,7 @@ body {
   @media (max-width: 970px) {
     .right-ui {
       transition: .2s;
-      right: -80px; } }
+      right: -150px; } }
   @media (max-width: 750px) {
     .right-ui {
       transition: .2s;
@@ -123,10 +123,20 @@ body {
   min-height: 690px;
   display: flex;
   align-items: center; }
+  @media (max-width: 414px) {
+    .hero{
+    display: block;
+    width: 375px;
+    margin-top: 130px;}
+}
+
   @media (min-width: 1650px) {
     .hero .scaler {
       transform: scale(1.25);
       transition: .2s; } }
+
+
+
   .hero .merriweather {
     font-style: italic;
     color: #99A9B3;
