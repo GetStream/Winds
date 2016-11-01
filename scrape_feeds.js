@@ -2,9 +2,8 @@ var Sails     = require('sails').Sails,
     app       = Sails(),
     striptags = require('striptags'),
     moment    = require('moment'),
-    async     = require("async"),
+    async     = require('async'),
     cheerio   = require('cheerio');
-
 
 var argv = require('yargs')
     .usage('Usage: $0 <command> [options]')

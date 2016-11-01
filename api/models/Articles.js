@@ -6,7 +6,7 @@
  */
 
 var streamNode = require('getstream-node'),
-    streamWaterline = new streamNode.WaterlineBackend();
+    streamWaterline = new streamNode.WaterlineBackend()
 
 module.exports = {
     attributes: {
@@ -61,10 +61,10 @@ module.exports = {
         toActivity: function() {
 
             let activity = {
-                actor: 'feed:' + this.feed,
+                actor: `feed: + ${this.feed}`,
                 verb: 'publish',
-                object: 'articles:' + this.id,
-                foreign_id: 'articles:' + this.id,
+                object: `articles: + ${this.id}`,
+                foreign_id: `articles: + ${this.id}`,
                 time: this.publicationDate,
                 // info for personalization
                 site: 'sites:' + this.site,
@@ -82,10 +82,9 @@ module.exports = {
                 activity.topic = 'topics:' + this.topic
             }
 
-            return activity;
+            return activity
 
         }
     },
 
-
-};
+}

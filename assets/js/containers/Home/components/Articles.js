@@ -21,46 +21,20 @@ class Article extends Component {
         ArticleActions.impression(this.props.object.id)
     )
 
-    // handleImgLoad = (src, id, err) => {
-    //
-    //     if (src == null || src.indexOf('track') != -1) {
-    //         document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
-    //     }
-    //
-    //     if (!err) {
-    //         let img = new Image()
-    //             img.src = src
-    //         if (img.naturalWidth <= 10 || img.naturalHeight <= 10) {
-    //             document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
-    //         }
-    //     }
-    //
-    //     if (err) {
-    //         document.getElementById(id).src = 'http://i.imgur.com/GPfS63U.png'
-    //     }
-    //
+    // onError = () => {
+    //     let url = this.props.object.imageSrc
+    //     document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
+    //     console.log('error!')s
     // }
-
-    componentDidUpdate() {
-        window.onerror = function (errorMsg, url, lineNumber) {
-            alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
-        }
-    }
-
-    onError = () => {
-        let url = this.props.object.imageSrc
-        document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
-        console.log('error!')
-    }
-
-    onLoad = () => {
-        let url = this.props.object.imageSrc
-        if (!url) {
-            console.log(url)
-            document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
-        }
-        console.log('load!')
-    }
+    //
+    // onLoad = () => {
+    //     let url = this.props.object.imageSrc
+    //     if (!url) {
+    //         console.log(url)
+    //         document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
+    //     }
+    //     console.log('load!')
+    // }
 
     render() {
 
@@ -78,14 +52,13 @@ class Article extends Component {
                         onClick={this.trackEngagement}>
                         <div
                             className="image"
-                            style={{ backgroundImage: `url('${this.props.object.imageSrc}')`}}
-                            data-src={this.props.object.imageSrc} />
-                        <img
+                            style={{ backgroundImage: `url('${this.props.object.imageSrc}')`}} />
+                        {/* <img
                             onError={this.onError}
                             onLoad={this.onLoad}
                             src={this.props.object.imageSrc}
                             data-src={this.props.object.imageSrc}
-                            style={{ display: 'none' }} />
+                            style={{ display: 'none' }} /> */}
                     </a>
                     <h2>
                         <a

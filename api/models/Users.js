@@ -1,7 +1,7 @@
 var bcrypt = require('bcrypt'),
     jwt = require('jsonwebtoken'),
     path = require('path'),
-    htmlToText = require('nodemailer-html-to-text').htmlToText;
+    htmlToText = require('nodemailer-html-to-text').htmlToText
 
 function saltPassword(newPassword, callback) {
     bcrypt.genSalt(10, function(err, salt) {
@@ -14,8 +14,8 @@ function saltPassword(newPassword, callback) {
                 sails.log.error('failed to hash the password', err)
             }
             callback(err, hash)
-        });
-    });
+        })
+    })
 }
 
 module.exports = {
@@ -35,14 +35,14 @@ module.exports = {
             obj.token = this.getJWTToken()
             obj.feedTokens = {}
             obj.feedTokens['timeline'] = StreamService.client.feed('timeline', this.id).getReadOnlyToken()
-            return obj;
+            return obj
         },
         getJWTToken: function() {
             let token = jwt.sign({
-                    sub: this.id,
-                    iss: sails.config.passport.issuer,
-                    audience: sails.config.passport.audience
-                },
+                sub: this.id,
+                iss: sails.config.passport.issuer,
+                audience: sails.config.passport.audience
+            },
                 sails.config.passport.secret
             )
             return token
@@ -64,9 +64,9 @@ module.exports = {
                     .then(function(result) {
                         callback(null, result)
                     })
-                    .catch(callback);
+                    .catch(callback)
             })
-            
+
         },
 
     },
@@ -90,4 +90,4 @@ module.exports = {
             cb(null, changedValues)
         }
     }
-};
+}
