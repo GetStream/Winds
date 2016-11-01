@@ -1,5 +1,5 @@
 module.exports = {
-    
+
     followTopics: function(userId, topics, callback) {
 
         if (!topics || !topics.length) {
@@ -99,7 +99,7 @@ module.exports = {
                             follows.forEach(follow => {
                                 if (follow.feed.topic === topic) {
                                     // remove this follow
-                                    toRemove.push(follow.id)
+                                    toRemove.push(follow.feed.id)
                                 }
                             })
                             callback(err, follows)
