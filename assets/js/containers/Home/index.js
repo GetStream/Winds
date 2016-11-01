@@ -31,15 +31,14 @@ class Home extends Component {
         }
 
         if (!err) {
+
             let img = new Image()
-                img.src = src
+            img.src = src
+
             if (img.naturalWidth <= 10 || img.naturalHeight <= 10) {
                 document.getElementById(id).style.backgroundImage = 'url("http://i.imgur.com/GPfS63U.png")'
             }
-        }
 
-        if (src == null || src.indexOf('track') != -1) {
-            document.getElementById(id).style.backgroundImage = 'url("http://i.imgur.com/GPfS63U.png")'
         }
 
     }
@@ -76,7 +75,7 @@ class Home extends Component {
                                         onError={() => this.handleImgLoad(this.props.articles[0].object.imageSrc, this.props.articles[0].object.id, true)} />
                                     <div className="b2"
                                         style={{
-                                            'backgroundImage': `url(${this.props.articles[0].object.imageSrc})`,
+                                            'backgroundImage': `url(${!this.props.articles[0].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[0].object.imageSrc})`,
                                         }}
                                         id={this.props.articles[0].object.id}
                                     />
@@ -108,7 +107,7 @@ class Home extends Component {
                                         onError={() => this.handleImgLoad(this.props.articles[1].object.imageSrc, this.props.articles[1].object.id, true)} />
                                     <div className="b3"
                                         style={{
-                                            'backgroundImage': `url(${this.props.articles[1].object.imageSrc})`,
+                                            'backgroundImage': `url(${!this.props.articles[1].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[1].object.imageSrc})`,
                                         }}
                                         id={this.props.articles[1].object.id}
                                     />
@@ -139,11 +138,11 @@ class Home extends Component {
                                     <img
                                         src={this.props.articles[2].object.imageSrc}
                                         style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.articles[0].object.imageSrc, this.props.articles[0].object.id)}
+                                        onLoad={() => this.handleImgLoad(this.props.articles[2].object.imageSrc, this.props.articles[2].object.id)}
                                         onError={() => this.handleImgLoad(this.props.articles[2].object.imageSrc, this.props.articles[2].object.id, true)} />
                                     <div className="b4"
                                         style={{
-                                            'backgroundImage': `url(${this.props.articles[2].object.imageSrc})`,
+                                            'backgroundImage': `url(${!this.props.articles[2].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[2].object.imageSrc})`,
                                         }}
                                         id={this.props.articles[2].object.id}
                                     />
@@ -171,11 +170,11 @@ class Home extends Component {
                                     <img
                                         src={this.props.articles[3].object.imageSrc}
                                         style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.articles[0].object.imageSrc, this.props.articles[0].object.id)}
+                                        onLoad={() => this.handleImgLoad(this.props.articles[3].object.imageSrc, this.props.articles[3].object.id)}
                                         onError={() => this.handleImgLoad(this.props.articles[3].object.imageSrc, this.props.articles[3].object.id, true)} />
                                     <div className="b5"
                                         style={{
-                                            'backgroundImage': `url(${this.props.articles[3].object.imageSrc})`,
+                                            'backgroundImage': `url(${!this.props.articles[3].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[3].object.imageSrc})`,
                                         }}
                                         id={this.props.articles[3].object.id}
                                     />
@@ -202,14 +201,9 @@ class Home extends Component {
                                     this.trackImpression(this.props.articles[4].object.id)
                                 }} />
                                 <a href={this.props.articles[5].object.articleUrl} target="_blank">
-                                    <img
-                                        src={this.props.articles[5].object.imageSrc}
-                                        style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.articles[0].object.imageSrc, this.props.articles[0].object.id)}
-                                        onError={() => this.handleImgLoad(this.props.articles[5].object.imageSrc, this.props.articles[5].object.id, true)} />
                                     <div className="b7"
                                         style={{
-                                            'backgroundImage': `url(${this.props.articles[5].object.imageSrc})`,
+                                            'backgroundImage': `url(${!this.props.articles[5].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[5].object.imageSrc})`,
                                         }}
                                         id={this.props.articles[5].object.id}
                                     />
@@ -236,15 +230,15 @@ class Home extends Component {
                                     }} />
                                     <a href={this.props.articles[5].object.articleUrl} target="_blank">
                                         <img
-                                            src={this.props.articles[4].object.imageSrc}
+                                            src={this.props.articles[5].object.imageSrc}
                                             style={{ display: 'none' }}
-                                            onLoad={() => this.handleImgLoad(this.props.articles[0].object.imageSrc, this.props.articles[0].object.id)}
-                                            onError={() => this.handleImgLoad(this.props.articles[4].object.imageSrc, this.props.articles[4].object.id, true)} />
+                                            onLoad={() => this.handleImgLoad(this.props.articles[5].object.imageSrc, this.props.articles[5].object.id)}
+                                            onError={() => this.handleImgLoad(this.props.articles[5].object.imageSrc, this.props.articles[5].object.id, true)} />
                                         <div className="b6"
                                             style={{
-                                                'backgroundImage': `url(${this.props.articles[4].object.imageSrc})`,
+                                                'backgroundImage': `url(${!this.props.articles[5].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[4].object.imageSrc})`,
                                             }}
-                                            id={this.props.articles[4].object.id}
+                                            id={this.props.articles[5].object.id}
                                         />
                                     </a>
                                     <div className="meta">
@@ -270,11 +264,11 @@ class Home extends Component {
                                 <img
                                     src={this.props.articles[6].object.imageSrc}
                                     style={{ display: 'none' }}
-                                    onLoad={() => this.handleImgLoad(this.props.articles[0].object.imageSrc, this.props.articles[0].object.id)}
+                                    onLoad={() => this.handleImgLoad(this.props.articles[6].object.imageSrc, this.props.articles[6].object.id)}
                                     onError={() => this.handleImgLoad(this.props.articles[6].object.imageSrc, this.props.articles[6].object.id, true)} />
                                 <div className="b8"
                                     style={{
-                                        'backgroundImage': `url(${this.props.articles[6].object.imageSrc})`,
+                                        'backgroundImage': `url(${!this.props.articles[6].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[6].object.imageSrc})`,
                                     }}
                                     id={this.props.articles[6].object.id}
                                 />

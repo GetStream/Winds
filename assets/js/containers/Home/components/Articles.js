@@ -52,7 +52,7 @@ class Article extends Component {
                         onClick={this.trackEngagement}>
                         <div
                             className="image"
-                            style={{ backgroundImage: `url('${this.props.object.imageSrc}')`}} />
+                            style={{ backgroundImage: `url('${!this.props.object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.object.imageSrc }')`}} />
                         {/* <img
                             onError={this.onError}
                             onLoad={this.onLoad}
