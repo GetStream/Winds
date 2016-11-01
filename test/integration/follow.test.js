@@ -27,7 +27,7 @@ describe('Follows Topics', function() {
           })
     })
 
-    it('unfollows a topic', function (done) {
+    it('unfollows a feed', function (done) {
       request(sails.hooks.http.app)
         .post('/api/unfollow')
         .set('Authorization', `JWT ${test.token}`)
@@ -37,7 +37,7 @@ describe('Follows Topics', function() {
         })
     })
 
-    it('optionally follows a topic of type feed', function (done) {
+    it('read the feeds you follow', function (done) {
       request(sails.hooks.http.app)
         .get('/api/follows')
         .set('Authorization', `JWT ${test.token}`)
@@ -47,7 +47,7 @@ describe('Follows Topics', function() {
         })
     })
 
-    it('follows a topic of unknown type', function (done) {
+    it('read the topics and feeds you follow', function (done) {
       request(sails.hooks.http.app)
         .get('/api/follows')
         .set('Authorization', `JWT ${test.token}`)
