@@ -120,6 +120,7 @@ The [Sketch File](https://www.sketchapp.com/) files are available in the `/sketc
 
 Contributions are much appreciated. Here are some ideas for improvements:
 
+* Secondary links (ie comments link for HNews and Lobsters)
 * Follow suggestions (we're working on this)
 * Deploy to Heroku button
 * Lightweight task queuing system for emails and discover endpoint
