@@ -13,14 +13,21 @@ describe('Follows Topics', function() {
     })
 
     it('unfollows a topic', function (done) {
-      request(sails.hooks.http.app)
-        .post('/api/follow_topics')
-        .set('Authorization', `JWT ${test.token}`)
-        .send({'unfollow': ['5807e9f6ef5aebaf9165d0b6']})
-        .expect(200, done)
+        let topicId = '58126b82a4a4b76e46941e13'
+        request(sails.hooks.http.app)
+          .post('/api/follow_topics')
+          .set('Authorization', `JWT ${test.token}`)
+          .send({'follow': [topicId]})
+          .expect(200, function(err, results) {
+              request(sails.hooks.http.app)
+                .post('/api/follow_topics')
+                .set('Authorization', `JWT ${test.token}`)
+                .send({'unfollow': [topicId]})
+                .expect(200, done)
+          })
     })
 
-    it('unfollows a topic', function (done) {
+    it('unfollows a feed', function (done) {
       request(sails.hooks.http.app)
         .post('/api/unfollow')
         .set('Authorization', `JWT ${test.token}`)
@@ -30,7 +37,7 @@ describe('Follows Topics', function() {
         })
     })
 
-    it('optionally follows a topic of type feed', function (done) {
+    it('read the feeds you follow', function (done) {
       request(sails.hooks.http.app)
         .get('/api/follows')
         .set('Authorization', `JWT ${test.token}`)
@@ -40,7 +47,7 @@ describe('Follows Topics', function() {
         })
     })
 
-    it('follows a topic of unknown type', function (done) {
+    it('read the topics and feeds you follow', function (done) {
       request(sails.hooks.http.app)
         .get('/api/follows')
         .set('Authorization', `JWT ${test.token}`)

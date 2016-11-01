@@ -120,15 +120,22 @@ The [Sketch File](https://www.sketchapp.com/) files are available in the `/sketc
 
 Contributions are much appreciated. Here are some ideas for improvements:
 
-* Follow suggestions (we're working on this)
+* Secondary links (ie comments link for HNews and Lobsters)
 * Deploy to Heroku button
+* Follow suggestions (we're working on this)
+* Switching between feeds should be easier
 * Lightweight task queuing system for emails and discover endpoint
-* Keyboard shortcuts
+* Keyboard shortcuts vim style
+* GraphQL style APIs so you have more flexibility for building your own mobile apps
 * Android & iOS apps
 * Support more sites (RSS data quality is pretty poor and often needs custom logic per site/feed)
 * Search article's you've read using [Algolia](https://www.algolia.com/)
 * Folders/Groups
-* Better solution for `scrape_feeds.js` and `scrape_favicons.js`
+
+### Roadmap
+
+At the moment we're gathering feedback from the community before deciding on the changes for Winds 0.2
+
 
 ### Adding Support for Your Favorite Feeds
 

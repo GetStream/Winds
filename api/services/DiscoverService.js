@@ -1,5 +1,4 @@
-let rssDiscover = require('rssdiscovery'),
-    normalize = require('normalize-url'),
+let normalize = require('normalize-url'),
     urlLibrary = require('url'),
     URI = require('urijs'),
     parse = require('./parse'),
