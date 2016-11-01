@@ -130,7 +130,7 @@ class Personalization extends Component {
                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 learn">
                             <h4>Learn&nbsp;
                                 <a href="https://getstream.io/personalization/" target="_blank">
-                                    <span data-toggle="tooltip" data-placement="bottom" title="As you engage, we apply Machine Learning to find content that will give you more of what you want and less of what your dont.">?</span>
+                                    <span data-toggle="tooltip" data-placement="bottom" title="As you engage, we apply Machine Learning to learn what you're interested in and optimize your feed.">?</span>
                                 </a>
                             </h4>
                             <Learning />
