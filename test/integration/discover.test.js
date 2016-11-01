@@ -69,6 +69,15 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
+    it('finds parses darkreading rss feed direct', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'http://www.darkreading.com/rss_simple.asp'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(200, done)
+    })
+
     it('finds the security rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
