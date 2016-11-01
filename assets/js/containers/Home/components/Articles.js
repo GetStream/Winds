@@ -41,22 +41,25 @@ class Article extends Component {
     //
     // }
 
-    onError = () => {
-
-        let url = this.props.object.imageSrc
-
-        if (!url) {
-            document.querySelectorAll('div[data-src="' + url + '"]').style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
+    componentDidUpdate() {
+        window.onerror = function (errorMsg, url, lineNumber) {
+            alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
         }
+    }
 
+    onError = () => {
+        let url = this.props.object.imageSrc
+        document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
+        console.log('error!')
     }
 
     onLoad = () => {
         let url = this.props.object.imageSrc
         if (!url) {
             console.log(url)
-            document.querySelectorAll('.image').style.backgroundImage = 'http://i.imgur.com/GPfS63U.png'
+            document.querySelectorAll('div[data-src="' + url + '"]')[0].style.backgroundImage = `url('http://i.imgur.com/GPfS63U.png')`
         }
+        console.log('load!')
     }
 
     render() {
