@@ -31,7 +31,7 @@ module.exports.http = {
     order: [
       'startRequestTimer',
       'cookieParser',
-      //'session',
+      'session',
       'passportInit',
       'passportSession',
       'jwtAuthenticate',

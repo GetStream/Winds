@@ -1,7 +1,6 @@
 {
   "hooks": {
       "grunt": false,
-      "session": false,
       "sockets": false,
       "pubsub": false,
       "i18n": false,
