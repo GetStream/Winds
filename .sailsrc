@@ -4,6 +4,6 @@
       "sockets": false,
       "pubsub": false,
       "i18n": false,
-      "blueprints": false
+      "blueprints": true
   }
 }
