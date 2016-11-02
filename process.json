@@ -12,6 +12,7 @@
     {
         "name"            : "feeds",
         "script"          : "scrape_feeds.js",
+        "args"            : "-l",
         "watch"           : true,
         "log_date_format" : "YYYY-MM-DD HH:mm Z",
         "autorestart"     : false,
@@ -22,6 +23,7 @@
     {
         "name"            : "favicons",
         "script"          : "scrape_favicons.js",
+        "args"            : "-l",
         "watch"           : true,
         "log_date_format" : "YYYY-MM-DD HH:mm Z",
         "autorestart"     : false,

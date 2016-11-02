@@ -10,6 +10,10 @@ var argv = require('yargs')
     .command('scrape_feeds', 'Scrape all RSS feeds that we didn\'t update in the past 5 minutes')
     .example('$0 -f -c 50', 'Scrape all feeds, 50 at the time')
     .example('$0 -q cnn -a 1', 'Get 1 article from CNN')
+    .alias('l', 'live')
+    .boolean('l')
+    .default('l', false)
+    .describe('l', 'keeps the process alive')
     .alias('f', 'force')
     .boolean('f')
     .default('f', false)
@@ -102,7 +106,9 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
                  sails.log.warn(`encountered ${feed.scrapingErrors} errors for feed`, feed.feedUrl)
              }
          })
-         sails.log.info('exiting... bye bye')
-         process.exit(0)
+         if (!argv.l) {
+            sails.log.info('exiting... bye bye')
+            process.exit(0)
+         }
      })
 }
