@@ -115,7 +115,7 @@ class Sidebar extends Component {
                                         key={`topic-${topic.id}`}
                                         onClick={() => this.props.onTopicClick(topic)}
                                         className={topic.followed == true ? 'active': ''}>
-                                        <i className="material-icons">check</i> <Truncate length={20}>{topic.name}</Truncate>
+                                        <i className="material-icons">check</i> <Truncate length={15}>{topic.name}</Truncate>
                                     </li>
                                 )}
                             </ul>
@@ -132,7 +132,7 @@ class Sidebar extends Component {
                                     <li key={`site-${site.feed.site.id}`}>
                                         <a href={normalizeUrl(site.feed.site.siteUrl)} target="_blank" key={`site-${site.feed.site.id}`}>
                                             <img src={!!site.feed.site.faviconUrl ? site.feed.site.faviconUrl : '../img/app/default-favicon.png'} height="20" width="20" />&nbsp;
-                                            <Truncate length={20}>{!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}</Truncate>
+                                            <Truncate length={15}>{!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}</Truncate>
                                         </a>
                                         <svg fill="#000000" height="16px" viewBox="0 0 24 24" width="24" onClick={() => this.handleUnsubscribe(site)}>
                                             <path d="M0 0h24v24H0V0z" fill="none"/>

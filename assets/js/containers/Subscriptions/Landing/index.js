@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import moment from 'moment'
 import Waypoint from 'react-waypoint'
 
+import Truncate from 'components/Truncate'
 import Subscription from 'containers/Subscriptions/components/Subscription'
 
 import * as SubscriptionActions from 'actions/Subscriptions'
@@ -80,7 +81,7 @@ class Subscriptions extends Component {
                                 <Link to={`/app/subscriptions/${site.feed.id}`} key={`site-${site.feed.site.id}`} onClick={() => { this.trackEngagement(site.feed.site)}}>
                                     <li>
                                         <img src={!!site.feed.site.faviconUrl ? site.feed.site.faviconUrl : '../img/app/default-favicon.png'} height="20" width="20" />&nbsp;
-                                        {!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}
+                                        <Truncate length={15}>{!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}</Truncate>
                                     </li>
                                 </Link>
                             )}
