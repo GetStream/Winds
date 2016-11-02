@@ -9,6 +9,7 @@ import Summary from 'components/Summary'
 import Waypoint from 'react-waypoint'
 
 import * as ArticleActions from 'actions/Articles'
+import * as PersonalizationActions from 'actions/Personalization'
 
 @connect()
 class Article extends Component {
@@ -21,10 +22,14 @@ class Article extends Component {
         ArticleActions.impression(this.props.object.id)
     )
 
+    handleClick = () => this.props.dispatch(
+        PersonalizationActions.getStats()
+    )
+
     render() {
 
         return (
-            <div className="article">
+            <div className="article" onClick={this.handleClick}>
                 <div className="article-inner">
                     <Waypoint onEnter={() => {
                         this.trackImpression(this.props.object.id)

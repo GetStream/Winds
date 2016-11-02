@@ -9,7 +9,9 @@ import Summary from '../../components/Summary'
 
 import Personalization from '../../components/Personalization'
 import Articles from 'containers/Home/components/Articles'
+
 import * as ArticleActions from 'actions/Articles'
+import * as PersonalizationActions from 'actions/Personalization'
 
 import Waypoint from 'react-waypoint'
 
@@ -22,6 +24,10 @@ class Home extends Component {
 
     trackImpression = (id) => this.props.dispatch(
         ArticleActions.impression(id)
+    )
+
+    handleClick = () => this.props.dispatch(
+        PersonalizationActions.getStats()
     )
 
     handleImgLoad = (src, id, err) => {
@@ -63,7 +69,9 @@ class Home extends Component {
                                     <a href="http://bit.ly/personalization-winds" target="_blank" className="btn btn-outline-primary text-uppercase">HOW IT WORKS &rarr;</a>
                                 </div>
                             </div>
-                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 margin-btm" onClick={() => this.trackEngagement(this.props.articles[0].object.id, 0)}>
+                            <div
+                                className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 margin-btm"
+                                onClick={() => this.trackEngagement(this.props.articles[0].object.id, 0)}>
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[0].object.id)
                                 }} />
@@ -95,7 +103,9 @@ class Home extends Component {
                                     </p>
                                 </div>
                             </div>
-                            <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[1].object.id, 1)}>
+                            <div
+                                className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12"
+                                onClick={() => this.trackEngagement(this.props.articles[1].object.id, 1)}>
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[1].object.id)
                                 }} />
@@ -130,7 +140,9 @@ class Home extends Component {
                             </div>
                         </div>
                         <div className="row row-2">
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[2].object.id, 2)}>
+                            <div
+                                className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                onClick={() => this.trackEngagement(this.props.articles[2].object.id, 2)}>
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[2].object.id)
                                 }} />
@@ -162,7 +174,9 @@ class Home extends Component {
                                 </p>
                                 </div>
                             </div>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[3].object.id, 3)}>
+                            <div
+                                className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                onClick={() => this.trackEngagement(this.props.articles[3].object.id, 3)}>
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[3].object.id)
                                 }} />
@@ -196,7 +210,9 @@ class Home extends Component {
                             </div>
                         </div>
                         <div className="row row-3">
-                            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[4].object.id, 4)}>
+                            <div
+                                className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                onClick={() => this.trackEngagement(this.props.articles[4].object.id, 4)}>
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[4].object.id)
                                 }} />
@@ -224,7 +240,9 @@ class Home extends Component {
                                     <Summary>{this.props.articles[5].object.summary}</Summary>
                                     </div>
                                 </div>
-                                <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[5].object.id, 5)}>
+                                <div
+                                    className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    onClick={() => this.trackEngagement(this.props.articles[5].object.id, 5)}>
                                     <Waypoint onEnter={() => {
                                         this.trackImpression(this.props.articles[5].object.id)
                                     }} />
@@ -256,7 +274,9 @@ class Home extends Component {
                                         </p>
                                     </div>
                                 </div>
-                            <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.articles[6].object.id, 6)}>
+                            <div
+                                className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                onClick={() => this.trackEngagement(this.props.articles[6].object.id, 6)}>
                             <Waypoint onEnter={() => {
                                 this.trackImpression(this.props.articles[6].object.id)
                             }} />
