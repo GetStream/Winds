@@ -1,5 +1,11 @@
 {
   "hooks": {
-    "grunt": false
+      "grunt": false,
+      "session": false,
+      "sockets": false,
+      "pubsub": false,
+      "views": false,
+      "i18n": false,
+      "blueprints": false
   }
 }

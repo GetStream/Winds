@@ -21,7 +21,15 @@ function isLocalConnection(connection) {
 before(function(done) {
 
   sails.lift({
-      hooks: { grunt: false },
+      hooks: {
+          "grunt": false,
+          "session": false,
+          "sockets": false,
+          "pubsub": false,
+          "views": false,
+          "i18n": false,
+          "blueprints": false
+      },
       log: { level: 'warn' }
   }, function(err, server) {
 
