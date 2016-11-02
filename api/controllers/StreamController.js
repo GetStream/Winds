@@ -68,7 +68,7 @@ module.exports = {
             }
         }, function(error, response, feedResponse) {
 
-            if (error) {
+            if (error || (feedResponse && !feedResponse.results)) {
                 sails.log.error('Failed to load personalized feed:', error)
                 return res.serverError('Failed to load personalized feed.')
             }
