@@ -3,7 +3,7 @@ var Sails     = require('sails').Sails,
     striptags = require('striptags'),
     moment    = require('moment'),
     async     = require('async'),
-    cheerio   = require('cheerio');
+    cheerio   = require('cheerio')
 
 var argv = require('yargs')
     .usage('Usage: $0 <command> [options]')
@@ -28,7 +28,7 @@ var argv = require('yargs')
     .help('h')
     .alias('h', 'help')
     .epilog('Happy reading!')
-    .argv;
+    .argv
 
 var scrapingErrors = {}
 
@@ -38,8 +38,8 @@ app.load({
 }, function sailsReady(err) {
 
     if (err) {
-        sails.log.warn('Error loading app:', err);
-        return process.exit(1);
+        sails.log.warn('Error loading app:', err)
+        return process.exit(1)
     }
 
     sails.log.info('About to start scraping process')
@@ -53,12 +53,12 @@ app.load({
 
     if (argv.q) {
         sails.log.info(`searching for a feed matching ${argv.q}`)
-        Feeds.find({ feedUrl: {'contains': argv.q} }).exec(scrapeFeedsBound);
+        Feeds.find({ feedUrl: {'contains': argv.q} }).exec(scrapeFeedsBound)
     } else if (argv.f) {
         sails.log.info(`scraping all feeds`)
-        Feeds.find({}).exec(scrapeFeedsBound);
+        Feeds.find({}).exec(scrapeFeedsBound)
     } else {
-        var scrapeInterval = moment().subtract('minutes', 3).toISOString();
+        var scrapeInterval = moment().subtract('minutes', 3).toISOString()
         sails.log.info(`scraping all feeds that are older than ${scrapeInterval}`)
         Feeds.find({
                 or: [
@@ -69,9 +69,9 @@ app.load({
                         lastScraped: null
                     }
                 ]
-            }).exec(scrapeFeedsBound);
+            }).exec(scrapeFeedsBound)
     }
- });
+ })
 
 // query the feed table for feeds we need to scrape
 function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
@@ -103,6 +103,6 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
              }
          })
          sails.log.info('exiting... bye bye')
-         process.exit()
-     });
+         process.exit(0)
+     })
 }

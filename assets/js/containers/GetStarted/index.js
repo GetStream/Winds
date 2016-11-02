@@ -131,6 +131,7 @@ class CreateAccount extends Component {
     }
 
     componentWillReceiveProps(props) {
+
         if (props.open != this.props.open) {
             if (props.open) {
                 document.getElementById('root').classList.add('creating-account')
@@ -140,11 +141,12 @@ class CreateAccount extends Component {
         }
 
         if (props.error != this.props.error && !props.error) {
-            this.setState({ email: '', password: '', })
+            this.setState({ password: '', })
             setTimeout(() => {
-                this[this.props.create ? '_createEmail' : '_loginEmail'].focus()
+                this[this.props.create ? '_createPassword' : '_loginPassword'].focus()
             }, 150)
         }
+
     }
 
     componentWillUnmount() {
@@ -243,6 +245,7 @@ class CreateAccount extends Component {
                             <label>Your Password</label>
                             <input
                                 type="password"
+                                ref={c => this._loginPassword = c}
                                 required={true}
                                 minLength={6}
                                 value={this.state.password}
@@ -296,6 +299,12 @@ class GetStarted extends Component {
         }
     }
 
+    componentDidUpdate(oldProps, oldState) {
+        if (this.state.selected.length != oldState.selected.length && this.state.creating) {
+            if (!this.state.signin) this.setState({ creating: false, })
+        }
+    }
+
     handleSelected = (topic, checked) => {
 
         if (!checked) {
@@ -332,12 +341,6 @@ class GetStarted extends Component {
         }, err => this.setState({ creating: false, creatingAccount: false, loadingAccount: false, }))
     }
 
-    componentDidUpdate(oldProps, oldState) {
-        if (this.state.selected.length != oldState.selected.length && this.state.creating) {
-            if (!this.state.signin) this.setState({ creating: false, })
-        }
-    }
-
     handleSignIn = () => this.setState({ signin: true, creating: true, })
     handleContinue = () => this.setState({ creating: true, signin: false, })
 
@@ -360,6 +363,7 @@ class GetStarted extends Component {
                     this.setState({
                         loadingAccount: false,
                         error: 'Invalid Email or Password.',
+                        password: '',
                     })
                     setTimeout(() => this.setState({ error: false, }), 3000)
                 }

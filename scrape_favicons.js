@@ -4,7 +4,7 @@ var Sails     = require('sails').Sails,
     moment    = require('moment'),
     request = require('request'),
     async     = require("async"),
-    cheerio   = require('cheerio');
+    cheerio   = require('cheerio')
 
 var argv = require('yargs')
     .usage('Usage: $0 <command> [options]')
@@ -25,7 +25,7 @@ var argv = require('yargs')
     .help('h')
     .alias('h', 'help')
     .epilog('Happy reading!')
-    .argv;
+    .argv
 
 var scrapingErrors = {}
 
@@ -35,20 +35,20 @@ app.load({
 }, function sailsReady(err) {
 
     if (err) {
-        sails.log.warn('Error loading app:', err);
-        return process.exit(1);
+        sails.log.warn('Error loading app:', err)
+        return process.exit(1)
     }
 
     sails.log.info('About to start scraping process')
 
     if (argv.q) {
         sails.log.info(`searching for a site matching ${argv.q}`)
-        Sites.find({ siteUrl: {'contains': argv.q} }).exec(scrapeFavicons);
+        Sites.find({ siteUrl: {'contains': argv.q} }).exec(scrapeFavicons)
     } else if (argv.f) {
         sails.log.info(`scraping all sites`)
         Sites.find({}).limit(1000).exec(scrapeFavicons)
     } else {
-        let scrapeInterval = moment().subtract('minutes', 60 * 24).toISOString();
+        let scrapeInterval = moment().subtract('minutes', 60 * 24).toISOString()
         sails.log.info(`scraping site we didnt update in a day`)
         Sites.find({
                 or: [
@@ -61,7 +61,7 @@ app.load({
                 ]
             }).limit(1000).exec(scrapeFavicons)
     }
- });
+ })
 
 function scrapeFavicon(site, callback) {
     let normalize   = require('normalize-url')
@@ -125,6 +125,6 @@ function scrapeFavicons(err, sites) {
          }
          sails.log.info(`completed scraping for ${sites.length} sites`)
          sails.log.info('exiting... bye bye')
-         process.exit()
-     });
+         process.exit(0)
+     })
 }
