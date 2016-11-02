@@ -104,9 +104,17 @@ function enrichArticle(article, callback) {
         if (!article.imageSrc) {
                 if (article.summary) {
                     try {
-                        let $ = cheerio.load(article.description)
-                        let descriptionImage = $('img').attr('src')
-                        article.imageSrc = makeUrlAbsolute(article.link, descriptionImage)
+                        let $ = cheerio.load(article.description),
+                            img = $('img')
+                        let descriptionImage = img.attr('src'),
+                            width = img.attr('width'),
+                            height = img.attr('height')
+                        if ((width && width.replace('px', '') == '1') || (height && height.replace('px', '') == 1)) {
+                            // invalid image
+                            sails.log.info('found an invalid image')
+                        } else {
+                            article.imageSrc = makeUrlAbsolute(article.link, descriptionImage)
+                        }
                     } catch (e) {
                         sails.log.warn('cheerio didnt quite work', e)
                     }

@@ -74,7 +74,8 @@ module.exports = {
                 summary: this.summary,
                 author: this.author,
                 articleUrl: this.articleUrl,
-                canonicalUrl: this.canonicalUrl
+                canonicalUrl: this.canonicalUrl,
+                image: this.imageSrc
             }
 
             if (this.topic) {
