@@ -15,6 +15,10 @@ var argv = require('yargs')
     .number('c')
     .default('c', 30)
     .describe('c', 'the number of feeds to scrape concurrently. for debugging set this to 1')
+    .alias('l', 'live')
+    .boolean('l')
+    .default('l', false)
+    .describe('l', 'keeps the process alive')
     .alias('f', 'force')
     .boolean('f')
     .default('f', false)
@@ -124,7 +128,9 @@ function scrapeFavicons(err, sites) {
              sails.log.error('scraping sites failed', err)
          }
          sails.log.info(`completed scraping for ${sites.length} sites`)
-         sails.log.info('exiting... bye bye')
-         process.exit(0)
+         if (!argv.l) {
+            sails.log.info('exiting... bye bye')
+            process.exit(0)
+         }
      })
 }
