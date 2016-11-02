@@ -3,7 +3,6 @@
       "grunt": false,
       "sockets": false,
       "pubsub": false,
-      "i18n": false,
-      "blueprints": true
+      "i18n": false
   }
 }
