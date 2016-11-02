@@ -79,7 +79,7 @@ module.exports = {
 
             if (this.topic) {
                 activity.to = [`topic:${this.topic}`]
-                activity.topic = 'topics:' + this.topic
+                activity.topic = `topics:${this.topic}`
             }
 
             return activity
