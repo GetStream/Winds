@@ -6,8 +6,8 @@ export const load = (page = 1, limit = 20, version = null) => dispatch => {
 
     let v = version || localStorage.getItem('version')
 
-    if (v) {
-        
+    if (page == 1) {
+
         return dispatch({
             type: LOAD,
 
