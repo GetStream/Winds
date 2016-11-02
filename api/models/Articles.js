@@ -61,14 +61,14 @@ module.exports = {
         toActivity: function() {
 
             let activity = {
-                actor: `feed: + ${this.feed}`,
+                actor: `feed:${this.feed}`,
                 verb: 'publish',
-                object: `articles: + ${this.id}`,
-                foreign_id: `articles: + ${this.id}`,
+                object: `articles:${this.id}`,
+                foreign_id: `articles:${this.id}`,
                 time: this.publicationDate,
                 // info for personalization
-                site: 'sites:' + this.site,
-                feed: 'feeds:' + this.feed,
+                site: `sites:${this.site}`,
+                feed: `feeds:${this.feed}`,
                 categories: this.categories,
                 title: this.title,
                 summary: this.summary,

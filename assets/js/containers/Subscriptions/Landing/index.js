@@ -18,6 +18,14 @@ class Subscriptions extends Component {
         appending: false,
     }
 
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll)
+    }
+
     handleMarkAllRead = () => this.props.dispatch(
         SubscriptionActions.markRead()
     )
@@ -51,14 +59,6 @@ class Subscriptions extends Component {
             }
         }, 200)
 
-    }
-
-    componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll)
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll)
     }
 
     isAllRead = () => this.props.subscriptions.every(sub => sub.read)
