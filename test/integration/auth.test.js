@@ -82,7 +82,7 @@ describe('Auth', function() {
     it('logs out a user', function (done) {
       request(sails.hooks.http.app)
         .get('/api/logout')
-        .expect(200, done)
+        .expect(302, done)
     })
 
     it('resets a users password', function (done) {
