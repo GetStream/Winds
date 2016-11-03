@@ -365,7 +365,7 @@ class GetStarted extends Component {
                         error: 'Invalid Email or Password.',
                         password: '',
                     })
-                    setTimeout(() => this.setState({ error: false, }), 3000)
+                    setTimeout(() => this.setState({ error: false, }), 2500)
                 }
             )
     }

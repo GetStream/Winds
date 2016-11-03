@@ -50,7 +50,13 @@ export default opts => store => next => action => {
                 return Promise.resolve({ ...others, data, headers: response.headers, status: response.status }).then(next)
 
             return response.json().then(json =>
-                Promise.resolve({ ...others, data, response: json, headers: response.headers, status: response.status }).then(next)
+                Promise.resolve({
+                    ...others,
+                    data,
+                    response: json,
+                    headers: response.headers,
+                    status: response.status })
+                .then(next)
             )
         })
         .catch(error => Promise.reject({ ...others, data, error, }).then(next))

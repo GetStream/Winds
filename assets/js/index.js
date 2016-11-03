@@ -52,10 +52,10 @@ const isReady = (nextState, replace, callback) => {
         if (nextState.location.pathname == '/app') {
             replace('/app/personalization-feed')
         }
-        callback()
+        return callback()
     }, () => {
         replace('/app/getting-started')
-        callback()
+        return callback()
     })
 }
 

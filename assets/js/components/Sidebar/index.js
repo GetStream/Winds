@@ -131,7 +131,7 @@ class Sidebar extends Component {
                                 {this.props.sites.map(site => (
                                     <li key={`site-${site.feed.site.id}`}>
                                         <a href={normalizeUrl(site.feed.site.siteUrl)} target="_blank" key={`site-${site.feed.site.id}`}>
-                                            <img src={!!site.feed.site.faviconUrl ? site.feed.site.faviconUrl : '../img/app/default-favicon.png'} height="20" width="20" />&nbsp;
+                                            <img src={!!site.feed.site.faviconUrl ? site.feed.site.faviconUrl : '../img/app/http://i.imgur.com/blhZfDe.png'} height="20" width="20" />&nbsp;
                                             <Truncate length={15}>{!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}</Truncate>
                                         </a>
                                         <svg fill="#000000" height="16px" viewBox="0 0 24 24" width="24" onClick={() => this.handleUnsubscribe(site)}>
