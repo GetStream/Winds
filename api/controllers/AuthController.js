@@ -96,7 +96,7 @@ module.exports = {
 
     logout: function(req, res) {
         req.logout()
-        return res.ok({});
+        return res.redirect('/app/getting-started')
     },
 
     passwordReset: function(req, res) {
