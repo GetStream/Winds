@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Hostname from 'components/Hostname'
 import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
+import Truncate from 'components/Truncate'
 
 import Waypoint from 'react-waypoint'
 
