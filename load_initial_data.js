@@ -52,9 +52,7 @@ var initialData = {
         {'name': 'BBC', 'rss': 'http://feeds.bbci.co.uk/news/rss.xml?edition=us', 'url': 'http://www.bbc.com'}
     ],
     'VR': [
-        //{'name': 'Road To VR', 'rss': 'http://www.roadtovr.com/feed/'},
         {'name': 'Upload VR', 'rss': 'http://uploadvr.com/feed/'},
-        //{'name': 'OVRNews', 'rss': 'http://www.ovrnews.com/feed/'},
         {'name': 'HTC Vive', 'rss': 'http://blog.vive.com/us/feed/'}
     ]
 }
@@ -134,6 +132,7 @@ app.load({
 
             sails.log.info('Completed inserting feeds, wicked!')
             sails.log.info('All done setting up your initial data...')
+
             process.exit(0)
 
         })

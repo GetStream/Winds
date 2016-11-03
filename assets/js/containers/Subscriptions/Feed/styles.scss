@@ -4,6 +4,10 @@
         margin-right: 0;
     }
 
+    .subscriptions ul.article.read, .subscriptions ul.article:hover {
+        background-color: lime;
+    }
+
     .site-feed-header {
         display: flex;
         justify-content: space-between;
@@ -25,10 +29,10 @@
             line-height: 12px;
             text-decoration: none;
         }
-        .svg-icon{
+
+        .svg-icon {
             margin-right: 20px;
         }
-
 
     }
 

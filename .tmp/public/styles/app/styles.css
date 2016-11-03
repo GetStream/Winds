@@ -785,7 +785,8 @@ body {
   -webkit-justify-content: center;
   justify-content: center;
   flex-wrap: wrap;
-  background: #F0F0F0; }
+  background: #F0F0F0;
+  padding-top: 60px; }
   .articles .appending-loader {
     position: fixed;
     bottom: 55px; }
@@ -930,6 +931,9 @@ body {
         color: #16C98D; }
 .site-feed-list .subscriptions ul.article {
   margin-right: 0; }
+
+.site-feed-list .subscriptions ul.article.read, .site-feed-list .subscriptions ul.article:hover {
+  background-color: lime; }
 
 .site-feed-list .site-feed-header {
   display: flex;

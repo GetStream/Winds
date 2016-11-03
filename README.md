@@ -1,7 +1,6 @@
-![Winds - Open source RSS reader](https://github.com/GetStream/Winds/raw/master/screenshots/ss-0.png "Winds - Open source RSS reader")
+![Winds - An Open Source Personalized RSS Reader](https://github.com/GetStream/Winds/raw/master/screenshots/ss-0.png "Winds - An Open Source Personalized RSS Reader"
 
-
-# Winds - Open Source RSS Reader
+# Winds - An Open Source Personalized RSS Reader
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
 [![Dependencies up to date](https://david-dm.org/GetStream/Winds.png)](https://david-dm.org/getstream/Winds)
 
@@ -28,15 +27,21 @@ Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
 ### Step 0 - Git clone
 
 ```bash
-git clone git@github.com:GetStream/Winds.git
+git clone https://github.com/GetStream/Winds.git
 ```
 
 ### Step 1 - Node & requirements
 
 ```bash
 cd Winds
+```
+
+```bash
 brew install nvm
 nvm install 7.0.0
+```
+
+```bash
 npm install .
 npm install -g sails pm2
 ```
@@ -61,7 +66,7 @@ API_BASE_URL = 'http://localhost:1337'
 
 Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. Get started at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials
 
-**Email (optional)**
+**Email**
 
 To send email create an account on [sendgrid.com](https://sendgrid.com/) and add your username and password. You can use other providers by customizing config/emails.js
 
@@ -73,16 +78,7 @@ To track errors create an account on [sentry.io](https://sentry.io/). Next add y
 
 Sails uses an ORM called [Waterline](https://github.com/balderdashy/waterline), which supports [many databases](https://github.com/balderdashy/waterline-docs#supported-adapters). If you don't provide the Mongo URI ,it will store your data on local disk. This is fine for trying out the app; however it is not a solution for a production level app. The full details are available in `config/connections.js`.
 
-### Step 3 - Launch!
-
-Next, run `sails lift` in the command line like so:
-
-```bash
-sails lift
-```
-You can now see your own RSS reader at: [localhost:1337](http://localhost:1337/)
-
-### Step 4 - Scrape Some Data
+### Step 3 - Scrape Some Data
 
 A reader without any data isn't much fun though. Let's insert a few topics and rss feeds into the database:
 
@@ -95,6 +91,15 @@ Next, we need to run 2 cronjobs to ensure we keep on reading RSS articles and up
 ```
 pm2 start process.json
 ```
+
+### Step 4 - Launch!
+
+Next, run `sails lift` in the command line like so:
+
+```bash
+sails lift
+```
+You can now see your own RSS reader at: [localhost:1337](http://localhost:1337/)
 
 ### Step 5 - Enjoy
 
@@ -125,12 +130,13 @@ Contributions are much appreciated. Here are some ideas for improvements:
 * Follow suggestions (we're working on this)
 * Switching between feeds should be easier
 * Lightweight task queuing system for emails and discover endpoint
-* Keyboard shortcuts vim style
+* Keyboard shortcuts (vim style)
 * GraphQL style APIs so you have more flexibility for building your own mobile apps
 * Android & iOS apps
 * Support more sites (RSS data quality is pretty poor and often needs custom logic per site/feed)
 * Search article's you've read using [Algolia](https://www.algolia.com/)
 * Folders/Groups
+* Sharing support (e.g. Buffer, Facebook, Twitter, etc.)
 
 ### Roadmap
 
