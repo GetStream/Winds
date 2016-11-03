@@ -6,61 +6,46 @@ export const load = (page = 1, limit = 20, version = null) => dispatch => {
 
     let v = version || localStorage.getItem('version')
 
-    return dispatch({
-        type: LOAD,
+    if (page == 1) {
 
-        data: {
-            limit,
-            offset: (page - 1) * limit,
-            version: v,
-        },
+        return dispatch({
+            type: LOAD,
 
-        sync: {
-            method: 'GET',
-            url: '/api/stream/personalized',
-        }
-    }).then(res => dispatch(Personalization.getStats()))
+            data: {
+                limit,
+                offset: (page - 1) * limit,
+                version: v,
+            },
 
-    // if (page == 1) {
-    //
-    //     return dispatch({
-    //         type: LOAD,
-    //
-    //         data: {
-    //             limit,
-    //             offset: (page - 1) * limit,
-    //             version: v,
-    //         },
-    //
-    //         sync: {
-    //             method: 'GET',
-    //             url: '/api/stream/personalized',
-    //         }
-    //     }).then(res =>
-    //         Promise.resolve().then(() => localStorage.setItem('version', res.response.version))
-    //     ).then(() => dispatch(Personalization.getStats()))
-    //
-    // } else {
-    //
-    //     return dispatch({
-    //         type: LOAD,
-    //
-    //         data: {
-    //             limit,
-    //             offset: (page - 1) * limit,
-    //         },
-    //
-    //         sync: {
-    //             method: 'GET',
-    //             url: '/api/stream/personalized',
-    //         }
-    //     }).then(res =>
-    //         Promise.resolve()
-    //             .then(() => localStorage.removeItem('version'))
-    //             .then(() => localStorage.setItem('version', res.response.version))
-    //     ).then(() => dispatch(Personalization.getStats()))
-    //
-    // }
+            sync: {
+                method: 'GET',
+                url: '/api/stream/personalized',
+            }
+        }).then(res =>
+            Promise.resolve().then(() => localStorage.setItem('version', res.response.version))
+        ).then(() => dispatch(Personalization.getStats()))
+
+    } else {
+
+        return dispatch({
+            type: LOAD,
+
+            data: {
+                limit,
+                offset: (page - 1) * limit,
+            },
+
+            sync: {
+                method: 'GET',
+                url: '/api/stream/personalized',
+            }
+        }).then(res =>
+            Promise.resolve()
+                .then(() => localStorage.removeItem('version'))
+                .then(() => localStorage.setItem('version', res.response.version))
+        ).then(() => dispatch(Personalization.getStats()))
+
+    }
 
 }
 
