@@ -96,9 +96,17 @@
 
         &.read,
         &:hover {
-            
+
             transition: background 0.3s linear;
+
         }
+        &.read{
+
+            transition: background 0.3s linear;
+            background-color: #F2F2F2;
+
+        }
+
 
         li {
 
@@ -110,6 +118,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
 
             &:nth-child(1) {
                 margin-left: 2px;
