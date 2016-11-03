@@ -9,6 +9,7 @@ import Footer from 'components/Footer'
 import Sidebar from 'components/Sidebar'
 import Personalization from 'components/Personalization'
 
+import * as AppActions from 'actions/App'
 import * as SidebarActions from 'actions/Sidebar'
 import * as PersonalizationActions from 'actions/Personalization'
 import * as TopicActions from 'actions/Topics'
