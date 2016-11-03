@@ -23,7 +23,7 @@ function scrapeFeed(feed, numberOfActivities, callback) {
     parse.fetch(feed.feedUrl, function(err, meta, articles) {
 
         if (err) {
-            sails.log.error('parsing failed', err)
+            sails.sentry.captureMessage(err)
             return callback(err, null)
         }
 
@@ -38,25 +38,32 @@ function scrapeFeed(feed, numberOfActivities, callback) {
 
         // iterate through articles and enrich
         async.map(articles, enrichArticle, function(err, enrichedArticles) {
+
             if (err) {
-                sails.log.error('enrichment failed', err)
+                sails.sentry.captureMessage(err)
             }
 
             // iterate through enrichedArticles and store
             async.map(enrichedArticles, storeArticleBound, function(err, articleActivities) {
-                sails.log.info(`completed scraping for feed ${feed.feedUrl} - ${feed.id} found ${articleActivities.length} activities`)
+
+                sails.log.info(`Completed scraping for feed ${feed.feedUrl} - ${feed.id} found ${articleActivities.length} activities`)
+
                 const now = new Date()
                 sails.models.feeds.update({
                     id: feed.id
                 }, {
                     lastScraped: now
                 }).exec(function(err, updatedFeed) {
+
                     if (err) {
-                        sails.log.error('update failed', err)
+                        sails.sentry.captureMessage(err)
                     }
+
                     sails.log.info(`updated:${updatedFeed} last scraped at to ${now}`)
                     callback(null, articleActivities)
+
                 })
+
             })
         })
     })
@@ -84,11 +91,11 @@ function enrichArticle(article, callback) {
         return
     }
 
-
     getMetaInformation(url, function(err, meta) {
 
         // Don't use the article if we can't get meta information
         if (err) {
+            sails.sentry.captureMessage(err)
             return callback(null, null)
         }
 
@@ -102,23 +109,23 @@ function enrichArticle(article, callback) {
 
         // extract image from summary if we don't have one
         if (!article.imageSrc) {
-                if (article.summary) {
-                    try {
-                        let $ = cheerio.load(article.description),
-                            img = $('img')
-                        let descriptionImage = img.attr('src'),
-                            width = img.attr('width'),
-                            height = img.attr('height')
-                        if ((width && width.replace('px', '') == '1') || (height && height.replace('px', '') == 1)) {
-                            // invalid image
-                            sails.log.info('found an invalid image')
-                        } else {
-                            article.imageSrc = makeUrlAbsolute(article.link, descriptionImage)
-                        }
-                    } catch (e) {
-                        sails.log.warn('cheerio didnt quite work', e)
+            if (article.summary) {
+                try {
+                    let $ = cheerio.load(article.description),
+                        img = $('img')
+                    let descriptionImage = img.attr('src'),
+                        width = img.attr('width'),
+                        height = img.attr('height')
+                    if ((width && width.replace('px', '') == '1') || (height && height.replace('px', '') == 1)) {
+                        // invalid image
+                        sails.log.info('found an invalid image')
+                    } else {
+                        article.imageSrc = makeUrlAbsolute(article.link, descriptionImage)
                     }
+                } catch (e) {
+                    sails.sentry.captureMessage(e)
                 }
+            }
         }
 
         // feed specific logic
@@ -183,17 +190,23 @@ function getMetaInformation(articleUrl, callback) {
         }
     }
     request(options, function(err, response, body) {
+
         if (err || response.statusCode != 200) {
-            sails.log.error('failed to get meta', err)
+
+            sails.sentry.captureMessage(err)
 
             // handle corner cases where the library fails without an error
             err = err || 'failed to get meta'
 
             return callback(err)
+
         } else {
+
             let meta = {},
-                parsedDocument;
+                parsedDocument
+
             try {
+
                 parsedDocument = cheerio.load(body)
 
                 // image
@@ -217,19 +230,20 @@ function getMetaInformation(articleUrl, callback) {
                         return false
                     }
                 })
-                meta.favicon = absolute(meta.favicon)
 
-                // canonicalUrl, og url or the last url we were redirected to
-                meta.canonical = parsedDocument("link[rel='canonical']").attr("href")
-                meta.ogUrl = parsedDocument("meta[property='og:url']").attr("content")
+                meta.favicon      = absolute(meta.favicon)
+                meta.canonical    = parsedDocument("link[rel='canonical']").attr("href")
+                meta.ogUrl        = parsedDocument("meta[property='og:url']").attr("content")
                 meta.canonicalUrl = meta.canonical || meta.ogUrl || response.url
                 meta.canonicalUrl = absolute(meta.canonicalUrl)
-                sails.log.verbose('found meta for url', articleUrl, meta)
+
+                sails.log.verbose('Found meta for URL', articleUrl, meta)
+
                 callback(null, meta)
 
             } catch(e) {
                 // common errors include exceeding the max call stack
-                sails.log.error('failed to parse body using cheerio', e)
+                sails.sentry.captureMessage(e)
                 return callback(e)
             }
 
@@ -258,7 +272,7 @@ function storeArticle(feedObject, rssArticle, callback) {
     if (!isValidArticle(rssArticle)) {
 
         // Its an example app, ignore broken data
-        sails.log.error('bummer, this article is invalid', rssArticle && rssArticle.link)
+        sails.log.error('Bummer, this article is invalid:', rssArticle && rssArticle.link)
 
         let feedUrl = feedObject.feedUrl
 
@@ -307,7 +321,7 @@ function storeArticle(feedObject, rssArticle, callback) {
     }, articleProperties).exec(function cb(err, article) {
 
         if (err) {
-            sails.log.error('couldnt save article', err)
+            sails.sentry.captureMessage(err)
             return callback(err)
         }
 
@@ -318,9 +332,10 @@ function storeArticle(feedObject, rssArticle, callback) {
             id: article.id
         }, articleProperties).exec(function(err, updateArticles) {
             if (err) {
-                sails.log.error('couldnt update article', err)
+                sails.sentry.captureMessage(err)
                 return callback(err)
             }
+
             let article = updateArticles[0]
             sails.log.verbose(`created and updated a new article`, article)
 
@@ -331,9 +346,8 @@ function storeArticle(feedObject, rssArticle, callback) {
                 sails.log.verbose('added article to stream', article.articleUrl)
                 callback(null, activity)
             }, function(err) {
-                sails.log.error('error adding article to stream', err)
-                callback(err)
-                return
+                sails.sentry.captureMessage(err)
+                return callback(err)
             })
 
         })

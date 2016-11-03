@@ -21,73 +21,82 @@ module.exports = {
         DiscoverService.findRSS(humanizedUrl, function(err, url, feedUrl, rssMeta) {
 
             if (err) {
-                sails.log.error(err)
+                sails.sentry.captureMessage(err)
                 return res.badRequest('Sorry, we could not figure out which url you\'re looking for.')
-            } else {
+            }
 
-                const hostname = urlLibrary.parse(url).hostname
-                let rssLinkHostname
+            const hostname = urlLibrary.parse(url).hostname
+            let rssLinkHostname
 
-                if(rssMeta.link) {
-                    rssLinkHostname = urlLibrary.parse(rssMeta.link).hostname
+            if(rssMeta.link) {
+                rssLinkHostname = urlLibrary.parse(rssMeta.link).hostname
+            }
+
+            let siteUrl = rssLinkHostname || hostname,
+                name    = rssMeta.title
+
+            if (name && name.indexOf('RSS') != -1) {
+                name = null
+            }
+
+            Sites.findOrCreate({
+                siteUrl: siteUrl
+            }, {
+                siteUrl: siteUrl,
+                name: name
+            }).exec(function(err, site) {
+
+                if (err) {
+                    sails.sentry.captureMessage(err)
+                    return res.badRequest('Sorry, failed to add the RSS feed.')
                 }
 
-                let siteUrl = rssLinkHostname || hostname,
-                    name    = rssMeta.title
+                Feeds.findOrCreate({
+                        feedUrl: feedUrl
+                    }, {
+                        site: site.id,
+                        siteUrl: hostname,
+                        feedUrl: feedUrl
+                    })
+                    .exec(function(err, feed) {
 
-                if (name && name.indexOf('RSS') != -1) {
-                    name = null
-                }
+                        if (err) {
+                            sails.sentry.captureMessage(err)
+                            return res.badRequest('Sorry, failed to add the RSS feed.')
+                        }
 
-                sails.log.info('Adding site', siteUrl, name)
+                        sails.models.follows.findOrCreate({
+                            type: 'feed',
+                            feed: feed.id,
+                            user: req.user.id
+                        }).exec(function(err, follow) {
 
-                Sites.findOrCreate({
-                    siteUrl: siteUrl
-                }, {
-                    siteUrl: siteUrl,
-                    name: name
-                }).exec(function(err, site) {
+                            if (err) {
+                                sails.sentry.captureMessage(err)
+                                return res.badRequest('Sorry, failed to add the RSS feed.')
+                            }
 
-                    if (err) return res.badRequest('Sorry, failed to add the RSS feed.')
+                            ScrapingService.scrapeFeed(feed, 20, function(err, articles) {
 
-                    Feeds.findOrCreate({
-                            feedUrl: feedUrl
-                        }, {
-                            site: site.id,
-                            siteUrl: hostname,
-                            feedUrl: feedUrl
-                        })
-                        .exec(function(err, feed) {
+                                if (err) {
+                                    sails.sentry.captureMessage(err)
+                                    return res.badRequest(`Something went wrong while scraping: ${feed.feedUrl}`)
+                                }
 
-                            if (err) return res.badRequest('Sorry, failed to add the RSS feed.')
+                                sails.log.info('Completed scraping for:', feed.feedUrl)
 
-                            sails.models.follows.findOrCreate({
-                                type: 'feed',
-                                feed: feed.id,
-                                user: req.user.id
-                            }).exec(function(err, follow) {
-
-                                if (err) return res.badRequest('Sorry, failed to add the RSS feed.')
-
-                                // run the scraping in the background
-                                ScrapingService.scrapeFeed(feed, 20, function(err, articles) {
-
-                                    if (err) return res.badRequest(`Something went wrong while scraping: ${feed.feedUrl}`)
-
-                                    sails.log.info('Completed scraping for:', feed.feedUrl)
-
-                                    return res.ok({
-                                        site_id: site.id,
-                                        feed_id: feed.id
-                                    })
-
+                                return res.ok({
+                                    site_id: site.id,
+                                    feed_id: feed.id
                                 })
 
                             })
 
                         })
-                })
-            }
+
+                    })
+            })
+
         })
     },
 

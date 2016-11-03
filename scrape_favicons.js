@@ -55,15 +55,15 @@ app.load({
         let scrapeInterval = moment().subtract('minutes', 60 * 24).toISOString()
         sails.log.info(`scraping site we didnt update in a day`)
         Sites.find({
-                or: [
-                    {
-                        lastScraped: {'<': scrapeInterval}
-                    },
-                    {
-                        lastScraped: null
-                    }
-                ]
-            }).limit(1000).exec(scrapeFavicons)
+            or: [
+                {
+                    lastScraped: {'<': scrapeInterval}
+                },
+                {
+                    lastScraped: null
+                }
+            ]
+        }).limit(1000).exec(scrapeFavicons)
     }
  })
 
@@ -72,41 +72,53 @@ function scrapeFavicon(site, callback) {
     let url = normalize(site.siteUrl)
     sails.log.info('processing site', url, site.id)
     ScrapingService.getMetaInformation(url, function(err, client) {
+
         if (err) {
-            sails.log.error('favicon not found', err)
+            sails.sentry.captureMessage(err)
             callback(null, null)
             return
         }
 
         function maybeUpdateFavicon(client) {
+
             if (client.favicon) {
                 sails.log.info('found favicon', client.favicon)
             } else {
                 sails.log.error('favicon not found', client.favicon)
             }
+
             const now = new Date()
             sails.models.sites.update({id: site.id}, {'faviconUrl': client.favicon, lastScraped: now}).exec(function(err, result) {
+
                 if (err) {
                     callback(err)
                     return
                 }
+
                 if (client.favicon == site.faviconUrl) {
                     sails.log.info('favicon for site didnt change', site.siteUrl)
                 } else {
                     sails.log.info('updated favicon for site', site.siteUrl)
                 }
+
                 callback(null, site)
+
             })
         }
 
         if (client.favicon) {
+
             request(client.favicon, function (error, response, body) {
+
               if (error || response.statusCode != 200) {
                 sails.log.info('couldnt find the favicon specified at', client.favicon)
                 client.favicon = undefined
               }
+
               maybeUpdateFavicon(client)
+
             })
+
         } else {
             maybeUpdateFavicon(client)
         }

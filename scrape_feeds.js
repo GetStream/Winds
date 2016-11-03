@@ -86,29 +86,36 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
 
      function scrapeFeedBound(feed, callback) {
          ScrapingService.scrapeFeed(feed, numberOfActivities, function(err, response) {
+
              if (err) {
-                 sails.log.error('encountered a critical error while scraping', feed.feedUrl)
-                 feed.scrapingErrors = feed.scrapingErrors + 100
+                sails.sentry.captureMessage(err)
+                feed.scrapingErrors = feed.scrapingErrors + 100
              }
+
              // never break the scraping loop, dont propagate errors
              return callback(null, response)
+
          })
      }
 
      // iterate through feeds
      async.mapLimit(feeds, concurrency, scrapeFeedBound, function(err, articles) {
+
          if (err) {
-             sails.log.error('scraping feed failed', err)
+            sails.sentry.captureMessage(err)
          }
-         sails.log.info(`completed scraping for ${feeds.length} feeds`)
+
+         sails.log.info(`Completed scraping for ${feeds.length} feeds`)
          feeds.forEach(function(feed) {
              if (feed.scrapingErrors > 0) {
                  sails.log.warn(`encountered ${feed.scrapingErrors} errors for feed`, feed.feedUrl)
              }
          })
+
          if (!argv.l) {
             sails.log.info('exiting... bye bye')
             process.exit(0)
          }
+        
      })
 }

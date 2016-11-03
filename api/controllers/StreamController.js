@@ -25,7 +25,7 @@ module.exports = {
                 StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities){
 
                     if (err) {
-                        sails.log.error('Enrichment failed:', err)
+                        sails.sentry.captureMessage(err)
                         return res.badRequest('Sorry, failed to load the feed.')
                     }
 
@@ -36,7 +36,7 @@ module.exports = {
                 })
 
             }).catch(err => {
-                sails.log.error('Failed to read the feed from Stream', err)
+                sails.sentry.captureMessage(err)
                 return res.badRequest('Sorry, failed to load the feed.')
             })
 
@@ -44,7 +44,7 @@ module.exports = {
 
     personalized: function(req, res, next) {
 
-        const userId = req.user.id,
+        const userId   = req.user.id,
               url      = `https://reader.getstream.io/reader/personalized/${userId}`,
               token    = StreamService.getJwtToken(userId),
               offset   = req.param('offset'),
@@ -69,19 +69,20 @@ module.exports = {
         }, function(error, response, feedResponse) {
 
             if (error || (feedResponse && !feedResponse.results)) {
-                sails.log.error('Failed to load personalized feed:', error)
+                sails.sentry.captureMessage(error)
                 return res.serverError('Failed to load personalized feed.')
             }
 
             StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities){
 
                 if (err) {
-                    sails.log.error('Enrichment failed:', err)
+                    sails.sentry.captureMessage(err)
                     return res.badRequest('Sorry, failed to load the feed.')
                 }
 
                 feedResponse.results = enrichedActivities
                 delete feedResponse.next
+
                 return res.ok(feedResponse)
 
             })
@@ -106,19 +107,22 @@ module.exports = {
         StreamService.client.feed('rss_feed', feedId).get(params)
         .then(function(feedResponse) {
 
-            StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities){
+            StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities) {
+
                 if (err) {
-                    sails.log.error('Enrichment failed:', err)
+                    sails.sentry.captureMessage(err)
                     res.badRequest('Sorry, failed to load the feed.')
-                } else {
-                    feedResponse.results = enrichedActivities
-                    delete feedResponse.next
-                    return res.ok(feedResponse)
                 }
+
+                feedResponse.results = enrichedActivities
+                delete feedResponse.next
+
+                return res.ok(feedResponse)
+
             })
 
         }).catch(err => {
-            sails.log.error('Failed to read the feed from Stream', err)
+            sails.sentry.captureMessage(err)
             res.badRequest('Sorry, failed to load the feed.')
         })
 
@@ -144,11 +148,11 @@ module.exports = {
             }
         }, function(error, response, body) {
             if (error) {
-                sails.log.error('Failed to load interest profile :', error)
-                return res.serverError('Failed to load interest profile...')
-            } else {
-                return res.ok(body)
+                sails.sentry.captureMessage(error)
+                return res.serverError('Failed to load interest profile.')
             }
+
+            return res.ok(body)
 
         })
 
@@ -173,12 +177,13 @@ module.exports = {
                 'stream-auth-type': 'jwt'
             }
         }, function(error, response, body) {
+
             if (error) {
-                sails.log.error('Failed to load event counts :', error)
-                return res.serverError('Failed to load event counts...')
-            } else {
-                return res.ok(body)
+                sails.sentry.captureMessage(error)
+                return res.serverError('Failed to load event counts.')
             }
+
+            return res.ok(body)
 
         })
     }

@@ -26,7 +26,7 @@ module.exports = {
         }).exec(function(err, user) {
 
             if (err) {
-                sails.log.error('registration failed', err)
+                sails.sentry.captureMessage(err)
                 return res.badRequest('Registration failed. Could not create user.')
             }
 
@@ -34,38 +34,37 @@ module.exports = {
 
                 if (err || !validPassword) {
 
-                    sails.log.error('login failed', err)
+                    sails.sentry.captureMessage(err)
                     return res.badRequest('Failed to login. Invalid password.')
 
-                } else {
+                }
 
-                    async.parallel([
+                async.parallel([
 
-                        callback => {
+                    callback => {
 
-                            // send the registration email
-                            let context = { password: password }
+                        let context = { password: password }
 
-                            user.sendRegistrationEmail(context, function(err, result) {
-                                callback(err, result)
-                            })
-
-                        }, callback => {
-
-                            // follow the topics
-                            let topicsToFollow = req.body.topics
-                            FollowService.followTopics(user.id, topicsToFollow, callback)
-
-                        }], function(err, results) {
-                            if (err) {
-                                sails.log.error(err)
-                                return res.badRequest('Failed to send registration email.')
-                            } else {
-                                return res.ok(user.toJSON())
-                            }
+                        user.sendRegistrationEmail(context, function(err, result) {
+                            callback(err, result)
                         })
 
-                }
+                    }, callback => {
+
+                        let topicsToFollow = req.body.topics
+                        FollowService.followTopics(user.id, topicsToFollow, callback)
+
+                    }], function(err, results) {
+
+                        if (err) {
+                            sails.sentry.captureMessage(err)
+                            return res.badRequest('Failed to send registration email.')
+                        }
+
+                        return res.ok(user.toJSON())
+
+                })
+
             })
 
         })
@@ -82,12 +81,16 @@ module.exports = {
             if (err || !user) {
                 return res.badRequest(info.message)
             }
+
             req.logIn(user, function(err) {
+
                 if (err) res.send(err)
+
                 return res.send({
                     message: info.message,
                     user: user.toJSON()
                 })
+
             })
 
         })(req, res)
@@ -114,7 +117,7 @@ module.exports = {
         sails.models.users.update({ email: email }, { password: password }).exec(function(err, users) {
 
             if (err || (users && !users.length)) {
-                sails.log.error(err)
+                sails.sentry.captureMessage(err)
                 return res.badRequest('Could not retrieve user.')
             }
 
@@ -124,7 +127,7 @@ module.exports = {
             user.sendRegistrationEmail(context, function(err, result) {
 
                 if (err) {
-                    sails.log.error(err)
+                    sails.sentry.captureMessage(err)
                     return res.badRequest('Failed to send registration email.')
                 }
 

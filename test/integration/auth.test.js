@@ -21,7 +21,6 @@ describe('Auth', function() {
 
     it('registers a new user without a password', function (done) {
         sails.models.users.destroy({email: chance.email()}).exec(function(err, result) {
-            if(err) sails.log.error(err)
             request(sails.hooks.http.app)
               .post('/api/register')
               .send({'email': email})

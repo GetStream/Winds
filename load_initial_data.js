@@ -63,7 +63,7 @@ app.load({
 }, function sailsReady(err) {
 
     if (err) {
-        sails.log.error('Error loading app:', err);
+        sails.sentry.captureMessage(err)
         return process.exit(1);
     }
 
@@ -83,7 +83,7 @@ app.load({
     async.map(topicNames, createTopic, function(err, topics) {
 
         if (err) {
-            sails.log.error(err)
+            sails.sentry.captureMessage(err)
             process.exit(0)
         }
 
@@ -102,14 +102,14 @@ app.load({
                      sails.log.info(`inserted site ${hostname}`)
 
                      if (err) {
-                         sails.log.error(err)
-                         process.exit(0)
+                        sails.sentry.captureMessage(err)
+                        process.exit(0)
                      }
 
                      sails.models.feeds.findOrCreate({site: site.id, feedUrl: feedToCreate.rss, topic:topic.id}).exec(function(err, feedObject) {
                          if (err) {
-                             sails.log.error(err)
-                             process.exit(0)
+                            sails.sentry.captureMessage(err)
+                            process.exit(0)
                          }
                          sails.log.info(`inserted feed ${feedObject.feedUrl}`)
                          callback(err, feedObject)
@@ -126,7 +126,7 @@ app.load({
         async.map(topics, insertFeeds, function(err, results) {
 
             if (err) {
-                sails.log.error(err)
+                sails.sentry.captureMessage(err)
                 process.exit(0)
             }
 

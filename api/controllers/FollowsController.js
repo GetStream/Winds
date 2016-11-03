@@ -33,7 +33,7 @@ module.exports = {
             }], function(err, results) {
 
                 if (err) {
-                    sails.log.error('failed to unfollow feed', err)
+                    sails.sentry.captureMessage(err)
                     return res.serverError(err)
                 }
 

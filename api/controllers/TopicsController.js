@@ -9,7 +9,6 @@ module.exports = {
 
     readTopics: function(req, res, next) {
 
-        // read the topics and include if you follow them yes or no
         async.parallel([
 
             callback => {
@@ -18,7 +17,7 @@ module.exports = {
                 })
             },
             callback => {
-                
+
                 if (!req.user) return callback(null, [])
 
                 sails.models.follows.find({
@@ -29,6 +28,11 @@ module.exports = {
                 })
 
         }], function(err, results) {
+
+            if (err) {
+                sails.sentry.captureMessage(err)
+                return res.serverError('Failed to read topics.')
+            }
 
             let topics = results[0],
                 follows = results[1],
