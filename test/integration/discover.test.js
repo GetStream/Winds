@@ -114,11 +114,20 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it('finds the tweakers rss feed', function (done) {
+    it('finds the tweakers rss feed direct', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
         .query({ url: 'http://feeds.feedburner.com/tweakers/mixed'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(200, done)
+    })
+
+    it('finds the tweakers rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'tweakers.net'})
         .set('Authorization', `JWT ${test.token}`)
         .expect(200, done)
     })
