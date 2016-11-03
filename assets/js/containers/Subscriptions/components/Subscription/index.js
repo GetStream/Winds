@@ -40,7 +40,7 @@ class Subscription extends Component {
                             <div className="col-lg-12">
                                 <ul className={classes.join(' ')}>
                                     <li>
-                                        <img src={!!this.props.site.faviconUrl ? this.props.site.faviconUrl : '../../img/app/http://i.imgur.com/blhZfDe.png'} height="20" width="20" />
+                                        <img src={!!this.props.site.faviconUrl ? this.props.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'} height="20" width="20" />
                                     </li>
                                     <li>
                                         <a
