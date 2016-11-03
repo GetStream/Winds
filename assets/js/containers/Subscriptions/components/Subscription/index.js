@@ -5,6 +5,8 @@ import moment from 'moment'
 import normalizeUrl from 'normalize-url'
 import Waypoint from 'react-waypoint'
 
+import StripEntities from 'components/StripEntities'
+
 import * as SubscriptionActions from 'actions/Subscriptions'
 
 @connect()
@@ -48,7 +50,7 @@ class Subscription extends Component {
                                             data-id={this.props.id}
                                             data-position={this.props.index}
                                             onClick={this.trackEngagement}>
-                                            {this.props.title}
+                                            <StripEntities>{this.props.title}</StripEntities>
                                         </a>
                                     </li>
                                     <li>
