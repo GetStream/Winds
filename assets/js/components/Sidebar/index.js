@@ -61,7 +61,7 @@ class Sidebar extends Component {
         localStorage.clear()
         this.props.dispatch(UserActions.logout())
 
-        window.location.href = '/logout'
+        window.location.href = '/api/logout'
 
     }
 
@@ -99,7 +99,7 @@ class Sidebar extends Component {
                                     <Avatar>{localStorage.getItem('email')}</Avatar>
                                 </div>
                                 <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                    <span className="email">{localStorage.getItem('email')}</span>
+                                    <span className="email"><Truncate>{localStorage.getItem('email')}</Truncate></span>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" className="edit">
                                     <a href="#" onClick={() => this.setState({ profile: true, })}>Change Password</a>

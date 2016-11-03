@@ -31,9 +31,10 @@ export default class App extends React.Component {
         loading: false,
     }
 
-    handleSidebarClose = () => this.props.dispatch(
-        SidebarActions.close()
-    )
+    handleSidebarClose = () => {
+        this.props.dispatch(SidebarActions.close())
+        this.props.dispatch(AppActions.reload())
+    }
 
     componentWillReceiveProps(props) {
         if (props.user.loading != this.props.user.loading) {
