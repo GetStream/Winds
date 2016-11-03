@@ -14,18 +14,21 @@ export const loaded = () => ({
 
 export const INIT = 'APP_INIT'
 export const init = () => dispatch => dispatch(Topics.load())
-        .then(() =>
-            dispatch(User.me())
-                .then(userRes => Promise.all([
-                        dispatch(Feeds.load()),
-                        dispatch(Articles.load()),
-                        dispatch(Subscriptions.load()),
-                        dispatch(Sites.load()),
-                        dispatch(Personalization.getStats()),
-                    ]).then(data => Promise.resolve([...data])), err => {
-                        return Promise.reject(err)
-                    })
-        ).catch(err => Promise.reject(err))
+    .then(() =>
+        dispatch(User.me())
+            .then(userRes => Promise.all([
+                    dispatch(Feeds.load()),
+                    dispatch(Articles.load()),
+                    dispatch(Subscriptions.load()),
+                    dispatch(Sites.load()),
+                    dispatch(Personalization.getStats()),
+                ]).then(data => Promise.resolve([...data])), err => {
+                    return Promise.reject(err)
+                })
+    ).catch(err => {
+        raven.captureException(err)
+        Promise.reject(err)
+    })
 
 export const reload = () => dispatch => {
     return Promise.all([

@@ -79,7 +79,7 @@ new Promise(() => {
 
     loading.then(
         () => renderApp(),
-        () => renderApp()
+        () => renderApp(),
     )
 
-}).catch(e => console.warn('err:', e))
+}).catch(e => console.warn(e))

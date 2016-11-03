@@ -2,7 +2,7 @@ import * as AppActions from 'actions/App'
 
 import { browserHistory } from 'react-router'
 
-export const LOAD = 'FEEDS_LOAD'
+// export const LOAD = 'FEEDS_LOAD'
 export const load = (limit = 25) => ({
     type: LOAD,
 
