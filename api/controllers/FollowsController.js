@@ -106,8 +106,7 @@ module.exports = {
 
                 follows.forEach(follow => {
                     if (follow.type == 'feed') {
-                        // populate the nested relationship of sites
-                        follow.feed.site = siteMap[follow.feed.site]
+                        follow.feed.site = siteMap[follow.feed.site] // populate the nested relationship of sites
                     }
                 })
 
