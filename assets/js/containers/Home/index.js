@@ -216,28 +216,28 @@ class Home extends Component {
                                 <Waypoint onEnter={() => {
                                     this.trackImpression(this.props.articles[4].object.id)
                                 }} />
-                                <a href={this.props.articles[5].object.articleUrl} target="_blank">
+                                <a href={this.props.articles[4].object.articleUrl} target="_blank">
                                     <div className="b7"
                                         style={{
-                                            'backgroundImage': `url(${!this.props.articles[5].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[5].object.imageSrc})`,
+                                            'backgroundImage': `url(${!this.props.articles[4].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.articles[5].object.imageSrc})`,
                                         }}
-                                        id={this.props.articles[5].object.id}
+                                        id={this.props.articles[4].object.id}
                                     />
                                 </a>
                                 <div className="meta">
                                     <h3>
-                                        <a href={this.props.articles[5].object.articleUrl} target="_blank">
+                                        <a href={this.props.articles[4].object.articleUrl} target="_blank">
                                             <StripEntities>{this.props.articles[5].object.title}</StripEntities>
                                         </a>
                                     </h3>
                                     <p>
-                                        {moment(this.props.articles[5].object.createdAt).fromNow()}
+                                        {moment(this.props.articles[4].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
-                                        <a href={normalizeUrl(this.props.articles[5].object.articleUrl)} target="_blank">
-                                            {this.props.articles[5].site.name || this.props.articles[5].site.siteUrl}
+                                        <a href={normalizeUrl(this.props.articles[4].object.articleUrl)} target="_blank">
+                                            {this.props.articles[4].site.name || this.props.articles[5].site.siteUrl}
                                         </a>
                                     </p>
-                                    <Summary>{this.props.articles[5].object.summary}</Summary>
+                                    <Summary>{this.props.articles[4].object.summary}</Summary>
                                     </div>
                                 </div>
                                 <div
