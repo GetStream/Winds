@@ -896,6 +896,9 @@ body {
     padding: 20px 10px 20px 10px; }
     .subscriptions ul.article.read, .subscriptions ul.article:hover {
       transition: background 0.3s linear; }
+    .subscriptions ul.article.read {
+      transition: background 0.3s linear;
+      background-color: #F2F2F2; }
     .subscriptions ul.article li {
       color: #7B868C;
       font-size: 12px;
@@ -933,7 +936,7 @@ body {
   margin-right: 0; }
 
 .site-feed-list .subscriptions ul.article.read, .site-feed-list .subscriptions ul.article:hover {
-  background-color: lime; }
+  background-color: #F2F2F2; }
 
 .site-feed-list .site-feed-header {
   display: flex;
