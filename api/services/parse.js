@@ -10,9 +10,8 @@
 function fetch(feedUrl, callback) {
 
     const request = require('request'),
-        FeedParser = require('feedparser'),
-        iconv = require('iconv-lite')
-
+        FeedParser = require('feedparser')
+        
     // define our streams
     let req = request(feedUrl, {
         timeout: 10000,
@@ -59,6 +58,7 @@ function fetch(feedUrl, callback) {
 }
 
 function maybeTranslate(res, charset) {
+    const iconv = require('iconv-lite')
 
     // use iconv if its not utf8 already.
     if (charset && !/utf-*8/i.test(charset)) {
