@@ -1,4 +1,4 @@
-![Winds - An Open Source Personalized RSS Reader](https://github.com/GetStream/Winds/raw/master/screenshots/ss-0.png "Winds - An Open Source Personalized RSS Reader"
+![Winds - An Open Source Personalized RSS Reader](https://github.com/GetStream/Winds/raw/master/screenshots/ss-0.png "Winds - An Open Source Personalized RSS Reader")
 
 # Winds - An Open Source Personalized RSS Reader
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
@@ -64,7 +64,7 @@ API_BASE_URL = 'http://localhost:1337'
 
 **Stream**
 
-Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. Get started at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials
+Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. Get started at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials. While you're in the dashboard you'll also want to create a flat feed group called "rss_feed".
 
 **Email**
 
