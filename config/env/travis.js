@@ -6,5 +6,8 @@ module.exports = {
     models: {
         connection: 'localTestDiskDb',
         migrate: 'safe'
+    },
+    sentry: {
+        active: false
     }
 }
