@@ -114,7 +114,7 @@ The API is located in `/api`. It uses [Sails](http://sailsjs.org/), so their [do
 
 **Design**
 
-The [Sketch File](https://www.sketchapp.com/) files are available in the `/sketch` directory.
+The [Sketch File](https://www.sketchapp.com/) files are available for [download via Invision](https://invis.io/a/ZA9KFVTRPFX95).
 
 ### Ideas for Improvements
 
