@@ -108,7 +108,7 @@ class Articles extends Component {
                 this.props.dispatch(ArticleActions.load(this.state.page))
                     .then(() => this.setState({ appending: false, }))
             }
-        }, 200)
+        }, 150)
     }
 
     componentDidMount() {
