@@ -243,7 +243,6 @@ function getMetaInformation(articleUrl, callback) {
 
             } catch(e) {
                 // common errors include exceeding the max call stack
-                sails.sentry.captureMessage(e)
                 return callback(e)
             }
 

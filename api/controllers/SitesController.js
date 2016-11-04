@@ -46,7 +46,6 @@ module.exports = {
             }).exec(function(err, site) {
 
                 if (err) {
-                    sails.sentry.captureMessage(err)
                     return res.badRequest('Sorry, failed to add the RSS feed.')
                 }
 
