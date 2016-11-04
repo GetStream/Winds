@@ -13,6 +13,7 @@ module.exports = {
             userId = req.user.id
 
         if (!feedId) return res.badRequest('Missing feed id')
+        if (!userId) return res.badRequest('Missing userId')
 
         async.parallel([
 
@@ -50,14 +51,16 @@ module.exports = {
 
         let topicsToFollow   = req.param('follow'),
             topicsToUnfollow = req.param('unfollow'),
-            user             = req.user.id
+            userId             = req.user.id
+
+        if (!userId) return res.badRequest('Missing userId')
 
         async.parallel([
             callback => {
-                FollowService.followTopics(user, topicsToFollow, callback)
+                FollowService.followTopics(userId, topicsToFollow, callback)
             },
             callback => {
-                FollowService.unfollowTopics(user, topicsToUnfollow, callback)
+                FollowService.unfollowTopics(userId, topicsToUnfollow, callback)
             }
         ], function(err, results) {
 
@@ -76,11 +79,12 @@ module.exports = {
 
         const url = require('url')
 
-        let user = req.user.id,
-            filter = { user: user },
+        let userId = req.user.id,
+            filter = { user: userId },
             type = req.param('type')
 
         if (type) filter.type = type
+        if (!userId) return res.badRequest('Missing userId')
 
         sails.models.follows.find(filter).populate(['feed', 'topic']).exec(function(err, follows) {
 
