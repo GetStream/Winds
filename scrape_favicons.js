@@ -3,7 +3,7 @@ var Sails     = require('sails').Sails,
     striptags = require('striptags'),
     moment    = require('moment'),
     request = require('request'),
-    async     = require("async"),
+    async     = require('async'),
     cheerio   = require('cheerio')
 
 var argv = require('yargs')
@@ -68,9 +68,12 @@ app.load({
  })
 
 function scrapeFavicon(site, callback) {
+
     let normalize   = require('normalize-url')
     let url = normalize(site.siteUrl)
+
     sails.log.info('processing site', url, site.id)
+
     ScrapingService.getMetaInformation(url, function(err, client) {
 
         if (err) {
@@ -122,26 +125,31 @@ function scrapeFavicon(site, callback) {
             maybeUpdateFavicon(client)
         }
 
-
     })
+
 }
 
 // query the feed table for feeds we need to scrape
 function scrapeFavicons(err, sites) {
+
      sails.log.info(`Found ${sites.length} sites we need to scrape`)
 
      if (err) sails.log.warn(err)
      if (!sites) sails.log.verbose('No feeds to scrape.')
 
-     // iterate through feeds
      async.mapLimit(sites, argv.c, scrapeFavicon, function(err, articles){
+
          if (err) {
              sails.log.error('scraping sites failed', err)
          }
-         sails.log.info(`completed scraping for ${sites.length} sites`)
+
+         sails.log.info(`Completed scraping for ${sites.length} sites`)
+
          if (!argv.l) {
-            sails.log.info('exiting... bye bye')
+            sails.log.info('Exiting... bye bye')
             process.exit(0)
          }
+
      })
+
 }
