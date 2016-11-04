@@ -59,7 +59,6 @@ module.exports = {
                     .exec(function(err, feed) {
 
                         if (err) {
-                            sails.sentry.captureMessage(err)
                             return res.badRequest('Sorry, failed to add the RSS feed.')
                         }
 
@@ -70,14 +69,12 @@ module.exports = {
                         }).exec(function(err, follow) {
 
                             if (err) {
-                                sails.sentry.captureMessage(err)
                                 return res.badRequest('Sorry, failed to add the RSS feed.')
                             }
 
                             ScrapingService.scrapeFeed(feed, 20, function(err, articles) {
 
                                 if (err) {
-                                    sails.sentry.captureMessage(err)
                                     return res.badRequest(`Something went wrong while scraping: ${feed.feedUrl}`)
                                 }
 
@@ -93,6 +90,7 @@ module.exports = {
                         })
 
                     })
+                    
             })
 
         })

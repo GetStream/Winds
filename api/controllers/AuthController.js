@@ -33,10 +33,7 @@ module.exports = {
             bcrypt.compare(password, user.password, function(err, validPassword) {
 
                 if (err || !validPassword) {
-
-                    sails.sentry.captureMessage(err)
                     return res.badRequest('Failed to login. Invalid password.')
-
                 }
 
                 async.parallel([
