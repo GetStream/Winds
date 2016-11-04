@@ -88,7 +88,6 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
          ScrapingService.scrapeFeed(feed, numberOfActivities, function(err, response) {
 
              if (err) {
-                sails.sentry.captureMessage(err)
                 feed.scrapingErrors = feed.scrapingErrors + 100
              }
 
@@ -101,10 +100,6 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
      // iterate through feeds
      async.mapLimit(feeds, concurrency, scrapeFeedBound, function(err, articles) {
 
-         if (err) {
-            sails.sentry.captureMessage(err)
-         }
-
          sails.log.info(`Completed scraping for ${feeds.length} feeds`)
          feeds.forEach(function(feed) {
              if (feed.scrapingErrors > 0) {
@@ -116,6 +111,6 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
             sails.log.info('exiting... bye bye')
             process.exit(0)
          }
-        
+
      })
 }

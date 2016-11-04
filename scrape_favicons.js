@@ -74,7 +74,6 @@ function scrapeFavicon(site, callback) {
     ScrapingService.getMetaInformation(url, function(err, client) {
 
         if (err) {
-            sails.sentry.captureMessage(err)
             callback(null, null)
             return
         }
