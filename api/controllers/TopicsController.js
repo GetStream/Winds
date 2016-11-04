@@ -30,7 +30,6 @@ module.exports = {
         }], function(err, results) {
 
             if (err) {
-                sails.sentry.captureMessage(err)
                 return res.serverError('Failed to read topics.')
             }
 

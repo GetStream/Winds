@@ -20,8 +20,8 @@ module.exports = {
         sails.models.users.update({ id: req.user.id }, { password: password }).exec(function(err, result) {
 
             if (err) {
-                sails.sentry.captureMessage(err);
-                return res.badRequest('Password update failed.');
+                sails.sentry.captureMessage(err)
+                return res.badRequest('Password update failed.')
             }
 
             return res.ok(req.user.toJSON())

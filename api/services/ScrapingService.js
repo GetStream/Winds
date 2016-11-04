@@ -23,7 +23,6 @@ function scrapeFeed(feed, numberOfActivities, callback) {
     parse.fetch(feed.feedUrl, function(err, meta, articles) {
 
         if (err) {
-            sails.sentry.captureMessage(err)
             return callback(err, null)
         }
 
@@ -39,10 +38,6 @@ function scrapeFeed(feed, numberOfActivities, callback) {
         // iterate through articles and enrich
         async.map(articles, enrichArticle, function(err, enrichedArticles) {
 
-            if (err) {
-                sails.sentry.captureMessage(err)
-            }
-
             // iterate through enrichedArticles and store
             async.map(enrichedArticles, storeArticleBound, function(err, articleActivities) {
 
@@ -54,10 +49,6 @@ function scrapeFeed(feed, numberOfActivities, callback) {
                 }, {
                     lastScraped: now
                 }).exec(function(err, updatedFeed) {
-
-                    if (err) {
-                        sails.sentry.captureMessage(err)
-                    }
 
                     sails.log.info(`updated:${updatedFeed} last scraped at to ${now}`)
                     callback(null, articleActivities)
@@ -77,12 +68,16 @@ function enrichArticle(article, callback) {
         feed = article.feedObject
 
     if (feed.feedUrl.indexOf('designernews') != -1) {
+
         if (validator.isURL(article.summary)) {
             url = article.summary
         } else {
             // default image for text posts
-            article.image = {url: 'http://67.media.tumblr.com/5a535d0f4218df35a83525fc40bf521f/tumblr_inline_mufumquS5g1r0v0xk.png'}
+            article.image = {
+                url: 'http://67.media.tumblr.com/5a535d0f4218df35a83525fc40bf521f/tumblr_inline_mufumquS5g1r0v0xk.png'
+            }
         }
+
     }
 
     if (!url) {
@@ -95,7 +90,6 @@ function enrichArticle(article, callback) {
 
         // Don't use the article if we can't get meta information
         if (err) {
-            sails.sentry.captureMessage(err)
             return callback(null, null)
         }
 
@@ -109,23 +103,30 @@ function enrichArticle(article, callback) {
 
         // extract image from summary if we don't have one
         if (!article.imageSrc) {
+
             if (article.summary) {
+
                 try {
+
                     let $ = cheerio.load(article.description),
                         img = $('img')
+
                     let descriptionImage = img.attr('src'),
-                        width = img.attr('width'),
-                        height = img.attr('height')
+                                   width = img.attr('width'),
+                                  height = img.attr('height')
+
                     if ((width && width.replace('px', '') == '1') || (height && height.replace('px', '') == 1)) {
-                        // invalid image
-                        sails.log.info('found an invalid image')
+                        sails.log.info('Found an invalid image')
                     } else {
                         article.imageSrc = makeUrlAbsolute(article.link, descriptionImage)
                     }
+
                 } catch (e) {
                     sails.sentry.captureMessage(e)
                 }
+
             }
+
         }
 
         // feed specific logic
