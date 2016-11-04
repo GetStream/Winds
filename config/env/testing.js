@@ -5,5 +5,5 @@ module.exports = {
     csrf: false,
     sentry: {
         active: false
-    }
+    },
 }

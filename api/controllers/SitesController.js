@@ -21,7 +21,6 @@ module.exports = {
         DiscoverService.findRSS(humanizedUrl, function(err, url, feedUrl, rssMeta) {
 
             if (err) {
-                sails.sentry.captureMessage(err)
                 return res.badRequest('Sorry, we could not figure out which url you\'re looking for.')
             }
 
