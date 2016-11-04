@@ -76,7 +76,8 @@ class AddFeedDialog extends Component {
                                 <div className="url-container">
                                     <input
                                         id="url-input"
-                                        type="text"
+                                        type="url"
+                                        title="Please enter a valid site or feed URL"
                                         ref="url"
                                         className="url"
                                         pattern="(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?"
