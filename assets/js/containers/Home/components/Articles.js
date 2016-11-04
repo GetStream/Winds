@@ -9,18 +9,18 @@ import Truncate from 'components/Truncate'
 
 import Waypoint from 'react-waypoint'
 
-import * as ArticleActions from 'actions/Articles'
+import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
 
 @connect()
 class Article extends Component {
 
     trackEngagement = e => this.props.dispatch(
-        ArticleActions.engage(this.props.object.id, (this.props.index + 7))
+        FeedActions.engage(this.props.object.id, (this.props.index + 7))
     )
 
     trackImpression = () => this.props.dispatch(
-        ArticleActions.impression(this.props.object.id)
+        FeedActions.impression(this.props.object.id)
     )
 
     handleClick = () => this.props.dispatch(
@@ -76,7 +76,7 @@ class Article extends Component {
 
 }
 
-@connect(state => ({ articles: state.Articles, }))
+@connect(state => ({ feeds: state.Feeds, }))
 class Articles extends Component {
 
     state = {
@@ -106,9 +106,10 @@ class Articles extends Component {
 
             if (offset > (height - 100)) {
                 this.setState({ appending: true, page: this.state.page + 1, })
-                this.props.dispatch(ArticleActions.load(this.state.page))
+                this.props.dispatch(FeedActions.load(this.state.page))
                     .then(() => this.setState({ appending: false, }))
             }
+
         }, 150)
     }
 
@@ -123,8 +124,8 @@ class Articles extends Component {
     render() {
         return (
             <div className="articles">
-                {this.props.articles.slice(7).map((article, index) =>
-                    <Article {...article} index={index} key={`article-${article.object.id}`} />
+                {this.props.feeds.slice(7).map((feed, index) =>
+                    <Article {...feed} index={index} key={`article-${feed.object.id}`} />
                 )}
                 {this.state.appending ? <div className="appending-loader">
                     <svg width="35px" height="35px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="uil-ring">
