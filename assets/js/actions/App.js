@@ -19,9 +19,7 @@ export const init = () => dispatch => dispatch(Topics.load())
                 ]).then(data => Promise.resolve([...data])), err => {
                     return Promise.reject(err)
                 })
-    ).catch(err => {
-        Promise.reject(err)
-    })
+    ).catch(err => Promise.reject(err))
 
 export const reload = () => dispatch => {
     return Promise.all([

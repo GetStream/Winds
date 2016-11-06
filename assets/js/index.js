@@ -59,27 +59,23 @@ const isReady = (nextState, replace, callback) => {
     })
 }
 
-new Promise(() => {
-
-    const renderApp = () =>
-        render((
-            <Provider store={store}>
-                <Router history={history}>
-                    <Route path="/app/getting-started" component={GetStarted} onEnter={isReady} />
-                    <Route path="/app" component={App} onEnter={isReady}>
-                        <Route path="personalization-feed" component={Home}/>
-                        <Route path="subscriptions" component={Subscriptions}>
-                            <IndexRoute component={SubscriptionLanding} />
-                            <Route path=":id" component={SubscriptionFeed} />
-                        </Route>
+const renderApp = () =>
+    render((
+        <Provider store={store}>
+            <Router history={history}>
+                <Route path="/app/getting-started" component={GetStarted} onEnter={isReady} />
+                <Route path="/app" component={App} onEnter={isReady}>
+                    <Route path="personalization-feed" component={Home}/>
+                    <Route path="subscriptions" component={Subscriptions}>
+                        <IndexRoute component={SubscriptionLanding} />
+                        <Route path=":id" component={SubscriptionFeed} />
                     </Route>
-                </Router>
-            </Provider>
-        ), document.getElementById('root'))
+                </Route>
+            </Router>
+        </Provider>
+    ), document.getElementById('root'))
 
-    loading.then(
-        () => renderApp(),
-        () => renderApp()
-    )
-
-}).catch(e => console.warn('err:', e))
+loading.then(
+    () => renderApp(),
+    () => renderApp()
+)
