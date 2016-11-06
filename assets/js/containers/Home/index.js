@@ -29,10 +29,6 @@ class Home extends Component {
             .then(() => this.setState({ loading: false, }))
     }
 
-    handleClick = () => this.props.dispatch(
-        PersonalizationActions.getStats()
-    )
-
     handleImgLoad = (src, id, err) => {
 
         if (err) {
