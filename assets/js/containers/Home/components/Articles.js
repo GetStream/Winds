@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
 import Hostname from 'components/Hostname'
 import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
 import Truncate from 'components/Truncate'
+import Image from 'components/Image'
 
 import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
@@ -32,9 +35,10 @@ class Article extends Component {
                         data-id={this.props.object.id}
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
-                        <div
+                        <Image src={this.props.object.imageSrc} />
+                        {/* <div
                             className="image"
-                            style={{ backgroundImage: `url('${!this.props.object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.object.imageSrc }')`}} />
+                            style={{ backgroundImage: `url('${!this.props.object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.object.imageSrc }')`}} /> */}
                     </a>
                     <h2>
                         <a
@@ -95,13 +99,13 @@ class Articles extends Component {
             const offset = document.body.scrollTop + window.innerHeight,
                   height = document.body.offsetHeight
 
-            if (offset > (height - 100)) {
+            if (offset > (height - 500)) {
                 this.setState({ appending: true, page: this.state.page + 1, })
                 this.props.dispatch(FeedActions.load(this.state.page))
                     .then(() => this.setState({ appending: false, }))
             }
 
-        }, 150)
+        }, 100)
     }
 
     componentDidMount() {
@@ -114,10 +118,18 @@ class Articles extends Component {
 
     render() {
         return (
-            <div className="articles">
-                {this.props.feeds.slice(7).map((feed, index) =>
-                    <Article {...feed} index={index} key={`article-${feed.object.id}`} />
-                )}
+            <div>
+                <ReactCSSTransitionGroup
+                    transitionName="feed"
+                    component="div"
+                    className="articles"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}>
+                    {this.props.feeds.slice(7).map((feed, index) =>
+                        <Article {...feed} index={index} key={`article-${feed.object.id}`} />
+                    )}
+                </ReactCSSTransitionGroup>
+
                 {this.state.appending ? <div className="appending-loader">
                     <svg width="35px" height="35px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="uil-ring">
                         <rect x="0" y="0" width="100" height="100" fill="none" className="bk"></rect>

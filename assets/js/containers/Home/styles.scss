@@ -239,13 +239,17 @@
 
 }
 
+.appending-loader {
+    position: fixed;
+    bottom: 55px;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    svg { margin: auto; }
+}
+
 .articles {
-
-    .appending-loader {
-        position: fixed;
-        bottom: 55px;
-    }
-
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: row;
@@ -320,4 +324,23 @@
         }
 
     }
+}
+
+
+.feed-enter {
+    opacity: 0.01;
+}
+
+.feed-enter.feed-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+}
+
+.feed-leave {
+    opacity: 1;
+}
+
+.feed-leave.feed-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
 }

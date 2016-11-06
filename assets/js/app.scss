@@ -22,3 +22,21 @@ body {
     left: 50%;
     top: 25%;
 }
+
+.page-enter {
+    opacity: 0.01;
+}
+
+.page-enter.page-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+}
+
+.page-leave {
+    opacity: 1;
+}
+
+.page-leave.page-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+}

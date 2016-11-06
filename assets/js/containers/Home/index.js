@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
 import moment from 'moment'
 import normalizeUrl from 'normalize-url'
-import Hostname from '../../components/Hostname'
+import Hostname from 'components/Hostname'
 import StripEntities from 'components/StripEntities'
-import Summary from '../../components/Summary'
+import Summary from 'components/Summary'
+import Image from 'components/Image'
 
-import Personalization from '../../components/Personalization'
+import Personalization from 'components/Personalization'
 import Articles from 'containers/Home/components/Articles'
 
 import * as FeedActions from 'actions/Feeds'
@@ -16,17 +19,12 @@ import * as PersonalizationActions from 'actions/Personalization'
 @connect(state => ({ feeds: state.Feeds, sidebar: state.Sidebar, }))
 class Home extends Component {
 
-    state = {
-        loading: true,
-    }
-
     trackEngagement = (id, index) => this.props.dispatch(
         FeedActions.engage(id, index)
     )
 
     componentWillMount() {
         this.props.dispatch(FeedActions.load())
-            .then(() => this.setState({ loading: false, }))
     }
 
     componentWillReceiveProps(props) {
@@ -34,27 +32,7 @@ class Home extends Component {
         if (props.sidebar != this.props.sidebar && !props.sidebar) {
             dispatch(FeedActions.clear())
             dispatch(FeedActions.load())
-                .then(() => this.setState({ loading: false, }))
         }
-    }
-
-    handleImgLoad = (src, id, err) => {
-
-        if (err) {
-            return document.getElementById(id).style.backgroundImage = 'url("http://i.imgur.com/GPfS63U.png")'
-        }
-
-        if (!err) {
-
-            let img = new Image()
-                img.src = src
-
-            if (img.naturalWidth <= 10 || img.naturalHeight <= 10) {
-                document.getElementById(id).style.backgroundImage = 'url("http://i.imgur.com/GPfS63U.png")'
-            }
-
-        }
-
     }
 
     render() {
@@ -79,17 +57,7 @@ class Home extends Component {
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 margin-btm" onClick={() => this.trackEngagement(this.props.feeds[0].object.id, 0)}>
                                 <a href={this.props.feeds[0].object.articleUrl} target="_blank">
-                                    <img
-                                        src={this.props.feeds[0].object.imageSrc}
-                                        style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.feeds[0].object.imageSrc, this.props.feeds[0].object.id)}
-                                        onError={() => this.handleImgLoad(this.props.feeds[0].object.imageSrc, this.props.feeds[0].object.id, true)} />
-                                    <div className="b2"
-                                        style={{
-                                            'backgroundImage': `url(${!this.props.feeds[0].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.feeds[0].object.imageSrc})`,
-                                        }}
-                                        id={this.props.feeds[0].object.id}
-                                    />
+                                    <Image className="b2" src={this.props.feeds[0].object.imageSrc} />
                                 </a>
                                 <div className="meta">
                                     <h2>
@@ -108,17 +76,7 @@ class Home extends Component {
                             </div>
                             <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[1].object.id, 1)}>
                                 <a href={this.props.feeds[1].object.articleUrl} target="_blank">
-                                    <img
-                                        src={this.props.feeds[1].object.imageSrc}
-                                        style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.feeds[1].object.imageSrc, this.props.feeds[1].object.id)}
-                                        onError={() => this.handleImgLoad(this.props.feeds[1].object.imageSrc, this.props.feeds[1].object.id, true)} />
-                                    <div className="b3"
-                                        style={{
-                                            'backgroundImage': `url(${!this.props.feeds[1].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.feeds[1].object.imageSrc})`,
-                                        }}
-                                        id={this.props.feeds[1].object.id}
-                                    />
+                                    <Image className="b3" src={this.props.feeds[1].object.imageSrc} />
                                 </a>
                                 <div className="meta">
                                     <h3>
@@ -140,17 +98,7 @@ class Home extends Component {
                         <div className="row row-2">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[2].object.id, 2)}>
                                 <a href={this.props.feeds[2].object.articleUrl} target="_blank">
-                                    <img
-                                        src={this.props.feeds[2].object.imageSrc}
-                                        style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.feeds[2].object.imageSrc, this.props.feeds[2].object.id)}
-                                        onError={() => this.handleImgLoad(this.props.feeds[2].object.imageSrc, this.props.feeds[2].object.id, true)} />
-                                    <div className="b4"
-                                        style={{
-                                            'backgroundImage': `url(${!this.props.feeds[2].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.feeds[2].object.imageSrc})`,
-                                        }}
-                                        id={this.props.feeds[2].object.id}
-                                    />
+                                    <Image className="b4" src={this.props.feeds[2].object.imageSrc} />
                                 </a>
                                 <div className="meta">
                                     <h2>
@@ -169,17 +117,7 @@ class Home extends Component {
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[3].object.id, 3)}>
                                 <a href={this.props.feeds[3].object.articleUrl} target="_blank">
-                                    <img
-                                        src={this.props.feeds[3].object.imageSrc}
-                                        style={{ display: 'none' }}
-                                        onLoad={() => this.handleImgLoad(this.props.feeds[3].object.imageSrc, this.props.feeds[3].object.id)}
-                                        onError={() => this.handleImgLoad(this.props.feeds[3].object.imageSrc, this.props.feeds[3].object.id, true)} />
-                                    <div className="b5"
-                                        style={{
-                                            'backgroundImage': `url(${!this.props.feeds[3].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.feeds[3].object.imageSrc})`,
-                                        }}
-                                        id={this.props.feeds[3].object.id}
-                                    />
+                                    <Image className="b5" src={this.props.feeds[3].object.imageSrc} />
                                 </a>
                                 <div className="meta">
                                     <h2>
@@ -202,12 +140,7 @@ class Home extends Component {
                                 className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12"
                                 onClick={() => this.trackEngagement(this.props.feeds[4].object.id, 4)}>
                                 <a href={this.props.feeds[4].object.articleUrl} target="_blank">
-                                    <div className="b7"
-                                        style={{
-                                            'backgroundImage': `url(${!this.props.feeds[4].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.feeds[4].object.imageSrc})`,
-                                        }}
-                                        id={this.props.feeds[4].object.id}
-                                    />
+                                    <Image className="b7" src={this.props.feeds[4].object.imageSrc} />
                                 </a>
                                 <div className="meta">
                                     <h3>
@@ -227,17 +160,7 @@ class Home extends Component {
                                 </div>
                                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[5].object.id, 5)}>
                                     <a href={this.props.feeds[5].object.articleUrl} target="_blank">
-                                        <img
-                                            src={this.props.feeds[5].object.imageSrc}
-                                            style={{ display: 'none' }}
-                                            onLoad={() => this.handleImgLoad(this.props.feeds[5].object.imageSrc, this.props.feeds[5].object.id)}
-                                            onError={() => this.handleImgLoad(this.props.feeds[5].object.imageSrc, this.props.feeds[5].object.id, true)} />
-                                        <div className="b6"
-                                            style={{
-                                                'backgroundImage': `url(${!this.props.feeds[5].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.feeds[5].object.imageSrc})`,
-                                            }}
-                                            id={this.props.feeds[5].object.id}
-                                        />
+                                        <Image className="b6" src={this.props.feeds[5].object.imageSrc} />
                                     </a>
                                     <div className="meta">
                                         <h2>
@@ -258,17 +181,7 @@ class Home extends Component {
                                 className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12"
                                 onClick={() => this.trackEngagement(this.props.feeds[6].object.id, 6)}>
                             <a href={this.props.feeds[6].object.articleUrl} target="_blank">
-                                <img
-                                    src={this.props.feeds[6].object.imageSrc}
-                                    style={{ display: 'none' }}
-                                    onLoad={() => this.handleImgLoad(this.props.feeds[6].object.imageSrc, this.props.feeds[6].object.id)}
-                                    onError={() => this.handleImgLoad(this.props.feeds[6].object.imageSrc, this.props.feeds[6].object.id, true)} />
-                                <div className="b8"
-                                    style={{
-                                        'backgroundImage': `url(${!this.props.feeds[6].object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.feeds[6].object.imageSrc})`,
-                                    }}
-                                    id={this.props.feeds[6].object.id}
-                                />
+                                <Image className="b8" src={this.props.feeds[6].object.imageSrc} />
                             </a>
                             <div className="meta">
                                 <h3>
