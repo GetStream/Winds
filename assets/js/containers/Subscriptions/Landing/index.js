@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import moment from 'moment'
-import Waypoint from 'react-waypoint'
 
 import Truncate from 'components/Truncate'
 import Subscription from 'containers/Subscriptions/components/Subscription'
@@ -16,6 +15,12 @@ class Subscriptions extends Component {
 
     state = {
         appending: false,
+        loading: true,
+    }
+
+    componentWillMount() {
+        this.props.dispatch(SubscriptionActions.load())
+            .then(() => this.setState({ loading: false, }))
     }
 
     componentDidMount() {

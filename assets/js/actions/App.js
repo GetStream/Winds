@@ -1,6 +1,4 @@
 import * as User from 'actions/User'
-import * as Feeds from 'actions/Feeds'
-import * as Subscriptions from 'actions/Subscriptions'
 import * as Learning from 'actions/Learning'
 import * as Topics from 'actions/Topics'
 import * as Sites from 'actions/Sites'
@@ -16,8 +14,6 @@ export const init = () => dispatch => dispatch(Topics.load())
     .then(() =>
         dispatch(User.me())
             .then(userRes => Promise.all([
-                    dispatch(Feeds.load()),
-                    dispatch(Subscriptions.load()),
                     dispatch(Sites.load()),
                     dispatch(Personalization.getStats()),
                 ]).then(data => Promise.resolve([...data])), err => {
@@ -29,8 +25,6 @@ export const init = () => dispatch => dispatch(Topics.load())
 
 export const reload = () => dispatch => {
     return Promise.all([
-        dispatch(Feeds.load()),
-        dispatch(Subscriptions.load()),
         dispatch(Sites.load()),
         dispatch(Personalization.getStats()),
     ]).then(() => dispatch(

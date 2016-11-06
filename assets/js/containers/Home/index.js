@@ -16,9 +16,18 @@ import * as PersonalizationActions from 'actions/Personalization'
 @connect(state => ({ feeds: state.Feeds, }))
 class Home extends Component {
 
+    state = {
+        loading: true,
+    }
+
     trackEngagement = (id, index) => this.props.dispatch(
         FeedActions.engage(id, index)
     )
+
+    componentWillMount() {
+        this.props.dispatch(FeedActions.load())
+            .then(() => this.setState({ loading: false, }))
+    }
 
     handleClick = () => this.props.dispatch(
         PersonalizationActions.getStats()
