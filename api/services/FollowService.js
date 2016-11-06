@@ -114,8 +114,13 @@ module.exports = {
             // unfollow the feeds in our database as well as Stream
             async.parallel([
                 callback => {
+                    if (!toRemove.length) {
+                        // skip
+                        callback(null, null)
+                    }
                     sails.models.follows.destroy({
                         feed: toRemove,
+                        user: userId,
                         type: 'feed'
                     }).exec((err, results) => {
                         callback(err, results)
