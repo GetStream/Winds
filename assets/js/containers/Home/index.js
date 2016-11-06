@@ -13,7 +13,7 @@ import Articles from 'containers/Home/components/Articles'
 import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
 
-@connect(state => ({ feeds: state.Feeds, }))
+@connect(state => ({ feeds: state.Feeds, sidebar: state.Sidebar, }))
 class Home extends Component {
 
     state = {
@@ -27,6 +27,15 @@ class Home extends Component {
     componentWillMount() {
         this.props.dispatch(FeedActions.load())
             .then(() => this.setState({ loading: false, }))
+    }
+
+    componentWillReceiveProps(props) {
+        const { dispatch } = this.props
+        if (props.sidebar != this.props.sidebar && !props.sidebar) {
+            dispatch(FeedActions.clear())
+            dispatch(FeedActions.load())
+                .then(() => this.setState({ loading: false, }))
+        }
     }
 
     handleImgLoad = (src, id, err) => {
