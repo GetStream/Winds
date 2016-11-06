@@ -15,7 +15,7 @@ class ImageComponent extends Component {
     }
 
     handleLoad = () => {
-        if (this.i.width <= 10 && this.i.height <= 10) return
+        if (this.i.width <= 10 || this.i.height <= 10) return
         this.setState({ image: this.i, loading: false, })
     }
 
@@ -56,6 +56,8 @@ class ImageComponent extends Component {
             ...props
         } = this.props
 
+        console.log(this.props.src, !this.state.image ? 'not loaded' : this.state.image.src)
+
         return (
             <ReactCSSTransitionGroup
                 component="div"
@@ -65,8 +67,8 @@ class ImageComponent extends Component {
                 transitionEnterTimeout={300}
                 transitionLeaveTimeout={300}>
             {!this.state.loading && this.state.image
-                ? <div className="inner-image" style={{ backgroundImage: `url(${this.state.image.src})`}} key="image" />
-                : <div className="inner-image" style={{ backgroundImage: `url(${this.props.placeholder})`}} key="placeholder" />}
+                ? <div className="inner-image" style={{ backgroundImage: `url("${this.state.image.src}")`}} key="image" />
+                : <div className="inner-image" style={{ backgroundImage: `url("${this.props.placeholder})"`}} key="placeholder" />}
             </ReactCSSTransitionGroup>
         )
     }
