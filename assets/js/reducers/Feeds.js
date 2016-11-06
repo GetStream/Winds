@@ -6,7 +6,10 @@ function Feeds(state = [], action) {
     switch (action.type) {
 
         case FeedActions.LOAD:
-            if (action.response) return [...action.response ]
+            if (action.response) {
+                return ([...state, ...action.response.results]).filter((item, index, arr) =>
+                    arr.map(s => s.object.id).indexOf(item.object.id) == index)
+            }
             return state
 
         case FeedActions.ADD:
@@ -14,6 +17,7 @@ function Feeds(state = [], action) {
             return {...state }
 
         case UserActions.LOGOUT:
+        case FeedActions.CLEAR:
             return []
 
     }

@@ -163,3 +163,25 @@
     }
 
 }
+
+.subscriptions-enter {
+    opacity: 0.01;
+    transform: translateY(50%);
+}
+
+.subscriptions-enter.subscriptions-enter-active {
+    opacity: 1;
+    transform: translateY(0%);
+    transition: all 300ms ease-in;
+}
+
+.subscriptions-leave {
+    opacity: 1;
+    transform: translateY(0%);
+}
+
+.subscriptions-leave.subscriptions-leave-active {
+    opacity: 0.01;
+    transform: translateY(50%);
+    transition: all 300ms ease-in;
+}

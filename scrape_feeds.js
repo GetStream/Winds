@@ -48,11 +48,13 @@ app.load({
 
     sails.log.info('About to start scraping process')
 
-    var numberOfActivities = argv.a || 20
-    var concurrency = argv.c || 10
+    let numberOfActivities = argv.a || 20,
+        concurrency = argv.c || 10
+
     function scrapeFeedsBound(err, feeds) {
         scrapeFeeds(err, feeds, numberOfActivities, concurrency)
     }
+
     sails.log.info(`going to scrape ${numberOfActivities} activities per feed`)
 
     if (argv.q) {
@@ -75,42 +77,49 @@ app.load({
                 ]
             }).exec(scrapeFeedsBound)
     }
+
  })
 
 // query the feed table for feeds we need to scrape
 function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
+
      sails.log.info(`Found ${feeds.length} feeds we need to scrape`)
 
      if (err) sails.log.warn(err)
      if (!feeds) sails.log.verbose('No feeds to scrape.')
 
      function scrapeFeedBound(feed, callback) {
+
          ScrapingService.scrapeFeed(feed, numberOfActivities, function(err, response) {
 
              if (err) {
                 feed.scrapingErrors = feed.scrapingErrors + 100
              }
 
-             // never break the scraping loop, dont propagate errors
              return callback(null, response)
 
          })
+
      }
 
      // iterate through feeds
      async.mapLimit(feeds, concurrency, scrapeFeedBound, function(err, articles) {
 
          sails.log.info(`Completed scraping for ${feeds.length} feeds`)
+         
          feeds.forEach(function(feed) {
+
              if (feed.scrapingErrors > 0) {
-                 sails.log.warn(`encountered ${feed.scrapingErrors} errors for feed`, feed.feedUrl)
+                 sails.log.warn(`Encountered ${feed.scrapingErrors} errors for feed`, feed.feedUrl)
              }
+
          })
 
          if (!argv.l) {
-            sails.log.info('exiting... bye bye')
+            sails.log.info('Exiting... bye bye')
             process.exit(0)
          }
 
      })
+
 }

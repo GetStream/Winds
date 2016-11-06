@@ -1,18 +1,25 @@
+import * as PersonalizationActions from 'actions/Personalization'
+
 export const LOAD = 'SUBSCRIPTIONS_LOAD'
-export const load = (id_lt = null, limit = 20, sort = 'createdAt DESC') => ({
-    type: LOAD,
+export const load = (id_lt = null, limit = 25, sort = 'createdAt DESC') => dispatch => {
+    return dispatch({
+        type: LOAD,
 
-    data: {
-        limit,
-        id_lt,
-        sort,
-    },
+        data: {
+            limit,
+            id_lt,
+            sort,
+        },
 
-    sync: {
-        method: 'GET',
-        url: '/api/stream/chronological',
-    }
-})
+        sync: {
+            method: 'GET',
+            url: '/api/stream/chronological',
+        }
+    }).then(res => {
+        dispatch(impression(res.response.results.map(r => r.object.id)))
+        return Promise.resolve(res)
+    }).then(() => dispatch(PersonalizationActions.getStats()))
+}
 
 export const CLEAR = 'SUBSCRIPTIONS_CLEAR'
 export const clear = () => ({
@@ -58,19 +65,19 @@ export const engage = (id, index) => dispatch => {
 }
 
 export const IMPRESSION = 'SUBSCRIPTION_IMPRESSION'
-export const impression = id => (dispatch, getState) => {
+export const impression = ids => (dispatch, getState) => {
 
     const userID = getState().User.id
 
     client.trackImpression({
-        content_list: [`articles:${id}`],
+        content_list: ids.map(id => `articles:${id}`),
         feed_id: `timeline:${userID}`,
         location: 'subscriptions',
     })
 
     return dispatch({
         type: IMPRESSION,
-        data: { id, userID, }
+        data: { id: ids.map(id => id), userID, }
     })
-    
+
 }

@@ -6,12 +6,6 @@ export const open = () => ({
 })
 
 export const CLOSE = 'SIDEBAR_CLOSE'
-export const close = () => dispatch => {
-
-    return dispatch({
+export const close = () => ({
         type: CLOSE,
-    }).then(() => {
-        dispatch(AppActions.reload())
-    })
-
-}
+})

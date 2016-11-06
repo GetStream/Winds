@@ -4,6 +4,8 @@ import { browserHistory, Link, withRouter } from 'react-router'
 
 require('./app.scss')
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
 import Header from 'components/Header'
 import Footer from 'components/Footer'
 import Sidebar from 'components/Sidebar'
@@ -84,7 +86,15 @@ export default class App extends React.Component {
                     open={this.props.personalization.open}
                     onRequestClose={() => dispatch(PersonalizationActions.close())} />
 
-                {this.props.children}
+                <ReactCSSTransitionGroup
+                    transitionName="page"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}>
+                    {React.cloneElement(this.props.children, {
+                        key: `page-${this.props.location.pathname}`
+                    })}
+                </ReactCSSTransitionGroup>
+
 
                 <Footer />
 

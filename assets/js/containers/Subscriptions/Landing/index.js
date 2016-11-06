@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import moment from 'moment'
-import Waypoint from 'react-waypoint'
+
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Truncate from 'components/Truncate'
 import Subscription from 'containers/Subscriptions/components/Subscription'
@@ -16,6 +17,10 @@ class Subscriptions extends Component {
 
     state = {
         appending: false,
+    }
+
+    componentWillMount() {
+        this.props.dispatch(SubscriptionActions.load())
     }
 
     componentDidMount() {
@@ -50,14 +55,14 @@ class Subscriptions extends Component {
             const offset = document.body.scrollTop + window.innerHeight,
                 height = document.body.offsetHeight
 
-            if (offset > (height - 100)) {
+            if (offset > (height - 500)) {
                 const subs = this.props.subscriptions
                 const len = subs.length
                 this.setState({ appending: true, })
                 this.props.dispatch(SubscriptionActions.load(subs[len - 1].id))
                     .then(() => this.setState({ appending: false, }))
             }
-        }, 200)
+        }, 100)
 
     }
 
@@ -89,9 +94,14 @@ class Subscriptions extends Component {
                         </div>
                     </div>
                     <div className="col-lg-9 col-md-9 col-sm-12 right">
-                        {this.props.subscriptions.map((subscription, index) =>
-                            <Subscription {...subscription} index={index} key={`subscription-${subscription.id}`} />
-                        )}
+                        <ReactCSSTransitionGroup
+                            transitionName="subscriptions"
+                            transitionEnterTimeout={300}
+                            transitionLeaveTimeout={300}>
+                            {this.props.subscriptions.map((subscription, index) =>
+                                <Subscription {...subscription} index={index} key={`subscription-${subscription.id}`} />
+                            )}
+                        </ReactCSSTransitionGroup>
                         {this.state.appending ? <div className="appending-loader">
                             <svg width="35px" height="35px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="uil-ring">
                                 <rect x="0" y="0" width="100" height="100" fill="none" className="bk"></rect>

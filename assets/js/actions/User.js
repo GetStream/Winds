@@ -4,7 +4,8 @@ import * as TopicActions from 'actions/Topics'
 export const ME = 'USER_ME'
 export const me = () => dispatch => {
 
-    if (!localStorage.getItem('token')) return Promise.reject(new Error('No JWT Token'))
+    if (!localStorage.getItem('token'))
+        return Promise.reject(new Error('No JWT Token'))
 
     return dispatch({
         type: ME,

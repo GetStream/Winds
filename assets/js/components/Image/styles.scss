@@ -1,0 +1,35 @@
+.image {
+    position: relative;
+    &.loading {
+        background-color: white;
+    }
+
+    .inner-image {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+}
+
+.image-enter {
+    opacity: 0.01;
+}
+
+.image-enter.image-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+}
+
+.image-leave {
+    opacity: 1;
+}
+
+.image-leave.image-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+}

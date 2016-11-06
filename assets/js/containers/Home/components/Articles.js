@@ -2,25 +2,22 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
 import Hostname from 'components/Hostname'
 import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
 import Truncate from 'components/Truncate'
+import Image from 'components/Image'
 
-import Waypoint from 'react-waypoint'
-
-import * as ArticleActions from 'actions/Articles'
+import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
 
 @connect()
 class Article extends Component {
 
     trackEngagement = e => this.props.dispatch(
-        ArticleActions.engage(this.props.object.id, (this.props.index + 7))
-    )
-
-    trackImpression = () => this.props.dispatch(
-        ArticleActions.impression(this.props.object.id)
+        FeedActions.engage(this.props.object.id, (this.props.index + 7))
     )
 
     handleClick = () => this.props.dispatch(
@@ -32,18 +29,16 @@ class Article extends Component {
         return (
             <div className="article" onClick={this.handleClick}>
                 <div className="article-inner">
-                    <Waypoint onEnter={() => {
-                        this.trackImpression(this.props.object.id)
-                    }} />
                     <a
                         href={this.props.object.articleUrl}
                         target="_blank"
                         data-id={this.props.object.id}
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
-                        <div
+                        <Image src={this.props.object.imageSrc} />
+                        {/* <div
                             className="image"
-                            style={{ backgroundImage: `url('${!this.props.object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.object.imageSrc }')`}} />
+                            style={{ backgroundImage: `url('${!this.props.object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.object.imageSrc }')`}} /> */}
                     </a>
                     <h2>
                         <a
@@ -76,7 +71,7 @@ class Article extends Component {
 
 }
 
-@connect(state => ({ articles: state.Articles, }))
+@connect(state => ({ feeds: state.Feeds, }))
 class Articles extends Component {
 
     state = {
@@ -104,12 +99,13 @@ class Articles extends Component {
             const offset = document.body.scrollTop + window.innerHeight,
                   height = document.body.offsetHeight
 
-            if (offset > (height - 100)) {
+            if (offset > (height - 500)) {
                 this.setState({ appending: true, page: this.state.page + 1, })
-                this.props.dispatch(ArticleActions.load(this.state.page))
+                this.props.dispatch(FeedActions.load(this.state.page))
                     .then(() => this.setState({ appending: false, }))
             }
-        }, 150)
+
+        }, 100)
     }
 
     componentDidMount() {
@@ -122,10 +118,18 @@ class Articles extends Component {
 
     render() {
         return (
-            <div className="articles">
-                {this.props.articles.slice(7).map((article, index) =>
-                    <Article {...article} index={index} key={`article-${article.object.id}`} />
-                )}
+            <div>
+                <ReactCSSTransitionGroup
+                    transitionName="feed"
+                    component="div"
+                    className="articles"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}>
+                    {this.props.feeds.slice(7).map((feed, index) =>
+                        <Article {...feed} index={index} key={`article-${feed.object.id}`} />
+                    )}
+                </ReactCSSTransitionGroup>
+
                 {this.state.appending ? <div className="appending-loader">
                     <svg width="35px" height="35px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="uil-ring">
                         <rect x="0" y="0" width="100" height="100" fill="none" className="bk"></rect>

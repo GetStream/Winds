@@ -598,6 +598,47 @@ body {
   position: fixed;
   left: 50%;
   top: 25%; }
+
+.page-enter {
+  opacity: 0.01; }
+
+.page-enter.page-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in; }
+
+.page-leave {
+  opacity: 1; }
+
+.page-leave.page-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in; }
+.image {
+  position: relative; }
+  .image.loading {
+    background-color: white; }
+  .image .inner-image {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center; }
+
+.image-enter {
+  opacity: 0.01; }
+
+.image-enter.image-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in; }
+
+.image-leave {
+  opacity: 1; }
+
+.image-leave.image-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in; }
 .masonry .col-lg-3 {
   margin-bottom: 60px; }
 
@@ -775,6 +816,15 @@ body {
     font-family: 'Merriweather';
     font-style: normal; }
 
+.appending-loader {
+  position: fixed;
+  bottom: 55px;
+  left: 0;
+  right: 0;
+  text-align: center; }
+  .appending-loader svg {
+    margin: auto; }
+
 .articles {
   display: -webkit-flex;
   display: flex;
@@ -787,9 +837,6 @@ body {
   flex-wrap: wrap;
   background: #F0F0F0;
   padding-top: 60px; }
-  .articles .appending-loader {
-    position: fixed;
-    bottom: 55px; }
   .articles .article {
     width: 270px;
     margin-right: 2%;
@@ -831,6 +878,20 @@ body {
       height: 400px; }
     .articles .article:last-child {
       margin-bottom: 50px; }
+
+.feed-enter {
+  opacity: 0.01; }
+
+.feed-enter.feed-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in; }
+
+.feed-leave {
+  opacity: 1; }
+
+.feed-leave.feed-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in; }
 .material-icons, .subscriptions .mark-all-read a::before {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -932,6 +993,24 @@ body {
         text-decoration: none; }
       .subscriptions ul.article li a:hover {
         color: #16C98D; }
+
+.subscriptions-enter {
+  opacity: 0.01;
+  transform: translateY(50%); }
+
+.subscriptions-enter.subscriptions-enter-active {
+  opacity: 1;
+  transform: translateY(0%);
+  transition: all 300ms ease-in; }
+
+.subscriptions-leave {
+  opacity: 1;
+  transform: translateY(0%); }
+
+.subscriptions-leave.subscriptions-leave-active {
+  opacity: 0.01;
+  transform: translateY(50%);
+  transition: all 300ms ease-in; }
 .site-feed-list .subscriptions ul.article {
   margin-right: 0; }
 

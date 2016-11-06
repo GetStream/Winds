@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 
 import moment from 'moment'
 import normalizeUrl from 'normalize-url'
-import Waypoint from 'react-waypoint'
 
 import StripEntities from 'components/StripEntities'
 
 import * as SubscriptionActions from 'actions/Subscriptions'
+import * as PersonalizationActions from 'actions/Personalization'
 
 @connect()
 class Subscription extends Component {
@@ -15,8 +15,15 @@ class Subscription extends Component {
     trackEngagement = () =>
         this.props.dispatch(SubscriptionActions.engage(this.props.object.id, this.props.index))
 
-    trackImpression = () =>
-        this.props.dispatch(SubscriptionActions.impression(this.props.object.id))
+    handleClick = (e) => {
+        e.preventDefault()
+        this.trackEngagement().then(() =>
+            this.props.dispatch(PersonalizationActions.getStats())
+        )
+
+        window.open(this.props.articleUrl, '_blank')
+
+    }
 
     render() {
 
@@ -24,47 +31,36 @@ class Subscription extends Component {
         if (this.props.read) classes.push('read')
 
         return(
-            <ul className="list-unstyled">
-                <Waypoint onEnter={() => {
-                    this.trackImpression(this.props.id)
-                }} />
+            <ul className="list-unstyled" onClick={this.handleClick}>
                 <li className="article">
                     <div className="row">
-                        <a
-                            href={this.props.articleUrl}
-                            target="_blank"
-                            title={this.props.title}
-                            data-id={this.props.id}
-                            data-position={this.props.index}
-                            onClick={this.trackEngagement}>
-                            <div className="col-lg-12">
-                                <ul className={classes.join(' ')}>
-                                    <li>
-                                        <img src={!!this.props.site.faviconUrl ? this.props.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'} height="20" width="20" />
-                                    </li>
-                                    <li>
-                                        <a
-                                            href={this.props.articleUrl}
-                                            target="_blank"
-                                            title={this.props.title}
-                                            data-id={this.props.id}
-                                            data-position={this.props.index}
-                                            onClick={this.trackEngagement}>
-                                            <StripEntities>{this.props.title}</StripEntities>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        {moment(this.props.time).fromNow()}&nbsp;
-                                        <span>from</span>&nbsp;
-                                        <a
-                                            href={normalizeUrl(this.props.site.siteUrl)}
-                                            target="_blank" title={this.props.site.name}>
-                                            {this.props.site.name}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </a>
+
+                        <div className="col-lg-12">
+                            <ul className={classes.join(' ')}>
+                                <li>
+                                    <img src={!!this.props.site.faviconUrl ? this.props.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'} height="20" width="20" />
+                                </li>
+                                <li>
+                                    <a
+                                        href={this.props.articleUrl}
+                                        target="_blank"
+                                        title={this.props.title}
+                                        data-id={this.props.id}
+                                        data-position={this.props.index}>
+                                        <StripEntities>{this.props.title}</StripEntities>
+                                    </a>
+                                </li>
+                                <li>
+                                    {moment(this.props.time).fromNow()}&nbsp;
+                                    <span>from</span>&nbsp;
+                                    <a
+                                        href={normalizeUrl(this.props.site.siteUrl)}
+                                        target="_blank" title={this.props.site.name}>
+                                        {this.props.site.name}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </li>
             </ul>
