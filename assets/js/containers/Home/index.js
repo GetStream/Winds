@@ -13,17 +13,11 @@ import Articles from 'containers/Home/components/Articles'
 import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
 
-import Waypoint from 'react-waypoint'
-
 @connect(state => ({ feeds: state.Feeds, }))
 class Home extends Component {
 
     trackEngagement = (id, index) => this.props.dispatch(
         FeedActions.engage(id, index)
-    )
-
-    trackImpression = (id) => this.props.dispatch(
-        FeedActions.impression(id)
     )
 
     handleClick = () => this.props.dispatch(
@@ -70,9 +64,6 @@ class Home extends Component {
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 margin-btm" onClick={() => this.trackEngagement(this.props.feeds[0].object.id, 0)}>
-                                <Waypoint onEnter={() => {
-                                    this.trackImpression(this.props.feeds[0].object.id)
-                                }} />
                                 <a href={this.props.feeds[0].object.articleUrl} target="_blank">
                                     <img
                                         src={this.props.feeds[0].object.imageSrc}
@@ -102,9 +93,6 @@ class Home extends Component {
                                 </div>
                             </div>
                             <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[1].object.id, 1)}>
-                                <Waypoint onEnter={() => {
-                                    this.trackImpression(this.props.feeds[1].object.id)
-                                }} />
                                 <a href={this.props.feeds[1].object.articleUrl} target="_blank">
                                     <img
                                         src={this.props.feeds[1].object.imageSrc}
@@ -137,9 +125,6 @@ class Home extends Component {
                         </div>
                         <div className="row row-2">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[2].object.id, 2)}>
-                                <Waypoint onEnter={() => {
-                                    this.trackImpression(this.props.feeds[2].object.id)
-                                }} />
                                 <a href={this.props.feeds[2].object.articleUrl} target="_blank">
                                     <img
                                         src={this.props.feeds[2].object.imageSrc}
@@ -169,9 +154,6 @@ class Home extends Component {
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[3].object.id, 3)}>
-                                <Waypoint onEnter={() => {
-                                    this.trackImpression(this.props.feeds[3].object.id)
-                                }} />
                                 <a href={this.props.feeds[3].object.articleUrl} target="_blank">
                                     <img
                                         src={this.props.feeds[3].object.imageSrc}
@@ -205,9 +187,6 @@ class Home extends Component {
                             <div
                                 className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12"
                                 onClick={() => this.trackEngagement(this.props.feeds[4].object.id, 4)}>
-                                <Waypoint onEnter={() => {
-                                    this.trackImpression(this.props.feeds[4].object.id)
-                                }} />
                                 <a href={this.props.feeds[4].object.articleUrl} target="_blank">
                                     <div className="b7"
                                         style={{
@@ -233,9 +212,6 @@ class Home extends Component {
                                     </div>
                                 </div>
                                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[5].object.id, 5)}>
-                                    <Waypoint onEnter={() => {
-                                        this.trackImpression(this.props.feeds[5].object.id)
-                                    }} />
                                     <a href={this.props.feeds[5].object.articleUrl} target="_blank">
                                         <img
                                             src={this.props.feeds[5].object.imageSrc}
@@ -267,9 +243,6 @@ class Home extends Component {
                             <div
                                 className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12"
                                 onClick={() => this.trackEngagement(this.props.feeds[6].object.id, 6)}>
-                            <Waypoint onEnter={() => {
-                                this.trackImpression(this.props.feeds[6].object.id)
-                            }} />
                             <a href={this.props.feeds[6].object.articleUrl} target="_blank">
                                 <img
                                     src={this.props.feeds[6].object.imageSrc}

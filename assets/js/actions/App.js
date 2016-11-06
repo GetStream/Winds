@@ -21,7 +21,6 @@ export const init = () => dispatch => dispatch(Topics.load())
                     dispatch(Sites.load()),
                     dispatch(Personalization.getStats()),
                 ]).then(data => Promise.resolve([...data])), err => {
-                    console.log(err)
                     return Promise.reject(err)
                 })
     ).catch(err => {

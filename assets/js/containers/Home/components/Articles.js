@@ -7,8 +7,6 @@ import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
 import Truncate from 'components/Truncate'
 
-import Waypoint from 'react-waypoint'
-
 import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
 
@@ -17,10 +15,6 @@ class Article extends Component {
 
     trackEngagement = e => this.props.dispatch(
         FeedActions.engage(this.props.object.id, (this.props.index + 7))
-    )
-
-    trackImpression = () => this.props.dispatch(
-        FeedActions.impression(this.props.object.id)
     )
 
     handleClick = () => this.props.dispatch(
@@ -32,9 +26,6 @@ class Article extends Component {
         return (
             <div className="article" onClick={this.handleClick}>
                 <div className="article-inner">
-                    <Waypoint onEnter={() => {
-                        this.trackImpression(this.props.object.id)
-                    }} />
                     <a
                         href={this.props.object.articleUrl}
                         target="_blank"
