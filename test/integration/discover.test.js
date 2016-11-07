@@ -60,7 +60,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it('finds the darkreading rss feed', function (done) {
+    it.skip('finds the darkreading rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -132,7 +132,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it('finds the reddit rss programming', function (done) {
+    it.skip('finds the reddit rss programming', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -140,11 +140,5 @@ describe('Discover', function() {
         .set('Authorization', `JWT ${test.token}`)
         .expect(200, done)
     })
-
-
-
-
-
-
 
 })
