@@ -88,7 +88,7 @@ Sails uses an ORM called [Waterline](https://github.com/balderdashy/waterline), 
 
 ### Step 3 - Scrape Some Data
 
-A reader without any data isn't much fun though. Let's insert a few topics and rss feeds into the database:
+A reader without any data isn't much fun though. Let's insert a few topics and RSS feeds into the database:
 
 ```bash
 node load_initial_data.js
