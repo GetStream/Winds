@@ -63,7 +63,16 @@ API_BASE_URL = 'http://localhost:1337'
 
 **Stream**
 
-Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. Get started at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials. While you're in the dashboard you'll also want to create a flat feed group called "rss_feed".
+Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. 
+
+Get started at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials. 
+
+While you're in the dashboard, you'll also want to create the following feed types:
+
+* rss_feed (type = flat, realtime notifications = off)
+* timeline (type = flat, realtime notifications = on)
+* user (type = flat, realtime notificatons = off)
+* topic (type = flat, realtime notifications = on)
 
 **Email**
 
@@ -140,7 +149,6 @@ Contributions are much appreciated. Here are some ideas for improvements:
 ### Roadmap
 
 At the moment we're gathering feedback from the community before deciding on the changes for Winds 0.2
-
 
 ### Adding Support for Your Favorite Feeds
 
