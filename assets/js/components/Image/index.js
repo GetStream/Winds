@@ -56,8 +56,6 @@ class ImageComponent extends Component {
             ...props
         } = this.props
 
-        console.log(this.props.src, !this.state.image ? 'not loaded' : this.state.image.src)
-
         return (
             <ReactCSSTransitionGroup
                 component="div"

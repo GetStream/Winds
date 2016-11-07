@@ -19,7 +19,7 @@ module.exports.http = {
       passport.authenticate('jwt', function(err, user, something, something2) {
           if (user) {
               req.logIn(user, function(err) {
-                  if (err) {console.log(err)}
+                  if (err) {console.warn(err)}
               });
           }
           next()
