@@ -51,7 +51,7 @@ function scrapeFeed(feed, numberOfActivities, callback) {
                 }).exec(function(err, updatedFeed) {
 
                     sails.log.info(`updated:${updatedFeed} last scraped at to ${now}`)
-                    callback(null, articleActivities)
+                    return callback(null, articleActivities)
 
                 })
 
@@ -82,8 +82,7 @@ function enrichArticle(article, callback) {
 
     if (!url) {
         sails.log.warn('Received an empty URL for this article:', article)
-        callback(null, null)
-        return
+        return callback(null, null)
     }
 
     getMetaInformation(url, function(err, meta) {
@@ -153,7 +152,7 @@ function enrichArticle(article, callback) {
         sails.log.verbose('=====article=====')
         sails.log.verbose(article)
 
-        callback(null, article)
+        return callback(null, article)
 
     })
 }
@@ -190,6 +189,7 @@ function getMetaInformation(articleUrl, callback) {
           'accept': 'text/html,application/xhtml+xml'
         }
     }
+
     request(options, function(err, response, body) {
 
         if (err || response.statusCode != 200) {
@@ -240,13 +240,12 @@ function getMetaInformation(articleUrl, callback) {
 
                 sails.log.verbose('Found meta for URL', articleUrl, meta)
 
-                callback(null, meta)
+                return callback(null, meta)
 
             } catch(e) {
                 // common errors include exceeding the max call stack
                 return callback(e)
             }
-
 
         }
     })
@@ -344,7 +343,7 @@ function storeArticle(feedObject, rssArticle, callback) {
 
             streamFeed.addActivity(activity).then(function() {
                 sails.log.verbose('added article to stream', article.articleUrl)
-                callback(null, activity)
+                return callback(null, activity)
             }, function(err) {
                 sails.sentry.captureMessage(err)
                 return callback(err)
