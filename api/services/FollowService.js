@@ -117,14 +117,15 @@ module.exports = {
                     if (!toRemove.length) {
                         // skip
                         callback(null, null)
+                    } else {
+                        sails.models.follows.destroy({
+                            feed: toRemove,
+                            user: userId,
+                            type: 'feed'
+                        }).exec((err, results) => {
+                            callback(err, results)
+                        })
                     }
-                    sails.models.follows.destroy({
-                        feed: toRemove,
-                        user: userId,
-                        type: 'feed'
-                    }).exec((err, results) => {
-                        callback(err, results)
-                    })
                 },
                 callback => {
                     // Stream doesn't expose a batch unfollow API endpoint
