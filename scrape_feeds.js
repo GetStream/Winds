@@ -55,17 +55,17 @@ app.load({
         scrapeFeeds(err, feeds, numberOfActivities, concurrency)
     }
 
-    sails.log.info(`going to scrape ${numberOfActivities} activities per feed`)
+    sails.log.info(`Going to scrape ${numberOfActivities} activities per feed`)
 
     if (argv.q) {
-        sails.log.info(`searching for a feed matching ${argv.q}`)
+        sails.log.info(`Searching for a feed matching ${argv.q}`)
         Feeds.find({ feedUrl: {'contains': argv.q} }).exec(scrapeFeedsBound)
     } else if (argv.f) {
-        sails.log.info(`scraping all feeds`)
+        sails.log.info(`Scraping all feeds`)
         Feeds.find({}).exec(scrapeFeedsBound)
     } else {
         var scrapeInterval = moment().subtract('minutes', 3).toISOString()
-        sails.log.info(`scraping all feeds that are older than ${scrapeInterval}`)
+        sails.log.info(`Scraping all feeds that are older than ${scrapeInterval}`)
         Feeds.find({
                 or: [
                     {
@@ -106,7 +106,7 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
      async.mapLimit(feeds, concurrency, scrapeFeedBound, function(err, articles) {
 
          sails.log.info(`Completed scraping for ${feeds.length} feeds`)
-         
+
          feeds.forEach(function(feed) {
 
              if (feed.scrapingErrors > 0) {

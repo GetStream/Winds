@@ -121,7 +121,7 @@ function enrichArticle(article, callback) {
                     }
 
                 } catch (e) {
-                    sails.sentry.captureMessage(e)
+                    sails.log.warn(e)
                 }
 
             }
@@ -194,7 +194,7 @@ function getMetaInformation(articleUrl, callback) {
 
         if (err || response.statusCode != 200) {
 
-            sails.sentry.captureMessage(err)
+            sails.log.warn(err)
 
             // handle corner cases where the library fails without an error
             err = err || 'failed to get meta'
@@ -320,7 +320,7 @@ function storeArticle(feedObject, rssArticle, callback) {
     }, articleProperties).exec(function cb(err, article) {
 
         if (err) {
-            sails.sentry.captureMessage(err)
+            sails.log.warn(err)
             return callback(err)
         }
 
@@ -330,22 +330,23 @@ function storeArticle(feedObject, rssArticle, callback) {
         Articles.update({
             id: article.id
         }, articleProperties).exec(function(err, updateArticles) {
+
             if (err) {
-                sails.sentry.captureMessage(err)
+                sails.log.warn(err)
                 return callback(err)
             }
 
             let article = updateArticles[0]
-            sails.log.verbose(`created and updated a new article`, article)
+            sails.log.verbose(`Created and updated a new article`, article)
 
-            let activity = article.toActivity(),
+            let activity   = article.toActivity(),
                 streamFeed = StreamService.client.feed('rss_feed', feed.id)
 
             streamFeed.addActivity(activity).then(function() {
-                sails.log.verbose('added article to stream', article.articleUrl)
+                sails.log.verbose('Added article to stream', article.articleUrl)
                 return callback(null, activity)
             }, function(err) {
-                sails.sentry.captureMessage(err)
+                sails.log.warn(err)
                 return callback(err)
             })
 
