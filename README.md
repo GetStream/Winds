@@ -9,6 +9,9 @@ This tutorial explains how the personalization API works ([blogpost](http://bit.
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
+
+
+
 ## Screenshots
 
 ![Winds - Open source RSS reader - Personalized feed](https://github.com/GetStream/Winds/raw/master/screenshots/ss-2.png "Winds - Open source RSS reader")
@@ -63,9 +66,9 @@ API_BASE_URL = 'http://localhost:1337'
 
 **Stream**
 
-Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users. 
+Stream handles the feed personalization and storage. Accounts are free up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.
 
-Get started at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials. 
+Get started at [getstream.io](https://getstream.io/) and visit the [dashboard](https://getstream.io/dashboard/) to get your credentials.
 
 While you're in the dashboard, you'll also want to create the following feed types:
 
