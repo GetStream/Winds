@@ -10,7 +10,7 @@ This tutorial explains how the personalization API works ([blogpost](http://bit.
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
 
-(https://i.sli.mg/OnoOEw.png "Upvote on Product Hunt")
+
 
 ## Screenshots
 
