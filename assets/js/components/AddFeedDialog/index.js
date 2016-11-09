@@ -80,7 +80,6 @@ class AddFeedDialog extends Component {
                                         title="Please enter a valid site or feed URL"
                                         ref="url"
                                         className="url"
-                                        pattern="(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?"
                                         placeholder="Enter a valid site or feed URL"
                                         required={true}
                                         value={this.state.url}

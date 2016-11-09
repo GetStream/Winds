@@ -110,7 +110,7 @@ form {
       letter-spacing: 2px;
       line-height: 15px;
       border-radius: 0px;
-      background-color: transparent;
+      background-color: #FFFFFF;
       display: block;
       outline: none; }
       form input:valid + button:hover, form input:valid + button:active {
