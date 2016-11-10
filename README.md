@@ -213,6 +213,29 @@ Scrape the favicons:
 node scrape_favicons.js -c 10 -q cnn
 ```
 
+## Native OS Support
+
+Winds supports a native OSX client through the use of [https://github.com/electron/electron](Electron). An example application pointed at the [hosted version](http://winds.getstream.io) can be found in the `/native` directory of this repo.
+
+### Building Your Own Native Client
+
+To make the build process easier, we chose to go with the popular tool [Nativefier](https://github.com/jiahaog/nativefier), a command line tool that allows you to easily create a desktop application for any web site with succinct and minimal configuration. Apps are wrapped by Electron in an OS executable (.app, .exe, etc.) for use on Windows, OSX and Linux.
+
+To start, you'll need to install the Nativefier module from NPM in your terminal:
+
+```bash
+npm install nativefier -g
+```
+
+Then, run the following command to build on OSX:
+
+```bash
+nativefier --name "Winds" "http://your-domain.com" --icon "icon.png" --show-menu-bar
+```
+
+The full API documentation can be found at: [https://github.com/jiahaog/nativefier/blob/development/docs/api.md](https://github.com/jiahaog/nativefier/blob/development/docs/api.md)
+
+
 ## Powered By
 
 * [React](https://facebook.github.io/react/)
@@ -222,4 +245,5 @@ node scrape_favicons.js -c 10 -q cnn
 * [Sendgrid](https://sendgrid.com)
 * [Stream](https://getstream.io)
 * [MongoDB](https://www.mongodb.com/)
+* [Nativefier](https://github.com/jiahaog/nativefier)
 * [PM2](http://pm2.keymetrics.io/)
