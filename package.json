@@ -22,7 +22,7 @@
     "dotenv": "^2.0.0",
     "ejs": "^2.5.2",
     "email-templates": "^2.5.3",
-    "express-validator": "^2.21.0",
+    "express-validator": "^2.21.0c",
     "extract-image-props-from-html-string": "^0.2.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "feedparser": "^1.1.5",
