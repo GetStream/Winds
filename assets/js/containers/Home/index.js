@@ -177,26 +177,24 @@ class Home extends Component {
                                         </p>
                                     </div>
                                 </div>
-                            <div
-                                className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12"
-                                onClick={() => this.trackEngagement(this.props.feeds[6].object.id, 6)}>
-                            <a href={this.props.feeds[6].object.articleUrl} target="_blank">
-                                <Image className="b8" src={this.props.feeds[6].object.imageSrc} />
-                            </a>
-                            <div className="meta">
-                                <h3>
+                                <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[6].object.id, 6)}>
                                     <a href={this.props.feeds[6].object.articleUrl} target="_blank">
-                                        <StripEntities>{this.props.feeds[6].object.title}</StripEntities>
+                                        <Image className="b8" src={this.props.feeds[6].object.imageSrc} />
                                     </a>
-                                </h3>
-                                <p>
-                                    {moment(this.props.feeds[6].object.createdAt).fromNow()}
-                                    &nbsp;from&nbsp;
-                                    <a href={normalizeUrl(this.props.feeds[6].object.articleUrl)} target="_blank">
-                                        {this.props.feeds[6].site.name || this.props.feeds[6].site.siteUrl}
-                                    </a>
-                                </p>
-                                <Summary>{this.props.feeds[6].object.summary}</Summary>
+                                    <div className="meta">
+                                    <h3>
+                                        <a href={this.props.feeds[6].object.articleUrl} target="_blank">
+                                            <StripEntities>{this.props.feeds[6].object.title}</StripEntities>
+                                        </a>
+                                    </h3>
+                                    <p>
+                                        {moment(this.props.feeds[6].object.createdAt).fromNow()}
+                                        &nbsp;from&nbsp;
+                                        <a href={normalizeUrl(this.props.feeds[6].object.articleUrl)} target="_blank">
+                                            {this.props.feeds[6].site.name || this.props.feeds[6].site.siteUrl}
+                                        </a>
+                                    </p>
+                                    <Summary>{this.props.feeds[6].object.summary}</Summary>
                                 </div>
                             </div>
                         </div>

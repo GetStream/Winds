@@ -7,5 +7,5 @@ export const open = () => ({
 
 export const CLOSE = 'SIDEBAR_CLOSE'
 export const close = () => ({
-        type: CLOSE,
+    type: CLOSE,
 })

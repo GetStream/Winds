@@ -134,7 +134,25 @@ form {
     background-color: #D8D8D8 !important;
     border: 1px solid #D8D8D8 !important;
     outline: none !important;
-    display: none; }
+    display: none;
+    text-align: left;
+    padding-left: 35px; }
+    form .adding-feed:after {
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: bottom;
+      -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+      animation: ellipsis steps(4, end) 900ms infinite;
+      content: "\2026";
+      width: 0px; }
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em; } }
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em; } }
   form .invalid-feed {
     position: absolute;
     right: 0;
@@ -1049,11 +1067,6 @@ body {
   color: #16C98D;
   font-size: 13px;
   text-decoration: none; }
-
-.site-feed-list .appending-loader {
-  position: fixed;
-  bottom: 55px;
-  margin-left: 50%; }
 .simple-header {
   top: 0;
   left: 0;

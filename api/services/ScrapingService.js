@@ -19,14 +19,14 @@ function scrapeFeed(feed, numberOfActivities, callback) {
         storeArticle(feed, article, callback)
     }
 
-    // scrape articles
+    // Scrape articles
     parse.fetch(feed.feedUrl, function(err, meta, articles) {
 
         if (err) {
             return callback(err, null)
         }
 
-        // loop through articles
+        // Loop through articles
         // https://github.com/danmactough/node-feedparser#list-of-article-properties
         sails.log.info(`Found ${articles.length} articles to insert`)
 
@@ -64,7 +64,7 @@ function enrichArticle(article, callback) {
 
     const validator = require('validator')
 
-    let url = article.link,
+    let url  = article.link,
         feed = article.feedObject
 
     if (feed.feedUrl.indexOf('designernews') != -1) {
@@ -72,7 +72,7 @@ function enrichArticle(article, callback) {
         if (validator.isURL(article.summary)) {
             url = article.summary
         } else {
-            // default image for text posts
+            // Default image for text posts
             article.image = {
                 url: 'http://67.media.tumblr.com/5a535d0f4218df35a83525fc40bf521f/tumblr_inline_mufumquS5g1r0v0xk.png'
             }
@@ -96,9 +96,9 @@ function enrichArticle(article, callback) {
         let rssImage = (article.image && article.image.url) ? article.image.url : null
 
         article.canonicalUrl = meta.canonicalUrl || article.link
-        article.imageSrc = meta.image || rssImage
-        article.category = (article.categories.length) ? article.categories : meta.keywords
-        article.summary = article.summary || meta.ogDescription
+        article.imageSrc     = meta.image || rssImage
+        article.category     = (article.categories.length) ? article.categories : meta.keywords
+        article.summary      = article.summary || meta.ogDescription
 
         // extract image from summary if we don't have one
         if (!article.imageSrc) {
@@ -291,7 +291,7 @@ function storeArticle(feedObject, rssArticle, callback) {
     let feed = rssArticle.feedObject
 
     let articleProperties = {
-        // uniqueness
+        // Uniqueness
         articleUrl: rssArticle.link,
         // Fields to know where the article came from
         feed: feed.id,

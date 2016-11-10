@@ -31,8 +31,6 @@ export default opts => store => next => action => {
         credentials: 'include',
     }
 
-
-
     if (data && !ignoreData || body) {
         if (['get', 'delete'].indexOf(method.toLowerCase()) !== -1) {
             url += '?'+ qs.stringify(body || data)

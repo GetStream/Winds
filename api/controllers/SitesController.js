@@ -72,7 +72,7 @@ module.exports = {
                                 return res.badRequest('Sorry, failed to add the RSS feed.')
                             }
 
-                            ScrapingService.scrapeFeed(feed, 20, function(err, articles) {
+                            ScrapingService.scrapeFeed(feed, 10, function(err, articles) {
 
                                 if (err) {
                                     return res.badRequest(`Something went wrong while scraping: ${feed.feedUrl}`)

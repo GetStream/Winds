@@ -76,9 +76,8 @@ export const add = (data) => dispatch => {
         }
     }).then(res => {
         dispatch(AppActions.reload())
-        return window.location.href = `/app/subscriptions/${res.response.feed_id}`
+            .then(() => browserHistory.push(`/app/subscriptions/${res.response.feed_id}`))
     }, err => {
-        document.getElementsByClassName('url')[0].focus()
         throw err
     })
 

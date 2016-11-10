@@ -17,6 +17,14 @@ class AddFeedDialog extends Component {
         url: '',
     }
 
+    componentWillReceiveProps(props) {
+
+        if (this.props.loading != props.loading && !props.loading) {
+            this.setState({ url: '' })
+        }
+
+    }
+
     componentDidUpdate() {
         if (this.props.open) this.refs.url.focus()
     }
@@ -37,7 +45,7 @@ class AddFeedDialog extends Component {
 
     renderBtn() {
 
-        if (this.props.error == true)
+        if (this.props.error)
             return (
                 <button
                     type="submit"
@@ -46,12 +54,12 @@ class AddFeedDialog extends Component {
                 </button>
             )
 
-        if (this.props.loading == true)
+        if (this.props.loading)
             return (
                 <button
                     type="submit"
                     className="btn text-uppercase adding-feed">
-                    Checking...
+                    Checking
                 </button>
             )
 
