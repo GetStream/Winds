@@ -39,7 +39,9 @@ var initialData = {
         {'name': 'Brad Feld', 'rss': 'http://feeds.feedburner.com/FeldThoughts', 'url': 'http://www.feld.com/'},
         {'name': 'AVC', 'rss': 'http://feeds.feedburner.com/avc', 'url': 'http://avc.com/'},
         {'name': 'YCBlog', 'rss': 'https://blog.ycombinator.com/posts.atom'},
-        {'name': 'Alex Iskold', 'rss': 'https://alexiskold.net/feed/'}
+        {'name': 'Alex Iskold', 'rss': 'https://alexiskold.net/feed/'},
+        {'name': 'David Cohen', 'rss': 'http://feeds.feedburner.com/DavidGCohen', 'url': 'http://davidgcohen.com/'},
+        {'name': 'VC Adventure', 'rss': 'http://feeds.feedburner.com/VC_Adventure', 'url': 'http://www.sethlevine.com/'}
     ],
     'AI & Machine Learning': [
         {'name': 'R Bloggers', 'rss': 'https://www.r-bloggers.com/feed/'},

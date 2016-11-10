@@ -9,7 +9,7 @@ This tutorial explains how the personalization API works ([blogpost](http://bit.
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
-[<img src="https://i.sli.mg/OnoOEw.png">](https://www.producthunt.com/posts/winds-2)
+[<img src="https://i.sli.mg/OnoOEw.png">](https://www.producthunt.com/)
 
 ## Screenshots
 
@@ -136,6 +136,7 @@ The [Sketch File](https://www.sketchapp.com/) files are available for [download 
 Contributions are much appreciated. Here are some ideas for improvements:
 
 * Secondary links (ie comments link for HNews and Lobsters)
+* Batch OPML import
 * Deploy to Heroku button
 * Follow suggestions (we're working on this)
 * Switching between feeds should be easier
