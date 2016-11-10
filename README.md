@@ -136,6 +136,7 @@ The [Sketch File](https://www.sketchapp.com/) files are available for [download 
 Contributions are much appreciated. Here are some ideas for improvements:
 
 * Secondary links (ie comments link for HNews and Lobsters)
+* Batch OPML import
 * Deploy to Heroku button
 * Follow suggestions (we're working on this)
 * Switching between feeds should be easier
