@@ -9,8 +9,7 @@ This tutorial explains how the personalization API works ([blogpost](http://bit.
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
-
-
+[<img src="https://i.sli.mg/OnoOEw.png">](https://www.producthunt.com/posts/winds-2)
 
 ## Screenshots
 
