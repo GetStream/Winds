@@ -9,8 +9,6 @@ This tutorial explains how the personalization API works ([blogpost](http://bit.
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
-[<img src="https://i.sli.mg/OnoOEw.png">](https://www.producthunt.com/)
-
 ## Screenshots
 
 ![Winds - Open source RSS reader - Personalized feed](https://github.com/GetStream/Winds/raw/master/screenshots/ss-2.png "Winds - Open source RSS reader")
