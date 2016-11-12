@@ -57,6 +57,9 @@ module.exports = {
             type: 'url',
             required: true
         },
+        syncedAt: {
+            type: 'datetime'
+        },
 
         toActivity: function() {
 

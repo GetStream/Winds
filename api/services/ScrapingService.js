@@ -323,6 +323,7 @@ function storeArticle(feedObject, rssArticle, callback) {
             sails.log.warn(err)
             return callback(err)
         }
+        let previousArticle = article
 
         // articles have an canonicalUrl and an articleUrl
         // in theory different feeds can point to the same canonicalUrl
@@ -335,16 +336,39 @@ function storeArticle(feedObject, rssArticle, callback) {
                 sails.log.warn(err)
                 return callback(err)
             }
-
             let article = updateArticles[0]
-            sails.log.verbose(`Created and updated a new article`, article)
+            let changed = previousArticle == article
+            sails.log.verbose(`Created and updated a new article`, article, changed)
 
             let activity   = article.toActivity(),
                 streamFeed = StreamService.client.feed('rss_feed', feed.id)
 
+            // only sync to Stream if its a new activity
+            if (article.syncedAt && !changed) {
+                sails.log.verbose('no need to sync to stream', article.syncedAt, changed)
+                return callback(null, activity)
+            } else {
+                sails.log.verbose('starting sync to stream')
+            }
+
             streamFeed.addActivity(activity).then(function() {
                 sails.log.verbose('Added article to stream', article.articleUrl)
-                return callback(null, activity)
+                const now = new Date()
+                // set the synced at for the article
+                Articles.update({
+                    id: article.id
+                }, {
+                    syncedAt: now
+                }).exec(function(err, updatedArticles){
+                    if (err) {
+                        sails.log.warn(err)
+                        return callback(err)
+                    } else {
+                        return callback(null, activity)
+                    }
+                })
+
+
             }, function(err) {
                 sails.log.warn(err)
                 return callback(err)
