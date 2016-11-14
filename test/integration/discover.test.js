@@ -12,7 +12,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the engadget rss feed', function (done) {
+    it('finds the engadget rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -33,7 +33,7 @@ describe('Discover', function() {
         })
     })
 
-    it.skip('finds the highscalability rss feed', function (done) {
+    it('finds the highscalability rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -42,7 +42,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the onstartups rss feed', function (done) {
+    it('finds the onstartups rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -51,7 +51,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the gizmododirect rss feed', function (done) {
+    it('finds the gizmododirect rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -69,7 +69,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds parses darkreading rss feed direct', function (done) {
+    it('finds parses darkreading rss feed direct', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -78,7 +78,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the security rss feed', function (done) {
+    it('finds the security rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -87,7 +87,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the securitydirect rss feed', function (done) {
+    it('finds the securitydirect rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -96,7 +96,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('fails to find the yourshot rss feed', function (done) {
+    it('fails to find the yourshot rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -105,7 +105,7 @@ describe('Discover', function() {
         .expect(400, done)
     })
 
-    it.skip('finds the sentry rss feed', function (done) {
+    it('finds the sentry rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -114,7 +114,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the tweakers rss feed direct', function (done) {
+    it('finds the tweakers rss feed direct', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -123,7 +123,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the tweakers rss feed', function (done) {
+    it('finds the tweakers rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
