@@ -167,7 +167,7 @@ class Sidebar extends Component {
                                     minLength={6}
                                     className="form-control"
                                     id="password"
-                                    placeholder="Password at least 6 characters long" />
+                                    placeholder="Minimum of 6 characters" />
                             </div>
                             <button type="submit" className="btn">Update</button>
                             <button type="button" className="btn" onClick={() => this.setState({ profile: false, })}>Cancel</button>
