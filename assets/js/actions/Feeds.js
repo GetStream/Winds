@@ -38,8 +38,6 @@ export const load = (page = 1, limit = 25, version = null) => dispatch => {
 
     } else {
 
-        console.log('PAGE', page, v)
-
         return dispatch({
             type: LOAD,
 
