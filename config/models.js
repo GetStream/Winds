@@ -17,7 +17,7 @@ module.exports.models = {
 
 };
 
-if (process.env.MONGO_URL) {
+if (process.env.MONGO_URI) {
     module.exports.models = {
         connection: 'mongo',
         migrate: 'safe'
