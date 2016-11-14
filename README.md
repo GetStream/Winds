@@ -213,7 +213,7 @@ node scrape_favicons.js -c 10 -q cnn
 
 ## Native OS Support
 
-Winds supports a native OSX client through the use of [https://github.com/electron/electron](Electron). An example application (OSX) pointed at the [hosted version](http://winds.getstream.io) can be found in the `/native/Winds-darwin-x64` directory of this repo.
+Winds supports a native OSX client through the use of [https://github.com/electron/electron](Electron). An example application (OSX) pointed at the [hosted version](http://winds.getstream.io) can be found in the [releases](https://github.com/GetStream/Winds/releases) section this repo.
 
 ### Building Your Own Native Client
 
