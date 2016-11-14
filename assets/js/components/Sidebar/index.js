@@ -102,7 +102,7 @@ class Sidebar extends Component {
                                     <span className="email"><Truncate>{localStorage.getItem('email')}</Truncate></span>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" className="edit">
-                                    <a href="#" onClick={() => this.setState({ profile: true, })}>Change Password</a>
+                                    <a href="#" onClick={() => this.setState({ profile: true, })}>Profile Settings</a>
                                     &nbsp;<span className="pipe">&#124;</span>&nbsp;
                                     <a href="#" title="Sign Out" onClick={this.handleLogout}>Sign Out</a>
                                 </div>

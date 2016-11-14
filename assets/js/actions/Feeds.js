@@ -5,11 +5,13 @@ import * as Personalization from 'actions/Personalization'
 import { browserHistory } from 'react-router'
 
 export const LOAD = 'FEEDS_LOAD'
-export const load = (page = 1, limit = 25, version = null) => dispatch =>{
+export const load = (page = 1, limit = 25, version = null) => dispatch => {
 
     let v = version || localStorage.getItem('version')
 
     if (page == 1) {
+
+        v = null
 
         return dispatch({
             type: LOAD,
@@ -26,6 +28,7 @@ export const load = (page = 1, limit = 25, version = null) => dispatch =>{
             }
         })
             .then(res => {
+                localStorage.removeItem('version')
                 dispatch(impression(res.response.results.map(item => item.object.id)))
                 return Promise.resolve(res)
             })
@@ -34,6 +37,8 @@ export const load = (page = 1, limit = 25, version = null) => dispatch =>{
             ).then(() => dispatch(Personalization.getStats()))
 
     } else {
+
+        console.log('PAGE', page, v)
 
         return dispatch({
             type: LOAD,
