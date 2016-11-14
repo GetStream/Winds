@@ -68,7 +68,9 @@ before(function(done) {
       .post('/api/register')
       .send({'email': email, 'password': password})
       .expect(200, function(err, result) {
-          if (err) console.log('Bootstrap registration failed with error:', result.body)
+          if (err) {
+            return sails.log.warn('Bootstrap registration failed with error:', result.body)
+          }
           sails.log.info('Registered an account, providing token now', result.body.token)
           test.token = result.body.token
           test.email = email
