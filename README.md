@@ -2,6 +2,7 @@
 
 # Winds - An Open Source Personalized RSS Reader
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
+[![Dependency Status](https://david-dm.org/GetStream/Winds.svg)](https://david-dm.org/GetStream/Winds)
 [![Slack Status](http://winds-rss.herokuapp.com/badge.svg)](http://winds-rss.herokuapp.com/)
 
 Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, and Quora - powered by the [getstream.io API](https://getstream.io/)).
