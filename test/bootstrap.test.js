@@ -23,12 +23,8 @@ before(function(done) {
   sails.lift({
       hooks: {
           "grunt": false,
-          "session": false,
           "sockets": false,
-          "pubsub": false,
-          "views": false,
-          "i18n": false,
-          "blueprints": false
+          "pubsub": false
       },
       log: { level: 'warn' }
   }, function(err, server) {
@@ -38,7 +34,7 @@ before(function(done) {
     let connectionName = sails.config.models.connection,
         connection     = sails.config.connections[connectionName]
 
-    sails.log.info('test is running against connection', connection)
+    sails.log.info('Test is running against connection', connection)
 
     if (false && !isLocalConnection(connection)) {
         let err = 'You cant run test suite against the production database'
@@ -60,7 +56,7 @@ before(function(done) {
     }
 
     let email    = chance.email(),
-        password = chance.string({length: 6})
+        password = chance.string({ length: 6 })
 
     global.test = {}
 
@@ -68,14 +64,19 @@ before(function(done) {
       .post('/api/register')
       .send({'email': email, 'password': password})
       .expect(200, function(err, result) {
+
           if (err) {
             return sails.log.warn('Bootstrap registration failed with error:', result.body)
           }
+
           sails.log.info('Registered an account, providing token now', result.body.token)
-          test.token = result.body.token
-          test.email = email
+
+          test.token    = result.body.token
+          test.email    = email
           test.password = password
+
           done(err, sails)
+
       })
   })
 
