@@ -15,6 +15,9 @@ module.exports = {
             type: 'url',
             required: true
         },
+        secondaryUrl: {
+            type: 'url'
+        },
         // relations
         feed: {
             model: 'feeds'
@@ -78,6 +81,7 @@ module.exports = {
                 author: this.author,
                 articleUrl: this.articleUrl,
                 canonicalUrl: this.canonicalUrl,
+                secondaryUrl: this.secondaryUrl,
                 image: this.imageSrc
             }
 

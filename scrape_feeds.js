@@ -38,7 +38,7 @@ var scrapingErrors = {}
 
 app.load({
     hooks: { grunt: false },
-    log: { level: 'info' }
+    log: { level: 'warn' }
 }, function sailsReady(err) {
 
     if (err) {

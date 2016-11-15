@@ -22,7 +22,7 @@ function fetch(feedUrl, callback) {
     })
 
     req.setMaxListeners(50)
-    req.setHeader('user-agent', 'winds rss reader')
+    req.setHeader('user-agent', 'Winds RSS reader')
     req.setHeader('accept', 'text/html,application/xhtml+xml')
 
     var feedparser = new FeedParser({

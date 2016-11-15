@@ -129,14 +129,30 @@ function enrichArticle(article, callback) {
         }
 
         // feed specific logic
-        if (feed.feedUrl.indexOf('designernews') != -1) {
-            article.summary = null
+        if (feed.feedUrl.indexOf('designernews.co') != -1) {
+
+            if (article.description.indexOf('http') == 0) {
+                article.secondaryUrl = article.link
+                article.link = article.description
+                // these 2 just contain the link
+                article.summary = null
+                article.description = null
+            } else {
+                // original content on designernews
+                // summary and description are identical, no need for changes
+                article.description = null
+            }
         } else if (feed.feedUrl.indexOf('news.ycombinator.com') != -1) {
             article.summary = meta.ogDescription
             article.description = undefined
+            article.secondaryUrl = article.comments
+        } else if (feed.feedUrl.indexOf('reddit') != -1) {
+            // Reddit doesn't provide the target url so we cant show nice secondary actions
         } else if (feed.feedUrl.indexOf('lobste.rs') != -1) {
             article.summary = meta.ogDescription
             article.description = undefined
+            article.secondaryUrl = article.comments
+
         } else if (feed.feedUrl.indexOf('gamespot.com') != -1) {
             // summary is the full text on this feed, remove it
             article.summary = meta.ogDescription
@@ -304,7 +320,8 @@ function storeArticle(feedObject, rssArticle, callback) {
         author: rssArticle.author,
         imageSrc: rssArticle.imageSrc,
         categories: rssArticle.categories,
-        canonicalUrl: rssArticle.canonicalUrl
+        canonicalUrl: rssArticle.canonicalUrl,
+        secondaryUrl: rssArticle.secondaryUrl
     }
 
     if (rssArticle.pubdate) {
