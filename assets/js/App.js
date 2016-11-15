@@ -69,7 +69,7 @@ export default class App extends React.Component {
         if (this.state.loading) return <div>Loading</div>
 
         return (
-            <div>
+            <div className="flex-grow flex-col">
 
                 <Sidebar
                     open={this.props.sidebar}
@@ -87,6 +87,7 @@ export default class App extends React.Component {
                     onRequestClose={() => dispatch(PersonalizationActions.close())} />
 
                 <ReactCSSTransitionGroup
+                    className="flex-grow"
                     transitionName="page"
                     transitionEnterTimeout={300}
                     transitionLeaveTimeout={300}>
