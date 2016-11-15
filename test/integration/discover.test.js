@@ -132,6 +132,27 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
+    it.skip('finds the facebook developer rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'https://code.facebook.com/posts/rss'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(200, done)
+    })
+
+    it.skip('finds the firstround rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'http://firstround.com/review/feed.xml'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(200, function(err, result) {
+            console.log(result.body)
+            done()
+        })
+    })
+
     it.skip('finds the reddit rss programming', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')

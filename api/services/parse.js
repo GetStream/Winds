@@ -11,7 +11,7 @@ function fetch(feedUrl, callback) {
 
     const request = require('request'),
         FeedParser = require('feedparser')
-        
+
     // define our streams
     let req = request(feedUrl, {
         timeout: 10000,

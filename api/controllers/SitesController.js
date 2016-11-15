@@ -62,33 +62,49 @@ module.exports = {
                             return res.badRequest('Sorry, failed to add the RSS feed.')
                         }
 
-                        sails.models.follows.findOrCreate({
-                            type: 'feed',
-                            feed: feed.id,
-                            user: req.user.id
-                        }).exec(function(err, follow) {
+                        // Insert in the DB, Sync to Stream and scrape at the same time
 
-                            if (err) {
-                                return res.badRequest('Sorry, failed to add the RSS feed.')
-                            }
-
-                            ScrapingService.scrapeFeed(feed, 10, function(err, articles) {
-
-                                if (err) {
-                                    return res.badRequest(`Something went wrong while scraping: ${feed.feedUrl}`)
-                                }
-
-                                sails.log.info('Completed scraping for:', feed.feedUrl)
-
-                                return res.ok({
-                                    site_id: site.id,
-                                    feed_id: feed.id
+                        async.parallel(
+                            [callback => {
+                                // insert the follow into the database
+                                sails.models.follows.findOrCreate({
+                                    type: 'feed',
+                                    feed: feed.id,
+                                    user: req.user.id
+                                }).exec(callback)
+                            },
+                            callback => {
+                                // sync the data to stream
+                                let timelineFeed = StreamService.client.feed('timeline', req.user.id)
+                                timelineFeed.follow('rss_feed', feed.id).then(response => {
+                                    callback(null, response)
+                                }).catch(err => {
+                                    callback(err)
                                 })
-
-                            })
-
-                        })
-
+                            },
+                            callback => {
+                                // scraping fun
+                                ScrapingService.scrapeFeed(feed, 10, function(err, articles) {
+                                    if (err) {
+                                        sails.log.error('Something went wrong while scraping', err)
+                                    } else {
+                                        sails.log.info('Completed scraping for:', feed.feedUrl)
+                                    }
+                                    callback(err, articles)
+                                })
+                            }], function(err, results) {
+                                if (err) {
+                                    sails.log.error(err)
+                                    return res.badRequest('Sorry, failed to add the RSS feed.')
+                                } else {
+                                    // all good return
+                                    return res.ok({
+                                        site_id: site.id,
+                                        feed_id: feed.id
+                                    })
+                                }
+                            }
+                        )
                     })
 
             })
