@@ -29,6 +29,10 @@ var argv = require('yargs')
     .alias('q', 'query')
     .string('q')
     .describe('q', 'search for a feed url containing this value')
+    .alias('v', 'verbosity')
+    .string('v')
+    .describe('v', 'set the verbosity level')
+    .default('v', 'warn')
     .help('h')
     .alias('h', 'help')
     .epilog('Happy reading!')
@@ -38,7 +42,7 @@ var scrapingErrors = {}
 
 app.load({
     hooks: { grunt: false },
-    log: { level: 'warn' }
+    log: { level: argv.v }
 }, function sailsReady(err) {
 
     if (err) {
