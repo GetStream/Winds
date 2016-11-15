@@ -89,6 +89,7 @@ function enrichArticle(article, callback) {
 
         // Don't use the article if we can't get meta information
         if (err) {
+            sails.log.warn('failed to get meta')
             return callback(null, null)
         }
 
@@ -127,7 +128,6 @@ function enrichArticle(article, callback) {
             }
 
         }
-
         // feed specific logic
         if (feed.feedUrl.indexOf('designernews.co') != -1) {
 
@@ -146,8 +146,13 @@ function enrichArticle(article, callback) {
             article.summary = meta.ogDescription
             article.description = undefined
             article.secondaryUrl = article.comments
+        } else if (feed.feedUrl.indexOf('hnrss.org') != -1) {
+            //console.log(article)
+
         } else if (feed.feedUrl.indexOf('reddit') != -1) {
             // Reddit doesn't provide the target url so we cant show nice secondary actions
+        } else if (feed.feedUrl.indexOf('producthunt') != -1) {
+            // The meta scraping fails for PH, seems like an issue with the DOM structure
         } else if (feed.feedUrl.indexOf('lobste.rs') != -1) {
             article.summary = meta.ogDescription
             article.description = undefined
@@ -175,7 +180,7 @@ function enrichArticle(article, callback) {
 
 function makeUrlAbsolute(baseUrl, url) {
 
-    if (url && url.indexOf('http') == -1) {
+    if (url && (url.indexOf('http') === -1)) {
 
         let uri = new URI(url)
         try {
