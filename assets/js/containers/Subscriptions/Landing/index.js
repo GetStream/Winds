@@ -6,7 +6,9 @@ import moment from 'moment'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
+// import Dialog from 'components/Dialog'
 import Truncate from 'components/Truncate'
+import ImportOPMLDialog from 'components/ImportOPMLDialog'
 import Subscription from 'containers/Subscriptions/components/Subscription'
 
 import * as SubscriptionActions from 'actions/Subscriptions'
@@ -17,6 +19,7 @@ class Subscriptions extends Component {
 
     state = {
         appending: false,
+        importOPMLDialog: false,
     }
 
     componentWillMount() {
@@ -52,16 +55,21 @@ class Subscriptions extends Component {
         if (this.$i || this.state.appending) clearTimeout(this.$i)
 
         this.$i = setTimeout(() => {
+
             const offset = document.body.scrollTop + window.innerHeight,
                 height = document.body.offsetHeight
 
             if (offset > (height - 500)) {
+
                 const subs = this.props.subscriptions
-                const len = subs.length
+                const len  = subs.length
+
                 this.setState({ appending: true, })
                 this.props.dispatch(SubscriptionActions.load(subs[len - 1].id))
                     .then(() => this.setState({ appending: false, }))
+
             }
+
         }, 100)
 
     }
@@ -92,6 +100,19 @@ class Subscriptions extends Component {
                             )}
                             </ul>
                         </div>
+                        <div className="open-opml-dialog">
+                            <a href="#" onClick={() => this.setState({ importOPMLDialog: true, })}>
+                                <svg width="16px" height="16px" viewBox="0 309 16 16">
+                                    <g id="ic_file_upload_black_18px" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(0.000000, 309.000000)">
+                                        <g id="Group">
+                                            <polygon id="Shape" points="0 0 16 0 16 16 0 16"></polygon>
+                                            <path d="M6,10.6666667 L10,10.6666667 L10,6.66666667 L12.6666667,6.66666667 L8,2 L3.33333333,6.66666667 L6,6.66666667 L6,10.6666667 Z M3.33333333,12 L12.6666667,12 L12.6666667,13.3333333 L3.33333333,13.3333333 L3.33333333,12 Z" id="Shape" fill="#99A9B3"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                Import OPML
+                            </a>
+                        </div>
                     </div>
                     <div className="col-lg-9 col-md-9 col-sm-12 right">
                         <ReactCSSTransitionGroup
@@ -119,6 +140,9 @@ class Subscriptions extends Component {
                         </div> : null}
                     </div>
                 </div>
+                <ImportOPMLDialog
+                    onRequestClose={() => this.setState({ importOPMLDialog: false, })}
+                    open={this.state.importOPMLDialog} />
             </div>
         )
 

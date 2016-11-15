@@ -61,6 +61,8 @@
 
     .following {
 
+        padding-bottom: 40px;
+
         a,
         a:hover,
         a:active {
@@ -82,6 +84,33 @@
 
     }
 
+    .open-opml-dialog {
+
+        border-top: 1px solid #E6E6E6;
+        padding-top: 45px;
+        margin-left: 10px;
+
+        svg {
+            position: relative;
+            top: 3px;
+            margin-right: 8px;
+        }
+
+        a, a:visited {
+            font-weight: 300;
+            font-size: 14px;
+            color: rgba(42,54,83,0.70);
+            letter-spacing: 0;
+            line-height: 16px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #16c98d;
+        }
+
+    }
+
     ul.article {
 
         cursor: pointer;
@@ -96,9 +125,7 @@
 
         &.read,
         &:hover {
-
             transition: background 0.3s linear;
-
         }
         &.read{
 

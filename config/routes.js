@@ -67,6 +67,7 @@ module.exports.routes = {
   'post /api/register': 'AuthController.register',
   'post /api/password_reset': 'AuthController.passwordReset',
   'post /api/update_password': 'UsersController.updatePassword',
+  'post /api/uploads/opml': 'UploadController.opml',
 
   // If a request to a URL doesn't match any of the custom routes above,
   // it is matched against Sails route blueprints.  See `config/blueprints.js`
