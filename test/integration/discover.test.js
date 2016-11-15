@@ -132,7 +132,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the facebook developer rss feed', function (done) {
+    it('finds the facebook developer rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)
@@ -141,7 +141,7 @@ describe('Discover', function() {
         .expect(200, done)
     })
 
-    it.skip('finds the firstround rss feed', function (done) {
+    it('finds the firstround rss feed', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
         .timeout(10000)

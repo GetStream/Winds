@@ -17,22 +17,28 @@ function fetch(feedUrl, callback) {
         timeout: 10000,
         pool: false,
         maxRedirects: 25,
-        jar: true
-    });
+        jar: true,
+        gzip: true
+    })
 
-    req.setMaxListeners(50);
+    req.setMaxListeners(50)
+    req.setHeader('user-agent', 'winds rss reader')
+    req.setHeader('accept', 'text/html,application/xhtml+xml')
 
     var feedparser = new FeedParser({
         addmeta: false,
         normalize: true,
         feedurl: feedUrl
-    });
+    })
 
     // define our handlers
     req.on('error', callback);
     req.on('response', function(res) {
         if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
-        let charset = getParams(res.headers['content-type'] || '').charset;
+        let encoding = res.headers['content-encoding'] || 'identity',
+            charset = getParams(res.headers['content-type'] || '').charset
+        sails.log.info(`Feed content encoding ${encoding}, charset ${charset}`)
+        res = maybeDecompress(res, encoding)
         res = maybeTranslate(res, charset)
         // And boom goes the dynamite
         res.pipe(feedparser)
@@ -78,6 +84,18 @@ function maybeTranslate(res, charset) {
 }
 
 exports.fetch = fetch;
+
+
+function maybeDecompress(res, encoding) {
+    const zlib = require('zlib')
+    var decompress;
+    if (encoding.match(/\bdeflate\b/)) {
+        decompress = zlib.createInflate();
+    } else if (encoding.match(/\bgzip\b/)) {
+        decompress = zlib.createGunzip();
+    }
+    return decompress ? res.pipe(decompress) : res;
+}
 
 function getParams(str) {
 
