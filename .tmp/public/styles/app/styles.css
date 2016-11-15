@@ -83,6 +83,22 @@
 :-ms-input-placeholder {
   color: #737373; }
 
+.import-opml-option {
+  position: absolute;
+  right: 10px;
+  top: -45px;
+  font-weight: 300 !important;
+  font-size: 14px !important;
+  color: rgba(42, 54, 83, 0.7) !important;
+  line-height: 16px;
+  text-decoration: none; }
+  .import-opml-option svg {
+    position: relative !important;
+    top: 3px !important;
+    margin-right: 8px !important; }
+  .import-opml-option a:hover {
+    color: #16C98D !important; }
+
 form {
   width: 100%;
   margin-top: 15%; }

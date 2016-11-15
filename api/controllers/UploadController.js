@@ -51,12 +51,9 @@ module.exports = {
 
                         if (name && name.indexOf('RSS') != -1) name = null
 
-                        // create the site, and after that create the feed
                         async.waterfall([
 
                             function(callback) {
-
-                                console.log('site')
 
                                 Sites.findOrCreate({
                                     siteUrl: siteUrl
@@ -64,9 +61,6 @@ module.exports = {
                                     siteUrl: siteUrl,
                                     name: name
                                 }).exec(callback)
-
-                                return console.log(callback)
-
 
                             }, function(site, callback) {
 
@@ -108,23 +102,23 @@ module.exports = {
                                             .then(response => {
                                                 callback(null, response)
                                             }).catch(err => {
-                                                console.log(err)
                                                 callback(err)
                                             })
 
                                     }
 
                                 ], function(err, results) {
-                                    console.log('ERR', err)
-                                    console.log('RESULTS', results)
+                                    console.warn('I WAS CALLLLLLLEDDDD')
                                     callback(err, results)
                                 })
 
                             }
+
                         ], function(err, results) {
                             console.log('completed for 1 url')
                             callback(err, results)
                         })
+
                     })
                 }
 

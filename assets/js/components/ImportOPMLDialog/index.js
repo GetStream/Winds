@@ -130,12 +130,6 @@ class ImportOPMLDialog extends Component {
                                     onChange={(e) => this.handleChange(e)}
                                     required={true} />
                                 {this.renderBtn()}
-                                {/* <button
-                                    type="submit"
-                                    className="btn text-uppercase import-opml"
-                                    onClick={this.handleFileClick}>
-                                    {this.state.status}
-                                </button> */}
                             </form>
                         </div>
                     </div>
