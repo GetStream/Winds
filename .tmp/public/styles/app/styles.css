@@ -630,10 +630,7 @@ body {
   overflow-x: hidden; }
 
 #root {
-  padding-top: 60px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column; }
+  padding-top: 60px; }
 
 .img-circle {
   height: 40px;
