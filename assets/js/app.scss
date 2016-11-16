@@ -10,9 +10,6 @@ body {
 
 #root {
     padding-top: 60px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
 .img-circle {
@@ -42,13 +39,4 @@ body {
 .page-leave.page-leave-active {
     opacity: 0.01;
     transition: opacity 300ms ease-in;
-}
-
-.flex-grow {
-  flex-grow: 1;
-}
-
-.flex-col {
-  display: flex;
-  flex-direction: column;
 }
