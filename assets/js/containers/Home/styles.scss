@@ -3,6 +3,7 @@
     font-size: 14px;
     color: #2A3754;
     margin-top: 25px;
+    font-weight: 300;
 
     .cta {
         background-color: #FAFAFA;
@@ -12,8 +13,11 @@
 
     .divider {
         height: 1px;
-        width: 10px;
-        background-color: #16C98D;
+        border-top: 1px solid #D8D8D8;
+        position: absolute;
+        width: 93%;
+        margin-top: 10px;
+        z-index: -1;
     }
 
     .exit {
@@ -27,6 +31,7 @@
     a:visited {
         font-family: 'Merriweather-Italic';
         font-size: 13px;
+        font-weight: 300;
         color: #16C98D;
         line-height: 21px;
         text-decoration: none;
@@ -280,6 +285,16 @@
 .appending-loader {
     position: fixed;
     bottom: 55px;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    svg { margin: auto; }
+}
+
+.appending-loader-main-feed {
+    position: fixed;
+    top: 15%;
     left: 0;
     right: 0;
     text-align: center;

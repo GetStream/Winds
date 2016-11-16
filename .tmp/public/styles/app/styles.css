@@ -684,15 +684,19 @@ body {
 .realtime-notifications {
   font-size: 14px;
   color: #2A3754;
-  margin-top: 25px; }
+  margin-top: 25px;
+  font-weight: 300; }
   .realtime-notifications .cta {
     background-color: #FAFAFA;
     width: 195px;
     float: left; }
   .realtime-notifications .divider {
     height: 1px;
-    width: 10px;
-    background-color: #16C98D; }
+    border-top: 1px solid #D8D8D8;
+    position: absolute;
+    width: 93%;
+    margin-top: 10px;
+    z-index: -1; }
   .realtime-notifications .exit {
     position: relative;
     cursor: pointer;
@@ -702,6 +706,7 @@ body {
   .realtime-notifications a:visited {
     font-family: 'Merriweather-Italic';
     font-size: 13px;
+    font-weight: 300;
     color: #16C98D;
     line-height: 21px;
     text-decoration: none;
@@ -891,6 +896,15 @@ body {
   right: 0;
   text-align: center; }
   .appending-loader svg {
+    margin: auto; }
+
+.appending-loader-main-feed {
+  position: fixed;
+  top: 15%;
+  left: 0;
+  right: 0;
+  text-align: center; }
+  .appending-loader-main-feed svg {
     margin: auto; }
 
 .articles {

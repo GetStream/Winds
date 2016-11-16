@@ -18,6 +18,7 @@ export const store = createStore(
     compose(applyMiddleware(
 
         store => next => action => Promise.resolve(action).then(next),
+
         thunk,
 
         syncMiddleware({
