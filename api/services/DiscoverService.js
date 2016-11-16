@@ -159,7 +159,7 @@ function findRSS(humanizedUrl, callback) {
             feedUrl = new URI(feedUrl).absoluteTo(url).normalize().toString()
 
             parse.fetch(feedUrl, function(err, meta, articles) {
-                callback(null, url, feedUrl, meta)
+                callback(err, url, feedUrl, meta)
             })
 
         } else {

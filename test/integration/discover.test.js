@@ -153,6 +153,34 @@ describe('Discover', function() {
         })
     })
 
+    it('doesnt find the cnet.com rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'cnet.com'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(400, function(err, result) {
+            console.log(result.body)
+            done()
+        })
+    })
+
+    it('doesnt find the michaelmoore rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'http://michaelmoore.com/'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(400, function(err, result) {
+            console.log(result.body)
+            done()
+        })
+    })
+
+
+
+
+
     it.skip('finds the reddit rss programming', function (done) {
       request(sails.hooks.http.app)
         .get('/api/rss/discover')
