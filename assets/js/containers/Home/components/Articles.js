@@ -36,9 +36,6 @@ class Article extends Component {
                         data-position={this.props.index}
                         onClick={this.trackEngagement}>
                         <Image src={this.props.object.imageSrc} />
-                        {/* <div
-                            className="image"
-                            style={{ backgroundImage: `url('${!this.props.object.imageSrc ? 'http://i.imgur.com/GPfS63U.png' : this.props.object.imageSrc }')`}} /> */}
                     </a>
                     <h2>
                         <a

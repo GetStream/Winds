@@ -1,0 +1,83 @@
+.import-opml-dialog {
+
+    .logo {
+        margin-top: 10%;
+    }
+
+    p {
+        margin-top: 45px;
+        font-size: 16px;
+        color: #2A3754;
+        line-height: 12px;
+    }
+
+    form {
+
+        margin-top: 5%;
+
+        input[type="file"] {
+            position: absolute;
+            left: -1000%;
+        }
+
+        button[type="submit"] {
+
+            display: inline;
+
+            &.import-opml,
+            &.imported-opml {
+                height: 40px;
+                width: 156px;
+                font-size: 14px;
+                letter-spacing: 2px;
+                line-height: 15px;
+                outline: none !important;
+                color: #16C98D;
+                border: 1px solid #16C98D;
+                border-radius: 0;
+                background-color: transparent;
+            }
+
+            &.parsing-opml {
+                color: #FFFFFF !important;
+                background-color: #D8D8D8 !important;
+                border: 1px solid #D8D8D8 !important;
+                outline: none !important;
+                text-align: left;
+                padding-left: 28px;
+
+                &:after {
+                    overflow: hidden;
+                    display: inline-block;
+                    vertical-align: bottom;
+                    -webkit-animation: ellipsis steps(4,end) 900ms infinite;
+                    animation: ellipsis steps(4,end) 900ms infinite;
+                    content: "\2026";
+                    width: 0px;
+                }
+
+                @keyframes ellipsis {
+                    to {
+                        width: 1.25em;
+                    }
+                }
+
+                @-webkit-keyframes ellipsis {
+                    to {
+                        width: 1.25em;
+                    }
+                }
+
+            }
+
+            &.invalid-opml {
+                color: red !important;
+                border: 1px solid red !important;
+                outline: none !important;
+            }
+
+        }
+
+    }
+
+}

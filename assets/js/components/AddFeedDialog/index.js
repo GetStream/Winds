@@ -18,11 +18,9 @@ class AddFeedDialog extends Component {
     }
 
     componentWillReceiveProps(props) {
-
         if (this.props.loading != props.loading && !props.loading) {
             this.setState({ url: '' })
         }
-
     }
 
     componentDidUpdate() {
@@ -80,6 +78,19 @@ class AddFeedDialog extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            {/* <div className="import-opml-option">
+                                <a href="#">
+                                    <svg width="16px" height="16px" viewBox="0 309 16 16">
+                                        <g id="ic_file_upload_black_18px" stroke="none" stroke-width="1" fill="none" fillRule="evenodd" transform="translate(0.000000, 309.000000)">
+                                            <g id="Group">
+                                                <polygon id="Shape" points="0 0 16 0 16 16 0 16"></polygon>
+                                                <path d="M6,10.6666667 L10,10.6666667 L10,6.66666667 L12.6666667,6.66666667 L8,2 L3.33333333,6.66666667 L6,6.66666667 L6,10.6666667 Z M3.33333333,12 L12.6666667,12 L12.6666667,13.3333333 L3.33333333,13.3333333 L3.33333333,12 Z" id="Shape" fill="#99A9B3"></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    Import OPML
+                                </a>
+                            </div> */}
                             <form onSubmit={this.handleSubmit}>
                                 <div className="url-container">
                                     <input

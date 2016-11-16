@@ -83,6 +83,22 @@
 :-ms-input-placeholder {
   color: #737373; }
 
+.import-opml-option {
+  position: absolute;
+  right: 10px;
+  top: -45px;
+  font-weight: 300 !important;
+  font-size: 14px !important;
+  color: rgba(42, 54, 83, 0.7) !important;
+  line-height: 16px;
+  text-decoration: none; }
+  .import-opml-option svg {
+    position: relative !important;
+    top: 3px !important;
+    margin-right: 8px !important; }
+  .import-opml-option a:hover {
+    color: #16C98D !important; }
+
 form {
   width: 100%;
   margin-top: 15%; }
@@ -910,6 +926,60 @@ body {
 .feed-leave.feed-leave-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in; }
+.import-opml-dialog .logo {
+  margin-top: 10%; }
+
+.import-opml-dialog p {
+  margin-top: 45px;
+  font-size: 16px;
+  color: #2A3754;
+  line-height: 12px; }
+
+.import-opml-dialog form {
+  margin-top: 5%; }
+  .import-opml-dialog form input[type="file"] {
+    position: absolute;
+    left: -1000%; }
+  .import-opml-dialog form button[type="submit"] {
+    display: inline; }
+    .import-opml-dialog form button[type="submit"].import-opml, .import-opml-dialog form button[type="submit"].imported-opml {
+      height: 40px;
+      width: 156px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      line-height: 15px;
+      outline: none !important;
+      color: #16C98D;
+      border: 1px solid #16C98D;
+      border-radius: 0;
+      background-color: transparent; }
+    .import-opml-dialog form button[type="submit"].parsing-opml {
+      color: #FFFFFF !important;
+      background-color: #D8D8D8 !important;
+      border: 1px solid #D8D8D8 !important;
+      outline: none !important;
+      text-align: left;
+      padding-left: 28px; }
+      .import-opml-dialog form button[type="submit"].parsing-opml:after {
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+        -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+        animation: ellipsis steps(4, end) 900ms infinite;
+        content: "\2026";
+        width: 0px; }
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em; } }
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em; } }
+    .import-opml-dialog form button[type="submit"].invalid-opml {
+      color: red !important;
+      border: 1px solid red !important;
+      outline: none !important; }
 .material-icons, .subscriptions .mark-all-read a::before {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -952,18 +1022,37 @@ body {
         font-size: 16px !important;
         top: 3px;
         right: 12px; }
-  .subscriptions .following a,
-  .subscriptions .following a:hover,
-  .subscriptions .following a:active {
-    text-decoration: none; }
-  .subscriptions .following li {
-    font-size: 14px;
-    color: rgba(42, 54, 83, 0.7);
-    line-height: 16px;
-    margin-left: 10px;
-    margin-bottom: 10px; }
-    .subscriptions .following li img {
-      margin-right: 10px; }
+  .subscriptions .following {
+    padding-bottom: 40px; }
+    .subscriptions .following a,
+    .subscriptions .following a:hover,
+    .subscriptions .following a:active {
+      text-decoration: none; }
+    .subscriptions .following li {
+      font-size: 14px;
+      color: rgba(42, 54, 83, 0.7);
+      line-height: 16px;
+      margin-left: 10px;
+      margin-bottom: 10px; }
+      .subscriptions .following li img {
+        margin-right: 10px; }
+  .subscriptions .open-opml-dialog {
+    border-top: 1px solid #E6E6E6;
+    padding-top: 45px;
+    margin-left: 10px; }
+    .subscriptions .open-opml-dialog svg {
+      position: relative;
+      top: 3px;
+      margin-right: 8px; }
+    .subscriptions .open-opml-dialog a, .subscriptions .open-opml-dialog a:visited {
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(42, 54, 83, 0.7);
+      letter-spacing: 0;
+      line-height: 16px;
+      text-decoration: none; }
+    .subscriptions .open-opml-dialog a:hover {
+      color: #16c98d; }
   .subscriptions ul.article {
     cursor: pointer;
     display: flex;

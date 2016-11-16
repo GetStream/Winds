@@ -8,6 +8,13 @@ let sails   = require('sails'),
 
 require('dotenv').config()
 
+
+var argv = require('yargs')
+    .alias('v', 'verbosity')
+    .string('v')
+    .describe('v', 'set the verbosity level')
+    .default('v', 'warn')
+
 function isLocalConnection(connection) {
     let local = false
     if (connection.adapter == 'sails-disk') {
@@ -26,7 +33,7 @@ before(function(done) {
           "sockets": false,
           "pubsub": false
       },
-      log: { level: 'warn' }
+      log: { level: argv.v }
   }, function(err, server) {
 
     if (err) return done(err)

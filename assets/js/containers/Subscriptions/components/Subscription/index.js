@@ -34,7 +34,6 @@ class Subscription extends Component {
             <ul className="list-unstyled" onClick={this.handleClick}>
                 <li className="article">
                     <div className="row">
-
                         <div className="col-lg-12">
                             <ul className={classes.join(' ')}>
                                 <li>
