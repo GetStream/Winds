@@ -177,9 +177,29 @@ describe('Discover', function() {
         })
     })
 
+    it('finds the coreos rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'https://coreos.com/atom.xml'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(200, function(err, result) {
+            console.log(result.body)
+            done()
+        })
+    })
 
-
-
+    it('finds the nodejs rss feed', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/rss/discover')
+        .timeout(10000)
+        .query({ url: 'http://blog.nodejs.org/feed/'})
+        .set('Authorization', `JWT ${test.token}`)
+        .expect(200, function(err, result) {
+            console.log(result.body)
+            done()
+        })
+    })
 
     it.skip('finds the reddit rss programming', function (done) {
       request(sails.hooks.http.app)
