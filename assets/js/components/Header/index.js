@@ -119,6 +119,7 @@ class Header extends Component {
                     loading={this.state.loading}
                     error={this.state.error}
                     onRequestClose={() => this.setState({ addFeedOpen: false, })} />
+                    
             </nav>
 
         )

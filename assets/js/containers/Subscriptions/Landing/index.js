@@ -6,7 +6,6 @@ import moment from 'moment'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-// import Dialog from 'components/Dialog'
 import Truncate from 'components/Truncate'
 import ImportOPMLDialog from 'components/ImportOPMLDialog'
 import Subscription from 'containers/Subscriptions/components/Subscription'
@@ -57,7 +56,7 @@ class Subscriptions extends Component {
         this.$i = setTimeout(() => {
 
             const offset = document.body.scrollTop + window.innerHeight,
-                height = document.body.offsetHeight
+                  height = document.body.offsetHeight
 
             if (offset > (height - 500)) {
 

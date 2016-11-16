@@ -30,14 +30,14 @@ module.exports = {
 
                 function addFeed(feedUrl, callback) {
 
-                    console.log('inserting', feedUrl)
+                    sails.log.info(`starting to add url`, feedUrl)
 
                     parse.fetch(feedUrl, function(err, rssMeta, articles) {
 
-                        console.log(rssMeta)
-
                         if (err) {
-                            return res.badRequest('Sorry, we could not figure out which url you\'re looking for.')
+                            sails.log.warn('failed to add feed', err)
+                            // we dont break if 1 feed breaks
+                            return callback(null, null)
                         }
 
                         const hostname = urlLibrary.parse(feedUrl).hostname
@@ -62,9 +62,9 @@ module.exports = {
                                     name: name
                                 }).exec(callback)
 
-                            }, function(site, callback) {
 
-                                console.log('site', site)
+                            },
+                            function(site, callback) {
 
                                 Feeds.findOrCreate({
                                     feedUrl: feedUrl
@@ -74,27 +74,23 @@ module.exports = {
                                     feedUrl: feedUrl
                                 }).exec(callback)
 
-                            }, function(feed, callback) {
-
-                                console.log('follow and sync')
+                            },
+                            // TODO: Maybe refactor this to follow service
+                            function(feed, seriesCallback) {
 
                                 async.parallel([
 
-                                    function(callback) {
-
-                                        console.log('follow')
+                                    callback => {
 
                                         sails.models.follows.findOrCreate({
                                             type: 'feed',
                                             feed: feed.id,
                                             user: req.user.id
-                                        })
+                                        }).exec(callback)
 
                                     },
 
-                                    function(callback) {
-
-                                        console.log('sync')
+                                    callback => {
 
                                         let timelineFeed = StreamService.client.feed('timeline', req.user.id)
 
@@ -107,24 +103,24 @@ module.exports = {
 
                                     }
 
-                                ], function(err, results) {
-                                    console.warn('I WAS CALLLLLLLEDDDD')
-                                    callback(err, results)
-                                })
+                                ],
+                                seriesCallback)
 
                             }
 
                         ], function(err, results) {
-                            console.log('completed for 1 url')
-                            callback(err, results)
+                            sails.log.info(`completed adding url`, feedUrl)
+                            if (err) {
+                                sails.log.warn(`failed to add feed`, err)
+                            }
+                            // dont halt import if there is an error with 1 feed
+                            return callback(null, results)
                         })
 
                     })
                 }
 
-                // TODO: 1 -> 30
-                async.mapLimit(urls, 1, addFeed, function(err, results) {
-                    console.log('all done ye ye')
+                async.mapLimit(urls, 30, addFeed, function(err, results) {
                     res.send(200)
                 })
 
