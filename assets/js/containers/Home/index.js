@@ -35,6 +35,11 @@ class Home extends Component {
         }
     }
 
+    handleReload = e => {
+        e.preventDefault()
+        window.location.reload()
+    }
+
     render() {
 
         if (!this.props.feeds.length) return null
@@ -42,6 +47,17 @@ class Home extends Component {
         return (
             <div>
                 <div className="container-fluid">
+                    {/* <div className="container-fluid realtime-notifications">
+                        <div className="cta">
+                            3 New Articles <a href="#" onClick={this.handleReload}>Reload Now</a>
+                        </div>
+                        <div className="divider">FOO</div>
+                        <div className="exit">
+                            <svg width="9px" height="9px" viewBox="1191 0 9 9">
+                                <path d="M1196.45,4.03525 L1198.925,1.56025 C1199.121,1.36525 1199.121,1.04825 1198.925,0.85325 L1198.218,0.14625 C1198.023,-0.04875 1197.706,-0.04875 1197.511,0.14625 L1195.036,2.62125 L1192.561,0.14625 C1192.366,-0.04875 1192.049,-0.04875 1191.854,0.14625 L1191.147,0.85325 C1190.951,1.04825 1190.951,1.36525 1191.147,1.56025 L1193.622,4.03525 L1191.147,6.51025 C1190.951,6.70525 1190.951,7.02225 1191.147,7.21725 L1191.854,7.92425 C1192.049,8.11925 1192.366,8.11925 1192.561,7.92425 L1195.036,5.44925 L1197.511,7.92425 C1197.706,8.11925 1198.023,8.11925 1198.218,7.92425 L1198.925,7.21725 C1199.121,7.02125 1199.121,6.70525 1198.925,6.51025 L1196.45,4.03525 Z" id="X_1" stroke="none" fill-opacity="0.599999964" fill="#99A9B3" fillRule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div> */}
                     <div className="container-fluid masonry">
                         <div className="row row-1">
                             <div className="col-lg-3 col-md-12 col-sm-12">

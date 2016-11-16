@@ -38,9 +38,9 @@
     "isomorphic-fetch": "^2.2.1",
     "md5": "^2.2.1",
     "moment": "^2.16.0",
-    "mongoose": "^4.6.7",
+    "mongoose": "^4.6.8",
     "node-opml-parser": "^1.0.0",
-    "node-sass": "^3.12.2",
+    "node-sass": "^3.13.0",
     "nodemailer-html-to-text": "^2.1.0",
     "normalize-html-whitespace": "^0.2.0",
     "normalize-url": "^1.8.0",
@@ -53,11 +53,11 @@
     "passport-local": "^1.0.0",
     "qs": "^6.3.0",
     "randomstring": "^1.1.5",
-    "raven-js": "^3.8.0",
+    "raven-js": "^3.8.1",
     "rc": "1.1.6",
-    "react": "^15.3.2",
-    "react-addons-css-transition-group": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^15.4.0",
+    "react-addons-css-transition-group": "^15.4.0",
+    "react-dom": "^15.4.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-hover": "^0.6.2",
     "react-redux": "^4.4.6",
@@ -80,7 +80,7 @@
     "style-loader": "^0.13.1",
     "urijs": "^1.18.2",
     "valid-url": "^1.0.9",
-    "yargs": "^6.3.0"
+    "yargs": "^6.4.0"
   },
   "scripts": {
     "start": "node app.js",
@@ -93,11 +93,11 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.15",
-    "eslint": "^3.10.0",
+    "eslint": "^3.10.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.1",
-    "eslint-plugin-react": "^6.6.0",
+    "eslint-plugin-react": "^6.7.1",
     "mocha-lcov-reporter": "^1.2.0",
     "supertest": "^2.0.1"
   }

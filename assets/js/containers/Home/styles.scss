@@ -1,10 +1,47 @@
+.realtime-notifications {
+
+    font-size: 14px;
+    color: #2A3754;
+    margin-top: 25px;
+
+    .cta {
+        background-color: #FAFAFA;
+        width: 195px;
+        float: left;
+    }
+
+    .divider {
+        height: 1px;
+        width: 10px;
+        background-color: #16C98D;
+    }
+
+    .exit {
+        position: relative;
+        cursor: pointer;
+        float: right;
+    }
+
+    a,
+    a:hover,
+    a:visited {
+        font-family: 'Merriweather-Italic';
+        font-size: 13px;
+        color: #16C98D;
+        line-height: 21px;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+}
+
 .masonry {
 
-    .col-lg-3{
+    .col-lg-3 {
         margin-bottom: 60px;
     }
 
-    .col-sm-6{
+    .col-sm-6 {
         margin-bottom: 30px;
     }
 
@@ -50,7 +87,8 @@
     .row-1 {
         min-height: 390px;
         margin-bottom: 19px;
-        .margin-btm{
+
+        .margin-btm {
             margin-bottom: 60px;
         }
 
