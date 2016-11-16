@@ -32,7 +32,7 @@ var argv = require('yargs')
     .alias('v', 'verbosity')
     .string('v')
     .describe('v', 'set the verbosity level')
-    .default('v', 'warn')
+    .default('v', 'info')
     .help('h')
     .alias('h', 'help')
     .epilog('Happy reading!')
@@ -70,16 +70,46 @@ app.load({
     } else {
         var scrapeInterval = moment().subtract('minutes', 3).toISOString()
         sails.log.info(`Scraping all feeds that are older than ${scrapeInterval}`)
-        Feeds.find({
-                or: [
-                    {
-                        lastScraped: {'<': scrapeInterval}
-                    },
-                    {
-                        lastScraped: null
-                    }
-                ]
-            }).exec(scrapeFeedsBound)
+        async.waterfall(
+        [callback=>{
+            Feeds.count({lastScraped: null}).exec(function(err, results) {
+                sails.log.info(`These feeds have never been scraped`, results)
+                callback(err, results)
+            })
+        }, function(count, callback) {
+            Feeds.count({lastScraped: {'<': scrapeInterval}}).exec(function(err, results) {
+                sails.log.info(`These feeds need to be updated`, results)
+                callback(err, results)
+            })
+        }, function(count, callback) {
+            Feeds.count({
+                    or: [
+                        {
+                            lastScraped: {'<': scrapeInterval}
+                        },
+                        {
+                            lastScraped: null
+                        }
+                    ]
+                }).exec(function(err, results) {
+                sails.log.info(`In total these feeds need to be updated`, results)
+                callback(err, results)
+            })
+        }, function(count, callback) {
+            // prioritize feeds that have never been scraped
+            Feeds.find({
+                    or: [
+                        {
+                            lastScraped: {'<': scrapeInterval}
+                        },
+                        {
+                            lastScraped: null
+                        }
+                    ]
+                }).sort('lastScraped ASC').exec(function(err, results) {
+                    scrapeFeedsBound(err, results)
+                })
+        }])
     }
 
  })
