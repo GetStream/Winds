@@ -32,7 +32,10 @@ function fetch(feedUrl, callback) {
     })
 
     // define our handlers
-    req.on('error', callback);
+    let feedRequestError
+    req.on('error', function(err, response) {
+        feedRequestError = err
+    })
     req.on('response', function(res) {
         if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
         let encoding = res.headers['content-encoding'] || 'identity',
@@ -42,7 +45,7 @@ function fetch(feedUrl, callback) {
         res = maybeTranslate(res, charset)
         // And boom goes the dynamite
         res.pipe(feedparser)
-    });
+    })
 
     let feedParseError
     feedparser.on('error', function(err, response) {
@@ -58,7 +61,7 @@ function fetch(feedUrl, callback) {
     });
 
     feedparser.on('end', function() {
-        callback(feedParseError, feedparser.meta, items);
+        callback(feedRequestError || feedParseError, feedparser.meta, items);
     });
 
 }
