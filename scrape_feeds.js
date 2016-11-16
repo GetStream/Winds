@@ -106,7 +106,7 @@ app.load({
                             lastScraped: null
                         }
                     ]
-                }).sort('lastScraped ASC').exec(function(err, results) {
+                }).sort('topic DESC lastScraped ASC').exec(function(err, results) {
                     scrapeFeedsBound(err, results)
                 })
         }])
