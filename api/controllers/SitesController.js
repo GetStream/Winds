@@ -110,7 +110,9 @@ module.exports = {
         ], function(err, site, feed) {
             if (err) {
                 sails.log.error('Failed to add the RSS feed', err)
-                return res.badRequest('Sorry, failed to add the RSS feed.')
+                sails.models.failures.findOrCreate({user: req.user.id, url: humanizedUrl}).exec(function(err, results) {
+                    return res.badRequest('Sorry, failed to add the RSS feed.')
+                })            
             } else {
                 sails.log.verbose('succesfully completed discovery site, feed', site.id, feed.id)
                 // all good return

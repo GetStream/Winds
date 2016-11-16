@@ -5,7 +5,7 @@
  * - Set `pool` to false if you send lots of requests using "request" library.
  */
 
-
+const zlib = require('zlib')
 
 function fetch(feedUrl, callback) {
 
@@ -32,7 +32,7 @@ function fetch(feedUrl, callback) {
     })
 
     // define our handlers
-    let feedRequestError
+    let feedRequestError, feedResultError
     req.on('error', function(err, response) {
         feedRequestError = err
     })
@@ -41,10 +41,15 @@ function fetch(feedUrl, callback) {
         let encoding = res.headers['content-encoding'] || 'identity',
             charset = getParams(res.headers['content-type'] || '').charset
         sails.log.info(`Feed content encoding ${encoding}, charset ${charset}`)
+        res.on('error', function(err){
+            feedResultError = err
+        })
+
         res = maybeDecompress(res, encoding)
         res = maybeTranslate(res, charset)
         // And boom goes the dynamite
         res.pipe(feedparser)
+
     })
 
     let feedParseError
@@ -61,7 +66,8 @@ function fetch(feedUrl, callback) {
     });
 
     feedparser.on('end', function() {
-        callback(feedRequestError || feedParseError, feedparser.meta, items);
+        let err = feedRequestError || feedParseError || feedResultError
+        callback(err, feedparser.meta, items);
     });
 
 }
@@ -90,14 +96,21 @@ exports.fetch = fetch;
 
 
 function maybeDecompress(res, encoding) {
-    const zlib = require('zlib')
-    var decompress;
+
+    let decompress
+
     if (encoding.match(/\bdeflate\b/)) {
-        decompress = zlib.createInflate();
+        decompress = zlib.createInflate()
     } else if (encoding.match(/\bgzip\b/)) {
-        decompress = zlib.createGunzip();
+        decompress = zlib.createGunzip()
     }
-    return decompress ? res.pipe(decompress) : res;
+    let newRes = decompress ? res.pipe(decompress) : res;
+
+    newRes.on('error', err => {
+        // emit the error on the original
+        res.emit('error', err)
+    })
+    return newRes
 }
 
 function getParams(str) {
