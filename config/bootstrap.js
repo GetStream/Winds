@@ -9,7 +9,12 @@
  * http://links.sailsjs.org/docs/config/bootstrap
  */
 
-require('dotenv').config()
+if (process.env.NODE_ENV == 'testing') {
+    console.log('using test credentials')
+    require('dotenv').config({path: './test/.env'})
+} else {
+    require('dotenv').config()
+}
 
 module.exports.bootstrap = function(cb) {
   sails.log.info('loading environment variables...')

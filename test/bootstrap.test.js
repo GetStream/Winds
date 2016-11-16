@@ -6,7 +6,7 @@ let sails   = require('sails'),
     env     = require('dotenv'),
     fs      = require('fs')
 
-require('dotenv').config()
+//require('dotenv').config()
 
 
 var argv = require('yargs')
