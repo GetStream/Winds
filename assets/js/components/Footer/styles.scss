@@ -1,10 +1,19 @@
 footer {
 
+    font-family: 'Merriweather';
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    background: rgba(255,255,255,0.90);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50);
+
     font-size: 13px;
     font-weight: 300;
     color: #99A9B3;
-    margin: 100px 18px 0 18px;
-    padding-bottom: 35px;
+
+    padding-top: 18px;
+    padding-bottom: 18px;
 
     a,
     a:hover,

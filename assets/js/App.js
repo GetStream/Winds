@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { browserHistory, Link, withRouter } from 'react-router'
 
-require('./app.scss')
-
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Header from 'components/Header'
@@ -69,8 +67,7 @@ export default class App extends React.Component {
         if (this.state.loading) return <div>Loading</div>
 
         return (
-            <div className="flex-grow flex-col">
-
+            <div>
                 <Sidebar
                     open={this.props.sidebar}
                     topics={this.props.topics}
@@ -87,7 +84,6 @@ export default class App extends React.Component {
                     onRequestClose={() => dispatch(PersonalizationActions.close())} />
 
                 <ReactCSSTransitionGroup
-                    className="flex-grow"
                     transitionName="page"
                     transitionEnterTimeout={300}
                     transitionLeaveTimeout={300}>
@@ -97,9 +93,10 @@ export default class App extends React.Component {
                 </ReactCSSTransitionGroup>
 
                 <Footer />
-
             </div>
         )
     }
 
 }
+
+require('./app.scss')

@@ -21,9 +21,8 @@ class Footer extends Component {
                             </em>
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-right">
-                            <a href="https://www.facebook.com/getstream.io/" target="_blank"><i className="fa fa-facebook"></i></a>
-                            <a href="https://github.com/getstream" target="_blank"><i className="fa fa-github"></i></a>
-                            <a href="https://twitter.com/getstream_io" target="_blank"><i className="fa fa-twitter"></i></a>
+                            <a href="https://github.com/getstream" target="_blank">GitHub</a>&nbsp;&nbsp;
+                            <a href="https://twitter.com/getstream_io" target="_blank">Twitter</a>
                         </div>
                     </div>
                 </div>

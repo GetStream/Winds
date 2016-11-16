@@ -258,10 +258,18 @@ form {
 .navbar svg.rss-add-icon:active > polygon {
   fill: #16C98D; }
 footer {
+  font-family: 'Merriweather';
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   font-size: 13px;
   font-weight: 300;
   color: #99A9B3;
-  margin: 100px 18px 35px 18px; }
+  padding-top: 18px;
+  padding-bottom: 18px; }
   footer a,
   footer a:hover,
   footer a:active {
@@ -622,7 +630,10 @@ body {
   overflow-x: hidden; }
 
 #root {
-  padding-top: 60px; }
+  padding-top: 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; }
 
 .img-circle {
   height: 40px;
