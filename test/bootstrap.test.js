@@ -6,7 +6,7 @@ let sails   = require('sails'),
     env     = require('dotenv'),
     fs      = require('fs')
 
-require('dotenv').config()
+//require('dotenv').config()
 
 
 var argv = require('yargs')
@@ -33,7 +33,7 @@ before(function(done) {
           "sockets": false,
           "pubsub": false
       },
-      log: { level: argv.v }
+      log: { level: 'info' }
   }, function(err, server) {
 
     if (err) return done(err)

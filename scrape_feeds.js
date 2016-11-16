@@ -24,7 +24,7 @@ var argv = require('yargs')
     .describe('a', 'the number of articles to insert per feed')
     .alias('c', 'concurrency')
     .number('c')
-    .default('c', 30)
+    .default('c', 100)
     .describe('c', 'the number of feeds to scrape concurrently. for debugging set this to 1')
     .alias('q', 'query')
     .string('q')
@@ -106,7 +106,7 @@ app.load({
                             lastScraped: null
                         }
                     ]
-                }).sort('lastScraped ASC').exec(function(err, results) {
+                }).sort('topic DESC lastScraped ASC').exec(function(err, results) {
                     scrapeFeedsBound(err, results)
                 })
         }])
