@@ -40,7 +40,7 @@ function fetch(feedUrl, callback) {
         if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
         let encoding = res.headers['content-encoding'] || 'identity',
             charset = getParams(res.headers['content-type'] || '').charset
-        sails.log.info(`Feed content encoding ${encoding}, charset ${charset}`)
+        sails.log.verbose(`Feed content encoding ${encoding}, charset ${charset}`)
         res.on('error', function(err){
             feedResultError = err
         })
