@@ -22,7 +22,6 @@ class Subscription extends Component {
         )
 
         window.open(this.props.articleUrl, '_blank')
-
     }
 
     render() {
