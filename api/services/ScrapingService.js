@@ -5,7 +5,7 @@ const parse     = require('./parse'),
       cheerio   = require('cheerio'),
       request   = require('request'),
       URI       = require('urijs'),
-      deepcopy  = require('deepcopy')
+      clone     = require('clone')
 
 module.exports = {
     scrapeFeed: scrapeFeed,
@@ -289,12 +289,12 @@ function isValidArticle(article) {
 }
 
 function articleChanged(first, second) {
-    let a = deepcopy(first),
-        b = deepcopy(second)
+    let a = clone(first),
+        b = clone(second)
         fields = ['updatedAt', 'publicationDate']
     fields.forEach(field => {
-        delete a[field]
-        delete b[field]
+        a[field] = 'articleChanged'
+        b[field] = 'articleChanged'
     })
     //var diff = require('deep-diff').diff;
     //var differences = diff(a, b);

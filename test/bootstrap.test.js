@@ -33,7 +33,7 @@ before(function(done) {
           "sockets": false,
           "pubsub": false
       },
-      log: { level: 'info' }
+      log: { level: 'warn' }
   }, function(err, server) {
 
     if (err) return done(err)
