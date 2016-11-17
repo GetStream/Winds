@@ -18,7 +18,7 @@
         "autorestart"     : true,
         "max_restarts"    : 1,
         "instances"       : 1,
-        "cron_restart"    : "*/5 * * * *",
+        "cron_restart"    : "*/10 * * * *",
     },
     {
         "name"            : "favicons",
@@ -29,6 +29,6 @@
         "autorestart"     : true,
         "max_restarts"    : 1,
         "instances"       : 1,
-        "cron_restart"    : "*/5 * * * *",
+        "cron_restart"    : "*/10 * * * *",
     }]
 }

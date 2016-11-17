@@ -130,8 +130,8 @@ class Sidebar extends Component {
                             <h3>Subscriptions</h3>
                             <ul className="list-unstyled">
                                 {this.props.sites.map(site => (
-                                    <li key={`site-${site.feed.site.id}`}>
-                                        <a href={normalizeUrl(site.feed.site.siteUrl)} target="_blank" key={`site-${site.feed.site.id}`}>
+                                    <li key={`site-${site.feed.site.id}-${Math.random()}`}>
+                                        <a href={normalizeUrl(site.feed.site.siteUrl)} target="_blank" key={`site-${site.feed.site.id}-${Math.random()}`}>
                                             <img src={!!site.feed.site.faviconUrl ? site.feed.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'} height="20" width="20" />&nbsp;
                                             <Truncate length={15}>{!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}</Truncate>
                                         </a>

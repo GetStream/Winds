@@ -1,36 +1,52 @@
 .realtime-notifications {
 
-    font-size: 14px;
-    color: #2A3754;
-    margin-top: 25px;
+    .banner {
 
-    .cta {
-        background-color: #FAFAFA;
-        width: 195px;
-        float: left;
-    }
-
-    .divider {
-        height: 1px;
-        width: 10px;
-        background-color: #16C98D;
-    }
-
-    .exit {
-        position: relative;
         cursor: pointer;
-        float: right;
-    }
+        height: 40px;
+        font-size: 14px;
+        color: #2A3754;
+        margin-top: 25px;
+        font-weight: 300;
+        background: #FFFFFF;
+        border: 1px solid rgba(22,201,141,0.20);
+        box-shadow: 0 1px 1px 0 rgba(0,0,0,0.10);
+        border-radius: 2px;
 
-    a,
-    a:hover,
-    a:visited {
-        font-family: 'Merriweather-Italic';
-        font-size: 13px;
-        color: #16C98D;
-        line-height: 21px;
-        text-decoration: none;
-        margin-left: 10px;
+        .cta {
+            top: 10px;
+            position: relative;
+        }
+
+        .exit {
+            background-color: #FAFAFA;
+            position: relative;
+            cursor: pointer;
+            float: right;
+            height: 38px;
+            width: 38px;
+            top: -21px;
+
+            svg {
+                top: 10px;
+                left: 16px;
+                position: relative;
+            }
+
+        }
+
+        a,
+        a:hover,
+        a:visited {
+            font-family: 'Merriweather-Italic';
+            font-size: 13px;
+            font-weight: 300;
+            color: #16C98D;
+            line-height: 21px;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
     }
 
 }
@@ -280,6 +296,16 @@
 .appending-loader {
     position: fixed;
     bottom: 55px;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    svg { margin: auto; }
+}
+
+.appending-loader-main-feed {
+    position: fixed;
+    top: 15%;
     left: 0;
     right: 0;
     text-align: center;

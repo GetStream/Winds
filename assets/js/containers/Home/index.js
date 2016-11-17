@@ -16,7 +16,10 @@ import Articles from 'containers/Home/components/Articles'
 import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
 
-@connect(state => ({ feeds: state.Feeds, sidebar: state.Sidebar, }))
+@connect(state => ({
+    feeds: state.Feeds,
+    sidebar: state.Sidebar,
+}))
 class Home extends Component {
 
     trackEngagement = (id, index) => this.props.dispatch(
@@ -25,6 +28,10 @@ class Home extends Component {
 
     componentWillMount() {
         this.props.dispatch(FeedActions.load())
+    }
+
+    componenetWillUpdate() {
+        console.log('UPDATE')
     }
 
     componentWillReceiveProps(props) {
@@ -42,20 +49,37 @@ class Home extends Component {
 
     render() {
 
-        if (!this.props.feeds.length) return null
+        if (!this.props.feeds.length) return (
+            <div className="appending-loader-main-feed">
+                <svg width="35px" height="35px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="uil-ring">
+                    <rect x="0" y="0" width="100" height="100" fill="none" className="bk"></rect>
+                    <defs>
+                        <filter id="uil-ring-shadow" x="-100%" y="-100%" width="300%" height="300%">
+                            <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0"></feOffset>
+                            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="0"></feGaussianBlur>
+                            <feBlend in="SourceGraphic" in2="blurOut" mode="normal"></feBlend>
+                        </filter>
+                    </defs>
+                    <path d="M10,50c0,0,0,0.5,0.1,1.4c0,0.5,0.1,1,0.2,1.7c0,0.3,0.1,0.7,0.1,1.1c0.1,0.4,0.1,0.8,0.2,1.2c0.2,0.8,0.3,1.8,0.5,2.8 c0.3,1,0.6,2.1,0.9,3.2c0.3,1.1,0.9,2.3,1.4,3.5c0.5,1.2,1.2,2.4,1.8,3.7c0.3,0.6,0.8,1.2,1.2,1.9c0.4,0.6,0.8,1.3,1.3,1.9 c1,1.2,1.9,2.6,3.1,3.7c2.2,2.5,5,4.7,7.9,6.7c3,2,6.5,3.4,10.1,4.6c3.6,1.1,7.5,1.5,11.2,1.6c4-0.1,7.7-0.6,11.3-1.6 c3.6-1.2,7-2.6,10-4.6c3-2,5.8-4.2,7.9-6.7c1.2-1.2,2.1-2.5,3.1-3.7c0.5-0.6,0.9-1.3,1.3-1.9c0.4-0.6,0.8-1.3,1.2-1.9 c0.6-1.3,1.3-2.5,1.8-3.7c0.5-1.2,1-2.4,1.4-3.5c0.3-1.1,0.6-2.2,0.9-3.2c0.2-1,0.4-1.9,0.5-2.8c0.1-0.4,0.1-0.8,0.2-1.2 c0-0.4,0.1-0.7,0.1-1.1c0.1-0.7,0.1-1.2,0.2-1.7C90,50.5,90,50,90,50s0,0.5,0,1.4c0,0.5,0,1,0,1.7c0,0.3,0,0.7,0,1.1 c0,0.4-0.1,0.8-0.1,1.2c-0.1,0.9-0.2,1.8-0.4,2.8c-0.2,1-0.5,2.1-0.7,3.3c-0.3,1.2-0.8,2.4-1.2,3.7c-0.2,0.7-0.5,1.3-0.8,1.9 c-0.3,0.7-0.6,1.3-0.9,2c-0.3,0.7-0.7,1.3-1.1,2c-0.4,0.7-0.7,1.4-1.2,2c-1,1.3-1.9,2.7-3.1,4c-2.2,2.7-5,5-8.1,7.1 c-0.8,0.5-1.6,1-2.4,1.5c-0.8,0.5-1.7,0.9-2.6,1.3L66,87.7l-1.4,0.5c-0.9,0.3-1.8,0.7-2.8,1c-3.8,1.1-7.9,1.7-11.8,1.8L47,90.8 c-1,0-2-0.2-3-0.3l-1.5-0.2l-0.7-0.1L41.1,90c-1-0.3-1.9-0.5-2.9-0.7c-0.9-0.3-1.9-0.7-2.8-1L34,87.7l-1.3-0.6 c-0.9-0.4-1.8-0.8-2.6-1.3c-0.8-0.5-1.6-1-2.4-1.5c-3.1-2.1-5.9-4.5-8.1-7.1c-1.2-1.2-2.1-2.7-3.1-4c-0.5-0.6-0.8-1.4-1.2-2 c-0.4-0.7-0.8-1.3-1.1-2c-0.3-0.7-0.6-1.3-0.9-2c-0.3-0.7-0.6-1.3-0.8-1.9c-0.4-1.3-0.9-2.5-1.2-3.7c-0.3-1.2-0.5-2.3-0.7-3.3 c-0.2-1-0.3-2-0.4-2.8c-0.1-0.4-0.1-0.8-0.1-1.2c0-0.4,0-0.7,0-1.1c0-0.7,0-1.2,0-1.7C10,50.5,10,50,10,50z" fill="#16c98d" filter="url(#uil-ring-shadow)">
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" repeatCount="indefinite" dur="1s"></animateTransform>
+                    </path>
+                </svg>
+            </div>
+        )
 
         return (
             <div>
                 <div className="container-fluid">
                     {/* <div className="container-fluid realtime-notifications">
-                        <div className="cta">
-                            3 New Articles <a href="#" onClick={this.handleReload}>Reload Now</a>
-                        </div>
-                        <div className="divider">FOO</div>
-                        <div className="exit">
-                            <svg width="9px" height="9px" viewBox="1191 0 9 9">
-                                <path d="M1196.45,4.03525 L1198.925,1.56025 C1199.121,1.36525 1199.121,1.04825 1198.925,0.85325 L1198.218,0.14625 C1198.023,-0.04875 1197.706,-0.04875 1197.511,0.14625 L1195.036,2.62125 L1192.561,0.14625 C1192.366,-0.04875 1192.049,-0.04875 1191.854,0.14625 L1191.147,0.85325 C1190.951,1.04825 1190.951,1.36525 1191.147,1.56025 L1193.622,4.03525 L1191.147,6.51025 C1190.951,6.70525 1190.951,7.02225 1191.147,7.21725 L1191.854,7.92425 C1192.049,8.11925 1192.366,8.11925 1192.561,7.92425 L1195.036,5.44925 L1197.511,7.92425 C1197.706,8.11925 1198.023,8.11925 1198.218,7.92425 L1198.925,7.21725 C1199.121,7.02125 1199.121,6.70525 1198.925,6.51025 L1196.45,4.03525 Z" id="X_1" stroke="none" fill-opacity="0.599999964" fill="#99A9B3" fillRule="evenodd"></path>
-                            </svg>
+                        <div className="banner">
+                            <div className="cta text-center" onClick={this.handleReload}>
+                                View 3 New Articles
+                            </div>
+                            <div className="exit">
+                                <svg width="9px" height="9px" viewBox="1176 236 9 9">
+                                    <path d="M1181.45,240.03525 L1183.925,237.56025 C1184.121,237.36525 1184.121,237.04825 1183.925,236.85325 L1183.218,236.14625 C1183.023,235.95125 1182.706,235.95125 1182.511,236.14625 L1180.036,238.62125 L1177.561,236.14625 C1177.366,235.95125 1177.049,235.95125 1176.854,236.14625 L1176.147,236.85325 C1175.951,237.04825 1175.951,237.36525 1176.147,237.56025 L1178.622,240.03525 L1176.147,242.51025 C1175.951,242.70525 1175.951,243.02225 1176.147,243.21725 L1176.854,243.92425 C1177.049,244.11925 1177.366,244.11925 1177.561,243.92425 L1180.036,241.44925 L1182.511,243.92425 C1182.706,244.11925 1183.023,244.11925 1183.218,243.92425 L1183.925,243.21725 C1184.121,243.02125 1184.121,242.70525 1183.925,242.51025 L1181.45,240.03525 Z" id="X_1" stroke="none" fillOpacity="0.599999964" fill="#99A9B3" fillRule="evenodd"></path>
+                                </svg>
+                            </div>
                         </div>
                     </div> */}
                     <div className="container-fluid masonry">
