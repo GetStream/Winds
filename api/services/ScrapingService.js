@@ -4,7 +4,8 @@ const parse     = require('./parse'),
       async     = require('async'),
       cheerio   = require('cheerio'),
       request   = require('request'),
-      URI       = require('urijs')
+      URI       = require('urijs'),
+      deepcopy  = require('deepcopy')
 
 module.exports = {
     scrapeFeed: scrapeFeed,
@@ -287,6 +288,20 @@ function isValidArticle(article) {
 
 }
 
+function articleChanged(first, second) {
+    let a = deepcopy(first),
+        b = deepcopy(second)
+        fields = ['updatedAt', 'publicationDate']
+    fields.forEach(field => {
+        delete a[field]
+        delete b[field]
+    })
+    //var diff = require('deep-diff').diff;
+    //var differences = diff(a, b);
+    //console.log(differences)
+    return !_.isEqual(a, b)
+}
+
 function storeArticle(feedObject, rssArticle, callback) {
 
     if (!isValidArticle(rssArticle)) {
@@ -359,7 +374,8 @@ function storeArticle(feedObject, rssArticle, callback) {
                 return callback(err)
             }
             let article = updateArticles[0]
-            let changed = previousArticle == article
+            let changed = articleChanged(previousArticle, article)
+
             sails.log.verbose(`Created and updated a new article`, article, changed)
 
             let activity   = article.toActivity(),
