@@ -349,7 +349,7 @@ function storeArticle(feedObject, rssArticle, callback) {
     }
 
     Articles.findOrCreate({
-        site: feed.site,
+        feed: feed.id,
         or : [
           { articleUrl: rssArticle.link },
           { canonicalUrl: rssArticle.canonicalUrl }
