@@ -35,7 +35,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        let notification = notify.feed(
+        let notification = realtime.feed(
             'timeline',
             localStorage.getItem('id'),
             localStorage.getItem('timeline_token')

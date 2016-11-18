@@ -32,10 +32,10 @@ class Subscriptions extends Component {
     }
 
     componentDidMount() {
-        
+
         window.addEventListener('scroll', this.handleScroll)
 
-        let notification = notify.feed(
+        let notification = realtime.feed(
             'timeline',
             localStorage.getItem('id'),
             localStorage.getItem('timeline_token')
