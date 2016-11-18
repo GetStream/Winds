@@ -28,23 +28,23 @@ class Subscriptions extends Component {
     }
 
     componentWillMount() {
-
         this.props.dispatch(SubscriptionActions.load())
-
-        // let notification = notify.feed(
-        //     'timeline',
-        //     localStorage.getItem('id'),
-        //     localStorage.getItem('timeline_token')
-        // )
-        //
-        // notification.subscribe((data) => {
-        //     this.setState({ unread: this.state.unread + 1, })
-        // })
-
     }
 
     componentDidMount() {
+        
         window.addEventListener('scroll', this.handleScroll)
+
+        let notification = notify.feed(
+            'timeline',
+            localStorage.getItem('id'),
+            localStorage.getItem('timeline_token')
+        )
+
+        notification.subscribe((data) => {
+            this.setState({ unread: this.state.unread + 1, })
+        })
+
     }
 
     componentWillUnmount() {
