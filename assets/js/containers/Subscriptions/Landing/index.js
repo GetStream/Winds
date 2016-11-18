@@ -28,12 +28,8 @@ class Subscriptions extends Component {
     }
 
     componentWillMount() {
+
         this.props.dispatch(SubscriptionActions.load())
-    }
-
-    componentDidMount() {
-
-        window.addEventListener('scroll', this.handleScroll)
 
         let notification = realtime.feed(
             'timeline',
@@ -45,6 +41,10 @@ class Subscriptions extends Component {
             this.setState({ unread: this.state.unread + 1, })
         })
 
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll)
     }
 
     componentWillUnmount() {

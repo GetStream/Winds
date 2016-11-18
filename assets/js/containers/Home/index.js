@@ -32,9 +32,7 @@ class Home extends Component {
 
     componentWillMount() {
         this.props.dispatch(FeedActions.load())
-    }
 
-    componentDidMount() {
         let notification = realtime.feed(
             'timeline',
             localStorage.getItem('id'),
