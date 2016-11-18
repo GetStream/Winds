@@ -31,15 +31,15 @@ class Subscriptions extends Component {
 
         this.props.dispatch(SubscriptionActions.load())
 
-        // let notification = notify.feed(
-        //     'timeline',
-        //     localStorage.getItem('id'),
-        //     localStorage.getItem('timeline_token')
-        // )
-        //
-        // notification.subscribe((data) => {
-        //     this.setState({ unread: this.state.unread + 1, })
-        // })
+        let notification = notify.feed(
+            'timeline',
+            localStorage.getItem('id'),
+            localStorage.getItem('timeline_token')
+        )
+
+        notification.subscribe((data) => {
+            this.setState({ unread: this.state.unread + 1, })
+        })
 
     }
 
