@@ -10,10 +10,15 @@ import Truncate from 'components/Truncate'
 import ImportOPMLDialog from 'components/ImportOPMLDialog'
 import Subscription from 'containers/Subscriptions/components/Subscription'
 
+import * as OPMLDialogActions from 'actions/OPMLDialog'
 import * as SubscriptionActions from 'actions/Subscriptions'
 import * as SiteActions from 'actions/Sites'
 
-@connect(state => ({ subscriptions: state.Subscriptions, sites: state.Sites, }))
+@connect(state => ({
+    subscriptions: state.Subscriptions,
+    sites: state.Sites,
+    opmlDialog: state.ImportOPMLDialog,
+}))
 class Subscriptions extends Component {
 
     state = {
@@ -100,7 +105,7 @@ class Subscriptions extends Component {
                             </ul>
                         </div>
                         <div className="open-opml-dialog">
-                            <a href="#" onClick={() => this.setState({ importOPMLDialog: true, })}>
+                            <a href="#" onClick={() => this.props.dispatch(OPMLDialogActions.open())}>
                                 <svg width="16px" height="16px" viewBox="0 309 16 16">
                                     <g id="ic_file_upload_black_18px" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(0.000000, 309.000000)">
                                         <g id="Group">
@@ -140,8 +145,8 @@ class Subscriptions extends Component {
                     </div>
                 </div>
                 <ImportOPMLDialog
-                    onRequestClose={() => this.setState({ importOPMLDialog: false, })}
-                    open={this.state.importOPMLDialog} />
+                    onRequestClose={() => this.props.dispatch(OPMLDialogActions.close())}
+                    open={this.props.opmlDialog} />
             </div>
         )
 

@@ -34,6 +34,12 @@ class AddFeedDialog extends Component {
         this.props.onReset()
     }
 
+    handleClick = e => {
+        e.preventDefault()
+        this.props.onRequestClose()
+        this.props.onImport()
+    }
+
     handleSubmit = e => {
         e.preventDefault()
         this.props.onSubmit({
@@ -78,8 +84,8 @@ class AddFeedDialog extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            {/* <div className="import-opml-option">
-                                <a href="#">
+                            <div className="import-opml-option">
+                                <a href="#" onClick={this.handleClick}>
                                     <svg width="16px" height="16px" viewBox="0 309 16 16">
                                         <g id="ic_file_upload_black_18px" stroke="none" stroke-width="1" fill="none" fillRule="evenodd" transform="translate(0.000000, 309.000000)">
                                             <g id="Group">
@@ -90,7 +96,7 @@ class AddFeedDialog extends Component {
                                     </svg>
                                     Import OPML
                                 </a>
-                            </div> */}
+                            </div>
                             <form onSubmit={this.handleSubmit}>
                                 <div className="url-container">
                                     <input

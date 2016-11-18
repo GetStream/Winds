@@ -9,6 +9,7 @@ import AddFeedDialog from 'components/AddFeedDialog'
 import * as FeedActions from 'actions/Feeds'
 import * as SidebarActions from 'actions/Sidebar'
 import * as PersonalizationActions from 'actions/Personalization'
+import * as OPMLDialogActions from 'actions/OPMLDialog'
 
 @connect(state => ({ user: state.User, personalization: state.Personalization }))
 class Header extends Component {
@@ -118,8 +119,9 @@ class Header extends Component {
                     onReset={() => this.setState({ loading: false, error: false, })}
                     loading={this.state.loading}
                     error={this.state.error}
-                    onRequestClose={() => this.setState({ addFeedOpen: false, })} />
-                    
+                    onRequestClose={() => this.setState({ addFeedOpen: false, })}
+                    onImport={() => this.props.dispatch(OPMLDialogActions.open())} />
+
             </nav>
 
         )
