@@ -3,12 +3,12 @@ logs
 *.log
 .DS_Store
 npm-debug.log*
-.tmp/public/styles/styles.css
 # Runtime data
 pids
 *.pid
 *.seed
-#.tmp/public/js/
+.tmp/public/styles/styles.css
+.tmp/public/js/
 disk-storage
 #.tmp
 .tmp/uploads
