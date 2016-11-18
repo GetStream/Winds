@@ -911,7 +911,8 @@ body {
   right: 0;
   text-align: center; }
   .appending-loader-main-feed svg {
-    margin: auto; }
+    margin: auto;
+    margin-top: 15%; }
 
 .articles {
   display: -webkit-flex;
@@ -1053,6 +1054,42 @@ body {
 
 .subscriptions {
   margin-top: 10px; }
+  .subscriptions .realtime-notifications .banner {
+    cursor: pointer;
+    height: 40px;
+    font-size: 14px;
+    color: #2A3754;
+    margin-top: 25px;
+    font-weight: 300;
+    background: #FFFFFF;
+    border: 1px solid rgba(22, 201, 141, 0.2);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 2px; }
+    .subscriptions .realtime-notifications .banner .cta {
+      top: 10px;
+      position: relative; }
+    .subscriptions .realtime-notifications .banner .exit {
+      background-color: #FAFAFA;
+      position: relative;
+      cursor: pointer;
+      float: right;
+      height: 38px;
+      width: 38px;
+      top: -21px; }
+      .subscriptions .realtime-notifications .banner .exit svg {
+        top: 10px;
+        left: 16px;
+        position: relative; }
+    .subscriptions .realtime-notifications .banner a,
+    .subscriptions .realtime-notifications .banner a:hover,
+    .subscriptions .realtime-notifications .banner a:visited {
+      font-family: 'Merriweather-Italic';
+      font-size: 13px;
+      font-weight: 300;
+      color: #16C98D;
+      line-height: 21px;
+      text-decoration: none;
+      margin-left: 10px; }
   .subscriptions .container-fluid {
     margin-top: 30px;
     margin-left: 18px;

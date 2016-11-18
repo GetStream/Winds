@@ -22,16 +22,28 @@ import * as PersonalizationActions from 'actions/Personalization'
 }))
 class Home extends Component {
 
+    state = {
+        unread: 0,
+    }
+
     trackEngagement = (id, index) => this.props.dispatch(
         FeedActions.engage(id, index)
     )
 
     componentWillMount() {
-        this.props.dispatch(FeedActions.load())
-    }
 
-    componenetWillUpdate() {
-        console.log('UPDATE')
+        this.props.dispatch(FeedActions.load())
+
+        let notification = notify.feed(
+            'timeline',
+            localStorage.getItem('id'),
+            localStorage.getItem('timeline_token')
+        )
+
+        notification.subscribe((data) => {
+            this.setState({ unread: this.state.unread + 1, })
+        })
+
     }
 
     componentWillReceiveProps(props) {
@@ -40,6 +52,10 @@ class Home extends Component {
             dispatch(FeedActions.clear())
             dispatch(FeedActions.load())
         }
+    }
+
+    handleResetCount = () => {
+        this.setState({ unread: 0, })
     }
 
     handleReload = e => {
@@ -70,18 +86,22 @@ class Home extends Component {
         return (
             <div>
                 <div className="container-fluid">
-                    {/* <div className="container-fluid realtime-notifications">
-                        <div className="banner">
-                            <div className="cta text-center" onClick={this.handleReload}>
-                                View 3 New Articles
+                    {
+                        this.state.unread > 0 ? (
+                            <div className="container-fluid realtime-notifications">
+                                <div className="banner">
+                                    <div className="cta text-center" onClick={this.handleReload}>
+                                        View {this.state.unread} New Article{this.state.unread === 1 ? '' : 's'}
+                                    </div>
+                                    <div className="exit" onClick={this.handleResetCount}>
+                                        <svg width="9px" height="9px" viewBox="1176 236 9 9">
+                                            <path d="M1181.45,240.03525 L1183.925,237.56025 C1184.121,237.36525 1184.121,237.04825 1183.925,236.85325 L1183.218,236.14625 C1183.023,235.95125 1182.706,235.95125 1182.511,236.14625 L1180.036,238.62125 L1177.561,236.14625 C1177.366,235.95125 1177.049,235.95125 1176.854,236.14625 L1176.147,236.85325 C1175.951,237.04825 1175.951,237.36525 1176.147,237.56025 L1178.622,240.03525 L1176.147,242.51025 C1175.951,242.70525 1175.951,243.02225 1176.147,243.21725 L1176.854,243.92425 C1177.049,244.11925 1177.366,244.11925 1177.561,243.92425 L1180.036,241.44925 L1182.511,243.92425 C1182.706,244.11925 1183.023,244.11925 1183.218,243.92425 L1183.925,243.21725 C1184.121,243.02125 1184.121,242.70525 1183.925,242.51025 L1181.45,240.03525 Z" id="X_1" stroke="none" fillOpacity="0.599999964" fill="#99A9B3" fillRule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="exit">
-                                <svg width="9px" height="9px" viewBox="1176 236 9 9">
-                                    <path d="M1181.45,240.03525 L1183.925,237.56025 C1184.121,237.36525 1184.121,237.04825 1183.925,236.85325 L1183.218,236.14625 C1183.023,235.95125 1182.706,235.95125 1182.511,236.14625 L1180.036,238.62125 L1177.561,236.14625 C1177.366,235.95125 1177.049,235.95125 1176.854,236.14625 L1176.147,236.85325 C1175.951,237.04825 1175.951,237.36525 1176.147,237.56025 L1178.622,240.03525 L1176.147,242.51025 C1175.951,242.70525 1175.951,243.02225 1176.147,243.21725 L1176.854,243.92425 C1177.049,244.11925 1177.366,244.11925 1177.561,243.92425 L1180.036,241.44925 L1182.511,243.92425 C1182.706,244.11925 1183.023,244.11925 1183.218,243.92425 L1183.925,243.21725 C1184.121,243.02125 1184.121,242.70525 1183.925,242.51025 L1181.45,240.03525 Z" id="X_1" stroke="none" fillOpacity="0.599999964" fill="#99A9B3" fillRule="evenodd"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div> */}
+                        ) : null
+                    }
                     <div className="container-fluid masonry">
                         <div className="row row-1">
                             <div className="col-lg-3 col-md-12 col-sm-12">

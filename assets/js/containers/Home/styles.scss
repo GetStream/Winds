@@ -310,7 +310,11 @@
     right: 0;
     text-align: center;
 
-    svg { margin: auto; }
+    svg {
+        margin: auto;
+        margin-top: 15%;
+    }
+    
 }
 
 .articles {

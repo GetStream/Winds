@@ -30,7 +30,7 @@
             apiKey: '<%- sails.config.stream.streamApiKey %>',
             token: '<%- sails.config.stream.streamAnalyticsToken %>'
         });
-        notify = stream.connect('<%- sails.config.stream.streamApiKey %>')
+        notify = stream.connect('<%- sails.config.stream.streamApiKey %>', null, '<%- sails.config.stream.streamAppId %>');
     </script>
 
     <script type="text/javascript">

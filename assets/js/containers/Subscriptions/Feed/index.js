@@ -93,16 +93,20 @@ class Feed extends Component {
         if (this.$i || this.state.appending) clearTimeout(this.$i)
 
         this.$i = setTimeout(() => {
+
             const offset = document.body.scrollTop + window.innerHeight,
                 height = document.body.offsetHeight
 
             if (offset > (height - 100)) {
+
                 const subs = this.props.feed
                 const len = subs.length
+
                 this.setState({ appending: true, })
                 this.props.dispatch(SiteActions.loadArticles(this.props.params.id, subs[len - 1].id))
                     .then(() => this.setState({ appending: false, }))
             }
+
         }, 200)
 
     }

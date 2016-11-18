@@ -87,6 +87,7 @@ export const login = (email, password) => dispatch => {
         localStorage.setItem('id', res.response.user.id)
         localStorage.setItem('email', res.response.user.email)
         localStorage.setItem('token', res.response.user.token)
+        localStorage.setItem('timeline_token', res.response.user.feedTokens.timeline)
 
         client.setUser({ id: res.response.user.id, alias: res.response.user.email })
 
