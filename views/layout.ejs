@@ -26,11 +26,11 @@
     </script>
 
     <script type="text/javascript">
-        client = new StreamAnalytics({
+        var client = new StreamAnalytics({
             apiKey: '<%- sails.config.stream.streamApiKey %>',
             token: '<%- sails.config.stream.streamAnalyticsToken %>'
         });
-        notify = stream.connect(
+        var realtime = stream.connect(
             '<%- sails.config.stream.streamApiKey %>',
             null,
             '<%- sails.config.stream.streamAppId %>'
