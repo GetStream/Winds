@@ -21,6 +21,12 @@ if [[ "$*" == pm2-docker*process.json* ]]; then
   # Install production dependencies
   npm install --production
 
+  # If data has not been initialized, do it
+  if [ ! -f "$APP_CONTENT/.initial_data_loaded" ]; then
+    gosu app node "$APP_CONTENT/load_initial_data.js" \
+      && touch "$APP_CONTENT/.initial_data_loaded"
+  fi
+
   # Run the application as app user
   set -- gosu app "$@"
 fi
