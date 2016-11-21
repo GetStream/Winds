@@ -96,19 +96,24 @@ A reader without any data isn't much fun though. Let's insert a few topics and R
 node load_initial_data.js
 ```
 
+### Step 4 - Launch!
+
 Next, we need to run 2 cronjobs to ensure we keep on reading RSS articles and update the site's favicons. To make it easy to keep these cronjobs up and running, we use the amazing [PM2](https://github.com/Unitech/pm2) library:
 
 ```
 pm2 start process.json
 ```
 
-### Step 4 - Launch!
+This command runs 2 cronjobs and the app on port 80. You can change the port in `process.js`.
 
-Next, run `sails lift` in the command line like so:
+**Development**
+
+To run in development mode, run `sails lift` in the command line like so:
 
 ```bash
 sails lift
 ```
+
 You can now see your own RSS reader at: [localhost:1337](http://localhost:1337/)
 
 ### Step 5 - Enjoy
