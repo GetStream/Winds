@@ -101,10 +101,10 @@ node load_initial_data.js
 Next, we need to run 2 cronjobs to ensure we keep on reading RSS articles and update the site's favicons. To make it easy to keep these cronjobs up and running, we use the amazing [PM2](https://github.com/Unitech/pm2) library:
 
 ```
-pm2 start process.json
+pm2 start process_dev.json
 ```
 
-This command runs 2 cronjobs and the app on port 80. You can change the port in `process.js`.
+This command runs 3 cron jobs and the app on port 1337. You can change the port in `process_dev.json`. Alternatively, you can use `process_prod.json`. The production config uses a background worker for scraping the RSS feeds. It will work better if you expect to scrape thousands of feeds.
 
 **Development**
 
