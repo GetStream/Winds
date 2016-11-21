@@ -141,7 +141,6 @@ The [Sketch File](https://www.sketchapp.com/) files are available for [download 
 Contributions are much appreciated. Here are some ideas for improvements:
 
 * Secondary links (ie comments link for HNews and Lobsters)
-* Batch OPML import
 * Deploy to Heroku button
 * Follow suggestions (we're working on this)
 * Switching between feeds should be easier
@@ -152,7 +151,6 @@ Contributions are much appreciated. Here are some ideas for improvements:
 * Support more sites (RSS data quality is pretty poor and often needs custom logic per site/feed)
 * Search article's you've read using [Algolia](https://www.algolia.com/)
 * Folders/Groups
-* Sharing support (e.g. Buffer, Facebook, Twitter, etc.)
 
 ### Roadmap
 
