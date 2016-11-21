@@ -36,12 +36,16 @@ class ImportOPMLDialog extends Component {
             },
         }).then(res => {
 
+            console.log('res', res)
+
             this.setState({ success: true, })
             this.renderBtn()
 
             setTimeout(() => window.location.reload(), 2500)
 
         }).catch(err => {
+
+            console.log('err', err)
 
             this.setState({ error: true, })
             this.renderBtn()

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 
 import Avatar from 'components/Avatar'
 
@@ -120,7 +120,10 @@ class Header extends Component {
                     loading={this.state.loading}
                     error={this.state.error}
                     onRequestClose={() => this.setState({ addFeedOpen: false, })}
-                    onImport={() => this.props.dispatch(OPMLDialogActions.open())} />
+                    onImport={() => {
+                        browserHistory.push('/app/subscriptions')
+                        this.props.dispatch(OPMLDialogActions.open())
+                    }} />
 
             </nav>
 
