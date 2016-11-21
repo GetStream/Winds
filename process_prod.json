@@ -37,7 +37,7 @@
             "script"          : "worker.js",
             "watch"           : true,
             "log_date_format" : "YYYY-MM-DD HH:mm Z",
-            "instances"       : "max",
+            "instances"       : 6,
             "exec_mode"       : "cluster"
         }
     ]
