@@ -1,9 +1,10 @@
-var Sails     = require('sails').Sails,
+const Sails     = require('sails').Sails,
     app       = Sails(),
     striptags = require('striptags'),
     moment    = require('moment'),
     async     = require('async'),
-    cheerio   = require('cheerio')
+    cheerio   = require('cheerio'),
+    kue = require('kue')
 
 var argv = require('yargs')
     .usage('Usage: $0 <command> [options]')
@@ -18,6 +19,10 @@ var argv = require('yargs')
     .boolean('f')
     .default('f', false)
     .describe('f', 'scrape all feeds, not just those that aren\'t up to date')
+    .alias('t', 'tasks')
+    .boolean('t')
+    .default('t', false)
+    .describe('t', 'create tasks instead of running scraping locally')
     .alias('a', 'articles')
     .number('a')
     .default('a', 20)
@@ -53,10 +58,11 @@ app.load({
     sails.log.info('About to start scraping process')
 
     let numberOfActivities = argv.a || 20,
-        concurrency = argv.c || 10
+        concurrency = argv.c || 10,
+        createTasks = argv.t
 
     function scrapeFeedsBound(err, feeds) {
-        scrapeFeeds(err, feeds, numberOfActivities, concurrency)
+        scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks)
     }
 
     sails.log.info(`Going to scrape ${numberOfActivities} activities per feed`)
@@ -115,24 +121,41 @@ app.load({
  })
 
 // query the feed table for feeds we need to scrape
-function scrapeFeeds(err, feeds, numberOfActivities, concurrency) {
+function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks) {
 
+     let queue
+     if (createTasks) {
+         queue = kue.createQueue({redis: sails.config.tasks.redis})
+     }
      sails.log.info(`Found ${feeds.length} feeds we need to scrape`)
 
      if (err) sails.log.warn(err)
      if (!feeds) sails.log.verbose('No feeds to scrape.')
 
      function scrapeFeedBound(feed, callback) {
+         if (createTasks) {
+             let scrapeTask = queue.create('scrape_rss', {
+                 feedId: feed.id,
+                 startedAt: new Date()
+             }).ttl(1000*60*3).events(false).save( function(err){
+                 if (err) {
+                     sails.log.error(err)
+                 } else {
+                     sails.log.info(`start scrape rss task ${scrapeTask.id} for feed ${feed.id}`)
+                 }
+                 callback(err, null)
+             });
+         } else {
+             ScrapingService.scrapeFeed(feed, numberOfActivities, function(err, response) {
 
-         ScrapingService.scrapeFeed(feed, numberOfActivities, function(err, response) {
+                 if (err) {
+                    feed.scrapingErrors = feed.scrapingErrors + 100
+                 }
 
-             if (err) {
-                feed.scrapingErrors = feed.scrapingErrors + 100
-             }
+                 return callback(null, response)
 
-             return callback(null, response)
-
-         })
+             })
+         }
 
      }
 
