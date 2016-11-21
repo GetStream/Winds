@@ -1,34 +1,44 @@
 {
-    "apps" : [{
-        "name"            : "app",
-        "script"          : "app.js",
-        "watch"           : true,
-        "log_date_format" : "YYYY-MM-DD HH:mm Z",
-        "env" : {
-            "NODE_ENV": "production",
-            "PORT": 80,
+    "apps" : [
+        {
+            "name"            : "app",
+            "script"          : "app.js",
+            "watch"           : true,
+            "log_date_format" : "YYYY-MM-DD HH:mm Z",
+            "env" : {
+                "NODE_ENV": "production",
+                "PORT": 80,
+            }
+        },
+        {
+            "name"            : "feeds",
+            "script"          : "scrape_feeds.js",
+            "args"            : "-l -t",
+            "watch"           : true,
+            "log_date_format" : "YYYY-MM-DD HH:mm Z",
+            "autorestart"     : true,
+            "max_restarts"    : 1,
+            "instances"       : 1,
+            "cron_restart"    : "*/10 * * * *",
+        },
+        {
+            "name"            : "favicons",
+            "script"          : "scrape_favicons.js",
+            "args"            : "-l",
+            "watch"           : true,
+            "log_date_format" : "YYYY-MM-DD HH:mm Z",
+            "autorestart"     : true,
+            "max_restarts"    : 1,
+            "instances"       : 1,
+            "cron_restart"    : "*/10 * * * *",
+        },
+        {
+            "name"            : "worker",
+            "script"          : "worker.js",
+            "watch"           : true,
+            "log_date_format" : "YYYY-MM-DD HH:mm Z",
+            "instances"       : "max",
+            "exec_mode"       : "cluster"
         }
-    },
-    {
-        "name"            : "feeds",
-        "script"          : "scrape_feeds.js",
-        "args"            : "-l",
-        "watch"           : true,
-        "log_date_format" : "YYYY-MM-DD HH:mm Z",
-        "autorestart"     : true,
-        "max_restarts"    : 1,
-        "instances"       : 1,
-        "cron_restart"    : "*/10 * * * *",
-    },
-    {
-        "name"            : "favicons",
-        "script"          : "scrape_favicons.js",
-        "args"            : "-l",
-        "watch"           : true,
-        "log_date_format" : "YYYY-MM-DD HH:mm Z",
-        "autorestart"     : true,
-        "max_restarts"    : 1,
-        "instances"       : 1,
-        "cron_restart"    : "*/10 * * * *",
-    }]
+    ]
 }
