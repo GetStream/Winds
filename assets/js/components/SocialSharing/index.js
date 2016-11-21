@@ -79,14 +79,14 @@ class SocialSharing extends Component {
                 <div className="outer-container">
                     <div className="arrow-up"></div>
                     <ul className="list-unstyled inner-container">
-                        {/* <li onClick={this.handleFacebook}>
+                        <li onClick={this.handleFacebook}>
                             <div className="icon">
                                 <svg width="9px" height="16px" viewBox="20 22 9 16">
                                     <path d="M27,25 C26.7,25 26,25.472 26,26 L26,28 L29,28 L29,31 L26,31 L26,38 L23,38 L23,31 L20,31 L20,28 L23,28 L23,26 C23,23.794 24.961,22 27.062,22 L29,22 L29,25 L27,25 Z" id="Shape" stroke="none" fill="#99A9B3" fillRule="evenodd"></path>
                                 </svg>
                             </div>
                             <div className="network">Facebook</div>
-                        </li> */}
+                        </li>
                         <li onClick={this.handleTwitter}>
                             <div className="icon">
                                 <svg width="16px" height="14px" viewBox="17 79 16 14">
