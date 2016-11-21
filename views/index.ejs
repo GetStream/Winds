@@ -21,8 +21,8 @@
     </head>
     <body>
         <script>
-            if (window.location.hostname.indexOf('rss') >= 0) {
-                window.location.href = 'http://winds.getstream.io/?ref=producthunt'
+            if (window.location.hostname.indexOf('rss') >= 0 || location.protocol != 'https:') {
+                window.location.href = 'https://winds.getstream.io/?ref=producthunt'
             }
         </script>
         <script>
