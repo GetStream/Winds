@@ -33,17 +33,19 @@ class Home extends Component {
     )
 
     componentWillMount() {
+        
         this.props.dispatch(FeedActions.load())
 
-        // let notification = realtime.feed(
-        //     'timeline',
-        //     localStorage.getItem('id'),
-        //     localStorage.getItem('timeline_token')
-        // )
-        //
-        // notification.subscribe((data) => {
-        //     this.setState({ unread: this.state.unread + 1, })
-        // })
+        let notification = realtime.feed(
+            'timeline',
+            localStorage.getItem('id'),
+            localStorage.getItem('timeline_token')
+        )
+
+        notification.subscribe((data) => {
+            this.setState({ unread: this.state.unread + 1, })
+        })
+
     }
 
     componentWillReceiveProps(props) {
