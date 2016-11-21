@@ -4,5 +4,5 @@ module.exports.sentry = {
 };
 
 module.exports.http = {
-    baseUrl: 'http://winds.getstream.io'
+    baseUrl: process.env.API_BASE_URL
 };
