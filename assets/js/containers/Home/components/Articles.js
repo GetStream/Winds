@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
+import SocialSharing from 'components/SocialSharing'
 import Hostname from 'components/Hostname'
 import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
@@ -53,6 +54,7 @@ class Article extends Component {
                         onClick={this.trackEngagement}>
                         <Summary limit={80}>{this.props.object.summary}</Summary>
                     </a>
+                    <SocialSharing url={this.props.object.articleUrl} title={this.props.object.title} />
                     <a
                         href={this.props.object.articleUrl}
                         target="_blank"

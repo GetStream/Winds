@@ -121,6 +121,7 @@ module.exports = {
                 }
 
                 async.mapLimit(urls, 30, addFeed, function(err, results) {
+                    if (err) return res.send(500)
                     res.send(200)
                 })
 
