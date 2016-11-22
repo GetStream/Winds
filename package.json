@@ -20,6 +20,7 @@
     "chance": "^1.0.4",
     "cheerio": "^0.22.0",
     "clone": "^2.0.0",
+    "connect-redis": "^3.1.0",
     "css-loader": "^0.26.0",
     "dotenv": "^2.0.0",
     "ejs": "^2.5.2",
