@@ -53,12 +53,26 @@ class SocialSharing extends Component {
 
     handlePinterest = (e) => {
 
-        e.preventDefault
+        e.preventDefault()
 
         let intentUrl = `http://pinterest.com/pin/create/button`
         let articleUrl = `?url=${this.props.url}`
 
         let intent = intentUrl + articleUrl
+
+        window.open(intent, '_blank', 'width=800,height=600')
+
+    }
+
+    handlePocket = (e) => {
+
+        e.preventDefault()
+
+        let intentUrl = `https://getpocket.com/save`
+        let articleUrl = `?url=${encodeURI(this.props.url)}`
+        let title = `&title=${encodeURI(this.props.title)}`
+
+        let intent = intentUrl + articleUrl + title
 
         window.open(intent, '_blank', 'width=800,height=600')
 
@@ -113,6 +127,14 @@ class SocialSharing extends Component {
                             </div>
                             <div className="network">Pinterest</div>
                         </li>
+                        {/* <li onClick={this.handlePocket}>
+                            <div className="icon">
+                                <svg width="13px" height="16px" viewBox="17 190 13 16">
+                                    <path d="M21.9335225,200.581764 C21.5275225,202.784764 21.0335225,204.895764 19.5675225,205.999764 C19.1155225,202.670764 20.2325225,200.170764 20.7505225,197.515764 C19.8665225,195.972764 20.8565225,192.866764 22.7215225,193.631764 C25.0155225,194.573764 20.7345225,199.370764 23.6085225,199.969764 C26.6095225,200.594764 27.8335225,194.568764 25.9735225,192.609764 C23.2855225,189.780764 18.1475225,192.545764 18.7795225,196.595764 C18.9335225,197.586764 19.9195225,197.887764 19.1735225,199.253764 C17.4535225,198.857764 16.9395225,197.449764 17.0055225,195.573764 C17.1115225,192.502764 19.6665225,190.351764 22.2285225,190.053764 C25.4685225,189.677764 28.5095225,191.287764 28.9295225,194.449764 C29.4025225,198.017764 27.4675225,201.882764 24.0025225,201.604764 C23.0635225,201.528764 22.6685225,201.045764 21.9335225,200.581764 L21.9335225,200.581764 Z" id="Shape" stroke="none" fill="#99A9B3" fillRule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div className="network">Pocket</div>
+                        </li> */}
                     </ul>
                 </div>
             </div>
