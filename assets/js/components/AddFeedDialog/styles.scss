@@ -88,7 +88,7 @@ form {
             letter-spacing: 2px;
             line-height: 15px;
             border-radius: 0px;
-            background-color: #FFFFFF;
+            background-color: transparent;
             display: block;
             outline: none;
             &:hover,
@@ -112,6 +112,8 @@ form {
         bottom: 15px;
         outline: none !important;
         display: none;
+        width: 156px;
+        height: 40px;
     }
 
     .adding-feed {
@@ -125,6 +127,8 @@ form {
         display: none;
         text-align: left;
         padding-left: 35px;
+        width: 156px;
+        height: 40px;
 
         &:after {
             overflow: hidden;
@@ -155,9 +159,11 @@ form {
         right: 0;
         bottom: 15px;
         color: red !important;
+        background-color: transparent !important;
         border: 1px solid red !important;
-        outline: none !important;
-        display: none;
+        border-radius: 1px !important;
+        width: 156px;
+        height: 40px;
     }
 
 }
