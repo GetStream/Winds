@@ -31,15 +31,19 @@ class Subscriptions extends Component {
 
         this.props.dispatch(SubscriptionActions.load())
 
-        let notification = realtime.feed(
-            'timeline',
-            localStorage.getItem('id'),
-            localStorage.getItem('timeline_token')
-        )
+        let timelineToken = localStorage.getItem('timeline_token')
 
-        notification.subscribe((data) => {
-            this.setState({ unread: this.state.unread + 1, })
-        })
+        if(timelineToken) {
+            let notification = realtime.feed(
+                'timeline',
+                localStorage.getItem('id'),
+                localStorage.getItem('timeline_token')
+            )
+
+            notification.subscribe((data) => {
+                this.setState({ unread: this.state.unread + 1, })
+            })
+        }
 
     }
 

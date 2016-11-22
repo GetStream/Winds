@@ -36,15 +36,18 @@ class Home extends Component {
 
         this.props.dispatch(FeedActions.load())
 
-        let notification = realtime.feed(
-            'timeline',
-            localStorage.getItem('id'),
-            localStorage.getItem('timeline_token')
-        )
+        let timelineToken = localStorage.getItem('timeline_token')
+        if (timelineToken) {
+            let notification = realtime.feed(
+                'timeline',
+                localStorage.getItem('id'),
+                localStorage.getItem('timeline_token')
+            )
 
-        notification.subscribe((data) => {
-            this.setState({ unread: this.state.unread + 1, })
-        })
+            notification.subscribe((data) => {
+                this.setState({ unread: this.state.unread + 1, })
+            })
+        }
 
     }
 
