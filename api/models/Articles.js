@@ -15,6 +15,13 @@ module.exports = {
             type: 'url',
             required: true
         },
+        canonicalUrl: {
+            type: 'url',
+            required: true
+        },
+        hash: {
+            type: 'text'
+        },
         secondaryUrl: {
             type: 'url'
         },
@@ -56,10 +63,7 @@ module.exports = {
             type: 'array',
             defaultsTo: []
         },
-        canonicalUrl: {
-            type: 'url',
-            required: true
-        },
+
         syncedAt: {
             type: 'datetime'
         },

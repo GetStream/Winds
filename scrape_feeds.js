@@ -59,10 +59,11 @@ app.load({
 
     let numberOfActivities = argv.a || 20,
         concurrency = argv.c || 10,
-        createTasks = argv.t
+        createTasks = argv.t,
+        forceUpdate = argv.f
 
     function scrapeFeedsBound(err, feeds) {
-        scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks)
+        scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks, forceUpdate)
     }
 
     sails.log.info(`Going to scrape ${numberOfActivities} activities per feed`)
@@ -121,7 +122,7 @@ app.load({
  })
 
 // query the feed table for feeds we need to scrape
-function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks) {
+function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks, forceUpdate) {
 
      let queue
      if (createTasks) {
@@ -146,7 +147,7 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks) {
                  callback(err, null)
              });
          } else {
-             ScrapingService.scrapeFeed(feed, numberOfActivities, function(err, response) {
+             ScrapingService.scrapeFeed(feed, numberOfActivities, forceUpdate, function(err, response) {
 
                  if (err) {
                     feed.scrapingErrors = feed.scrapingErrors + 100

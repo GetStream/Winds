@@ -49,7 +49,7 @@ app.load({
             if (err) {
                 sails.log.error('error retrieving feed', err)
             }
-            ScrapingService.scrapeFeed(feed, 20, function(err, response) {
+            ScrapingService.scrapeFeed(feed, 20, false, function(err, response) {
                 sails.log.info(`completed scraping for feed ${feed.id}, url ${feed.feedUrl}`)
                 if (feed.scrapingErrors) {
                     sails.log.warn(`encountered ${feed.scrapingErrors} for feed ${feed.id}, url ${feed.feedUrl}`)

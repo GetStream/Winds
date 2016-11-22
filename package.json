@@ -48,6 +48,7 @@
     "normalize-html-whitespace": "^0.2.0",
     "normalize-url": "^1.8.0",
     "numeral": "^1.5.5",
+    "object-hash": "^1.1.5",
     "parse-http-header": "^1.0.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",

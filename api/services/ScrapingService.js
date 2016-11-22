@@ -5,60 +5,93 @@ const parse     = require('./parse'),
       cheerio   = require('cheerio'),
       request   = require('request'),
       URI       = require('urijs'),
-      clone     = require('clone')
+      clone     = require('clone'),
+      hash      = require('object-hash')
 
 module.exports = {
     scrapeFeed: scrapeFeed,
     getMetaInformation: getMetaInformation
 }
 
-function scrapeFeed(feed, numberOfActivities, callback) {
+function scrapeFeed(feed, numberOfActivities, forceUpdate, callback) {
 
-    sails.log.info(`Now scraping feed ${feed.feedUrl}`)
+    sails.log.info(`Now scraping feed ${feed.feedUrl}, numberOfActivities: ${numberOfActivities}, forceUpdate: ${forceUpdate} `)
 
     function storeArticleBound(article, callback) {
         storeArticle(feed, article, callback)
     }
 
-    // Scrape articles
-    parse.fetch(feed.feedUrl, function(err, meta, articles) {
+    async.waterfall([
+        callback => {
+            // make sure we get the last 30 hashes
+            sails.models.articles.find({where: {feed: feed.id}, limit: 30, sort: 'publicationDate DESC'}).exec(function(err, articles){
+                let existingHashes = {}
+                articles.forEach(article => {
+                    if (article.hash) {
+                        existingHashes[article.hash] = true
+                    }
+                })
+                return callback(err, existingHashes)
+            })
+        }, (existingHashes, callback) => {
+            // Scrape articles
+            parse.fetch(feed.feedUrl, function(err, meta, articles) {
 
-        if (err) {
-            return callback(err, null)
-        }
+                if (err) {
+                    return callback(err, null)
+                }
 
-        // Loop through articles
-        // https://github.com/danmactough/node-feedparser#list-of-article-properties
-        sails.log.info(`Found ${articles.length} articles to insert`)
+                // Loop through articles
+                // https://github.com/danmactough/node-feedparser#list-of-article-properties
+                sails.log.info(`Found ${articles.length} articles to insert`)
 
-        articles = articles.slice(0, numberOfActivities)
-        articles.forEach(function(article) {
-            article.feedObject = feed
-        })
-
-        // iterate through articles and enrich
-        async.map(articles, enrichArticle, function(err, enrichedArticles) {
-
-            // iterate through enrichedArticles and store
-            async.map(enrichedArticles, storeArticleBound, function(err, articleActivities) {
-
-                sails.log.info(`Completed scraping for feed ${feed.feedUrl} - ${feed.id} found ${articleActivities.length} activities`)
-
-                const now = new Date()
-                sails.models.feeds.update({
-                    id: feed.id
-                }, {
-                    lastScraped: now
-                }).exec(function(err, updatedFeed) {
-
-                    sails.log.info(`updated:${updatedFeed} last scraped at to ${now}`)
-                    return callback(null, articleActivities)
+                articles = articles.slice(0, numberOfActivities)
+                articles.forEach(function(article) {
+                    // add the hash, has to be the first thing before we modify
+                    article.hash = hash.MD5(article)
+                    article.feedObject = feed
 
                 })
 
+                // skip existing articles unless forceUpdate is set
+                // since article enrichment is heavy this makes the entire scraping process much faster
+                let newArticles = []
+                articles.forEach(function(article) {
+                    if (forceUpdate || !(article.hash in existingHashes)) {
+                        newArticles.push(article)
+                    } else {
+                        sails.log.info(`skipping article ${article.link} with hash ${article.hash}`)
+                    }
+                })
+                sails.log.info(`From those ${articles.length} articles, ${newArticles.length} are new`)
+
+                // iterate through articles and enrich
+                async.map(newArticles, enrichArticle, function(err, enrichedArticles) {
+
+                    // iterate through enrichedArticles and store
+                    async.map(enrichedArticles, storeArticleBound, function(err, articleActivities) {
+
+                        sails.log.info(`Completed scraping for feed ${feed.feedUrl} - ${feed.id} found ${articleActivities.length} activities`)
+
+                        const now = new Date()
+                        sails.models.feeds.update({
+                            id: feed.id
+                        }, {
+                            lastScraped: now
+                        }).exec(function(err, updatedFeed) {
+
+                            sails.log.info(`updated:${updatedFeed} last scraped at to ${now}`)
+                            return callback(null, articleActivities)
+
+                        })
+
+                    })
+                })
             })
-        })
-    })
+        }], callback)
+
+
+
 }
 
 function enrichArticle(article, callback) {
@@ -341,7 +374,8 @@ function storeArticle(feedObject, rssArticle, callback) {
         imageSrc: rssArticle.imageSrc,
         categories: rssArticle.categories,
         canonicalUrl: rssArticle.canonicalUrl,
-        secondaryUrl: rssArticle.secondaryUrl
+        hash: rssArticle.hash,
+        secondaryUrl: rssArticle.secondaryUrl,
     }
 
     if (rssArticle.pubdate) {
