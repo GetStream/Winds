@@ -99,23 +99,23 @@ app.load({
                             }
                         ]
                     }).exec(function(err, results) {
-                    sails.log.info(`In total these feeds need to be updated`, results)
-                    callback(err, results)
-                })
+                        sails.log.info(`In total these feeds need to be updated`, results)
+                        callback(err, results)
+                    })
             }, function(count, callback) {
                 // prioritize feeds that have never been scraped
                 Feeds.find({
-                        or: [
-                            {
-                                lastScraped: {'<': scrapeInterval}
-                            },
-                            {
-                                lastScraped: null
-                            }
-                        ]
-                    }).sort('topic DESC lastScraped ASC').exec(function(err, results) {
-                        scrapeFeedsBound(err, results)
-                    })
+                    or: [
+                        {
+                            lastScraped: {'<': scrapeInterval}
+                        },
+                        {
+                            lastScraped: null
+                        }
+                    ]
+                }).sort('topic DESC lastScraped ASC').exec(function(err, results) {
+                    scrapeFeedsBound(err, results)
+                })
             }]
         )
     }
@@ -141,7 +141,7 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks, f
                  feedId: feed.id,
                  feedUrl: feed.feedUrl,
                  startedAt: new Date()
-             }).ttl(1000*60*10).events(false).save( function(err){
+             }).ttl(1000*60*10).events(false).save(function(err){
                  if (err) {
                      sails.log.error(err)
                  } else {
@@ -151,13 +151,10 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks, f
              });
          } else {
              ScrapingService.scrapeFeed(feed, numberOfActivities, forceUpdate, function(err, response) {
-
                  if (err) {
                     feed.scrapingErrors = feed.scrapingErrors + 100
                  }
-
                  return callback(null, response)
-
              })
          }
 
@@ -165,22 +162,16 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks, f
 
      // iterate through feeds
      async.mapLimit(feeds, concurrency, scrapeFeedBound, function(err, articles) {
-
          sails.log.info(`Completed scraping for ${feeds.length} feeds`)
-
          feeds.forEach(function(feed) {
-
              if (feed.scrapingErrors > 0) {
                  sails.log.warn(`Encountered ${feed.scrapingErrors} errors for feed`, feed.feedUrl)
              }
-
          })
-
          if (!argv.l) {
             sails.log.info('Exiting... bye bye')
             process.exit(0)
          }
-
      })
 
 }
