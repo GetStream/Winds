@@ -30,11 +30,11 @@ app.load({
         return process.exit(1)
     }
 
-    sails.log.info('connecting to broker...')
+    sails.log.info('Connecting to broker...')
     let queue = kue.createQueue({redis: sails.config.tasks.redis})
     sails.log.info('Started RSS scraping worker, yeah!')
 
-    queue.process('scrape_rss', 20, function(job, done){
+    queue.process('scrape_rss', 50, function(job, done){
       scrapeFeedTask(job.data.feedId, job.data.startedAt, done);
     });
 
@@ -44,15 +44,15 @@ app.load({
             sails.log.warn(`feedId ${feedId} task started more than 10 minutes ago, skipping it`)
             done(null, 'skipped')
         }
-        sails.log.info(`looking up feed with id ${feedId}`)
+        sails.log.info(`Looking up feed with id ${feedId}`)
         sails.models.feeds.findOne({id: feedId}).exec(function(err, feed) {
             if (err) {
-                sails.log.error('error retrieving feed', err)
+                sails.log.error('Error retrieving feed', err)
             }
             ScrapingService.scrapeFeed(feed, 20, false, function(err, response) {
-                sails.log.info(`completed scraping for feed ${feed.id}, url ${feed.feedUrl}`)
+                sails.log.info(`Completed scraping for feed ${feed.id}, url ${feed.feedUrl}`)
                 if (feed.scrapingErrors) {
-                    sails.log.warn(`encountered ${feed.scrapingErrors} for feed ${feed.id}, url ${feed.feedUrl}`)
+                    sails.log.warn(`Encountered ${feed.scrapingErrors} for feed ${feed.id}, url ${feed.feedUrl}`)
                 }
                 return done(err, {errors: feed.scrapingErrors})
             })
