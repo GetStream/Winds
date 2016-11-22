@@ -136,9 +136,11 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks, f
      function scrapeFeedBound(feed, callback) {
          if (createTasks) {
              let scrapeTask = queue.create('scrape_rss', {
+                 title: `Feed ${feed.feedUrl}`,
                  feedId: feed.id,
+                 feedUrl: feed.feedUrl,
                  startedAt: new Date()
-             }).ttl(1000*60*3).events(false).save( function(err){
+             }).ttl(1000*60*10).events(false).save( function(err){
                  if (err) {
                      sails.log.error(err)
                  } else {
