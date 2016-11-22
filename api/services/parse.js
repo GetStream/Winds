@@ -94,7 +94,6 @@ function maybeTranslate(res, charset) {
 
 exports.fetch = fetch;
 
-
 function maybeDecompress(res, encoding) {
 
     let decompress

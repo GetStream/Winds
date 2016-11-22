@@ -11,7 +11,8 @@ module.exports = {
 
         const fs     = require('fs'),
               urlLibrary = require('url'),
-              parser = require('node-opml-parser')
+              parser = require('node-opml-parser'),
+              parse = require('../services/parse')
 
         req.file('opml').upload(function (err, files) {
 
@@ -22,22 +23,16 @@ module.exports = {
 
             parser(opml, (err, feeds) => {
 
-                if (err) return res.serverError(err)
+                function addFeed(feedUrl, callback) {
 
-                urls = feeds.map(feed => {
-                    return feed.feedUrl
-                })
-
-                function addFeed(feedUrl, cb) {
-
-                    sails.log.info(`starting to add url`, feedUrl)
+                    sails.log.info(`Starting to add url`, feedUrl)
 
                     parse.fetch(feedUrl, function(err, rssMeta, articles) {
 
                         if (err) {
-                            sails.log.warn('failed to add feed', err)
+                            sails.log.warn('Failed to add feed', err)
                             // we dont break if 1 feed breaks
-                            return cb(null, null)
+                            return callback(null, null)
                         }
 
                         const hostname = urlLibrary.parse(feedUrl).hostname
@@ -49,7 +44,7 @@ module.exports = {
                         let siteUrl = rssLinkHostname || hostname,
                             name    = rssMeta.title
 
-                        if (name && name.indexOf('RSS') != -1) name = null
+                        if (name && name.toLowerCase().indexOf('rss') != -1) name = null
 
                         async.waterfall([
 
@@ -74,7 +69,7 @@ module.exports = {
                                 }).exec(callback)
 
                             },
-                            // TODO: Maybe refactor this to use the follow service
+                            // TODO: Maybe refactor this to follow service
                             function(feed, seriesCallback) {
 
                                 async.parallel([
@@ -112,26 +107,28 @@ module.exports = {
                                 sails.log.warn(`Failed to add feed`, err)
                             }
 
-                            sails.log.info(`Completed adding url`, feedUrl)
+                            sails.log.info(`Completed adding URL`, feedUrl)
 
                             // dont halt import if there is an error with 1 feed
-                            return cb(null, results)
+                            return callback(null, results)
 
                         })
 
                     })
+
                 }
 
                 async.map(urls, addFeed, function(err, results) {
+
                     if (err) {
                         return res.badRequest('Sorry, failed to parse OPML import.')
-                    } else {
-                        return res.ok({urls: urls})
                     }
+
+                    return res.ok({ urls: urls })
+
                 })
 
             })
-
 
         })
 

@@ -49,8 +49,6 @@ class AddFeedDialog extends Component {
 
     renderBtn() {
 
-        console.log(this.props)
-
         if (this.props.error == true)
             return (
                 <button

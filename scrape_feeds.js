@@ -126,7 +126,7 @@ function scrapeFeeds(err, feeds, numberOfActivities, concurrency, createTasks, f
 
      let queue
      if (createTasks) {
-         queue = kue.createQueue({redis: sails.config.tasks.redis})
+         queue = kue.createQueue({ redis: sails.config.tasks.redis })
      }
      sails.log.info(`Found ${feeds.length} feeds we need to scrape`)
 
