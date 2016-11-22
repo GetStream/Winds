@@ -35,11 +35,16 @@
             apiKey: '<%- sails.config.stream.streamApiKey %>',
             token: '<%- sails.config.stream.streamAnalyticsToken %>'
         });
+        var userId = '<%- req.user.id %>'
+        if (userId) {
+            client.setUser({id: '<%- req.user.id %>', alias: '<%- req.user.email %>'})
+        }
         var realtime = stream.connect(
             '<%- sails.config.stream.streamApiKey %>',
             null,
             '<%- sails.config.stream.streamAppId %>'
         );
+
     </script>
 
     <script type="text/javascript">
