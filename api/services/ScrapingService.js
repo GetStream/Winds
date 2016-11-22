@@ -236,7 +236,7 @@ function getMetaInformation(articleUrl, callback) {
 
     let options = {
         uri: articleUrl,
-        timeout: 10000,
+        timeout: 7000,
         maxRedirects: 25,
         jar: true,
         headers: {

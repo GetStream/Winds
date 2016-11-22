@@ -39,7 +39,7 @@ app.load({
     });
 
     function scrapeFeedTask(feedId, startedAt, done) {
-        let tenMinutesAgo = moment().subtract(10, 'm');
+        let tenMinutesAgo = moment().subtract(30, 'm');
         if (startedAt < tenMinutesAgo) {
             sails.log.warn(`feedId ${feedId} task started more than 10 minutes ago, skipping it`)
             done(null, 'skipped')

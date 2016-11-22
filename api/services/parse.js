@@ -14,7 +14,7 @@ function fetch(feedUrl, callback) {
 
     // define our streams
     let req = request(feedUrl, {
-        timeout: 10000,
+        timeout: 7000,
         pool: false,
         maxRedirects: 25,
         jar: true,
@@ -37,7 +37,12 @@ function fetch(feedUrl, callback) {
         feedRequestError = err
     })
     req.on('response', function(res) {
-        if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'));
+        if (res.statusCode != 200) {
+            let err = new Error('Bad status code')
+            // in this case we never reach the feed parser end
+            // so call callback manually
+            return callback(err, null, null)
+        }
         let encoding = res.headers['content-encoding'] || 'identity',
             charset = getParams(res.headers['content-type'] || '').charset
         sails.log.verbose(`Feed content encoding ${encoding}, charset ${charset}`)
