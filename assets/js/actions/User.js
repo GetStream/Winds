@@ -16,12 +16,12 @@ export const me = () => dispatch => {
         },
     }).then(res => {
 
+        client.setUser({ id: res.response.id, alias: res.response.email })
+
         localStorage.setItem('id', res.response.id)
         localStorage.setItem('email', res.response.email)
         localStorage.setItem('token', res.response.token)
         localStorage.setItem('timeline_token', res.response.user.feedTokens.timeline)
-
-        client.setUser({ id: res.response.id, alias: res.response.email })
 
         return dispatch(AppActions.reload())
 
@@ -57,11 +57,11 @@ export const create = (user) => dispatch => {
         },
     }).then(res => {
 
+        client.setUser({ id: res.response.id, alias: res.response.email })
+
         localStorage.setItem('id', res.response.id)
         localStorage.setItem('email', res.response.email)
         localStorage.setItem('token', res.response.token)
-
-        client.setUser({ id: res.response.id, alias: res.response.email })
 
         return dispatch(AppActions.reload())
 
@@ -85,12 +85,12 @@ export const login = (email, password) => dispatch => {
         },
     }).then(res => {
 
+        client.setUser({ id: res.response.id, alias: res.response.email })
+
         localStorage.setItem('id', res.response.user.id)
         localStorage.setItem('email', res.response.user.email)
         localStorage.setItem('token', res.response.user.token)
         localStorage.setItem('timeline_token', res.response.user.feedTokens.timeline)
-
-        client.setUser({ id: res.response.user.id, alias: res.response.user.email })
 
         return dispatch(AppActions.reload())
 

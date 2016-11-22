@@ -27,6 +27,8 @@ class Article extends Component {
 
     render() {
 
+        console.log(this.props.object.secondaryUrl)
+
         return (
             <div className="article" onClick={this.handleClick}>
                 <div className="article-inner">
@@ -63,6 +65,12 @@ class Article extends Component {
                         onClick={this.trackEngagement}>
                         {this.props.site.name || this.props.site.siteUrl}
                     </a>
+                    <span>|</span>
+                    {
+                        this.props.object.secondaryUrl ? (
+                            <a href={this.props.object.secondaryUrl} target="_blank">Comments</a>
+                        ) : null
+                    }
                 </div>
             </div>
         )

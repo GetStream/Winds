@@ -28,7 +28,7 @@ module.exports = {
                     return feed.feedUrl
                 })
 
-                function addFeed(feedUrl, callback) {
+                function addFeed(feedUrl, cb) {
 
                     sails.log.info(`starting to add url`, feedUrl)
 
@@ -37,7 +37,7 @@ module.exports = {
                         if (err) {
                             sails.log.warn('failed to add feed', err)
                             // we dont break if 1 feed breaks
-                            return callback(null, null)
+                            return cb(null, null)
                         }
 
                         const hostname = urlLibrary.parse(feedUrl).hostname
@@ -62,7 +62,6 @@ module.exports = {
                                     name: name
                                 }).exec(callback)
 
-
                             },
                             function(site, callback) {
 
@@ -75,7 +74,7 @@ module.exports = {
                                 }).exec(callback)
 
                             },
-                            // TODO: Maybe refactor this to follow service
+                            // TODO: Maybe refactor this to use the follow service
                             function(feed, seriesCallback) {
 
                                 async.parallel([
@@ -103,21 +102,20 @@ module.exports = {
 
                                     }
 
-                                ],
-                                seriesCallback)
+                                ], seriesCallback)
 
                             }
 
                         ], function(err, results) {
 
-                            sails.log.info(`Completed adding url`, feedUrl)
-
                             if (err) {
                                 sails.log.warn(`Failed to add feed`, err)
                             }
 
+                            sails.log.info(`Completed adding url`, feedUrl)
+
                             // dont halt import if there is an error with 1 feed
-                            return callback(null, results)
+                            return cb(null, results)
 
                         })
 
@@ -126,6 +124,7 @@ module.exports = {
 
                 async.map(urls, addFeed, function(err, results) {
                     if (err) return res.send(500)
+                    console.log('RESULTS', results)
                     res.send(200)
                 })
 
