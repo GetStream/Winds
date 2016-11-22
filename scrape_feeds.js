@@ -75,48 +75,49 @@ app.load({
         sails.log.info(`Scraping all feeds`)
         Feeds.find({}).exec(scrapeFeedsBound)
     } else {
-        var scrapeInterval = moment().subtract('minutes', 3).toISOString()
+        var scrapeInterval = moment().subtract(3, 'm').toISOString()
         sails.log.info(`Scraping all feeds that are older than ${scrapeInterval}`)
-        async.waterfall(
-        [callback=>{
-            Feeds.count({lastScraped: null}).exec(function(err, results) {
-                sails.log.info(`These feeds have never been scraped`, results)
-                callback(err, results)
-            })
-        }, function(count, callback) {
-            Feeds.count({lastScraped: {'<': scrapeInterval}}).exec(function(err, results) {
-                sails.log.info(`These feeds need to be updated`, results)
-                callback(err, results)
-            })
-        }, function(count, callback) {
-            Feeds.count({
-                    or: [
-                        {
-                            lastScraped: {'<': scrapeInterval}
-                        },
-                        {
-                            lastScraped: null
-                        }
-                    ]
-                }).exec(function(err, results) {
-                sails.log.info(`In total these feeds need to be updated`, results)
-                callback(err, results)
-            })
-        }, function(count, callback) {
-            // prioritize feeds that have never been scraped
-            Feeds.find({
-                    or: [
-                        {
-                            lastScraped: {'<': scrapeInterval}
-                        },
-                        {
-                            lastScraped: null
-                        }
-                    ]
-                }).sort('topic DESC lastScraped ASC').exec(function(err, results) {
-                    scrapeFeedsBound(err, results)
+        async.waterfall([
+            callback=>{
+                Feeds.count({lastScraped: null}).exec(function(err, results) {
+                    sails.log.info(`These feeds have never been scraped`, results)
+                    callback(err, results)
                 })
-        }])
+            }, function(count, callback) {
+                Feeds.count({lastScraped: {'<': scrapeInterval}}).exec(function(err, results) {
+                    sails.log.info(`These feeds need to be updated`, results)
+                    callback(err, results)
+                })
+            }, function(count, callback) {
+                Feeds.count({
+                        or: [
+                            {
+                                lastScraped: {'<': scrapeInterval}
+                            },
+                            {
+                                lastScraped: null
+                            }
+                        ]
+                    }).exec(function(err, results) {
+                    sails.log.info(`In total these feeds need to be updated`, results)
+                    callback(err, results)
+                })
+            }, function(count, callback) {
+                // prioritize feeds that have never been scraped
+                Feeds.find({
+                        or: [
+                            {
+                                lastScraped: {'<': scrapeInterval}
+                            },
+                            {
+                                lastScraped: null
+                            }
+                        ]
+                    }).sort('topic DESC lastScraped ASC').exec(function(err, results) {
+                        scrapeFeedsBound(err, results)
+                    })
+            }]
+        )
     }
 
  })
