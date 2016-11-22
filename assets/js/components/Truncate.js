@@ -4,7 +4,7 @@ var Entities = require('html-entities').AllHtmlEntities,
     entities = new Entities(),
     normalizeWhitespace = require('normalize-html-whitespace')
 
-const truncate = (text, length = 25) => {
+const truncate = (text, length = 15) => {
     if (text.length < length) return text
     return text.substring(0, length) + '...'
 }

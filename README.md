@@ -49,18 +49,20 @@ npm install -g sails pm2
 
 ### Step 2 - Secrets
 
-Create a file called `.env` with the following secrets:
+Create a file called `.env` with the following values:
 
 ```bash
-STREAM_APP_ID = ''
-STREAM_API_KEY = ''
-STREAM_API_SECRET = ''
-STREAM_ANALYTICS_TOKEN = ''
-SENDGRID_USERNAME = ''
-SENDGRID_PASSWORD = ''
-SENTRY_DSN = ''
-MONGO_URI = ''
-API_BASE_URL = 'http://localhost:1337'
+STREAM_APP_ID = ""
+STREAM_API_KEY = ""
+STREAM_API_SECRET = ""
+STREAM_ANALYTICS_TOKEN = ""
+SENDGRID_USERNAME = ""
+SENDGRID_PASSWORD = ""
+SENTRY_DSN = ""
+API_BASE_URL = "http://localhost:1337"
+MONGO_URI = ""
+FACEBOOK_API_KEY = ""
+REDIS_AUTH = ""
 ```
 
 **Stream**
@@ -96,7 +98,21 @@ A reader without any data isn't much fun though. Let's insert a few topics and R
 node load_initial_data.js
 ```
 
-### Step 4 - Launch!
+### Step 4 - Redis
+
+Redis is currently used as the primary session store. To install on OSX, simply use Homebrew:
+
+```bash
+brew install redis
+```
+
+Then run Redis with the following command:
+
+```bash
+redis-server
+```
+
+### Step 5 - Launch!
 
 Next, we need to run 2 cronjobs to ensure we keep on reading RSS articles and update the site's favicons. To make it easy to keep these cronjobs up and running, we use the amazing [PM2](https://github.com/Unitech/pm2) library:
 

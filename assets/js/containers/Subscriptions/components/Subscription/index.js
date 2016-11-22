@@ -36,7 +36,7 @@ class Subscription extends Component {
                         <div className="col-lg-12">
                             <ul className={classes.join(' ')}>
                                 <li>
-                                    <img src={!!this.props.site.faviconUrl ? this.props.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'} height="20" width="20" />
+                                    <img src={!!this.props.site.faviconUrl ? this.props.site.faviconUrl : 'https://i.imgur.com/blhZfDe.png'} height="20" width="20" />
                                 </li>
                                 <li>
                                     <a
@@ -56,6 +56,11 @@ class Subscription extends Component {
                                         target="_blank" title={this.props.site.name}>
                                         {this.props.site.name}
                                     </a>
+                                    {
+                                        this.props.secondaryUrl ? (
+                                            <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                        ) : null
+                                    }
                                 </li>
                             </ul>
                         </div>

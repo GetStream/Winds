@@ -66,7 +66,7 @@ class Article extends Component {
                     &nbsp;
                     {
                         this.props.object.secondaryUrl ? (
-                            <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.object.secondaryUrl} target="_blank" className="secondary-url">Comments</a></span>
+                            <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
                         ) : null
                     }
                 </div>
