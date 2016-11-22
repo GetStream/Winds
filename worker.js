@@ -42,7 +42,7 @@ app.load({
         let tenMinutesAgo = moment().subtract(10, 'm');
         if (startedAt < tenMinutesAgo) {
             sails.log.warn(`feedId ${feedId} task started more than 10 minutes ago, skipping it`)
-            done()
+            done(null, 'skipped')
         }
         sails.log.info(`looking up feed with id ${feedId}`)
         sails.models.feeds.findOne({id: feedId}).exec(function(err, feed) {
@@ -54,7 +54,7 @@ app.load({
                 if (feed.scrapingErrors) {
                     sails.log.warn(`encountered ${feed.scrapingErrors} for feed ${feed.id}, url ${feed.feedUrl}`)
                 }
-                return done()
+                return done(err, {errors: feed.scrapingErrors})
             })
         })
     }
