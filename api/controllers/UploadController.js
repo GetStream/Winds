@@ -125,8 +125,11 @@ module.exports = {
                 }
 
                 async.map(urls, addFeed, function(err, results) {
-                    if (err) return res.send(500)
-                    res.send(200)
+                    if (err) {
+                        return res.badRequest('Sorry, failed to parse OPML import.')
+                    } else {
+                        return res.ok({urls: urls})
+                    }
                 })
 
             })
