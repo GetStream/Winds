@@ -78,5 +78,8 @@ const renderApp = () =>
 
 loading.then(
     () => renderApp(),
-    () => renderApp()
+    (err) => {
+        console.warn(err)
+        renderApp()
+    }
 )

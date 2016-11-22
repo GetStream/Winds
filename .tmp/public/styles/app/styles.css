@@ -1012,6 +1012,8 @@ body {
     .articles .article .article-inner {
       padding: 10px;
       height: 400px; }
+      .articles .article .article-inner .pipe {
+        color: #333333; }
     .articles .article:last-child {
       margin-bottom: 50px; }
 

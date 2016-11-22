@@ -62,6 +62,7 @@ export const create = (user) => dispatch => {
         localStorage.setItem('id', res.response.id)
         localStorage.setItem('email', res.response.email)
         localStorage.setItem('token', res.response.token)
+        localStorage.setItem('timeline_token', res.response.user.feedTokens.timeline)
 
         return dispatch(AppActions.reload())
 

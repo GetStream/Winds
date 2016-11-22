@@ -140,7 +140,7 @@ class Subscriptions extends Component {
                                 <Link to={`/app/subscriptions/${site.feed.id}`} key={`site-${site.feed.site.id}-${Math.random()}`} onClick={() => { this.trackEngagement(site.feed.site)}}>
                                     <li>
                                         <img src={!!site.feed.site.faviconUrl ? site.feed.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'} height="20" width="20" />&nbsp;
-                                        <Truncate length={15}>{!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}</Truncate>
+                                        <Truncate length={10}>{!!site.feed.site.name ? site.feed.site.name : site.feed.site.siteUrl}</Truncate>
                                     </li>
                                 </Link>
                             )}

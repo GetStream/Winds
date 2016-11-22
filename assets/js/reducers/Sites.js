@@ -14,7 +14,7 @@ function Sites(state = [], action) {
 
         case UserActions.LOGOUT:
             return []
-            
+
         default:
             return state
 

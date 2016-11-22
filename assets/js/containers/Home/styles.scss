@@ -314,7 +314,7 @@
         margin: auto;
         margin-top: 15%;
     }
-    
+
 }
 
 .articles {
@@ -385,6 +385,11 @@
         .article-inner {
             padding: 10px;
             height: 400px;
+
+            .pipe {
+                color: #333333;
+            }
+            
         }
 
         &:last-child {
