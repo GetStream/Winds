@@ -109,18 +109,22 @@ module.exports = {
                             }
 
                         ], function(err, results) {
-                            sails.log.info(`completed adding url`, feedUrl)
+
+                            sails.log.info(`Completed adding url`, feedUrl)
+
                             if (err) {
-                                sails.log.warn(`failed to add feed`, err)
+                                sails.log.warn(`Failed to add feed`, err)
                             }
+
                             // dont halt import if there is an error with 1 feed
                             return callback(null, results)
+
                         })
 
                     })
                 }
 
-                async.mapLimit(urls, 30, addFeed, function(err, results) {
+                async.map(urls, addFeed, function(err, results) {
                     if (err) return res.send(500)
                     res.send(200)
                 })
