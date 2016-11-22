@@ -17,11 +17,10 @@ export const me = () => dispatch => {
     }).then(res => {
 
         client.setUser({ id: res.response.id, alias: res.response.email })
-
         localStorage.setItem('id', res.response.id)
         localStorage.setItem('email', res.response.email)
         localStorage.setItem('token', res.response.token)
-        localStorage.setItem('timeline_token', res.response.user.feedTokens.timeline)
+        localStorage.setItem('timeline_token', res.response.feedTokens.timeline)
 
         return dispatch(AppActions.reload())
 
@@ -58,10 +57,10 @@ export const create = (user) => dispatch => {
     }).then(res => {
 
         client.setUser({ id: res.response.id, alias: res.response.email })
-
         localStorage.setItem('id', res.response.id)
         localStorage.setItem('email', res.response.email)
         localStorage.setItem('token', res.response.token)
+        localStorage.setItem('timeline_token', res.response.feedTokens.timeline)
 
         return dispatch(AppActions.reload())
 
@@ -86,7 +85,6 @@ export const login = (email, password) => dispatch => {
     }).then(res => {
 
         client.setUser({ id: res.response.id, alias: res.response.email })
-
         localStorage.setItem('id', res.response.user.id)
         localStorage.setItem('email', res.response.user.email)
         localStorage.setItem('token', res.response.user.token)
