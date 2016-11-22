@@ -137,6 +137,11 @@ class Home extends Component {
                                         <a href={normalizeUrl(this.props.feeds[0].object.articleUrl)} target="_blank">
                                             {this.props.feeds[0].site.name || this.props.feeds[0].site.siteUrl}
                                         </a>
+                                        {
+                                            this.props.feeds[0].object.secondaryUrl ? (
+                                                <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[0].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                            ) : null
+                                        }
                                     </p>
                                 </div>
                             </div>
@@ -157,6 +162,11 @@ class Home extends Component {
                                         <a href={normalizeUrl(this.props.feeds[1].object.articleUrl)} target="_blank">
                                             {this.props.feeds[1].site.name || this.props.feeds[1].site.siteUrl}
                                         </a>
+                                        {
+                                            this.props.feeds[1].object.secondaryUrl ? (
+                                                <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[1].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                            ) : null
+                                        }
                                     </p>
                                     <Summary>{this.props.feeds[1].object.summary}</Summary>
                                 </div>
@@ -180,6 +190,11 @@ class Home extends Component {
                                     <a href={normalizeUrl(this.props.feeds[2].object.articleUrl)} target="_blank">
                                         {this.props.feeds[2].site.name || this.props.feeds[2].site.siteUrl}
                                     </a>
+                                    {
+                                        this.props.feeds[2].object.secondaryUrl ? (
+                                            <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[2].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                        ) : null
+                                    }
                                 </p>
                                 </div>
                             </div>
@@ -200,6 +215,11 @@ class Home extends Component {
                                     <a href={normalizeUrl(this.props.feeds[3].object.articleUrl)} target="_blank">
                                         {this.props.feeds[3].site.name || this.props.feeds[3].site.siteUrl}
                                     </a>
+                                    {
+                                        this.props.feeds[3].object.secondaryUrl ? (
+                                            <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[3].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                        ) : null
+                                    }
                                 </p>
                                 </div>
                             </div>
@@ -224,6 +244,11 @@ class Home extends Component {
                                         <a href={normalizeUrl(this.props.feeds[4].object.articleUrl)} target="_blank">
                                             {this.props.feeds[4].site.name || this.props.feeds[4].site.siteUrl}
                                         </a>
+                                        {
+                                            this.props.feeds[4].object.secondaryUrl ? (
+                                                <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[4].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                            ) : null
+                                        }
                                     </p>
                                     <Summary>{this.props.feeds[4].object.summary}</Summary>
                                     </div>
@@ -245,6 +270,11 @@ class Home extends Component {
                                             <a href={normalizeUrl(this.props.feeds[5].object.articleUrl)} target="_blank">
                                                 {this.props.feeds[5].site.name || this.props.feeds[5].site.siteUrl}
                                             </a>
+                                            {
+                                                this.props.feeds[5].object.secondaryUrl ? (
+                                                    <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[5].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                                ) : null
+                                            }
                                         </p>
                                     </div>
                                 </div>
@@ -265,6 +295,11 @@ class Home extends Component {
                                         <a href={normalizeUrl(this.props.feeds[6].object.articleUrl)} target="_blank">
                                             {this.props.feeds[6].site.name || this.props.feeds[6].site.siteUrl}
                                         </a>
+                                        {
+                                            this.props.feeds[6].object.secondaryUrl ? (
+                                                <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[6].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                            ) : null
+                                        }
                                     </p>
                                     <Summary>{this.props.feeds[6].object.summary}</Summary>
                                 </div>

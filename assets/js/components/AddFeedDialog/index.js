@@ -49,7 +49,9 @@ class AddFeedDialog extends Component {
 
     renderBtn() {
 
-        if (this.props.error)
+        console.log(this.props)
+
+        if (this.props.error == true)
             return (
                 <button
                     type="submit"
@@ -58,7 +60,7 @@ class AddFeedDialog extends Component {
                 </button>
             )
 
-        if (this.props.loading)
+        if (this.props.loading === true)
             return (
                 <button
                     type="submit"
