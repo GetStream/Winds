@@ -101,10 +101,11 @@ class AddFeedDialog extends Component {
                                 <div className="url-container">
                                     <input
                                         id="url-input"
-                                        type="url"
+                                        type="text"
                                         title="Please enter a valid site or feed URL"
                                         ref="url"
                                         className="url"
+                                        pattern="^(http|https|ftp)?(://)?(www|ftp)?.?[a-z0-9-]+(.|:)([a-z0-9-]+)+([/?].*)?$"
                                         placeholder="Enter a valid site or feed URL"
                                         required={true}
                                         value={this.state.url}
