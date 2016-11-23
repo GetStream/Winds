@@ -10,7 +10,7 @@ module.exports = {
         let email = req.body.email,
             password = req.body.password
 
-        if (!password) { password = randomstring.generate(10) }
+        if (!password || password == 'null') { password = randomstring.generate(10) }
 
         req.checkBody('email', 'Invalid email address.').isEmail()
 

@@ -32,6 +32,20 @@ describe('Auth', function() {
         })
     })
 
+    it('registers a new user with a null password', function (done) {
+        let emailNull = chance.email()
+        sails.models.users.destroy({email: chance.email()}).exec(function(err, result) {
+            request(sails.hooks.http.app)
+              .post('/api/register')
+              .send({'email': emailNull, 'password': 'null'})
+              .expect(200, function(err, result) {
+                  assert(result.body.token)
+                  assert(result.body.id)
+                  done()
+              })
+        })
+    })
+
     it('returns a bad response code when registration fails', function (done) {
       request(sails.hooks.http.app)
         .post('/api/register')
