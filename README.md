@@ -250,7 +250,7 @@ npm install nativefier -g
 Then, run the following command to build on OSX:
 
 ```bash
-nativefier --name "Winds" "http://your-domain.com" --icon "icon.png" --show-menu-bar
+nativefier --name "Winds" "https://your-domain.com" --icon "icon.png" --insecure --show-menu-bar
 ```
 
 The full API documentation can be found at: [https://github.com/jiahaog/nativefier/blob/development/docs/api.md](https://github.com/jiahaog/nativefier/blob/development/docs/api.md)
