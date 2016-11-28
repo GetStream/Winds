@@ -1,9 +1,10 @@
 ![Winds - An Open Source Personalized RSS Reader](https://github.com/GetStream/Winds/raw/master/screenshots/ss-0.png "Winds - An Open Source Personalized RSS Reader")
 
 # Winds - An Open Source Personalized RSS Reader
+
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
 [![Dependency Status](https://david-dm.org/GetStream/Winds.svg)](https://david-dm.org/GetStream/Winds)
-[![Slack Status](http://winds-rss.herokuapp.com/badge.svg)](http://winds-rss.herokuapp.com/)
+[![Join the chat at https://gitter.im/GetStream/Winds](https://badges.gitter.im/GetStream/Winds.svg)](https://gitter.im/GetStream/Winds?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, and Quora - powered by the [getstream.io API](https://getstream.io/)).
 
@@ -249,7 +250,7 @@ npm install nativefier -g
 Then, run the following command to build on OSX:
 
 ```bash
-nativefier --name "Winds" "http://your-domain.com" --icon "icon.png" --show-menu-bar
+nativefier --name "Winds" "https://your-domain.com" --icon "icon.png" --insecure --show-menu-bar
 ```
 
 The full API documentation can be found at: [https://github.com/jiahaog/nativefier/blob/development/docs/api.md](https://github.com/jiahaog/nativefier/blob/development/docs/api.md)
