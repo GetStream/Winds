@@ -1,6 +1,8 @@
 ![Winds - An Open Source Personalized RSS Reader](https://github.com/GetStream/Winds/raw/master/screenshots/ss-0.png "Winds - An Open Source Personalized RSS Reader")
 
 # Winds - An Open Source Personalized RSS Reader
+
+[![Join the chat at https://gitter.im/GetStream/Winds](https://badges.gitter.im/GetStream/Winds.svg)](https://gitter.im/GetStream/Winds?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
 [![Dependency Status](https://david-dm.org/GetStream/Winds.svg)](https://david-dm.org/GetStream/Winds)
 [![Slack Status](http://winds-rss.herokuapp.com/badge.svg)](http://winds-rss.herokuapp.com/)
