@@ -10,7 +10,9 @@ module.exports = {
         let email = req.body.email,
             password = req.body.password
 
-        if (!password || password == 'null') { password = randomstring.generate(10) }
+        if (!password || password == 'null') {
+            password = randomstring.generate(10)
+        }
 
         req.checkBody('email', 'Invalid email address.').isEmail()
 
@@ -26,7 +28,12 @@ module.exports = {
         }).exec(function(err, user) {
 
             if (err) {
-                sails.sentry.captureMessage(err)
+                if (!_.isEmpty(sails.sentry)) {
+                    console.log('ereirjeklj', err)
+                    sails.sentry.captureMessage(err)
+                } else {
+                    console.log(err)
+                }
                 return res.badRequest('Registration failed. Could not create user.')
             }
 
@@ -54,7 +61,11 @@ module.exports = {
                     }], function(err, results) {
 
                         if (err) {
-                            sails.sentry.captureMessage(err)
+                            if (!_.isEmpty(sails.sentry)) {
+                                sails.sentry.captureMessage(err)
+                            } else {
+                                sails.log.warn(err)
+                            }
                             return res.badRequest('Failed to send registration email.')
                         }
 
@@ -114,7 +125,11 @@ module.exports = {
         sails.models.users.update({ email: email }, { password: password }).exec(function(err, users) {
 
             if (err || (users && !users.length)) {
-                sails.sentry.captureMessage(err)
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(err)
+                } else {
+                    sails.log.warn(err)
+                }
                 return res.badRequest('Could not retrieve user.')
             }
 
@@ -124,7 +139,11 @@ module.exports = {
             user.sendRegistrationEmail(context, function(err, result) {
 
                 if (err) {
-                    sails.sentry.captureMessage(err)
+                    if (!_.isEmpty(sails.sentry)) {
+                        sails.sentry.captureMessage(err)
+                    } else {
+                        sails.log.warn(err)
+                    }
                     return res.badRequest('Failed to send registration email.')
                 }
 

@@ -4,18 +4,26 @@ var bcrypt = require('bcrypt'),
     htmlToText = require('nodemailer-html-to-text').htmlToText
 
 function saltPassword(newPassword, callback) {
-    
+
     bcrypt.genSalt(10, function(err, salt) {
 
         if (err) {
-            sails.sentry.captureMessage(err)
+            if (!_.isEmpty(sails.sentry)) {
+                sails.sentry.captureMessage(err)
+            } else {
+                sails.log.warn(err)
+            }
             callback(err, null)
         }
 
         bcrypt.hash(newPassword, salt, function(err, hash) {
 
             if (err) {
-                sails.sentry.captureMessage(err)
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(err)
+                } else {
+                    sails.log.warn(err)
+                }
             }
 
             callback(err, hash)

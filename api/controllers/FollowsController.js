@@ -34,7 +34,11 @@ module.exports = {
             }], function(err, results) {
 
                 if (err) {
-                    sails.sentry.captureMessage(err)
+                    if (!_.isEmpty(sails.sentry)) {
+                        sails.sentry.captureMessage(err)
+                    } else {
+                        sails.log.warn(err)
+                    }
                     return res.serverError(err)
                 }
 

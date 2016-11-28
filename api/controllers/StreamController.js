@@ -25,7 +25,11 @@ module.exports = {
                 StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities){
 
                     if (err) {
-                        sails.sentry.captureMessage(err)
+                        if (!_.isEmpty(sails.sentry)) {
+                            sails.sentry.captureMessage(err)
+                        } else {
+                            sails.log.warn(err)
+                        }
                         return res.badRequest('Sorry, failed to load the feed.')
                     }
 
@@ -36,7 +40,11 @@ module.exports = {
                 })
 
             }).catch(err => {
-                sails.sentry.captureMessage(err)
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(err)
+                } else {
+                    sails.log.warn(err)
+                }
                 return res.badRequest('Sorry, failed to load the feed.')
             })
 
@@ -69,14 +77,22 @@ module.exports = {
         }, function(error, response, feedResponse) {
 
             if (error || (feedResponse && !feedResponse.results)) {
-                sails.sentry.captureMessage(error)
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(error)
+                } else {
+                    sails.log.warn(error)
+                }
                 return res.serverError('Failed to load personalized feed.')
             }
 
             StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities){
 
                 if (err) {
-                    sails.sentry.captureMessage(err)
+                    if (!_.isEmpty(sails.sentry)) {
+                        sails.sentry.captureMessage(err)
+                    } else {
+                        sails.log.warn(err)
+                    }
                     return res.badRequest('Sorry, failed to load the feed.')
                 }
 
@@ -110,7 +126,11 @@ module.exports = {
             StreamService.enrichActivities(userId, feedResponse.results, function(err, enrichedActivities) {
 
                 if (err) {
-                    sails.sentry.captureMessage(err)
+                    if (!_.isEmpty(sails.sentry)) {
+                        sails.sentry.captureMessage(err)
+                    } else {
+                        sails.log.warn(err)
+                    }
                     res.badRequest('Sorry, failed to load the feed.')
                 }
 
@@ -122,7 +142,11 @@ module.exports = {
             })
 
         }).catch(err => {
-            sails.sentry.captureMessage(err)
+            if (!_.isEmpty(sails.sentry)) {
+                sails.sentry.captureMessage(err)
+            } else {
+                sails.log.warn(err)
+            }
             res.badRequest('Sorry, failed to load the feed.')
         })
 
@@ -148,7 +172,11 @@ module.exports = {
             }
         }, function(error, response, body) {
             if (error) {
-                sails.sentry.captureMessage(error)
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(error)
+                } else {
+                    sails.log.warn(error)
+                }
                 return res.serverError('Failed to load interest profile.')
             }
 
@@ -179,7 +207,11 @@ module.exports = {
         }, function(error, response, body) {
 
             if (error) {
-                sails.sentry.captureMessage(error)
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(error)
+                } else {
+                    sails.log.warn(error)
+                }
                 return res.serverError('Failed to load event counts.')
             }
 
