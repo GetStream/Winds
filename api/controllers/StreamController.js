@@ -3,7 +3,7 @@
  *
  * Controller fot the integration with Stream
  */
-const request = require('request');
+const request = require('request')
 
 module.exports = {
 
@@ -218,6 +218,65 @@ module.exports = {
             return res.ok(body)
 
         })
+
+    },
+
+    feedSuggestions: function(req, res, next) {
+
+        const userId = req.user.id,
+              url    = `https://reader.getstream.io/reader/recommended/${userId}`,
+              token  = StreamService.getJwtToken(userId)
+
+        request({
+            url: url,
+            qs: {
+                api_key: sails.config.stream.streamApiKey
+            },
+            method: 'GET',
+            json: true,
+            timeout: 10000,
+            headers: {
+                'authorization': token,
+                'stream-auth-type': 'jwt'
+            }
+        }, function(error, response, body) {
+
+            if (error) {
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(error)
+                } else {
+                    sails.log.warn(error)
+                }
+                return res.serverError('Failed to load suggested feeds.')
+            }
+
+            let results = body.results,
+                length  = results.length,
+                feeds   = []
+
+            results.forEach((feed) => {
+
+                sails.models.feeds.findOne({ id: feed })
+                    .then((feed) => {
+
+                        sails.models.sites.findOne({ id: feed.site })
+                            .then((site) => {
+
+                                feed.site = site
+                                feeds.push(feed)
+
+                                if (!--length) {
+                                    res.json(feeds)
+                                }
+                                
+                            })
+
+                    })
+
+            })
+
+        })
+
     }
 
 }

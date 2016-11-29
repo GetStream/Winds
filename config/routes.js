@@ -53,6 +53,7 @@ module.exports.routes = {
   'get /api/me': 'UsersController.aboutMe',
   'get /api/stream/chronological': 'StreamController.chronological',
   'get /api/stream/personalized': 'StreamController.personalized',
+  'get /api/stream/suggestions': 'StreamController.feedSuggestions',
   'get /api/stream/feed': 'StreamController.readFeed',
   'get /api/stream/interest_profile': 'StreamController.interestProfile',
   'get /api/stream/event_counts': 'StreamController.eventCounts',
