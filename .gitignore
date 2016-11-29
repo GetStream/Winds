@@ -21,6 +21,9 @@ lib-cov
 # dotenv
 .env
 
+# redis
+dump.rdb
+
 # Coverage directory used by tools like istanbul
 coverage
 
