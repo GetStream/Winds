@@ -13,10 +13,12 @@ module.exports = {
         // unique identifier
         articleUrl: {
             type: 'url',
+            unique: true,
             required: true
         },
         canonicalUrl: {
             type: 'url',
+            unique: true,
             required: true
         },
         hash: {
