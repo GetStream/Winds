@@ -51,7 +51,7 @@ class SuggestedFeeds extends Component {
                                             </svg>
                                         </div>
                                     </div>
-                                    <div className="metadata">
+                                    <div className="bottom">
                                         <a href="#" target="_blank" className="site-name">
                                             <p>Engadget</p>
                                         </a>
@@ -76,7 +76,7 @@ class SuggestedFeeds extends Component {
                                             </svg>
                                         </div>
                                     </div>
-                                    <div className="metadata">
+                                    <div className="bottom">
                                         <a href="#" target="_blank" className="site-name">
                                             <p>Engadget</p>
                                         </a>
@@ -101,7 +101,7 @@ class SuggestedFeeds extends Component {
                                             </svg>
                                         </div>
                                     </div>
-                                    <div className="metadata">
+                                    <div className="bottom">
                                         <a href="#" target="_blank" className="site-name">
                                             <p>Engadget</p>
                                         </a>
@@ -126,7 +126,7 @@ class SuggestedFeeds extends Component {
                                             </svg>
                                         </div>
                                     </div>
-                                    <div className="metadata">
+                                    <div className="bottom">
                                         <a href="#" target="_blank" className="site-name">
                                             <p>Engadget</p>
                                         </a>
@@ -151,7 +151,7 @@ class SuggestedFeeds extends Component {
                                             </svg>
                                         </div>
                                     </div>
-                                    <div className="metadata">
+                                    <div className="bottom">
                                         <a href="#" target="_blank" className="site-name">
                                             <p>Engadget</p>
                                         </a>
@@ -176,7 +176,7 @@ class SuggestedFeeds extends Component {
                                             </svg>
                                         </div>
                                     </div>
-                                    <div className="metadata">
+                                    <div className="bottom">
                                         <a href="#" target="_blank" className="site-name">
                                             <p>Engadget</p>
                                         </a>
