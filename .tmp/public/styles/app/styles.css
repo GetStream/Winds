@@ -1695,3 +1695,36 @@ body {
         font-weight: 300;
         font-size: 14px;
         text-decoration: none; }
+
+.create-account .sso p {
+  font-family: 'Marriweather';
+  font-style: italic;
+  font-size: 14px;
+  color: #FFFFFF;
+  margin-top: 20px;
+  margin-bottom: 0; }
+
+.create-account .sso svg {
+  position: relative;
+  top: 3px;
+  margin-right: 16px; }
+
+.create-account .sso a.btn {
+  height: 60px;
+  width: 270px;
+  margin-top: 20px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  letter-spacing: 2px;
+  line-height: 31px;
+  border: 1px solid #FFFFFF;
+  border-radius: 0;
+  outline: none;
+  text-transform: uppercase;
+  padding-top: 14px; }
+  .create-account .sso a.btn.facebook svg {
+    left: -10px; }
+  .create-account .sso a.btn.google svg {
+    left: -18px; }

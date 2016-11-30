@@ -1,7 +1,6 @@
 .getting-started {
 
     margin-top: -60px;
-    // min-width: 545px;
 
     footer {
         margin: -30px 0 0 0;
@@ -43,7 +42,7 @@
             background-color: #14BA83;
             text-align: center;
             color: #FFFFFF;
-        
+
 
             a {
                 color: #FFF;
@@ -482,6 +481,60 @@
                     font-weight: 300;
                     font-size: 14px;
                     text-decoration: none;
+                }
+
+            }
+
+        }
+
+    }
+
+    .sso {
+
+        p {
+            font-family: 'Marriweather';
+            font-style: italic;
+            font-size: 14px;
+            color: #FFFFFF;
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+
+        svg {
+            position: relative;
+            top: 3px;
+            margin-right: 16px;
+        }
+
+        a.btn {
+
+            height: 60px;
+            width: 270px;
+            margin-top: 20px;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 400;
+            color: #FFFFFF ;
+            letter-spacing: 2px;
+            line-height: 31px;
+            border: 1px solid #FFFFFF;
+            border-radius: 0;
+            outline: none;
+            text-transform: uppercase;
+            padding-top: 14px;
+
+            &.facebook {
+
+                svg {
+                    left: -10px;
+                }
+
+            }
+
+            &.google {
+
+                svg {
+                    left: -18px;
                 }
 
             }
