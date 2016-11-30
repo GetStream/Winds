@@ -169,16 +169,6 @@ class CreateAccount extends Component {
         })
     }
 
-    handleFacebookSignIn = e => {
-
-        e.preventDefault()
-
-        FB.getLoginStatus(response => {
-            console.log(response)
-        })
-
-    }
-
     handleNeedAccount = e => {
         e.preventDefault()
         this.props.onNeedAccount()
@@ -288,7 +278,7 @@ class CreateAccount extends Component {
 
                         <div className="sso">
                             <p>Or</p>
-                            <a href="#" className="btn facebook" onClick={this.handleFacebookSignIn}>
+                            <a href="/api/facebook_auth" className="btn facebook">
                                 <svg width="9px" height="16px" viewBox="33 22 9 16">
                                     <path d="M42,25 L40,25 C39.7,25 39,25.472 39,26 L39,28 L42,28 L42,31 L39,31 L39,38 L36,38 L36,31 L33,31 L33,28 L36,28 L36,26 C36,23.794 37.961,22 40.062,22 L42,22 L42,25 L42,25 Z" id="Shape" stroke="none" fill="#FFFFFF" fillRule="evenodd"></path>
                                 </svg>

@@ -51,21 +51,28 @@ module.exports.routes = {
   },
 
   'get /api/me': 'UsersController.aboutMe',
+
   'get /api/stream/chronological': 'StreamController.chronological',
   'get /api/stream/personalized': 'StreamController.personalized',
   'get /api/stream/feed': 'StreamController.readFeed',
   'get /api/stream/interest_profile': 'StreamController.interestProfile',
   'get /api/stream/event_counts': 'StreamController.eventCounts',
-  'post /api/follow_topics': 'FollowsController.followTopics',
+
   'post /api/mark_read': 'ReadController.markRead',
+
+  'post /api/follow_topics': 'FollowsController.followTopics',
   'get /api/follows': 'FollowsController.readFollows',
   'post /api/unfollow': 'FollowsController.unfollowFeed',
+
   'get /api/topics': 'TopicsController.readTopics',
   'get /api/rss/discover': 'SitesController.discover',
+
   'post /api/login': 'AuthController.login',
   'get /api/logout': 'AuthController.logout',
   'post /api/register': 'AuthController.register',
   'post /api/password_reset': 'AuthController.passwordReset',
+  'get /api/facebook_auth': 'AuthController.facebookLogin',
+
   'post /api/update_password': 'UsersController.updatePassword',
   'post /api/uploads/opml': 'UploadController.opml',
 

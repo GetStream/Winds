@@ -1,4 +1,5 @@
 var passport = require('passport'),
+    FacebookStrategy = require('passport-facebook').Strategy,
     bcrypt = require('bcrypt'),
     randomstring = require('randomstring'),
     util = require('util')
@@ -29,10 +30,9 @@ module.exports = {
 
             if (err) {
                 if (!_.isEmpty(sails.sentry)) {
-                    console.log('ereirjeklj', err)
                     sails.sentry.captureMessage(err)
                 } else {
-                    console.log(err)
+                    sails.log.warn(err)
                 }
                 return res.badRequest('Registration failed. Could not create user.')
             }
@@ -108,6 +108,25 @@ module.exports = {
     logout: function(req, res) {
         req.logout()
         return res.redirect('/app/getting-started')
+    },
+
+    facebookLogin: function(req, res) {
+
+        passport.authenticate('facebook', { failureRedirect: '/getting-started', scope: ['email'] }, function(err, user) {
+
+            req.logIn(user, function(err) {
+
+                if (err) {
+                    sails.log.warn(err)
+                    return res.send(500)
+                }
+
+                return res.redirect('/getting-started')
+
+            })
+
+        })(req, res)
+
     },
 
     passwordReset: function(req, res) {
