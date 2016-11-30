@@ -18,17 +18,11 @@ class Suggestion extends Component {
 
     handleRemoveSuggestion = () => {
         this.props.dispatch(SuggestedFeedsActions.remove(this.props.feedId))
-        this.setState({
-            displaySuggestion: false,
-        })
     }
 
     handleFollowSuggestion = (e) => {
         e.preventDefault()
         this.props.dispatch(SuggestedFeedsActions.follow(this.props.feedId))
-        this.setState({
-            displaySuggestion: false,
-        })
     }
 
     render() {
@@ -73,6 +67,11 @@ class SuggestedFeeds extends Component {
     }
 
     componentWillMount() {
+        if (sessionStorage.getItem('suggestionsClosed')) {
+            this.setState({
+                displaySuggestions: false,
+            })
+        }
         this.props.dispatch(
             SuggestedFeedsActions.load()
         )
@@ -82,6 +81,7 @@ class SuggestedFeeds extends Component {
         this.setState({
             displaySuggestions: false,
         })
+        sessionStorage.setItem('suggestionsClosed', 'true')
     }
 
     render() {
@@ -105,13 +105,13 @@ class SuggestedFeeds extends Component {
                 <div className="suggestions">
                     <ul className="list-inline">
                         <div className="row">
-                            {this.props.suggestedFeeds.slice(0, 6).map(suggestedFeed =>
+                            {[...this.props.suggestedFeeds].slice(0, 6).map(feed =>
                                 <Suggestion
-                                    feedId={suggestedFeed.id}
-                                    siteName={suggestedFeed.site.name ? suggestedFeed.site.name : <Hostname>suggestedFeed.site.siteUrl</Hostname>}
-                                    siteUrl={suggestedFeed.site.siteUrl}
-                                    faviconUrl={suggestedFeed.site.faviconUrl ? suggestedFeed.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'}
-                                    key={`suggested-feed-${suggestedFeed.id}`} />
+                                    feedId={feed.id}
+                                    siteName={feed.site.name}
+                                    siteUrl={feed.site.siteUrl}
+                                    faviconUrl={feed.site.faviconUrl ? feed.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'}
+                                    key={`suggested-feed-${feed.id}`} />
                             )}
                         </div>
                     </ul>

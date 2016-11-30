@@ -6,10 +6,8 @@ function SuggestedFeeds(state = [], action) {
             if (action.response) return [...action.response]
             return state
         case SuggestedFeedsActions.FOLLOW:
-            if (action.response) return [...action]
-            return state
         case SuggestedFeedsActions.REMOVE:
-            if (action.response) return [...action]
+            if (action.data) return state.filter(suggestion => suggestion.id !== action.data.feed_id)
             return state
     }
 

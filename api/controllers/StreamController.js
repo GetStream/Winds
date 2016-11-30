@@ -320,7 +320,7 @@ module.exports = {
             console.log('ERROR', error)
             console.log('BODY', body)
 
-            res.json(body)
+            res.send(204)
 
         })
 
