@@ -3,7 +3,8 @@
  *
  * Controller fot the integration with Stream
  */
-const request = require('request')
+const request = require('request'),
+      moment  = require('moment')
 
 module.exports = {
 
@@ -221,7 +222,7 @@ module.exports = {
 
     },
 
-    feedSuggestions: function(req, res, next) {
+    getfeedSuggestions: function(req, res, next) {
 
         const userId = req.user.id,
               url    = `https://reader.getstream.io/reader/recommended/${userId}`,
@@ -268,7 +269,7 @@ module.exports = {
                                 if (!--length) {
                                     res.json(feeds)
                                 }
-                                
+
                             })
 
                     })
@@ -277,6 +278,52 @@ module.exports = {
 
         })
 
-    }
+    },
+
+    updateFeedSuggestions: function(req, res, next) {
+
+        const userId = req.user.id,
+              url    = `https://reader.getstream.io/reader/recommended/${userId}`,
+              token  = StreamService.getJwtToken(userId)
+
+        let payload = {
+            feed_id: req.body.feed_id,
+        }
+
+        if (req.query.follow) payload.accepted_at = moment().format('YYYY-MM-DD HH:mm:ss')
+
+        request({
+            url: url,
+            qs: {
+                api_key: sails.config.stream.streamApiKey
+            },
+            method: 'POST',
+            body: payload,
+            json: true,
+            timeout: 10000,
+            headers: {
+                'authorization': token,
+                'stream-auth-type': 'jwt'
+            }
+        }, function(error, response, body) {
+
+            if (error) {
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(error)
+                } else {
+                    sails.log.warn(error)
+                }
+                return res.serverError('Failed to load suggested feeds.')
+            }
+
+            console.log('PAYLOAD', payload)
+            console.log('ERROR', error)
+            console.log('BODY', body)
+
+            res.json(body)
+
+        })
+
+    },
 
 }

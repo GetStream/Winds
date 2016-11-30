@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 import normalizeUrl from 'normalize-url'
 
 import Hostname from 'components/Hostname'
+import Truncate from 'components/Truncate'
 
 import * as SuggestedFeedsActions from 'actions/SuggestedFeeds'
 
+@connect(state => ({ suggestedFeeds: state.SuggestedFeeds }))
 class Suggestion extends Component {
 
     state = {
@@ -15,13 +17,15 @@ class Suggestion extends Component {
     }
 
     handleRemoveSuggestion = () => {
+        this.props.dispatch(SuggestedFeedsActions.remove(this.props.feedId))
         this.setState({
             displaySuggestion: false,
         })
     }
 
-    handleFollow = (e) => {
+    handleFollowSuggestion = (e) => {
         e.preventDefault()
+        this.props.dispatch(SuggestedFeedsActions.follow(this.props.feedId))
         this.setState({
             displaySuggestion: false,
         })
@@ -48,9 +52,9 @@ class Suggestion extends Component {
                     </div>
                     <div className="bottom">
                         <a href="#" target="_blank" className="site-name">
-                            <p>{this.props.siteName}</p>
+                            <p><Truncate>{this.props.siteName}</Truncate></p>
                         </a>
-                        <a href="#" data-id={this.props.feedId} className="follow text-uppercase" onClick={this.handleFollow}>
+                        <a href="#" data-id={this.props.feedId} className="follow text-uppercase" onClick={this.handleFollowSuggestion}>
                             Follow
                         </a>
                     </div>
@@ -101,17 +105,14 @@ class SuggestedFeeds extends Component {
                 <div className="suggestions">
                     <ul className="list-inline">
                         <div className="row">
-                            {this.props.suggestedFeeds.map(suggestedFeed => {
-                                return (
-                                    <Suggestion
-                                        feedId={suggestedFeed.id}
-                                        siteName={suggestedFeed.site.name ? suggestedFeed.site.name : <Hostname>suggestedFeed.site.siteUrl</Hostname>}
-                                        siteUrl={suggestedFeed.site.siteUrl}
-                                        faviconUrl={suggestedFeed.site.faviconUrl ? suggestedFeed.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'}
-                                        key={`suggested-feed-${suggestedFeed.id}`} />
-                                )
-
-                            })}
+                            {this.props.suggestedFeeds.slice(0, 6).map(suggestedFeed =>
+                                <Suggestion
+                                    feedId={suggestedFeed.id}
+                                    siteName={suggestedFeed.site.name ? suggestedFeed.site.name : <Hostname>suggestedFeed.site.siteUrl</Hostname>}
+                                    siteUrl={suggestedFeed.site.siteUrl}
+                                    faviconUrl={suggestedFeed.site.faviconUrl ? suggestedFeed.site.faviconUrl : 'http://i.imgur.com/blhZfDe.png'}
+                                    key={`suggested-feed-${suggestedFeed.id}`} />
+                            )}
                         </div>
                     </ul>
                 </div>
