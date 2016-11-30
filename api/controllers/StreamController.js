@@ -3,8 +3,7 @@
  *
  * Controller fot the integration with Stream
  */
-const request = require('request'),
-      moment  = require('moment')
+const request = require('request')
 
 module.exports = {
 
@@ -283,14 +282,18 @@ module.exports = {
     updateFeedSuggestions: function(req, res, next) {
 
         const userId = req.user.id,
-              url    = `https://reader.getstream.io/reader/recommended/${userId}`,
+              url    = `https://reader.getstream.io/reader/recommended/${userId}/`,
               token  = StreamService.getJwtToken(userId)
 
         let payload = {
             feed_id: req.body.feed_id,
         }
 
-        if (req.query.follow) payload.accepted_at = moment().format('YYYY-MM-DD HH:mm:ss')
+        if (req.query.follow) {
+            payload.accepted_at = true
+        } else {
+            payload.accepted_at = false
+        }
 
         request({
             url: url,
@@ -316,6 +319,7 @@ module.exports = {
                 return res.serverError('Failed to load suggested feeds.')
             }
 
+            console.log('RESPONSE', response.statusCode)
             console.log('PAYLOAD', payload)
             console.log('ERROR', error)
             console.log('BODY', body)
