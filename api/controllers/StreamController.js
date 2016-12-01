@@ -319,11 +319,6 @@ module.exports = {
                 return res.serverError('Failed to load suggested feeds.')
             }
 
-            console.log('RESPONSE', response.statusCode)
-            console.log('PAYLOAD', payload)
-            console.log('ERROR', error)
-            console.log('BODY', body)
-
             res.send(204)
 
         })
