@@ -38,7 +38,7 @@ module.exports.session = {
 
   host: 'localhost',
   port: 6379,
-  //ttl: <redis session TTL in seconds>,
+  ttl: 604800,
   db: 0,
   pass: process.env.REDIS_AUTH,
   prefix: 'sess:'
