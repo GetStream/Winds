@@ -92,7 +92,9 @@ module.exports = {
 
             req.logIn(user, function(err) {
 
-                if (err) res.send(err)
+                if (err) {
+                    return res.send(err)
+                }
 
                 return res.send({
                     message: info.message,
