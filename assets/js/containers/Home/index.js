@@ -175,8 +175,8 @@ class Home extends Component {
                             </div>
                         </div>
 
-                        <SuggestedFeeds />
-                        
+                        {/* <SuggestedFeeds /> */}
+
                         <div className="row row-2">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[2].object.id, 2)}>
                                 <a href={this.props.feeds[2].object.articleUrl} target="_blank">
