@@ -319,7 +319,24 @@ module.exports = {
                 return res.serverError('Failed to load suggested feeds.')
             }
 
-            res.send(204)
+            // remove the follow relationship
+            sails.models.follows.create({
+                user: userId,
+                feed: req.body.feed_id,
+                type: 'feed' }).exec(function(err, response) {
+
+                    if (error) {
+                        if (!_.isEmpty(sails.sentry)) {
+                            sails.sentry.captureMessage(error)
+                        } else {
+                            sails.log.warn(error)
+                        }
+                        return res.serverError('Failed to make follow relationship.')
+                    }
+
+                    res.send(204)
+
+                })
 
         })
 
