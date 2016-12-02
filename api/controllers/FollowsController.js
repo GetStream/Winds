@@ -20,7 +20,7 @@ module.exports = {
             callback => {
 
                 // remove the follow relationship
-                sails.models.follows.destroy({user: userId, feed: feedId, type: 'feed'}).exec(callback)
+                sails.models.follows.destroy({ user: userId, feed: feedId, type: 'feed' }).exec(callback)
 
             }, callback => {
 

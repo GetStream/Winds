@@ -26,6 +26,9 @@ module.exports.routes = {
   // default view engine) your home page.
   //
   // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
+  'get /4xx': 'ErrorController.four',
+  'get /5xx': 'ErrorController.five',
+
   '/': {
       view: 'index'
   },
@@ -53,6 +56,8 @@ module.exports.routes = {
   'get /api/me': 'UsersController.aboutMe',
   'get /api/stream/chronological': 'StreamController.chronological',
   'get /api/stream/personalized': 'StreamController.personalized',
+  'get /api/stream/suggestions': 'StreamController.getFeedSuggestions',
+  'put /api/stream/suggestions': 'StreamController.updateFeedSuggestions',
   'get /api/stream/feed': 'StreamController.readFeed',
   'get /api/stream/interest_profile': 'StreamController.interestProfile',
   'get /api/stream/event_counts': 'StreamController.eventCounts',
