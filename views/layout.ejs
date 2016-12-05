@@ -8,23 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="https://dzgr2e2po1y82.cloudfront.net/img/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="https://dzgr2e2po1y82.cloudfront.net/img/favicon-16x16.png" sizes="16x16" />
 
-    <link rel="apple-touch-icon" href="/img/icons/touch-icon-iphone-60x60.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/img/icons/touch-icon-ipad-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/img/icons/touch-icon-iphone-retina-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/img/icons/touch-icon-ipad-retina-152x152.png">
+    <link rel="apple-touch-icon" href="https://dzgr2e2po1y82.cloudfront.net/img/icons/touch-icon-iphone-60x60.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://dzgr2e2po1y82.cloudfront.net/img/icons/touch-icon-ipad-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://dzgr2e2po1y82.cloudfront.net/img/icons/touch-icon-iphone-retina-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://dzgr2e2po1y82.cloudfront.net/img/icons/touch-icon-ipad-retina-152x152.png">
 
-    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/app/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://dzgr2e2po1y82.cloudfront.net/styles/app/styles.css">
 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/app/getstream.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://dzgr2e2po1y82.cloudfront.net/js/app/getstream.min.js"></script>
 
     <script type="text/javascript">
         !function(t,e){t("StreamAnalytics","https://d2j1fszo1axgmp.cloudfront.net/2.6.0/stream-analytics.min.js",e)}(function(t,e,n){var s,i,r;n["_"+t]={},n[t]=function(e){n["_"+t].clients=n["_"+t].clients||{},n["_"+t].clients[e.apiKey]=this,this._config=e};var c=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(arguments),this}};s=["setUser","trackImpression","trackEngagement"];for(var a=0;a<s.length;a++){var o=s[a];n[t].prototype[o]=c(o)}i=document.createElement("script"),i.async=!0,i.src=e,r=document.getElementsByTagName("script")[0],r.parentNode.insertBefore(i,r)},this);
@@ -37,7 +37,7 @@
         });
         <%if (req.user) { %>
             var userId = '<%- req.user.id %>'
-            client.setUser({id: '<%- req.user.id %>', alias: '<%- req.user.email %>'})
+            client.setUser({ id: '<%- req.user.id %>', alias: '<%- req.user.email %>' })
         <% } %>
 
         var realtime = stream.connect(
@@ -55,11 +55,29 @@
 
     <script src="//connect.facebook.net/en_US/sdk.js"></script>
     <script>
+<<<<<<< HEAD
         FB.init({
             appId      : '<%- sails.config.facebook.facebookApiKey %>',
             xfbml      : true,
             version    : 'v2.8'
         })
+=======
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId   : '<%- sails.config.facebook.facebookApiKey %>',
+                xfbml   : true,
+                version : 'v2.8'
+            });
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+>>>>>>> 0376f2e2b4959a07e19b00c2fc6a544173cc717a
     </script>
     
 </head>

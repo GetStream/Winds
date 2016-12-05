@@ -18,7 +18,7 @@ const FirstChild = props => {
 
 class Topic extends Component {
 
-    getBackground = () => `url("/img/app/${this.props.name.replace(/\s+/g, '-').toLowerCase()}-bg.jpg")`
+    getBackground = () => `url("https://dzgr2e2po1y82.cloudfront.net/img/app/${this.props.name.replace(/\s+/g, '-').toLowerCase()}-bg.jpg")`
 
     render() {
         return (

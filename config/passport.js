@@ -3,7 +3,7 @@ LocalStrategy = require('passport-local').Strategy,
 bcrypt = require('bcrypt')
 
 let config = {
-    secret: 'Yt7MCuotQOKZRnfPeDyxQuXYKugMpBlL3RRCxp3Gziz8omKEPD',
+    secret: process.env.JWT_SECRET,
     issuer: 'getstream.io',
     audience: 'getstream.io'
 }

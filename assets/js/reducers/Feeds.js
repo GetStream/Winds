@@ -12,10 +12,6 @@ function Feeds(state = [], action) {
             }
             return state
 
-        // case FeedActions.ADD:
-        //     if (action.response) return [...state, action.response]
-        //     return [...state]
-
         case UserActions.LOGOUT:
         case FeedActions.CLEAR:
             return []
