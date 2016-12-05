@@ -662,7 +662,7 @@ body {
   transition: opacity 300ms ease-in; }
 .social-sharing {
   top: 4px;
-  margin-right: 10px;
+  margin-right: 25px;
   position: relative;
   cursor: pointer;
   display: inline-block; }
@@ -806,6 +806,28 @@ body {
       font-style: normal; }
   .suggested-feeds .bottom .follow {
     color: #16C98D; }
+.vote {
+  text-align: center;
+  width: 40px;
+  position: absolute;
+  display: block;
+  left: -10px;
+  top: -20px;
+  margin-right: 22px; }
+  .vote svg {
+    cursor: pointer; }
+  .vote .upvote {
+    position: relative;
+    bottom: -8px; }
+  .vote .downvote {
+    position: relative;
+    top: -6px; }
+  .vote .votes {
+    font-weight: 300;
+    color: #99A9B3;
+    font-size: 12px !important;
+    position: relative;
+    top: 8px; }
 .realtime-notifications .banner {
   cursor: pointer;
   height: 40px;
@@ -850,7 +872,7 @@ body {
   margin-bottom: 30px; }
 
 .masonry .read-blog {
-  background-image: url("/img/app/stream-blog-bg.png");
+  background-image: url("https://dzgr2e2po1y82.cloudfront.net/img/app/stream-blog-bg.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -879,6 +901,22 @@ body {
   margin-bottom: 19px; }
   .masonry .row-1 .margin-btm {
     margin-bottom: 60px; }
+  .masonry .row-1 .meta h2 a,
+  .masonry .row-1 .meta h2 a:hover,
+  .masonry .row-1 .meta h2 a:visited,
+  .masonry .row-1 .meta h2 a:active, .masonry .row-1 .meta h3 a,
+  .masonry .row-1 .meta h3 a:hover,
+  .masonry .row-1 .meta h3 a:visited,
+  .masonry .row-1 .meta h3 a:active {
+    float: left;
+    clear: right;
+    margin-bottom: 8px;
+    color: #16C98D;
+    text-decoration: none; }
+  .masonry .row-1 .meta h2 span, .masonry .row-1 .meta h3 span {
+    margin-left: 40px;
+    margin-top: -38px;
+    position: absolute; }
   .masonry .row-1 .b1 {
     background: #16C98D;
     display: box;
@@ -1452,7 +1490,7 @@ body {
         width: 394px;
         padding-left: 20px; } }
     .getting-started .create-account .logo {
-      background-image: url("/img/app/logo-lg.png");
+      background-image: url("https://dzgr2e2po1y82.cloudfront.net/img/app/logo-lg.png");
       background-repeat: no-repeat;
       background-position: center;
       background-size: 50% 50%;
@@ -1514,7 +1552,7 @@ body {
         font-size: 13px;
         font-weight: 300; }
     .getting-started > main aside .read-blog {
-      background-image: url("/img/app/stream-blog-bg.png");
+      background-image: url("https://dzgr2e2po1y82.cloudfront.net/img/app/stream-blog-bg.png");
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -1769,7 +1807,7 @@ body {
         text-decoration: none; }
 
 .create-account .sso p {
-  font-family: 'Marriweather';
+  font-family: 'Merriweather';
   font-style: italic;
   font-size: 14px;
   color: #FFFFFF;
@@ -1782,6 +1820,7 @@ body {
   margin-right: 16px; }
 
 .create-account .sso a.btn {
+  border: 1px solid lime !important;
   height: 60px;
   width: 270px;
   margin-top: 20px;

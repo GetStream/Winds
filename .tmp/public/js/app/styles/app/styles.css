@@ -806,6 +806,16 @@ body {
       font-style: normal; }
   .suggested-feeds .bottom .follow {
     color: #16C98D; }
+.vote {
+  border: 1px solid lime;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .vote .votes {
+    color: #99A9B3;
+    font-size: 12px !important; }
 .realtime-notifications .banner {
   cursor: pointer;
   height: 40px;

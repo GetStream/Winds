@@ -14,6 +14,7 @@ import Image from 'components/Image'
 
 import Personalization from 'components/Personalization'
 import SuggestedFeeds from 'components/SuggestedFeeds'
+import Vote from 'components/Vote'
 
 import Articles from 'containers/Home/components/Articles'
 
@@ -127,13 +128,20 @@ class Home extends Component {
                                     <Image className="b2" src={this.props.feeds[0].object.imageSrc} />
                                 </a>
                                 <div className="meta">
-                                    <h2>
-                                        <a href={this.props.feeds[0].object.articleUrl} target="_blank">
-                                            <StripEntities>{this.props.feeds[0].object.title}</StripEntities>
-                                        </a>
-                                    </h2>
+                                    <div className="title">
+                                        <h2>
+                                            <Vote />
+                                            <a href={this.props.feeds[0].object.articleUrl} target="_blank">
+                                                <StripEntities>{this.props.feeds[0].object.title}</StripEntities>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                    <div className="clearfix"></div>
                                     <p>
-                                        <SocialSharing url={this.props.feeds[0].object.articleUrl} title={this.props.feeds[0].object.title} picture={this.props.feeds[0].object.imageSrc} />
+                                        <SocialSharing
+                                            url={this.props.feeds[0].object.articleUrl}
+                                            title={this.props.feeds[0].object.title}
+                                            picture={this.props.feeds[0].object.imageSrc} />
                                         {moment(this.props.feeds[0].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
                                         <a href={normalizeUrl(this.props.feeds[0].object.articleUrl)} target="_blank">
@@ -153,12 +161,16 @@ class Home extends Component {
                                 </a>
                                 <div className="meta">
                                     <h3>
+                                        <Vote />
                                         <a href={this.props.feeds[1].object.articleUrl} target="_blank">
                                             <StripEntities>{this.props.feeds[1].object.title}</StripEntities>
                                         </a>
                                     </h3>
                                     <p>
-                                        <SocialSharing url={this.props.feeds[1].object.articleUrl} title={this.props.feeds[1].object.title} picture={this.props.feeds[1].object.imageSrc} />
+                                        <SocialSharing
+                                            url={this.props.feeds[1].object.articleUrl}
+                                            title={this.props.feeds[1].object.title}
+                                            picture={this.props.feeds[1].object.imageSrc} />
                                         {moment(this.props.feeds[1].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
                                         <a href={normalizeUrl(this.props.feeds[1].object.articleUrl)} target="_blank">

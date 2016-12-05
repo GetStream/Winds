@@ -9,3 +9,5 @@ export default props => (
         {entities.decode(normalizeWhitespace(props.children))}
     </span>
 )
+
+require('./styles.scss')
