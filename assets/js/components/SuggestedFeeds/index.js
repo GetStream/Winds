@@ -45,7 +45,7 @@ class Suggestion extends Component {
                         </div>
                     </div>
                     <div className="bottom">
-                        <a href="#" target="_blank" className="site-name">
+                        <a href={normalizeUrl(this.props.siteUrl)} target="_blank" className="site-name">
                             <p><Truncate>{this.props.siteName}</Truncate></p>
                         </a>
                         <a href="#" data-id={this.props.feedId} className="follow text-uppercase" onClick={this.handleFollowSuggestion}>
