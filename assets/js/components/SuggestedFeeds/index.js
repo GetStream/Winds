@@ -28,6 +28,7 @@ class Suggestion extends Component {
     render() {
 
         if (!this.state.displaySuggestion) return null
+        if (!this.props.siteUrl) return null
 
         return(
             <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
