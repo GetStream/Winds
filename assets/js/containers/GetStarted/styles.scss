@@ -492,7 +492,7 @@
     .sso {
 
         p {
-            font-family: 'Marriweather';
+            font-family: 'Merriweather';
             font-style: italic;
             font-size: 14px;
             color: #FFFFFF;
@@ -507,6 +507,8 @@
         }
 
         a.btn {
+
+            border: 1px solid lime !important;
 
             height: 60px;
             width: 270px;

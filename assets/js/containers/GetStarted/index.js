@@ -233,6 +233,7 @@ class CreateAccount extends Component {
                             <p>Have an account?</p>
                             <a href="#" onClick={this.handleHaveAccount}>Sign In</a>
                         </div>
+
                     </form>
 
                 </main>

@@ -1769,7 +1769,7 @@ body {
         text-decoration: none; }
 
 .create-account .sso p {
-  font-family: 'Marriweather';
+  font-family: 'Merriweather';
   font-style: italic;
   font-size: 14px;
   color: #FFFFFF;
@@ -1782,6 +1782,7 @@ body {
   margin-right: 16px; }
 
 .create-account .sso a.btn {
+  border: 1px solid lime !important;
   height: 60px;
   width: 270px;
   margin-top: 20px;

@@ -26,9 +26,6 @@ module.exports.routes = {
   // default view engine) your home page.
   //
   // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
-  'get /4xx': 'ErrorController.four',
-  'get /5xx': 'ErrorController.five',
-
   '/': {
       view: 'index'
   },
@@ -76,7 +73,6 @@ module.exports.routes = {
   'get /api/logout': 'AuthController.logout',
   'post /api/register': 'AuthController.register',
   'post /api/password_reset': 'AuthController.passwordReset',
-  'get /api/facebook_auth': 'AuthController.facebookLogin',
 
   'post /api/update_password': 'UsersController.updatePassword',
   'post /api/uploads/opml': 'UploadController.opml',
