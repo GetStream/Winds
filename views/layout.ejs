@@ -55,13 +55,6 @@
 
     <script src="//connect.facebook.net/en_US/sdk.js"></script>
     <script>
-<<<<<<< HEAD
-        FB.init({
-            appId      : '<%- sails.config.facebook.facebookApiKey %>',
-            xfbml      : true,
-            version    : 'v2.8'
-        })
-=======
         window.fbAsyncInit = function() {
             FB.init({
                 appId   : '<%- sails.config.facebook.facebookApiKey %>',
@@ -77,9 +70,8 @@
             js.src = "//connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
->>>>>>> 0376f2e2b4959a07e19b00c2fc6a544173cc717a
     </script>
-    
+
 </head>
 
     <body>
