@@ -825,7 +825,7 @@ body {
   .vote .votes {
     font-weight: 300;
     color: #99A9B3;
-    font-size: 12px !important;
+    font-size: 12px;
     position: relative;
     top: 8px; }
 .realtime-notifications .banner {

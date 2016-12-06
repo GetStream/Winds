@@ -136,7 +136,6 @@ class Home extends Component {
                                             </a>
                                         </h2>
                                     </div>
-                                    <div className="clearfix"></div>
                                     <p>
                                         <SocialSharing
                                             url={this.props.feeds[0].object.articleUrl}
