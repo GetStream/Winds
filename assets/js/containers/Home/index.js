@@ -14,7 +14,7 @@ import Image from 'components/Image'
 
 import Personalization from 'components/Personalization'
 import SuggestedFeeds from 'components/SuggestedFeeds'
-import Vote from 'components/Vote'
+import Like from 'components/Like'
 
 import Articles from 'containers/Home/components/Articles'
 
@@ -130,13 +130,13 @@ class Home extends Component {
                                 <div className="meta">
                                     <div className="title">
                                         <h2>
-                                            <Vote />
                                             <a href={this.props.feeds[0].object.articleUrl} target="_blank">
                                                 <StripEntities>{this.props.feeds[0].object.title}</StripEntities>
                                             </a>
                                         </h2>
                                     </div>
                                     <p>
+                                        <Like id={this.props.feeds[0].id} />
                                         <SocialSharing
                                             url={this.props.feeds[0].object.articleUrl}
                                             title={this.props.feeds[0].object.title}
@@ -160,12 +160,12 @@ class Home extends Component {
                                 </a>
                                 <div className="meta">
                                     <h3>
-                                        <Vote />
                                         <a href={this.props.feeds[1].object.articleUrl} target="_blank">
                                             <StripEntities>{this.props.feeds[1].object.title}</StripEntities>
                                         </a>
                                     </h3>
                                     <p>
+                                        <Like id={this.props.feeds[1].id} />
                                         <SocialSharing
                                             url={this.props.feeds[1].object.articleUrl}
                                             title={this.props.feeds[1].object.title}
@@ -200,18 +200,22 @@ class Home extends Component {
                                         </a>
                                     </h2>
                                     <p>
-                                    <SocialSharing url={this.props.feeds[2].object.articleUrl} title={this.props.feeds[2].object.title} picture={this.props.feeds[2].object.imageSrc} />
-                                    {moment(this.props.feeds[2].object.createdAt).fromNow()}
-                                    &nbsp;from&nbsp;
-                                    <a href={normalizeUrl(this.props.feeds[2].object.articleUrl)} target="_blank">
-                                        {this.props.feeds[2].site.name || this.props.feeds[2].site.siteUrl}
-                                    </a>
-                                    {
-                                        this.props.feeds[2].object.secondaryUrl ? (
-                                            <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[2].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
-                                        ) : null
-                                    }
-                                </p>
+                                        <Like id={this.props.feeds[2].id} />
+                                        <SocialSharing
+                                            url={this.props.feeds[2].object.articleUrl}
+                                            title={this.props.feeds[2].object.title}
+                                            picture={this.props.feeds[2].object.imageSrc} />
+                                        {moment(this.props.feeds[2].object.createdAt).fromNow()}
+                                        &nbsp;from&nbsp;
+                                        <a href={normalizeUrl(this.props.feeds[2].object.articleUrl)} target="_blank">
+                                            {this.props.feeds[2].site.name || this.props.feeds[2].site.siteUrl}
+                                        </a>
+                                        {
+                                            this.props.feeds[2].object.secondaryUrl ? (
+                                                <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[2].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                            ) : null
+                                        }
+                                    </p>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[3].object.id, 3)}>
@@ -225,18 +229,22 @@ class Home extends Component {
                                         </a>
                                     </h2>
                                     <p>
-                                    <SocialSharing url={this.props.feeds[3].object.articleUrl} title={this.props.feeds[3].object.title} picture={this.props.feeds[3].object.imageSrc} />
-                                    {moment(this.props.feeds[3].object.createdAt).fromNow()}
-                                    &nbsp;from&nbsp;
-                                    <a href={normalizeUrl(this.props.feeds[3].object.articleUrl)} target="_blank">
-                                        {this.props.feeds[3].site.name || this.props.feeds[3].site.siteUrl}
-                                    </a>
-                                    {
-                                        this.props.feeds[3].object.secondaryUrl ? (
-                                            <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[3].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
-                                        ) : null
-                                    }
-                                </p>
+                                        <Like id={this.props.feeds[3].id} />
+                                        <SocialSharing
+                                            url={this.props.feeds[3].object.articleUrl}
+                                            title={this.props.feeds[3].object.title}
+                                            picture={this.props.feeds[3].object.imageSrc} />
+                                        {moment(this.props.feeds[3].object.createdAt).fromNow()}
+                                        &nbsp;from&nbsp;
+                                        <a href={normalizeUrl(this.props.feeds[3].object.articleUrl)} target="_blank">
+                                            {this.props.feeds[3].site.name || this.props.feeds[3].site.siteUrl}
+                                        </a>
+                                        {
+                                            this.props.feeds[3].object.secondaryUrl ? (
+                                                <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[3].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
+                                            ) : null
+                                        }
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -254,7 +262,11 @@ class Home extends Component {
                                         </a>
                                     </h3>
                                     <p>
-                                        <SocialSharing url={this.props.feeds[4].object.articleUrl} title={this.props.feeds[4].object.title} picture={this.props.feeds[4].object.imageSrc} />
+                                        <Like id={this.props.feeds[4].id} />
+                                        <SocialSharing
+                                            url={this.props.feeds[4].object.articleUrl}
+                                            title={this.props.feeds[4].object.title}
+                                            picture={this.props.feeds[4].object.imageSrc} />
                                         {moment(this.props.feeds[4].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
                                         <a href={normalizeUrl(this.props.feeds[4].object.articleUrl)} target="_blank">
@@ -280,6 +292,7 @@ class Home extends Component {
                                             </a>
                                         </h2>
                                         <p>
+                                            <Like id={this.props.feeds[5].id} />
                                             <SocialSharing url={this.props.feeds[5].object.articleUrl} title={this.props.feeds[5].object.title} picture={this.props.feeds[5].object.imageSrc} />
                                             {moment(this.props.feeds[5].object.createdAt).fromNow()}
                                             &nbsp;from&nbsp;
@@ -305,7 +318,11 @@ class Home extends Component {
                                         </a>
                                     </h3>
                                     <p>
-                                        <SocialSharing url={this.props.feeds[6].object.articleUrl} title={this.props.feeds[6].object.title} picture={this.props.feeds[6].object.imageSrc} />
+                                        <Like id={this.props.feeds[6].id} />
+                                        <SocialSharing
+                                            url={this.props.feeds[6].object.articleUrl}
+                                            title={this.props.feeds[6].object.title}
+                                            picture={this.props.feeds[6].object.imageSrc} />
                                         {moment(this.props.feeds[6].object.createdAt).fromNow()}
                                         &nbsp;from&nbsp;
                                         <a href={normalizeUrl(this.props.feeds[6].object.articleUrl)} target="_blank">

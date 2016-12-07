@@ -77,6 +77,10 @@ module.exports.routes = {
   'post /api/update_password': 'UsersController.updatePassword',
   'post /api/uploads/opml': 'UploadController.opml',
 
+  'get /api/like': 'LikesController.getLike',
+  'post /api/like': 'LikesController.addLike',
+  'delete /api/like': 'LikesController.deleteLike',
+
   // If a request to a URL doesn't match any of the custom routes above,
   // it is matched against Sails route blueprints.  See `config/blueprints.js`
   // for configuration options and examples.
