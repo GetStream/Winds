@@ -14,7 +14,7 @@ class Like extends Component {
     componentWillMount() {
         this.props.dispatch(LikeActions.load(this.props.id))
             .then(res => {
-                if (res.response) {
+                if (res.response && this.props.id === res.response.feedId) {
                     this.setState({ liked: true, })
                 }
             })
