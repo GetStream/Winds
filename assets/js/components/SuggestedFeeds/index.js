@@ -73,9 +73,7 @@ class SuggestedFeeds extends Component {
                 displaySuggestions: false,
             })
         }
-        this.props.dispatch(
-            SuggestedFeedsActions.load()
-        )
+        this.props.dispatch(SuggestedFeedsActions.load())
     }
 
     handleHideSuggestions = () => {

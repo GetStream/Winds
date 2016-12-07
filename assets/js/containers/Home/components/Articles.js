@@ -55,7 +55,7 @@ class Article extends Component {
                         onClick={this.trackEngagement}>
                         <Summary limit={80}>{this.props.object.summary}</Summary>
                     </a>
-                    <Like id={this.props.object.id} />
+                    <Like id={this.props.object.feed} />
                     <SocialSharing
                         url={this.props.object.articleUrl}
                         title={this.props.object.title}

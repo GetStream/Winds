@@ -9,35 +9,51 @@ module.exports = {
 
     getLike: function(req, res) {
 
-        let userId = req.user.id,
-            feedId = req.query.feed_id
-
-        console.log('GET', user_id, feed_id)
-
-        res.send(200)
+        sails.models.likes.findOne({
+            userId: req.user.id,
+            feedId: req.query.feed_id,
+        }).exec(function(err, like) {
+            if (err) {
+                return res.negotiate(err)
+            } else if (!like) {
+                return res.send(204)
+            } else {
+                return res.send(like)
+            }
+        })
 
     },
 
     addLike: function(req, res) {
 
-        let userId = req.user.id,
-            feedId = req.query.feed_id
+        let data = {
+            userId: req.user.id,
+            feedId: req.body.feed_id,
+        }
 
-        console.log('ADD', user_id, feed_id)
-
-        res.send(201)
+        sails.models.likes.findOrCreate(data, data).exec(function(err, like) {
+            if (err) {
+                return res.negotiate(err)
+            }
+            return res.send(like)
+        })
 
     },
 
     deleteLike: function(req, res) {
 
-        let userId = req.user.id,
-            feedId = req.query.feed_id
+        let data = {
+            userId: req.user.id,
+            feedId: req.query.feed_id,
+        }
 
-        console.log('DEL', user_id, feed_id)
-
-        res.send(201)
+        sails.models.likes.destroy(data).exec(function(err) {
+            if (err) {
+                return res.negotiate(err)
+            }
+            return res.send(204)
+        })
 
     },
 
-};
+}
