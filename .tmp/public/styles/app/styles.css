@@ -1442,10 +1442,12 @@ body {
 .getting-started {
   margin-top: -60px; }
   .getting-started footer {
-    margin: -30px 0 0 0; }
+    margin: -30px 0 0 0;
+    position: relative; }
   .getting-started .dialog button[type=submit] {
     width: auto !important; }
   .getting-started .create-account {
+    overflow-y: auto;
     background-color: #16C98D;
     position: fixed;
     left: 100%;
@@ -1788,7 +1790,6 @@ body {
   margin-right: 16px; }
 
 .create-account .sso a.btn {
-  border: 1px solid lime !important;
   height: 60px;
   width: 270px;
   margin-top: 20px;
