@@ -95,7 +95,7 @@ class SocialSharing extends Component {
     render() {
 
         return (
-            <div className="social-sharing">
+            <span className="social-sharing">
                 <svg width="16px" height="16px" viewBox="1 378 16 16">
                     <g id="ic_share_black_18px-(1)" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(1.000000, 378.000000)">
                         <g id="Group">
@@ -173,7 +173,7 @@ class SocialSharing extends Component {
                         </li>
                     </ul>
                 </div>
-            </div>
+            </span>
         )
     }
 }
