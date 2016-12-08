@@ -51,7 +51,13 @@ npm install -g sails pm2
 
 ### Step 2 - Secrets
 
-Create a file called `.env` with the following values:
+Create a file called `.env` by duplicating `.env_example` using this command:
+
+```bash
+ cp .env_example .env
+```
+
+Now the `.env` file will have the following values:
 
 ```bash
 STREAM_APP_ID = ""
@@ -65,6 +71,7 @@ API_BASE_URL = "http://localhost:1337"
 MONGO_URI = ""
 FACEBOOK_API_KEY = ""
 REDIS_AUTH = ""
+JWT_SECRET = ""
 ```
 
 **Stream**
