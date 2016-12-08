@@ -6,6 +6,7 @@ install:
     - npm install
 script:
     - ls -la
+    - cp ./.env_example ./.env
     - mocha ./test/bootstrap.test.js ./test/integration/**
 addons:
   apt:
