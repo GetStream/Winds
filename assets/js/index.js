@@ -43,8 +43,21 @@ const loading = store.dispatch(AppActions.init())
     .then(
         () => store.dispatch(AppActions.loaded()),
         () => {
+
+            const qs = new URLSearchParams(window.location.search)
+            if (qs.has('auth')) {
+
+                localStorage.setItem('id', qs.get('id'))
+                localStorage.setItem('token', qs.get('jwt'))
+                localStorage.setItem('email', qs.get('email'))
+
+                window.location.href = '/app/personalization-feed'
+
+            }
+
             store.dispatch(AppActions.loaded())
             browserHistory.replace('/app/getting-started')
+
         }
 )
 
@@ -60,7 +73,10 @@ const isReady = (nextState, replace, callback) => {
     })
 }
 
-const renderApp = () =>
+const renderApp = () => {
+
+    console.log(window.location.search)
+
     render((
         <Provider store={store}>
             <Router history={history}>
@@ -75,6 +91,8 @@ const renderApp = () =>
             </Router>
         </Provider>
     ), document.getElementById('root'))
+
+}
 
 loading.then(
     () => renderApp(),

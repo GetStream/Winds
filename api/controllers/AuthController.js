@@ -180,12 +180,15 @@ module.exports = {
                     return res.badRequest('Failed to login user via Facebook.')
                 }
 
-                user = user.toJSON()
+                let data = user.toJSON()
 
-                let url = `/app/getting-started`
+                console.log('DATA', data)
+
+                let url = `/app/personalization-feed`
                     url += `?auth=true`
-                    url += `&id=${user.id}`
-                    url += `&jwt=${user.token}`
+                    url += `&id=${data.id}`
+                    url += `&jwt=${data.token}`
+                    url += `&email=${data.email}`
 
                 res.redirect(url)
 

@@ -37,6 +37,13 @@ export default class App extends React.Component {
         this.props.dispatch(AppActions.reload())
     }
 
+    // componentDidMount(props) {
+    //     if (this.props.location.query.auth) {
+    //         localStorage.setItem('id', this.props.location.query.id)
+    //         localStorage.setItem('token', this.props.location.query.jwt)
+    //     }
+    // }
+
     componentWillReceiveProps(props) {
         if (props.user.loading != this.props.user.loading) {
             this.setState({ loading: props.user.loading, })

@@ -223,7 +223,7 @@ class CreateAccount extends Component {
                             <button type="submit">{this.getButtonText()}</button>
                         </div>
 
-                        {/* <div className="sso">
+                        <div className="sso">
                             <p>Or</p>
                             <a href="#" className="btn facebook" onClick={this.handleFacebook}>
                                 <svg width="9px" height="16px" viewBox="33 22 9 16">
@@ -237,7 +237,7 @@ class CreateAccount extends Component {
                                 </svg>
                                 Google Sign Up
                             </a>
-                        </div> */}
+                        </div>
 
                         <div className="existing-user">
                             <p>Have an account?</p>
@@ -287,7 +287,7 @@ class CreateAccount extends Component {
                             {this.getButtonText()}
                         </button>
 
-                        {/* <div className="sso">
+                        <div className="sso">
                             <p>Or</p>
                             <a href="#" className="btn facebook" onClick={this.handleFacebook}>
                                 <svg width="9px" height="16px" viewBox="33 22 9 16">
@@ -301,7 +301,7 @@ class CreateAccount extends Component {
                                 </svg>
                                 Google Sign In
                             </a>
-                        </div> */}
+                        </div>
 
                         <div className="existing-user">
                             <p>Need an account?</p>
