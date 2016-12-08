@@ -181,7 +181,7 @@ class CreateAccount extends Component {
 
     handleFacebook = e => {
         e.preventDefault()
-        window.location.href = `https://www.facebook.com/v2.8/dialog/oauth?client_id=1909748522586102&redirect_uri=https://08b14584.ngrok.io/api/auth/facebook&scope=email`
+        window.location.href = `/api/auth/facebook`
     }
 
     handleGoogle = e => {

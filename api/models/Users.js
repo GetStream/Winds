@@ -39,11 +39,15 @@ module.exports = {
         email: {
             type: 'email',
             required: true,
-            unique: true
+            unique: true,
         },
         password: {
             type: 'string',
             minLength: 6,
+        },
+        facebookId: {
+            type: 'string',
+            unique: true,
         },
         toJSON: function() {
             var obj = this.toObject()

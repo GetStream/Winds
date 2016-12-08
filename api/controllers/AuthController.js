@@ -1,8 +1,8 @@
-var passport = require('passport'),
-    bcrypt = require('bcrypt'),
-    randomstring = require('randomstring'),
-    util = require('util'),
-    request = require('request')
+var passport      = require('passport'),
+    bcrypt        = require('bcrypt'),
+    randomstring  = require('randomstring'),
+    util          = require('util'),
+    request       = require('request')
 
 module.exports = {
 
@@ -116,7 +116,7 @@ module.exports = {
 
     passwordReset: function(req, res) {
 
-        let email = req.body.email,
+        let email    = req.body.email,
             password = randomstring.generate(10)
 
         req.checkBody('email', 'Invalid email address.').isEmail()
@@ -161,72 +161,38 @@ module.exports = {
 
     facebookAuth: function(req, res) {
 
-        if (req.query.code) {
+        passport.authenticate('facebook', {
+            failureRedirect: '/app/getting-started?auth=false'
+        }, function(err, user, info) {
 
-            let url = `https://graph.facebook.com/v2.8/oauth/access_token`
-                url += `?client_id=${process.env.FACEBOOK_API_KEY}`
-                url += `&redirect_uri=${process.env.FACEBOOK_CALLBACK_URI}`
-                url += `&client_secret=${process.env.FACEBOOK_API_SECRET}`
-                url += `&code=${req.query.code}`
+            if (err || !user) {
+                return res.badRequest(err)
+            }
 
-            request.get({
-                url: url,
-            }, function(error, response, body) {
+            req.logIn(user, function(err) {
 
-                if (error) {
-                    sails.warn(error)
-                    res.redirect('/app/getting-started#error')
+                if (err) {
+                    if (!_.isEmpty(sails.sentry)) {
+                        sails.sentry.captureMessage(err)
+                    } else {
+                        sails.log.warn(err)
+                    }
+                    return res.badRequest('Failed to login user via Facebook.')
                 }
 
-                let payload = JSON.parse(body)
+                user = user.toJSON()
 
-                let url = `https://graph.facebook.com/me`
-                    url += `?access_token=${payload.access_token}`
-                    url += `&fields=id,email`
+                let url = `/app/getting-started`
+                    url += `?auth=true`
+                    url += `&id=${user.id}`
+                    url += `&jwt=${user.token}`
 
-                request.get({
-                    url: url,
-                }, function(error, response, body) {
-
-                    if (error) {
-                        sails.warn(error)
-                        res.redirect('/app/getting-started#error')
-                    }
-
-                    payload = JSON.parse(body)
-
-                    passport.authenticate('local', function(err, user, info) {
-
-                        if (err || !user) {
-                            console.log('OH SHIT', info)
-                            return res.badRequest(info.message)
-                        }
-
-                        console.log('USER', user)
-
-                        req.logIn(user, function(err) {
-
-                            if (err) {
-                                return res.send(err)
-                            }
-
-                            return res.send({
-                                message: info.message,
-                                user: user.toJSON()
-                            })
-
-                        })
-
-                    })(req, res)
-
-                })
+                res.redirect(url)
 
             })
 
-        } else {
-            res.redirect('/app/getting-started#unauthorized')
-        }
+        })(req, res)
 
-    }
+    },
 
 }
