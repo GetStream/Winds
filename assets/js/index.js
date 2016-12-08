@@ -53,10 +53,12 @@ const loading = store.dispatch(AppActions.init())
 
                 window.location.href = '/app/personalization-feed'
 
-            }
+            } else {
 
-            store.dispatch(AppActions.loaded())
-            browserHistory.replace('/app/getting-started')
+                store.dispatch(AppActions.loaded())
+                browserHistory.replace('/app/getting-started')
+
+            }
 
         }
 )
