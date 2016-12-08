@@ -75,8 +75,6 @@ const isReady = (nextState, replace, callback) => {
 
 const renderApp = () => {
 
-    console.log(window.location.search)
-
     render((
         <Provider store={store}>
             <Router history={history}>
