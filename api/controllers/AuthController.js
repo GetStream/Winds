@@ -182,8 +182,6 @@ module.exports = {
 
                 let data = user.toJSON()
 
-                console.log('DATA', data)
-
                 let url = `/app/personalization-feed`
                     url += `?auth=true`
                     url += `&id=${data.id}`
