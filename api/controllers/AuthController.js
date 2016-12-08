@@ -1,7 +1,8 @@
 var passport = require('passport'),
     bcrypt = require('bcrypt'),
     randomstring = require('randomstring'),
-    util = require('util')
+    util = require('util'),
+    request = require('request')
 
 module.exports = {
 
@@ -81,9 +82,11 @@ module.exports = {
 
         req.checkBody('email', 'Invalid email address.').isEmail()
 
-        if (req.validationErrors()) return res.badRequest(req.validationErrors())
+        if (req.validationErrors()) {
+            return res.badRequest(req.validationErrors())
+        }
 
-        passport.authenticate('local', function(err, user, info, something) {
+        passport.authenticate('local', function(err, user, info) {
 
             if (err || !user) {
                 return res.badRequest(info.message)
@@ -153,6 +156,76 @@ module.exports = {
             })
 
         })
+
+    },
+
+    facebookAuth: function(req, res) {
+
+        if (req.query.code) {
+
+            let url = `https://graph.facebook.com/v2.8/oauth/access_token`
+                url += `?client_id=${process.env.FACEBOOK_API_KEY}`
+                url += `&redirect_uri=${process.env.FACEBOOK_CALLBACK_URI}`
+                url += `&client_secret=${process.env.FACEBOOK_API_SECRET}`
+                url += `&code=${req.query.code}`
+
+            request.get({
+                url: url,
+            }, function(error, response, body) {
+
+                if (error) {
+                    sails.warn(error)
+                    res.redirect('/app/getting-started#error')
+                }
+
+                let payload = JSON.parse(body)
+
+                let url = `https://graph.facebook.com/me`
+                    url += `?access_token=${payload.access_token}`
+                    url += `&fields=id,email`
+
+                request.get({
+                    url: url,
+                }, function(error, response, body) {
+
+                    if (error) {
+                        sails.warn(error)
+                        res.redirect('/app/getting-started#error')
+                    }
+
+                    payload = JSON.parse(body)
+
+                    passport.authenticate('local', function(err, user, info) {
+
+                        if (err || !user) {
+                            console.log('OH SHIT', info)
+                            return res.badRequest(info.message)
+                        }
+
+                        console.log('USER', user)
+
+                        req.logIn(user, function(err) {
+
+                            if (err) {
+                                return res.send(err)
+                            }
+
+                            return res.send({
+                                message: info.message,
+                                user: user.toJSON()
+                            })
+
+                        })
+
+                    })(req, res)
+
+                })
+
+            })
+
+        } else {
+            res.redirect('/app/getting-started#unauthorized')
+        }
 
     }
 

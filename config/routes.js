@@ -81,6 +81,9 @@ module.exports.routes = {
   'post /api/like': 'LikeController.addLike',
   'delete /api/like': 'LikeController.deleteLike',
 
+  'get /api/auth/facebook': 'AuthController.facebookAuth',
+  'get /api/auth/google': 'AuthController.googleAuth',
+
   // If a request to a URL doesn't match any of the custom routes above,
   // it is matched against Sails route blueprints.  See `config/blueprints.js`
   // for configuration options and examples.

@@ -16,7 +16,7 @@ module.exports.http = {
   expressValidator : require('express-validator')(),
   jwtAuthenticate: function (req, res, next) {
       var passport = require('passport')
-      passport.authenticate('jwt', function(err, user, something, something2) {
+      passport.authenticate('jwt', function(err, user) {
           if (user) {
               req.logIn(user, function(err) {
                   if (err) {console.warn(err)}
