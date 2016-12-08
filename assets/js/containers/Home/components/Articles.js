@@ -10,6 +10,7 @@ import StripEntities from 'components/StripEntities'
 import Summary from 'components/Summary'
 import Truncate from 'components/Truncate'
 import Image from 'components/Image'
+import Like from 'components/Like'
 
 import * as FeedActions from 'actions/Feeds'
 import * as PersonalizationActions from 'actions/Personalization'
@@ -54,7 +55,11 @@ class Article extends Component {
                         onClick={this.trackEngagement}>
                         <Summary limit={80}>{this.props.object.summary}</Summary>
                     </a>
-                    <SocialSharing url={this.props.object.articleUrl} title={this.props.object.title} picture={this.props.object.imageSrc} />
+                    <Like id={this.props.object.feed} />
+                    <SocialSharing
+                        url={this.props.object.articleUrl}
+                        title={this.props.object.title}
+                        picture={this.props.object.imageSrc} />
                     <a
                         href={this.props.object.articleUrl}
                         target="_blank"

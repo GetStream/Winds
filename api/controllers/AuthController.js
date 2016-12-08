@@ -1,7 +1,8 @@
-var passport = require('passport'),
-    bcrypt = require('bcrypt'),
-    randomstring = require('randomstring'),
-    util = require('util')
+var passport      = require('passport'),
+    bcrypt        = require('bcrypt'),
+    randomstring  = require('randomstring'),
+    util          = require('util'),
+    request       = require('request')
 
 module.exports = {
 
@@ -29,10 +30,9 @@ module.exports = {
 
             if (err) {
                 if (!_.isEmpty(sails.sentry)) {
-                    console.log('ereirjeklj', err)
                     sails.sentry.captureMessage(err)
                 } else {
-                    console.log(err)
+                    sails.log.warn(err)
                 }
                 return res.badRequest('Registration failed. Could not create user.')
             }
@@ -82,9 +82,11 @@ module.exports = {
 
         req.checkBody('email', 'Invalid email address.').isEmail()
 
-        if (req.validationErrors()) return res.badRequest(req.validationErrors())
+        if (req.validationErrors()) {
+            return res.badRequest(req.validationErrors())
+        }
 
-        passport.authenticate('local', function(err, user, info, something) {
+        passport.authenticate('local', function(err, user, info) {
 
             if (err || !user) {
                 return res.badRequest(info.message)
@@ -114,7 +116,7 @@ module.exports = {
 
     passwordReset: function(req, res) {
 
-        let email = req.body.email,
+        let email    = req.body.email,
             password = randomstring.generate(10)
 
         req.checkBody('email', 'Invalid email address.').isEmail()
@@ -155,6 +157,42 @@ module.exports = {
 
         })
 
-    }
+    },
+
+    facebookAuth: function(req, res) {
+
+        passport.authenticate('facebook', {
+            failureRedirect: '/app/getting-started?auth=false'
+        }, function(err, user, info) {
+
+            if (err || !user) {
+                return res.badRequest(err)
+            }
+
+            req.logIn(user, function(err) {
+
+                if (err) {
+                    if (!_.isEmpty(sails.sentry)) {
+                        sails.sentry.captureMessage(err)
+                    } else {
+                        sails.log.warn(err)
+                    }
+                    return res.badRequest('Failed to login user via Facebook.')
+                }
+
+                user = user.toJSON()
+
+                let url = `/app/getting-started`
+                    url += `?auth=true`
+                    url += `&id=${user.id}`
+                    url += `&jwt=${user.token}`
+
+                res.redirect(url)
+
+            })
+
+        })(req, res)
+
+    },
 
 }

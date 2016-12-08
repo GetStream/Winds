@@ -26,9 +26,6 @@ module.exports.routes = {
   // default view engine) your home page.
   //
   // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
-  'get /4xx': 'ErrorController.four',
-  'get /5xx': 'ErrorController.five',
-
   '/': {
       view: 'index'
   },
@@ -54,6 +51,7 @@ module.exports.routes = {
   },
 
   'get /api/me': 'UsersController.aboutMe',
+
   'get /api/stream/chronological': 'StreamController.chronological',
   'get /api/stream/personalized': 'StreamController.personalized',
   'get /api/stream/suggestions': 'StreamController.getFeedSuggestions',
@@ -61,18 +59,30 @@ module.exports.routes = {
   'get /api/stream/feed': 'StreamController.readFeed',
   'get /api/stream/interest_profile': 'StreamController.interestProfile',
   'get /api/stream/event_counts': 'StreamController.eventCounts',
-  'post /api/follow_topics': 'FollowsController.followTopics',
+
   'post /api/mark_read': 'ReadController.markRead',
+
+  'post /api/follow_topics': 'FollowsController.followTopics',
   'get /api/follows': 'FollowsController.readFollows',
   'post /api/unfollow': 'FollowsController.unfollowFeed',
+
   'get /api/topics': 'TopicsController.readTopics',
   'get /api/rss/discover': 'SitesController.discover',
+
   'post /api/login': 'AuthController.login',
   'get /api/logout': 'AuthController.logout',
   'post /api/register': 'AuthController.register',
   'post /api/password_reset': 'AuthController.passwordReset',
+
   'post /api/update_password': 'UsersController.updatePassword',
   'post /api/uploads/opml': 'UploadController.opml',
+
+  'get /api/like': 'LikeController.getLike',
+  'post /api/like': 'LikeController.addLike',
+  'delete /api/like': 'LikeController.deleteLike',
+
+  'get /api/auth/facebook': 'AuthController.facebookAuth',
+  'get /api/auth/google': 'AuthController.googleAuth',
 
   // If a request to a URL doesn't match any of the custom routes above,
   // it is matched against Sails route blueprints.  See `config/blueprints.js`

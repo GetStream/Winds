@@ -662,10 +662,10 @@ body {
   transition: opacity 300ms ease-in; }
 .social-sharing {
   top: 4px;
-  margin-right: 10px;
+  margin-right: 12px;
   position: relative;
   cursor: pointer;
-  display: inline-block; }
+  display: inline; }
   .social-sharing .outer-container {
     display: none;
     position: absolute;
@@ -806,6 +806,12 @@ body {
       font-style: normal; }
   .suggested-feeds .bottom .follow {
     color: #16C98D; }
+.like {
+  top: 4px;
+  position: relative;
+  margin-right: 12px; }
+  .like svg {
+    cursor: pointer; }
 .realtime-notifications .banner {
   cursor: pointer;
   height: 40px;
@@ -850,7 +856,7 @@ body {
   margin-bottom: 30px; }
 
 .masonry .read-blog {
-  background-image: url("/img/app/stream-blog-bg.png");
+  background-image: url("https://dzgr2e2po1y82.cloudfront.net/img/app/stream-blog-bg.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -1436,10 +1442,12 @@ body {
 .getting-started {
   margin-top: -60px; }
   .getting-started footer {
-    margin: -30px 0 0 0; }
+    margin: -30px 0 0 0;
+    position: relative; }
   .getting-started .dialog button[type=submit] {
     width: auto !important; }
   .getting-started .create-account {
+    overflow-y: auto;
     background-color: #16C98D;
     position: fixed;
     left: 100%;
@@ -1452,7 +1460,7 @@ body {
         width: 394px;
         padding-left: 20px; } }
     .getting-started .create-account .logo {
-      background-image: url("/img/app/logo-lg.png");
+      background-image: url("https://dzgr2e2po1y82.cloudfront.net/img/app/logo-lg.png");
       background-repeat: no-repeat;
       background-position: center;
       background-size: 50% 50%;
@@ -1514,7 +1522,7 @@ body {
         font-size: 13px;
         font-weight: 300; }
     .getting-started > main aside .read-blog {
-      background-image: url("/img/app/stream-blog-bg.png");
+      background-image: url("https://dzgr2e2po1y82.cloudfront.net/img/app/stream-blog-bg.png");
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -1767,3 +1775,36 @@ body {
         font-weight: 300;
         font-size: 14px;
         text-decoration: none; }
+
+.create-account .sso p {
+  font-family: 'Merriweather';
+  font-style: italic;
+  font-size: 14px;
+  color: #FFFFFF;
+  margin-top: 20px;
+  margin-bottom: 0; }
+
+.create-account .sso svg {
+  position: relative;
+  top: 3px;
+  margin-right: 16px; }
+
+.create-account .sso a.btn {
+  height: 60px;
+  width: 270px;
+  margin-top: 20px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  letter-spacing: 2px;
+  line-height: 31px;
+  border: 1px solid #FFFFFF;
+  border-radius: 0;
+  outline: none;
+  text-transform: uppercase;
+  padding-top: 14px; }
+  .create-account .sso a.btn.facebook svg {
+    left: -10px; }
+  .create-account .sso a.btn.google svg {
+    left: -18px; }

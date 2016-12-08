@@ -29,7 +29,7 @@ module.exports.cors = {
   // per-route basis by either adding a "cors" configuration object
   // to the route config, or setting "cors:true" in the route config to
   // use the default settings below.
-  allRoutes: false,
+  allRoutes: true,
 
   // Which domains which are allowed CORS access?
   // This can be a comma-delimited list of hosts (beginning with http:// or https://)
@@ -45,6 +45,6 @@ module.exports.cors = {
 
   // Which headers should be allowed for CORS requests?  This is only used
   // in response to preflight requests.
-  headers: 'content-type'
+  headers: 'content-type, x-csrf-token'
 
 };

@@ -15,9 +15,15 @@ module.exports = {
 
         const password = req.body.password
 
-        if (!password) return res.badRequest('Please provide a valid password.')
+        if (!password) {
+            return res.badRequest('Please provide a valid password.')
+        }
 
-        sails.models.users.update({ id: req.user.id }, { password: password }).exec(function(err, result) {
+        sails.models.users.update({
+            id: req.user.id,
+        }, {
+            password: password,
+        }).exec(function(err, result) {
 
             if (err) {
                 if (!_.isEmpty(sails.sentry)) {

@@ -101,6 +101,7 @@
     }
 
     .row-1 {
+
         min-height: 390px;
         margin-bottom: 19px;
 
@@ -109,14 +110,17 @@
         }
 
         .b1 {
+
             background: #16C98D;
             display: box;
             height: 290px;
             color: #FFFFFF;
             padding: 30px;
+
             @media (max-width: 1025px){
                 padding: 15px;
             }
+
             @media (max-width: 990px){
                 padding: 30px;
             }
