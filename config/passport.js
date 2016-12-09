@@ -10,7 +10,7 @@ let config = {
 }
 
 module.exports = {
-    passport: config
+    passport: config,
 }
 
 passport.serializeUser(function(user, done) {
