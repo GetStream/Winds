@@ -62,7 +62,7 @@ opts.issuer      = config.issuer
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
 
     Users.findOne({ id: jwt_payload.sub }, function(err, user) {
-        
+
         if (err) {
             return done(err, false)
         }
@@ -83,6 +83,8 @@ passport.use(new FacebookStrategy({
     callbackURL: process.env.FACEBOOK_CALLBACK_URI,
     profileFields: ['id', 'email'],
 }, function(accessToken, refreshToken, profile, done) {
+
+    console.log(profile)
 
     Users.findOrCreate({
         email: profile.emails[0].value
