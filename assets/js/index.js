@@ -29,6 +29,7 @@ export const store = createStore(
 )
 
 import * as AppActions from 'actions/App'
+import * as TopicActions from 'actions/Topics'
 
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -51,7 +52,15 @@ const loading = store.dispatch(AppActions.init())
                 localStorage.setItem('token', qs.get('jwt'))
                 localStorage.setItem('email', qs.get('email'))
 
-                window.location.reload()
+                if (localStorage.getItem('topics')) {
+                    store.dispatch(TopicActions.follow(
+                        localStorage.getItem('topics').split(',')
+                    ))
+                    localStorage.removeItem('topics')
+                    window.location.reload()
+                } else {
+                    window.location.reload()
+                }
 
             } else {
 

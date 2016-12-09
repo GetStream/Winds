@@ -188,7 +188,8 @@ class CreateAccount extends Component {
 
     handleFacebookSignUp = e => {
         e.preventDefault()
-        window.location.href = `/api/auth/facebook?topics=${topics.join()}`
+        localStorage.setItem('topics', topics.join())
+        window.location.href = `/api/auth/facebook`
     }
 
     handleGoogle = e => {
