@@ -169,6 +169,8 @@ module.exports = {
                 return res.badRequest(err)
             }
 
+            console.log('TOPICS', req.query.topics)
+
             req.logIn(user, function(err) {
 
                 if (err) {
