@@ -84,8 +84,6 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'email'],
 }, function(accessToken, refreshToken, profile, done) {
 
-    console.log(profile)
-
     Users.findOrCreate({
         email: profile.emails[0].value
     }, {
@@ -96,8 +94,10 @@ passport.use(new FacebookStrategy({
         if (err || !user) {
             if (!_.isEmpty(sails.sentry)) {
                 sails.sentry.captureMessage(err)
+                return done(err)
             } else {
                 sails.log.warn(err)
+                return done(err)
             }
         }
 

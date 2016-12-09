@@ -166,7 +166,7 @@ module.exports = {
         }, function(err, user, info) {
 
             if (err || !user) {
-                return res.badRequest(err)
+                res.redirect('/app-getting-started?auth=failed')
             }
 
             req.logIn(user, function(err) {
