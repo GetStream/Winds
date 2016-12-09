@@ -51,7 +51,7 @@ const loading = store.dispatch(AppActions.init())
                 localStorage.setItem('token', qs.get('jwt'))
                 localStorage.setItem('email', qs.get('email'))
 
-                window.location.href = '/app/personalization-feed'
+                window.location.reload()
 
             } else {
 
