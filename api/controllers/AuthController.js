@@ -162,7 +162,8 @@ module.exports = {
     facebookAuth: function(req, res) {
 
         passport.authenticate('facebook', {
-            failureRedirect: '/app/getting-started?auth=false'
+            failureRedirect: '/app/getting-started?auth=false',
+            scope: ['email'],
         }, function(err, user, info) {
 
             if (err || !user) {
