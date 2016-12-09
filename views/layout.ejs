@@ -25,7 +25,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://dzgr2e2po1y82.cloudfront.net/js/app/getstream.min.js"></script>
-    <script type="text/javascript" src="https://apis.google.com/js/client:platform.js?onload=start"></script>
 
     <script type="text/javascript">
         !function(t,e){t("StreamAnalytics","https://d2j1fszo1axgmp.cloudfront.net/2.6.0/stream-analytics.min.js",e)}(function(t,e,n){var s,i,r;n["_"+t]={},n[t]=function(e){n["_"+t].clients=n["_"+t].clients||{},n["_"+t].clients[e.apiKey]=this,this._config=e};var c=function(t){return function(){return this["_"+t]=this["_"+t]||[],this["_"+t].push(arguments),this}};s=["setUser","trackImpression","trackEngagement"];for(var a=0;a<s.length;a++){var o=s[a];n[t].prototype[o]=c(o)}i=document.createElement("script"),i.async=!0,i.src=e,r=document.getElementsByTagName("script")[0],r.parentNode.insertBefore(i,r)},this);
@@ -51,16 +50,6 @@
     <script type="text/javascript">
         csrf = '<%- _csrf %>'
         apiBaseUrl = '<%- sails.config.http.baseUrl %>'
-    </script>
-
-    <script type="text/javascript">
-        $(function() {
-            gapi.load('auth2', function() {
-                auth2 = gapi.auth2.init({
-                    client_id: `${'<%- sails.config.google.googleClientId %>'}.apps.googleusercontent.com`,
-                })
-            })
-        })
     </script>
 
     <script src="//connect.facebook.net/en_US/sdk.js"></script>
