@@ -166,7 +166,7 @@ module.exports = {
         }, function(err, user, info) {
 
             if (err || !user) {
-                res.redirect('/app-getting-started?auth=failed')
+                return res.redirect('/app-getting-started?auth=failed')
             }
 
             req.logIn(user, function(err) {
@@ -188,7 +188,7 @@ module.exports = {
                     url += `&jwt=${data.token}`
                     url += `&email=${data.email}`
 
-                res.redirect(url)
+                return res.redirect(url)
 
             })
 
