@@ -4,11 +4,14 @@ import { Provider } from 'react-redux'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import { browserHistory, Router, Route, IndexRoute, IndexRedirect } from 'react-router'
+
 import thunk from 'redux-thunk'
 
 import syncMiddleware from './middleware/Sync'
 
 import * as reducers from './reducers'
+
+const URLSearchParams = require('url-search-params')
 
 export const store = createStore(
     combineReducers({
