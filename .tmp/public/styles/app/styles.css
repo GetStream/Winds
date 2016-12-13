@@ -83,6 +83,9 @@
 :-ms-input-placeholder {
   color: #737373; }
 
+::placeholder {
+  color: #737373; }
+
 .import-opml-option {
   position: absolute;
   right: 10px;
@@ -1474,7 +1477,7 @@ body {
       text-align: center;
       color: #FFFFFF; }
       .getting-started .create-account header a {
-        color: #FFF;
+        color: #FFFFFF;
         text-decoration: underline; }
       .getting-started .create-account header h1 {
         font-size: 20px;
@@ -1533,7 +1536,7 @@ body {
       align-items: center;
       bottom: 0;
       left: 0;
-      color: white;
+      color: #FFFFFF;
       text-align: center; }
       @media (max-height: 880px) {
         .getting-started > main aside .read-blog {
@@ -1570,11 +1573,11 @@ body {
         letter-spacing: 2px;
         font-size: 14px;
         border: 1px solid #FFFFFF;
-        color: white; }
+        color: #FFFFFF; }
         @media (max-height: 850px) {
           .getting-started > main aside .read-blog .btn-outline-primary {
             margin-top: 1%; } }
-  .getting-started > main main .topic input[type=checkbox] {
+  .getting-started > main main .topic input[type="checkbox"] {
     position: absolute;
     left: -9999px; }
   .getting-started > main main .topic label {
@@ -1630,7 +1633,7 @@ body {
     -moz-transition: transform 0.3s ease-out;
     -ms-transition: transform 0.3s ease-out;
     transform: scale(0.9);
-    -webkit-transform: scale(0.9);
+    -webkit-transforms: scale(0.9);
     -moz-transform: scale(0.9);
     -ms-transform: scale(0.9); }
     .getting-started > main main .topic input:checked + label::before {

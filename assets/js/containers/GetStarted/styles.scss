@@ -47,7 +47,7 @@
             color: #FFFFFF;
 
             a {
-                color: #FFF;
+                color: #FFFFFF;
                 text-decoration: underline;
             }
 
@@ -141,7 +141,7 @@
                 align-items: center;
                 bottom: 0;
                 left: 0;
-                color: white;
+                color: #FFFFFF;
                 text-align: center;
                     @media (max-height: 880px) {
                       height: 18vh;
@@ -153,7 +153,7 @@
                       display: none;
                     }
 
-                .aligner{
+                .aligner {
                     align-items: center;
                     text-align: center;
                     margin: 0 auto;
@@ -186,7 +186,7 @@
                     letter-spacing: 2px;
                     font-size: 14px;
                     border: 1px solid #FFFFFF;
-                    color: white;
+                    color: #FFFFFF;
                         @media (max-height: 850px) {
                           margin-top: 1%;
                         }
@@ -200,10 +200,11 @@
 
             .topic {
 
-                input[type=checkbox] {
+                input[type="checkbox"] {
                     position: absolute;
                     left: -9999px;
                 }
+
                 label {
                     font-size: 17.6px;
                     text-transform: capitalize;
@@ -286,9 +287,8 @@
                     -moz-transition: transform 0.3s ease-out;
                     -ms-transition: transform 0.3s ease-out;
 
-
                     transform: scale(0.9);
-                    -webkit-transform: scale(0.9);
+                    -webkit-transforms: scale(0.9);
                     -moz-transform: scale(0.9);
                     -ms-transform: scale(0.9);
 

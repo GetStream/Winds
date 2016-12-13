@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import url from 'url'
 
 import Dialog from 'components/Dialog'
 
@@ -19,7 +20,9 @@ class AddFeedDialog extends Component {
 
     componentWillReceiveProps(props) {
         if (this.props.loading != props.loading && !props.loading) {
-            this.setState({ url: '' })
+            this.setState({
+                url: '',
+            })
         }
     }
 
@@ -43,7 +46,7 @@ class AddFeedDialog extends Component {
     handleSubmit = e => {
         e.preventDefault()
         this.props.onSubmit({
-            url: this.state.url,
+            url: this.state.url.replace(/.*?:\/\//g, ""),
         })
     }
 
