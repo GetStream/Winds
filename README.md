@@ -109,7 +109,7 @@ node load_initial_data.js
 
 ### Step 4 - Redis
 
-Redis is currently used as the primary session store. To install on OSX, simply use Homebrew:
+Redis is currently used as the primary session store. To install on macOS, simply use Homebrew:
 
 ```bash
 brew install redis
@@ -241,13 +241,15 @@ Scrape the favicons:
 node scrape_favicons.js -c 10 -q cnn
 ```
 
-## Native OS Support
+## Native macOS Support
 
-Winds supports a native OSX client through the use of [https://github.com/electron/electron](Electron). An example application (OSX) pointed at the [hosted version](http://winds.getstream.io) can be found in the [releases](https://github.com/GetStream/Winds/releases) section this repo.
+Winds supports a native macOS client through the use of [https://github.com/electron/electron](Electron). An example application (macOS) pointed at the [hosted version](http://winds.getstream.io) can be found in the [releases](https://github.com/GetStream/Winds/releases) section this repo.
+
+To install the native macOS application using Homebrew, simply run `brew cask install winds`.
 
 ### Building Your Own Native Client
 
-To make the build process easier, we chose to go with the popular tool [Nativefier](https://github.com/jiahaog/nativefier), a command line tool that allows you to easily create a desktop application for any web site with succinct and minimal configuration. Apps are wrapped by Electron in an OS executable (.app, .exe, etc.) for use on Windows, OSX and Linux.
+To make the build process easier, we chose to go with the popular tool [Nativefier](https://github.com/jiahaog/nativefier), a command line tool that allows you to easily create a desktop application for any web site with succinct and minimal configuration. Apps are wrapped by Electron in an OS executable (.app, .exe, etc.) for use on Windows, macOS and Linux.
 
 To start, you'll need to install the Nativefier module from NPM in your terminal:
 
@@ -255,7 +257,7 @@ To start, you'll need to install the Nativefier module from NPM in your terminal
 npm install nativefier -g
 ```
 
-Then, run the following command to build on OSX:
+Then, run the following command to build on macOS:
 
 ```bash
 nativefier --name "Winds" "https://your-domain.com" --icon "icon.png" --insecure --show-menu-bar
