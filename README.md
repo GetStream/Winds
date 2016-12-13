@@ -241,9 +241,11 @@ Scrape the favicons:
 node scrape_favicons.js -c 10 -q cnn
 ```
 
-## Native OS Support
+## Native macOS Support
 
-Winds supports a native OSX client through the use of [https://github.com/electron/electron](Electron). An example application (OSX) pointed at the [hosted version](http://winds.getstream.io) can be found in the [releases](https://github.com/GetStream/Winds/releases) section this repo.
+Winds supports a native macOS client through the use of [https://github.com/electron/electron](Electron). An example application (macOS) pointed at the [hosted version](http://winds.getstream.io) can be found in the [releases](https://github.com/GetStream/Winds/releases) section this repo.
+
+To install the native macOS application using Homebrew, simply run `brew cask install winds`.
 
 ### Building Your Own Native Client
 
