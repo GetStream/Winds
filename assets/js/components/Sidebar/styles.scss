@@ -127,20 +127,21 @@
         display: flex;
 
         .sidebar-main {
+            overflow: scroll;
             padding-left: 50px;
             padding-right: 50px;
             border-right: 1px solid #E0E0E0;
         }
 
         .sidebar-profile {
-
+            position: relative;
             width: 510px;
             height: 100%;
-            padding: 50px;
 
             form {
 
                 margin-top: 6px;
+                padding: 50px;
 
                 label {
                     font-size: 12px;

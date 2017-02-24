@@ -69,6 +69,7 @@ module.exports.routes = {
   'get /api/logout': 'AuthController.logout',
   'post /api/register': 'AuthController.register',
   'post /api/password_reset': 'AuthController.passwordReset',
+  'post /api/user_deactivate': 'AuthController.userDeactivate',
 
   'post /api/update_password': 'UsersController.updatePassword',
   'post /api/uploads/opml': 'UploadController.opml',

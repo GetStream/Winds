@@ -43,6 +43,16 @@ export const update = data => ({
     }
 })
 
+export const DEACTIVATE = 'USER_DEACTIVATE'
+export const deactivate = () => ({
+    type: DEACTIVATE,
+
+    sync: {
+        url: '/api/user_deactivate',
+        method: 'POST',
+    }
+})
+
 export const CREATE = 'USER_CREATE'
 export const create = (user) => dispatch => {
 

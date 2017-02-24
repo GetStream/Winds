@@ -5,6 +5,8 @@ import { browserHistory } from 'react-router'
 import Avatar from 'components/Avatar'
 import Truncate from 'components/Truncate'
 
+import DeactivateAccountBanner from 'components/DeactivateAccountBanner'
+
 import normalizeUrl from 'normalize-url'
 
 import * as UserActions from 'actions/User'
@@ -172,6 +174,7 @@ class Sidebar extends Component {
                             <button type="submit" className="btn">Update</button>
                             <button type="button" className="btn" onClick={() => this.setState({ profile: false, })}>Cancel</button>
                         </form>
+                        <DeactivateAccountBanner />
                     </div>
                 </div>
             </div>
