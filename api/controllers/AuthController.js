@@ -145,9 +145,8 @@ module.exports = {
                 if (err) {
                     if (!_.isEmpty(sails.sentry)) {
                         sails.sentry.captureMessage(err)
-                    } else {
-                        sails.log.warn(err)
                     }
+                    sails.log.warn(err)
                     return res.badRequest('Failed to send registration email.')
                 }
 
@@ -167,6 +166,7 @@ module.exports = {
         }, function(err, user, info) {
 
             if (err || !user) {
+                sails.log.warn(err)
                 return res.redirect('/app/getting-started?auth=failed')
             }
 
@@ -175,9 +175,9 @@ module.exports = {
                 if (err) {
                     if (!_.isEmpty(sails.sentry)) {
                         sails.sentry.captureMessage(err)
-                    } else {
-                        sails.log.warn(err)
                     }
+                    sails.log.warn(err)
+
                     return res.badRequest('Failed to login user via Facebook.')
                 }
 
