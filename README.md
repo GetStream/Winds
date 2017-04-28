@@ -9,7 +9,7 @@
 
 Open source &amp; beautiful RSS reader built using React/Redux/Sails/Node 7 and Stream (getstream.io). Showcases personalized feeds (using machine learning similar to Facebook, Flipboard, Etsy, and Quora - powered by the [getstream.io API](https://getstream.io/)).
 
-This tutorial explains how the personalization API works ([blogpost](http://bit.ly/personalization-winds)). Check out the hosted demo at [http://winds.getstream.io](http://winds.getstream.io/).
+This tutorial explains how the personalization API works ([blogpost](https://bit.ly/personalization-winds)). Check out the hosted demo at [https://winds.getstream.io](https://winds.getstream.io/).
 
 Note: We launched this project in November of 2016. We're actively working on it and contributions are much appreciated!
 
@@ -23,7 +23,7 @@ Note: We launched this project in November of 2016. We're actively working on it
 
 ## Demo
 
-Check out the hosted demo: [winds.getstream.io](http://winds.getstream.io/)
+Check out the hosted demo: [winds.getstream.io](https://winds.getstream.io/)
 
 ## Installation
 
@@ -261,7 +261,7 @@ node scrape_favicons.js -c 10 -q cnn
 
 ## Native macOS Support
 
-Winds supports a native macOS client through the use of [https://github.com/electron/electron](Electron). An example application (macOS) pointed at the [hosted version](http://winds.getstream.io) can be found in the [releases](https://github.com/GetStream/Winds/releases) section this repo.
+Winds supports a native macOS client through the use of [https://github.com/electron/electron](Electron). An example application (macOS) pointed at the [hosted version](https://winds.getstream.io) can be found in the [releases](https://github.com/GetStream/Winds/releases) section this repo.
 
 To install the native macOS application using Homebrew, simply run `brew cask install winds`.
 
