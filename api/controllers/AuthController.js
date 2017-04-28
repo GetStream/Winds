@@ -111,7 +111,7 @@ module.exports = {
 
     logout: function(req, res) {
         req.logout()
-        return res.redirect('/app/getting-started')
+        return res.redirect('/')
     },
 
     passwordReset: function(req, res) {
@@ -167,7 +167,7 @@ module.exports = {
         }, function(err, user, info) {
 
             if (err || !user) {
-                return res.redirect('/app-getting-started?auth=failed')
+                return res.redirect('/app/getting-started?auth=failed')
             }
 
             req.logIn(user, function(err) {
