@@ -25,7 +25,8 @@ module.exports = {
             email: email
         }, {
             email: email,
-            password: password
+            password: password,
+            inactive: false
         }).exec(function(err, user) {
 
             if (err) {
@@ -94,7 +95,7 @@ module.exports = {
 
             req.logIn(user, function(err) {
 
-                if (err) {
+                if (err || user.inactive) {
                     return res.send(err)
                 }
 
@@ -112,6 +113,28 @@ module.exports = {
     logout: function(req, res) {
         req.logout()
         return res.redirect('/app/getting-started')
+    },
+    
+    userDeactivate: function(req, res) {
+
+        sails.models.users.update({
+            id: req.user.id,
+        }, {
+            inactive: true,
+        }).exec(function(err, result) {
+
+            if (err) {
+                if (!_.isEmpty(sails.sentry)) {
+                    sails.sentry.captureMessage(err)
+                } else {
+                    sails.log.warn(err)
+                }
+                return res.badRequest('User deactivation failed.')
+            }
+
+            req.logout()
+            return res.redirect('/app/getting-started')
+        })
     },
 
     passwordReset: function(req, res) {
@@ -172,7 +195,7 @@ module.exports = {
 
             req.logIn(user, function(err) {
 
-                if (err) {
+                if (err || user.inactive) {
                     if (!_.isEmpty(sails.sentry)) {
                         sails.sentry.captureMessage(err)
                     } else {

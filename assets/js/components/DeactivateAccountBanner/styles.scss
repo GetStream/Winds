@@ -1,0 +1,23 @@
+.banner {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #F7F7F7;
+    color: white;
+    font-size: 13px;
+    padding: 17px;
+    &.confirmed {
+        background-color: #FD5657;
+    }
+    &.confirmed a {
+        background-color: #FD5657;
+        color: white;
+        padding: 0 4px;
+    }
+    a {
+        text-decoration: none;
+        color: #99A9B3;
+        font-size: 13px;
+    }
+}

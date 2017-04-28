@@ -113,7 +113,6 @@ form {
     border-right: 0;
     border-bottom: 2px solid #D8D8D8;
     background-color: transparent;
-    line-height: 200px;
     font-weight: 300 !important;
     font-size: 45px;
     width: 100%;
@@ -290,6 +289,25 @@ footer {
     color: #99A9B3; }
     footer i:hover {
       color: #2F7DEB; }
+.banner {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #F7F7F7;
+  color: white;
+  font-size: 13px;
+  padding: 17px; }
+  .banner.confirmed {
+    background-color: #FD5657; }
+  .banner.confirmed a {
+    background-color: #FD5657;
+    color: white;
+    padding: 0 4px; }
+  .banner a {
+    text-decoration: none;
+    color: #99A9B3;
+    font-size: 13px; }
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -380,15 +398,17 @@ footer {
     transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1);
     display: flex; }
     .sidebar .content .sidebar-main {
+      overflow: scroll;
       padding-left: 50px;
       padding-right: 50px;
       border-right: 1px solid #E0E0E0; }
     .sidebar .content .sidebar-profile {
+      position: relative;
       width: 510px;
-      height: 100%;
-      padding: 50px; }
+      height: 100%; }
       .sidebar .content .sidebar-profile form {
-        margin-top: 6px; }
+        margin-top: 6px;
+        padding: 50px; }
         .sidebar .content .sidebar-profile form label {
           font-size: 12px;
           font-weight: 400;
@@ -1730,7 +1750,7 @@ body {
       color: rgba(255, 255, 255, 0.7);
       letter-spacing: 2px; }
     .create-account main form input {
-      height: 30px;
+      height: 46px;
       width: 75%;
       padding-bottom: 16px;
       border-bottom: 1px solid #FFFFFF;
