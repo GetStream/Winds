@@ -166,7 +166,7 @@ class Home extends Component {
                                             <StripEntities>{this.props.feeds[1].object.title}</StripEntities>
                                         </a>
                                     </h3>
-                                    <p>
+                                    <div>
                                         <Like id={this.props.feeds[1].feed.id} />
                                         <SocialSharing
                                             url={this.props.feeds[1].object.articleUrl}
@@ -182,7 +182,7 @@ class Home extends Component {
                                                 <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[1].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
                                             ) : null
                                         }
-                                    </p>
+                                    </div>
                                     <Summary>{this.props.feeds[1].object.summary}</Summary>
                                 </div>
                             </div>
@@ -201,7 +201,7 @@ class Home extends Component {
                                             <StripEntities>{this.props.feeds[2].object.title}</StripEntities>
                                         </a>
                                     </h2>
-                                    <p>
+                                    <div>
                                         <Like id={this.props.feeds[2].feed.id} />
                                         <SocialSharing
                                             url={this.props.feeds[2].object.articleUrl}
@@ -217,7 +217,7 @@ class Home extends Component {
                                                 <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[2].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
                                             ) : null
                                         }
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[3].object.id, 3)}>
@@ -230,7 +230,7 @@ class Home extends Component {
                                             <StripEntities>{this.props.feeds[3].object.title}</StripEntities>
                                         </a>
                                     </h2>
-                                    <p>
+                                    <div>
                                         <Like id={this.props.feeds[3].feed.id} />
                                         <SocialSharing
                                             url={this.props.feeds[3].object.articleUrl}
@@ -246,7 +246,7 @@ class Home extends Component {
                                                 <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[3].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
                                             ) : null
                                         }
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -263,7 +263,7 @@ class Home extends Component {
                                             <StripEntities>{this.props.feeds[4].object.title}</StripEntities>
                                         </a>
                                     </h3>
-                                    <p>
+                                    <div>
                                         <Like id={this.props.feeds[4].feed.id} />
                                         <SocialSharing
                                             url={this.props.feeds[4].object.articleUrl}
@@ -279,7 +279,7 @@ class Home extends Component {
                                                 <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[4].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
                                             ) : null
                                         }
-                                    </p>
+                                    </div>
                                     <Summary>{this.props.feeds[4].object.summary}</Summary>
                                     </div>
                                 </div>
@@ -293,7 +293,7 @@ class Home extends Component {
                                                 <StripEntities>{this.props.feeds[5].object.title}</StripEntities>
                                             </a>
                                         </h2>
-                                        <p>
+                                        <div>
                                             <Like id={this.props.feeds[5].feed.id} />
                                             <SocialSharing url={this.props.feeds[5].object.articleUrl} title={this.props.feeds[5].object.title} picture={this.props.feeds[5].object.imageSrc} />
                                             {moment(this.props.feeds[5].object.createdAt).fromNow()}
@@ -306,7 +306,7 @@ class Home extends Component {
                                                     <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[5].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
                                                 ) : null
                                             }
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12" onClick={() => this.trackEngagement(this.props.feeds[6].object.id, 6)}>
@@ -319,7 +319,7 @@ class Home extends Component {
                                             <StripEntities>{this.props.feeds[6].object.title}</StripEntities>
                                         </a>
                                     </h3>
-                                    <p>
+                                    <div>
                                         <Like id={this.props.feeds[6].feed.id} />
                                         <SocialSharing
                                             url={this.props.feeds[6].object.articleUrl}
@@ -335,7 +335,7 @@ class Home extends Component {
                                                 <span>&nbsp;<span className="pipe">|</span>&nbsp;<a href={this.props.feeds[6].object.secondaryUrl} target="_blank" className="secondary-url">View Comments</a></span>
                                             ) : null
                                         }
-                                    </p>
+                                    </div>
                                     <Summary>{this.props.feeds[6].object.summary}</Summary>
                                 </div>
                             </div>
