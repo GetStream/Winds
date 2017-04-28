@@ -46,6 +46,10 @@ module.exports.routes = {
       view: 'homepage'
   },
 
+  '/app/logout': {
+      view: 'homepage'
+  },
+
   'get /api/me': 'UsersController.aboutMe',
 
   'get /api/stream/chronological': 'StreamController.chronological',
