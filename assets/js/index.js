@@ -38,6 +38,7 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 import App from './App'
 import Home from 'containers/Home'
+import Logout from 'containers/Logout'
 import Subscriptions from 'containers/Subscriptions'
 import SubscriptionLanding from 'containers/Subscriptions/Landing'
 import SubscriptionFeed from 'containers/Subscriptions/Feed'
@@ -99,6 +100,7 @@ const renderApp = () => {
                         <IndexRoute component={SubscriptionLanding} />
                         <Route path=":id" component={SubscriptionFeed} />
                     </Route>
+                    <Route path="logout" component={Logout} />
                 </Route>
             </Router>
         </Provider>
