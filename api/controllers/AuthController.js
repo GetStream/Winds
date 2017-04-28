@@ -111,7 +111,7 @@ module.exports = {
 
     logout: function(req, res) {
         req.logout()
-        return res.redirect('/app/getting-started')
+        return res.redirect('/')
     },
 
     passwordReset: function(req, res) {
@@ -145,9 +145,8 @@ module.exports = {
                 if (err) {
                     if (!_.isEmpty(sails.sentry)) {
                         sails.sentry.captureMessage(err)
-                    } else {
-                        sails.log.warn(err)
                     }
+                    sails.log.warn(err)
                     return res.badRequest('Failed to send registration email.')
                 }
 
@@ -167,7 +166,8 @@ module.exports = {
         }, function(err, user, info) {
 
             if (err || !user) {
-                return res.redirect('/app-getting-started?auth=failed')
+                sails.log.warn(err)
+                return res.redirect('/app/getting-started?auth=failed')
             }
 
             req.logIn(user, function(err) {
@@ -175,9 +175,9 @@ module.exports = {
                 if (err) {
                     if (!_.isEmpty(sails.sentry)) {
                         sails.sentry.captureMessage(err)
-                    } else {
-                        sails.log.warn(err)
                     }
+                    sails.log.warn(err)
+
                     return res.badRequest('Failed to login user via Facebook.')
                 }
 
