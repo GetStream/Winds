@@ -60,18 +60,36 @@ Create a file called `.env` by duplicating `.env_example` using this command:
 Now the `.env` file will have the following values:
 
 ```bash
-STREAM_APP_ID = ""
-STREAM_API_KEY = ""
-STREAM_API_SECRET = ""
-STREAM_ANALYTICS_TOKEN = ""
-SENDGRID_USERNAME = ""
-SENDGRID_PASSWORD = ""
-SENTRY_DSN = ""
-API_BASE_URL = "http://localhost:1337"
-MONGO_URI = ""
-FACEBOOK_API_KEY = ""
-REDIS_AUTH = ""
-JWT_SECRET = ""
+API_BASE_URL = "http://localhost:1337" # REQUIRED. The URL at which the Winds API will listen for client requests.
+
+# Stream Ids, Keys and secrets are available from the App dashboard:
+#  https://getstream.io/dashboard/
+STREAM_APP_ID = "" # REQUIRED.
+STREAM_API_KEY = "" # REQUIRED.
+STREAM_API_SECRET = "" # REQUIRED.
+STREAM_ANALYTICS_TOKEN = "" # REQUIRED.
+
+JWT_SECRET = "" # REQUIRED. Used for JWT authentication. A random, hard to guess secret key that you generate for your app.
+
+# A free Sendgrid account is used to send registration emails, etc.
+# Get more info about your credentials here:
+# https://sendgrid.com/docs/Classroom/Troubleshooting/Account_Administration/help_i_cant_find_my_smtp_username_and_password.html
+SENDGRID_USERNAME = "" # REQUIRED.
+SENDGRID_PASSWORD = "" # REQUIRED.
+
+# Facebook API Key, Secret, and Callback URI are required for Facebook Login.
+# See here for info on creating a "Facebook app" and getting started:
+#  https://developers.facebook.com/docs/apps/register
+FACEBOOK_API_KEY = "" # REQUIRED.
+FACEBOOK_API_SECRET = "" # REQUIRED.
+FACEBOOK_CALLBACK_URI = "" # REQUIRED.
+
+# Sentry is used for logging. Learn about the Data Source Name (DSN) here:
+#  https://docs.sentry.io/quickstart/#configure-the-dsn
+SENTRY_DSN = "" # OPTIONAL.
+
+MONGO_URI = "" # OPTIONAL.
+REDIS_AUTH = "" # OPTIONAL.
 ```
 
 **Stream**
