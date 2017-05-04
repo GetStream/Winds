@@ -251,32 +251,24 @@ module.exports = {
             }
 
             let results = body.results,
-                length  = results.length,
                 feeds   = []
 
-            results.forEach((feed) => {
-
-                sails.models.feeds.findOne({ id: feed })
-                    .then((feed) => {
-
-                        sails.models.sites.findOne({ id: feed.site })
-                            .then((site) => {
-
-                                feed.site = site
-                                feeds.push(feed)
-
-                                if (!--length) {
+            if (results.length) {
+                results.forEach((feed) => {
+                    sails.models.feeds.findOne({ id: feed })
+                        .then((feed) => {
+                            sails.models.sites.findOne({ id: feed.site })
+                                .then((site) => {
+                                    feed.site = site
+                                    feeds.push(feed)
                                     res.json(feeds)
-                                }
-
-                            })
-
-                    })
-
-            })
-
+                                })
+                        })
+                })
+            } else {
+                res.json(feeds)
+            }
         })
-
     },
 
     updateFeedSuggestions: function(req, res, next) {

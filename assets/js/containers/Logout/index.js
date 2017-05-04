@@ -16,9 +16,5 @@ class LogoutPage extends Component {
     return null
   }
 }
-LogoutPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  router: PropTypes.object.isRequired
-}
 
 export default connect()(withRouter(LogoutPage))
