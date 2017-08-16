@@ -1,11 +1,13 @@
 const webpack = require('webpack')
 const path = require('path')
 
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const commonsChunkPlugin = new webpack.optimize.CommonsChunkPlugin({
   name: "common",
   filename: 'common.js'
 })
+
 
 const plugins = [
   new webpack.DefinePlugin({
@@ -17,6 +19,7 @@ const plugins = [
     filename: '../../styles/app/styles.css',
     allChunks: true
   }),
+  new CopyWebpackPlugin([{ from: 'assets/robots.txt', to: '../../robots.txt' }])
 ]
 
 if (process.env.NODE_ENV == 'production') {

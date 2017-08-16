@@ -21,6 +21,7 @@
     "cheerio": "^0.22.0",
     "clone": "^2.1.0",
     "connect-redis": "^3.3.0",
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "0.28.1",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.5",
