@@ -27,27 +27,27 @@ module.exports.routes = {
   },
 
   '/app': {
-      view: 'homepage'
+      view: 'app'
   },
 
   '/app/personalization-feed': {
-      view: 'homepage'
+      view: 'app'
   },
 
   '/app/subscriptions': {
-      view: 'homepage'
+      view: 'app'
   },
 
   '/app/subscriptions/:id': {
-      view: 'homepage'
+      view: 'app'
   },
 
   '/app/getting-started': {
-      view: 'homepage'
+      view: 'app'
   },
 
   '/app/logout': {
-      view: 'homepage'
+      view: 'app'
   },
 
   'get /api/me': 'UsersController.aboutMe',
