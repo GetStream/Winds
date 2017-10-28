@@ -16,7 +16,8 @@ module.exports = {
             required: true,
         },
         faviconUrl: {
-            type: 'url'
+            type: 'url',
+            required: true
         },
         lastScraped: {
             type: 'datetime'
