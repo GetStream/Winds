@@ -89,6 +89,8 @@ SENTRY_DSN = "" # OPTIONAL.
 
 MONGO_URI = "" # OPTIONAL.
 REDIS_AUTH = "" # OPTIONAL.
+
+SESSION_SECRET = "" # Session secret is automatically generated when your new app is created
 ```
 
 **Stream**
