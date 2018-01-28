@@ -22,10 +22,6 @@ Note: We launched this project in November of 2016. We're actively working on it
 
 ![Winds - Open source RSS reader - Select topics](https://github.com/GetStream/Winds/raw/master/screenshots/ss-1.png "Winds - Open source RSS reader")
 
-## Demo
-
-Check out the hosted demo: [winds.getstream.io](https://winds.getstream.io/)
-
 ## Installation
 
 ### Step 0 - Git clone
