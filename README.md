@@ -16,8 +16,8 @@
 * [Powered By](#powered-by)
   * [Stream](#stream)
   * [Algolia](#algolia)
-  * MongoDB
-  * SendGrid
+  * [MongoDB](#mongodb)
+  * [SendGrid](https://sendgrid.com)
   * Amazon Web Services
 * [Tutorials](#tutorials)
 * [Download](#download)
