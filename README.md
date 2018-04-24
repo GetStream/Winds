@@ -46,7 +46,7 @@
 7. [Mercury](https://mercury.postlight.com?ref=winds)
 8. [Stream](https://getstream.io?ref=winds)
 9. [Papertrail](https://papertrailapp.com?ref=winds)
-10. [Amazon Web Services (ECS)](https://aws.amazon.com?ref=winds)
+10. [DigitalOcean](https://digitalocean.com)
 
 ### Stream
 
