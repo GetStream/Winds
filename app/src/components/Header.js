@@ -158,22 +158,9 @@ class Header extends Component {
 
 		return (
 			<header className={'header'}>
-				<div className="warning-bar">
-					<p>{'Hi there! Thanks for trying out Winds!'}</p>
-					<p>
-						{
-							'This is a beta version, so be sure to report bugs that you find over at: '
-						}
-					</p>
-					<p>
-						<a href="https://github.com/GetStream/winds/issues/new">
-							{'github.com/GetStream/winds/issues/new'}
-						</a>
-					</p>
-				</div>
 				<div className="title">
 					<a href="https://getstream.io/?utm_source=Winds&utm_medium=Winds&utm_content=winds_homepage">
-						Winds – Powered by GetStream.io
+						Winds 2.0 – Powered by GetStream.io
 					</a>
 				</div>
 				<div className="header-content">

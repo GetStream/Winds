@@ -41,28 +41,12 @@
 }
 
 .header {
+	background-color: $foreground-white;
 	position: fixed;
-	top: -3px;
+	padding-top: 0.5em;
+	top: 0;
 	width: 100%;
 	z-index: 99999;
-
-	.warning-bar {
-		> p {
-			margin: 0;
-		}
-
-		background-color: $foreground-blue;
-		color: white;
-		font-weight: bolder;
-		padding: 1em;
-		text-align: center;
-
-		a {
-			border-bottom: 2px solid white;
-			color: white;
-			text-decoration: none;
-		}
-	}
 
 	.title {
 		-webkit-app-region: drag;
@@ -94,8 +78,7 @@
 			$foreground-white 43%,
 			rgba(255, 255, 255, 0.95) 100%
 		);
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03),
-			inset 0 -1px 0 0 rgba(0, 0, 0, 0.1),
+		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.03), inset 0 -1px 0 0 rgba(0, 0, 0, 0.1),
 			inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
 			inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
 		display: flex;
