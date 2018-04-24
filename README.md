@@ -162,7 +162,7 @@ API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
 ```
 
-### Start up MongoDB locally
+### Start MongoDB Locally
 
 Winds uses MongoDB as the main datastore - it contains all users, rss feeds, podcasts, episodes, articles, and shares.
 
@@ -189,7 +189,7 @@ You can also run MongoDB in the background by running:
 brew services start mongodb
 ```
 
-### Start up Redis locally
+### Start Redis Locally
 
 At Stream, we use Redis as an in-memory storage for the Winds podcast processing and RSS processing workers. It contains a list of podcasts and RSS feeds, which the workers pick up and process using the `bull` messaging system.
 
@@ -217,7 +217,7 @@ brew services start redis
 
 ### Stream
 
-#### Sign up and create a Stream app
+#### Sign up and Create a Stream App
 
 To contribute to Winds, sign up for [Stream](https://getstream.io/get_started?ref=winds) to utilize the activity and timeline feeds.
 
@@ -237,7 +237,7 @@ STREAM_API_KEY=your-stream-api-key
 STREAM_API_SECRET=your-stream-api-secret
 ```
 
-#### Create your Stream feed groups
+#### Create Your Stream Feed Groups
 
 Once you've signed in, create "feed groups" for your Stream app.
 
@@ -256,7 +256,7 @@ It's fine to enable "Realtime Notifications" for each of these feed groups, thou
 
 ### Algolia
 
-#### Sign up for Algolia and create an Algolia app and index
+#### Sign up for Algolia and Create an Algolia App and Index
 In addition to Stream, you also need to sign up for [Algolia](https://www.algolia.com/users/sign_up?ref=winds), to contribute to Winds, for the search functionality.  
 
 _(Algolia is free for applications with up to 10k records.)_
@@ -266,7 +266,7 @@ _(Algolia is free for applications with up to 10k records.)_
     * (Select the datacenter that's closest to you.)
 * From the application page, select "Indices" and click "Add New Index". (We recommend something similar to `winds-main-index`)
 
-#### Add your Algolia application ID, search-only API Key and Admin API Key to your `.env` file
+#### Add Your Algolia Application Id, Search-Only Api Key and Admin Api Key to Your `.env` File
 
 From your app, click the "API Keys" button on the left to find your app ID and API keys.
 
@@ -278,7 +278,7 @@ REACT_APP_ALGOLIA_SEARCH_KEY=your-algolia-search-only-API-key
 ALGOLIA_WRITE_KEY=your-algolia-admin-API-key
 ```
 
-### Start backend services
+### Start Backend Services
 
 From the root directory, run:
 
@@ -292,13 +292,13 @@ To see logging information for all processes, run:
 pm2 logs
 ```
 
-### Start frontend electron / web app server
+### Start Frontend Electron / Web App Server
 
 ```
 cd app && yarn start
 ```
 
-### Building a production version
+### Building a Production Version
 
 Build a production version of Winds by running:
 
@@ -314,7 +314,7 @@ To run the production JS files:
 pm2 start process_prod.json
 ```
 
-## Debugging RSS &Podcast Issues
+## Debugging RSS & Podcast Issues
 
 Unfortunately there is no unified standard for RSS. To test your preferred feed, go to `api/src/workers` and run:
 
@@ -339,7 +339,7 @@ All support is handled via [GitHub Issues](https://github.com/getstream/winds/is
 
 Thank you to all of the maintainers and contributors who've helped Winds become what it is today and help it stay up and running every day. We couldn't do it without you!
 
-### Special shoutouts to:
+### Special Shoutouts To:
 
 * [Hackernoon](https://hackernoon.com/)
 * [Product Hunt](https://www.producthunt.com/)
