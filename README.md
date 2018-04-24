@@ -62,6 +62,8 @@ Algolia is used for lightning fast and relevant search. We use their [JavaScript
 
 ### MongoDB
 
+MOngoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds. Without Atlas, we would be tied up with tasks such as database administration.
+
 ## Tutorials
 
 The following tutorials will not only help you start contributing to Winds, but also provide inspiration for your next app.
