@@ -18,7 +18,7 @@
   * [Algolia](#algolia)
   * [MongoDB](#mongodb)
   * [SendGrid](https://sendgrid.com)
-  * Amazon Web Services
+  * [DigitalOcean](https://digitalocean.com)
 * [Tutorials](#tutorials)
 * [Download](#download)
 * [Contributing to Winds](#contributing-to-winds)
