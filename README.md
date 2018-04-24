@@ -262,7 +262,7 @@ In addition to Stream, you also need to sign up for [Algolia](https://www.algoli
 _(Algolia is free for applications with up to 10k records.)_
 
 * [Sign up for Algolia here](https://www.algolia.com/users/sign_up?ref=winds)
-* From the [Applications page](https://www.algolia.com/manage/applications), click "New Application" and create a new Algolia appilication. (We recommend something similar to `my-winds-app`)
+* From the [Applications page](https://www.algolia.com/manage/applications), click "New Application" and create a new Algolia application. (We recommend something similar to `my-winds-app`)
     * (Select the datacenter that's closest to you.)
 * From the application page, select "Indices" and click "Add New Index". (We recommend something similar to `winds-main-index`)
 
