@@ -52,6 +52,7 @@ class AdminView extends React.Component {
 				<table>
 					<thead>
 						<tr>
+							<th>Feed URL</th>
 							<th>Title</th>
 							<th>Featured (new users automatically follow)</th>
 							<th>Featured image</th>
@@ -81,6 +82,7 @@ class AdminView extends React.Component {
 				<table>
 					<thead>
 						<tr>
+							<th>Feed URL</th>
 							<th>Title</th>
 							<th>Featured (new users automatically follow)</th>
 							<th>Featured image</th>
@@ -124,6 +126,7 @@ class PodcastRow extends React.Component {
 	render() {
 		return (
 			<tr>
+				<td>{this.props.feedUrl}</td>
 				<td>{this.props.title}</td>
 				<td>
 					<input
@@ -247,6 +250,7 @@ PodcastRow.propTypes = {
 	_id: PropTypes.string.isRequired,
 	description: PropTypes.string,
 	featured: PropTypes.bool,
+	feedUrl: PropTypes.string,
 	getPodcasts: PropTypes.func.isRequired,
 	images: PropTypes.shape({
 		featured: PropTypes.string,
@@ -269,6 +273,7 @@ class RssRow extends React.Component {
 	render() {
 		return (
 			<tr>
+				<td>{this.props.feedUrl}</td>
 				<td>{this.props.title}</td>
 				<td>
 					<input
@@ -393,6 +398,7 @@ RssRow.propTypes = {
 	_id: PropTypes.string.isRequired,
 	description: PropTypes.string,
 	featured: PropTypes.bool,
+	feedUrl: PropTypes.string,
 	getRssFeeds: PropTypes.func.isRequired,
 	images: PropTypes.shape({
 		featured: PropTypes.string,
