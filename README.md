@@ -314,7 +314,7 @@ To run the production JS files:
 pm2 start process_prod.json
 ```
 
-## Debugging RSS issues
+## Debugging RSS &Podcast Issues
 
 Unfortunately there is no unified standard for RSS. To test your preferred feed, go to `api/src/workers` and run:
 
