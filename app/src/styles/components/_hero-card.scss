@@ -1,0 +1,40 @@
+.hero-card {
+	align-items: flex-start;
+	background-position: center;
+	background-size: cover;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+	color: $foreground-white;
+	display: flex;
+	flex-direction: column-reverse;
+	font-family: $primary;
+	height: 178px;
+	padding: 2em;
+	position: relative;
+
+	h1 {
+		color: $foreground-white;
+		font-size: 22px;
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.info {
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.logo {
+		background: url(/images/logos/partial-white.svg) center no-repeat;
+		display: block;
+		height: 25px;
+		left: 20px;
+		opacity: 0.5;
+		top: 20px;
+		width: 25px;
+	}
+
+	> *:last-child {
+		margin-bottom: auto;
+	}
+}

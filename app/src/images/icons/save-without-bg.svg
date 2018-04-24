@@ -1,0 +1,24 @@
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="*-ADD-NEW-1" transform="translate(-879.000000, -286.000000)">
+            <g id="*-ADD-NEW" transform="translate(105.000000, 87.000000)">
+                <g id="RSS-FEED" transform="translate(350.000000, 0.000000)">
+                    <g id="save-and-cancel-buttons" transform="translate(355.000000, 195.000000)">
+                        <g id="Button" transform="translate(65.000000, 0.000000)">
+                            <g id="add-1" transform="translate(2.000000, 2.000000)">
+                                <g id="frames-24px">
+                                    <rect id="Rectangle-path" x="0" y="0" width="24" height="24"></rect>
+                                    <circle id="Oval-9" fill-opacity="0.300000012" fill="#FFFFFF" cx="12" cy="12" r="10"></circle>
+                                    <g id="ic-save-24px" transform="translate(4.000000, 4.000000)">
+                                        <polygon id="Shape" points="0 0 16 0 16 16 0 16"></polygon>
+                                        <path d="M11,2 L3,2 C2.59333333,2 2,2.6 2,3 L2,13 C2,13.4 2.59333333,14 3,14 L13,14 C13.4,14 14,13.4 14,13 L14,5 L11,2 Z M8,12 C6.89333333,12 6,11.1066667 6,10 C6,8.89333333 6.89333333,8 8,8 C9.10666667,8 10,8.89333333 10,10 C10,11.1066667 9.10666667,12 8,12 Z M10,6 L3,6 L3,3 L10,3 L10,6 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,109 @@
+.drawer {
+	background-color: $background-white;
+	bottom: 0;
+	box-shadow: $box-shadow;
+	color: $foreground-black;
+	padding: 2em;
+	padding-bottom: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	width: 33.333%;
+	z-index: 100001;
+
+	.drawer-container {
+		height: 100%;
+		overflow-y: scroll;
+
+		.form-section {
+			h2 {
+				margin-top: 2em;
+				text-transform: uppercase;
+			}
+		}
+
+		header {
+			align-items: flex-start;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			margin-bottom: 1em;
+
+			h1 {
+				margin: 0;
+			}
+
+			.close-icon {
+				align-self: center;
+				cursor: pointer;
+			}
+		}
+
+		form {
+			label {
+				display: block;
+			}
+
+			input[type='text'],
+			input[type='password'],
+			input[type='email'],
+			input[type='url'],
+			textarea,
+			.checkbox {
+				display: block;
+				font-size: 1em;
+				margin-bottom: 1em;
+				width: 100%;
+			}
+
+			input[type='text'],
+			input[type='password'],
+			input[type='email'],
+			textarea {
+				padding: 0.5em;
+			}
+
+			input[type='checkbox'] {
+				margin-right: 0.6em;
+			}
+
+			textarea {
+				height: 6em;
+			}
+
+			label.checkbox {
+				color: $foreground-black;
+				cursor: pointer;
+				font-weight: normal;
+				text-transform: none;
+
+				input {
+					cursor: pointer;
+				}
+			}
+		}
+
+		footer {
+			align-items: center;
+			bottom: 0;
+			box-shadow: $box-shadow;
+			display: flex;
+			flex-direction: row-reverse;
+			height: 60px;
+			left: 0;
+			padding: 1em;
+			position: absolute;
+			right: 0;
+			z-index: 100002;
+		}
+	}
+}
+
+.drawer-click-catcher {
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 100000;
+}

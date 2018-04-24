@@ -1,0 +1,14 @@
+<svg width="22px" height="17px" viewBox="0 0 22 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.700000048">
+        <g id="Electron---Dashboard" transform="translate(-1284.000000, -941.000000)" fill="#000000">
+            <g id="Podcast-Player" transform="translate(105.000000, 918.000000)">
+                <g id="play-next-icon" transform="translate(1179.000000, 23.000000)">
+                    <rect id="Rectangle" opacity="0.5" x="0" y="0" width="22" height="1"></rect>
+                    <rect id="Rectangle" x="0" y="6" width="22" height="1"></rect>
+                    <rect id="Rectangle" x="0" y="12" width="10" height="1"></rect>
+                    <path d="M14.7526053,9.07463193 L20.7207421,12.5684666 L20.7207421,12.5684666 C20.9590519,12.7079766 21.0391449,13.0142601 20.8996349,13.2525699 C20.8563256,13.3265505 20.7947227,13.3881534 20.7207421,13.4314627 L14.7526053,16.9252974 L14.7526053,16.9252974 C14.5142955,17.0648074 14.208012,16.9847144 14.0685019,16.7464046 C14.0236441,16.6697787 14,16.5825898 14,16.4937993 L14,9.50612999 L14,9.50612999 C14,9.22998761 14.2238576,9.00612999 14.5,9.00612999 C14.5887905,9.00612999 14.6759794,9.02977405 14.7526053,9.07463193 Z" id="Play"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

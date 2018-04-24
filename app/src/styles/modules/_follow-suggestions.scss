@@ -1,0 +1,57 @@
+.follow-suggestions-section {
+	margin-top: 5em;
+
+	> * {
+		margin-bottom: 2em;
+	}
+}
+
+.follow-suggestions {
+	.follow-suggestion {
+		align-items: center;
+		border-bottom: 1px solid $foreground-lightgray;
+		color: inherit;
+		display: flex;
+		font-family: $primary;
+		font-size: 1.2em;
+		padding: 0.75em 0;
+		text-decoration: none;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		img {
+			border-radius: 10000px;
+			box-shadow: $box-shadow;
+			height: 2.5em;
+			margin-right: 1em;
+			width: 2.5em;
+		}
+
+		.info {
+			flex-grow: 1;
+
+			.username {
+				color: $foreground-darkgray;
+				font-size: 80%;
+			}
+		}
+
+		.follow {
+			border-radius: $border-radius;
+			color: $foreground-green;
+			cursor: pointer;
+			font-size: 80%;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			padding: 0.5em;
+			text-transform: uppercase;
+
+			&.active {
+				background-color: $background-green;
+				color: white;
+			}
+		}
+	}
+}

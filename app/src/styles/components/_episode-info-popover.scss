@@ -1,0 +1,50 @@
+.Popover {
+	z-index: 100000;
+}
+
+.episode-info-popover {
+	background-color: $background-black;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+	color: $foreground-lightgray;
+	display: flex;
+	flex-direction: column;
+	max-width: 25em;
+
+	> * {
+		border-bottom: 1px solid $foreground-reallydarkgray;
+		padding: 1em 1em 1.5em;
+
+		&:last-child {
+			border: none;
+		}
+	}
+
+	.media-card {
+		margin: 0.5em;
+	}
+
+	.action-bar {
+		color: $foreground-mediumgray;
+		display: flex;
+		justify-content: space-between;
+
+		.hearts {
+			img {
+				margin-right: 0.5em;
+			}
+		}
+
+		.playlist-button {
+			cursor: pointer;
+		}
+	}
+
+	.podcast {
+		align-items: center;
+		color: inherit;
+		display: flex;
+		justify-content: space-between;
+		text-decoration: inherit;
+	}
+}

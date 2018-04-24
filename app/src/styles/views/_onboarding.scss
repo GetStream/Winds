@@ -1,0 +1,102 @@
+.onboarding-2-view {
+	margin: auto;
+	max-width: 100%;
+	text-align: center;
+	width: 30em;
+
+	button {
+		margin: auto;
+	}
+
+	.input-box {
+		input {
+			margin-bottom: 12px;
+			padding-right: 25px;
+			width: 480px;
+		}
+	}
+
+	.dropzone {
+		align-items: center;
+		background-color: $background-gray;
+		border: 1px dotted $foreground-darkgray;
+		border-radius: $border-radius;
+		cursor: pointer;
+		display: flex;
+		flex-direction: column;
+		height: 200px;
+		justify-content: center;
+		margin: 1em auto;
+
+		.dropzone-container {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			font-family: $primary;
+			font-size: 12px;
+			font-weight: 300;
+			justify-content: center;
+
+			span {
+				font-family: $primary;
+				font-size: 12px;
+				font-weight: 300;
+			}
+		}
+	}
+
+	.info {
+		color: $foreground-black;
+		font-family: $primary;
+		font-size: 12px;
+		font-weight: 400;
+		text-transform: none;
+	}
+
+	.error-message {
+		color: $foreground-red;
+	}
+}
+
+.onboarding-view {
+	.column {
+		border: none;
+	}
+
+	.playlist-hero-card {
+		box-shadow: $mega-box-shadow;
+		display: grid;
+		height: unset;
+		margin-bottom: 0;
+
+		h1 {
+			margin-top: 1em;
+		}
+	}
+
+	.hero {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 3em;
+		text-align: center;
+
+		h1 {
+			font-weight: 400;
+			margin-bottom: 0;
+		}
+
+		p {
+			color: $foreground-darkgray;
+			margin-bottom: 30px;
+		}
+
+		button {
+			margin-bottom: 40px;
+		}
+	}
+
+	.panel-element {
+		cursor: pointer;
+	}
+}

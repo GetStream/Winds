@@ -1,0 +1,17 @@
+<svg width="18px" height="12px" viewBox="0 0 18 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Onboarding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="1">
+        <g id="onboarding-1" transform="translate(-678.000000, -250.000000)">
+            <g id="Button" transform="translate(670.000000, 242.000000)">
+                <g id="add-1" transform="translate(2.000000, 2.000000)">
+                    <g id="frames-24px">
+                        <rect id="Rectangle-path" x="0" y="0" width="24" height="24"></rect>
+                        <g id="ic-save-24px" transform="translate(4.000000, 4.000000)">
+                            <polygon id="Shape" points="0 0 16 0 16 16 0 16"></polygon>
+                            <path d="M19.414,6.707 L10.828,6.707 L14.121,3.414 L12.707,2 L7,7.707 L12.707,13.414 L14.121,12 L10.828,8.707 L19.414,8.707 L19.414,6.707 Z M9.121,3.414 L7.707,2 L2,7.707 L7.707,13.414 L9.121,12 L4.828,7.707 L9.121,3.414 Z" id="Page-1" fill="#FFFFFF" transform="translate(10.707000, 7.707000) scale(-1, 1) translate(-10.707000, -7.707000) "></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

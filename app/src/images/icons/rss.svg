@@ -1,0 +1,21 @@
+<svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.400000006">
+        <g id="*-ADD-NEW-1" transform="translate(-933.000000, -214.000000)" fill-rule="nonzero" fill="#000000">
+            <g id="*-ADD-NEW" transform="translate(105.000000, 87.000000)">
+                <g id="RSS-FEED" transform="translate(350.000000, 0.000000)">
+                    <g id="input-group" transform="translate(30.000000, 120.000000)">
+                        <g id="icon/share-rss-feed" transform="translate(448.000000, 7.000000)">
+                            <g id="Nova_solid" transform="translate(0.250000, 0.875000)">
+                                <g id="Group">
+                                    <circle id="Oval" cx="1.875" cy="10" r="1.875"></circle>
+                                    <path d="M0.625,3.75 L0.625,5 C4.07125,5 6.875,7.80375 6.875,11.25 L8.125,11.25 C8.125,7.114375 4.760625,3.75 0.625,3.75 Z" id="Shape"></path>
+                                    <path d="M0.625,0 L0.625,1.25 C6.13875,1.25 10.625,5.73625 10.625,11.25 L11.875,11.25 C11.875,5.046875 6.82875,0 0.625,0 Z" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

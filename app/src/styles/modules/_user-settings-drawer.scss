@@ -1,0 +1,60 @@
+.user-settings-drawer {
+	.background-image-grid {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		> .background-image {
+			border-radius: $border-radius;
+			margin-bottom: 1em;
+			margin-right: 1em;
+			position: relative;
+
+			img {
+				border-radius: $border-radius;
+				box-shadow: $box-shadow;
+				cursor: pointer;
+				height: 50px;
+				width: 50px;
+
+				&.active {
+					border: 2px solid $foreground-green;
+				}
+			}
+
+			.checkmark {
+				align-items: center;
+				background-color: $background-green;
+				border-radius: $border-radius;
+				bottom: 3px;
+				color: $foreground-white;
+				display: flex;
+				height: 1.3em;
+				justify-content: center;
+				padding: 0.1em;
+				position: absolute;
+				right: 0;
+				width: 1.3em;
+			}
+		}
+	}
+
+	.btn.delete {
+		margin-top: 2em;
+	}
+
+	#settings-account-form {
+		.avatar {
+			margin-bottom: 0.5em;
+		}
+	}
+
+	#settings-password-form {
+		.form-section {
+			label > span {
+				display: inline-block;
+				margin-bottom: 0.6em;
+			}
+		}
+	}
+}

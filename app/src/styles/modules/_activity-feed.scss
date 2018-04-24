@@ -1,0 +1,160 @@
+.activity-feed-wrapper {
+	.activity {
+		font-family: $primary;
+		margin-top: 24px;
+		width: 100%;
+
+		.about {
+			display: flex;
+			font-weight: 200;
+			margin-bottom: 1em;
+
+			.icon {
+				margin-right: 8px;
+
+				img {
+					border-radius: 10000px;
+					box-shadow: $box-shadow;
+					height: 40px;
+					width: 40px;
+				}
+			}
+
+			.title {
+				.verb,
+				.descriptor,
+				.time-ago {
+					color: $silver-chalice;
+				}
+
+				.action {
+					font-size: 1.1em;
+
+					a:link,
+					a:visited,
+					a:hover,
+					a:focus,
+					a:active {
+						color: inherit;
+						text-decoration: none;
+					}
+				}
+
+				.time-ago {
+					font-size: 1em;
+					margin-top: 4px;
+				}
+			}
+		}
+
+		.text {
+			font-size: 1.1em;
+			font-weight: lighter;
+			margin-bottom: 1em;
+		}
+
+		.content {
+			background-color: $background-white;
+			border-radius: 6px;
+			box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+			font-size: 11px;
+			font-weight: 600;
+			height: 82px;
+			margin-top: 12px;
+			padding: 12px;
+			width: auto;
+
+			.left {
+				float: left;
+				width: 25%;
+
+				.icon {
+					height: 58px;
+					width: 58px;
+
+					.play {
+						align-items: center;
+						background: rgba(0, 0, 0, 0.8);
+						border-radius: 50%;
+						box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.11);
+						cursor: pointer;
+						display: flex;
+						height: 39px;
+						justify-content: center;
+						left: 40px;
+						position: relative;
+						top: -50px;
+						width: 39px;
+
+						img {
+							margin-left: 3px;
+						}
+					}
+
+					.favicon {
+						align-items: center;
+						border: 1px solid lime;
+						border: 5px solid $snow;
+						cursor: pointer;
+						display: flex;
+						height: 16px;
+						justify-content: center;
+						left: 50px;
+						position: relative;
+						top: -45px;
+						width: 16px;
+
+						img {
+							margin-left: 3px;
+						}
+					}
+				}
+			}
+
+			.right {
+				float: left;
+				width: 75%;
+
+				.name {
+					color: $dim-gray;
+					margin-bottom: 5px;
+					text-transform: uppercase;
+				}
+
+				.title {
+					font-size: 13px;
+					font-weight: 400;
+					margin-bottom: 5px;
+				}
+
+				.stats {
+					color: $magnesium;
+					display: flex;
+					font-size: 11px;
+					font-weight: 400;
+
+					.left {
+						flex: 1;
+						text-align: left;
+					}
+
+					.right {
+						flex: 1;
+						text-align: right;
+					}
+				}
+			}
+		}
+
+		.spacer {
+			background-color: $snowcap;
+			height: 1px;
+			margin: 12px 0 12px 0;
+		}
+	}
+
+	> * {
+		border-bottom: 1px solid $foreground-lightgray;
+		padding-bottom: 2em;
+	}
+}

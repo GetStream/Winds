@@ -1,0 +1,35 @@
+
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <circle id="path-1" cx="10" cy="10" r="10"></circle>
+        <filter x="-35.0%" y="-25.0%" width="170.0%" height="170.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.149711277 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Electron---Dashboard" transform="translate(-1275.000000, -205.000000)">
+            <g id="RSS" transform="translate(927.000000, 160.000000)">
+                <g id="Flattened-Image-#flatten" transform="translate(0.000000, 35.000000)">
+                    <g id="rssfeeds-" transform="translate(0.000000, -2.000000)">
+                        <g id="rssfeeds-#flatten">
+                            <g id="TODAY" transform="translate(17.000000, 0.000000)">
+                                <g id="section-rss-today-header" transform="translate(20.000000, 14.000000)">
+                                    <g id="Group-7" transform="translate(315.000000, 0.000000)">
+                                        <g id="Oval-9">
+                                            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                                            <use fill="#F35162" fill-rule="evenodd" xlink:href="#path-1"></use>
+                                            <use fill="#8F8F8F" fill-rule="evenodd" xlink:href="#path-1"></use>
+                                        </g>
+                                        <polygon id="Shape" fill="#FFFFFF" fill-rule="nonzero" points="13.414 7.415 12 6 9.707 8.293 7.414 6 6 7.415 8.293 9.707 6 12 7.414 13.415 9.707 11.121 12 13.415 13.414 12 11.121 9.707"></polygon>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

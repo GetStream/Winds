@@ -1,0 +1,28 @@
+label {
+	color: $foreground-darkgray;
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.46px;
+	text-transform: uppercase;
+}
+
+input,
+textarea {
+	border: 1px solid $foreground-darkgray;
+	border-radius: 6px;
+	box-shadow: none;
+	font-size: 13px;
+	font-weight: 200;
+	padding: 6px;
+
+	&:focus {
+		border: 1px solid $medium-sea-green;
+		outline: none;
+		transition: all 0.4s linear;
+	}
+
+	&[type='email'] {
+		text-transform: lowercase;
+	}
+}

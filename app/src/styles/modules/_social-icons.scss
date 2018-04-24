@@ -1,0 +1,34 @@
+.social {
+	display: flex;
+	margin: 12px 0 0 0;
+
+	.like {
+		img {
+			position: relative;
+			top: 1px;
+		}
+	}
+
+	.like,
+	.comment,
+	.repost,
+	.flag {
+		color: $foreground-reallydarkgray;
+		cursor: pointer;
+		font-size: 11px;
+		font-weight: 200;
+		margin-right: 24px;
+
+		img {
+			margin-right: 6px;
+		}
+	}
+
+	.comment,
+	.repost {
+		img {
+			position: relative;
+			top: 2px;
+		}
+	}
+}

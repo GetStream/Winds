@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "description": "https://getstream.io/winds.",
+  "scripts": {
+    "start": "cd dist && node server.js",
+    "watch": "nodemon start",
+    "build": "./build.sh"
+  },
+  "author": [
+    {
+      "name": "Nick Parsons",
+      "email": "nick@getstream.io"
+    },
+    {
+      "name": "Ken Hoff",
+      "email": "ken@getstream.io"
+    }
+  ],
+  "license": "BSD-3-Clause",
+  "keywords": ["Winds", "RSS", "RSS Reader", "Podcast", "Podcast Player"],
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-inline-dotenv": "^1.1.2",
+    "babel-preset-env": "^1.6.1"
+  }
+}

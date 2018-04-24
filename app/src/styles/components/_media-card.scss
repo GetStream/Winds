@@ -1,0 +1,57 @@
+.media-card {
+	background-color: $background-white;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+	color: inherit;
+	display: grid;
+	grid-template-areas: 'image author' 'image title' 'image info';
+	grid-template-columns: auto 1fr;
+	padding: 1em;
+	text-decoration: inherit;
+
+	.image {
+		align-self: center;
+		grid-area: image;
+		margin-right: 2em;
+		position: relative;
+
+		.author-image {
+			background-position: center;
+			background-size: cover;
+			height: 50px;
+			width: 50px;
+		}
+
+		.type-image-container {
+			align-items: center;
+			background-color: $background-black;
+			border: 2px solid $foreground-white;
+			color: $foreground-white;
+			display: flex;
+			height: 2em;
+			justify-content: center;
+			position: absolute;
+			right: -1em;
+			top: calc(50% - 1em);
+			width: 2em;
+		}
+	}
+
+	.author {
+		color: $foreground-reallydarkgray;
+		grid-area: author;
+		letter-spacing: $label-letter-spacing;
+		margin-bottom: 0.5em;
+		text-transform: uppercase;
+	}
+
+	.title {
+		color: $foreground-black;
+		font-weight: bolder;
+		grid-area: title;
+	}
+
+	.info {
+		grid-area: info;
+	}
+}

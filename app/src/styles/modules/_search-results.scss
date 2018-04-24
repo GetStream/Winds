@@ -1,0 +1,37 @@
+.results.panel {
+	border-radius: 0.25em;
+	margin-top: 0.5em;
+	position: relative;
+	z-index: 10001;
+
+	> * {
+		&.panel-element {
+			margin: 0;
+			padding: 0.8em;
+
+			&:first-child {
+				border-top-left-radius: 0.25em;
+				border-top-right-radius: 0.25em;
+			}
+		}
+
+		&.selected {
+			background-color: $background-gray;
+		}
+
+		.left {
+			padding: unset;
+			width: unset;
+		}
+
+		.right {
+			margin-left: auto;
+			padding: 0;
+			width: unset;
+		}
+	}
+}
+
+.click-catcher {
+	z-index: 10000;
+}

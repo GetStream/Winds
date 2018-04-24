@@ -1,0 +1,32 @@
+.comment-input-box {
+	display: flex;
+	padding: 1em;
+
+	.avatar {
+		img {
+			border-radius: 10000px;
+			margin-right: 1em;
+		}
+	}
+
+	form.text-box {
+		position: relative;
+		width: 100%;
+
+		textarea {
+			background-color: $background-lightgray;
+			border: none;
+			border-radius: $border-radius;
+			padding: 1em;
+			resize: vertical;
+			width: 100%;
+		}
+
+		button[type="submit"] {
+			bottom: 2em;
+			position: absolute;
+			right: 1em;
+			z-index: 10000;
+		}
+	}
+}

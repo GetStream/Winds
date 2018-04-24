@@ -1,0 +1,27 @@
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <circle id="path-1" cx="14" cy="14" r="14"></circle>
+        <filter x="-25.0%" y="-17.9%" width="150.0%" height="150.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.149711277 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="*-ADD-NEW-1" transform="translate(-923.000000, -115.000000)">
+            <g id="*-ADD-NEW" transform="translate(105.000000, 87.000000)">
+                <g id="RSS-FEED" transform="translate(350.000000, 0.000000)">
+                    <g id="Label-and-close" transform="translate(30.000000, 30.000000)">
+                        <g id="close" transform="translate(442.000000, 0.000000)">
+                            <g id="Oval-9">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            </g>
+                            <path d="M15.45,14.03525 L17.925,11.56025 C18.121,11.36525 18.121,11.04825 17.925,10.85325 L17.218,10.14625 C17.023,9.95125 16.706,9.95125 16.511,10.14625 L14.036,12.62125 L11.561,10.14625 C11.366,9.95125 11.049,9.95125 10.854,10.14625 L10.147,10.85325 C9.951,11.04825 9.951,11.36525 10.147,11.56025 L12.622,14.03525 L10.147,16.51025 C9.951,16.70525 9.951,17.02225 10.147,17.21725 L10.854,17.92425 C11.049,18.11925 11.366,18.11925 11.561,17.92425 L14.036,15.44925 L16.511,17.92425 C16.706,18.11925 17.023,18.11925 17.218,17.92425 L17.925,17.21725 C18.121,17.02125 18.121,16.70525 17.925,16.51025 L15.45,14.03525 Z" id="X_1" fill="#000000"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

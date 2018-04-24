@@ -1,0 +1,78 @@
+.modal {
+	animation: 0.5s modal-slide-down-from-top;
+	background-color: $snow;
+	border-radius: $border-radius;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25), 0 12px 14px 0 rgba(0, 0, 0, 0.1);
+	padding: 24px;
+	position: relative;
+	width: 525px;
+
+	&:focus {
+		outline: 0;
+	}
+
+	.exit {
+		cursor: pointer;
+		display: block;
+		margin-left: auto;
+	}
+
+	header {
+		display: flex;
+
+		h1 {
+			font-family: $primary;
+			font-weight: $bold;
+			padding: 0;
+		}
+	}
+
+	form {
+		> * {
+			margin-bottom: 1em;
+		}
+	}
+
+	footer {
+		display: flex;
+		justify-content: space-between;
+
+		.button-combo {
+			display: flex;
+		}
+
+		.right {
+			margin-left: auto;
+		}
+	}
+
+	input[type='text'] {
+		width: 100%;
+	}
+}
+
+.modal-overlay {
+	align-items: center;
+	background-color: rgba(255, 255, 255, 0.75);
+	border: none;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	left: 0;
+	padding-top: $header-height;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 100001;
+}
+
+@keyframes modal-slide-down-from-top {
+	from {
+		bottom: 500px;
+	}
+
+	to {
+		bottom: 0;
+	}
+}

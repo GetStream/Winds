@@ -1,0 +1,71 @@
+/* VENDOR - Default fall-backs and external files.
+========================================================================== */
+
+/* BASE - Base Variable file along with starting point Mixins and Placeholders.
+========================================================================== */
+@import 'base/_vars.scss';
+@import 'base/_typography.scss';
+@import 'base/_normalize.scss';
+@import 'base/_colors.scss';
+@import 'elements/_buttons.scss';
+@import 'elements/_drawer.scss';
+@import 'elements/_forms.scss';
+@import 'elements/_modals.scss';
+@import 'elements/_popovers.scss';
+@import 'elements/_tabs.scss';
+
+/* FRAMEWORK - Structure and layout files.
+========================================================================== */
+
+@import 'framework/_app.scss';
+@import 'framework/_player.scss';
+@import 'framework/auth-views/_login.scss';
+@import 'framework/auth-views/_forgot-password.scss';
+@import 'framework/auth-views/_reset-password.scss';
+@import 'framework/auth-views/_create.scss';
+@import 'framework/dashboard/_header.scss';
+
+/* Components - Re-usable site elements.
+========================================================================== */
+
+@import 'components/_click-catcher.scss';
+@import 'components/_columns.scss';
+@import 'components/_comment-input-box.scss';
+@import 'components/_comment-section.scss';
+@import 'components/_episode-info-popover.scss';
+@import 'components/_follow-popover.scss';
+@import 'components/_hero-card.scss';
+@import 'components/_list.scss';
+@import 'components/_loader.scss';
+@import 'components/_media-card.scss';
+@import 'components/_panel-element.scss';
+@import 'components/_playlist-card.scss';
+@import 'components/_shows-grid.scss';
+@import 'components/_simple-progress-bar.scss';
+
+/* MODULES - Re-usable site elements.
+========================================================================== */
+
+@import 'modules/_activity-feed.scss';
+@import 'modules/_add-content.scss';
+@import 'modules/_download.scss';
+@import 'modules/_featured-items-section.scss';
+@import 'modules/_follow-suggestions.scss';
+@import 'modules/_my-playlists.scss';
+@import 'modules/_notification-feed.scss';
+@import 'modules/_podcast-suggestions.scss';
+@import 'modules/_reshare-modal.scss';
+@import 'modules/_rss-panels.scss';
+@import 'modules/_search-results.scss';
+@import 'modules/_share.scss';
+@import 'modules/_social-icons.scss';
+@import 'modules/_user-settings-drawer.scss';
+
+// views
+
+@import 'views/_dashboard.scss';
+@import 'views/_onboarding.scss';
+@import 'views/_profile.scss';
+@import 'views/_playlist.scss';
+@import 'views/_podcast.scss';
+@import 'views/_rss.scss';

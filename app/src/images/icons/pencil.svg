@@ -1,0 +1,18 @@
+
+<svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Activity-Feed" transform="translate(-362.000000, -571.000000)" fill-rule="nonzero" fill="#FFFFFF">
+            <g id="Group">
+                <g transform="translate(17.000000, 390.000000)">
+                    <g id="social-metrics" transform="translate(0.000000, 130.000000)">
+                        <g id="Group-9" transform="translate(0.000000, 38.000000)">
+                            <g id="Group-10" transform="translate(341.000000, 10.000000)">
+                                <path d="M13.707,3.295 C13.316,2.905 12.684,2.905 12.293,3.295 L5.293,10.295 C5.166,10.424 5.074,10.584 5.03,10.76 L4.03,14.76 C3.945,15.101 4.046,15.461 4.294,15.709 C4.542,15.957 4.902,16.058 5.243,15.973 L9.243,14.973 C9.419,14.93 9.579,14.838 9.708,14.71 L16.708,7.71 C17.098,7.319 17.099,6.687 16.708,6.296 L13.707,3.295 Z M8.488,13.099 L6.374,13.629 L6.904,11.515 L10,8.417 L11.586,10.003 L8.488,13.099 Z M13,8.59 L11.414,7.003 L13,5.417 L14.586,7.003 L13,8.59 Z" id="Shape"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

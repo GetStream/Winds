@@ -1,0 +1,56 @@
+.list {
+	.list-item {
+		border-bottom: 1px solid $foreground-lightgray;
+		color: inherit;
+		display: flex;
+		padding: 2em 0;
+		text-decoration: inherit;
+
+		.left {
+			margin-right: 2em;
+
+			> img,
+			> .background-image {
+				background-position: center;
+				background-size: cover;
+				border-radius: $border-radius;
+				box-shadow: $box-shadow;
+				height: 100px;
+				width: 100px;
+			}
+		}
+
+		.right {
+			h2 {
+				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
+				margin-bottom: 0.5em;
+				margin-top: 0;
+			}
+
+			.info {
+				align-items: center;
+				color: $foreground-darkgray;
+				display: flex;
+				font-family: $primary;
+				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
+				letter-spacing: 0.1em;
+				margin-bottom: 0.5em;
+				text-transform: uppercase;
+
+				.likes {
+					img {
+						margin-right: 0.5em;
+					}
+				}
+
+				.date {
+					font-size: 11px;
+				}
+
+				> * {
+					margin-right: 1em;
+				}
+			}
+		}
+	}
+}

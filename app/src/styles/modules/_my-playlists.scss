@@ -1,0 +1,48 @@
+.my-playlists {
+	margin-bottom: 2em;
+
+	.playlist {
+		align-items: center;
+		color: inherit;
+		display: flex;
+		flex-direction: row;
+		font-size: 1.1em;
+		padding: 1em 0;
+		text-decoration: none;
+
+		&:first-of-type {
+			padding-top: 0;
+		}
+
+		img {
+			border-radius: $border-radius;
+			height: 50px;
+			margin-right: 1em;
+			width: 50px;
+		}
+
+		.info {
+			flex-grow: 1;
+			font-weight: 600;
+
+			.title {
+				margin-bottom: 0.5em;
+			}
+
+			.attributes {
+				color: $foreground-darkgray;
+				font-family: $primary;
+				font-size: 0.8em;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+			}
+		}
+
+		.chevron {
+			align-items: center;
+			color: $foreground-darkgray;
+			display: flex;
+			justify-content: center;
+		}
+	}
+}

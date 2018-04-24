@@ -1,0 +1,14 @@
+
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" opacity="0.5" stroke-linejoin="round">
+        <g id="Activity-Feed" transform="translate(-84.000000, -345.000000)" stroke="#000000">
+            <g id="Group">
+                <g transform="translate(18.000000, 200.000000)">
+                    <g id="social-metrics" transform="translate(0.000000, 130.000000)">
+                        <path d="M69.2071068,24.5 L66.5,27.2071068 L66.5,17 C66.5,16.221319 67.221319,15.5 68,15.5 L76,15.5 C76.778681,15.5 77.5,16.221319 77.5,17 L77.5,23 C77.5,23.5298758 76.8662091,24.1636668 76.2022116,24.457286 L76,24.5 L69.2071068,24.5 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
