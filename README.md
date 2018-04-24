@@ -139,7 +139,7 @@ git clone git@github.com:GetStream/winds.git
 The following instructions are geared towards Mac users who can use `brew` ([Homebrew](https://brew.sh/)) to install most dependencies. Ubuntu users can use `apt`, and Windows users will have to install directly from the dependency's site. Non-debian-based Linux users will probably be able to figure it out on their own :)
 
 * `brew install pkg-config cairo`
-* `cd winds-2.0`
+* `cd Winds`
 * `yarn install`
 * `cd api`
 * `yarn install`
