@@ -1,0 +1,45 @@
+.comment-section {
+	margin-top: 2em;
+
+	.comment-list {
+		.comment {
+			border-bottom: 1px solid $background-lightgray;
+			display: grid;
+			grid-template-areas:
+				'user-avatar name'
+				'user-avatar text'
+				'user-avatar elements';
+			justify-content: start;
+			padding: 1em;
+
+			&:last-child {
+				border-bottom: none;
+			}
+		}
+
+		.user-avatar {
+			grid-area: user-avatar;
+
+			img {
+				border-radius: 10000px;
+				margin-right: 1em;
+			}
+		}
+
+		.name {
+			grid-area: name;
+		}
+
+		.text {
+			grid-area: text;
+		}
+
+		.elements {
+			color: $foreground-reallydarkgray;
+			cursor: pointer;
+			display: inline-block;
+			grid-area: elements;
+			justify-self: start;
+		}
+	}
+}

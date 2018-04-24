@@ -1,0 +1,107 @@
+.add-new-content-modal {
+	margin-top: 2em;
+
+	header {
+		display: flex;
+
+		h1 {
+			font-size: 20px;
+			font-weight: 600;
+			margin: 16px 0 16px 0;
+			padding: 0;
+		}
+	}
+
+	.expander-section {
+		.expander-button {
+			align-items: center;
+			color: $foreground-green;
+			cursor: pointer;
+			display: flex;
+
+			.expander-bar {
+				border-bottom: 1px solid $foreground-lightgray;
+				flex-grow: 1;
+			}
+
+			> * {
+				margin-right: 0.5em;
+			}
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	form {
+		.input-box {
+			input {
+				margin-bottom: 6px;
+				padding-right: 25px;
+				width: 480px;
+
+				&:disabled {
+					background-color: $background-lightgray;
+					border: 1px solid $background-lightgray;
+					cursor: not-allowed;
+				}
+			}
+
+			img {
+				float: right;
+				position: relative;
+				right: 5px;
+				top: -28px;
+			}
+		}
+
+		.dropzone {
+			align-items: center;
+			background-color: $background-gray;
+			border: 1px dotted $foreground-darkgray;
+			border-radius: $border-radius;
+			cursor: pointer;
+			display: flex;
+			flex-direction: column;
+			height: 200px;
+			justify-content: center;
+			margin: 1em auto;
+
+			.dropzone-container {
+				align-items: center;
+				display: flex;
+				flex-direction: column;
+				font-size: 12px;
+				font-weight: 300;
+				justify-content: center;
+
+				span {
+					font-size: 12px;
+					font-weight: 300;
+				}
+			}
+		}
+
+		.info {
+			color: $foreground-black;
+			font-size: 12px;
+			font-weight: 400;
+			text-transform: none;
+		}
+
+		.error-message {
+			color: $foreground-red;
+		}
+
+		.buttons {
+			display: flex;
+			flex-direction: row-reverse;
+			margin-top: 1em;
+		}
+
+		label {
+			cursor: pointer;
+		}
+	}
+}

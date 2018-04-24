@@ -1,0 +1,30 @@
+.simple-progress-bar {
+	width: 100%;
+
+	.bar {
+		position: relative;
+
+		> * {
+			border-radius: 10000px;
+			height: 1em;
+			width: 100%;
+		}
+
+		.progress {
+			background-color: $background-green;
+			bottom: 0;
+			position: absolute;
+			top: 0;
+			z-index: 10000;
+		}
+
+		.background {
+			background-color: $background-lightgray;
+		}
+	}
+
+	.numbers {
+		display: flex;
+		justify-content: space-between;
+	}
+}

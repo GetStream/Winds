@@ -1,0 +1,19 @@
+
+<svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" opacity="0.5" stroke-linejoin="round">
+        <g id="Activity-Feed" transform="translate(-134.000000, -534.000000)" stroke="#000000">
+            <g id="Group">
+                <g transform="translate(17.000000, 390.000000)">
+                    <g id="social-metrics" transform="translate(0.000000, 130.000000)">
+                        <g id="Group-5" transform="translate(117.000000, 14.000000)">
+                            <polyline id="Shape" points="9.99182129 0.514160156 12.2140435 2.51416016 9.99182129 4.51416016"></polyline>
+                            <path d="M1.48962402,5.48937988 L1.48962402,4.48937988 C1.48962402,3.38481038 2.4845468,2.48937988 3.48962402,2.48937988 L11.489624,2.48937988" id="Shape"></path>
+                            <polyline id="Shape" stroke-width="1.06000006" points="2.99919976 11.5800781 0.776977539 9.58007812 2.99919976 7.58007812"></polyline>
+                            <path d="M11.5001221,6.5055542 L11.5001221,7.5055542 C11.5001221,8.6101237 10.5051993,9.5055542 9.50012207,9.5055542 L1.50012207,9.5055542" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

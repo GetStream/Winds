@@ -1,0 +1,182 @@
+.playlist-view {
+	.left {
+		> * {
+			margin-bottom: 2em;
+		}
+	}
+
+	.right {
+		.top {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 2em;
+
+			.controls {
+				align-items: center;
+				display: flex;
+
+				> * {
+					margin-left: 30px;
+				}
+
+				.likes {
+					cursor: pointer;
+
+					span {
+						margin-left: 0.5em;
+					}
+
+					img {
+						height: 8px;
+						width: 10px;
+					}
+				}
+
+				.play-button {
+					align-items: center;
+					background-color: $background-black;
+					border-radius: 10000px;
+					cursor: pointer;
+					display: flex;
+					height: 40px;
+					justify-content: center;
+					width: 40px;
+
+					&.disabled {
+						background-color: $background-darkgray;
+						cursor: not-allowed;
+					}
+
+					img {
+						height: 13px;
+						margin-left: 4px;
+						width: 11px;
+					}
+				}
+			}
+
+			.info {
+				h1 {
+					font-weight: 700;
+					margin-bottom: 0.5em;
+					margin-top: 0;
+				}
+
+				.attributes {
+					color: $foreground-darkgray;
+					font-size: 0.9em;
+					font-weight: 600;
+
+					> * {
+						margin-right: 1em;
+					}
+				}
+			}
+		}
+
+		.episodes {
+			background-color: $background-white;
+			border-radius: $border-radius;
+			box-shadow: $box-shadow;
+			padding: 0 1em;
+			width: 100%;
+
+			.episodes-heading {
+				border-bottom: 2px solid $foreground-lightgray;
+				color: $foreground-darkgray;
+				font-family: $primary;
+				font-size: 11px;
+				font-weight: 600;
+				letter-spacing: 0.04em;
+				text-transform: uppercase;
+			}
+
+			.empty-playlist {
+				align-items: center;
+				color: $foreground-darkgray;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				min-height: 500px;
+
+				> * {
+					margin-bottom: 1em;
+				}
+
+				p {
+					max-width: 300px;
+					text-align: center;
+				}
+			}
+
+			.episode-row {
+				cursor: grab;
+
+				.gu-mirror {
+					cursor: grabbing;
+					opacity: 0.5;
+				}
+			}
+
+			.episode-row,
+			.episodes-heading {
+				align-items: center;
+				border-bottom: 1px solid $foreground-lightgray;
+				display: grid;
+				grid-template-columns: 3fr 1fr 1fr;
+				padding: 1em 0;
+
+				&:last-child {
+					border-bottom: none;
+				}
+
+				.episode-info {
+					align-items: center;
+					display: grid;
+					grid-template-columns: 3em 3em 1fr;
+					justify-content: center;
+
+					.playlist-episode-order-number {
+						margin-right: 1em;
+						text-align: right;
+					}
+
+					img {
+						display: block;
+						height: auto;
+						margin: auto;
+						margin-right: 1em;
+						max-width: 100%;
+					}
+				}
+
+				.time {
+					align-items: center;
+					display: flex;
+					justify-content: space-between;
+
+					.controls {
+						align-items: center;
+						display: flex;
+
+						.play {
+							align-items: center;
+							background-color: $background-darkgray;
+							border-radius: 10000px;
+							cursor: pointer;
+							display: flex;
+							height: 30px;
+							justify-content: center;
+							margin-left: 1em;
+							width: 30px;
+						}
+					}
+				}
+
+				&.active {
+					color: $foreground-green;
+				}
+			}
+		}
+	}
+}

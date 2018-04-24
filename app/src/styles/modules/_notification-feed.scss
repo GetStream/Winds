@@ -1,0 +1,26 @@
+.notifications-feed {
+	background-color: $snow;
+	border-radius: 6px;
+	box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+	height: auto;
+	min-height: 100px;
+	min-width: 100px;
+	padding: 12px;
+	width: auto;
+
+	.Popover-tip {
+		display: none;
+	}
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			font-family: $primary;
+			font-size: 13px;
+			font-weight: 300;
+		}
+	}
+}

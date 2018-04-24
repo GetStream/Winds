@@ -1,0 +1,72 @@
+.create-wrapper {
+	height: auto;
+	margin-top: 5%;
+	width: 303px;
+
+	.logo {
+		margin-bottom: 25px;
+	}
+
+	.cta {
+		color: rgba(0, 0, 0, 0.65);
+		font-family: $primary;
+		font-size: 14px;
+		font-weight: 200;
+	}
+
+	.form {
+		input {
+			margin-top: 4px;
+		}
+
+		input[type='text'] {
+			margin-bottom: 25px;
+			width: 288px;
+		}
+
+		input[type='email'] {
+			margin-bottom: 25px;
+			width: 288px;
+		}
+
+		input[type='password'] {
+			margin-bottom: 20px;
+			width: 288px;
+		}
+
+		button[type='submit'] {
+			cursor: pointer;
+			height: 35px;
+			margin-bottom: 1em;
+			outline: none;
+			width: 288px;
+
+			&:disabled {
+				color: rgba(255, 255, 255, 0.5);
+			}
+		}
+
+		.error {
+			color: $foreground-red;
+		}
+
+		.alt {
+			text-align: center;
+			font-family: $primary;
+			font-weight: 200;
+			font-size: 12px;
+
+			p {
+				margin-top: 25px;
+			}
+
+			a:link,
+			a:visited,
+			a:active,
+			a:hover {
+				color: $medium-sea-green;
+				text-decoration: none;
+			}
+		}
+	}
+}

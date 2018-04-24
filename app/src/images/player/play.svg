@@ -1,0 +1,29 @@
+
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#2DCE6F" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#4DB678" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="20" cy="20" r="20"></circle>
+        <filter x="-17.5%" y="-12.5%" width="135.0%" height="135.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.149711277 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Electron---Dashboard" transform="translate(-1101.000000, -926.000000)">
+            <g id="Podcast-Player" transform="translate(105.000000, 918.000000)">
+                <g id="play" transform="translate(1000.000000, 10.000000)">
+                    <g id="Oval-7">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                        <use fill="#4DB678" fill-rule="evenodd" xlink:href="#path-2"></use>
+                        <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                    </g>
+                    <path d="M25.7691964,18.7007813 L16.1370536,12.9678571 C16.0194196,12.8986607 15.8983259,12.8571429 15.759933,12.8571429 C15.3828125,12.8571429 15.0748884,13.1685268 15.0748884,13.5491071 L15.0714286,13.5491071 L15.0714286,25.4508929 L15.0748884,25.4508929 C15.0748884,25.8314732 15.3828125,26.1428571 15.759933,26.1428571 C15.9017857,26.1428571 16.0194196,26.0944196 16.147433,26.0252232 L25.7691964,20.2992188 C25.9975446,20.1089286 26.1428571,19.8217634 26.1428571,19.5 C26.1428571,19.1782366 25.9975446,18.8945313 25.7691964,18.7007813 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+.shows-grid {
+	display: grid;
+	grid-column-gap: 2em;
+	grid-row-gap: 2em;
+	grid-template-columns: 1fr 1fr;
+
+	.shows-grid-item {
+		color: inherit;
+		text-decoration: inherit;
+
+		.shows-grid-item-image {
+			background-position: center;
+			background-size: cover;
+			// this is a "hack" to give us a perfectly square container, regardless of width
+			padding-bottom: 100%;
+		}
+
+		h3 {
+			font-weight: bolder;
+		}
+	}
+}

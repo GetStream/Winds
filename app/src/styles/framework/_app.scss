@@ -1,0 +1,20 @@
+html {
+	font-size: 12px;
+}
+
+body {
+	background-color: $background-gray;
+	font-family: $primary;
+}
+
+.app {
+	// this is just for a little while, while we're in prerelease mode.
+	-webkit-app-region: drag;
+	padding-top: 12em;
+	// padding-top: 8em;
+}
+
+.center {
+	display: flex;
+	justify-content: center;
+}

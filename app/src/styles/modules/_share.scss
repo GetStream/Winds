@@ -1,0 +1,39 @@
+.share {
+	background-color: $background-white;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+	height: 10.25em;
+	margin-bottom: 2em;
+	padding: 1em;
+	position: relative;
+	width: auto;
+
+	.inner {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+
+		.avatar {
+			margin-right: 8px;
+
+			img {
+				border-radius: 50%;
+				box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.17);
+			}
+		}
+
+		textarea {
+			border: none;
+			font-size: 14px;
+			font-weight: 200;
+			height: 72px;
+			outline: none;
+			resize: none;
+			width: 100%;
+		}
+	}
+
+	.send {
+		margin-left: auto;
+	}
+}

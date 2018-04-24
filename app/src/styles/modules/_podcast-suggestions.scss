@@ -1,0 +1,58 @@
+.podcast-suggestions {
+	margin-bottom: 2em;
+
+	.suggestion {
+		color: inherit;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		padding: 0.5em 0;
+		text-decoration: none;
+
+		.left {
+			img {
+				border-radius: $border-radius;
+				box-shadow: $box-shadow;
+				margin-right: 2em;
+			}
+		}
+
+		.right {
+			border-bottom: 1px solid $foreground-lightgray;
+			flex-grow: 1;
+			font-family: $primary;
+			padding-bottom: 2em;
+
+			p {
+				margin: 0;
+
+				&.title {
+					font-size: 1.2em;
+					font-weight: 400;
+					margin: 6px 0;
+				}
+
+				&.stats {
+					color: $foreground-darkgray;
+					font-size: 1.1em;
+					font-weight: 300;
+					margin-bottom: 6px;
+				}
+
+				&.why {
+					color: $foreground-darkgray;
+					font-size: 0.9em;
+					font-weight: lighter;
+					text-transform: uppercase;
+				}
+			}
+		}
+
+		.chevron {
+			align-items: center;
+			color: $foreground-darkgray;
+			display: flex;
+			justify-content: center;
+		}
+	}
+}

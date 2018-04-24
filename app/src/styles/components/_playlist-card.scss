@@ -1,0 +1,18 @@
+.playlist-card {
+	align-items: center;
+	background-position: center;
+	background-size: cover;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+	color: $foreground-white;
+	display: flex;
+	font-family: $primary;
+	font-size: 1.1em;
+	height: 100px;
+	justify-content: center;
+	letter-spacing: 0.25em;
+	padding: 1em;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+}

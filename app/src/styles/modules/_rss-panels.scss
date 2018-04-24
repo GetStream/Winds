@@ -1,0 +1,31 @@
+.panel {
+	font-weight: 300;
+
+	&.follow-suggestions {
+		.panel-header {
+			color: $foreground-blue;
+		}
+	}
+
+	&.today {
+		.panel-header {
+			color: $foreground-purple;
+		}
+	}
+
+	&.pins {
+		.panel-header {
+			color: $foreground-orange;
+		}
+
+		img.pin {
+			margin-left: 0.5em;
+		}
+	}
+
+	&.everything {
+		.panel-header {
+			color: $foreground-red;
+		}
+	}
+}

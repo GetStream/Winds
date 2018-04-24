@@ -1,0 +1,88 @@
+$profile-padding: 20px;
+
+.profile {
+	padding-top: 14px;
+
+	.user-profile-card {
+		background-color: $background-white;
+		border-radius: $border-radius;
+		box-shadow: $box-shadow;
+		font-family: $primary;
+		font-size: 14px;
+		font-weight: 300;
+		margin-bottom: 2em;
+		overflow: hidden;
+
+		.bottom {
+			padding-left: $profile-padding;
+			padding-right: $profile-padding;
+
+			> *:last-child {
+				margin-bottom: $profile-padding;
+			}
+
+			a:-webkit-any-link {
+				color: $foreground-black;
+				text-decoration: none;
+
+				i {
+					color: #00a3ee;
+					padding-right: 0.25em;
+				}
+			}
+		}
+
+		.top {
+			background-position: center;
+			background-size: cover;
+			border-top-left-radius: $border-radius;
+			border-top-right-radius: $border-radius;
+			color: $snow;
+			display: flex;
+			flex-direction: row;
+			height: 100px;
+			justify-content: space-between;
+			padding: $profile-padding;
+			position: relative;
+
+			.avatar {
+				height: 60px;
+				width: 60px;
+
+				img {
+					border-radius: 10000px;
+				}
+			}
+
+			.info {
+				flex-grow: 1;
+				margin-left: $profile-padding;
+
+				.name {
+					font-weight: bolder;
+				}
+
+				.username {
+					font-weight: lighter;
+				}
+
+				.follows {
+					display: flex;
+
+					> * {
+						margin-right: 1em;
+
+						.number {
+							font-weight: bolder;
+						}
+					}
+				}
+			}
+
+			.interact {
+				position: absolute;
+				right: $profile-padding;
+			}
+		}
+	}
+}

@@ -1,0 +1,134 @@
+.btn {
+	align-items: center;
+	border-radius: 100000px;
+	border-style: solid;
+	border-width: 2px;
+	box-shadow: $button-box-shadow;
+	cursor: pointer;
+	display: flex;
+	font-size: 0.9em;
+	font-weight: 600;
+	justify-content: center;
+	outline: none;
+	overflow: visible;
+	padding: 0.5em 2em;
+	text-decoration: none;
+	text-transform: uppercase;
+
+	&:focus {
+		box-shadow: $mega-box-shadow;
+
+		&.no-focus {
+			box-shadow: $button-box-shadow;
+		}
+	}
+
+	&.primary {
+		background-color: $background-green;
+		border-color: $background-green;
+		color: $foreground-white;
+
+		&:disabled {
+			background-color: $background-darkgray;
+			border-color: $background-darkgray;
+		}
+
+		&.alt {
+			background-image: linear-gradient(-180deg, #3da192 0%, #4d9596 100%);
+			border-color: transparent;
+
+			&.hollow {
+				background-color: none;
+				background-image: none;
+				border-color: $background-darkgreen;
+				color: $background-darkgreen;
+			}
+
+			&:disabled {
+				background-color: $background-darkgray;
+				background-image: none;
+				border-color: $background-darkgray;
+			}
+		}
+	}
+
+	&.secondary {
+		background-color: $background-darkgray;
+		border-color: $background-darkgray;
+		color: $foreground-white;
+	}
+
+	&.hollow {
+		background-color: transparent;
+		border-color: $foreground-green;
+		color: $foreground-green;
+
+		&.alt {
+			border-color: $foreground-white;
+			color: $foreground-white;
+
+			&.selected {
+				background-color: $background-white;
+				color: $foreground-black;
+			}
+		}
+	}
+
+	&.link {
+		background-color: transparent;
+		border: none;
+		box-shadow: none;
+		color: $foreground-green;
+
+		&.cancel {
+			color: $foreground-darkgray;
+		}
+	}
+
+	&.with-icon {
+		padding-left: 0;
+		padding-right: 1em;
+
+		img {
+			margin-left: 1em;
+			margin-right: 1em;
+		}
+	}
+
+	&.with-circular-icon {
+		padding-bottom: 0.25em;
+		padding-left: 0;
+		padding-right: 1em;
+		padding-top: 0.25em;
+
+		img {
+			margin-left: 0.25em;
+			margin-right: 1em;
+		}
+	}
+
+	&:disabled {
+		background-color: $background-darkgray;
+		border-color: $background-darkgray;
+		cursor: not-allowed;
+	}
+
+	&.play,
+	&.pause {
+		align-items: center;
+		background-color: $background-black;
+		border: none;
+		border-radius: 10000px;
+		color: $foreground-white;
+		display: flex;
+		height: 40px;
+		justify-content: center;
+		padding: 0;
+		width: 40px;
+	}
+
+	&.delete {
+		border-color: $foreground-red;
+		color: $foreground-red;
+	}
+}

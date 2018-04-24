@@ -1,0 +1,40 @@
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#2DCE6F" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#4DB678" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="10" cy="10" r="10"></circle>
+        <filter x="-35.0%" y="-25.0%" width="170.0%" height="170.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.149711277 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Electron---Dashboard" transform="translate(-1275.000000, -386.000000)">
+            <g id="RSS" transform="translate(927.000000, 160.000000)">
+                <g id="Flattened-Image-#flatten" transform="translate(0.000000, 35.000000)">
+                    <g id="rssfeeds-" transform="translate(0.000000, -2.000000)">
+                        <g id="rssfeeds-#flatten">
+                            <g id="feeds" transform="translate(17.000000, 181.000000)">
+                                <g id="TODAY">
+                                    <g id="section-rss-today-header" transform="translate(20.000000, 14.000000)">
+                                        <g id="Group-7" transform="translate(315.000000, 0.000000)">
+                                            <g id="Oval-9">
+                                                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                                                <use fill="#4D75B6" fill-rule="evenodd" xlink:href="#path-2"></use>
+                                                <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                                            </g>
+                                            <polygon id="Shape" fill="#FFFFFF" fill-rule="nonzero" points="9 14.415 5.293 10.708 6.707 9.293 9 11.586 13.293 7.293 14.707 8.708"></polygon>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

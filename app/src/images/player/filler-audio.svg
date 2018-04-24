@@ -1,0 +1,107 @@
+
+<svg width="374px" height="38px" viewBox="0 0 374 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#2DCE6F" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#4DB678" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <path d="M0,10 L2,10 L2,20 L0,20 L0,10 Z M3,11 L5,11 L5,19 L3,19 L3,11 Z M6,10 L8,10 L8,20 L6,20 L6,10 Z M9,6 L11,6 L11,24 L9,24 L9,6 Z M12,4 L14,4 L14,27 L12,27 L12,4 Z M15,2 L17,2 L17,30 L15,30 L15,2 Z M18,4 L20,4 L20,27 L18,27 L18,4 Z M21,5 L23,5 L23,26 L21,26 L21,5 Z M24,6 L26,6 L26,25 L24,25 L24,6 Z M27,0 L29,0 L29,30 L27,30 L27,0 Z M30,2 L32,2 L32,29 L30,29 L30,2 Z M33,3 L35,3 L35,27 L33,27 L33,3 Z M36,4 L38,4 L38,26 L36,26 L36,4 Z M39,3 L41,3 L41,27 L39,27 L39,3 Z M42,10 L44,10 L44,20 L42,20 L42,10 Z M51,10 L53,10 L53,20 L51,20 L51,10 Z M54,7 L56,7 L56,23 L54,23 L54,7 Z M57,5 L59,5 L59,25 L57,25 L57,5 Z M60,6 L62,6 L62,24 L60,24 L60,6 Z M45,13 L47,13 L47,17 L45,17 L45,13 Z M48,13 L50,13 L50,17 L48,17 L48,13 Z M64,10 L66,10 L66,20 L64,20 L64,10 Z M67,11 L69,11 L69,19 L67,19 L67,11 Z M70,10 L72,10 L72,20 L70,20 L70,10 Z M73,6 L75,6 L75,24 L73,24 L73,6 Z M76,4 L78,4 L78,27 L76,27 L76,4 Z M79,2 L81,2 L81,30 L79,30 L79,2 Z M82,4 L84,4 L84,27 L82,27 L82,4 Z M85,5 L87,5 L87,26 L85,26 L85,5 Z M88,6 L90,6 L90,25 L88,25 L88,6 Z M91,0 L93,0 L93,30 L91,30 L91,0 Z M94,2 L96,2 L96,29 L94,29 L94,2 Z M97,3 L99,3 L99,27 L97,27 L97,3 Z M100,4 L102,4 L102,26 L100,26 L100,4 Z M103,3 L105,3 L105,27 L103,27 L103,3 Z M106,10 L108,10 L108,20 L106,20 L106,10 Z M115,10 L117,10 L117,20 L115,20 L115,10 Z M118,7 L120,7 L120,23 L118,23 L118,7 Z M121,5 L123,5 L123,25 L121,25 L121,5 Z M124,6 L126,6 L126,24 L124,24 L124,6 Z M109,13 L111,13 L111,17 L109,17 L109,13 Z M112,13 L114,13 L114,17 L112,17 L112,13 Z M127,11 L129,11 L129,19 L127,19 L127,11 Z M130,10 L132,10 L132,20 L130,20 L130,10 Z" id="path-2"></path>
+        <filter x="-5.3%" y="-16.7%" width="110.6%" height="146.7%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.149711277 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Catalyst" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Electron---Dashboard" transform="translate(-531.000000, -931.000000)">
+            <g id="Podcast-Player" transform="translate(105.000000, 918.000000)">
+                <g id="wave-tracks" transform="translate(430.000000, 15.000000)">
+                    <g id="Combined-Shape">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                        <use fill="#4DB678" fill-rule="evenodd" xlink:href="#path-2"></use>
+                        <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                    </g>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="133" y="6" width="2" height="18"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="136" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="139" y="2" width="2" height="28"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="142" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="145" y="5" width="2" height="21"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="148" y="6" width="2" height="19"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="151" y="0" width="2" height="30"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="154" y="2" width="2" height="27"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="157" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="160" y="4" width="2" height="22"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="163" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="166" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="175" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="178" y="7" width="2" height="16"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="181" y="5" width="2" height="20"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="184" y="6" width="2" height="18"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="169" y="13" width="2" height="4"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="172" y="13" width="2" height="4"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="187" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="190" y="11" width="2" height="8"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="193" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="196" y="6" width="2" height="18"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="199" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="202" y="2" width="2" height="28"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="205" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="208" y="5" width="2" height="21"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="211" y="6" width="2" height="19"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="214" y="0" width="2" height="30"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="217" y="2" width="2" height="27"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="220" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="223" y="4" width="2" height="22"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="226" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="229" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="238" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="241" y="7" width="2" height="16"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="244" y="5" width="2" height="20"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="247" y="6" width="2" height="18"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="232" y="13" width="2" height="4"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="235" y="13" width="2" height="4"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="250" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="253" y="11" width="2" height="8"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="256" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="259" y="6" width="2" height="18"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="262" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="265" y="2" width="2" height="28"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="268" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="271" y="5" width="2" height="21"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="274" y="6" width="2" height="19"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="277" y="0" width="2" height="30"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="280" y="2" width="2" height="27"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="283" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="286" y="4" width="2" height="22"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="289" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="292" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="301" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="304" y="7" width="2" height="16"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="307" y="5" width="2" height="20"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="310" y="6" width="2" height="18"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="295" y="13" width="2" height="4"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="298" y="13" width="2" height="4"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="314" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="317" y="11" width="2" height="8"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="320" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="323" y="6" width="2" height="18"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="326" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="329" y="2" width="2" height="28"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="332" y="4" width="2" height="23"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="335" y="5" width="2" height="21"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="338" y="6" width="2" height="19"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="341" y="0" width="2" height="30"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="344" y="2" width="2" height="27"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="347" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="350" y="4" width="2" height="22"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="353" y="3" width="2" height="24"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="356" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="365" y="10" width="2" height="10"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="368" y="14" width="2" height="2"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="359" y="13" width="2" height="4"></rect>
+                    <rect id="Rectangle-5" fill="#000000" opacity="0.100000001" x="362" y="13" width="2" height="4"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

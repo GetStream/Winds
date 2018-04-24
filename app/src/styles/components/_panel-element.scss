@@ -1,0 +1,107 @@
+.panel {
+	background-color: $background-white;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+	margin-bottom: 1em;
+
+	&.with-hero-card {
+		margin-top: -1em;
+		padding-top: 1em;
+	}
+
+	.panel-header {
+		align-items: center;
+		display: flex;
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		margin: 0 20px;
+		padding: 18px 0;
+		text-transform: uppercase;
+
+		.aside {
+			color: $foreground-darkgray;
+			padding-left: 6px;
+		}
+
+		.right {
+			margin-left: auto;
+		}
+	}
+
+	.panel-element {
+		align-items: center;
+		border-bottom: 1px solid $foreground-lightgray;
+		color: inherit;
+		display: flex;
+		font-weight: 600; // TODO: @kenhoff - figure out why we have to set this explicitly, rather than with 'bolder'
+		margin: 0 1em;
+		padding: 1em 0;
+		text-decoration: inherit;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		.left {
+			align-items: center;
+			display: flex;
+			// might need to rework this - not sure if other images will show up in panels
+			margin-right: 1em;
+
+			img {
+				height: 16px;
+				width: 16px;
+			}
+		}
+
+		.center {
+			display: block;
+			flex-grow: 1;
+			margin-right: 1em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.right {
+			align-items: center;
+			color: $foreground-darkgray;
+			display: flex;
+			flex-direction: row;
+			font-size: 10px;
+			letter-spacing: 0.05em;
+			white-space: nowrap;
+
+			&.clickable {
+				color: $foreground-green;
+				cursor: pointer;
+				font-size: 80%;
+				font-weight: 600;
+				letter-spacing: 0.1em;
+				padding: 0.5em;
+				text-transform: uppercase;
+
+				&.active {
+					background-color: $background-green;
+					border-radius: 4px;
+					color: white;
+				}
+			}
+		}
+
+		&.clickable {
+			cursor: pointer;
+		}
+	}
+
+	.panel-expander {
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin: 0 1em;
+		padding: 1em 0;
+		position: relative;
+	}
+}

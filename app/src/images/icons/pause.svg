@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="14px" viewBox="0 0 12 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>player-pause</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Electron---PODCAST-1-Copy-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-225.000000, -943.000000)">
+        <g id="Podcast-Player" transform="translate(105.000000, 925.000000)" fill="#FFFFFF">
+            <g id="Group-5" transform="translate(80.000000, 5.000000)">
+                <g id="Pause" transform="translate(26.000000, 0.000000)">
+                    <g id="player-pause" transform="translate(14.000000, 13.000000)">
+                        <path d="M1,14 L3,14 C3.552,14 4,13.608 4,13.125 L4,0.875 C4,0.392 3.552,0 3,0 L1,0 C0.448,0 0,0.392 0,0.875 L0,13.125 C0,13.608 0.448,14 1,14 L1,14 Z" id="Shape"></path>
+                        <path d="M8,0.875 L8,13.125 C8,13.608 8.448,14 9,14 L11,14 C11.552,14 12,13.608 12,13.125 L12,0.875 C12,0.392 11.552,0 11,0 L9,0 C8.448,0 8,0.392 8,0.875 L8,0.875 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

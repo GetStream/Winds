@@ -1,44 +1,39 @@
 {
-    "apps" : [
-        {
-            "name"            : "app",
-            "script"          : "app.js",
-            "watch"           : true,
-            "log_date_format" : "YYYY-MM-DD HH:mm Z",
-            "env" : {
-                "NODE_ENV": "development",
-                "PORT": 1337,
-            }
-        },
-        {
-            "name"            : "feeds",
-            "script"          : "scrape_feeds.js",
-            "args"            : "-l",
-            "watch"           : true,
-            "log_date_format" : "YYYY-MM-DD HH:mm Z",
-            "autorestart"     : true,
-            "max_restarts"    : 1,
-            "instances"       : 1,
-            "cron_restart"    : "*/10 * * * *",
-        },
-        {
-            "name"            : "favicons",
-            "script"          : "scrape_favicons.js",
-            "args"            : "-l",
-            "watch"           : true,
-            "log_date_format" : "YYYY-MM-DD HH:mm Z",
-            "autorestart"     : true,
-            "max_restarts"    : 1,
-            "instances"       : 1,
-            "cron_restart"    : "*/10 * * * *",
-        },
-        {
-            "name"            : "worker",
-            "script"          : "worker.js",
-            "watch"           : true,
-            "log_date_format" : "YYYY-MM-DD HH:mm Z",
-            "instances"       : "1",
-            "exec_mode"       : "cluster"
-        }
-    ]
+	"apps": [
+		{
+			"name": "api",
+			"cwd": "api/src",
+			"interpreter": "node_modules/babel-cli/bin/babel-node.js",
+			"script": "./server.js",
+			"watch": true
+		},
+		{
+			"name": "conductor",
+			"cwd": "api/src/workers",
+			"interpreter": "node_modules/babel-cli/bin/babel-node.js",
+			"script": "./conductor.js",
+			"watch": true
+		},
+		{
+			"name": "rss",
+			"cwd": "api/src/workers",
+			"interpreter": "node_modules/babel-cli/bin/babel-node.js",
+			"script": "./rss.js",
+			"watch": true
+		},
+		{
+			"name": "podcast",
+			"cwd": "api/src/workers",
+			"interpreter": "node_modules/babel-cli/bin/babel-node.js",
+			"script": "./podcast.js",
+			"watch": true
+		},
+		{
+			"name": "og",
+			"cwd": "api/src/workers",
+			"interpreter": "node_modules/babel-cli/bin/babel-node.js",
+			"script": "./og.js",
+			"watch": true
+		}
+	]
 }
