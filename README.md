@@ -62,7 +62,7 @@ Algolia is used for lightning fast and relevant search. We use their [JavaScript
 
 ### MongoDB
 
-MOngoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds. Without Atlas, we would be tied up with tasks such as database administration.
+MongoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds. Without Atlas, we would be tied up with tasks such as database administration.
 
 ## Tutorials
 
@@ -84,7 +84,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 ## Download
 
-To download Winds 2.0, visit [https://getstream.io/winds](https://getstream.io/winds) or download directly from the [Releases page on GitHub](https://github.com/GetStream/Winds/releases).
+To download Winds 2.0, visit [https://getstream.io/winds](https://getstream.io/winds).
 
 ## Contributing to Winds
 
