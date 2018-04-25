@@ -308,7 +308,7 @@ body {
 
 .app {
   -webkit-app-region: drag;
-  padding-top: 12em; }
+  padding-top: 8em; }
 
 .center {
   display: flex;
@@ -644,22 +644,12 @@ body {
       margin-right: 0.5em; }
 
 .header {
+  background-color: #fff;
   position: fixed;
-  top: -3px;
+  padding-top: 0.5em;
+  top: 0;
   width: 100%;
   z-index: 99999; }
-  .header .warning-bar {
-    background-color: #4592ff;
-    color: white;
-    font-weight: bolder;
-    padding: 1em;
-    text-align: center; }
-    .header .warning-bar > p {
-      margin: 0; }
-    .header .warning-bar a {
-      border-bottom: 2px solid white;
-      color: white;
-      text-decoration: none; }
   .header .title {
     -webkit-app-region: drag;
     background-color: #fff;
