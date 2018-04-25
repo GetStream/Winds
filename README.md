@@ -62,7 +62,7 @@ Algolia is used for lightning fast and relevant search. We use their [JavaScript
 
 ### MongoDB
 
-MOngoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds. Without Atlas, we would be tied up with tasks such as database administration.
+MongoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds. Without Atlas, we would be tied up with tasks such as database administration.
 
 ## Tutorials
 
@@ -84,7 +84,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 ## Download
 
-To download Winds 2.0, visit [https://getstream.io/winds](https://getstream.io/winds) or download directly from the [Releases page on GitHub](https://github.com/GetStream/Winds/releases).
+To download Winds 2.0, visit [https://getstream.io/winds](https://getstream.io/winds).
 
 ## Contributing to Winds
 
@@ -139,7 +139,7 @@ git clone git@github.com:GetStream/winds.git
 The following instructions are geared towards Mac users who can use `brew` ([Homebrew](https://brew.sh/)) to install most dependencies. Ubuntu users can use `apt`, and Windows users will have to install directly from the dependency's site. Non-debian-based Linux users will probably be able to figure it out on their own :)
 
 * `brew install pkg-config cairo`
-* `cd winds-2.0`
+* `cd Winds`
 * `yarn install`
 * `cd api`
 * `yarn install`
@@ -262,7 +262,7 @@ In addition to Stream, you also need to sign up for [Algolia](https://www.algoli
 _(Algolia is free for applications with up to 10k records.)_
 
 * [Sign up for Algolia here](https://www.algolia.com/users/sign_up?ref=winds)
-* From the [Applications page](https://www.algolia.com/manage/applications), click "New Application" and create a new Algolia appilication. (We recommend something similar to `my-winds-app`)
+* From the [Applications page](https://www.algolia.com/manage/applications), click "New Application" and create a new Algolia application. (We recommend something similar to `my-winds-app`)
     * (Select the datacenter that's closest to you.)
 * From the application page, select "Indices" and click "Add New Index". (We recommend something similar to `winds-main-index`)
 
