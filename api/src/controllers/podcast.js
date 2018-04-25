@@ -2,7 +2,6 @@ import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
-import moment from 'moment';
 
 import Podcast from '../models/podcast';
 import Episode from '../models/episode';
