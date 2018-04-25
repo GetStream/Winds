@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import fetch from '../util/fetch';
 import onboardingTopics from '../static-data/onboarding-topics';
+import { Link } from 'react-router-dom';
 
 let interests = onboardingTopics['Interests'];
 
@@ -62,6 +63,7 @@ class AdminView extends React.Component {
 							</th>
 							<th>Description</th>
 							<th>Summary</th>
+							<th>Link</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -92,6 +94,7 @@ class AdminView extends React.Component {
 							</th>
 							<th>Description</th>
 							<th>Summary</th>
+							<th>Link</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -241,6 +244,9 @@ class PodcastRow extends React.Component {
 						</button>
 					) : null}
 				</td>
+				<td>
+					<Link to={`/podcasts/${this.props._id}`}>go to podcast</Link>
+				</td>
 			</tr>
 		);
 	}
@@ -388,6 +394,9 @@ class RssRow extends React.Component {
 							save
 						</button>
 					) : null}
+				</td>
+				<td>
+					<Link to={`/rss/${this.props._id}`}>go to rss feed</Link>
 				</td>
 			</tr>
 		);
