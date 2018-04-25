@@ -89,7 +89,7 @@ exports.post = (req, res) => {
 							featured: false,
 							feedUrl: feed.url,
 							images: { favicon: feeds.site.favicon },
-							lastScraped: moment().format(),
+							lastScraped: new Date(0),
 							title: entities.decodeHTML(feed.title),
 							url: feeds.site.url,
 							valid: true,
