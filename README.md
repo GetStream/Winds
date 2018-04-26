@@ -113,6 +113,7 @@ CACHE_URI=redis://localhost:6379
 JWT_SECRET=some-super-secret-arbitrary-jwt-string
 API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
+STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 
 STREAM_APP_ID=your-stream-app-id
 STREAM_API_KEY=your-stream-api-key
@@ -160,6 +161,7 @@ CACHE_URI=redis://localhost:6379
 JWT_SECRET=some-super-secret-arbitrary-jwt-string
 API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
+STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 ```
 
 ### Start MongoDB Locally
