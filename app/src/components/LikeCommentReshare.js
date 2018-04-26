@@ -22,9 +22,11 @@ class LikeCommentReshare extends React.Component {
 		this.toggleReshareModal = this.toggleReshareModal.bind(this);
 		this.toggleCommentsSection = this.toggleCommentsSection.bind(this);
 	}
+
 	componentDidMount() {
 		this.props.getComments();
 	}
+
 	toggleReshareModal(e) {
 		e.preventDefault();
 		e.stopPropogation();
@@ -32,6 +34,7 @@ class LikeCommentReshare extends React.Component {
 			reshareModalIsOpen: !this.state.reshareModalIsOpen,
 		});
 	}
+
 	toggleCommentsSection(e) {
 		e.preventDefault();
 		e.stopPropogation();
@@ -39,6 +42,7 @@ class LikeCommentReshare extends React.Component {
 			showCommentsSection: !this.state.showCommentsSection,
 		});
 	}
+
 	render() {
 		return (
 			<div>
@@ -172,8 +176,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 						objectType: 'share',
 						type: 'LIKE',
 					});
-
-					console.log(err); // eslint-disable-line no-console
 				});
 			} else {
 				// optimistic dispatch
