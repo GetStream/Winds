@@ -2,7 +2,6 @@ import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
-import moment from 'moment';
 
 import Podcast from '../models/podcast';
 import Episode from '../models/episode';
@@ -89,7 +88,7 @@ exports.post = (req, res) => {
 							featured: false,
 							feedUrl: feed.url,
 							images: { favicon: feeds.site.favicon },
-							lastScraped: moment().format(),
+							lastScraped: new Date(0),
 							title: entities.decodeHTML(feed.title),
 							url: feeds.site.url,
 							valid: true,

@@ -123,6 +123,7 @@ class EpisodesView extends React.Component {
 					<div className="image">
 						<Img
 							src={[
+								this.props.podcast.images.featured,
 								this.props.podcast.images.favicon,
 								getPlaceholderImageURL(this.props.podcast._id),
 							]}
@@ -159,6 +160,7 @@ class EpisodesView extends React.Component {
 							<EpisodeListItem
 								active={active}
 								image={[
+									this.props.podcast.images.featured,
 									this.props.podcast.images.favicon,
 									getPlaceholderImageURL(this.props.podcast._id),
 								]}
