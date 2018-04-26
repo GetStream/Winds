@@ -21,6 +21,7 @@
 		"axios": "^0.18.0",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.18.2",
+		"bull": "^3.4.1",
 		"compression": "^1.7.2",
 		"cors": "^2.8.4",
 		"dotenv": "^5.0.1",

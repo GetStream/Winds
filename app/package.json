@@ -32,6 +32,7 @@
 		"algoliasearch": "^3.26.0",
 		"axios": "^0.18.0",
 		"babel-plugin-inline-dotenv": "^1.1.2",
+		"bull": "^3.4.1",
 		"electron-boilerplate": "^1.1.1",
 		"electron-google-analytics": "^0.0.24",
 		"electron-is-dev": "^0.3.0",

@@ -1,3 +1,4 @@
+import Queue from 'bull';
 import async from 'async';
 import rssFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
@@ -12,7 +13,9 @@ import search from '../utils/search';
 import logger from '../utils/logger';
 import events from '../utils/events';
 import moment from 'moment';
+import config from '../config';
 
+const rssQueue = new Queue('rss', config.cache.uri);
 
 exports.list = (req, res) => {
 	const query = req.query || {};
@@ -112,7 +115,7 @@ exports.post = (req, res) => {
 			if (!feeds.feedUrls.length) {
 				return res
 					.status(404)
-					.send('We couldn\'t find any feeds for that RSS feed URL :(');
+					.send("We couldn't find any feeds for that RSS feed URL :(");
 			}
 
 			async.mapLimit(
@@ -120,9 +123,11 @@ exports.post = (req, res) => {
 				feeds.feedUrls.length,
 				(feed, cb) => {
 					let feedTitle = feed.title;
+
 					if (feedTitle.toLowerCase() === 'rss') {
 						feedTitle = feeds.site.title;
 					}
+
 					RSS.findOneAndUpdate(
 						{ feedUrl: feed.url },
 						{
@@ -170,6 +175,18 @@ exports.post = (req, res) => {
 												},
 											},
 										})
+											.then(() => {
+												rssQueue.add(
+													{
+														rss: rss.value._id,
+														url: rss.value.feedUrl,
+													},
+													{
+														removeOnComplete: true,
+														removeOnFail: true,
+													},
+												);
+											})
 											.then(() => {
 												cb(null, rss.value);
 											})
