@@ -14,11 +14,11 @@
 
 * [Roadmap](#roadmap)
 * [Powered By](#powered-by)
-  * [Stream](#stream)
-  * [Algolia](#algolia)
-  * [MongoDB](#mongodb)
-  * [SendGrid](https://sendgrid.com)
-  * [DigitalOcean](https://digitalocean.com)
+    * [Stream](#stream)
+    * [Algolia](#algolia)
+    * [MongoDB](#mongodb)
+    * [SendGrid](https://sendgrid.com)
+    * [DigitalOcean](https://digitalocean.com)
 * [Tutorials](#tutorials)
 * [Download](#download)
 * [Contributing to Winds](#contributing-to-winds)
@@ -52,13 +52,13 @@
 
 [Stream](https://getstream.io/) is the platform for building, personalizing, and scaling activity feeds. For the Winds application, the ability to follow users, RSS feeds and playlists is powered by Stream. The machine learning that delivers personalized content suggestions to each user is also enabled by Stream (to learn more about Stream's machine learning, check out our [personalization docs](https://getstream.io/docs_personalization?ref=winds)). In addition to the application itself, if you're a designer you may also enjoy ([Stream's UI kit for feeds](https://getstream.io/based-feed-ui-kit-sketch?ref=winds)) for feeds.
 
-*Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.*
+_Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users._
 
 ### Algolia
 
 Algolia is used for lightning fast and relevant search. We use their [JavaScript search client](https://www.npmjs.com/package/algoliasearch?ref=winds) to easily setup the Winds search implementation.
 
-*With Algolia, accounts are free up to 10k records and 100k operations.*
+_With Algolia, accounts are free up to 10k records and 100k operations._
 
 ### MongoDB
 
@@ -113,6 +113,7 @@ CACHE_URI=redis://localhost:6379
 JWT_SECRET=some-super-secret-arbitrary-jwt-string
 API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
+STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 
 STREAM_APP_ID=your-stream-app-id
 STREAM_API_KEY=your-stream-api-key
@@ -160,6 +161,7 @@ CACHE_URI=redis://localhost:6379
 JWT_SECRET=some-super-secret-arbitrary-jwt-string
 API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
+STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 ```
 
 ### Start MongoDB Locally
@@ -257,7 +259,8 @@ It's fine to enable "Realtime Notifications" for each of these feed groups, thou
 ### Algolia
 
 #### Sign up for Algolia and Create an Algolia App and Index
-In addition to Stream, you also need to sign up for [Algolia](https://www.algolia.com/users/sign_up?ref=winds), to contribute to Winds, for the search functionality.  
+
+In addition to Stream, you also need to sign up for [Algolia](https://www.algolia.com/users/sign_up?ref=winds), to contribute to Winds, for the search functionality.
 
 _(Algolia is free for applications with up to 10k records.)_
 
