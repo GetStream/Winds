@@ -1420,6 +1420,8 @@ body {
     height: 200px;
     justify-content: center;
     margin: 1em auto; }
+    .add-new-content-modal form .dropzone:hover {
+      border: 1px dashed #44bc75; }
     .add-new-content-modal form .dropzone .dropzone-container {
       align-items: center;
       display: flex;
