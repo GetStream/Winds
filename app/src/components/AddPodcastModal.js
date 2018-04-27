@@ -46,9 +46,9 @@ class AddPodcastModal extends React.Component {
 			method: 'POST',
 			url: '/podcasts',
 		})
-			.then(res => {
+			.then(response => {
 				this.setState({
-					podcastsToFollow: res.data,
+					podcastsToFollow: response.data,
 					stage: 'select-podcasts',
 					submitting: false,
 				});
