@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import async from 'async';
 import stream from 'getstream';
 
