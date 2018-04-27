@@ -28,6 +28,10 @@
 		justify-content: center;
 		margin: 1em auto;
 
+		&:hover {
+			border: 1px dashed $foreground-green;
+		}
+
 		.dropzone-container {
 			align-items: center;
 			display: flex;
