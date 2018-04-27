@@ -1,3 +1,4 @@
+import Queue from 'bull';
 import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
@@ -11,6 +12,9 @@ import personalization from '../utils/personalization';
 import logger from '../utils/logger';
 import events from '../utils/events';
 import search from '../utils/search';
+import config from '../config';
+
+const podcastQueue = new Queue('podcast', config.cache.uri);
 
 exports.list = (req, res) => {
 	let query = req.query || {};
@@ -125,6 +129,18 @@ exports.post = (req, res) => {
 												},
 											},
 										})
+											.then(() => {
+												podcastQueue.add(
+													{
+														podcast: podcast.value._id,
+														url: podcast.value.feedUrl,
+													},
+													{
+														removeOnComplete: true,
+														removeOnFail: true,
+													},
+												);
+											})
 											.then(() => {
 												cb(null, podcast.value);
 											})
