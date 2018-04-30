@@ -1873,6 +1873,8 @@ body {
     height: 200px;
     justify-content: center;
     margin: 1em auto; }
+    .onboarding-2-view .dropzone:hover {
+      border: 1px dashed #44bc75; }
     .onboarding-2-view .dropzone .dropzone-container {
       align-items: center;
       display: flex;
