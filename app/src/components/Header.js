@@ -61,6 +61,7 @@ class Header extends Component {
 			newPodcastModalIsOpen: !this.state.newPodcastModalIsOpen,
 		});
 	}
+
 	toggleProfilePopover() {
 		this.setState({
 			profilePopoverIsOpen: !this.state.profilePopoverIsOpen,
@@ -68,6 +69,8 @@ class Header extends Component {
 	}
 
 	render() {
+		const { match, location, history } = this.props;
+
 		let profilePopover = (
 			<div className="panel profile-popover">
 				<div className="panel-element user">
@@ -122,6 +125,7 @@ class Header extends Component {
 				</div>
 			</div>
 		);
+
 		let githubPopover = (
 			<div className="popover github-popover">
 				<div
@@ -156,7 +160,7 @@ class Header extends Component {
 			</div>
 		);
 
-		return (
+		let header = (
 			<header className={'header'}>
 				<div className="title">
 					<a href="https://getstream.io/?utm_source=Winds&utm_medium=Winds&utm_content=winds_homepage">
@@ -248,6 +252,15 @@ class Header extends Component {
 				/>
 			</header>
 		);
+
+		if (
+			location.pathname !== '/onboarding' &&
+			location.pathname !== '/onboarding/2'
+		) {
+			return header;
+		} else {
+			return false;
+		}
 	}
 }
 
