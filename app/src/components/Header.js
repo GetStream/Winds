@@ -69,7 +69,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { match, location, history } = this.props;
+		const { location } = this.props;
 
 		let profilePopover = (
 			<div className="panel profile-popover">
