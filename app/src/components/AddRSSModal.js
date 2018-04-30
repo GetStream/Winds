@@ -238,7 +238,7 @@ class AddRSSModal extends React.Component {
 							<div className="expander-content">
 								<div className="input-box">
 									<Dropzone
-										accept=".xml"
+										accept=".opml"
 										className="dropzone"
 										onDrop={acceptedFiles => {
 											this.setState({
