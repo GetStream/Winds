@@ -12,6 +12,7 @@ class AddOPMLFile extends React.Component {
 		this.state = { submitting: false };
 		this.sendOMPLFileToAPI = this.sendOMPLFileToAPI.bind(this);
 	}
+
 	sendOMPLFileToAPI(e) {
 		e.preventDefault();
 		this.setState({
@@ -85,7 +86,7 @@ class AddOPMLFile extends React.Component {
 			<form onSubmit={this.sendOMPLFileToAPI}>
 				<div className="input-box">
 					<Dropzone
-						accept=".xml"
+						accept=".opml"
 						className="dropzone"
 						multiple={false}
 						onDrop={acceptedFiles => {
