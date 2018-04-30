@@ -25,14 +25,17 @@ class AddPodcastModal extends React.Component {
 		this.resetModal = this.resetModal.bind(this);
 		this.submitPodcastSelections = this.submitPodcastSelections.bind(this);
 	}
+
 	submitPodcastURL(e) {
 		e.preventDefault();
+
 		this.setState({
 			errorMessage: '',
 			errored: false,
 			submitting: true,
 			success: false,
 		});
+
 		axios({
 			baseURL: config.api.url,
 			data: { feedUrl: this.state.podcastInputValue },
@@ -58,14 +61,17 @@ class AddPodcastModal extends React.Component {
 				});
 			});
 	}
+
 	submitPodcastSelections(e) {
 		e.preventDefault();
+
 		this.setState({
 			errorMessage: '',
 			errored: false,
 			submitting: true,
 			success: false,
 		});
+
 		Promise.all(
 			this.state.checkedPodcastsToFollow.map(checkedPodcastToFollow => {
 				return fetch('post', '/follows', null, {
@@ -84,6 +90,7 @@ class AddPodcastModal extends React.Component {
 			}, 5000);
 		});
 	}
+
 	resetModal() {
 		this.setState({
 			checkedPodcastsToFollow: [],
@@ -96,8 +103,10 @@ class AddPodcastModal extends React.Component {
 			success: false,
 		});
 	}
+
 	render() {
 		let buttonText;
+
 		if (this.state.submitting) {
 			buttonText = 'Submitting...';
 		} else if (this.state.success) {
