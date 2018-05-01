@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.43",
+	"version": "2.0.44",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -21,12 +21,10 @@
 	],
 	"scripts": {
 		"build-css": "node-sass-chokidar src/ -o src/",
-		"watch-css":
-			"yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+		"watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"dev": "yarn react-scripts start",
 		"build": "react-scripts build",
-		"start":
-			"concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
+		"start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
 		"pack": "electron-builder --dir",
 		"dist": "electron-builder --x64 --mac --windows --linux"
 	},
@@ -119,7 +117,9 @@
 		},
 		"linux": {
 			"icon": "../assets/icon.png",
-			"target": ["snap"]
+			"target": [
+				"snap"
+			]
 		}
 	}
 }
