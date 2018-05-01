@@ -5,7 +5,7 @@ rm -rf dist && mkdir dist
 rm -rf build && mkdir build
 
 # Run react build scripts
-yarn build
+yarn build -mwl
 
 # Build application
 build --publish never
