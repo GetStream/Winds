@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "description": "https://getstream.io/winds.",
+  "description": "https://getstream.io/winds",
   "scripts": {
     "start": "cd dist && node server.js",
     "watch": "nodemon start",
