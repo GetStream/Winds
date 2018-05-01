@@ -6,7 +6,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 
-**Winds 2.0 is a easy-to-use, open-source RSS and Podcast app built using React/Redux/Node with a beautiful UI. Not only are the activity streams & personalization in Winds powered by [Stream](https://getstream.io/get_started), the application also leverages [Algolia](https://algolia.com?ref=stream) for search, [DigitalOcean](https://digitalocean/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted Database as a Service (DBaaS), and [SendGrid](https://sendgrid.com/) for email.**
+**Winds 2.0 is an easy-to-use, open-source RSS and Podcast app built using React/Redux/Node with a beautiful UI. Not only are the activity streams & personalization in Winds powered by [Stream](https://getstream.io/get_started), the application also leverages [Algolia](https://algolia.com?ref=stream) for search, [DigitalOcean](https://digitalocean/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted Database as a Service (DBaaS), and [SendGrid](https://sendgrid.com/) for email.**
 
 **To download Winds 2.0, please visit [https://getstream.io/winds](https://getstream.io/winds).**
 
