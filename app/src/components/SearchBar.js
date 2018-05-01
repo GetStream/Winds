@@ -1,4 +1,5 @@
 import searchOpacityIcon from '../images/icons/search-opacity.svg';
+import algoliaLogo from '../images/logos/powered-by-algolia.svg';
 import { Link, withRouter } from 'react-router-dom';
 import Algolia from 'algoliasearch';
 import Img from 'react-image';
@@ -228,9 +229,7 @@ class SearchBar extends React.Component {
 								{results}
 								<div className="panel-element">
 									<div className="right">
-										<Img
-											src={'/images/logos/powered-by-algolia.svg'}
-										/>
+										<Img src={algoliaLogo} />
 									</div>
 								</div>
 							</div>
