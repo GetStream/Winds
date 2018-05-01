@@ -21,10 +21,12 @@
 	],
 	"scripts": {
 		"build-css": "node-sass-chokidar src/ -o src/",
-		"watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+		"watch-css":
+			"yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"dev": "yarn react-scripts start",
 		"build": "react-scripts build",
-		"start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
+		"start":
+			"concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
 		"pack": "electron-builder --dir",
 		"dist": "electron-builder --x64 --mac --windows --linux"
 	},
@@ -117,9 +119,7 @@
 		},
 		"linux": {
 			"icon": "../assets/icon.png",
-			"target": [
-				"AppImage"
-			],
+			"target": ["AppImage"],
 			"publish": {
 				"provider": "s3",
 				"bucket": "winds-2.0-releases",
