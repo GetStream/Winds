@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.40",
+	"version": "2.0.42",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -119,7 +119,12 @@
 			"icon": "../assets/icon.png",
 			"target": [
 				"AppImage"
-			]
+			],
+			"publish": {
+				"provider": "s3",
+				"bucket": "winds-2.0-releases",
+				"path": "releases"
+			}
 		}
 	}
 }
