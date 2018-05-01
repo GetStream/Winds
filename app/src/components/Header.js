@@ -102,7 +102,7 @@ class Header extends Component {
 					className="panel-element sign-out"
 					onClick={() => {
 						localStorage.clear();
-						window.location = '/';
+						window.location.reload();
 					}}
 				>
 					<span>Sign out</span>
