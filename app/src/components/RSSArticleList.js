@@ -67,6 +67,7 @@ class RSSArticleList extends React.Component {
 			{
 				per_page: 10,
 				rss: rssFeedID,
+				sort_by: 'publicationDate,desc',
 			},
 		)
 			.then(res => {
