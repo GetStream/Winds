@@ -28,7 +28,10 @@ function handleJob(job, done) {
 		.then(article => {
 			// if the article hasn't been created yet, or it already has an OG image, ignore
 			if (!article || article.images.og) {
-				return;
+				return done();
+			} else if (url.endsWith('.mp3')) {
+				// ends with mp3, no point in scraping, returning early
+				return done();
 			} else {
 				return ogs({
 					followAllRedirects: true,
@@ -56,3 +59,6 @@ function handleJob(job, done) {
 			return done(err);
 		});
 }
+let endsWith = (input, suffix) => {
+	return input.indexOf(suffix, input.length - suffix.length) !== -1;
+};
