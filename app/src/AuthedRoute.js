@@ -6,11 +6,6 @@ import { connect } from 'react-redux';
 import fetch from './util/fetch';
 
 class AuthedRoute extends React.Component {
-	componentDidMount() {
-		if (!this.props.user && localStorage['authedUser']) {
-			this.props.getUser();
-		}
-	}
 	componentWillReceiveProps(nextProps) {
 		if (!nextProps.user && localStorage['authedUser']) {
 			nextProps.getUser();
@@ -80,10 +75,4 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-	return { ...ownProps, ...dispatchProps, ...stateProps };
-};
-
-export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps, mergeProps)(AuthedRoute),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AuthedRoute));

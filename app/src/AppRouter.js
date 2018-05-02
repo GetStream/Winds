@@ -17,6 +17,7 @@ import config from './config';
 import { createHashHistory } from 'history';
 import fetch from './util/fetch';
 import AdminView from './views/AdminView';
+import { connect } from 'react-redux';
 
 const history = createHashHistory();
 
@@ -27,12 +28,19 @@ history.listen(location => {
 class AppRouter extends Component {
 	componentDidMount() {
 		if (localStorage['authedUser']) {
-			fetch('GET', `/users/${localStorage['authedUser']}`).catch(err => {
-				if (err.response.status === 401 || err.response.status === 404) {
-					localStorage.clear();
-					window.location = '/';
-				}
-			});
+			fetch('GET', `/users/${localStorage['authedUser']}`)
+				.then(res => {
+					this.props.dispatch({
+						type: 'UPDATE_USER',
+						user: res.data,
+					});
+				})
+				.catch(err => {
+					if (err.response.status === 401 || err.response.status === 404) {
+						localStorage.clear();
+						window.location = '/';
+					}
+				});
 		}
 	}
 	render() {
@@ -70,4 +78,5 @@ class AppRouter extends Component {
 	}
 }
 
-export default AppRouter;
+// export default AppRouter;
+export default connect()(AppRouter);
