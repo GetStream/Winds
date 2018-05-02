@@ -74,6 +74,14 @@ exports.get = (req, res) => {
 exports.post = (req, res) => {
 	const data = Object.assign(req.body, { user: req.user.sub }) || {};
 
+	if (!data.feedUrl) {
+		return res.status(400).send('Please include a valid podcast URL.');
+	}
+
+	if (data.feedUrl.trim() === '') {
+		return res.status(400).send('You can\'t add a blank podcast URL.');
+	}
+
 	podcastFinder(normalizeUrl(data.feedUrl))
 		.then(feeds => {
 			if (!feeds.feedUrls.length) {

@@ -110,6 +110,14 @@ exports.get = (req, res) => {
 exports.post = (req, res) => {
 	const data = req.body || {};
 
+	if (!data.feedUrl) {
+		return res.status(400).send('Please include a valid RSS feed URL.');
+	}
+
+	if (data.feedUrl.trim() === '') {
+		return res.status(400).send('You can\'t add a blank RSS feed URL.');
+	}
+
 	rssFinder(normalizeUrl(data.feedUrl))
 		.then(feeds => {
 			if (!feeds.feedUrls.length) {
