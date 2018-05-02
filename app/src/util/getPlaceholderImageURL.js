@@ -10,5 +10,5 @@ export default string => {
 	for (let char of string) {
 		count += char.charCodeAt(0);
 	}
-	return cards[count % numberOfPlaceholderImages + 1];
+	return cards[count % numberOfPlaceholderImages];
 };
