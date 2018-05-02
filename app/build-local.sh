@@ -4,8 +4,11 @@
 rm -rf dist && mkdir dist
 rm -rf build && mkdir build
 
-# Run react build scripts
-yarn build -mwl
+# Run React build scripts
+yarn build
+
+# Run Electron dist scripts
+yarn dist
 
 # Build application
 build --publish never
