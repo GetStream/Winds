@@ -9,10 +9,9 @@ import RSSPanelsContainer from '../components/RSSPanelsContainer';
 import React from 'react';
 import TimelineFeed from '../components/TimelineFeed';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
 import DashboardListenSection from '../components/DashboardListenSection';
 
-class PresentationalDashboard extends React.Component {
+class Dashboard extends React.Component {
 	render() {
 		if (this.props.loading) {
 			return <Loader />;
@@ -57,13 +56,12 @@ class PresentationalDashboard extends React.Component {
 	}
 }
 
-PresentationalDashboard.defaultProps = {
+Dashboard.defaultProps = {
 	loading: true,
 	showIntroBanner: true,
 };
 
-PresentationalDashboard.propTypes = {
-	dismissIntroBanner: PropTypes.func.isRequired,
+Dashboard.propTypes = {
 	loading: PropTypes.bool,
 	showIntroBanner: PropTypes.bool,
 	userEmail: PropTypes.string,
@@ -90,23 +88,4 @@ const mapStateToProps = state => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
-	return {
-		dismissIntroBanner: () => {
-			localStorage['dismissedIntroBanner'] = true;
-			dispatch({ type: 'DISMISS_INTRO_BANNER' });
-		},
-		getUser: () => {
-			fetch('GET', `/users/${localStorage['authedUser']}`).then(res => {
-				dispatch({
-					type: 'UPDATE_USER',
-					user: res.data,
-				});
-			});
-		},
-	};
-};
-
-const Dashboard = connect(mapStateToProps, mapDispatchToProps)(PresentationalDashboard);
-
-export { Dashboard };
+export default connect(mapStateToProps)(Dashboard);

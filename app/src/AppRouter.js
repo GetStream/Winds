@@ -1,7 +1,7 @@
 import { Create, ForgotPassword, Login, ResetPassword } from './views/auth-views';
 import React, { Component } from 'react';
 import AuthedRoute from './AuthedRoute';
-import { Dashboard } from './views/Dashboard';
+import Dashboard from './views/Dashboard';
 import Header from './components/Header';
 import Onboarding from './views/OnboardingView';
 import OnboardingOPML from './views/OnboardingOPMLView';
