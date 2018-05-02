@@ -115,7 +115,7 @@ exports.post = (req, res) => {
 			if (!feeds.feedUrls.length) {
 				return res
 					.status(404)
-					.send("We couldn't find any feeds for that RSS feed URL :(");
+					.send('We couldn\'t find any feeds for that RSS feed URL :(');
 			}
 
 			async.mapLimit(
