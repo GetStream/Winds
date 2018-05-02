@@ -21,12 +21,14 @@
 	],
 	"scripts": {
 		"build-css": "node-sass-chokidar src/ -o src/",
-		"watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+		"watch-css":
+			"yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"dev": "yarn react-scripts start",
 		"build": "react-scripts build",
-		"start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
+		"start":
+			"concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
 		"pack": "electron-builder --dir",
-		"dist": "electron-builder --x64 --mac --windows --linux"
+		"dist": "electron-builder --x64 --mac --macos --win --linux"
 	},
 	"dependencies": {
 		"algoliasearch": "^3.27.0",
@@ -91,6 +93,7 @@
 		"wait-on": "^2.1.0"
 	},
 	"build": {
+		"compression": "normal",
 		"appId": "io.getstream.winds",
 		"productName": "Winds",
 		"copyright": "Copyright © 2018 Stream.io Inc",
@@ -114,6 +117,10 @@
 			"type": "distribution",
 			"category": "public.app-category.social-network",
 			"entitlements": "./assets/entitlements.mas.plist"
+		},
+		"win": {
+			"target": "nsis",
+			"icon": "../assets/icon.ico"
 		},
 		"linux": {
 			"icon": "../assets/icon.png",
