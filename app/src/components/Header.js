@@ -15,7 +15,6 @@ import { connect } from 'react-redux';
 import Popover from 'react-popover';
 import AddRSSModal from './AddRSSModal';
 import AddPodcastModal from './AddPodcastModal';
-import windows from 'is-windows';
 
 class Header extends Component {
 	constructor(props) {
@@ -161,21 +160,13 @@ class Header extends Component {
 			</div>
 		);
 
-		let title = null;
-
-		if (!windows()) {
-			title = (
+		let header = (
+			<header className={'header'}>
 				<div className="title">
 					<a href="https://getstream.io/?utm_source=Winds&utm_medium=Winds&utm_content=winds_homepage">
 						Winds 2.0 – Powered by GetStream.io
 					</a>
 				</div>
-			);
-		}
-
-		let header = (
-			<header className={'header'}>
-				{title}
 				<div className="header-content">
 					<div className="left">
 						<div className="nav">
