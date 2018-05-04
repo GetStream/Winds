@@ -34,11 +34,7 @@ class Login extends Component {
 				window.localStorage.setItem('jwt', res.data.jwt);
 				window.localStorage.setItem('authedUser', res.data._id);
 
-				if (!res.data.interests || res.data.interests.length < 3) {
-					this.props.history.push('/onboarding');
-				} else {
-					this.props.history.push('/');
-				}
+				this.props.history.push('/');
 			})
 			.catch(() => {
 				this.setState({
