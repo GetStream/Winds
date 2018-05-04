@@ -1,28 +1,142 @@
 import { Link, withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
-import Img from 'react-image';
 import axios from 'axios';
 import config from '../../config';
-import logo from '../../images/logos/full.svg';
+import PropTypes from 'prop-types';
+import interests from '../../static-data/onboarding-topics.js';
+import getPlaceholderImageURL from '../../util/getPlaceholderImageURL.js';
 
+// convert to 2-stage form - first stage is onboarding, second stage is account details
 class Create extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			email: null,
-			errorMessage: '',
-			name: null,
-			password: null,
-			username: null,
-			valid: false,
+			stage: 'onboarding',
 		};
+	}
 
+	render() {
+		if (this.state.stage === 'onboarding') {
+			return (
+				<OnboardingGrid
+					done={interests => {
+						this.setState({
+							interests,
+							stage: 'account-details',
+						});
+					}}
+				/>
+			);
+		} else {
+			return (
+				<AccountDetailsForm
+					done={(userID, jwt) => {
+						localStorage['authedUser'] = userID;
+						localStorage['jwt'] = jwt;
+						this.props.history.push('/');
+					}}
+					interests={this.state.interests}
+				/>
+			);
+		}
+	}
+}
+
+Create.propTypes = {
+	history: PropTypes.shape({ push: PropTypes.func.isRequired }),
+};
+
+class OnboardingGrid extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			selectedInterests: [],
+		};
+	}
+	toggleInterest(interestName) {
+		// look through this.state.selectedInterests - if it's in there, pop and return
+		let foundInterestIndex = this.state.selectedInterests.findIndex(
+			selectedInterest => {
+				return selectedInterest === interestName;
+			},
+		);
+
+		if (foundInterestIndex !== -1) {
+			let newInterests = this.state.selectedInterests.slice();
+			newInterests.splice(foundInterestIndex, 1);
+			this.setState({
+				selectedInterests: newInterests,
+			});
+		} else {
+			// else, push the interest on
+			this.setState({
+				selectedInterests: [...this.state.selectedInterests, interestName],
+			});
+		}
+	}
+
+	render() {
+		return (
+			<div className="center create-account-view">
+				<h1>Welcome to Winds!</h1>
+				<p>
+					Select at least three interests to get started. Have an account?{' '}
+					<Link to="/login">Sign in</Link>.
+				</p>
+				<div className="interests-grid">
+					{interests.map((interest, i) => {
+						let isSelected =
+							this.state.selectedInterests.findIndex(selectedInterest => {
+								return selectedInterest === interest.name;
+							}) !== -1;
+						return (
+							<div
+								className={`hero-card ${isSelected ? 'selected' : ''}`}
+								key={interest.name}
+								onClick={e => {
+									e.preventDefault();
+									this.toggleInterest(interest.name);
+								}}
+								style={{
+									backgroundImage: `linear-gradient(to top, black, transparent), url(${interest.image ||
+										getPlaceholderImageURL(i.toString())})`,
+								}}
+							>
+								<h1>{interest.name}</h1>
+								<p>{interest.subtitle}</p>
+								<label>
+									{isSelected ? 'Selected' : 'Select interest'}
+								</label>
+							</div>
+						);
+					})}
+				</div>
+				<button
+					className={'btn primary'}
+					disabled={this.state.selectedInterests.length < 3}
+					onClick={e => {
+						e.preventDefault();
+						this.props.done(this.state.selectedInterests);
+					}}
+				>
+					{this.state.selectedInterests.length >= 3
+						? 'Continue'
+						: 'Select at least 3 interests to continue'}
+				</button>
+			</div>
+		);
+	}
+}
+
+class AccountDetailsForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
 		this.validateName = this.validateName.bind(this);
 		this.validateUsername = this.validateUsername.bind(this);
 		this.validateEmail = this.validateEmail.bind(this);
 		this.validatePassword = this.validatePassword.bind(this);
 	}
-
 	validateForm() {
 		if (
 			this.state.username &&
@@ -144,9 +258,7 @@ class Create extends Component {
 				name,
 			})
 			.then(res => {
-				localStorage['authedUser'] = res.data._id;
-				localStorage['jwt'] = res.data.jwt;
-				this.props.history.push('/onboarding');
+				this.props.done(res.data._id, res.data.jwt);
 			})
 			.catch(err => {
 				let errorMessage;
@@ -167,95 +279,77 @@ class Create extends Component {
 
 	render() {
 		return (
-			<div className="center">
-				<div className="create-wrapper">
-					<div className="logo">
-						<Img src={logo} />
-					</div>
-					<div className="cta">
-						<p>
-							Winds is a place to engage with your favorite<br />
-							content and with your friends. Join for free.
-						</p>
-					</div>
-					<div className="form">
-						<form
-							id="sign-in"
-							onSubmit={e => {
-								e.preventDefault();
-								this.submit(
-									this.state.username,
-									this.state.email,
-									this.state.password,
-									this.state.name,
-								);
-							}}
-						>
-							<label>
-								Name<br />
-								<input
-									autoFocus={true}
-									tabIndex="1"
-									type="text"
-									name="name"
-									placeholder="Mr. Coffee"
-									onChange={this.validateName}
-								/>
-							</label>
+			<div className="center create-account-view">
+				<h1>Create Your Free Account</h1>
+				<p>
+					Enjoy a new and personalized way to listen, read, and share your
+					favorite content.
+				</p>
 
-							<label>
-								Username<br />
-								<input
-									tabIndex="2"
-									type="text"
-									name="username"
-									maxLength="15"
-									placeholder="e.g. coffee"
-									onChange={this.validateUsername}
-								/>
-							</label>
-							<br />
-							<label>
-								Email<br />
-								<input
-									tabIndex="3"
-									type="email"
-									name="email"
-									placeholder="e.g. coffee@example.com"
-									onChange={this.validateEmail}
-								/>
-							</label>
-							<br />
-							<label>
-								Enter your password
-								<br />
-								<input
-									tabIndex="4"
-									type="password"
-									name="password"
-									placeholder="8 characters recommended"
-									onChange={this.validatePassword}
-								/>
-							</label>
-							<br />
-							<button
-								tabIndex="5"
-								type="submit"
-								name="sign-in"
-								className="btn primary"
-								disabled={!this.state.valid}
-							>
-								Continue with my email
-							</button>
-							<div className="error">{this.state.errorMessage}</div>
-							<div className="alt">
-								<p>
-									Already a Winds User?{' '}
-									<Link to={`/login`}>Sign in here</Link>
-								</p>
-							</div>
-						</form>
-					</div>
+				<form
+					className="create-account-form"
+					onSubmit={e => {
+						e.preventDefault();
+						this.submit(
+							this.state.username,
+							this.state.email,
+							this.state.password,
+							this.state.name,
+						);
+					}}
+				>
+					<label>
+						<input
+							autoFocus={true}
+							tabIndex="1"
+							type="text"
+							name="name"
+							placeholder="Your Name"
+							onChange={this.validateName}
+						/>
+					</label>
+					<label>
+						<input
+							tabIndex="2"
+							type="text"
+							name="username"
+							maxLength="15"
+							placeholder="Username"
+							onChange={this.validateUsername}
+						/>
+					</label>
+					<label>
+						<input
+							tabIndex="3"
+							type="email"
+							name="email"
+							placeholder="Email"
+							onChange={this.validateEmail}
+						/>
+					</label>
+					<label>
+						<input
+							tabIndex="4"
+							type="password"
+							name="password"
+							placeholder="Password"
+							onChange={this.validatePassword}
+						/>
+					</label>
+					<button
+						tabIndex="5"
+						type="submit"
+						className="btn primary"
+						disabled={!this.state.valid}
+					>
+						Continue
+					</button>
+					<div className="error">{this.state.errorMessage}</div>
+				</form>
+				<div className="alt">
+					<p>
+						Already a Winds User? <Link to={`/login`}>Sign in here</Link>
+					</p>
 				</div>
 			</div>
 		);

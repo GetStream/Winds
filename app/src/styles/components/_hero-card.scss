@@ -1,8 +1,14 @@
+$border-width: 3px;
+
 .hero-card {
 	align-items: flex-start;
+	background-origin: border-box;
 	background-position: center;
 	background-size: cover;
+	border-color: transparent;
 	border-radius: $border-radius;
+	border-style: solid;
+	border-width: $border-width;
 	box-shadow: $box-shadow;
 	color: $foreground-white;
 	display: flex;
@@ -36,5 +42,19 @@
 
 	> *:last-child {
 		margin-bottom: auto;
+	}
+
+	label {
+		color: $foreground-white;
+	}
+
+	&.selected {
+		border-color: $foreground-green;
+		border-style: solid;
+		border-width: $border-width;
+
+		label {
+			color: $foreground-green;
+		}
 	}
 }

@@ -20,7 +20,7 @@ class AuthedRoute extends React.Component {
 				render={props => {
 					if (!localStorage['authedUser']) {
 						if (this.props.redirect) {
-							return <Redirect to="/login" />;
+							return <Redirect to="/create-account" />;
 						} else {
 							return <div />;
 						}
