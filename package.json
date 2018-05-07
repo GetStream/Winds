@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
-		"release-it": "^7.2.1",
-		"version-bump-prompt": "^4.0.0"
+		"release-it": "^7.4.3",
+		"version-bump-prompt": "^4.1.0"
 	}
 }
