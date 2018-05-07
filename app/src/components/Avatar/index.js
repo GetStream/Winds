@@ -10,7 +10,7 @@ let Avatar = props => {
 		<div className="avatar">
 			<Img
 				height={props.height || 28}
-				src={`https://www.gravatar.com/avatar/${avatarMD5Hash}?s=200`}
+				src={`https://www.gravatar.com/avatar/${avatarMD5Hash}?s=200&default=identicon`}
 				width={props.width || 28}
 			/>
 		</div>
