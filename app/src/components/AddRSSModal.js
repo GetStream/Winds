@@ -23,6 +23,7 @@ class AddRSSModal extends React.Component {
 			submitting: false,
 			success: false,
 		};
+
 		this.submitRSSFeedURL = this.submitRSSFeedURL.bind(this);
 		this.submitFeedSelections = this.submitFeedSelections.bind(this);
 		this.resetModal = this.resetModal.bind(this);
@@ -30,6 +31,7 @@ class AddRSSModal extends React.Component {
 		this.handleStageOneFormSubmit = this.handleStageOneFormSubmit.bind(this);
 		this.stageOneFormIsValid = this.stageOneFormIsValid.bind(this);
 	}
+
 	sendOMPLFileToAPI() {
 		this.setState({
 			errorMessage: '',
@@ -72,6 +74,7 @@ class AddRSSModal extends React.Component {
 				});
 			});
 	}
+
 	handleStageOneFormSubmit(e) {
 		e.preventDefault();
 		if (this.state.opmlSectionExpanded) {
@@ -80,6 +83,7 @@ class AddRSSModal extends React.Component {
 			this.submitRSSFeedURL();
 		}
 	}
+
 	submitRSSFeedURL() {
 		this.setState({
 			errorMessage: '',
@@ -112,6 +116,7 @@ class AddRSSModal extends React.Component {
 				});
 			});
 	}
+
 	resetModal() {
 		this.setState({
 			checkedFeedsToFollow: [],
@@ -124,6 +129,7 @@ class AddRSSModal extends React.Component {
 			success: false,
 		});
 	}
+
 	submitFeedSelections(e) {
 		e.preventDefault();
 		this.setState({
@@ -158,6 +164,7 @@ class AddRSSModal extends React.Component {
 				});
 			});
 	}
+
 	stageOneFormIsValid() {
 		if (this.state.opmlSectionExpanded && this.state.file) {
 			return true;
@@ -170,6 +177,7 @@ class AddRSSModal extends React.Component {
 			return false;
 		}
 	}
+
 	render() {
 		let dropzoneContents;
 
@@ -238,7 +246,7 @@ class AddRSSModal extends React.Component {
 							<div className="expander-content">
 								<div className="input-box">
 									<Dropzone
-										accept=".opml"
+										accept="application/xml, text/xml, text/x-opml"
 										className="dropzone"
 										onDrop={acceptedFiles => {
 											this.setState({
