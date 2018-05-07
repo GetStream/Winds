@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import compression from 'compression';
 import jwt from 'express-jwt';
+import rateLimmit from 'express-rate-limit';
 
 import config from './config';
 import logger from './utils/logger';
@@ -16,6 +17,15 @@ api.use(cors());
 api.use(compression());
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json());
+
+api.enable('trust proxy');
+api.use(
+	new rateLimit({
+		windowMs: 60 * 1000,
+		max: 100,
+		delayMs: 0,
+	}),
+);
 
 api.use(
 	jwt({ secret: config.jwt.secret }).unless({

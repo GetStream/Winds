@@ -42,6 +42,7 @@ class Login extends Component {
 			})
 			.catch(() => {
 				this.setState({
+					password: '',
 					errorMessage:
 						'It looks like you have entered an incorrect email or password. Please try again.',
 				});
