@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.69",
+	"version": "2.0.70",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -120,7 +120,12 @@
 		},
 		"win": {
 			"target": "nsis",
-			"icon": "../assets/icon.ico"
+			"icon": "../assets/icon.ico",
+			"publish": {
+				"provider": "s3",
+				"bucket": "winds-2.0-releases",
+				"path": "releases"
+			}
 		},
 		"linux": {
 			"icon": "../assets/icon.png",
