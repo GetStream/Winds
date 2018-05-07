@@ -119,7 +119,7 @@
 			"entitlements": "./assets/entitlements.mas.plist"
 		},
 		"win": {
-			"target": "appx",
+			"target": "nsis",
 			"icon": "../assets/icon.ico"
 		},
 		"linux": {
