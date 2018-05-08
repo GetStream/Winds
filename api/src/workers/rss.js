@@ -37,7 +37,6 @@ rssQueue.process((job, done) => {
 		ParseFeed(job.data.url, function(posts, err) {
 			// log the error
 			if (err) {
-				logger.error('Problem parsing feed:');
 				logger.error(err);
 				done(err);
 				return;
@@ -58,7 +57,6 @@ rssQueue.process((job, done) => {
 					upsert: false,
 				},
 			).catch(err => {
-				console.log('Failed updating RSS feed isParsing and lastScraped status:');
 				logger.error(err);
 			});
 
@@ -114,9 +112,6 @@ rssQueue.process((job, done) => {
 									})
 									.catch(err => {
 										// error: either adding to algolia, adding to Stream, or adding to OGqueue - continuing on for the time being.
-										logger.error(
-											'Failed adding article to algolia, stream, or og queue:',
-										);
 										logger.error(err);
 										cb(null, article);
 									});
