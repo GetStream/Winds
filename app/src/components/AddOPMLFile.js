@@ -86,7 +86,7 @@ class AddOPMLFile extends React.Component {
 			<form onSubmit={this.sendOMPLFileToAPI}>
 				<div className="input-box">
 					<Dropzone
-						accept=".opml"
+						accept="application/xml, text/xml, text/x-opml"
 						className="dropzone"
 						multiple={false}
 						onDrop={acceptedFiles => {

@@ -1767,6 +1767,12 @@ express-jwt@^5.3.1:
     jsonwebtoken "^8.1.0"
     lodash.set "^4.0.0"
 
+express-rate-limit@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-2.11.0.tgz#092122218c86eddb56fb350f431e522fb8024ea9"
+  dependencies:
+    defaults "^1.0.3"
+
 express-unless@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/express-unless/-/express-unless-0.3.1.tgz#2557c146e75beb903e2d247f9b5ba01452696e20"
@@ -3844,13 +3850,6 @@ process-nextick-args@~2.0.0:
 process@~0.5.1:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/process/-/process-0.5.2.tgz#1638d8a8e34c2f440a91db95ab9aeb677fc185cf"
-
-project-name-generator@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/project-name-generator/-/project-name-generator-2.1.4.tgz#57a4bcd137749eb02676dd6b1d9be3fcc3981d2c"
-  dependencies:
-    commander "^2.11.0"
-    lodash "^4.17.4"
 
 proxy-addr@~2.0.3:
   version "2.0.3"

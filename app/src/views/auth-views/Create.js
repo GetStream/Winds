@@ -228,7 +228,7 @@ class AccountDetailsForm extends React.Component {
 	validatePassword(e) {
 		let password = e.target.value.trim();
 
-		if (password.length > 4) {
+		if (password.length > 8) {
 			this.setState(
 				{
 					password: password,

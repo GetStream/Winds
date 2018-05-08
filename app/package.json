@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.47",
+	"version": "2.0.74",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -29,7 +29,7 @@
 		"dist": "electron-builder --x64 --mac --macos --win --linux"
 	},
 	"dependencies": {
-		"algoliasearch": "^3.27.0",
+		"algoliasearch": "^3.27.1",
 		"axios": "^0.18.0",
 		"babel-plugin-inline-dotenv": "^1.1.2",
 		"electron-boilerplate": "^1.1.1",
@@ -38,9 +38,9 @@
 		"electron-is-dev": "^0.3.0",
 		"electron-log": "^2.2.14",
 		"electron-open-link-in-browser": "^1.0.2",
-		"electron-publisher-s3": "^20.12.0",
+		"electron-publisher-s3": "^20.13.1",
 		"electron-remote": "^1.2.0",
-		"electron-updater": "^2.21.8",
+		"electron-updater": "^2.21.10",
 		"geopattern": "^1.2.3",
 		"github-buttons": "^0.0.1-security",
 		"global": "^4.3.2",
@@ -81,7 +81,7 @@
 		"cross-env": "^5.1.4",
 		"electron": "^2.0.0",
 		"electron-builder": "^20.11.1",
-		"electron-devtools-installer": "^2.2.3",
+		"electron-devtools-installer": "^2.2.4",
 		"eslint": "^4.19.1",
 		"eslint-plugin-react": "^7.7.0",
 		"prettier": "^1.12.1",
@@ -120,7 +120,12 @@
 		},
 		"win": {
 			"target": "nsis",
-			"icon": "../assets/icon.ico"
+			"icon": "../assets/icon.ico",
+			"publish": {
+				"provider": "s3",
+				"bucket": "winds-2.0-releases",
+				"path": "releases"
+			}
 		},
 		"linux": {
 			"icon": "../assets/icon.png",

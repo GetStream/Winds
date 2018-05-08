@@ -2,7 +2,7 @@ import md5 from 'md5';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import stream from 'getstream';
-import generate from 'project-name-generator';
+import uuidv4 from 'uuid/v4';
 import validator from 'validator';
 
 import User from '../models/user';
@@ -79,7 +79,6 @@ exports.signup = (req, res) => {
 						}
 					})
 					.then(createdUser => {
-						// set newly created user to follow all "featured" rss feeds and podcasts
 						return RSS.find({ featured: true }).then(featuredRssFeeds => {
 							return Promise.all(
 								featuredRssFeeds.map(featuredRssFeed => {
@@ -94,7 +93,6 @@ exports.signup = (req, res) => {
 						});
 					})
 					.then(createdUser => {
-						// could proooobably do this in parallel with rss feeds above...
 						return Podcast.find({ featured: true })
 							.then(featuredPodcasts => {
 								return Promise.all(
@@ -111,7 +109,6 @@ exports.signup = (req, res) => {
 							});
 					})
 					.then(createdUser => {
-						// return the newly created user
 						res.json({
 							_id: createdUser._id,
 							email: createdUser.email,
@@ -189,10 +186,7 @@ exports.forgotPassword = (req, res) => {
 		new: true,
 	};
 
-	const passcode = generate({
-		alliterative: true,
-		words: 2,
-	}).spaced;
+	const passcode = uuidv4();
 
 	User.findOneAndUpdate(
 		{ email: data.email.toLowerCase() },

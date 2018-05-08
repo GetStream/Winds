@@ -9,6 +9,7 @@ class PodcastSuggestions extends React.Component {
 	componentDidMount() {
 		this.props.getPodcasts();
 	}
+
 	render() {
 		return (
 			<div className="podcast-suggestions">
@@ -35,6 +36,7 @@ PodcastSuggestions.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let suggestedPodcasts = [];
 	let loading = false;
+
 	if ('suggestedPodcasts' in state) {
 		for (let podcastID of state.suggestedPodcasts) {
 			suggestedPodcasts.push(state.podcasts[podcastID]);
@@ -42,6 +44,7 @@ const mapStateToProps = (state, ownProps) => {
 	} else {
 		loading = true;
 	}
+
 	return {
 		...ownProps,
 		loading,
