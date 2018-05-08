@@ -482,58 +482,6 @@ body {
   display: flex;
   flex-direction: column; }
 
-.login-wrapper {
-  height: auto;
-  margin-top: 10%;
-  width: 303px; }
-  .login-wrapper .logo {
-    margin-bottom: 25px; }
-  .login-wrapper .cta {
-    color: rgba(0, 0, 0, 0.65);
-    font-size: 22px;
-    font-weight: 200; }
-  .login-wrapper .form input {
-    margin-top: 4px; }
-  .login-wrapper .form input[type='email'] {
-    margin-bottom: 25px;
-    width: 288px; }
-  .login-wrapper .form input[type='password'] {
-    margin-bottom: 20px;
-    width: 288px; }
-  .login-wrapper .form button[type='submit'] {
-    cursor: pointer;
-    height: 35px;
-    margin-bottom: 1em;
-    width: 288px; }
-  .login-wrapper .form .forgot-password {
-    float: right;
-    font-weight: 200;
-    text-transform: capitalize; }
-    .login-wrapper .form .forgot-password a:link,
-    .login-wrapper .form .forgot-password a:visited,
-    .login-wrapper .form .forgot-password a:active {
-      color: #747474;
-      text-decoration: none; }
-    .login-wrapper .form .forgot-password a:hover {
-      color: #44bc75;
-      text-decoration: none;
-      transition: all 0.4s linear; }
-  .login-wrapper .form .alt {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-size: 12px;
-    font-weight: 200;
-    text-align: center; }
-    .login-wrapper .form .alt p {
-      margin-top: 25px; }
-    .login-wrapper .form .alt a:link,
-    .login-wrapper .form .alt a:visited,
-    .login-wrapper .form .alt a:active,
-    .login-wrapper .form .alt a:hover {
-      color: #44bc75;
-      text-decoration: none; }
-  .login-wrapper .form .error {
-    color: #e55262; }
-
 .reset-password-wrapper {
   height: auto;
   margin-top: 8%;
