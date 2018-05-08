@@ -121,7 +121,6 @@ exports.post = (req, res) => {
 
 	rssFinder(normalizeUrl(data.feedUrl))
 		.then(feeds => {
-			console.log(feeds);
 			if (!feeds.feedUrls.length) {
 				return res
 					.status(404)
