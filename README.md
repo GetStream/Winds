@@ -29,8 +29,14 @@ Winds is a beautiful open-source RSS and Podcast app created using React/Redux/N
 
 ## Roadmap
 
-* [ ] SSO (Google & Twitter)
+Help us improve Winds and/or vote on the [Roadmap for 2.1] (https://github.com/GetStream/Winds/issues/191)
+
+* [ ] Playlist support (partially implemented)
+* [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
 * [ ] Mobile application powered by React Native
+* [ ] SSO (Google & Twitter)
+* [ ] Folder
+* [ ] Listen to feed changes in realtime
 
 ## Powered By
 
@@ -47,19 +53,15 @@ Winds is a beautiful open-source RSS and Podcast app created using React/Redux/N
 
 ### Stream
 
-[Stream](https://getstream.io/?ref=winds) is an API for building activity feeds. For the Winds application, the ability to follow users, RSS feeds and playlists is powered by Stream. The machine learning that delivers personalized content suggestions to each user is also enabled by Stream (to learn more about Stream's machine learning, check out our [personalization docs](https://getstream.io/docs_personalization?ref=winds)). In addition to the application itself, if you're a designer you may also enjoy ([Stream's UI kit for feeds](https://getstream.io/based-feed-ui-kit-sketch?ref=winds)) for feeds.
-
-*Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.*
+[Stream](https://getstream.io/?ref=winds) is an API for building activity feeds. For the Winds application, the ability to follow users, RSS feeds and playlists is powered by Stream. The machine learning that delivers personalized content suggestions to each user is also enabled by Stream (to learn more about Stream's machine learning, check out our [personalization docs](https://getstream.io/docs_personalization?ref=winds)). Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.
 
 ### Algolia
 
-Algolia is used for lightning fast and relevant search. We use their [JavaScript search client](https://www.npmjs.com/package/algoliasearch?ref=winds) to easily setup the Winds search implementation.
-
-*With Algolia, accounts are free up to 10k records and 100k operations.*
+Algolia is used for lightning fast and relevant search. We use their [JavaScript search client](https://www.npmjs.com/package/algoliasearch?ref=winds) to easily setup the Winds search implementation. Algolia, accounts are free up to 10k records and 100k operations.
 
 ### MongoDB
 
-MongoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds. Without Atlas, we would be tied up with tasks such as database administration.
+MongoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds.
 
 ## Tutorials
 
