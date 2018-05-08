@@ -1,45 +1,4 @@
 .create-account-view {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-
-	> * {
-		margin-bottom: 3rem;
-	}
-
-	a {
-		color: $foreground-green;
-		text-decoration: none;
-	}
-
-	form.create-account-form {
-		align-items: center;
-		background-color: $background-white;
-		border-radius: $border-radius;
-		box-shadow: $box-shadow;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		padding: 2em;
-		width: 30em;
-
-		> * {
-			margin-bottom: 2em;
-
-			&:last-child {
-				margin-bottom: 0;
-			}
-		}
-
-		label {
-			width: 100%;
-
-			input {
-				width: 100%;
-			}
-		}
-	}
-
 	.interests-grid {
 		display: grid;
 		grid-column-gap: 3em;

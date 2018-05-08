@@ -424,6 +424,64 @@ body {
       background-color: #aaa;
       z-index: 10003; }
 
+.create-account-view .interests-grid {
+  display: grid;
+  grid-column-gap: 3em;
+  grid-row-gap: 2em;
+  grid-template-columns: 1fr 1fr 1fr; }
+  .create-account-view .interests-grid > *:hover {
+    cursor: pointer; }
+
+.create-account-view .error {
+  color: #e55262; }
+
+.forgot-password-wrapper {
+  height: auto;
+  margin-top: 10%;
+  width: 303px; }
+  .forgot-password-wrapper .back {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase; }
+    .forgot-password-wrapper .back a:link,
+    .forgot-password-wrapper .back a:visited,
+    .forgot-password-wrapper .back a:active,
+    .forgot-password-wrapper .back a:hover {
+      color: #626262;
+      text-decoration: none; }
+    .forgot-password-wrapper .back img {
+      padding-right: 12px; }
+  .forgot-password-wrapper .lock {
+    margin: 25px 0 25px 0; }
+  .forgot-password-wrapper .cta {
+    color: #626262;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 14px; }
+  .forgot-password-wrapper .form {
+    margin-top: 25px; }
+    .forgot-password-wrapper .form input {
+      margin-top: 4px; }
+    .forgot-password-wrapper .form input[type='email'] {
+      margin-bottom: 25px;
+      width: 288px; }
+    .forgot-password-wrapper .form .required {
+      color: #747474;
+      float: right;
+      font-weight: 200;
+      text-transform: capitalize; }
+    .forgot-password-wrapper .form button[type='submit'] {
+      height: 35px;
+      outline: none;
+      width: 288px; }
+      .forgot-password-wrapper .form button[type='submit']:disabled {
+        color: rgba(255, 255, 255, 0.5); }
+
+.login-view {
+  align-items: center;
+  display: flex;
+  flex-direction: column; }
+
 .login-wrapper {
   height: auto;
   margin-top: 10%;
@@ -476,48 +534,6 @@ body {
   .login-wrapper .form .error {
     color: #e55262; }
 
-.forgot-password-wrapper {
-  height: auto;
-  margin-top: 10%;
-  width: 303px; }
-  .forgot-password-wrapper .back {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase; }
-    .forgot-password-wrapper .back a:link,
-    .forgot-password-wrapper .back a:visited,
-    .forgot-password-wrapper .back a:active,
-    .forgot-password-wrapper .back a:hover {
-      color: #626262;
-      text-decoration: none; }
-    .forgot-password-wrapper .back img {
-      padding-right: 12px; }
-  .forgot-password-wrapper .lock {
-    margin: 25px 0 25px 0; }
-  .forgot-password-wrapper .cta {
-    color: #626262;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-size: 14px; }
-  .forgot-password-wrapper .form {
-    margin-top: 25px; }
-    .forgot-password-wrapper .form input {
-      margin-top: 4px; }
-    .forgot-password-wrapper .form input[type='email'] {
-      margin-bottom: 25px;
-      width: 288px; }
-    .forgot-password-wrapper .form .required {
-      color: #747474;
-      float: right;
-      font-weight: 200;
-      text-transform: capitalize; }
-    .forgot-password-wrapper .form button[type='submit'] {
-      height: 35px;
-      outline: none;
-      width: 288px; }
-      .forgot-password-wrapper .form button[type='submit']:disabled {
-        color: rgba(255, 255, 255, 0.5); }
-
 .reset-password-wrapper {
   height: auto;
   margin-top: 8%;
@@ -567,16 +583,17 @@ body {
       .reset-password-wrapper .form button[type='submit']:disabled {
         color: rgba(255, 255, 255, 0.5); }
 
-.create-account-view {
+.auth-view {
   align-items: center;
   display: flex;
-  flex-direction: column; }
-  .create-account-view > * {
+  flex-direction: column;
+  text-align: center; }
+  .auth-view > * {
     margin-bottom: 3rem; }
-  .create-account-view a {
+  .auth-view a {
     color: #44bc75;
     text-decoration: none; }
-  .create-account-view form.create-account-form {
+  .auth-view form.auth-form {
     align-items: center;
     background-color: #fff;
     border-radius: 8px;
@@ -586,23 +603,16 @@ body {
     justify-content: space-around;
     padding: 2em;
     width: 30em; }
-    .create-account-view form.create-account-form > * {
+    .auth-view form.auth-form > * {
       margin-bottom: 2em; }
-      .create-account-view form.create-account-form > *:last-child {
+      .auth-view form.auth-form > *:last-child {
         margin-bottom: 0; }
-    .create-account-view form.create-account-form label {
+    .auth-view form.auth-form label {
       width: 100%; }
-      .create-account-view form.create-account-form label input {
+      .auth-view form.auth-form label input {
         width: 100%; }
-  .create-account-view .interests-grid {
-    display: grid;
-    grid-column-gap: 3em;
-    grid-row-gap: 2em;
-    grid-template-columns: 1fr 1fr 1fr; }
-    .create-account-view .interests-grid > *:hover {
-      cursor: pointer; }
-  .create-account-view .error {
-    color: #e55262; }
+        .auth-view form.auth-form label input[type='email'] {
+          text-transform: none; }
 
 .github-popover {
   margin-top: 2em; }

@@ -77,7 +77,7 @@ class OnboardingGrid extends React.Component {
 
 	render() {
 		return (
-			<div className="center create-account-view">
+			<div className="center auth-view create-account-view">
 				<h1>Welcome to Winds!</h1>
 				<p>
 					Select at least three interests to get started. Have an account?{' '}
@@ -284,15 +284,15 @@ class AccountDetailsForm extends React.Component {
 
 	render() {
 		return (
-			<div className="center create-account-view">
+			<div className="center auth-view create-account-view">
 				<h1>Create Your Free Account</h1>
 				<p>
-					Enjoy a new and personalized way to listen, read, and share your
+					Enjoy a new and personalized way to listen,<br /> read, and share your
 					favorite content.
 				</p>
 
 				<form
-					className="create-account-form"
+					className="auth-form"
 					onSubmit={e => {
 						e.preventDefault();
 						this.submit(
