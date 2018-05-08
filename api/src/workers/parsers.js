@@ -95,7 +95,7 @@ function ParsePodcast(podcastUrl, callback) {
 		url: podcastUrl,
 	};
 
-	let parsedEpisodes = [];
+	let podcastContents = { episodes: [] };
 
 	request(opts, (error, response, responseData) => {
 		podcastParser(responseData, (err, data) => {
@@ -119,10 +119,9 @@ function ParsePodcast(podcastUrl, callback) {
 				} catch (e) {
 					logger.error('Failed to parse episode', e);
 				}
-				parsedEpisodes.push(parsedEpisode);
+				podcastContents.episodes.push(parsedEpisode);
 			});
-
-			callback(parsedEpisodes);
+			callback(podcastContents);
 		});
 	});
 }

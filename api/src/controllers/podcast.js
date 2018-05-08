@@ -13,6 +13,7 @@ import logger from '../utils/logger';
 import events from '../utils/events';
 import search from '../utils/search';
 import detectFeedLanguage from '../utils/detectFeedLanguage';
+import detectPodcastLanguage from '../utils/detectPodcastLanguage';
 import config from '../config';
 
 const podcastQueue = new Queue('podcast', config.cache.uri);
@@ -127,17 +128,19 @@ exports.post = (req, res) => {
 									type: 'podcast',
 								})
 									.then(() => {
-										// works for podcasts too!
-										return detectFeedLanguage(podcast.value.feedUrl);
+										return detectPodcastLanguage(
+											podcast.value.feedUrl,
+										);
 									})
-									.then(feedLanguage => {
+									.then(podcastLanguage => {
 										return events({
 											meta: {
 												data: {
 													[`podcast:${podcast.value._id}`]: {
 														description:
 															podcast.value.description,
-														language: feedLanguage || 'eng',
+														language:
+															podcastLanguage || 'eng',
 														title: podcast.value.title,
 													},
 												},
