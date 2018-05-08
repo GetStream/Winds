@@ -234,7 +234,7 @@ class AddRSSModal extends React.Component {
 								});
 							}}
 						>
-							<span>Import feeds</span>
+							<span>Import OPML</span>
 							<i
 								className={`fas fa-chevron-${
 									this.state.opmlSectionExpanded ? 'up' : 'down'
