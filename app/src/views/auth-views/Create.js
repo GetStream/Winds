@@ -128,6 +128,10 @@ class OnboardingGrid extends React.Component {
 	}
 }
 
+OnboardingGrid.propTypes = {
+	done: PropTypes.func.isRequired,
+};
+
 class AccountDetailsForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -256,6 +260,7 @@ class AccountDetailsForm extends React.Component {
 				email,
 				password,
 				name,
+				interests: this.props.interests,
 			})
 			.then(res => {
 				this.props.done(res.data._id, res.data.jwt);
