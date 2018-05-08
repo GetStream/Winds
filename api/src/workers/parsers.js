@@ -15,7 +15,6 @@ import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 
 function ParseFeed(feedUrl, callback) {
-	console.log(`parsing ${feedUrl}...`);
 	let req = request(feedUrl, {
 		pool: false,
 		timeout: 10000,
