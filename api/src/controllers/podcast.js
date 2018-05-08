@@ -12,6 +12,7 @@ import personalization from '../utils/personalization';
 import logger from '../utils/logger';
 import events from '../utils/events';
 import search from '../utils/search';
+import detectFeedLanguage from '../utils/detectFeedLanguage';
 import config from '../config';
 
 const podcastQueue = new Queue('podcast', config.cache.uri);
@@ -126,35 +127,37 @@ exports.post = (req, res) => {
 									type: 'podcast',
 								})
 									.then(() => {
-										events({
+										// works for podcasts too!
+										return detectFeedLanguage(podcast.value.feedUrl);
+									})
+									.then(feedLanguage => {
+										return events({
 											meta: {
 												data: {
 													[`podcast:${podcast.value._id}`]: {
 														description:
 															podcast.value.description,
+														language: feedLanguage || 'eng',
 														title: podcast.value.title,
 													},
 												},
 											},
-										})
-											.then(() => {
-												podcastQueue.add(
-													{
-														podcast: podcast.value._id,
-														url: podcast.value.feedUrl,
-													},
-													{
-														removeOnComplete: true,
-														removeOnFail: true,
-													},
-												);
-											})
-											.then(() => {
-												cb(null, podcast.value);
-											})
-											.catch(err => {
-												cb(err);
-											});
+										});
+									})
+									.then(() => {
+										return podcastQueue.add(
+											{
+												podcast: podcast.value._id,
+												url: podcast.value.feedUrl,
+											},
+											{
+												removeOnComplete: true,
+												removeOnFail: true,
+											},
+										);
+									})
+									.then(() => {
+										cb(null, podcast.value);
 									})
 									.catch(err => {
 										cb(err);

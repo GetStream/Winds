@@ -174,10 +174,7 @@ exports.post = (req, res) => {
 									type: 'rss',
 								})
 									.then(() => {
-										let detectedLanguage = detectFeedLanguage(
-											rss.value.feedUrl,
-										);
-										return detectedLanguage;
+										return detectFeedLanguage(rss.value.feedUrl);
 									})
 									.then(feedLanguage => {
 										return events({
