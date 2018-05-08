@@ -35,7 +35,6 @@ function ParseFeed(feedUrl, callback) {
 	});
 
 	req.on('response', res => {
-		console.log(res.statusCode);
 		if (res.statusCode !== 200) {
 			return feedparser.emit('error', new Error('Bad status code'));
 		}
@@ -66,9 +65,7 @@ function ParseFeed(feedUrl, callback) {
 
 		while ((postBuffer = feedparser.read())) {
 			let post = Object.assign({}, postBuffer);
-			// console.log(post);
-
-			let parsedArticle = new Article({
+			let parsedArticle = {
 				description: strip(
 					entities.decodeHTML(post.description).substring(0, 280),
 				),
@@ -76,7 +73,7 @@ function ParseFeed(feedUrl, callback) {
 					moment(post.pubdate).toISOString() || moment().toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
-			});
+			};
 
 			feedContents.articles.push(parsedArticle);
 			feedContents.metadata = post.meta;
