@@ -34,7 +34,7 @@ rssQueue.process((job, done) => {
 		}
 
 		// update the feed
-		ParseFeed(job.data.url, function(posts, err) {
+		ParseFeed(job.data.url, function(feedContents, err) {
 			// log the error
 			if (err) {
 				logger.error(err);
@@ -60,9 +60,9 @@ rssQueue.process((job, done) => {
 				logger.error(err);
 			});
 
-			// process all the posts we found
+			// process all the feedContents we found
 			async.mapLimit(
-				posts,
+				feedContents.articles,
 				10,
 				(post, cb) => {
 					// lookup by url

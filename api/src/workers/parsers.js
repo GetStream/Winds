@@ -15,6 +15,7 @@ import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 
 function ParseFeed(feedUrl, callback) {
+	console.log(`parsing ${feedUrl}...`);
 	let req = request(feedUrl, {
 		pool: false,
 		timeout: 10000,
@@ -34,6 +35,7 @@ function ParseFeed(feedUrl, callback) {
 	});
 
 	req.on('response', res => {
+		console.log(res.statusCode);
 		if (res.statusCode !== 200) {
 			return feedparser.emit('error', new Error('Bad status code'));
 		}
@@ -53,9 +55,10 @@ function ParseFeed(feedUrl, callback) {
 		callback(null, err);
 	});
 
-	let articles = [];
+	let feedContents = { articles: [] };
+
 	feedparser.on('end', () => {
-		callback(articles);
+		callback(feedContents);
 	});
 
 	feedparser.on('readable', () => {
@@ -63,6 +66,7 @@ function ParseFeed(feedUrl, callback) {
 
 		while ((postBuffer = feedparser.read())) {
 			let post = Object.assign({}, postBuffer);
+			// console.log(post);
 
 			let parsedArticle = new Article({
 				description: strip(
@@ -74,7 +78,8 @@ function ParseFeed(feedUrl, callback) {
 				url: normalize(post.link),
 			});
 
-			articles.push(parsedArticle);
+			feedContents.articles.push(parsedArticle);
+			feedContents.metadata = post.meta;
 		}
 	});
 }

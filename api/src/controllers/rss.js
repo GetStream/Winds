@@ -12,6 +12,7 @@ import personalization from '../utils/personalization';
 import search from '../utils/search';
 import logger from '../utils/logger';
 import events from '../utils/events';
+import detectFeedLanguage from '../utils/detectFeedLanguage';
 import moment from 'moment';
 import config from '../config';
 
@@ -120,6 +121,7 @@ exports.post = (req, res) => {
 
 	rssFinder(normalizeUrl(data.feedUrl))
 		.then(feeds => {
+			console.log(feeds);
 			if (!feeds.feedUrls.length) {
 				return res
 					.status(404)
@@ -172,35 +174,39 @@ exports.post = (req, res) => {
 									type: 'rss',
 								})
 									.then(() => {
-										events({
+										let detectedLanguage = detectFeedLanguage(
+											rss.value.feedUrl,
+										);
+										return detectedLanguage;
+									})
+									.then(feedLanguage => {
+										return events({
 											meta: {
 												data: {
 													[`rss:${rss.value._id}`]: {
 														description:
 															rss.value.description,
+														language: feedLanguage || 'eng', // default to english
 														title: rss.value.title,
 													},
 												},
 											},
-										})
-											.then(() => {
-												rssQueue.add(
-													{
-														rss: rss.value._id,
-														url: rss.value.feedUrl,
-													},
-													{
-														removeOnComplete: true,
-														removeOnFail: true,
-													},
-												);
-											})
-											.then(() => {
-												cb(null, rss.value);
-											})
-											.catch(err => {
-												cb(err);
-											});
+										});
+									})
+									.then(() => {
+										return rssQueue.add(
+											{
+												rss: rss.value._id,
+												url: rss.value.feedUrl,
+											},
+											{
+												removeOnComplete: true,
+												removeOnFail: true,
+											},
+										);
+									})
+									.then(() => {
+										cb(null, rss.value);
 									})
 									.catch(err => {
 										cb(err);
