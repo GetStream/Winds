@@ -6,9 +6,11 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 
-**Winds 2.0 is an easy-to-use, open-source RSS and Podcast app built using React/Redux/Node with a beautiful UI. Not only are the activity streams & personalization in Winds powered by [Stream](https://getstream.io/get_started), the application also leverages [Algolia](https://algolia.com?ref=stream) for search, [DigitalOcean](https://digitalocean/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted Database as a Service (DBaaS), and [SendGrid](https://sendgrid.com/) for email.**
+Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact we're planning a series of tutorials to help you get started. Activity Feeds in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [DigitalOcean](https://digitalocean/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
-**To download Winds 2.0, please visit [https://getstream.io/winds](https://getstream.io/winds).**
+**To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/).**
+
+![Winds 2.0](https://d2ffutrenqvap3.cloudfront.net/items/1R2j1P1z0J3G241A0z0G/README.gif)
 
 ## TOC
 
@@ -27,13 +29,8 @@
 
 ## Roadmap
 
-* [ ] SSO (Google)
+* [ ] SSO (Google & Twitter)
 * [ ] Mobile application powered by React Native
-* [ ] Linux support
-
-## Screenshots
-
-![Winds 2.0](https://d2ffutrenqvap3.cloudfront.net/items/1R2j1P1z0J3G241A0z0G/README.gif)
 
 ## Powered By
 
@@ -45,12 +42,12 @@
 6. [Bull](https://github.com/OptimalBits/bull?ref=winds)
 7. [Mercury](https://mercury.postlight.com?ref=winds)
 8. [Stream](https://getstream.io?ref=winds)
-9. [Papertrail](https://papertrailapp.com?ref=winds)
-10. [DigitalOcean](https://digitalocean.com)
+9. [Sentry](https://sentry.io/?ref=winds)
+10. [DigitalOcean](https://digitalocean.com/?ref=winds)
 
 ### Stream
 
-[Stream](https://getstream.io/) is the platform for building, personalizing, and scaling activity feeds. For the Winds application, the ability to follow users, RSS feeds and playlists is powered by Stream. The machine learning that delivers personalized content suggestions to each user is also enabled by Stream (to learn more about Stream's machine learning, check out our [personalization docs](https://getstream.io/docs_personalization?ref=winds)). In addition to the application itself, if you're a designer you may also enjoy ([Stream's UI kit for feeds](https://getstream.io/based-feed-ui-kit-sketch?ref=winds)) for feeds.
+[Stream](https://getstream.io/?ref=winds) is an API for building activity feeds. For the Winds application, the ability to follow users, RSS feeds and playlists is powered by Stream. The machine learning that delivers personalized content suggestions to each user is also enabled by Stream (to learn more about Stream's machine learning, check out our [personalization docs](https://getstream.io/docs_personalization?ref=winds)). In addition to the application itself, if you're a designer you may also enjoy ([Stream's UI kit for feeds](https://getstream.io/based-feed-ui-kit-sketch?ref=winds)) for feeds.
 
 *Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.*
 
