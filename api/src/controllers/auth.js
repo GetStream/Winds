@@ -109,6 +109,39 @@ exports.signup = (req, res) => {
 							});
 					})
 					.then(createdUser => {
+						// follow all podcasts and rss feeds specified in "interests" payload
+						return Promise.all(
+							data.interests.map(interest => {
+								// all interests
+								return Promise.all([
+									// rss and podcasts
+									RSS.find({ interest }).then(interestRssFeeds => {
+										return Promise.all(
+											interestRssFeeds.map(interestRssFeed => {
+												return followRssFeed(
+													createdUser._id,
+													interestRssFeed._id,
+												);
+											}),
+										);
+									}),
+									Podcast.find({ interest }).then(interestPodcasts => {
+										return Promise.all(
+											interestPodcasts.map(interestPodcast => {
+												return followPodcast(
+													createdUser._id,
+													interestPodcast._id,
+												);
+											}),
+										);
+									}),
+								]);
+							}),
+						).then(() => {
+							return createdUser;
+						});
+					})
+					.then(createdUser => {
 						res.json({
 							_id: createdUser._id,
 							email: createdUser.email,
