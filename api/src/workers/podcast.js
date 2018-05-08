@@ -30,7 +30,7 @@ podcastQueue.process((job, done) => {
 			return done(new Error('Podcast feed does not exist.'));
 		}
 
-		ParsePodcast(job.data.url, function(episodes, err) {
+		ParsePodcast(job.data.url, function(podcastContents, err) {
 			// mark as done
 			setLastScraped(job.data.podcast);
 
@@ -40,11 +40,11 @@ podcastQueue.process((job, done) => {
 				return done(err);
 			}
 
-			logger.debug(`updating ${episodes.length} episodes`);
+			logger.debug(`updating ${podcastContents.episodes.length} episodes`);
 
 			// actually store the episodes
 			return Promise.all(
-				episodes.map(episode => {
+				podcastContents.episodes.map(episode => {
 					return Episode.findOne({
 						url: normalize(episode.url), // do not lowercase this - some podcast URLs are case-sensitive
 					}).then(exists => {
