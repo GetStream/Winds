@@ -3033,7 +3033,36 @@ electron-boilerplate@^1.1.1:
     electron-dynamic-preload "^0.1.4"
     electron-window-state "^4.1.1"
 
-electron-builder-lib@20.13.2, electron-builder-lib@~20.13.2:
+electron-builder-lib@20.13.3:
+  version "20.13.3"
+  resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-20.13.3.tgz#1fc9b795fa913125c0708426a16159fb854b8e3b"
+  dependencies:
+    "7zip-bin" "~3.1.0"
+    app-builder-bin "1.8.6"
+    async-exit-hook "^2.0.1"
+    bluebird-lst "^1.0.5"
+    builder-util "5.8.1"
+    builder-util-runtime "4.2.1"
+    chromium-pickle-js "^0.2.0"
+    debug "^3.1.0"
+    ejs "^2.6.1"
+    electron-osx-sign "0.4.10"
+    electron-publish "20.13.2"
+    fs-extra-p "^4.6.0"
+    hosted-git-info "^2.6.0"
+    is-ci "^1.1.0"
+    isbinaryfile "^3.0.2"
+    js-yaml "^3.11.0"
+    lazy-val "^1.0.3"
+    minimatch "^3.0.4"
+    normalize-package-data "^2.4.0"
+    plist "^3.0.1"
+    read-config-file "3.0.1"
+    sanitize-filename "^1.6.1"
+    semver "^5.5.0"
+    temp-file "^3.1.2"
+
+electron-builder-lib@~20.13.2:
   version "20.13.2"
   resolved "https://registry.yarnpkg.com/electron-builder-lib/-/electron-builder-lib-20.13.2.tgz#0204144cd2518856b53e35406c203803fc10ae81"
   dependencies:
@@ -3062,16 +3091,16 @@ electron-builder-lib@20.13.2, electron-builder-lib@~20.13.2:
     semver "^5.5.0"
     temp-file "^3.1.2"
 
-electron-builder@^20.13.2:
-  version "20.13.2"
-  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.13.2.tgz#d7da1c62be5568866115d9798fcf69331fa91ab2"
+electron-builder@^20.13.3:
+  version "20.13.3"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-20.13.3.tgz#ef419c9a2a62faaf5d5e5e1968b18b2418befe36"
   dependencies:
     bluebird-lst "^1.0.5"
     builder-util "5.8.1"
     builder-util-runtime "4.2.1"
     chalk "^2.4.1"
     dmg-builder "4.1.8"
-    electron-builder-lib "20.13.2"
+    electron-builder-lib "20.13.3"
     electron-download-tf "4.3.4"
     fs-extra-p "^4.6.0"
     is-ci "^1.1.0"

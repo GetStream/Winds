@@ -22,10 +22,12 @@
 	],
 	"scripts": {
 		"build-css": "node-sass-chokidar src/ -o src/",
-		"watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+		"watch-css":
+			"yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"dev": "yarn react-scripts start",
 		"build": "react-scripts build",
-		"start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
+		"start":
+			"concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
 		"pack": "electron-builder --dir",
 		"dist": "electron-builder --x64 --mac --macos --win --linux"
 	},
@@ -81,7 +83,7 @@
 		"concurrently": "^3.5.1",
 		"cross-env": "^5.1.4",
 		"electron": "^2.0.0",
-		"electron-builder": "^20.13.2",
+		"electron-builder": "^20.13.3",
 		"electron-devtools-installer": "^2.2.4",
 		"electron-osx-sign": "^0.4.10",
 		"eslint": "^4.19.1",
@@ -95,7 +97,7 @@
 		"wait-on": "^2.1.0"
 	},
 	"build": {
-		"appId": "io.getstream.winds",
+		"appId": "com.electron.winds",
 		"compression": "normal",
 		"copyright": "Copyright © 2018 Stream.io Inc. All rights reserved.",
 		"productName": "Winds",
@@ -106,12 +108,7 @@
 		"mac": {
 			"icon": "assets/icon.icns",
 			"type": "distribution",
-			"target": [
-				"pkg",
-				"dmg",
-				"zip",
-				"mas"
-			],
+			"target": ["pkg", "dmg", "zip", "mas"],
 			"publish": {
 				"provider": "s3",
 				"bucket": "winds-2.0-releases",
