@@ -10,7 +10,6 @@ import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 
 import logger from '../utils/logger';
-import search from '../utils/search';
 import events from '../utils/events';
 import config from '../config';
 
@@ -47,15 +46,6 @@ exports.signup = (req, res) => {
 							client
 								.feed('timeline', createdUser._id)
 								.follow('user', createdUser._id),
-							search({
-								_id: createdUser._id,
-								image: `https://www.gravatar.com/avatar/${md5(
-									createdUser.email,
-								)}`,
-								name: createdUser.name,
-								type: 'user',
-								username: createdUser.username,
-							}),
 						]).then(() => {
 							return createdUser;
 						});

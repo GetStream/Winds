@@ -82,14 +82,6 @@ rssQueue.process((job, done) => {
 							}).then(article => {
 								// after article is created, add to algolia, stream, and opengraph scraper queue
 								return Promise.all([
-									search({
-										_id: article._id,
-										description: article.description,
-										publicationDate: article.publicationDate,
-										rss: article.rss,
-										title: article.title,
-										type: 'article',
-									}),
 									client.feed('rss', article.rss).addActivity({
 										actor: article.rss,
 										foreign_id: `articles:${article._id}`,
