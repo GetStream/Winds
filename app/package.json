@@ -22,12 +22,10 @@
 	],
 	"scripts": {
 		"build-css": "node-sass-chokidar src/ -o src/",
-		"watch-css":
-			"yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+		"watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"dev": "yarn react-scripts start",
 		"build": "react-scripts build",
-		"start":
-			"concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
+		"start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
 		"pack": "electron-builder --dir",
 		"dist": "electron-builder --x64 --mac --macos --win --linux"
 	},
@@ -58,6 +56,7 @@
 		"node-sass-chokidar": "^1.2.2",
 		"numeral": "^2.0.6",
 		"opn": "^5.3.0",
+		"raven-js": "^3.24.2",
 		"rc-slider": "^8.6.1",
 		"react": "^16.3.2",
 		"react-audio-player": "^0.10.0",
@@ -108,7 +107,12 @@
 		"mac": {
 			"icon": "assets/icon.icns",
 			"type": "distribution",
-			"target": ["pkg", "dmg", "zip", "mas"],
+			"target": [
+				"pkg",
+				"dmg",
+				"zip",
+				"mas"
+			],
 			"publish": {
 				"provider": "s3",
 				"bucket": "winds-2.0-releases",

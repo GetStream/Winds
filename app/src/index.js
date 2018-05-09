@@ -5,6 +5,9 @@ import ReactDOM from 'react-dom';
 import packageInfo from '../package.json';
 import Loader from './components/Loader';
 import axios from 'axios';
+import Raven from 'raven-js';
+
+Raven.config(process.env.REACT_APP_SENTRY_DSN).install();
 
 class UpdateWrapper extends React.Component {
 	constructor(props) {
@@ -67,4 +70,6 @@ class UpdateWrapper extends React.Component {
 	}
 }
 
-ReactDOM.render(<UpdateWrapper />, document.getElementById('root'));
+Raven.context(() => {
+	ReactDOM.render(<UpdateWrapper />, document.getElementById('root'));
+});
