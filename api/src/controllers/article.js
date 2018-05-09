@@ -182,7 +182,6 @@ exports.get = (req, res) => {
 									let content = parsed.content
 									// XKCD doesn't like Mercury
 									if (article.url.indexOf('https://xkcd') == 0) {
-										console.log('xkcd', article.content)
 										 content = article.content
 									}
 
@@ -194,6 +193,7 @@ exports.get = (req, res) => {
 											parsed.date_published || moment().toDate(),
 										title: parsed.title,
 										url: article.url,
+										commentUrl: article.commentUrl,
 									})
 										.then(cache => {
 											cb(null, cache);
