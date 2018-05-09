@@ -2741,10 +2741,6 @@ is-unc-path@^0.1.1:
   dependencies:
     unc-path-regex "^0.1.0"
 
-is-url@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/is-url/-/is-url-1.2.4.tgz#04a4df46d28c4cff3d73d01ff06abeb318a1aa52"
-
 is-windows@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-0.1.1.tgz#be310715431cfabccc54ab3951210fa0b6d01abe"
