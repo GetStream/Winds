@@ -64,10 +64,14 @@ function ParseFeed(feedUrl, callback) {
 
 		while ((postBuffer = feedparser.read())) {
 			let post = Object.assign({}, postBuffer);
+			let description = strip(
+				entities.decodeHTML(post.description).substring(0, 280),
+			);
+			if (description.length == 0 && post['atom:summary']) {
+				description = entities.decodeHTML(post['atom:summary']['#'])
+			}
 			let parsedArticle = {
-				description: strip(
-					entities.decodeHTML(post.description).substring(0, 280),
-				),
+				description: description,
 				publicationDate:
 					moment(post.pubdate).toISOString() || moment().toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
