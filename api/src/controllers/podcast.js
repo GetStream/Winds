@@ -5,15 +5,11 @@ import normalizeUrl from 'normalize-url';
 import entities from 'entities';
 
 import Podcast from '../models/podcast';
-import Episode from '../models/episode';
 import User from '../models/user';
 
 import personalization from '../utils/personalization';
 import logger from '../utils/logger';
-import events from '../utils/events';
 import search from '../utils/search';
-import detectFeedLanguage from '../utils/detectFeedLanguage';
-import detectPodcastLanguage from '../utils/detectPodcastLanguage';
 import config from '../config';
 
 const podcastQueue = new Queue('podcast', config.cache.uri);
@@ -127,26 +123,6 @@ exports.post = (req, res) => {
 									title: podcast.value.title,
 									type: 'podcast',
 								})
-									.then(() => {
-										return detectPodcastLanguage(
-											podcast.value.feedUrl,
-										);
-									})
-									.then(podcastLanguage => {
-										return events({
-											meta: {
-												data: {
-													[`podcast:${podcast.value._id}`]: {
-														description:
-															podcast.value.description,
-														language:
-															podcastLanguage || 'eng',
-														title: podcast.value.title,
-													},
-												},
-											},
-										});
-									})
 									.then(() => {
 										return podcastQueue.add(
 											{
