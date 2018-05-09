@@ -76,6 +76,8 @@ rssQueue.process((job, done) => {
 							Article.create({
 								description: post.description,
 								publicationDate: post.publicationDate,
+								commentUrl: post.commentUrl,
+								content: post.content,
 								rss: job.data.rss,
 								title: post.title,
 								url: post.url,

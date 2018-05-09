@@ -124,6 +124,7 @@ exports.get = (req, res) => {
 	let query = req.query || {};
 
 	if (query.type === 'parsed') {
+
 		async.waterfall(
 			[
 				cb => {
@@ -177,8 +178,16 @@ exports.get = (req, res) => {
 							}
 							parser({ url: article.url })
 								.then(parsed => {
+
+									let content = parsed.content
+									// XKCD doesn't like Mercury
+									if (article.url.indexOf('https://xkcd') == 0) {
+										console.log('xkcd', article.content)
+										 content = article.content
+									}
+
 									Cache.create({
-										content: parsed.content,
+										content: content,
 										excerpt: parsed.excerpt,
 										image: parsed.lead_image_url || '',
 										publicationDate:

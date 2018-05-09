@@ -40,6 +40,9 @@ function main() {
 				if (article.commentUrl) {
 					logger.info(`Comments: ${article.commentUrl}`);
 				}
+				if (article.content) {
+					logger.info(`Content: ${article.content}`);
+				}
 				logger.info(chalk.red('Image is missing'));
 			}
 		} else {

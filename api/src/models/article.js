@@ -45,6 +45,11 @@ export const ArticleSchema = new Schema(
 			maxLength: 240,
 			default: '',
 		},
+		content: {
+			type: String,
+			trim: true,
+			default: '',
+		},
 		commentUrl: {
 			type: String,
 			trim: true,

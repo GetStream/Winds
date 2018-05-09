@@ -1,4 +1,5 @@
 import strip from 'strip';
+import sanitizeHtml from 'sanitize-html';
 import entities from 'entities';
 import moment from 'moment';
 import request from 'request';
@@ -13,6 +14,17 @@ import Article from '../models/rss';
 
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
+
+
+// sanitize cleans the html before returning it to the frontend
+var sanitize = function(dirty) {
+	return sanitizeHtml(dirty, {
+	  allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]),
+		allowedAttributes: {
+			'img': [ 'src', 'title', 'alt' ]
+		},
+	});
+}
 
 function ParseFeed(feedUrl, callback) {
 	let req = request(feedUrl, {
@@ -64,19 +76,19 @@ function ParseFeed(feedUrl, callback) {
 
 		while ((postBuffer = feedparser.read())) {
 			let post = Object.assign({}, postBuffer);
-			let description = strip(
-				entities.decodeHTML(post.description).substring(0, 280),
-			);
 
-			if (description.length == 0 && post['atom:summary']) {
-				description = entities.decodeHTML(post['atom:summary']['#'])
-			}
+			let description = strip(
+					entities.decodeHTML(post.description).substring(0, 280),
+				)
+
 			let parsedArticle = {
 				description: description,
 				publicationDate:
 					moment(post.pubdate).toISOString() || moment().toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
+				// For some sites like XKCD the content from RSS is better than Mercury
+				content: sanitize(post.summary)
 			};
 
 			// nice for HNews
