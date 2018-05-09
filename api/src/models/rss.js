@@ -90,6 +90,10 @@ export const RSSSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		language: {
+			type: String,
+			default: '',
+		},
 	},
 	{ collection: 'rss' },
 );

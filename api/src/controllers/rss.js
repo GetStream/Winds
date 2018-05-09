@@ -173,23 +173,6 @@ exports.post = (req, res) => {
 									type: 'rss',
 								})
 									.then(() => {
-										return detectFeedLanguage(rss.value.feedUrl);
-									})
-									.then(feedLanguage => {
-										return events({
-											meta: {
-												data: {
-													[`rss:${rss.value._id}`]: {
-														description:
-															rss.value.description,
-														language: feedLanguage || 'eng', // default to english
-														title: rss.value.title,
-													},
-												},
-											},
-										});
-									})
-									.then(() => {
 										return rssQueue.add(
 											{
 												rss: rss.value._id,

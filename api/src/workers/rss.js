@@ -14,7 +14,7 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 import search from '../utils/search';
-import events from '../utils/events';
+import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
 import { ParseFeed } from './parsers';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -70,7 +70,7 @@ rssQueue.process((job, done) => {
 					Article.findOne({ url: normalize(post.url) }).then(article => {
 						if (article) {
 							// article already exists
-							cb(null, article);
+							cb(null, null);
 							return;
 						} else {
 							Article.create({
@@ -106,17 +106,6 @@ rssQueue.process((job, done) => {
 											removeOnFail: true,
 										},
 									),
-									Article.find({ rss: job.data.rss }).then(articles => {
-										return events({
-											meta: {
-												data: {
-													[`rss:${job.data.rss}`]: {
-														articleCount: articles.length,
-													},
-												},
-											},
-										});
-									}),
 								])
 									.then(function() {
 										// this is just returning the article created from the MongoDB `create` call
@@ -131,13 +120,22 @@ rssQueue.process((job, done) => {
 						}
 					});
 				},
-				err => {
+				(err, updatedArticles) => {
+					// updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
+
+					updatedArticles = updatedArticles.filter(updatedArticle => {
+						return updatedArticle;
+					});
+
 					if (err) {
 						logger.warn(
 							`Scraping failed for ${job.data.url} with error ${err}`,
 						);
 						done(err);
 					} else {
+						if (updatedArticles.length > 0) {
+							sendRssFeedToCollections(job.data.rss);
+						}
 						logger.info(`Completed scraping for ${job.data.url}`);
 						done();
 					}
