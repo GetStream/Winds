@@ -45,6 +45,11 @@ export const ArticleSchema = new Schema(
 			maxLength: 240,
 			default: '',
 		},
+		commentUrl: {
+			type: String,
+			trim: true,
+			default: '',
+		},
 		images: {
 			featured: {
 				type: String,

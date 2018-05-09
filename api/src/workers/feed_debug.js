@@ -37,6 +37,9 @@ function main() {
 				logger.info(`URL: ${article.url}`);
 				logger.info(`Description: ${article.description}`);
 				logger.info(`Publication Date: ${article.publicationDate}`);
+				if (article.commentUrl) {
+					logger.info(`Comments: ${article.commentUrl}`);
+				}
 				logger.info(chalk.red('Image is missing'));
 			}
 		} else {

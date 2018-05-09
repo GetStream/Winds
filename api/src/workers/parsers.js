@@ -67,6 +67,7 @@ function ParseFeed(feedUrl, callback) {
 			let description = strip(
 				entities.decodeHTML(post.description).substring(0, 280),
 			);
+
 			if (description.length == 0 && post['atom:summary']) {
 				description = entities.decodeHTML(post['atom:summary']['#'])
 			}
@@ -77,6 +78,11 @@ function ParseFeed(feedUrl, callback) {
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
 			};
+
+			// nice for HNews
+			if (post.comments) {
+				parsedArticle.commentUrl = post.comments;
+			}
 
 			feedContents.articles.push(parsedArticle);
 			feedContents.metadata = post.meta;
