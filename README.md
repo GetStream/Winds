@@ -91,8 +91,8 @@ To download Winds 2.0, visit [https://getstream.io/winds](https://getstream.io/w
 
 Commands:
 
-* `brew install pkg-config cairo`
-* `cd winds-2.0`
+* `brew install pkg-config cairo redis mongodb`
+* `cd winds`
 * `yarn install`
 * `cd api`
 * `yarn install`
@@ -100,7 +100,6 @@ Commands:
 * `cd workers && yarn install`
 * `cd ../../../`
 * `cd app && yarn install`
-* `brew install redis mongodb`
 * `brew services start mongodb`
 * `brew services start redis`
 
