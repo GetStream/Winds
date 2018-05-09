@@ -424,57 +424,16 @@ body {
       background-color: #aaa;
       z-index: 10003; }
 
-.login-wrapper {
-  height: auto;
-  margin-top: 10%;
-  width: 303px; }
-  .login-wrapper .logo {
-    margin-bottom: 25px; }
-  .login-wrapper .cta {
-    color: rgba(0, 0, 0, 0.65);
-    font-size: 22px;
-    font-weight: 200; }
-  .login-wrapper .form input {
-    margin-top: 4px; }
-  .login-wrapper .form input[type='email'] {
-    margin-bottom: 25px;
-    width: 288px; }
-  .login-wrapper .form input[type='password'] {
-    margin-bottom: 20px;
-    width: 288px; }
-  .login-wrapper .form button[type='submit'] {
-    cursor: pointer;
-    height: 35px;
-    margin-bottom: 1em;
-    width: 288px; }
-  .login-wrapper .form .forgot-password {
-    float: right;
-    font-weight: 200;
-    text-transform: capitalize; }
-    .login-wrapper .form .forgot-password a:link,
-    .login-wrapper .form .forgot-password a:visited,
-    .login-wrapper .form .forgot-password a:active {
-      color: #747474;
-      text-decoration: none; }
-    .login-wrapper .form .forgot-password a:hover {
-      color: #44bc75;
-      text-decoration: none;
-      transition: all 0.4s linear; }
-  .login-wrapper .form .alt {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-size: 12px;
-    font-weight: 200;
-    text-align: center; }
-    .login-wrapper .form .alt p {
-      margin-top: 25px; }
-    .login-wrapper .form .alt a:link,
-    .login-wrapper .form .alt a:visited,
-    .login-wrapper .form .alt a:active,
-    .login-wrapper .form .alt a:hover {
-      color: #44bc75;
-      text-decoration: none; }
-  .login-wrapper .form .error {
-    color: #e55262; }
+.create-account-view .interests-grid {
+  display: grid;
+  grid-column-gap: 3em;
+  grid-row-gap: 2em;
+  grid-template-columns: 1fr 1fr 1fr; }
+  .create-account-view .interests-grid > *:hover {
+    cursor: pointer; }
+
+.create-account-view .error {
+  color: #e55262; }
 
 .forgot-password-wrapper {
   height: auto;
@@ -517,6 +476,11 @@ body {
       width: 288px; }
       .forgot-password-wrapper .form button[type='submit']:disabled {
         color: rgba(255, 255, 255, 0.5); }
+
+.login-view {
+  align-items: center;
+  display: flex;
+  flex-direction: column; }
 
 .reset-password-wrapper {
   height: auto;
@@ -567,51 +531,36 @@ body {
       .reset-password-wrapper .form button[type='submit']:disabled {
         color: rgba(255, 255, 255, 0.5); }
 
-.create-wrapper {
-  height: auto;
-  margin-top: 5%;
-  width: 303px; }
-  .create-wrapper .logo {
-    margin-bottom: 25px; }
-  .create-wrapper .cta {
-    color: rgba(0, 0, 0, 0.65);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-size: 14px;
-    font-weight: 200; }
-  .create-wrapper .form input {
-    margin-top: 4px; }
-  .create-wrapper .form input[type='text'] {
-    margin-bottom: 25px;
-    width: 288px; }
-  .create-wrapper .form input[type='email'] {
-    margin-bottom: 25px;
-    width: 288px; }
-  .create-wrapper .form input[type='password'] {
-    margin-bottom: 20px;
-    width: 288px; }
-  .create-wrapper .form button[type='submit'] {
-    cursor: pointer;
-    height: 35px;
-    margin-bottom: 1em;
-    outline: none;
-    width: 288px; }
-    .create-wrapper .form button[type='submit']:disabled {
-      color: rgba(255, 255, 255, 0.5); }
-  .create-wrapper .form .error {
-    color: #e55262; }
-  .create-wrapper .form .alt {
-    text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    font-weight: 200;
-    font-size: 12px; }
-    .create-wrapper .form .alt p {
-      margin-top: 25px; }
-    .create-wrapper .form .alt a:link,
-    .create-wrapper .form .alt a:visited,
-    .create-wrapper .form .alt a:active,
-    .create-wrapper .form .alt a:hover {
-      color: #44bc75;
-      text-decoration: none; }
+.auth-view {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center; }
+  .auth-view > * {
+    margin-bottom: 3rem; }
+  .auth-view a {
+    color: #44bc75;
+    text-decoration: none; }
+  .auth-view form.auth-form {
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 2em;
+    width: 30em; }
+    .auth-view form.auth-form > * {
+      margin-bottom: 2em; }
+      .auth-view form.auth-form > *:last-child {
+        margin-bottom: 0; }
+    .auth-view form.auth-form label {
+      width: 100%; }
+      .auth-view form.auth-form label input {
+        width: 100%; }
+        .auth-view form.auth-form label input[type='email'] {
+          text-transform: none; }
 
 .github-popover {
   margin-top: 2em; }
@@ -1012,9 +961,13 @@ body {
 
 .hero-card {
   align-items: flex-start;
+  background-origin: border-box;
   background-position: center;
   background-size: cover;
+  border-color: transparent;
   border-radius: 8px;
+  border-style: solid;
+  border-width: 3px;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
   color: #fff;
   display: flex;
@@ -1041,6 +994,14 @@ body {
     width: 25px; }
   .hero-card > *:last-child {
     margin-bottom: auto; }
+  .hero-card label {
+    color: #fff; }
+  .hero-card.selected {
+    border-color: #44bc75;
+    border-style: solid;
+    border-width: 3px; }
+    .hero-card.selected label {
+      color: #44bc75; }
 
 .list .list-item {
   border-bottom: 1px solid #eee;

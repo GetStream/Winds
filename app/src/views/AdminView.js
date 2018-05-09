@@ -4,8 +4,6 @@ import fetch from '../util/fetch';
 import onboardingTopics from '../static-data/onboarding-topics';
 import { Link } from 'react-router-dom';
 
-let interests = onboardingTopics['Interests'];
-
 class AdminView extends React.Component {
 	constructor(props) {
 		super(props);
@@ -187,10 +185,10 @@ class PodcastRow extends React.Component {
 						value={this.props.interest}
 					>
 						<option value="none">None</option>
-						{interests.map(interest => {
+						{onboardingTopics.map(interest => {
 							return (
-								<option key={interest} value={interest}>
-									{interest}
+								<option key={interest.name} value={interest.name}>
+									{interest.name}
 								</option>
 							);
 						})}
@@ -337,10 +335,10 @@ class RssRow extends React.Component {
 						value={this.props.interest}
 					>
 						<option value="none">None</option>
-						{interests.map(interest => {
+						{onboardingTopics.map(interest => {
 							return (
-								<option key={interest} value={interest}>
-									{interest}
+								<option key={interest.name} value={interest.name}>
+									{interest.name}
 								</option>
 							);
 						})}

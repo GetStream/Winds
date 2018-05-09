@@ -19,10 +19,11 @@
 
 @import 'framework/_app.scss';
 @import 'framework/_player.scss';
-@import 'framework/auth-views/_login.scss';
-@import 'framework/auth-views/_forgot-password.scss';
-@import 'framework/auth-views/_reset-password.scss';
 @import 'framework/auth-views/_create.scss';
+@import 'framework/auth-views/_forgot-password.scss';
+@import 'framework/auth-views/_login.scss';
+@import 'framework/auth-views/_reset-password.scss';
+@import 'framework/auth-views/_shared.scss';
 @import 'framework/dashboard/_header.scss';
 
 /* Components - Re-usable site elements.

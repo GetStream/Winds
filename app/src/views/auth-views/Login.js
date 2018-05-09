@@ -34,91 +34,74 @@ class Login extends Component {
 				window.localStorage.setItem('jwt', res.data.jwt);
 				window.localStorage.setItem('authedUser', res.data._id);
 
-				if (!res.data.interests || res.data.interests.length < 3) {
-					this.props.history.push('/onboarding');
-				} else {
-					this.props.history.push('/');
-				}
+				this.props.history.push('/');
 			})
 			.catch(() => {
 				this.setState({
-					password: '',
 					errorMessage:
 						'It looks like you have entered an incorrect email or password. Please try again.',
+					password: '',
 				});
 			});
 	}
 
 	render() {
 		return (
-			<div className="center">
-				<div className="login-wrapper">
-					<div className="logo">
-						<Img src="images/logos/full.svg" />
-					</div>
-					<div className="cta">
-						<p>
-							RSS &amp; Podcasts in one place.<br />
-							Sign in to continue with Winds.
-						</p>
-					</div>
-					<div className="form">
-						<form id="sign-in" onSubmit={this.submit}>
-							<label>
-								Email<br />
-								<input
-									autoFocus={true}
-									name="email"
-									onChange={e => {
-										e.preventDefault();
-										this.setState({
-											email: e.target.value,
-										});
-									}}
-									tabIndex="1"
-									type="email"
-								/>
-							</label>
-							<br />
-							<label>
-								Password
-								<span className="forgot-password">
-									<Link to={'/forgot-password'}>Forgot?</Link>
-								</span>
-								<br />
-								<input
-									name="password"
-									onChange={e => {
-										e.preventDefault();
-										this.setState({
-											password: e.target.value,
-										});
-									}}
-									tabIndex="2"
-									type="password"
-									value={this.state.password}
-								/>
-							</label>
-							<br />
-							<button
-								className="btn primary"
-								disabled={!this.isValid()}
-								name="sign-in"
-								tabIndex="3"
-								type="submit"
-							>
-								Sign In
-							</button>
-							<div className="error">{this.state.errorMessage}</div>
-							<div className="alt">
-								<p>
-									New to Winds?{' '}
-									<Link to={'/create-account'}>Create an Account</Link>
-								</p>
-							</div>
-						</form>
-					</div>
-				</div>
+			<div className="center auth-view login-view">
+				<h1>Sign In</h1>
+				<p>
+					Enjoy a new and personalized way to listen, <br />read, and share your
+					favorite content.
+				</p>
+				<form className="auth-form" onSubmit={this.submit}>
+					<label>
+						<input
+							autoFocus={true}
+							name="email"
+							onChange={e => {
+								e.preventDefault();
+								this.setState({
+									email: e.target.value,
+								});
+							}}
+							placeholder="Email"
+							tabIndex="1"
+							type="email"
+						/>
+					</label>
+					<br />
+					<label>
+						<input
+							name="password"
+							onChange={e => {
+								e.preventDefault();
+								this.setState({
+									password: e.target.value,
+								});
+							}}
+							placeholder="Password"
+							tabIndex="2"
+							type="password"
+							value={this.state.password}
+						/>
+					</label>
+					<button
+						className="btn primary"
+						disabled={!this.isValid()}
+						name="sign-in"
+						tabIndex="3"
+						type="submit"
+					>
+						Continue
+					</button>
+					<div className="error">{this.state.errorMessage}</div>
+				</form>
+				<p>
+					New to Winds? <Link to={'/create-account'}>Create an Account</Link>
+				</p>
+				<p>
+					Forget password? <Link to={'/forgot-password'}>Reset Password</Link>
+				</p>
 			</div>
 		);
 	}
