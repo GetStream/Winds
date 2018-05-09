@@ -825,6 +825,12 @@ form-data@~2.1.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
+franc-min@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/franc-min/-/franc-min-4.0.0.tgz#e93d9c95a1497494e885f76cfe33ddf03c9ae736"
+  dependencies:
+    trigram-utils "^1.0.0"
+
 franc@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/franc/-/franc-4.0.0.tgz#365951bc787b92ffbb1c63c1c492d6b76cbd3a56"

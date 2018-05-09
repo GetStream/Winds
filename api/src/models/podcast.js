@@ -81,6 +81,10 @@ export const PodcastSchema = new Schema(
 			type: String,
 			default: '',
 		},
+		language: {
+			type: String,
+			default: '',
+		},
 	},
 	{ collection: 'podcasts' },
 );

@@ -6,13 +6,10 @@ import entities from 'entities';
 
 import User from '../models/user';
 import RSS from '../models/rss';
-import Article from '../models/article';
 
 import personalization from '../utils/personalization';
 import search from '../utils/search';
 import logger from '../utils/logger';
-import events from '../utils/events';
-import detectFeedLanguage from '../utils/detectFeedLanguage';
 import moment from 'moment';
 import config from '../config';
 

@@ -1,5 +1,5 @@
 import { ParsePodcast } from '../workers/parsers';
-import franc from 'franc';
+import franc from 'franc-min';
 
 export default podcastUrl => {
 	return new Promise((resolve, reject) => {

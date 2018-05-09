@@ -14,7 +14,7 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 import search from '../utils/search';
-import events from '../utils/events';
+import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from './parsers';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -50,7 +50,7 @@ podcastQueue.process((job, done) => {
 						url: normalize(episode.url), // do not lowercase this - some podcast URLs are case-sensitive
 					}).then(exists => {
 						if (exists) {
-							return exists;
+							return null;
 						} else {
 							return Episode.create({
 								description: episode.description,
@@ -78,35 +78,33 @@ podcastQueue.process((job, done) => {
 												time: episode.publicationDate,
 												verb: 'podcast_episode',
 											}),
-										Episode.find({ podcast: job.data.podcast }).then(
-											episodes => {
-												return events({
-													meta: {
-														data: {
-															[`podcast:${
-																job.data.podcast
-															}`]: {
-																episodeCount:
-																	episodes.length,
-															},
-														},
-													},
-												});
-											},
-										),
-									]);
+									]).then(() => {
+										return episode;
+									});
 								})
-								.catch(err => {
-									logger.error(err);
+								.then(() => {
+									return episode;
 								});
 						}
 					});
 				}),
-			).then(() => {
-				logger.info(`completed podcast ${job.data.url}`);
-				done();
-				return;
-			});
+			)
+				.then(updatedEpisodes => {
+					updatedEpisodes = updatedEpisodes.filter(updatedEpisode => {
+						return updatedEpisode;
+					});
+
+					if (updatedEpisodes.length > 0) {
+						sendPodcastToCollections(job.data.podcast);
+					}
+
+					logger.info(`Completed podcast ${job.data.url}`);
+					done();
+					return;
+				})
+				.catch(err => {
+					logger.error(err);
+				});
 		});
 	});
 });

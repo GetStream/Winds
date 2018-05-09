@@ -1,5 +1,5 @@
 import { ParseFeed } from '../workers/parsers';
-import franc from 'franc';
+import franc from 'franc-min';
 
 export default feedUrl => {
 	return new Promise((resolve, reject) => {

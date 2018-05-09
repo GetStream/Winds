@@ -42,7 +42,6 @@ export default rssFeedID => {
 					});
 			})
 			.then(personalizationInfo => {
-				console.log(personalizationInfo);
 				return events({
 					meta: {
 						data: {
@@ -55,7 +54,6 @@ export default rssFeedID => {
 				resolve();
 			})
 			.catch(err => {
-				console.log(err);
 				reject(err);
 			});
 	});
