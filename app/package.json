@@ -1,12 +1,12 @@
 {
 	"name": "winds",
-	"version": "2.0.74",
+	"version": "2.0.75",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
-	"repository": "https://github.com/getstream/winds-2.0.git",
+	"repository": "https://github.com/getstream/winds.git",
 	"bugs": {
-		"url": "https://github.com/getstream/winds-2.0/issues"
+		"url": "https://github.com/getstream/winds/issues"
 	},
 	"homepage": "./",
 	"main": "public/electron.js",
@@ -80,8 +80,9 @@
 		"concurrently": "^3.5.1",
 		"cross-env": "^5.1.4",
 		"electron": "^2.0.0",
-		"electron-builder": "^20.11.1",
+		"electron-builder": "^20.13.2",
 		"electron-devtools-installer": "^2.2.4",
+		"electron-osx-sign": "^0.4.10",
 		"eslint": "^4.19.1",
 		"eslint-plugin-react": "^7.7.0",
 		"prettier": "^1.12.1",
@@ -93,10 +94,10 @@
 		"wait-on": "^2.1.0"
 	},
 	"build": {
-		"compression": "normal",
 		"appId": "io.getstream.winds",
+		"compression": "normal",
+		"copyright": "Copyright © 2018 Stream.io Inc. All rights reserved.",
 		"productName": "Winds",
-		"copyright": "Copyright © 2018 Stream.io Inc",
 		"directories": {
 			"buildResources": "build",
 			"output": "dist"
@@ -104,23 +105,29 @@
 		"mac": {
 			"icon": "../assets/icon.icns",
 			"type": "distribution",
-			"category": "public.app-category.social-network",
-			"entitlements": "./assets/entitlements.mac.plist",
+			"target": [
+				"pkg",
+				"dmg",
+				"zip",
+				"mas"
+			],
 			"publish": {
 				"provider": "s3",
 				"bucket": "winds-2.0-releases",
 				"path": "releases"
-			}
+			},
+			"category": "public.app-category.productivity",
+			"entitlements": "assets/parent.plist",
+			"provisioningProfile": "assets/embedded.provisionprofile"
 		},
 		"mas": {
-			"icon": "../assets/icon.icns",
+			"icon": "assets/icon.icns",
 			"type": "distribution",
-			"category": "public.app-category.social-network",
-			"entitlements": "./assets/entitlements.mas.plist"
+			"category": "public.app-category.productivity"
 		},
 		"win": {
 			"target": "nsis",
-			"icon": "../assets/icon.ico",
+			"icon": "assets/icon.ico",
 			"publish": {
 				"provider": "s3",
 				"bucket": "winds-2.0-releases",

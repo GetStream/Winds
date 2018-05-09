@@ -11,4 +11,4 @@ yarn build
 yarn dist
 
 # Build application
-build --publish never
+build --c.extraMetadata.main=build/electron.js -p never
