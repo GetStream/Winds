@@ -3,6 +3,7 @@ import async from 'async';
 import rssFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
+import validUrl from 'valid-url';
 
 import User from '../models/user';
 import RSS from '../models/rss';
@@ -108,12 +109,8 @@ exports.get = (req, res) => {
 exports.post = (req, res) => {
 	const data = req.body || {};
 
-	if (!data.feedUrl) {
-		return res.status(400).send('Please include a valid RSS feed URL.');
-	}
-
-	if (data.feedUrl.trim() === '') {
-		return res.status(400).send('You can\'t add a blank RSS feed URL.');
+	if (!data.feedUrl || !validUrl.isUri(data.feedUrl)) {
+		return res.status(400).send('Please provide a valid RSS URL.');
 	}
 
 	rssFinder(normalizeUrl(data.feedUrl))
@@ -121,7 +118,7 @@ exports.post = (req, res) => {
 			if (!feeds.feedUrls.length) {
 				return res
 					.status(404)
-					.send('We couldn\'t find any feeds for that RSS feed URL :(');
+					.send("We couldn't find any feeds for that RSS feed URL :(");
 			}
 
 			async.mapLimit(

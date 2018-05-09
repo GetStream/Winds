@@ -21,6 +21,7 @@ class AddPodcastModal extends React.Component {
 			submitting: false,
 			success: false,
 		};
+
 		this.submitPodcastURL = this.submitPodcastURL.bind(this);
 		this.resetModal = this.resetModal.bind(this);
 		this.submitPodcastSelections = this.submitPodcastSelections.bind(this);
@@ -46,16 +47,18 @@ class AddPodcastModal extends React.Component {
 			method: 'POST',
 			url: '/podcasts',
 		})
-			.then(response => {
+			.then(res => {
 				this.setState({
-					podcastsToFollow: response.data,
+					podcastsToFollow: res.data,
 					stage: 'select-podcasts',
 					submitting: false,
 				});
 			})
 			.catch(err => {
 				this.setState({
-					errorMessage: err.message,
+					errorMessage: err.message.includes('400')
+						? 'Please enter a valid podcast URL.'
+						: err.message,
 					errored: true,
 					submitting: false,
 				});

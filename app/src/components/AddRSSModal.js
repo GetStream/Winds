@@ -110,7 +110,9 @@ class AddRSSModal extends React.Component {
 			})
 			.catch(err => {
 				this.setState({
-					errorMessage: err.message,
+					errorMessage: err.message.includes('400')
+						? 'Please enter a valid RSS URL.'
+						: err.message,
 					errored: true,
 					submitting: false,
 				});

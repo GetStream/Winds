@@ -3,6 +3,7 @@ import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
+import validUrl from 'valid-url';
 
 import Podcast from '../models/podcast';
 import User from '../models/user';
@@ -72,12 +73,8 @@ exports.get = (req, res) => {
 exports.post = (req, res) => {
 	const data = Object.assign(req.body, { user: req.user.sub }) || {};
 
-	if (!data.feedUrl) {
-		return res.status(400).send('Please include a valid podcast URL.');
-	}
-
-	if (data.feedUrl.trim() === '') {
-		return res.status(400).send('You can\'t add a blank podcast URL.');
+	if (!data.feedUrl || !validUrl.isUri(data.feedUrl)) {
+		return res.status(400).send('Please provide a valid podcast URL.');
 	}
 
 	podcastFinder(normalizeUrl(data.feedUrl))
