@@ -14,6 +14,7 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 import search from '../utils/search';
+import events from '../utils/events';
 import { ParsePodcast } from './parsers';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -77,6 +78,22 @@ podcastQueue.process((job, done) => {
 												time: episode.publicationDate,
 												verb: 'podcast_episode',
 											}),
+										Episode.find({ podcast: job.data.podcast }).then(
+											episodes => {
+												return events({
+													meta: {
+														data: {
+															[`podcast:${
+																job.data.podcast
+															}`]: {
+																episodeCount:
+																	episodes.length,
+															},
+														},
+													},
+												});
+											},
+										),
 									]);
 								})
 								.catch(err => {

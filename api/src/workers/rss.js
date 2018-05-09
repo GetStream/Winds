@@ -14,6 +14,7 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 import search from '../utils/search';
+import events from '../utils/events';
 import { ParseFeed } from './parsers';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -105,6 +106,17 @@ rssQueue.process((job, done) => {
 											removeOnFail: true,
 										},
 									),
+									Article.find({ rss: job.data.rss }).then(articles => {
+										return events({
+											meta: {
+												data: {
+													[`rss:${job.data.rss}`]: {
+														articleCount: articles.length,
+													},
+												},
+											},
+										});
+									}),
 								])
 									.then(function() {
 										// this is just returning the article created from the MongoDB `create` call
