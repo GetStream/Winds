@@ -53,9 +53,10 @@ function ParseFeed(feedUrl, callback) {
 		callback(null, err);
 	});
 
-	let articles = [];
+	let feedContents = { articles: [] };
+
 	feedparser.on('end', () => {
-		callback(articles);
+		callback(feedContents);
 	});
 
 	feedparser.on('readable', () => {
@@ -63,8 +64,7 @@ function ParseFeed(feedUrl, callback) {
 
 		while ((postBuffer = feedparser.read())) {
 			let post = Object.assign({}, postBuffer);
-
-			let parsedArticle = new Article({
+			let parsedArticle = {
 				description: strip(
 					entities.decodeHTML(post.description).substring(0, 280),
 				),
@@ -72,9 +72,10 @@ function ParseFeed(feedUrl, callback) {
 					moment(post.pubdate).toISOString() || moment().toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
-			});
+			};
 
-			articles.push(parsedArticle);
+			feedContents.articles.push(parsedArticle);
+			feedContents.metadata = post.meta;
 		}
 	});
 }
@@ -93,7 +94,7 @@ function ParsePodcast(podcastUrl, callback) {
 		url: podcastUrl,
 	};
 
-	let parsedEpisodes = [];
+	let podcastContents = { episodes: [] };
 
 	request(opts, (error, response, responseData) => {
 		podcastParser(responseData, (err, data) => {
@@ -117,10 +118,9 @@ function ParsePodcast(podcastUrl, callback) {
 				} catch (e) {
 					logger.error('Failed to parse episode', e);
 				}
-				parsedEpisodes.push(parsedEpisode);
+				podcastContents.episodes.push(parsedEpisode);
 			});
-
-			callback(parsedEpisodes);
+			callback(podcastContents);
 		});
 	});
 }
