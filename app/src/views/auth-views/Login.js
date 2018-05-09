@@ -1,6 +1,5 @@
 import { Link, withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
-import Img from 'react-image';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import config from '../../config';
