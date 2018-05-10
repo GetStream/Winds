@@ -11,13 +11,12 @@
 
 	.panel-header {
 		align-items: center;
+		box-shadow: $box-shadow;
 		display: flex;
 		font-size: 11px;
 		font-weight: 700;
 		letter-spacing: 0.06em;
-		margin: 0 20px;
-		padding: 18px 0;
-		text-transform: uppercase;
+		padding: 1em;
 
 		.aside {
 			color: $foreground-darkgray;
@@ -39,56 +38,79 @@
 		padding: 1em 0;
 		text-decoration: inherit;
 
+		> * {
+			margin-right: 1em;
+
+			&:last-child {
+				margin-right: unset;
+				min-width: 4em;
+				text-align: right;
+			}
+
+			&:nth-child(2) {
+				flex-grow: 1;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+
+		.clickable {
+			color: $foreground-green;
+			cursor: pointer;
+			font-size: 80%;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			padding: 0.5em;
+			text-transform: uppercase;
+
+			&.active {
+				background-color: $background-green;
+				border-radius: 4px;
+				color: white;
+			}
+		}
+
+		img {
+			height: 16px;
+			width: 16px;
+		}
+
 		&:last-child {
 			border-bottom: none;
 		}
 
-		.left {
-			align-items: center;
-			display: flex;
-			// might need to rework this - not sure if other images will show up in panels
-			margin-right: 1em;
+		// .left {
+		// 	align-items: center;
+		// 	display: flex;
+		// 	// might need to rework this - not sure if other images will show up in panels
+		// 	margin-right: 1em;
+		//
+		// 	// img {
+		// 	// 	height: 16px;
+		// 	// 	width: 16px;
+		// 	// }
+		// }
+		//
+		// .center {
+		// 	display: block;
+		// 	flex-grow: 1;
+		// 	margin-right: 1em;
+		// 	overflow: hidden;
+		// 	text-overflow: ellipsis;
+		// 	white-space: nowrap;
+		// }
 
-			img {
-				height: 16px;
-				width: 16px;
-			}
-		}
-
-		.center {
-			display: block;
-			flex-grow: 1;
-			margin-right: 1em;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-
-		.right {
-			align-items: center;
-			color: $foreground-darkgray;
-			display: flex;
-			flex-direction: row;
-			font-size: 10px;
-			letter-spacing: 0.05em;
-			white-space: nowrap;
-
-			&.clickable {
-				color: $foreground-green;
-				cursor: pointer;
-				font-size: 80%;
-				font-weight: 600;
-				letter-spacing: 0.1em;
-				padding: 0.5em;
-				text-transform: uppercase;
-
-				&.active {
-					background-color: $background-green;
-					border-radius: 4px;
-					color: white;
-				}
-			}
-		}
+		// .right {
+		// 	align-items: center;
+		// 	color: $foreground-darkgray;
+		// 	display: flex;
+		// 	flex-direction: row;
+		// 	font-size: 10px;
+		// 	letter-spacing: 0.05em;
+		// 	white-space: nowrap;
+		//
+		// }
 
 		&.clickable {
 			cursor: pointer;

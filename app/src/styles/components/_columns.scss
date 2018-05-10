@@ -69,14 +69,43 @@
 		margin-bottom: 1em;
 	}
 
+	// only allow hover state for link headers
+	a.column-header:hover {
+		background-color: $background-lightgray;
+		border-radius: $border-radius;
+		transition: all 0.22s ease-in-out;
+	}
+
 	.column-header {
+		align-items: center;
+		color: $foreground-black;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 1em;
+		text-decoration: none;
+
 		h1 {
-			transition: all 0.22s ease-in-out;
+			margin-bottom: 0;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: inherit;
 		}
 
 		img {
 			height: 8px;
 			width: 5px;
+		}
+
+		.drilldown {
+			align-items: baseline;
+			display: flex;
+
+			> *:not(:last-child) {
+				margin-right: 1em;
+			}
 		}
 
 		.heading-with-button {
@@ -93,13 +122,6 @@
 				padding: 0;
 				width: 2em;
 			}
-		}
-	}
-
-	a.column-header:hover {
-		h1 {
-			color: $foreground-green;
-			transition: all 0.22s ease-in-out;
 		}
 	}
 
