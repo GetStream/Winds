@@ -11,6 +11,7 @@ import Tabs from '../components/Tabs';
 import RecentArticles from '../components/RSSPanels/RecentArticles';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
+import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
 
 const RSSNotSelected = () => {
 	return (
@@ -57,13 +58,6 @@ class RSSFeedsView extends React.Component {
 	}
 
 	render() {
-		// let columnComponents = null;
-		// if (this.state.selectedTab === 'all') {
-		// 	columnComponents = <RSSPanelsContainer />;
-		// } else if (this.state.selectedTab === 'my-rss-feeds') {
-		// 	columnComponents = <ListOfFollowedRSSFeeds />;
-		// }
-
 		// let leftColumn;
 		// if (this.props.rssFeed && this.props.rssFeed.featured) {
 		// 	leftColumn = (
@@ -108,7 +102,7 @@ class RSSFeedsView extends React.Component {
 							<RssFeedList />
 						</div>
 						<div tabTitle="Bookmarks">
-							<div> bookmarks panel</div>
+							<BookmarkedArticles />
 						</div>
 						<div tabTitle="Suggestions">
 							<SuggestedFeeds />

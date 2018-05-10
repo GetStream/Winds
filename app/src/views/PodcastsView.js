@@ -2,6 +2,7 @@ import Tabs from '../components/Tabs';
 import RecentEpisodes from '../components/PodcastPanels/RecentEpisodes';
 import SuggestedPodcasts from '../components/PodcastPanels/SuggestedPodcasts';
 import PodcastList from '../components/PodcastPanels/PodcastList';
+import BookmarkedEpisodes from '../components/PodcastPanels/BookmarkedEpisodes';
 import EpisodesView from '../components/EpisodesView';
 import Img from 'react-image';
 import PropTypes from 'prop-types';
@@ -62,12 +63,6 @@ class PodcastsView extends React.Component {
 			episodeView = <EpisodesView podcastID={this.props.match.params.podcastID} />;
 		}
 
-		// let selectedTabComponents;
-		// if (this.state.selectedTab === 'all') {
-		// 	selectedTabComponents = <PodcastPanelsContainer />;
-		// } else if (this.state.selectedTab === 'my-podcasts') {
-		// 	selectedTabComponents = <ListOfFollowedPodcasts />;
-		// }
 		//
 		// let leftColumn;
 
@@ -113,7 +108,7 @@ class PodcastsView extends React.Component {
 							<PodcastList />
 						</div>
 						<div tabTitle="Bookmarks">
-							<div>bookmarks panel</div>
+							<BookmarkedEpisodes />
 						</div>
 						<div tabTitle="Suggestions">
 							<SuggestedPodcasts />
