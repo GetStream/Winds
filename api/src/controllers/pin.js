@@ -159,17 +159,18 @@ exports.post = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-	Pin.findById(req.params.pinId)
+	let pinId = req.params.pinId
+	Pin.findById(pinId)
 		.then(pin => {
 			if (!pin) {
-				res.status(404).send();
+				res.status(404).send(`Couldn't find pin with id ${pinId}`);
 				return;
-			} else if (pin.user !== req.user.sub) {
-				res.status(401).send();
+			} else if (pin.user._id != req.user.sub) {
+				res.status(401).send(`User ${req.user.sub} is not the owner of pin ${pinId}`);
 				return;
 			} else {
 				return Pin.remove({ _id: req.params.pinId }).then(() => {
-					res.status(204).send();
+					res.status(204).send(`Removed pin with id ${pinId}`);
 				});
 			}
 		})
