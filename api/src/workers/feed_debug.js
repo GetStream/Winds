@@ -81,7 +81,7 @@ function main() {
 		ParsePodcast(program.podcast, validate);
 	}
 	logger.info(
-		'Note that upgrading node-podcast-parser or feedparser can sometimes improve parsing.',
+		'Note that upgrading feedparser can sometimes improve parsing.',
 	);
 }
 
