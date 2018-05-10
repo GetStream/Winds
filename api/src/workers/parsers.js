@@ -6,7 +6,7 @@ import request from 'request';
 import normalize from 'normalize-url';
 import FeedParser from 'feedparser';
 import zlib from 'zlib';
-import podcastParser from 'node-podcast-parser';
+import podcastParser from './podcast_parser_sax';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
@@ -89,6 +89,7 @@ function ParseFeed(feedUrl, callback) {
 				url: normalize(post.link),
 				// For some sites like XKCD the content from RSS is better than Mercury
 				content: sanitize(post.summary)
+				// note that we don't actually get the images, OG scraping is more reliable
 			};
 
 			// HNEWS
@@ -105,7 +106,9 @@ function ParseFeed(feedUrl, callback) {
 			}
 
 			feedContents.articles.push(parsedArticle);
-			feedContents.metadata = post.meta;
+			feedContents.title = post.meta.title;
+			feedContents.link = post.meta.link;
+			feedContents.image = post.meta.image;
 		}
 	});
 }
@@ -132,11 +135,20 @@ function ParsePodcast(podcastUrl, callback) {
 				return callback(null, err);
 			}
 
+			// the podcast metadata we care about:
+			podcastContents.title = data.title
+			podcastContents.link = data.link
+			podcastContents.image = data.image
+			podcastContents.description = (data.description) ? data.description.long : ''
+
 			let episodes = data.episodes ? data.episodes : data;
 
 			episodes.map(episode => {
 				try {
-					let url = episode.enclosure ? episode.enclosure.url : episode.guid;
+					let url = episode.link;
+					if (!url) {
+						url = episode.enclosure ? episode.enclosure.url : episode.guid;
+					}
 					var parsedEpisode = new Episode({
 						description: strip(episode.description).substring(0, 280),
 						publicationDate:
@@ -144,6 +156,7 @@ function ParsePodcast(podcastUrl, callback) {
 							moment().toISOString(),
 						title: strip(episode.title),
 						url: normalize(url),
+						images: {'og': episode.image},
 					});
 				} catch (e) {
 					logger.error('Failed to parse episode', e);
