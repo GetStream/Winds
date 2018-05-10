@@ -45,4 +45,12 @@ const getEpisode = (state, episodeID) => {
 	};
 };
 
-export { getActivity, getPlaylistsForUser, getEpisode };
+const getArticle = (state, articleID) => {
+	// get podcast
+	return {
+		...state.articles[articleID],
+		rss: state.rssFeeds[state.articles[articleID].rss],
+	};
+};
+
+export { getActivity, getPlaylistsForUser, getEpisode, getArticle };
