@@ -121,7 +121,7 @@ class SuggestedFeeds extends React.Component {
 								/>
 								<div>{rssFeed.title}</div>
 								<div
-									className={`right clickable ${
+									className={`clickable ${
 										this.props.followedRssFeeds[rssFeed._id]
 											? 'active'
 											: ''
@@ -153,7 +153,7 @@ SuggestedFeeds.defaultProps = {
 
 SuggestedFeeds.propTypes = {
 	dispatch: PropTypes.func.isRequired,
-	followedRssFeeds: PropTypes.shape({}),
+	followedRssFeeds: PropTypes.shape(),
 	rssFeeds: PropTypes.arrayOf(PropTypes.shape),
 };
 
