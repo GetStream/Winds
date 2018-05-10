@@ -4,7 +4,6 @@ import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
-import Img from 'react-image';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -69,7 +68,6 @@ class RSSArticle extends React.Component {
 		return (
 			<div className="rss-article-container">
 				<h1>{this.props.title}</h1>
-				<Img src={this.props.images.og} />
 				{this.state.error ? <div>{this.state.errorMessage}</div> : null}
 				<div className="rss-article-content">
 					{ReactHtmlParser(this.state.content)}
