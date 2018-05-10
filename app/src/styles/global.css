@@ -300,7 +300,8 @@ textarea {
 /* FRAMEWORK - Structure and layout files.
 ========================================================================== */
 html {
-  font-size: 12px; }
+  font-size: 12px;
+  padding-bottom: 204em; }
 
 body {
   background-color: #f7f7f7;
