@@ -1,7 +1,6 @@
 import nextIcon from '../images/player/next.svg';
 import forwardIcon from '../images/player/forward.svg';
 import rewindIcon from '../images/player/rewind.svg';
-import greenOptionsIcon from '../images/icons/options-green.svg';
 import pauseIcon from '../images/icons/pause.svg';
 import playIcon from '../images/icons/play.svg';
 import React, { Component } from 'react';
