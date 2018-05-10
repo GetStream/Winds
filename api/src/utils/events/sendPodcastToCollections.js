@@ -11,7 +11,7 @@ export default podcastID => {
 				if (!podcast.language) {
 					return detectPodcastLanguage(podcast.feedUrl).then(language => {
 						// save to podcast, return the modified document (the new: true thing)
-						Podcast.findByIdAndUpdate(
+						return Podcast.findByIdAndUpdate(
 							podcastID,
 							{ language },
 							{ new: true },

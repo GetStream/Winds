@@ -67,7 +67,7 @@ rssQueue.process((job, done) => {
 				10,
 				(post, cb) => {
 					// lookup by url
-					Article.findOne({ url: normalize(post.url) }).then(article => {
+					Article.findOne({ url: normalize(post.url),rss: job.data.rss }).then(article => {
 						if (article) {
 							// article already exists
 							cb(null, null);
@@ -76,20 +76,14 @@ rssQueue.process((job, done) => {
 							Article.create({
 								description: post.description,
 								publicationDate: post.publicationDate,
+								commentUrl: post.commentUrl,
+								content: post.content,
 								rss: job.data.rss,
 								title: post.title,
 								url: post.url,
 							}).then(article => {
 								// after article is created, add to algolia, stream, and opengraph scraper queue
 								return Promise.all([
-									search({
-										_id: article._id,
-										description: article.description,
-										publicationDate: article.publicationDate,
-										rss: article.rss,
-										title: article.title,
-										type: 'article',
-									}),
 									client.feed('rss', article.rss).addActivity({
 										actor: article.rss,
 										foreign_id: `articles:${article._id}`,

@@ -121,6 +121,8 @@ STREAM_API_SECRET=your-stream-api-secret
 REACT_APP_ALGOLIA_APP_ID=your-algolia-app-id
 REACT_APP_ALGOLIA_SEARCH_KEY=your-algolia-search-only-API-key
 ALGOLIA_WRITE_KEY=your-algolia-admin-API-key
+
+MERCURY_KEY=my-key-here
 ```
 
 Then run:
@@ -161,6 +163,7 @@ JWT_SECRET=some-super-secret-arbitrary-jwt-string
 API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
 STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
+MERCURY_KEY=my-key-here
 ```
 
 ### Start MongoDB Locally
