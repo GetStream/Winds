@@ -5,7 +5,7 @@ import request from 'request';
 import normalize from 'normalize-url';
 import FeedParser from 'feedparser';
 import zlib from 'zlib';
-import podcastParser from 'node-podcast-parser';
+import podcastParser from './podcast_parser_sax';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
