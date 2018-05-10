@@ -22,7 +22,11 @@ function main() {
 	let target = program.rss || program.podcast;
 	logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
-	function validate(articles, error) {
+	function validate(response, error) {
+		if (error) {
+			console.warn(error)
+		}
+		let articles = response.articles;
 		let selectedArticles = articles.slice(0, program.limit);
 		logger.info(`Found ${articles.length} articles showing ${program.limit}`);
 
@@ -33,6 +37,12 @@ function main() {
 				logger.info(`URL: ${article.url}`);
 				logger.info(`Description: ${article.description}`);
 				logger.info(`Publication Date: ${article.publicationDate}`);
+				if (article.commentUrl) {
+					logger.info(`Comments: ${article.commentUrl}`);
+				}
+				if (article.content) {
+					logger.info(`Content: ${article.content}`);
+				}
 				logger.info(chalk.red('Image is missing'));
 			}
 		} else {
