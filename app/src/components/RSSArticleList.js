@@ -180,10 +180,10 @@ class RSSArticleList extends React.Component {
 								</p>
 								<p>
 									{
-										'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, send us an email at '
+										'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
 									}
-									<a href="mailto:winds@getstream.io">
-										winds@getstream.io
+									<a href="https://github.com/getstream/winds/issues">
+										GitHub Issue
 									</a>.
 								</p>
 							</div>
