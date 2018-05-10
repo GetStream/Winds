@@ -1164,6 +1164,8 @@ body {
         background-color: #44bc75;
         border-radius: 4px;
         color: white; }
+    .panel .panel-element .muted {
+      color: #aaa; }
     .panel .panel-element img {
       height: 16px;
       width: 16px; }
