@@ -67,7 +67,7 @@ rssQueue.process((job, done) => {
 				10,
 				(post, cb) => {
 					// lookup by url
-					Article.findOne({ url: normalize(post.url) }).then(article => {
+					Article.findOne({ url: normalize(post.url),rss: job.data.rss }).then(article => {
 						if (article) {
 							// article already exists
 							cb(null, article);
