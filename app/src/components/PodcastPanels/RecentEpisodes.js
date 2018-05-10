@@ -60,6 +60,7 @@ class RecentEpisodes extends React.Component {
 								/>
 								<div>{episode.title}</div>
 								<TimeAgo
+									className="muted"
 									timestamp={episode.publicationDate}
 									trim={true}
 								/>

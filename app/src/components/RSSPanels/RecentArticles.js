@@ -65,6 +65,7 @@ class RecentArticles extends React.Component {
 								/>
 								<div>{article.title}</div>
 								<TimeAgo
+									className="muted"
 									timestamp={article.publicationDate}
 									trim={true}
 								/>
