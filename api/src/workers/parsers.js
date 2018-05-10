@@ -91,9 +91,17 @@ function ParseFeed(feedUrl, callback) {
 				content: sanitize(post.summary)
 			};
 
-			// nice for HNews
+			// HNEWS
 			if (post.comments) {
 				parsedArticle.commentUrl = post.comments;
+			}
+
+			// product hunt comments url
+			if (post.link.indexOf('https://www.producthunt.com')==0) {
+				let matches = post.description.match(/(https:\/\/www.producthunt.com\/posts\/.*)"/)
+				if (matches.length) {
+					parsedArticle.commentUrl = matches[1];
+				}
 			}
 
 			feedContents.articles.push(parsedArticle);
