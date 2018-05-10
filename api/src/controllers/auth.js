@@ -19,7 +19,7 @@ import followPodcast from '../shared/followPodcast';
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 exports.signup = (req, res) => {
-	const data = req.body || {};
+	const data = Object.assign({}, { interests: [] }, req.body);
 
 	if (!data.email || !data.name || !data.password) {
 		return res.sendStatus(422);
