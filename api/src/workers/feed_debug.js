@@ -26,7 +26,22 @@ function main() {
 		if (error) {
 			console.warn(error)
 		}
-		let articles = response.articles;
+
+		// validate the podcast or RSS feed
+		logger.info(`========== Validating Publication ==========`)
+		logger.info(`Title: ${response.title}`)
+		logger.info(`Link: ${response.link}`)
+		if (response.image) {
+			logger.info(chalk.green('Image found :)'));
+			logger.info(`Image: ${response.image}`);
+		} else {
+			logger.info(chalk.red('Image missing :('));
+		}
+
+		logger.info(`========== Validating episodes/articles now ==========`)
+
+		// validate the articles or episodes
+		let articles = (response.articles) ? response.articles : response.episodes;
 		let selectedArticles = articles.slice(0, program.limit);
 		logger.info(`Found ${articles.length} articles showing ${program.limit}`);
 
@@ -43,7 +58,17 @@ function main() {
 				if (article.content) {
 					logger.info(`Content: ${article.content}`);
 				}
-				logger.info(chalk.red('Image is missing'));
+
+				if (!program.rss) {
+					// for RSS we rely on OG scraping, for podcasts the images are already in the feed
+					if (article.images.og) {
+						logger.info(chalk.green('Image found :)'));
+						logger.info(`Image: ${article.images.og}`);
+					} else {
+						logger.info(chalk.red('Image missing :('));
+
+					}
+				}
 			}
 		} else {
 			logger.info(chalk.red('Didn\'t find any articles or episodes.'));

@@ -89,6 +89,7 @@ function ParseFeed(feedUrl, callback) {
 				url: normalize(post.link),
 				// For some sites like XKCD the content from RSS is better than Mercury
 				content: sanitize(post.summary)
+				// note that we don't actually get the images, OG scraping is more reliable
 			};
 
 			// HNEWS
@@ -105,7 +106,9 @@ function ParseFeed(feedUrl, callback) {
 			}
 
 			feedContents.articles.push(parsedArticle);
-			feedContents.metadata = post.meta;
+			feedContents.title = post.meta.title;
+			feedContents.link = post.meta.link;
+			feedContents.image = post.meta.image;
 		}
 	});
 }
@@ -132,6 +135,11 @@ function ParsePodcast(podcastUrl, callback) {
 				return callback(null, err);
 			}
 
+			// the podcast metadata we care about:
+			podcastContents.title = data.title
+			podcastContents.link = data.link
+			podcastContents.image = data.image
+
 			let episodes = data.episodes ? data.episodes : data;
 
 			episodes.map(episode => {
@@ -144,6 +152,7 @@ function ParsePodcast(podcastUrl, callback) {
 							moment().toISOString(),
 						title: strip(episode.title),
 						url: normalize(url),
+						images: {'og': episode.image},
 					});
 				} catch (e) {
 					logger.error('Failed to parse episode', e);
