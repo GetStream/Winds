@@ -10,8 +10,8 @@ class Tabs extends React.Component {
 	}
 	render() {
 		let selectedElement = this.props.children[this.state.selectedTab];
-		let selectedElementProps = { ...selectedElement.props };
-		delete selectedElementProps.tabTitle;
+		// clever key deletion with es7 destructuring
+		let { tabTitle, ...selectedElementProps } = selectedElement.props; // eslint-disable-line no-unused-vars
 		return (
 			<div>
 				<ul className="tabs">
