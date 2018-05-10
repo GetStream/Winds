@@ -20,6 +20,8 @@ import { ParsePodcast } from './parsers';
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 const podcastQueue = new Queue('podcast', config.cache.uri);
+const ogQueue = new Queue('og', config.cache.uri);
+
 
 logger.info('Starting to process podcasts....');
 
@@ -79,6 +81,16 @@ podcastQueue.process((job, done) => {
 												time: episode.publicationDate,
 												verb: 'podcast_episode',
 											}),
+											ogQueue.add(
+												{
+													url: normalize(episode.url),
+													type: 'podcast',
+												},
+												{
+													removeOnComplete: true,
+													removeOnFail: true,
+												},
+											),
 									]).then(() => {
 										return episode;
 									});

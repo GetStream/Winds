@@ -94,6 +94,7 @@ rssQueue.process((job, done) => {
 									ogQueue.add(
 										{
 											url: normalize(article.url),
+											type: 'rss',
 										},
 										{
 											removeOnComplete: true,

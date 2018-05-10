@@ -145,7 +145,10 @@ function ParsePodcast(podcastUrl, callback) {
 
 			episodes.map(episode => {
 				try {
-					let url = episode.enclosure ? episode.enclosure.url : episode.guid;
+					let url = episode.link;
+					if (!url) {
+						url = episode.enclosure ? episode.enclosure.url : episode.guid;
+					}
 					var parsedEpisode = new Episode({
 						description: strip(episode.description).substring(0, 280),
 						publicationDate:
