@@ -25,6 +25,7 @@ function main() {
 	function validate(response, error) {
 		if (error) {
 			console.warn(error)
+			return
 		}
 
 		// validate the podcast or RSS feed

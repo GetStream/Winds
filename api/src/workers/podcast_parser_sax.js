@@ -132,7 +132,7 @@ module.exports = function parse(feedXML, callback) {
       let description = '';
       if (tmpEpisode.description) {
         description = tmpEpisode.description.primary
-        if (tmpEpisode.description.alternate && tmpEpisode.description.alternate.length > description.length) {
+        if (!description || (tmpEpisode.description.alternate && tmpEpisode.description.alternate.length > description.length)) {
           description = tmpEpisode.description.alternate
         }
         description = description || '';

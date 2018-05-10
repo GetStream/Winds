@@ -139,6 +139,7 @@ function ParsePodcast(podcastUrl, callback) {
 			podcastContents.title = data.title
 			podcastContents.link = data.link
 			podcastContents.image = data.image
+			podcastContents.description = (data.description) ? data.description.long : ''
 
 			let episodes = data.episodes ? data.episodes : data;
 

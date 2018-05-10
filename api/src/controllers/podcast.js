@@ -12,6 +12,8 @@ import personalization from '../utils/personalization';
 import logger from '../utils/logger';
 import search from '../utils/search';
 import config from '../config';
+import { ParsePodcast } from '../workers/parsers';
+import strip from 'strip';
 
 const podcastQueue = new Queue('podcast', config.cache.uri);
 
@@ -87,62 +89,80 @@ exports.post = (req, res) => {
 				feeds.feedUrls,
 				feeds.feedUrls.length,
 				(feed, cb) => {
-					Podcast.findOneAndUpdate(
-						{ feedUrl: feed.url },
-						{
-							categories: 'podcast',
-							description: entities.decodeHTML(feed.title),
-							featured: false,
-							feedUrl: feed.url,
-							images: { favicon: feeds.site.favicon },
-							lastScraped: new Date(0),
-							title: entities.decodeHTML(feed.title),
-							url: feeds.site.url,
-							valid: true,
-						},
-						{
-							new: true,
-							rawResult: true,
-							upsert: true,
-						},
-					)
-						.then(podcast => {
-							if (podcast.lastErrorObject.updatedExisting) {
-								cb(null, podcast.value);
-							} else {
-								search({
-									_id: podcast.value._id,
-									categories: 'Podcast',
-									description: podcast.value.title,
-									image: podcast.value.image,
-									public: true,
-									publicationDate: podcast.value.publicationDate,
-									title: podcast.value.title,
-									type: 'podcast',
-								})
-									.then(() => {
-										return podcastQueue.add(
-											{
-												podcast: podcast.value._id,
-												url: podcast.value.feedUrl,
-											},
-											{
-												removeOnComplete: true,
-												removeOnFail: true,
-											},
-										);
+
+					// Get more metadata
+					ParsePodcast(feed.url, function(podcastContents, err) {
+						let title, url, images, description;
+						if (podcastContents) {
+							title = strip(podcastContents.title) || strip(feed.title)
+							url = podcastContents.link || feeds.site.url
+							images = { favicon: feeds.site.favicon, og: podcastContents.image}
+							description = podcastContents.description
+						} else {
+							title =  strip(feed.title)
+							url = feeds.site.url
+							images = { favicon: feeds.site.favicon}
+							description = ''
+						}
+
+						Podcast.findOneAndUpdate(
+							{ feedUrl: feed.url },
+							{
+								categories: 'podcast',
+								description: description,
+								featured: false,
+								feedUrl: feed.url,
+								images: images,
+								lastScraped: new Date(0),
+								title: title,
+								url: url,
+								valid: true,
+							},
+							{
+								new: true,
+								rawResult: true,
+								upsert: true,
+							},
+						)
+							.then(podcast => {
+								if (podcast.lastErrorObject.updatedExisting) {
+									cb(null, podcast.value);
+								} else {
+									search({
+										_id: podcast.value._id,
+										categories: 'Podcast',
+										description: podcast.value.title,
+										image: podcast.value.image,
+										public: true,
+										publicationDate: podcast.value.publicationDate,
+										title: podcast.value.title,
+										type: 'podcast',
 									})
-									.then(() => {
-										cb(null, podcast.value);
-									})
-									.catch(err => {
-										cb(err);
-									});
-							}
-						})
-						.catch(err => {
-							cb(err);
-						});
+										.then(() => {
+											return podcastQueue.add(
+												{
+													podcast: podcast.value._id,
+													url: podcast.value.feedUrl,
+												},
+												{
+													removeOnComplete: true,
+													removeOnFail: true,
+												},
+											);
+										})
+										.then(() => {
+											cb(null, podcast.value);
+										})
+										.catch(err => {
+											cb(err);
+										});
+								}
+							})
+							.catch(err => {
+								cb(err);
+							});
+					});
+
 				},
 				(err, results) => {
 					if (err) {

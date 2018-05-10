@@ -58,6 +58,7 @@ podcastQueue.process((job, done) => {
 								publicationDate: episode.publicationDate,
 								title: episode.title,
 								url: episode.url,
+								images: episode.images
 							})
 								.then(episode => {
 									return Promise.all([
