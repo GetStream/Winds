@@ -240,7 +240,6 @@ class Player extends Component {
 						</div>
 					</div>
 					<div className="sub-right">
-						<Img className="ellipsis-menu" src={greenOptionsIcon} />
 						<div className="timestamps">
 							{`${moment
 								.duration(this.state.currentTime, 'seconds')
