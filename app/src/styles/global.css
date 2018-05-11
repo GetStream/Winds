@@ -2168,17 +2168,27 @@ body {
   max-width: 720px;
   min-width: 520px;
   padding-bottom: 100px; }
+  .rss-view > .column > .rss-article-container .info {
+    display: flex;
+    flex-direction: row;
+    font-weight: bolder;
+    letter-spacing: 0.1em;
+    text-transform: uppercase; }
+    .rss-view > .column > .rss-article-container .info > * {
+      margin-right: 1em; }
+    .rss-view > .column > .rss-article-container .info .muted {
+      color: #aaa; }
   .rss-view > .column > .rss-article-container h1 {
     font-size: 30px; }
   .rss-view > .column > .rss-article-container p {
     font-size: 15px;
     font-weight: normal;
     line-height: 26px; }
-    .rss-view > .column > .rss-article-container p a {
-      color: #44bc75;
-      text-decoration: none; }
-      .rss-view > .column > .rss-article-container p a:hover {
-        text-decoration: underline; }
+  .rss-view > .column > .rss-article-container a {
+    color: #44bc75;
+    text-decoration: none; }
+    .rss-view > .column > .rss-article-container a:hover {
+      text-decoration: underline; }
   .rss-view > .column > .rss-article-container img {
     max-width: 100%; }
 

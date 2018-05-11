@@ -4,6 +4,7 @@ import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
+import TimeAgo from './TimeAgo';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -68,6 +69,24 @@ class RSSArticle extends React.Component {
 		return (
 			<div className="rss-article-container">
 				<h1>{this.props.title}</h1>
+				<div className="info">
+					<i className="fa fa-bookmark" />
+					<div>
+						<i className="fas fa-external-link-alt" />
+						<a href={this.props.url}>{this.props.rss.title}</a>
+					</div>
+					{this.props.commentUrl ? (
+						<div>
+							<i className="fas fa-comment-alt" />
+
+							<a href={this.props.commentUrl}>Comments</a>
+						</div>
+					) : null}
+					<span className="muted">
+						{'Posted '}
+						<TimeAgo timestamp={this.props.publicationDate} />
+					</span>
+				</div>
 				{this.state.error ? <div>{this.state.errorMessage}</div> : null}
 				<div className="rss-article-content">
 					{ReactHtmlParser(this.state.content)}
@@ -83,6 +102,7 @@ RSSArticle.defaultProps = {
 
 RSSArticle.propTypes = {
 	_id: PropTypes.string,
+	commentUrl: PropTypes.string,
 	description: PropTypes.string,
 	getArticle: PropTypes.func.isRequired,
 	images: PropTypes.shape({
@@ -95,6 +115,10 @@ RSSArticle.propTypes = {
 			rssFeedID: PropTypes.string.isRequired,
 		}),
 	}),
+	publicationDate: PropTypes.string,
+	rss: PropTypes.shape({
+		title: PropTypes.string,
+	}),
 	title: PropTypes.string,
 	url: PropTypes.string,
 };
@@ -102,6 +126,7 @@ RSSArticle.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let articleID = ownProps.match.params.articleID;
 	let article = {};
+	let rss = {};
 	let loading = false;
 	if (!('articles' in state) || !(articleID in state.articles)) {
 		loading = true;
@@ -109,10 +134,13 @@ const mapStateToProps = (state, ownProps) => {
 		article = {
 			...state.articles[articleID],
 		};
+		rss = { ...state.rssFeeds[article.rss] };
 	}
+	// get article's rss feed
 	return {
 		loading,
 		...article,
+		rss,
 	};
 };
 

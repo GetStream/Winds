@@ -16,6 +16,22 @@
 			min-width: 520px;
 			padding-bottom: 100px;
 
+			.info {
+				display: flex;
+				flex-direction: row;
+				font-weight: bolder;
+				letter-spacing: $label-letter-spacing;
+				text-transform: uppercase;
+
+				> * {
+					margin-right: 1em;
+				}
+
+				.muted {
+					color: $foreground-darkgray;
+				}
+			}
+
 			h1 {
 				font-size: 30px;
 			}
@@ -24,14 +40,14 @@
 				font-size: 15px;
 				font-weight: normal;
 				line-height: 26px;
+			}
 
-				a {
-					color: $foreground-green;
-					text-decoration: none;
+			a {
+				color: $foreground-green;
+				text-decoration: none;
 
-					&:hover {
-						text-decoration: underline;
-					}
+				&:hover {
+					text-decoration: underline;
 				}
 			}
 
