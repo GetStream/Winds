@@ -1,6 +1,6 @@
 {
 	"name": "Winds",
-	"version": "2.0.114",
+	"version": "2.0.115",
 	"engines": {
 		"node": "10.x.x"
 	},
