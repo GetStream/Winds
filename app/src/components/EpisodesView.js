@@ -160,6 +160,7 @@ class EpisodesView extends React.Component {
 							<EpisodeListItem
 								active={active}
 								image={[
+									episode.images.og,
 									this.props.podcast.images.featured,
 									this.props.podcast.images.favicon,
 									getPlaceholderImageURL(this.props.podcast._id),
