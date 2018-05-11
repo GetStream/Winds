@@ -15,16 +15,15 @@ import Article from '../models/rss';
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 
-
 // sanitize cleans the html before returning it to the frontend
 var sanitize = function(dirty) {
 	return sanitizeHtml(dirty, {
-	  allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]),
+		allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
 		allowedAttributes: {
-			'img': [ 'src', 'title', 'alt' ]
+			img: ['src', 'title', 'alt'],
 		},
 	});
-}
+};
 
 function ParseFeed(feedUrl, callback) {
 	let req = request(feedUrl, {
@@ -77,8 +76,10 @@ function ParseFeed(feedUrl, callback) {
 		while ((postBuffer = feedparser.read())) {
 			let post = Object.assign({}, postBuffer);
 
-			let description = strip(entities.decodeHTML(post.description)).substring(0, 280)
-
+			let description = strip(entities.decodeHTML(post.description)).substring(
+				0,
+				280,
+			);
 
 			let parsedArticle = {
 				description: description,
@@ -87,7 +88,7 @@ function ParseFeed(feedUrl, callback) {
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
 				// For some sites like XKCD the content from RSS is better than Mercury
-				content: sanitize(post.summary)
+				content: sanitize(post.summary),
 				// note that we don't actually get the images, OG scraping is more reliable
 			};
 
@@ -97,19 +98,23 @@ function ParseFeed(feedUrl, callback) {
 			}
 
 			// product hunt comments url
-			if (post.link.indexOf('https://www.producthunt.com')==0) {
-				let matches = post.description.match(/(https:\/\/www.producthunt.com\/posts\/.*?)"/)
+			if (post.link.indexOf('https://www.producthunt.com') == 0) {
+				let matches = post.description.match(
+					/(https:\/\/www.producthunt.com\/posts\/.*)"/,
+				);
 				if (matches.length) {
 					parsedArticle.commentUrl = matches[1];
 				}
 			}
 
 			// nice images for XKCD
-			if (post.link.indexOf('https://xkcd')==0) {
-				let matches = post.description.match(/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/)
+			if (post.link.indexOf('https://xkcd') == 0) {
+				let matches = post.description.match(
+					/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/,
+				);
 				if (matches.length) {
-					console.log(matches[1])
-					parsedArticle.images = {'og':matches[1]}
+					console.log(matches[1]);
+					parsedArticle.images = { og: matches[1] };
 				}
 			}
 
@@ -144,10 +149,10 @@ function ParsePodcast(podcastUrl, callback) {
 			}
 
 			// the podcast metadata we care about:
-			podcastContents.title = data.title
-			podcastContents.link = data.link
-			podcastContents.image = data.image
-			podcastContents.description = (data.description) ? data.description.long : ''
+			podcastContents.title = data.title;
+			podcastContents.link = data.link;
+			podcastContents.image = data.image;
+			podcastContents.description = data.description ? data.description.long : '';
 
 			let episodes = data.episodes ? data.episodes : data;
 
@@ -164,7 +169,7 @@ function ParsePodcast(podcastUrl, callback) {
 							moment().toISOString(),
 						title: strip(episode.title),
 						url: normalize(url),
-						images: {'og': episode.image},
+						images: { og: episode.image },
 					});
 				} catch (e) {
 					logger.error('Failed to parse episode', e);
