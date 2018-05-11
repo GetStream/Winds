@@ -2,7 +2,7 @@ import Queue from 'bull';
 import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
-import entities from 'entities';
+// import entities from 'entities';
 import validUrl from 'valid-url';
 
 import Podcast from '../models/podcast';
@@ -89,20 +89,22 @@ exports.post = (req, res) => {
 				feeds.feedUrls,
 				feeds.feedUrls.length,
 				(feed, cb) => {
-
 					// Get more metadata
-					ParsePodcast(feed.url, function(podcastContents, err) {
+					ParsePodcast(feed.url, function(podcastContents) {
 						let title, url, images, description;
 						if (podcastContents) {
-							title = strip(podcastContents.title) || strip(feed.title)
-							url = podcastContents.link || feeds.site.url
-							images = { favicon: feeds.site.favicon, og: podcastContents.image}
-							description = podcastContents.description
+							title = strip(podcastContents.title) || strip(feed.title);
+							url = podcastContents.link || feeds.site.url;
+							images = {
+								favicon: feeds.site.favicon,
+								og: podcastContents.image,
+							};
+							description = podcastContents.description;
 						} else {
-							title =  strip(feed.title)
-							url = feeds.site.url
-							images = { favicon: feeds.site.favicon}
-							description = ''
+							title = strip(feed.title);
+							url = feeds.site.url;
+							images = { favicon: feeds.site.favicon };
+							description = '';
 						}
 
 						Podcast.findOneAndUpdate(
@@ -145,6 +147,7 @@ exports.post = (req, res) => {
 													url: podcast.value.feedUrl,
 												},
 												{
+													priority: 1,
 													removeOnComplete: true,
 													removeOnFail: true,
 												},
@@ -162,7 +165,6 @@ exports.post = (req, res) => {
 								cb(err);
 							});
 					});
-
 				},
 				(err, results) => {
 					if (err) {
