@@ -21,16 +21,16 @@ class EpisodesView extends React.Component {
 		};
 	}
 	componentDidMount() {
-		this.props.getPodcast(this.props.podcastID);
-		this.props.getEpisodes(this.props.podcastID);
-		this.props.getPodcastFollowers(this.props.podcastID);
+		this.props.getPodcast(this.props.match.params.podcastID);
+		this.props.getEpisodes(this.props.match.params.podcastID);
+		this.props.getPodcastFollowers(this.props.match.params.podcastID);
 		this.props.getPlaylistsForUser();
 	}
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.podcastID !== this.props.podcastID) {
-			this.props.getPodcast(nextProps.podcastID);
-			this.props.getEpisodes(nextProps.podcastID);
-			this.props.getPodcastFollowers(nextProps.podcastID);
+		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
+			this.props.getPodcast(nextProps.match.params.podcastID);
+			this.props.getEpisodes(nextProps.match.params.podcastID);
+			this.props.getPodcastFollowers(nextProps.match.params.podcastID);
 			this.props.getPlaylistsForUser();
 		}
 	}
@@ -150,7 +150,8 @@ class EpisodesView extends React.Component {
 					{sortedEpisodes.map((episode, i) => {
 						let active = false;
 						if (
-							this.props.context.contextID === this.props.podcastID &&
+							this.props.context.contextID ===
+								this.props.match.params.podcastID &&
 							i === this.props.context.contextPosition
 						) {
 							active = true;
@@ -219,6 +220,11 @@ EpisodesView.propTypes = {
 	getPodcastFollowers: PropTypes.func.isRequired,
 	isFollowing: PropTypes.bool,
 	like: PropTypes.func.isRequired,
+	match: PropTypes.shape({
+		params: PropTypes.shape({
+			podcastID: PropTypes.string,
+		}),
+	}),
 	pauseEpisode: PropTypes.func.isRequired,
 	pinEpisode: PropTypes.func.isRequired,
 	playEpisode: PropTypes.func.isRequired,
@@ -226,10 +232,10 @@ EpisodesView.propTypes = {
 		_id: PropTypes.string,
 		images: PropTypes.shape({
 			favicon: PropTypes.string,
+			featured: PropTypes.string,
 		}),
 		title: PropTypes.string,
 	}),
-	podcastID: PropTypes.string.isRequired,
 	resumeEpisode: PropTypes.func.isRequired,
 	unfollowPodcast: PropTypes.func.isRequired,
 	unlike: PropTypes.func.isRequired,
@@ -238,23 +244,24 @@ EpisodesView.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
 	let isFollowing = false;
+	let podcastID = ownProps.match.params.podcastID;
 
 	if (
 		state.followedPodcasts &&
 		state.followedPodcasts[localStorage['authedUser']] &&
-		state.followedPodcasts[localStorage['authedUser']][ownProps.podcastID]
+		state.followedPodcasts[localStorage['authedUser']][podcastID]
 	) {
 		isFollowing = true;
 	}
 	let podcast = null;
-	if (state.podcasts && state.podcasts[ownProps.podcastID]) {
-		podcast = state.podcasts[ownProps.podcastID];
+	if (state.podcasts && state.podcasts[podcastID]) {
+		podcast = state.podcasts[podcastID];
 	}
 	let episodes = [];
 	if (state.episodes) {
 		episodes = Object.values(state.episodes).filter(episode => {
 			// only return the episodes where the podcast ID matches the parent ID
-			return episode.podcast === ownProps.podcastID;
+			return episode.podcast === podcastID;
 		});
 	}
 	for (let episode of episodes) {
@@ -276,7 +283,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	let podcastID = ownProps.podcastID;
+	let podcastID = ownProps.match.params.podcastID;
 	return {
 		followPodcast: () => {
 			// optimistic dispatch

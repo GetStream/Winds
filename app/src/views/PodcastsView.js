@@ -4,12 +4,13 @@ import SuggestedPodcasts from '../components/PodcastPanels/SuggestedPodcasts';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import BookmarkedEpisodes from '../components/PodcastPanels/BookmarkedEpisodes';
 import EpisodesView from '../components/EpisodesView';
-import Img from 'react-image';
+// import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import fetch from '../util/fetch';
 import { connect } from 'react-redux';
-import partialIcon from '../images/icons/partial.svg';
+// import partialIcon from '../images/icons/partial.svg';
+import { Route, Switch } from 'react-router-dom';
 
 class PodcastsView extends React.Component {
 	constructor(props) {
@@ -50,18 +51,19 @@ class PodcastsView extends React.Component {
 			newPodcastModalIsOpen: !this.state.newPodcastModalIsOpen,
 		});
 	}
+
 	render() {
-		let episodeView;
-		if (!this.props.match.params.podcastID) {
-			episodeView = (
-				<div className="none-selected">
-					<Img src={partialIcon} />
-					<div>Select a Podcast</div>
-				</div>
-			);
-		} else {
-			episodeView = <EpisodesView podcastID={this.props.match.params.podcastID} />;
-		}
+		// let episodeView;
+		// if (!this.props.match.params.podcastID) {
+		// 	episodeView = (
+		// 		<div className="none-selected">
+		// 			<Img src={partialIcon} />
+		// 			<div>Select a Podcast</div>
+		// 		</div>
+		// 	);
+		// } else {
+		// 	episodeView = <EpisodesView podcastID={this.props.match.params.podcastID} />;
+		// }
 
 		//
 		// let leftColumn;
@@ -115,11 +117,25 @@ class PodcastsView extends React.Component {
 						</div>
 					</Tabs>
 				</div>
-				<div className="column">{episodeView}</div>
+				<div className="column">
+					<Switch>
+						<Route component={recentEpisodes} path="/podcasts/recent" />
+						<Route component={EpisodesView} path="/podcasts/:podcastID" />
+						<Route component={allEpisodes} path="/podcasts" />
+					</Switch>
+				</div>
 			</div>
 		);
 	}
 }
+
+let allEpisodes = () => {
+	return <div>all episodes</div>;
+};
+
+let recentEpisodes = () => {
+	return <div>recent episodes</div>;
+};
 
 PodcastsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,

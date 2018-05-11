@@ -115,7 +115,9 @@ class RSSFeedsView extends React.Component {
 							component={RSSArticle}
 							path="/rss/:rssFeedID/articles/:articleID"
 						/>
+						<Route component={recentArticles} path="/rss/recent" />
 						<Route component={RSSArticleList} path="/rss/:rssFeedID" />
+						<Route component={allArticles} path="/rss" />
 						<Route component={RSSNotSelected} />
 					</Switch>
 				</div>
@@ -123,6 +125,14 @@ class RSSFeedsView extends React.Component {
 		);
 	}
 }
+
+let allArticles = props => {
+	return <div>all articles</div>;
+};
+
+let recentArticles = props => {
+	return <div>recent articles</div>;
+};
 
 RSSFeedsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,
