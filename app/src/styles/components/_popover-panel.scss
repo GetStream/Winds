@@ -1,0 +1,37 @@
+.popover-panel {
+	background-color: $background-white;
+	border-radius: $border-radius;
+	box-shadow: $box-shadow;
+
+	.panel-element {
+		align-items: center;
+		border-bottom: 1px solid $foreground-lightgray;
+		color: inherit;
+		display: flex;
+		font-weight: 600; // TODO: @kenhoff - figure out why we have to set this explicitly, rather than with 'bolder'
+		margin: 0 1em;
+		padding: 1em 0;
+		text-decoration: inherit;
+
+		> * {
+			margin-right: 1em;
+
+			&:last-child {
+				margin-right: unset;
+				min-width: 4em;
+				// text-align: right;
+			}
+
+			&:nth-child(2) {
+				flex-grow: 1;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+}

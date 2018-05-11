@@ -588,9 +588,9 @@ body {
 
 .new-content-popover {
   margin-top: 1.75em; }
-  .new-content-popover .panel-element {
+  .new-content-popover .popover-panel {
     cursor: pointer; }
-    .new-content-popover .panel-element i {
+    .new-content-popover .popover-panel i {
       color: #aaa;
       margin-right: 0.5em; }
 
@@ -755,28 +755,28 @@ body {
       background-image: none;
       color: #fff; }
 
-.panel.profile-popover .panel-element.user {
+.popover-panel.profile-popover .panel-element.user {
   display: grid;
   grid-column-gap: 1em;
   grid-template-areas: 'avatar user-info' 'avatar link-to-profile'; }
-  .panel.profile-popover .panel-element.user .avatar {
+  .popover-panel.profile-popover .panel-element.user .avatar {
     grid-area: avatar; }
-    .panel.profile-popover .panel-element.user .avatar img {
+    .popover-panel.profile-popover .panel-element.user .avatar img {
       border-radius: 10000px; }
-  .panel.profile-popover .panel-element.user .user-info {
+  .popover-panel.profile-popover .panel-element.user .user-info {
     display: flex;
     flex-direction: column;
     grid-area: user-info; }
-    .panel.profile-popover .panel-element.user .user-info .name {
+    .popover-panel.profile-popover .panel-element.user .user-info .name {
       font-weight: bolder;
       margin-bottom: 0.25em; }
-    .panel.profile-popover .panel-element.user .user-info .username {
+    .popover-panel.profile-popover .panel-element.user .user-info .username {
       font-size: 0.9em;
       font-weight: lighter; }
-  .panel.profile-popover .panel-element.user .link-to-profile {
+  .popover-panel.profile-popover .panel-element.user .link-to-profile {
     grid-area: link-to-profile; }
 
-.panel.profile-popover .sign-out {
+.popover-panel.profile-popover .sign-out {
   cursor: pointer;
   display: flex;
   justify-content: space-between; }
@@ -1201,6 +1201,32 @@ body {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase; }
+
+.popover-panel {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05); }
+  .popover-panel .panel-element {
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    color: inherit;
+    display: flex;
+    font-weight: 600;
+    margin: 0 1em;
+    padding: 1em 0;
+    text-decoration: inherit; }
+    .popover-panel .panel-element > * {
+      margin-right: 1em; }
+      .popover-panel .panel-element > *:last-child {
+        margin-right: unset;
+        min-width: 4em; }
+      .popover-panel .panel-element > *:nth-child(2) {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+    .popover-panel .panel-element:last-child {
+      border-bottom: none; }
 
 .shows-grid {
   display: grid;
