@@ -108,7 +108,6 @@ function ParseFeed(feedUrl, callback) {
 			if (post.link.indexOf('https://xkcd')==0) {
 				let matches = post.description.match(/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/)
 				if (matches.length) {
-					console.log(matches[1])
 					parsedArticle.images = {'og':matches[1]}
 				}
 			}
