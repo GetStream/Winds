@@ -70,6 +70,7 @@
 		"react-popover": "^0.5.5",
 		"react-redux": "^5.0.7",
 		"react-router-dom": "^4.2.2",
+		"react-waypoint": "^8.0.1",
 		"redux": "^4.0.0",
 		"rss-finder": "^2.0.5",
 		"trianglify": "^1.2.0",
