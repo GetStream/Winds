@@ -108,9 +108,6 @@
 			"icon": "assets/icon.icns",
 			"type": "distribution",
 			"target": [
-				"pkg",
-				"dmg",
-				"zip",
 				"mas"
 			],
 			"publish": {
