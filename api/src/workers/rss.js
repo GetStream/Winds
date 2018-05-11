@@ -78,6 +78,7 @@ rssQueue.process((job, done) => {
 								publicationDate: post.publicationDate,
 								commentUrl: post.commentUrl,
 								content: post.content,
+								images: post.images,
 								rss: job.data.rss,
 								title: post.title,
 								url: post.url,
@@ -94,6 +95,7 @@ rssQueue.process((job, done) => {
 									ogQueue.add(
 										{
 											url: normalize(article.url),
+											type: 'rss',
 										},
 										{
 											removeOnComplete: true,

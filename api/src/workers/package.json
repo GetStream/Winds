@@ -17,7 +17,6 @@
 		"iconv-js": "^0.3.5",
 		"moment": "^2.22.1",
 		"music-metadata": "^0.11.3",
-		"node-podcast-parser": "^2.1.0",
 		"normalize-url": "^2.0.1",
 		"open-graph-scraper": "^3.3.0",
 		"request": "^2.85.0",

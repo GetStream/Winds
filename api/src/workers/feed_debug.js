@@ -25,8 +25,24 @@ function main() {
 	function validate(response, error) {
 		if (error) {
 			console.warn(error)
+			return
 		}
-		let articles = response.articles;
+
+		// validate the podcast or RSS feed
+		logger.info(`========== Validating Publication ==========`)
+		logger.info(`Title: ${response.title}`)
+		logger.info(`Link: ${response.link}`)
+		if (response.image && response.image.og) {
+			logger.info(chalk.green('Image found :)'));
+			logger.info(`Image: ${response.image.og}`);
+		} else {
+			logger.info(chalk.red('Image missing :('));
+		}
+
+		logger.info(`========== Validating episodes/articles now ==========`)
+
+		// validate the articles or episodes
+		let articles = (response.articles) ? response.articles : response.episodes;
 		let selectedArticles = articles.slice(0, program.limit);
 		logger.info(`Found ${articles.length} articles showing ${program.limit}`);
 
@@ -43,7 +59,17 @@ function main() {
 				if (article.content) {
 					logger.info(`Content: ${article.content}`);
 				}
-				logger.info(chalk.red('Image is missing'));
+
+
+				// for RSS we rely on OG scraping, for podcasts the images are already in the feed
+				if (article.images && article.images.og) {
+					logger.info(chalk.green('Image found :)'));
+					logger.info(`Image: ${article.images.og}`);
+				} else {
+					logger.info(chalk.red('Image missing :('));
+
+				}
+
 			}
 		} else {
 			logger.info(chalk.red('Didn\'t find any articles or episodes.'));
@@ -56,7 +82,7 @@ function main() {
 		ParsePodcast(program.podcast, validate);
 	}
 	logger.info(
-		'Note that upgrading node-podcast-parser or feedparser can sometimes improve parsing.',
+		'Note that upgrading feedparser can sometimes improve parsing.',
 	);
 }
 
