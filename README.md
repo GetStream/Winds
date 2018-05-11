@@ -6,9 +6,9 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 
-Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact we're planning a series of tutorials to help you get started. Activity Feeds in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [DigitalOcean](https://digitalocean/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
+Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact we're planning a series of tutorials to help you get started. Activity Feeds in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
-**To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/).**
+**To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/) (OSx, Linux, Windows)**
 
 ![Winds 2.0](https://i.imgur.com/USmgqqI.jpg)
 
@@ -20,7 +20,7 @@ Winds is a beautiful open-source RSS and Podcast app created using React/Redux/N
   * [Algolia](#algolia)
   * [MongoDB](#mongodb)
   * [SendGrid](https://sendgrid.com)
-  * [DigitalOcean](https://digitalocean.com)
+  * [AWS](https://aws.amazon.com/)
 * [Tutorials](#tutorials)
 * [Download](#download)
 * [Contributing to Winds](#contributing-to-winds)
@@ -50,7 +50,7 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1] (https://github.com/G
 7. [Mercury](https://mercury.postlight.com?ref=winds)
 8. [Stream](https://getstream.io?ref=winds)
 9. [Sentry](https://sentry.io/?ref=winds)
-10. [DigitalOcean](https://digitalocean.com/?ref=winds)
+10. [AWS](https://aws.amazon.com/?ref=winds)
 
 ### Stream
 
@@ -357,6 +357,7 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 
 ### Contributors
 
+* [Tommaso Barbugli](https://github.com/tbarbugli)
 * [Dwight Gunning](https://github.com/dwightgunning)
 * [Matt Gauger](https://github.com/mathias)
 * [Zhomart Mukhamejanov](https://github.com/Zhomart)
