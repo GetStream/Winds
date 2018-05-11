@@ -173,6 +173,7 @@ exports.post = (req, res) => {
 												url: rss.value.feedUrl,
 											},
 											{
+												priority: 1,
 												removeOnComplete: true,
 												removeOnFail: true,
 											},
