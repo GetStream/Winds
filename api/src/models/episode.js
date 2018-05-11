@@ -30,7 +30,6 @@ export const EpisodeSchema = new Schema(
 			type: String,
 			trim: true,
 			index: true,
-			unique: true,
 			required: true,
 		},
 		title: {
