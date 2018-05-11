@@ -47,8 +47,11 @@ class RSSArticle extends React.Component {
 			});
 	}
 	render() {
-		if (this.state.error) {
-			return (
+		let articleContents;
+		if (this.props.loading || this.state.loadingContent) {
+			articleContents = <Loader />;
+		} else if (this.state.error) {
+			articleContents = (
 				<div>
 					<p>There was a problem loading this article :(</p>
 					<p>To read the article, head on over to:</p>
@@ -59,12 +62,12 @@ class RSSArticle extends React.Component {
 					</p>
 				</div>
 			);
-		}
-		if (this.props.loading) {
-			return <Loader />;
-		}
-		if (this.state.loadingContent) {
-			return <Loader />;
+		} else {
+			articleContents = (
+				<div className="rss-article-content">
+					{ReactHtmlParser(this.state.content)}
+				</div>
+			);
 		}
 		return (
 			<div className="rss-article-container">
@@ -87,10 +90,7 @@ class RSSArticle extends React.Component {
 						<TimeAgo timestamp={this.props.publicationDate} />
 					</span>
 				</div>
-				{this.state.error ? <div>{this.state.errorMessage}</div> : null}
-				<div className="rss-article-content">
-					{ReactHtmlParser(this.state.content)}
-				</div>
+				{articleContents}
 			</div>
 		);
 	}
