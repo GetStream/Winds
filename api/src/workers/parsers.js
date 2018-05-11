@@ -77,8 +77,8 @@ function ParseFeed(feedUrl, callback) {
 		while ((postBuffer = feedparser.read())) {
 			let post = Object.assign({}, postBuffer);
 
-			let description = strip(
-					entities.decodeHTML(post.description)).substring(0, 280),
+			let description = strip(entities.decodeHTML(post.description)).substring(0, 280)
+
 
 			let parsedArticle = {
 				description: description,
@@ -98,9 +98,18 @@ function ParseFeed(feedUrl, callback) {
 
 			// product hunt comments url
 			if (post.link.indexOf('https://www.producthunt.com')==0) {
-				let matches = post.description.match(/(https:\/\/www.producthunt.com\/posts\/.*)"/)
+				let matches = post.description.match(/(https:\/\/www.producthunt.com\/posts\/.*?)"/)
 				if (matches.length) {
 					parsedArticle.commentUrl = matches[1];
+				}
+			}
+
+			// nice images for XKCD
+			if (post.link.indexOf('https://xkcd')==0) {
+				let matches = post.description.match(/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/)
+				if (matches.length) {
+					console.log(matches[1])
+					parsedArticle.images = {'og':matches[1]}
 				}
 			}
 

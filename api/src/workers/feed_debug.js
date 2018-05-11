@@ -32,9 +32,9 @@ function main() {
 		logger.info(`========== Validating Publication ==========`)
 		logger.info(`Title: ${response.title}`)
 		logger.info(`Link: ${response.link}`)
-		if (response.image) {
+		if (response.image.og) {
 			logger.info(chalk.green('Image found :)'));
-			logger.info(`Image: ${response.image}`);
+			logger.info(`Image: ${response.image.og}`);
 		} else {
 			logger.info(chalk.red('Image missing :('));
 		}
@@ -60,16 +60,16 @@ function main() {
 					logger.info(`Content: ${article.content}`);
 				}
 
-				if (!program.rss) {
-					// for RSS we rely on OG scraping, for podcasts the images are already in the feed
-					if (article.images.og) {
-						logger.info(chalk.green('Image found :)'));
-						logger.info(`Image: ${article.images.og}`);
-					} else {
-						logger.info(chalk.red('Image missing :('));
 
-					}
+				// for RSS we rely on OG scraping, for podcasts the images are already in the feed
+				if (article.images.og) {
+					logger.info(chalk.green('Image found :)'));
+					logger.info(`Image: ${article.images.og}`);
+				} else {
+					logger.info(chalk.red('Image missing :('));
+
 				}
+
 			}
 		} else {
 			logger.info(chalk.red('Didn\'t find any articles or episodes.'));
