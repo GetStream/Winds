@@ -113,7 +113,6 @@ function ParseFeed(feedUrl, callback) {
 					/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/,
 				);
 				if (matches.length) {
-					console.log(matches[1]);
 					parsedArticle.images = { og: matches[1] };
 				}
 			}
