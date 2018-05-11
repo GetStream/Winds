@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.85",
+	"version": "2.0.89",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -122,6 +122,7 @@
 			"entitlements": "assets/entitlements.mas.plist",
 			"entitlementsInherit": "assets/entitlements.mas.inherit.plist",
 			"provisioningProfile": "assets/embedded.provisionprofile"
+
 		},
 		"mas": {
 			"icon": "assets/icon.icns",
