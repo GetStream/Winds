@@ -5,11 +5,15 @@ import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
+import Waypoint from 'react-waypoint';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { loading: true };
+		this.state = {
+			articleCursor: 1,
+			loading: true,
+		};
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
 		this.getFollowState = this.getFollowState.bind(this);
@@ -65,6 +69,7 @@ class RSSArticleList extends React.Component {
 			'/articles',
 			{},
 			{
+				page: this.state.articleCursor,
 				per_page: 10,
 				rss: rssFeedID,
 				sort_by: 'publicationDate,desc',
@@ -189,6 +194,18 @@ class RSSArticleList extends React.Component {
 							</div>
 						) : null}
 					</div>
+					<Waypoint
+						onEnter={() => {
+							this.setState(
+								{
+									articleCursor: this.state.articleCursor + 1,
+								},
+								() => {
+									this.getRSSArticles(this.props.match.params.rssFeedID);
+								},
+							);
+						}}
+					/>
 				</div>
 			);
 		}

@@ -301,8 +301,7 @@ textarea {
 /* FRAMEWORK - Structure and layout files.
 ========================================================================== */
 html {
-  font-size: 12px;
-  padding-bottom: 204em; }
+  font-size: 12px; }
 
 body {
   background-color: #f7f7f7;
@@ -310,7 +309,8 @@ body {
 
 .app {
   -webkit-app-region: drag;
-  padding-top: 8em; }
+  padding-bottom: 60px;
+  padding-top: 7em; }
 
 .center {
   display: flex;
@@ -804,10 +804,12 @@ body {
   border-image: linear-gradient(to top, #ebebeb, #f7f7f7) 1 100%;
   border-right-style: solid;
   border-right-width: 5px;
-  padding-bottom: 80px;
+  overflow-y: scroll;
   padding-left: 20px;
   padding-right: 20px;
   width: 33.33333%; }
+  .column::-webkit-scrollbar {
+    display: none; }
   .column:first-child {
     padding-left: 0; }
   .column:last-child {

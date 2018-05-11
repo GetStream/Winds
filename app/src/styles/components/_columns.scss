@@ -11,10 +11,14 @@
 	border-image: linear-gradient(to top, #ebebeb, #f7f7f7) 1 100%;
 	border-right-style: solid;
 	border-right-width: 5px;
-	padding-bottom: 80px;
+	overflow-y: scroll;
 	padding-left: 20px;
 	padding-right: 20px;
 	width: 33.33333%;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
 	&:first-child {
 		padding-left: 0;
