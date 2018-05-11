@@ -78,8 +78,7 @@ function ParseFeed(feedUrl, callback) {
 			let post = Object.assign({}, postBuffer);
 
 			let description = strip(
-					entities.decodeHTML(post.description).substring(0, 280),
-				)
+					entities.decodeHTML(post.description)).substring(0, 280),
 
 			let parsedArticle = {
 				description: description,
