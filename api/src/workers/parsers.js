@@ -15,6 +15,11 @@ import Article from '../models/rss';
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 
+
+const WindsUserAgent = 'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/'
+const BrowserUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36'
+const AcceptHeader = 'text/html,application/xhtml+xml,application/xml';
+
 // sanitize cleans the html before returning it to the frontend
 var sanitize = function(dirty) {
 	return sanitizeHtml(dirty, {
@@ -34,9 +39,9 @@ function ParseFeed(feedUrl, callback) {
 	req.setMaxListeners(50);
 	req.setHeader(
 		'User-Agent',
-		'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
+		WindsUserAgent,
 	);
-	req.setHeader('Accept', 'text/html,application/xhtml+xml');
+	req.setHeader('Accept', AcceptHeader);
 
 	let feedparser = new FeedParser();
 
@@ -127,12 +132,10 @@ function ParseFeed(feedUrl, callback) {
 
 function ParsePodcast(podcastUrl, callback) {
 	logger.debug(`Attempting to parse podcast ${podcastUrl}`);
-
 	let opts = {
 		headers: {
-			'Accept': 'text/html,application/xhtml+xml',
-			'User-Agent':
-				'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
+			'Accept': AcceptHeader,
+			'User-Agent': WindsUserAgent
 		},
 		pool: false,
 		timeout: 10000,
@@ -142,6 +145,9 @@ function ParsePodcast(podcastUrl, callback) {
 	let podcastContents = { episodes: [] };
 
 	request(opts, (error, response, responseData) => {
+		// easy way to detect charset or encoding issues
+		let partialBody = response.body.substring(0,500)
+		logger.debug(`${podcastUrl} response \n${partialBody}`)
 		podcastParser(responseData, (err, data) => {
 			if (err) {
 				return callback(null, err);

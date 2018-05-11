@@ -50,6 +50,7 @@ podcastQueue.process((job, done) => {
 				podcastContents.episodes.map(episode => {
 					return Episode.findOne({
 						url: normalize(episode.url), // do not lowercase this - some podcast URLs are case-sensitive
+						podcast: job.data.podcast,
 					}).then(exists => {
 						if (exists) {
 							return null;
