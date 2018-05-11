@@ -11,7 +11,7 @@ export default rssFeedID => {
 				if (!rssFeed.language) {
 					return detectFeedLanguage(rssFeed.feedUrl).then(language => {
 						// save to feed, return the modified document (the new: true thing)
-						RSS.findByIdAndUpdate(
+						return RSS.findByIdAndUpdate(
 							rssFeedID,
 							{ language },
 							{ new: true },
