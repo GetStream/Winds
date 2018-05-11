@@ -19,7 +19,8 @@ yarn build
 yarn dist
 
 # Build application
-build --c.extraMetadata.main=build/electron.js -p always
+#build --c.extraMetadata.main=build/electron.js -p always
+build --c.mac.identity=null -p always
 
 # Deploy Linux version to Snap
 snapcraft push --release stable dist/winds_${VERSION}_amd64.snap
