@@ -32,7 +32,7 @@ function main() {
 		logger.info(`========== Validating Publication ==========`)
 		logger.info(`Title: ${response.title}`)
 		logger.info(`Link: ${response.link}`)
-		if (response.image.og) {
+		if (response.image && response.image.og) {
 			logger.info(chalk.green('Image found :)'));
 			logger.info(`Image: ${response.image.og}`);
 		} else {
@@ -62,7 +62,7 @@ function main() {
 
 
 				// for RSS we rely on OG scraping, for podcasts the images are already in the feed
-				if (article.images.og) {
+				if (article.images && article.images.og) {
 					logger.info(chalk.green('Image found :)'));
 					logger.info(`Image: ${article.images.og}`);
 				} else {
