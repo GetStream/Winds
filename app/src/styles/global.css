@@ -858,6 +858,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
     padding: 1em;
+    margin-bottom: 1em;
     text-decoration: none; }
     .column .column-header h1 {
       margin-bottom: 0; }
@@ -1232,16 +1233,21 @@ body {
   display: grid;
   grid-column-gap: 2em;
   grid-row-gap: 2em;
-  grid-template-columns: 1fr 1fr; }
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 2em;
+  max-width: 100%; }
   .shows-grid .shows-grid-item {
     color: inherit;
+    font-weight: bolder;
     text-decoration: inherit; }
     .shows-grid .shows-grid-item .shows-grid-item-image {
       background-position: center;
-      background-size: cover;
+      background-repeat: no-repeat;
+      background-size: contain;
+      border-radius: 8px;
+      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+      margin-bottom: 1em;
       padding-bottom: 100%; }
-    .shows-grid .shows-grid-item h3 {
-      font-weight: bolder; }
 
 .simple-progress-bar {
   width: 100%; }
@@ -1262,6 +1268,30 @@ body {
   .simple-progress-bar .numbers {
     display: flex;
     justify-content: space-between; }
+
+.tiny-list > * {
+  border-bottom: 1px solid #eee;
+  color: inherit;
+  display: flex;
+  font-weight: bolder;
+  padding: 1em 0;
+  text-decoration: inherit; }
+  .tiny-list > *:last-child {
+    border-bottom: none; }
+  .tiny-list > * > *:not(:last-child) {
+    margin-right: 1em; }
+  .tiny-list > * > *:first-child {
+    height: 1.5em;
+    width: 1.5em; }
+  .tiny-list > * > *:nth-child(2) {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .tiny-list > * > *:last-child {
+    font-weight: normal; }
+    .tiny-list > * > *:last-child > *:not(:last-child) {
+      margin-right: 1em; }
 
 /* MODULES - Re-usable site elements.
 ========================================================================== */
