@@ -783,6 +783,23 @@ body {
 
 /* Components - Re-usable site elements.
 ========================================================================== */
+.article-info {
+  display: flex;
+  flex-direction: row;
+  font-weight: bolder;
+  letter-spacing: 0.1em;
+  margin-bottom: 1em;
+  text-transform: uppercase; }
+  .article-info > * {
+    margin-right: 1em; }
+  .article-info .muted {
+    color: #aaa; }
+  .article-info a {
+    color: #44bc75;
+    text-decoration: none; }
+    .article-info a:hover {
+      text-decoration: underline; }
+
 .click-catcher {
   bottom: 0;
   height: 100%;
@@ -2226,16 +2243,6 @@ body {
   max-width: 720px;
   min-width: 520px;
   padding-bottom: 100px; }
-  .rss-view > .column > .rss-article-container .info {
-    display: flex;
-    flex-direction: row;
-    font-weight: bolder;
-    letter-spacing: 0.1em;
-    text-transform: uppercase; }
-    .rss-view > .column > .rss-article-container .info > * {
-      margin-right: 1em; }
-    .rss-view > .column > .rss-article-container .info .muted {
-      color: #aaa; }
   .rss-view > .column > .rss-article-container h1 {
     font-size: 30px; }
   .rss-view > .column > .rss-article-container p {
