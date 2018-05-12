@@ -74,10 +74,11 @@ function registerProtocol() {
 }
 
 function generateMenu() {
+	// apple menu guidelines: https://developer.apple.com/macos/human-interface-guidelines/menus/menu-anatomy/
 	const template = [
 		{
 			label: 'File',
-			submenu: [{ role: 'quit' }],
+			submenu: [{ role: 'quit' }, { role: 'new' }],
 		},
 		{
 			label: 'Edit',
