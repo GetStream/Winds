@@ -91,7 +91,7 @@ class DiscoverSection extends React.Component {
 								<span>{suggestion.title}</span>
 								<div>
 									<span>{`View ${
-										suggestion.type == 'podcast' ? 'Podcast' : 'Feed'
+										suggestion.type === 'podcast' ? 'Podcast' : 'Feed'
 									}`}</span>
 									<i className="fa fa-chevron-right" />
 								</div>
@@ -106,11 +106,13 @@ class DiscoverSection extends React.Component {
 
 DiscoverSection.defaultProps = {
 	suggestedPodcasts: [],
+	suggestedRssFeeds: [],
 };
 
 DiscoverSection.propTypes = {
-	suggestedPodcasts: PropTypes.array,
 	dispatch: PropTypes.func.isRequired,
+	suggestedPodcasts: PropTypes.array,
+	suggestedRssFeeds: PropTypes.array,
 };
 
 const mapStateToProps = (state, ownProps) => {
