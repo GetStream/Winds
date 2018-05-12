@@ -78,7 +78,10 @@ function generateMenu() {
 	const template = [
 		{
 			label: 'File',
-			submenu: [{ role: 'quit' }, { role: 'new' }],
+			submenu: [        
+				{ role: 'about' },
+				{ role: 'quit' }
+			],
 		},
 		{
 			label: 'Edit',
@@ -146,9 +149,10 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
+	//if (process.platform !== 'darwin') {
+// single window application guideline is to close the app
 		app.quit();
-	}
+	//}
 });
 
 app.on('activate', () => {
