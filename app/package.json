@@ -109,10 +109,7 @@
 			"icon": "assets/icon.icns",
 			"type": "distribution",
 			"target": [
-				"mas",
-				"dmg",
-				"pkg",
-				"mas-dev"
+				"mas"
 			],
 			"publish": {
 				"provider": "s3",

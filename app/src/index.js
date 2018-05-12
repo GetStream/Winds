@@ -30,9 +30,14 @@ class UpdateWrapper extends React.Component {
 				});
 			} else {
 				this.setState({
+					loading: false,
+					onLatestVersion: true,
+				});
+				/*
+				this.setState({
 					downloadURL: response.data.url.replace('-', ''),
 					loading: false,
-				});
+				});*/
 			}
 		});
 	}
