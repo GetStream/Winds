@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.86",
+	"version": "2.0.89",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -109,9 +109,6 @@
 			"icon": "assets/icon.icns",
 			"type": "distribution",
 			"target": [
-				"pkg",
-				"dmg",
-				"zip",
 				"mas"
 			],
 			"publish": {
@@ -119,15 +116,16 @@
 				"bucket": "winds-2.0-releases",
 				"path": "releases"
 			},
-			"category": "public.app-category.productivity",
+			"category": "public.app-category.news",
 			"entitlements": "assets/entitlements.mas.plist",
 			"entitlementsInherit": "assets/entitlements.mas.inherit.plist",
 			"provisioningProfile": "assets/embedded.provisionprofile"
+
 		},
 		"mas": {
 			"icon": "assets/icon.icns",
 			"type": "distribution",
-			"category": "public.app-category.productivity"
+			"category": "public.app-category.news"
 		},
 		"win": {
 			"target": "nsis",
