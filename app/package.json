@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.93",
+	"version": "2.0.94",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -109,7 +109,10 @@
 			"icon": "assets/icon.icns",
 			"type": "distribution",
 			"target": [
-				"mas"
+				"mas",
+				"dmg",
+				"pkg",
+				"mas-dev"
 			],
 			"publish": {
 				"provider": "s3",

@@ -8,8 +8,6 @@
     <string>EHV7XZLAHA.io.getstream.winds</string>
 	<key>com.apple.security.network.client</key>
 	<true/>
-	<key>com.apple.security.network.server</key>
-	<true/>
 	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
   </dict>
