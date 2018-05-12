@@ -54,7 +54,6 @@ class FeaturedItems extends React.Component {
 								style={{
 									backgroundImage: `linear-gradient(to top, black, transparent), url(${featuredItem
 										.images.featured ||
-										featuredItem.images.favicon ||
 										getPlaceholderImageURL(featuredItem._id)})`,
 								}}
 								to={linkURL}

@@ -55,10 +55,8 @@ class AppRouter extends Component {
 					<AuthedRoute component={Profile} exact path="/profile" />
 					<AuthedRoute component={Profile} path="/profile/:userID" />
 					<AuthedRoute component={PlaylistView} path="/playlists/:playlistID" />
-					<AuthedRoute component={PodcastsView} exact path="/podcasts" />
-					<AuthedRoute component={PodcastsView} path="/podcasts/:podcastID" />
-					<AuthedRoute component={RSSFeedsView} exact path="/rss" />
-					<AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
+					<AuthedRoute component={PodcastsView} path="/podcasts" />
+					<AuthedRoute component={RSSFeedsView} path="/rss" />
 					<AuthedRoute component={AdminView} path="/admin" />
 					<UnauthedRoute component={Login} exact path="/login" />
 					<UnauthedRoute component={Create} exact path="/create-account" />
@@ -77,6 +75,7 @@ class AppRouter extends Component {
 		);
 	}
 }
+// <AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
 
 // export default AppRouter;
 export default connect()(AppRouter);

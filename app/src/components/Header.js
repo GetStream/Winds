@@ -72,7 +72,7 @@ class Header extends Component {
 		const { location } = this.props;
 
 		let profilePopover = (
-			<div className="panel profile-popover">
+			<div className="popover-panel profile-popover">
 				<div className="panel-element user">
 					<div className="avatar">
 						<Avatar height={80} width={80}>
@@ -114,7 +114,7 @@ class Header extends Component {
 		);
 
 		let newContentPopover = (
-			<div className="panel new-content-popover">
+			<div className="popover-panel new-content-popover">
 				<div className="panel-element" onClick={this.toggleNewPodcastModal}>
 					<i className="fas fa-podcast" />
 					<span>New Podcast</span>
@@ -127,7 +127,7 @@ class Header extends Component {
 		);
 
 		let githubPopover = (
-			<div className="popover github-popover">
+			<div className="popover-panel github-popover">
 				<div
 					className="top"
 					onClick={e => {

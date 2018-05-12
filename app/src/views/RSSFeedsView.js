@@ -1,17 +1,17 @@
 import { Route, Switch } from 'react-router-dom';
 import Img from 'react-image';
-import ListOfFollowedRSSFeeds from '../components/ListOfFollowedRSSFeeds';
 import RSSArticle from '../components/RSSArticle';
 import RSSArticleList from '../components/RSSArticleList';
-import RSSPanelsContainer from '../components/RSSPanelsContainer';
 import React from 'react';
-import AddRSSModal from '../components/AddRSSModal';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import PropTypes from 'prop-types';
-import FollowerList from '../components/FollowerList';
-import addButton from '../images/icons/add.svg';
 import partialIcon from '../images/icons/partial.svg';
+import Tabs from '../components/Tabs';
+import RecentArticles from '../components/RSSPanels/RecentArticles';
+import RssFeedList from '../components/RSSPanels/RssFeedList';
+import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
+import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
 
 const RSSNotSelected = () => {
 	return (
@@ -58,101 +58,66 @@ class RSSFeedsView extends React.Component {
 	}
 
 	render() {
-		let columnComponents = null;
-		if (this.state.selectedTab === 'all') {
-			columnComponents = <RSSPanelsContainer />;
-		} else if (this.state.selectedTab === 'my-rss-feeds') {
-			columnComponents = <ListOfFollowedRSSFeeds />;
-		}
-
-		let leftColumn;
-		if (this.props.rssFeed && this.props.rssFeed.featured) {
-			leftColumn = (
-				<div className="column">
-					<div className="column-header" />
-					<div className="column-content featured-rss">
-						<div
-							className="hero-card"
-							style={{
-								backgroundImage: `linear-gradient(to top, black, transparent), url(${
-									this.props.rssFeed.images.featured
-								})`,
-							}}
-						>
-							<h1>{this.props.rssFeed.title}</h1>
-							<div className="info">rss</div>
-						</div>
-						<label>About {this.props.rssFeed.title}</label>
-						<h1>{this.props.rssFeed.description}</h1>
-						<div>{this.props.rssFeed.summary}</div>
-						<FollowerList id={this.props.rssFeed._id} type="rss" />
-					</div>
-				</div>
-			);
-		} else {
-			leftColumn = (
-				<div className="column">
-					<div className="column-header">
-						<div className="heading-with-button">
-							<h1>RSS</h1>
-							<Img
-								className="plus-button"
-								onClick={this.toggleNewRSSModal}
-								src={addButton}
-							/>
-						</div>
-
-						<ul className="tabs">
-							<li
-								className={`tab ${
-									this.state.selectedTab === 'all' ? 'active' : ''
-								}`}
-								onClick={() => {
-									localStorage['selectedRSSTab'] = 'all';
-									this.setState({
-										selectedTab: 'all',
-									});
-								}}
-							>
-								All
-							</li>
-							<li
-								className={`tab ${
-									this.state.selectedTab === 'my-rss-feeds'
-										? 'active'
-										: ''
-								}`}
-								onClick={() => {
-									localStorage['selectedRSSTab'] = 'my-rss-feeds';
-									this.setState({
-										selectedTab: 'my-rss-feeds',
-									});
-								}}
-							>
-								My RSS Feeds
-							</li>
-						</ul>
-					</div>
-					<div className="column-content">{columnComponents}</div>
-					<AddRSSModal
-						done={this.toggleNewRSSModal}
-						isOpen={this.state.newRSSModalIsOpen}
-						toggleModal={this.toggleNewRSSModal}
-					/>
-				</div>
-			);
-		}
+		// let leftColumn;
+		// if (this.props.rssFeed && this.props.rssFeed.featured) {
+		// 	leftColumn = (
+		// 		<div className="column">
+		// 			<div className="column-header" />
+		// 			<div className="column-content featured-rss">
+		// 				<div
+		// 					className="hero-card"
+		// 					style={{
+		// 						backgroundImage: `linear-gradient(to top, black, transparent), url(${
+		// 							this.props.rssFeed.images.featured
+		// 						})`,
+		// 					}}
+		// 				>
+		// 					<h1>{this.props.rssFeed.title}</h1>
+		// 					<div className="info">rss</div>
+		// 				</div>
+		// 				<label>About {this.props.rssFeed.title}</label>
+		// 				<h1>{this.props.rssFeed.description}</h1>
+		// 				<div>{this.props.rssFeed.summary}</div>
+		// 				<FollowerList id={this.props.rssFeed._id} type="rss" />
+		// 			</div>
+		// 		</div>
+		// 	);
+		// } else {
+		// 	leftColumn = (
+		// 		<div className="column">
+		// 			<div className="column-content">{columnComponents}</div>
+		// 		</div>
+		// 	);
+		// }
 
 		return (
 			<div className="two-columns rss-view">
-				{leftColumn}
+				<div className="column">
+					<div className="column-header">
+						<h1>RSS</h1>
+					</div>
+					<Tabs tabGroup="rss-view">
+						<div tabTitle="All Feeds">
+							<RecentArticles />
+							<RssFeedList />
+						</div>
+						<div tabTitle="Bookmarks">
+							<BookmarkedArticles />
+						</div>
+						<div tabTitle="Suggestions">
+							<SuggestedFeeds />
+						</div>
+					</Tabs>
+				</div>
 				<div className="column">
 					<Switch>
 						<Route
 							component={RSSArticle}
 							path="/rss/:rssFeedID/articles/:articleID"
 						/>
+						<Route component={recentArticles} path="/rss/recent" />
 						<Route component={RSSArticleList} path="/rss/:rssFeedID" />
+						<Route component={allArticles} path="/rss" />
 						<Route component={RSSNotSelected} />
 					</Switch>
 				</div>
@@ -160,6 +125,14 @@ class RSSFeedsView extends React.Component {
 		);
 	}
 }
+
+let allArticles = props => {
+	return <div>all articles</div>;
+};
+
+let recentArticles = props => {
+	return <div>recent articles</div>;
+};
 
 RSSFeedsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,

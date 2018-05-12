@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import exitIcon from '../images/buttons/exit.svg';
 import Dropzone from 'react-dropzone';
 import config from '../config';
@@ -9,6 +10,7 @@ import axios from 'axios';
 import fetch from '../util/fetch';
 import saveIcon from '../images/icons/save.svg';
 import rssIcon from '../images/icons/rss.svg';
+import { withRouter } from 'react-router-dom';
 
 class AddRSSModal extends React.Component {
 	constructor(props) {
@@ -102,6 +104,12 @@ class AddRSSModal extends React.Component {
 			url: '/rss',
 		})
 			.then(res => {
+				for (let rssFeed of res.data) {
+					this.props.dispatch({
+						rssFeed,
+						type: 'UPDATE_RSS_FEED',
+					});
+				}
 				this.setState({
 					feedsToFollow: res.data,
 					stage: 'select-feeds',
@@ -145,14 +153,22 @@ class AddRSSModal extends React.Component {
 				return fetch('post', '/follows', null, {
 					rss: checkedFeedToFollow,
 					type: 'rss',
+				}).then(response => {
+					this.props.dispatch({
+						rssFeedID: response.data.rss,
+						type: 'FOLLOW_RSS_FEED',
+						userID: response.data.user,
+					});
+					return response.data.rss;
 				});
 			}),
 		)
-			.then(() => {
+			.then(rssFeeds => {
 				this.setState({
 					submitting: false,
 					success: true,
 				});
+				this.props.history.push(`/rss/${rssFeeds[0]}`);
 				setTimeout(() => {
 					this.resetModal();
 					this.props.done();
@@ -405,9 +421,11 @@ AddRSSModal.defaultProps = {
 };
 
 AddRSSModal.propTypes = {
+	dispatch: PropTypes.func.isRequired,
 	done: PropTypes.func.isRequired,
+	history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 	isOpen: PropTypes.bool,
 	toggleModal: PropTypes.func.isRequired,
 };
 
-export default AddRSSModal;
+export default connect()(withRouter(AddRSSModal));

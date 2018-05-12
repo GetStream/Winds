@@ -1,15 +1,18 @@
-import forwardGreenIcon from '../images/icons/forward-green.svg';
+import forwardBlackIcon from '../images/icons/forward-black.svg';
 import FeaturedItems from '../components/FeaturedItems';
 import Img from 'react-image';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
-import NewShareForm from '../components/NewShareForm';
+// import NewShareForm from '../components/NewShareForm';
 import PropTypes from 'prop-types';
-import RSSPanelsContainer from '../components/RSSPanelsContainer';
+// import RSSPanelsContainer from '../components/RSSPanelsContainer';
 import React from 'react';
-import TimelineFeed from '../components/TimelineFeed';
 import { connect } from 'react-redux';
-import DashboardListenSection from '../components/DashboardListenSection';
+import RecentEpisodes from '../components/PodcastPanels/RecentEpisodes';
+import RecentArticles from '../components/RSSPanels/RecentArticles';
+import PodcastList from '../components/PodcastPanels/PodcastList';
+import RssFeedList from '../components/RSSPanels/RssFeedList';
+import DiscoverSection from '../components/DiscoverSection';
 
 class Dashboard extends React.Component {
 	render() {
@@ -21,33 +24,37 @@ class Dashboard extends React.Component {
 				<FeaturedItems />
 				<div className="three-columns">
 					<div className="column">
-						<div className="column-header">
-							<h1>Timeline</h1>
-						</div>
-						<div className="column-content">
-							<NewShareForm
-								userEmail={this.props.userEmail}
-								userID={this.props.userID}
-							/>
-							<TimelineFeed />
-						</div>
-					</div>
-					<div className="column">
 						<Link className="column-header" to="/podcasts">
-							<h1>Listen</h1>
-							<Img src={forwardGreenIcon} />
+							<h1>Podcasts</h1>
+							<div className="drilldown">
+								<div>View all</div>
+								<Img src={forwardBlackIcon} />
+							</div>
 						</Link>
 						<div className="column-content">
-							<DashboardListenSection />
+							<RecentEpisodes />
+							<PodcastList />
 						</div>
 					</div>
 					<div className="column">
 						<Link className="column-header" to="/rss">
 							<h1>Read</h1>
-							<Img src={forwardGreenIcon} />
+							<div className="drilldown">
+								<div>View all</div>
+								<Img src={forwardBlackIcon} />
+							</div>
 						</Link>
 						<div className="column-content">
-							<RSSPanelsContainer />
+							<RecentArticles />
+							<RssFeedList />
+						</div>
+					</div>
+					<div className="column">
+						<div className="column-header">
+							<h1>Discover</h1>
+						</div>
+						<div className="column-content">
+							<DiscoverSection />
 						</div>
 					</div>
 				</div>

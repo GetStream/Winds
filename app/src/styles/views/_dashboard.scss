@@ -23,11 +23,11 @@
 			line-height: 1.5em;
 			margin-bottom: 2em;
 
-			a:link,
-			a:visited,
-			a:hover,
+			a:active,
 			a:focus,
-			a:active {
+			a:hover,
+			a:link,
+			a:visited {
 				border-bottom: 2px solid #89a8a8;
 				color: inherit;
 				font-weight: 500;
@@ -43,14 +43,6 @@
 				color: $foreground-white;
 			}
 		}
-	}
-
-	.column-header {
-		align-items: baseline;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		text-decoration: none;
 	}
 
 	.podcast-dashboard-column {
