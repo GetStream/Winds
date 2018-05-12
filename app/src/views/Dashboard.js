@@ -12,6 +12,7 @@ import RecentEpisodes from '../components/PodcastPanels/RecentEpisodes';
 import RecentArticles from '../components/RSSPanels/RecentArticles';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
+import DiscoverSection from '../components/DiscoverSection';
 
 class Dashboard extends React.Component {
 	render() {
@@ -26,7 +27,7 @@ class Dashboard extends React.Component {
 						<Link className="column-header" to="/podcasts">
 							<h1>Podcasts</h1>
 							<div className="drilldown">
-								<p>View all</p>
+								<div>View all</div>
 								<Img src={forwardBlackIcon} />
 							</div>
 						</Link>
@@ -39,7 +40,7 @@ class Dashboard extends React.Component {
 						<Link className="column-header" to="/rss">
 							<h1>Read</h1>
 							<div className="drilldown">
-								<p>View all</p>
+								<div>View all</div>
 								<Img src={forwardBlackIcon} />
 							</div>
 						</Link>
@@ -53,8 +54,7 @@ class Dashboard extends React.Component {
 							<h1>Discover</h1>
 						</div>
 						<div className="column-content">
-							<p> podcast suggestions grid</p>
-							<p>merged suggestions grid</p>
+							<DiscoverSection />
 						</div>
 					</div>
 				</div>
