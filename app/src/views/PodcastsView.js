@@ -11,6 +11,7 @@ import fetch from '../util/fetch';
 import { connect } from 'react-redux';
 // import partialIcon from '../images/icons/partial.svg';
 import { Route, Switch } from 'react-router-dom';
+import AllEpisodes from '../components/AllEpisodes';
 
 class PodcastsView extends React.Component {
 	constructor(props) {
@@ -121,17 +122,13 @@ class PodcastsView extends React.Component {
 					<Switch>
 						<Route component={recentEpisodes} path="/podcasts/recent" />
 						<Route component={EpisodesView} path="/podcasts/:podcastID" />
-						<Route component={allEpisodes} path="/podcasts" />
+						<Route component={AllEpisodes} path="/podcasts" />
 					</Switch>
 				</div>
 			</div>
 		);
 	}
 }
-
-let allEpisodes = () => {
-	return <div>all episodes</div>;
-};
 
 let recentEpisodes = () => {
 	return <div>recent episodes</div>;
