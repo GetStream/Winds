@@ -1,6 +1,3 @@
-import inactivePinLogo from '../images/icons/pin-inactive.svg';
-import pinIcon from '../images/icons/pin.svg';
-import Img from 'react-image';
 import { Link } from 'react-router-dom';
 import TimeAgo from './TimeAgo';
 import React from 'react';
@@ -70,6 +67,7 @@ ArticleListItem.defaultProps = {
 
 ArticleListItem.propTypes = {
 	_id: PropTypes.string.isRequired,
+	commentUrl: PropTypes.string,
 	description: PropTypes.string,
 	favicon: PropTypes.string,
 	images: PropTypes.shape({ og: PropTypes.string }),
@@ -78,8 +76,12 @@ ArticleListItem.propTypes = {
 	pinArticle: PropTypes.func.isRequired,
 	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
-	rss: PropTypes.shape({ _id: PropTypes.string }),
+	rss: PropTypes.shape({
+		_id: PropTypes.string,
+		title: PropTypes.string,
+	}),
 	title: PropTypes.string,
 	unpinArticle: PropTypes.func.isRequired,
+	url: PropTypes.string,
 };
 export default ArticleListItem;
