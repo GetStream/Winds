@@ -124,7 +124,7 @@ class EpisodesView extends React.Component {
 						<Img
 							src={[
 								this.props.podcast.images.featured,
-								this.props.podcast.images.favicon,
+								this.props.podcast.images.og,
 								getPlaceholderImageURL(this.props.podcast._id),
 							]}
 						/>
@@ -233,6 +233,7 @@ EpisodesView.propTypes = {
 		images: PropTypes.shape({
 			favicon: PropTypes.string,
 			featured: PropTypes.string,
+			og: PropTypes.string,
 		}),
 		title: PropTypes.string,
 	}),
