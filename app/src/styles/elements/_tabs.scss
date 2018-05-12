@@ -2,7 +2,8 @@
 	list-style-type: none;
 	margin: 0;
 	margin-bottom: 2em;
-	padding: 0;
+	min-height: 2em;
+	padding-left: 1em;
 
 	.tab {
 		color: $foreground-darkgray;

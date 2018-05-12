@@ -7,6 +7,8 @@ import Img from 'react-image';
 import axios from 'axios';
 import fetch from '../util/fetch';
 import saveIcon from '../images/icons/save.svg';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class AddPodcastModal extends React.Component {
 	constructor(props) {
@@ -48,6 +50,12 @@ class AddPodcastModal extends React.Component {
 			url: '/podcasts',
 		})
 			.then(res => {
+				for (let podcast of res.data) {
+					this.props.dispatch({
+						podcast,
+						type: 'UPDATE_PODCAST_SHOW',
+					});
+				}
 				this.setState({
 					podcastsToFollow: res.data,
 					stage: 'select-podcasts',
@@ -80,13 +88,22 @@ class AddPodcastModal extends React.Component {
 				return fetch('post', '/follows', null, {
 					podcast: checkedPodcastToFollow,
 					type: 'podcast',
+				}).then(response => {
+					console.log(response);
+					this.props.dispatch({
+						podcastID: response.data.podcast,
+						type: 'FOLLOW_PODCAST',
+						userID: response.data.user,
+					});
+					return response.data.podcast;
 				});
 			}),
-		).then(() => {
+		).then(podcastIDs => {
 			this.setState({
 				submitting: false,
 				success: true,
 			});
+			this.props.history.push(`/podcasts/${podcastIDs[0]}`);
 			setTimeout(() => {
 				this.resetModal();
 				this.props.done();
@@ -278,4 +295,4 @@ AddPodcastModal.propTypes = {
 	toggleModal: PropTypes.func.isRequired,
 };
 
-export default AddPodcastModal;
+export default connect()(withRouter(AddPodcastModal));

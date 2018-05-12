@@ -37,4 +37,20 @@ const getPlaylistsForUser = (state, userID) => {
 	return playlists;
 };
 
-export { getActivity, getPlaylistsForUser };
+const getEpisode = (state, episodeID) => {
+	// get podcast
+	return {
+		...state.episodes[episodeID],
+		podcast: state.podcasts[state.episodes[episodeID].podcast],
+	};
+};
+
+const getArticle = (state, articleID) => {
+	// get podcast
+	return {
+		...state.articles[articleID],
+		rss: state.rssFeeds[state.articles[articleID].rss],
+	};
+};
+
+export { getActivity, getPlaylistsForUser, getEpisode, getArticle };

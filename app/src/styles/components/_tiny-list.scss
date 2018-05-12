@@ -1,0 +1,40 @@
+.tiny-list {
+	> * {
+		border-bottom: 1px solid $foreground-lightgray;
+		color: inherit;
+		display: flex;
+		font-weight: bolder;
+		padding: 1em 0;
+		text-decoration: inherit;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		> * {
+			&:not(:last-child) {
+				margin-right: 1em;
+			}
+
+			&:first-child {
+				height: 1.5em;
+				width: 1.5em;
+			}
+
+			&:nth-child(2) {
+				flex-grow: 1;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			&:last-child {
+				font-weight: normal;
+
+				> *:not(:last-child) {
+					margin-right: 1em;
+				}
+			}
+		}
+	}
+}
