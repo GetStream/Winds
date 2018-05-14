@@ -21,7 +21,7 @@ const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 exports.signup = (req, res) => {
 	const data = Object.assign({}, { interests: [] }, req.body);
 
-	if (!data.email || !data.name || !data.password) {
+	if (!data.email || !data.username || !data.name || !data.password) {
 		return res.sendStatus(422);
 	}
 
@@ -33,127 +33,120 @@ exports.signup = (req, res) => {
 		return res.status(422).send('Usernames must be alphanumeric.');
 	}
 
-	User.findOne({ email: data.email.toLowerCase(), username: data.username }).then(
-		foundUser => {
-			if (foundUser) {
-				return res
-					.status(409)
-					.send('A user already exists with that username or email.');
-			} else {
-				User.create(data)
-					.then(createdUser => {
-						return Promise.all([
-							client
-								.feed('timeline', createdUser._id)
-								.follow('user', createdUser._id),
-						]).then(() => {
-							return createdUser;
-						});
-					})
-					.then(createdUser => {
-						if (process.env.NODE_ENV === 'production') {
-							let obj = {
-								meta: {
-									data: {},
-								},
-							};
+	User.findOne({
+		$or: [{ email: data.email.toLowerCase() }, { username: data.username }],
+	}).then(exists => {
+		if (exists) {
+			res.status(409).send('A user already exists with that username or email.');
+			return;
+		} else {
+			User.create(data)
+				.then(user => {
+					return Promise.all([
+						client.feed('timeline', user._id).follow('user', user._id),
+					]).then(() => {
+						return user;
+					});
+				})
+				.then(user => {
+					if (process.env.NODE_ENV === 'production') {
+						let obj = {
+							meta: {
+								data: {},
+							},
+						};
 
-							obj.meta.data[`user:${createdUser._id}`] = {
-								email: createdUser.email,
-							};
-							return events(obj).then(() => {
-								return createdUser;
-							});
-						} else {
-							return createdUser;
-						}
-					})
-					.then(createdUser => {
-						return RSS.find({ featured: true }).then(featuredRssFeeds => {
-							return Promise.all(
-								featuredRssFeeds.map(featuredRssFeed => {
-									return followRssFeed(
-										createdUser._id,
-										featuredRssFeed._id,
-									);
-								}),
-							).then(() => {
-								return createdUser;
-							});
+						obj.meta.data[`user:${user._id}`] = {
+							email: user.email,
+						};
+
+						return events(obj).then(() => {
+							return user;
 						});
-					})
-					.then(createdUser => {
-						return Podcast.find({ featured: true })
-							.then(featuredPodcasts => {
-								return Promise.all(
-									featuredPodcasts.map(featuredPodcast => {
-										return followPodcast(
-											createdUser._id,
-											featuredPodcast._id,
-										);
-									}),
-								);
-							})
-							.then(() => {
-								return createdUser;
-							});
-					})
-					.then(createdUser => {
-						// follow all podcasts and rss feeds specified in "interests" payload
+					} else {
+						return user;
+					}
+				})
+				.then(user => {
+					return RSS.find({ featured: true }).then(featuredRssFeeds => {
 						return Promise.all(
-							data.interests.map(interest => {
-								// all interests
-								return Promise.all([
-									// rss and podcasts
-									RSS.find({ interest }).then(interestRssFeeds => {
-										return Promise.all(
-											interestRssFeeds.map(interestRssFeed => {
-												return followRssFeed(
-													createdUser._id,
-													interestRssFeed._id,
-												);
-											}),
-										);
-									}),
-									Podcast.find({ interest }).then(interestPodcasts => {
-										return Promise.all(
-											interestPodcasts.map(interestPodcast => {
-												return followPodcast(
-													createdUser._id,
-													interestPodcast._id,
-												);
-											}),
-										);
-									}),
-								]);
+							featuredRssFeeds.map(featuredRssFeed => {
+								return followRssFeed(user._id, featuredRssFeed._id);
 							}),
 						).then(() => {
-							return createdUser;
+							return user;
 						});
-					})
-					.then(createdUser => {
-						res.json({
-							_id: createdUser._id,
-							email: createdUser.email,
-							interests: createdUser.interests,
-							jwt: jwt.sign(
-								{
-									email: createdUser.email,
-									sub: createdUser._id,
-								},
-								config.jwt.secret,
-							),
-							name: createdUser.name,
-							username: createdUser.username,
-						});
-					})
-					.catch(err => {
-						logger.error(err);
-						res.status(500).send(err);
 					});
-			}
-		},
-	);
+				})
+				.then(user => {
+					return Podcast.find({ featured: true })
+						.then(featuredPodcasts => {
+							return Promise.all(
+								featuredPodcasts.map(featuredPodcast => {
+									return followPodcast(user._id, featuredPodcast._id);
+								}),
+							);
+						})
+						.then(() => {
+							return user;
+						});
+				})
+				.then(user => {
+					// follow all podcasts and rss feeds specified in "interests" payload
+					return Promise.all(
+						data.interests.map(interest => {
+							// all interests
+							return Promise.all([
+								// rss and podcasts
+								RSS.find({ interest }).then(interestRssFeeds => {
+									return Promise.all(
+										interestRssFeeds.map(interestRssFeed => {
+											return followRssFeed(
+												user._id,
+												interestRssFeed._id,
+											);
+										}),
+									);
+								}),
+
+								Podcast.find({ interest }).then(interestPodcasts => {
+									return Promise.all(
+										interestPodcasts.map(interestPodcast => {
+											return followPodcast(
+												user._id,
+												interestPodcast._id,
+											);
+										}),
+									);
+								}),
+							]);
+						}),
+					).then(() => {
+						return user;
+					});
+				})
+				.then(user => {
+					res.json({
+						_id: user._id,
+						email: user.email,
+						interests: user.interests,
+						jwt: jwt.sign(
+							{
+								email: user.email,
+								sub: user._id,
+							},
+							config.jwt.secret,
+						),
+						name: user.name,
+						username: user.username,
+					});
+				})
+				.catch(err => {
+					logger.error(err);
+					res.status(500).send(err);
+				});
+		}
+	});
 };
 
 exports.login = (req, res) => {
