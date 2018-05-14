@@ -16,7 +16,7 @@
         </style>
     </head>
     <body>
-        <h1>Redirecting you to the Winds ${version} download page...</h1>
+        <h1>Fetching Winds ${version}...</h1>
         <p class="notice">This may take a few moments...</p>
 
         <script type="text/javascript">
