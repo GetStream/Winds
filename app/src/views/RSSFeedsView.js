@@ -12,7 +12,8 @@ import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
 import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
-import AllArticles from '../components/AllArticles';
+import AllArticlesList from '../components/AllArticlesList';
+import RecentArticlesList from '../components/RecentArticlesList';
 
 const RSSNotSelected = () => {
 	return (
@@ -116,9 +117,9 @@ class RSSFeedsView extends React.Component {
 							component={RSSArticle}
 							path="/rss/:rssFeedID/articles/:articleID"
 						/>
-						<Route component={recentArticles} path="/rss/recent" />
+						<Route component={RecentArticlesList} path="/rss/recent" />
 						<Route component={RSSArticleList} path="/rss/:rssFeedID" />
-						<Route component={AllArticles} path="/rss" />
+						<Route component={AllArticlesList} path="/rss" />
 						<Route component={RSSNotSelected} />
 					</Switch>
 				</div>
@@ -126,10 +127,6 @@ class RSSFeedsView extends React.Component {
 		);
 	}
 }
-
-let recentArticles = props => {
-	return <div>recent articles</div>;
-};
 
 RSSFeedsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,

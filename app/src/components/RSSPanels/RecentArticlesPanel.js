@@ -49,7 +49,7 @@ class RecentArticlesPanel extends React.Component {
 	render() {
 		return (
 			<Panel>
-				<Panel.Header>Recent Articles</Panel.Header>
+				<Panel.Header to="/rss/recent">Recent Articles</Panel.Header>
 				<Panel.Contents>
 					{this.props.articles.slice(0, 20).map(article => {
 						return (

@@ -20,7 +20,6 @@ class AllArticles extends React.Component {
 								pinArticle={() => {
 									this.props.pinArticle(article._id);
 								}}
-								rssFeedID={this.props.match.params.rssFeedID}
 								unpinArticle={() => {
 									this.props.unpinArticle(article.pinID, article._id);
 								}}
