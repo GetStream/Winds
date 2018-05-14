@@ -148,7 +148,7 @@ const mapStateToProps = (state, ownProps) => {
 	let podcasts = [];
 	let followedPodcasts = {};
 	if (state.followedPodcasts && state.followedPodcasts[localStorage['authedUser']]) {
-		followedPodcasts = state.followedPodcasts[localStorage['authedUser']];
+		followedPodcasts = { ...state.followedPodcasts[localStorage['authedUser']] };
 	}
 	if ('suggestedPodcasts' in state) {
 		for (let podcastID of state.suggestedPodcasts) {

@@ -75,7 +75,7 @@ BookmarkedEpisodes.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
 	let bookmarks = [];
-	for (var episodeID in state.pinnedEpisodes) {
+	for (let episodeID in state.pinnedEpisodes) {
 		if (state.pinnedEpisodes.hasOwnProperty(episodeID)) {
 			if (state.pinnedEpisodes[episodeID]) {
 				let pin = { ...state.pinnedEpisodes[episodeID] };
