@@ -10,7 +10,7 @@ import fetch from '../util/fetch';
 import moment from 'moment';
 import Loader from './Loader';
 
-class EpisodesView extends React.Component {
+class PodcastEpisodesView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggleFollowPodcast = this.toggleFollowPodcast.bind(this);
@@ -23,15 +23,11 @@ class EpisodesView extends React.Component {
 	componentDidMount() {
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.props.getEpisodes(this.props.match.params.podcastID);
-		this.props.getPodcastFollowers(this.props.match.params.podcastID);
-		this.props.getPlaylistsForUser();
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
 			this.props.getPodcast(nextProps.match.params.podcastID);
 			this.props.getEpisodes(nextProps.match.params.podcastID);
-			this.props.getPodcastFollowers(nextProps.match.params.podcastID);
-			this.props.getPlaylistsForUser();
 		}
 	}
 	toggleFollowPodcast() {
@@ -156,16 +152,9 @@ class EpisodesView extends React.Component {
 						) {
 							active = true;
 						}
-
 						return (
 							<EpisodeListItem
 								active={active}
-								image={[
-									episode.images.og,
-									this.props.podcast.images.featured,
-									this.props.podcast.images.favicon,
-									getPlaceholderImageURL(this.props.podcast._id),
-								]}
 								key={episode._id}
 								pinEpisode={() => {
 									this.props.pinEpisode(episode._id);
@@ -179,6 +168,7 @@ class EpisodesView extends React.Component {
 										this.props.playEpisode(episode._id, i);
 									}
 								}}
+								playable={true}
 								playing={this.props.context.playing}
 								position={i}
 								toggleLike={() => {
@@ -201,12 +191,12 @@ class EpisodesView extends React.Component {
 	}
 }
 
-EpisodesView.defaultProps = {
+PodcastEpisodesView.defaultProps = {
 	episodes: [],
 	isFollowing: false,
 };
 
-EpisodesView.propTypes = {
+PodcastEpisodesView.propTypes = {
 	context: PropTypes.shape({
 		contextID: PropTypes.string,
 		contextPosition: PropTypes.number,
@@ -215,11 +205,8 @@ EpisodesView.propTypes = {
 	episodes: PropTypes.array,
 	followPodcast: PropTypes.func.isRequired,
 	getEpisodes: PropTypes.func.isRequired,
-	getPlaylistsForUser: PropTypes.func.isRequired,
 	getPodcast: PropTypes.func.isRequired,
-	getPodcastFollowers: PropTypes.func.isRequired,
 	isFollowing: PropTypes.bool,
-	like: PropTypes.func.isRequired,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			podcastID: PropTypes.string,
@@ -239,7 +226,6 @@ EpisodesView.propTypes = {
 	}),
 	resumeEpisode: PropTypes.func.isRequired,
 	unfollowPodcast: PropTypes.func.isRequired,
-	unlike: PropTypes.func.isRequired,
 	unpinEpisode: PropTypes.func.isRequired,
 };
 
@@ -256,14 +242,15 @@ const mapStateToProps = (state, ownProps) => {
 	}
 	let podcast = null;
 	if (state.podcasts && state.podcasts[podcastID]) {
-		podcast = state.podcasts[podcastID];
+		podcast = { ...state.podcasts[podcastID] };
 	}
 	let episodes = [];
 	if (state.episodes) {
-		episodes = Object.values(state.episodes).filter(episode => {
-			// only return the episodes where the podcast ID matches the parent ID
-			return episode.podcast === podcastID;
-		});
+		for (let episode of Object.keys(state.episodes)) {
+			if (state.episodes[episode].podcast === podcastID) {
+				episodes.push({ ...state.episodes[episode] });
+			}
+		}
 	}
 	for (let episode of episodes) {
 		// attach pinned state
@@ -273,6 +260,8 @@ const mapStateToProps = (state, ownProps) => {
 		} else {
 			episode.pinned = false;
 		}
+		// attach podcast
+		episode.podcast = { ...podcast };
 	}
 	let context = { ...state.player };
 	return {
@@ -334,21 +323,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 					console.log(err); // eslint-disable-line no-console
 				});
 		},
-		getPlaylistsForUser: () => {
-			fetch('GET', '/playlists', null, { user: localStorage['authedUser'] })
-				.then(response => {
-					for (let playlist of response.data) {
-						dispatch({
-							playlist,
-							type: 'UPDATE_PLAYLIST',
-						});
-					}
-				})
-				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
-				});
-		},
-
 		getPodcast: podcastID => {
 			fetch('GET', `/podcasts/${podcastID}`)
 				.then(res => {
@@ -360,41 +334,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 				.catch(err => {
 					console.log(err); // eslint-disable-line no-console
 				});
-		},
-		getPodcastFollowers: podcastID => {
-			fetch('GET', '/follows', null, { podcast: podcastID }).then(response => {
-				for (let followRelationship of response.data) {
-					dispatch({
-						type: 'UPDATE_USER',
-						user: followRelationship.user,
-					});
-					dispatch({
-						followRelationship,
-						type: 'UPDATE_PODCAST_FOLLOWER',
-					});
-				}
-			});
-		},
-		like: episodeID => {
-			// optimistic dispatch
-			dispatch({
-				objectID: episodeID,
-				objectType: 'episode',
-				type: 'LIKE',
-			});
-
-			fetch('POST', '/likes', {
-				episode: episodeID,
-			}).catch(err => {
-				// rollback on failure
-				dispatch({
-					objectID: episodeID,
-					objectType: 'episode',
-					type: 'UNLIKE',
-				});
-
-				console.log(err); // eslint-disable-line no-console
-			});
 		},
 		pauseEpisode: () => {
 			dispatch({ type: 'PAUSE_EPISODE' });
@@ -447,26 +386,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 				});
 			});
 		},
-		unlike: episodeID => {
-			// optimistic dispatch
-			dispatch({
-				objectID: episodeID,
-				objectType: 'episode',
-				type: 'UNLIKE',
-			});
-			fetch('DELETE', '/likes', null, {
-				episode: episodeID,
-			}).catch(err => {
-				// rollback if it fails
-				dispatch({
-					objectID: episodeID,
-					objectType: 'episode',
-					type: 'LIKE',
-				});
-
-				console.log(err); // eslint-disable-line no-console
-			});
-		},
 		unpinEpisode: (pinID, episodeID) => {
 			fetch('DELETE', `/pins/${pinID}`)
 				.then(() => {
@@ -496,4 +415,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(EpisodesView);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(
+	PodcastEpisodesView,
+);

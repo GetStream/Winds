@@ -1,16 +1,16 @@
 import Tabs from '../components/Tabs';
-import RecentEpisodes from '../components/PodcastPanels/RecentEpisodes';
+import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
 import SuggestedPodcasts from '../components/PodcastPanels/SuggestedPodcasts';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import BookmarkedEpisodes from '../components/PodcastPanels/BookmarkedEpisodes';
-import EpisodesView from '../components/EpisodesView';
-// import Img from 'react-image';
+import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import PropTypes from 'prop-types';
 import React from 'react';
 import fetch from '../util/fetch';
 import { connect } from 'react-redux';
-// import partialIcon from '../images/icons/partial.svg';
 import { Route, Switch } from 'react-router-dom';
+import AllEpisodesList from '../components/AllEpisodesList';
+import RecentEpisodesList from '../components/RecentEpisodesList';
 
 class PodcastsView extends React.Component {
 	constructor(props) {
@@ -106,7 +106,7 @@ class PodcastsView extends React.Component {
 					</div>
 					<Tabs tabGroup="podcast-view">
 						<div tabTitle="All Podcasts">
-							<RecentEpisodes />
+							<RecentEpisodesPanel />
 							<PodcastList />
 						</div>
 						<div tabTitle="Bookmarks">
@@ -119,23 +119,18 @@ class PodcastsView extends React.Component {
 				</div>
 				<div className="column">
 					<Switch>
-						<Route component={recentEpisodes} path="/podcasts/recent" />
-						<Route component={EpisodesView} path="/podcasts/:podcastID" />
-						<Route component={allEpisodes} path="/podcasts" />
+						<Route component={RecentEpisodesList} path="/podcasts/recent" />
+						<Route
+							component={PodcastEpisodesView}
+							path="/podcasts/:podcastID"
+						/>
+						<Route component={AllEpisodesList} path="/podcasts" />
 					</Switch>
 				</div>
 			</div>
 		);
 	}
 }
-
-let allEpisodes = () => {
-	return <div>all episodes</div>;
-};
-
-let recentEpisodes = () => {
-	return <div>recent episodes</div>;
-};
 
 PodcastsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,
@@ -161,7 +156,7 @@ const mapStateToProps = (state, ownProps) => {
 	if (ownProps.match.params.podcastID && state.podcasts) {
 		return {
 			...ownProps,
-			podcast: state.podcasts[ownProps.match.params.podcastID],
+			podcast: { ...state.podcasts[ownProps.match.params.podcastID] },
 		};
 	} else {
 		return { ...ownProps };

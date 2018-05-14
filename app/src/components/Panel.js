@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Panel extends React.Component {
 	render() {
@@ -14,17 +15,25 @@ Panel.propTypes = {
 	]),
 };
 
-class PanelHeader extends React.Component {
-	render() {
-		return <div className="panel-header">{this.props.children}</div>;
+const PanelHeader = props => {
+	if (props.to) {
+		return (
+			<Link className="panel-header" to={props.to}>
+				{props.children}
+			</Link>
+		);
+	} else {
+		return <div className="panel-header">{props.children}</div>;
 	}
-}
+};
+
 PanelHeader.propTypes = {
 	children: PropTypes.oneOfType([
 		PropTypes.element,
 		PropTypes.node,
 		PropTypes.arrayOf(PropTypes.element),
 	]),
+	to: PropTypes.string,
 };
 
 class PanelContents extends React.Component {

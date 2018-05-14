@@ -72,7 +72,7 @@ class RSSArticle extends React.Component {
 		return (
 			<div className="rss-article-container">
 				<h1>{this.props.title}</h1>
-				<div className="info">
+				<div className="article-info">
 					<i className="fa fa-bookmark" />
 					<div>
 						<i className="fas fa-external-link-alt" />

@@ -9,7 +9,7 @@ import fetch from '../../util/fetch';
 import TimeAgo from '../TimeAgo';
 import PropTypes from 'prop-types';
 
-class RecentArticles extends React.Component {
+class RecentArticlesPanel extends React.Component {
 	componentDidMount() {
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 			type: 'article',
@@ -49,7 +49,7 @@ class RecentArticles extends React.Component {
 	render() {
 		return (
 			<Panel>
-				<Panel.Header>Recent Articles</Panel.Header>
+				<Panel.Header to="/rss/recent">Recent Articles</Panel.Header>
 				<Panel.Contents>
 					{this.props.articles.slice(0, 20).map(article => {
 						return (
@@ -78,7 +78,7 @@ class RecentArticles extends React.Component {
 	}
 }
 
-RecentArticles.propTypes = {
+RecentArticlesPanel.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 };
 
@@ -96,4 +96,4 @@ const mapStateToProps = (state, ownProps) => {
 	return { ...ownProps, articles };
 };
 
-export default connect(mapStateToProps)(RecentArticles);
+export default connect(mapStateToProps)(RecentArticlesPanel);

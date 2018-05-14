@@ -8,10 +8,12 @@ import fetch from '../util/fetch';
 import PropTypes from 'prop-types';
 import partialIcon from '../images/icons/partial.svg';
 import Tabs from '../components/Tabs';
-import RecentArticles from '../components/RSSPanels/RecentArticles';
+import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
 import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
+import AllArticlesList from '../components/AllArticlesList';
+import RecentArticlesList from '../components/RecentArticlesList';
 
 const RSSNotSelected = () => {
 	return (
@@ -98,7 +100,7 @@ class RSSFeedsView extends React.Component {
 					</div>
 					<Tabs tabGroup="rss-view">
 						<div tabTitle="All Feeds">
-							<RecentArticles />
+							<RecentArticlesPanel />
 							<RssFeedList />
 						</div>
 						<div tabTitle="Bookmarks">
@@ -115,9 +117,9 @@ class RSSFeedsView extends React.Component {
 							component={RSSArticle}
 							path="/rss/:rssFeedID/articles/:articleID"
 						/>
-						<Route component={recentArticles} path="/rss/recent" />
+						<Route component={RecentArticlesList} path="/rss/recent" />
 						<Route component={RSSArticleList} path="/rss/:rssFeedID" />
-						<Route component={allArticles} path="/rss" />
+						<Route component={AllArticlesList} path="/rss" />
 						<Route component={RSSNotSelected} />
 					</Switch>
 				</div>
@@ -125,14 +127,6 @@ class RSSFeedsView extends React.Component {
 		);
 	}
 }
-
-let allArticles = props => {
-	return <div>all articles</div>;
-};
-
-let recentArticles = props => {
-	return <div>recent articles</div>;
-};
 
 RSSFeedsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,

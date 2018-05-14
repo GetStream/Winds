@@ -1,8 +1,3 @@
-import likeIcon from '../images/icons/like.svg';
-import filledLikeIcon from '../images/icons/like-filled.svg';
-import inactivePinLogo from '../images/icons/pin-inactive.svg';
-import pinIcon from '../images/icons/pin.svg';
-import Img from 'react-image';
 import { Link } from 'react-router-dom';
 import TimeAgo from './TimeAgo';
 import React from 'react';
@@ -11,7 +6,7 @@ import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 
 const ArticleListItem = props => {
 	return (
-		<Link className="list-item" to={`/rss/${props.rssFeedID}/articles/${props._id}`}>
+		<Link className="list-item" to={`/rss/${props.rss._id}/articles/${props._id}`}>
 			<div className="left">
 				<div
 					className="background-image"
@@ -23,7 +18,7 @@ const ArticleListItem = props => {
 			</div>
 			<div className="right">
 				<h2>{props.title}</h2>
-				<div className="info">
+				<div className="article-info">
 					<span
 						onClick={e => {
 							e.preventDefault();
@@ -36,31 +31,26 @@ const ArticleListItem = props => {
 						}}
 					>
 						{props.pinned ? (
-							<Img src={pinIcon} />
+							<i className="fa fa-bookmark" />
 						) : (
-							<Img src={inactivePinLogo} />
+							<i className="far fa-bookmark" />
 						)}
 					</span>
-					<span
-						className="likes"
-						onClick={e => {
-							e.preventDefault();
-							e.stopPropagation();
-							if (props.liked) {
-								props.unlike(props._id);
-							} else {
-								props.like(props._id);
-							}
-						}}
-					>
-						{props.liked ? (
-							<Img src={filledLikeIcon} />
-						) : (
-							<Img src={likeIcon} />
-						)}
-						{props.likes}
+					<div>
+						<i className="fas fa-external-link-alt" />
+						<a href={props.url}>{props.rss.title}</a>
+					</div>
+					{props.commentUrl ? (
+						<div>
+							<i className="fas fa-comment-alt" />
+
+							<a href={props.commentUrl}>Comments</a>
+						</div>
+					) : null}
+					<span className="muted">
+						{'Posted '}
+						<TimeAgo timestamp={props.publicationDate} />
 					</span>
-					<TimeAgo timestamp={props.publicationDate} />
 				</div>
 				<div>{props.description}</div>
 			</div>
@@ -77,18 +67,21 @@ ArticleListItem.defaultProps = {
 
 ArticleListItem.propTypes = {
 	_id: PropTypes.string.isRequired,
+	commentUrl: PropTypes.string,
 	description: PropTypes.string,
 	favicon: PropTypes.string,
 	images: PropTypes.shape({ og: PropTypes.string }),
-	like: PropTypes.func.isRequired,
 	liked: PropTypes.bool,
 	likes: PropTypes.number,
 	pinArticle: PropTypes.func.isRequired,
 	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
-	rssFeedID: PropTypes.string.isRequired,
+	rss: PropTypes.shape({
+		_id: PropTypes.string,
+		title: PropTypes.string,
+	}),
 	title: PropTypes.string,
-	unlike: PropTypes.func.isRequired,
 	unpinArticle: PropTypes.func.isRequired,
+	url: PropTypes.string,
 };
 export default ArticleListItem;

@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import fetch from '../../util/fetch';
 import { getEpisode } from '../../selectors';
 import TimeAgo from '../TimeAgo';
+import PropTypes from 'prop-types';
 
-class RecentEpisodes extends React.Component {
+class RecentEpisodesPanel extends React.Component {
 	componentDidMount() {
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 			type: 'episode',
@@ -44,7 +45,7 @@ class RecentEpisodes extends React.Component {
 	render() {
 		return (
 			<Panel>
-				<Panel.Header>Recent Episodes</Panel.Header>
+				<Panel.Header to="/podcasts/recent">Recent Episodes</Panel.Header>
 				<Panel.Contents>
 					{this.props.episodes.slice(0, 20).map(episode => {
 						return (
@@ -72,8 +73,14 @@ class RecentEpisodes extends React.Component {
 		);
 	}
 }
-RecentEpisodes.defaultProps = {
+
+RecentEpisodesPanel.defaultProps = {
 	episodes: [],
+};
+
+RecentEpisodesPanel.propTypes = {
+	dispatch: PropTypes.func.isRequired,
+	episodes: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -89,4 +96,4 @@ const mapStateToProps = (state, ownProps) => {
 	return { ...ownProps, episodes };
 };
 
-export default connect(mapStateToProps)(RecentEpisodes);
+export default connect(mapStateToProps)(RecentEpisodesPanel);

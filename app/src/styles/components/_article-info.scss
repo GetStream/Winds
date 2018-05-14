@@ -1,0 +1,25 @@
+.article-info {
+	display: flex;
+	flex-direction: row;
+	font-weight: bolder;
+	letter-spacing: $label-letter-spacing;
+	margin-bottom: 1em;
+	text-transform: uppercase;
+
+	> * {
+		margin-right: 1em;
+	}
+
+	.muted {
+		color: $foreground-darkgray;
+	}
+
+	a {
+		color: $foreground-green;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

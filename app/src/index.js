@@ -13,7 +13,7 @@ class UpdateWrapper extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bypassed: false,
+			bypassed: true,
 			downloadURL: '',
 			loading: true,
 			onLatestVersion: false,
