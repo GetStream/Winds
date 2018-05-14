@@ -10,7 +10,6 @@ import Podcast from '../models/podcast'; // eslint-disable-line
 
 import Article from '../models/article';
 import Episode from '../models/episode';
-import Podcast from '../models/podcast';
 
 
 import '../utils/db';
@@ -20,14 +19,15 @@ import logger from '../utils/logger';
 
 const ogQueue = new Queue('og', config.cache.uri);
 
-logger.info('Starting the OG worker, now supporting both podcasts and rss feeds');
+logger.info('Starting the OG worker, now supporting podcasts, episodes and articles');
 ogQueue.process(handleJob);
 
 // run the scraping job
 function handleJob(job, done) {
 	logger.info(`Processing opengraph images for ${job.data.url}...`);
 
-	const url = normalize(job.data.url);
+	// dont normalize the url, this is done when the object is created
+	const url = job.data.url;
 	const jobType = job.data.type;
 
 	// lookup the right type of schema: article, episode or podcast
@@ -35,9 +35,9 @@ function handleJob(job, done) {
 	let mongoSchema = schemaMap[jobType] || Article;
 
 	mongoSchema.findOne({ url: url })
-		.then(article => {
-			// if the article hasn't been created yet, or it already has an OG image, ignore
-			if (!article || article.images.og) {
+		.then(instance => {
+			// if the instance hasn't been created yet, or it already has an OG image, ignore
+			if (!instance || instance.images.og) {
 				return done();
 			} else if (url.endsWith('.mp3')) {
 				// ends with mp3, no point in scraping, returning early
@@ -52,9 +52,11 @@ function handleJob(job, done) {
 					if (!image.data.ogImage || !image.data.ogImage.url) {
 						logger.info(`didn't find image for ${url}`);
 						return;
+					} else {
+						logger.info(`Found an image for ${url}`)
 					}
 					return mongoSchema.update(
-						{ _id: article._id },
+						{ _id: instance._id },
 						{ $set: { 'images.og': normalize(image.data.ogImage.url) } },
 					);
 				});
@@ -64,7 +66,7 @@ function handleJob(job, done) {
 			return done();
 		})
 		.catch(err => {
-			logger.error(`Error retrieving/saving image for article: ${url}`);
+			logger.error(`Error retrieving/saving image for instance: ${url} type ${jobType}`);
 			logger.error(JSON.stringify(err));
 			return done(err);
 		});
