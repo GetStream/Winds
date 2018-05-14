@@ -119,7 +119,7 @@ exports.post = (req, res) => {
 								images: images,
 								lastScraped: new Date(0),
 								title: title,
-								url: url,
+								url: normalize(url),
 								valid: true,
 							},
 							{
