@@ -85,7 +85,7 @@ podcastQueue.process((job, done) => {
 											ogQueue.add(
 												{
 													url: normalize(episode.url),
-													type: 'podcast',
+													type: 'episode',
 												},
 												{
 													removeOnComplete: true,

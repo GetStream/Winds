@@ -10,6 +10,7 @@ import Podcast from '../models/podcast'; // eslint-disable-line
 
 import Article from '../models/article';
 import Episode from '../models/episode';
+import Podcast from '../models/podcast';
 
 
 import '../utils/db';
@@ -29,7 +30,9 @@ function handleJob(job, done) {
 	const url = normalize(job.data.url);
 	const jobType = job.data.type;
 
-	let mongoSchema = (jobType=='podcast') ? Episode : Article
+	// lookup the right type of schema: article, episode or podcast
+	let schemaMap = {'podcast': Podcast, 'episode': Episode}
+	let mongoSchema = schemaMap[jobType] || Article;
 
 	mongoSchema.findOne({ url: url })
 		.then(article => {

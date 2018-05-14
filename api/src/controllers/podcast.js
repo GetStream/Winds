@@ -15,6 +15,7 @@ import config from '../config';
 import { ParsePodcast } from '../workers/parsers';
 import strip from 'strip';
 
+const ogQueue = new Queue('og', config.cache.uri);
 const podcastQueue = new Queue('podcast', config.cache.uri);
 
 exports.list = (req, res) => {
@@ -107,6 +108,7 @@ exports.post = (req, res) => {
 							description = '';
 						}
 
+
 						Podcast.findOneAndUpdate(
 							{ feedUrl: feed.url },
 							{
@@ -154,6 +156,18 @@ exports.post = (req, res) => {
 											);
 										})
 										.then(() => {
+											if (!images.og) {
+												ogQueue.add(
+													{
+														url: url,
+														type: 'podcast',
+													},
+													{
+														removeOnComplete: true,
+														removeOnFail: true,
+													},
+												)
+											}
 											cb(null, podcast.value);
 										})
 										.catch(err => {
