@@ -127,7 +127,7 @@
 			"category": "public.app-category.news"
 		},
 		"win": {
-			"target": "nsis-web",
+			"target": "nsis",
 			"icon": "assets/icon.ico",
 			"publish": {
 				"provider": "s3",
