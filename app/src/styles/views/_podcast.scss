@@ -72,46 +72,47 @@
 	}
 
 	.podcast-episode-list {
-		.podcast-episode {
-			cursor: pointer;
-			position: relative;
+	}
+}
 
-			.left {
-				position: relative;
+.podcast-episode {
+	cursor: pointer;
+	position: relative;
 
-				.play-icon,
-				.pause-icon {
-					align-items: center;
-					bottom: 0;
-					display: flex;
-					justify-content: center;
-					left: 0;
-					position: absolute;
-					right: 0;
-					top: 0;
+	.left {
+		position: relative;
 
-					.icon-container {
-						align-items: center;
-						background-color: $background-black;
-						border-radius: 10000px;
-						display: flex;
-						height: 3em;
-						justify-content: center;
-						width: 3em;
-					}
-				}
+		.play-icon,
+		.pause-icon {
+			align-items: center;
+			bottom: 0;
+			display: flex;
+			justify-content: center;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
 
-				.play-icon {
-					display: none;
-				}
+			.icon-container {
+				align-items: center;
+				background-color: $background-black;
+				border-radius: 10000px;
+				display: flex;
+				height: 3em;
+				justify-content: center;
+				width: 3em;
 			}
+		}
 
-			&:hover {
-				.left {
-					.play-icon {
-						display: flex;
-					}
-				}
+		.play-icon {
+			display: none;
+		}
+	}
+
+	&:hover {
+		.left {
+			.play-icon {
+				display: flex;
 			}
 		}
 	}

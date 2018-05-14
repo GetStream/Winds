@@ -2200,13 +2200,13 @@ body {
     cursor: pointer;
     margin-left: auto; }
 
-.podcasts-view .podcast-episode-list .podcast-episode {
+.podcast-episode {
   cursor: pointer;
   position: relative; }
-  .podcasts-view .podcast-episode-list .podcast-episode .left {
+  .podcast-episode .left {
     position: relative; }
-    .podcasts-view .podcast-episode-list .podcast-episode .left .play-icon,
-    .podcasts-view .podcast-episode-list .podcast-episode .left .pause-icon {
+    .podcast-episode .left .play-icon,
+    .podcast-episode .left .pause-icon {
       align-items: center;
       bottom: 0;
       display: flex;
@@ -2215,8 +2215,8 @@ body {
       position: absolute;
       right: 0;
       top: 0; }
-      .podcasts-view .podcast-episode-list .podcast-episode .left .play-icon .icon-container,
-      .podcasts-view .podcast-episode-list .podcast-episode .left .pause-icon .icon-container {
+      .podcast-episode .left .play-icon .icon-container,
+      .podcast-episode .left .pause-icon .icon-container {
         align-items: center;
         background-color: #000;
         border-radius: 10000px;
@@ -2224,9 +2224,9 @@ body {
         height: 3em;
         justify-content: center;
         width: 3em; }
-    .podcasts-view .podcast-episode-list .podcast-episode .left .play-icon {
+    .podcast-episode .left .play-icon {
       display: none; }
-  .podcasts-view .podcast-episode-list .podcast-episode:hover .left .play-icon {
+  .podcast-episode:hover .left .play-icon {
     display: flex; }
 
 .rss-view .none-selected {
