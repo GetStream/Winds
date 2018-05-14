@@ -156,19 +156,24 @@ exports.post = (req, res) => {
 											);
 										})
 										.then(() => {
-											if (!images.og) {
+											logger.info(`api is scheduling ${podcast.value.url} for og scraping`)
+											if (!podcast.value.images.og) {
 												ogQueue.add(
 													{
-														url: podcast.url,
+														url: podcast.value.url,
 														type: 'podcast',
 													},
 													{
 														removeOnComplete: true,
 														removeOnFail: true,
 													},
-												)
+												).then(() => {
+													cb(null, podcast.value);
+												})
+											} else {
+												cb(null, podcast.value);
 											}
-											cb(null, podcast.value);
+
 										})
 										.catch(err => {
 											cb(err);
