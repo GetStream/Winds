@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
 
-class AllEpisodes extends React.Component {
+class RecentEpisodesList extends React.Component {
 	pinEpisode(episodeID) {
 		fetch('POST', '/pins', {
 			episode: episodeID,
@@ -63,11 +63,12 @@ class AllEpisodes extends React.Component {
 			});
 		});
 	}
+
 	render() {
 		return (
 			<div>
 				<div className="podcast-header">
-					<h1>All Episodes</h1>
+					<h1>Recent Episodes</h1>
 				</div>
 				<div className="list">
 					{this.props.episodes.map(episode => {
@@ -91,13 +92,13 @@ class AllEpisodes extends React.Component {
 	}
 }
 
-AllEpisodes.defaultProps = {
+RecentEpisodesList.defaultProps = {
 	episodes: [],
 };
-AllEpisodes.propTypes = {
+
+RecentEpisodesList.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 	episodes: PropTypes.arrayOf(PropTypes.shape({})),
-	pinned: PropTypes.bool,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -114,7 +115,10 @@ const mapStateToProps = (state, ownProps) => {
 		}
 	}
 
-	return { ...ownProps, episodes };
+	return {
+		...ownProps,
+		episodes: episodes.slice(0, 20),
+	};
 };
 
-export default connect(mapStateToProps)(AllEpisodes);
+export default connect(mapStateToProps)(RecentEpisodesList);

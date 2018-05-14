@@ -9,7 +9,8 @@ import React from 'react';
 import fetch from '../util/fetch';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import AllEpisodes from '../components/AllEpisodes';
+import AllEpisodesList from '../components/AllEpisodesList';
+import RecentEpisodesList from '../components/RecentEpisodesList';
 
 class PodcastsView extends React.Component {
 	constructor(props) {
@@ -118,22 +119,18 @@ class PodcastsView extends React.Component {
 				</div>
 				<div className="column">
 					<Switch>
-						<Route component={recentEpisodes} path="/podcasts/recent" />
+						<Route component={RecentEpisodesList} path="/podcasts/recent" />
 						<Route
 							component={PodcastEpisodesView}
 							path="/podcasts/:podcastID"
 						/>
-						<Route component={AllEpisodes} path="/podcasts" />
+						<Route component={AllEpisodesList} path="/podcasts" />
 					</Switch>
 				</div>
 			</div>
 		);
 	}
 }
-
-let recentEpisodes = () => {
-	return <div>recent episodes</div>;
-};
 
 PodcastsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,
