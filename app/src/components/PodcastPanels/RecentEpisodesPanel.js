@@ -8,7 +8,7 @@ import fetch from '../../util/fetch';
 import { getEpisode } from '../../selectors';
 import TimeAgo from '../TimeAgo';
 
-class RecentEpisodes extends React.Component {
+class RecentEpisodesPanel extends React.Component {
 	componentDidMount() {
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 			type: 'episode',
@@ -72,9 +72,11 @@ class RecentEpisodes extends React.Component {
 		);
 	}
 }
-RecentEpisodes.defaultProps = {
+RecentEpisodesPanel.defaultProps = {
 	episodes: [],
 };
+
+
 
 const mapStateToProps = (state, ownProps) => {
 	let episodes = [];
@@ -89,4 +91,4 @@ const mapStateToProps = (state, ownProps) => {
 	return { ...ownProps, episodes };
 };
 
-export default connect(mapStateToProps)(RecentEpisodes);
+export default connect(mapStateToProps)(RecentEpisodesPanel);
