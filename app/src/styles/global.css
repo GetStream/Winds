@@ -1201,6 +1201,9 @@ body {
     margin: 0 1em;
     padding: 1em 0;
     position: relative; }
+  .panel a {
+    color: inherit;
+    text-decoration: inherit; }
 
 .playlist-card {
   align-items: center;
