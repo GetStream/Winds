@@ -6,6 +6,8 @@ import config from '../config';
 const version = '0.0.1';
 const ogQueue = new Queue('og', config.cache.uri);
 import ogs from 'open-graph-scraper';
+import normalize from 'normalize-url';
+
 
 program
 	.version(version)
@@ -17,26 +19,27 @@ program
 function main() {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info('Starting the OG queue Debugger \\0/');
-	logger.info(`Looking for og images at ${program.url} for type ${program.type}`);
+  let normalizedUrl = normalize(program.url)
+	logger.info(`Looking for og images at ${normalizedUrl} for type ${program.type}`);
 
   ogs({
     followAllRedirects: true,
     maxRedirects: 20,
     timeout: 3000,
-    url: program.url,
+    url: normalizedUrl,
   }).then(image => {
 
     if (!image.data.ogImage || !image.data.ogImage.url) {
-      logger.info(chalk.red(`OG scraping didn't find an image for ${program.url}`));
+      logger.info(chalk.red(`OG scraping didn't find an image for ${normalizedUrl}`));
     } else {
-      logger.info(chalk.green(`Image found for ${program.url}: ${image.data.ogImage.url}`));
+      logger.info(chalk.green(`Image found for ${normalizedUrl}: ${image.data.ogImage.url}`));
     }
 
     if (program.task) {
       logger.info(`creating a task on the bull queue`)
       ogQueue.add(
         {
-          url: program.url,
+          url: normalizedUrl,
           type: program.type,
         },
         {

@@ -26,7 +26,7 @@ ogQueue.process(handleJob);
 function handleJob(job, done) {
 	logger.info(`Processing opengraph images for ${job.data.url}...`);
 
-	// dont normalize the url, this is done when the object is created
+	// Note dont normalize the url, this is done when the object is created
 	const url = job.data.url;
 	const jobType = job.data.type;
 

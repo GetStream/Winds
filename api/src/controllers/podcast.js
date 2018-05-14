@@ -159,7 +159,7 @@ exports.post = (req, res) => {
 											if (!images.og) {
 												ogQueue.add(
 													{
-														url: url,
+														url: podcast.url,
 														type: 'podcast',
 													},
 													{

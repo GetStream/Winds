@@ -30,7 +30,6 @@ export const ArticleSchema = new Schema(
 		url: {
 			type: String,
 			trim: true,
-			lowercase: true,
 			index: true,
 			required: true,
 		},
