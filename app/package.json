@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.144",
+	"version": "2.0.146",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -127,7 +127,7 @@
 			"category": "public.app-category.news"
 		},
 		"win": {
-			"target": "nsis-web",
+			"target": "nsis",
 			"icon": "assets/icon.ico",
 			"publish": {
 				"provider": "s3",
