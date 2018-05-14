@@ -8,7 +8,7 @@ import fetch from '../util/fetch';
 import PropTypes from 'prop-types';
 import partialIcon from '../images/icons/partial.svg';
 import Tabs from '../components/Tabs';
-import RecentArticles from '../components/RSSPanels/RecentArticles';
+import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
 import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
@@ -99,7 +99,7 @@ class RSSFeedsView extends React.Component {
 					</div>
 					<Tabs tabGroup="rss-view">
 						<div tabTitle="All Feeds">
-							<RecentArticles />
+							<RecentArticlesPanel />
 							<RssFeedList />
 						</div>
 						<div tabTitle="Bookmarks">

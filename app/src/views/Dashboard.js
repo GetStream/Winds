@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 // import RSSPanelsContainer from '../components/RSSPanelsContainer';
 import React from 'react';
 import { connect } from 'react-redux';
-import RecentEpisodes from '../components/PodcastPanels/RecentEpisodes';
-import RecentArticles from '../components/RSSPanels/RecentArticles';
+import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
+import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import DiscoverSection from '../components/DiscoverSection';
@@ -32,7 +32,7 @@ class Dashboard extends React.Component {
 							</div>
 						</Link>
 						<div className="column-content">
-							<RecentEpisodes />
+							<RecentEpisodesPanel />
 							<PodcastList />
 						</div>
 					</div>
@@ -45,7 +45,7 @@ class Dashboard extends React.Component {
 							</div>
 						</Link>
 						<div className="column-content">
-							<RecentArticles />
+							<RecentArticlesPanel />
 							<RssFeedList />
 						</div>
 					</div>

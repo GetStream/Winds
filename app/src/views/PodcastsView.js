@@ -1,5 +1,5 @@
 import Tabs from '../components/Tabs';
-import RecentEpisodes from '../components/PodcastPanels/RecentEpisodes';
+import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
 import SuggestedPodcasts from '../components/PodcastPanels/SuggestedPodcasts';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import BookmarkedEpisodes from '../components/PodcastPanels/BookmarkedEpisodes';
@@ -105,7 +105,7 @@ class PodcastsView extends React.Component {
 					</div>
 					<Tabs tabGroup="podcast-view">
 						<div tabTitle="All Podcasts">
-							<RecentEpisodes />
+							<RecentEpisodesPanel />
 							<PodcastList />
 						</div>
 						<div tabTitle="Bookmarks">
