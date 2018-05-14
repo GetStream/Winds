@@ -1,15 +1,36 @@
 import fetch from '../util/fetch';
-import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
-// import Popover from 'react-popover';
-// import optionsIcon from '../images/icons/options.svg';
-import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import TimeAgo from './TimeAgo';
-import { Link } from 'react-router-dom';
+import EpisodeListItem from './EpisodeListItem';
 
 class AllEpisodes extends React.Component {
+	pinEpisode(episodeID) {
+		fetch('POST', '/pins', {
+			episode: episodeID,
+		})
+			.then(response => {
+				this.props.dispatch({
+					pin: response.data,
+					type: 'PIN_EPISODE',
+				});
+			})
+			.catch(err => {
+				console.log(err); // eslint-disable-line no-console
+			});
+	}
+	unpinEpisode(pinID, episodeID) {
+		fetch('DELETE', `/pins/${pinID}`)
+			.then(() => {
+				this.props.dispatch({
+					episodeID,
+					type: 'UNPIN_EPISODE',
+				});
+			})
+			.catch(err => {
+				console.log(err); // eslint-disable-line no-console
+			});
+	}
 	componentDidMount() {
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 			type: 'episode',
@@ -51,53 +72,17 @@ class AllEpisodes extends React.Component {
 				<div className="list">
 					{this.props.episodes.map(episode => {
 						return (
-							<Link
-								className="list-item podcast-episode"
+							<EpisodeListItem
 								key={episode._id}
-								to={`/podcasts/${episode.podcast._id}`}
-							>
-								<div className="left">
-									<Img
-										height="100"
-										src={[
-											episode.images.og,
-											getPlaceholderImageURL(episode.podcast._id),
-										]}
-										width="100"
-									/>
-								</div>
-								<div className="right">
-									<h2>{episode.title}</h2>
-									<div className="info">
-										<span
-											onClick={e => {
-												e.preventDefault();
-												e.stopPropagation();
-												if (this.props.pinned) {
-													this.props.unpinEpisode();
-												} else {
-													this.props.pinEpisode();
-												}
-											}}
-										>
-											{episode.pinned ? (
-												<i className="fa fa-bookmark" />
-											) : (
-												<i className="far fa-bookmark" />
-											)}
-										</span>
-										<span className="date">
-											{'Posted '}
-											<TimeAgo
-												timestamp={episode.publicationDate}
-											/>
-										</span>
-									</div>
-									<div className="description">
-										{this.props.description}
-									</div>
-								</div>
-							</Link>
+								pinEpisode={() => {
+									this.pinEpisode(episode._id);
+								}}
+								playable={false}
+								unpinEpisode={() => {
+									this.unpinEpisode(episode.pinID, episode._id);
+								}}
+								{...episode}
+							/>
 						);
 					})}
 				</div>
@@ -105,29 +90,6 @@ class AllEpisodes extends React.Component {
 		);
 	}
 }
-//
-// <EpisodeListItem
-// 	active={active}
-// 	key={episode._id}
-// 	pinEpisode={() => {
-// 		this.props.pinEpisode(episode._id);
-// 	}}
-// 	playOrPauseEpisode={() => {
-// 		if (active && this.props.context.playing) {
-// 			this.props.pauseEpisode();
-// 		} else if (active) {
-// 			this.props.resumeEpisode();
-// 		} else {
-// 			this.props.playEpisode(episode._id, i);
-// 		}
-// 	}}
-// 	playing={this.props.context.playing}
-// 	position={i}
-// 	unpinEpisode={() => {
-// 		this.props.unpinEpisode(episode.pinID, episode._id);
-// 	}}
-// 	{...episode}
-// />;
 
 AllEpisodes.defaultProps = {
 	episodes: [],
