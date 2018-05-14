@@ -10,7 +10,7 @@ Winds is a beautiful open-source RSS and Podcast app created using React/Redux/N
 
 **To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/) (OSx, Linux, Windows)**
 
-![Winds 2.0](https://i.imgur.com/8WoMJpH.png)
+![Winds 2.0](https://i.imgur.com/USmgqqI.jpg)
 
 ## TOC
 
@@ -36,7 +36,7 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 * [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
 * [ ] Mobile application powered by React Native
 * [ ] SSO (Google & Twitter)
-* [ ] Folder
+* [ ] Folder Support
 * [ ] Listen to feed changes in realtime
 
 ## Powered By
@@ -54,7 +54,7 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 
 ### Stream
 
-[Stream](https://getstream.io/?ref=winds) is an API for building activity feeds. For the Winds application, the ability to follow users, RSS feeds and playlists is powered by Stream. The machine learning that delivers personalized content suggestions to each user is also enabled by Stream (to learn more about Stream's machine learning, check out our [personalization docs](https://getstream.io/docs_personalization?ref=winds)). Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.
+[Stream](https://getstream.io/?ref=winds) is an API for building activity feeds. For Winds the follow suggestions and the list of articles from the feeds you follow is powered by Stream. Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.
 
 ### Algolia
 
@@ -62,7 +62,7 @@ Algolia is used for lightning fast and relevant search. We use their [JavaScript
 
 ### MongoDB
 
-MongoDB Atlas provides a Database as a Service, and services as the backend datastore for Winds.
+MongoDB Atlas provides a Database as a Service, and serves as the backend datastore for Winds.
 
 ## Tutorials
 
@@ -84,7 +84,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 ## Download
 
-To download Winds 2.0, visit [https://getstream.io/winds](https://getstream.io/winds).
+To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/winds/).
 
 ## Contributing to Winds
 
