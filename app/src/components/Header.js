@@ -128,7 +128,16 @@ class Header extends Component {
 
 		let githubPopover = (
 			<div className="popover-panel github-popover">
-				<div className="top">
+				<div
+					className="top"
+					onClick={e => {
+						e.preventDefault();
+						window.ipcRenderer.send(
+							'open-external-window',
+							'https://github.com/GetStream/Winds',
+						);
+					}}
+				>
 					<Img src={githubIcon} />
 					<a className="gh-button" href="https://github.com/GetStream/Winds">
 						<span className="gh-button__title">
