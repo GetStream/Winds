@@ -23,6 +23,7 @@ export const EpisodeSchema = new Schema(
 					'publicationDate',
 					'lastScraped',
 					'images',
+					'featured',
 				],
 			},
 		},

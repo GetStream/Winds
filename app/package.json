@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.147",
+	"version": "2.0.153",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -137,7 +137,10 @@
 		},
 		"linux": {
 			"icon": "assets/icon.png",
-			"target": "snap"
+			"target": [
+				"snap",
+				"AppImage"
+			]
 		}
 	}
 }
