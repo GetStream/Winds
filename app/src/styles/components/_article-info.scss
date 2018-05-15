@@ -6,8 +6,15 @@
 	margin-bottom: 1em;
 	text-transform: uppercase;
 
+	.bookmark {
+		cursor: pointer;
+	}
+
 	> * {
 		margin-right: 1em;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.muted {
@@ -16,6 +23,7 @@
 
 	a {
 		color: $foreground-green;
+		margin-left: 0.5em;
 		text-decoration: none;
 
 		&:hover {

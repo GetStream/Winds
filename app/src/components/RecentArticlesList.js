@@ -1,3 +1,4 @@
+import { getPinnedArticles } from '../util/pins';
 import { getArticle } from '../selectors';
 import ArticleListItem from './ArticleListItem';
 import PropTypes from 'prop-types';
@@ -7,6 +8,8 @@ import fetch from '../util/fetch';
 
 class RecentArticlesList extends React.Component {
 	componentDidMount() {
+		getPinnedArticles(this.props.dispatch);
+
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 			type: 'article',
 		}).then(response => {
@@ -76,6 +79,7 @@ RecentArticlesList.defaultProps = {
 
 RecentArticlesList.propTypes = {
 	articles: PropTypes.arrayOf(PropTypes.shape({})),
+	dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -87,6 +91,16 @@ const mapStateToProps = (state, ownProps) => {
 	for (let articleID of userArticleFeed) {
 		// need to trim the `episode:` from the episode ID
 		articles.push(getArticle(state, articleID.replace('article:', '')));
+	}
+
+	for (let article of articles) {
+		// attach pinned state
+		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
+			article.pinned = true;
+			article.pinID = state.pinnedArticles[article._id]._id;
+		} else {
+			article.pinned = false;
+		}
 	}
 
 	return { ...ownProps, articles: articles.slice(0, 20) };

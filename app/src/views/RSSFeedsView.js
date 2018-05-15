@@ -1,12 +1,10 @@
 import { Route, Switch } from 'react-router-dom';
-import Img from 'react-image';
 import RSSArticle from '../components/RSSArticle';
 import RSSArticleList from '../components/RSSArticleList';
 import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import PropTypes from 'prop-types';
-import partialIcon from '../images/icons/partial.svg';
 import Tabs from '../components/Tabs';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import RssFeedList from '../components/RSSPanels/RssFeedList';

@@ -27,6 +27,7 @@ export const PinSchema = new Schema(
 			ref: 'Article',
 			autopopulate: {
 				select: [
+					'commentUrl',
 					'parent',
 					'url',
 					'title',
