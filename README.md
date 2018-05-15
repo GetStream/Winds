@@ -114,15 +114,15 @@ API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
 STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 
-STREAM_APP_ID=your-stream-app-id
-STREAM_API_KEY=your-stream-api-key
-STREAM_API_SECRET=your-stream-api-secret
+STREAM_APP_ID=YOUR_STREAM_APP_ID
+STREAM_API_KEY=YOUR_STREAM_API_KEY
+STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 
-REACT_APP_ALGOLIA_APP_ID=your-algolia-app-id
-REACT_APP_ALGOLIA_SEARCH_KEY=your-algolia-search-only-API-key
-ALGOLIA_WRITE_KEY=your-algolia-admin-API-key
+REACT_APP_ALGOLIA_APP_ID=YOUR_ALGOLIA_APP_ID
+REACT_APP_ALGOLIA_SEARCH_KEY=YOUR_ALGOLIA_SEARCH_ONLY_API_KEY
+ALGOLIA_WRITE_KEY=YOUR_ALGOLIA_ADMIN_API_KEY
 
-MERCURY_KEY=my-key-here
+MERCURY_KEY=YOUR_KEY_HERE
 ```
 
 Then run:
@@ -140,7 +140,6 @@ git clone git@github.com:GetStream/winds.git
 
 The following instructions are geared towards Mac users who can use `brew` ([Homebrew](https://brew.sh/)) to install most dependencies. Ubuntu users can use `apt`, and Windows users will have to install directly from the dependency's site. Non-debian-based Linux users will probably be able to figure it out on their own :)
 
-* `brew install pkg-config cairo`
 * `cd Winds`
 * `yarn install`
 * `cd api`
@@ -163,7 +162,7 @@ JWT_SECRET=some-super-secret-arbitrary-jwt-string
 API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
 STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
-MERCURY_KEY=my-key-here
+MERCURY_KEY=YOUR_API_KEY_HERE
 ```
 
 ### Start MongoDB Locally
@@ -177,15 +176,6 @@ brew install mongodb
 ```
 
 _(You can also install MongoDB from the [official MongoDB site](https://www.mongodb.com/download-center).)_
-
-Then, begin using MongoDB by running:
-
-```
-mkdir mongo-db
-mongod --dbpath mongo-db
-```
-
-...which creates `mongo-db` directory in your current directory and stores the database data there.
 
 You can also run MongoDB in the background by running:
 
@@ -236,9 +226,9 @@ _(Reminder: Stream is free for applications with less than 3,000,000 updates per
 Append the Stream App ID, API Key, and API secret to your `.env` file:
 
 ```
-STREAM_APP_ID=your-stream-app-id
-STREAM_API_KEY=your-stream-api-key
-STREAM_API_SECRET=your-stream-api-secret
+STREAM_APP_ID=YOUR_STREAM_APP_ID
+STREAM_API_KEY=YOUR_STREAM_API_KEY
+STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 ```
 
 #### Create Your Stream Feed Groups
@@ -277,9 +267,9 @@ From your app, click the "API Keys" button on the left to find your app ID and A
 Append your Algolia application ID, search-only API Key and Admin API Key to your `.env` file to look like this:
 
 ```
-REACT_APP_ALGOLIA_APP_ID=your-algolia-app-id
-REACT_APP_ALGOLIA_SEARCH_KEY=your-algolia-search-only-API-key
-ALGOLIA_WRITE_KEY=your-algolia-admin-API-key
+REACT_APP_ALGOLIA_APP_ID=YOUR_ALGOLIA_APP_ID
+REACT_APP_ALGOLIA_SEARCH_KEY=YOUR_ALGOLIA_SEARCH_ONLY_API_KEY
+ALGOLIA_WRITE_KEY=YOUR_ALGOLIA_ADMIN_API_KEY
 ```
 
 ### Start Backend Services
