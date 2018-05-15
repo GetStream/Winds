@@ -226,9 +226,9 @@ _(Reminder: Stream is free for applications with less than 3,000,000 updates per
 Append the Stream App ID, API Key, and API secret to your `.env` file:
 
 ```
-STREAM_APP_ID=your-stream-app-id
-STREAM_API_KEY=your-stream-api-key
-STREAM_API_SECRET=your-stream-api-secret
+STREAM_APP_ID=YOUR_STREAM_APP_ID
+STREAM_API_KEY=YOUR_STREAM_API_KEY
+STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 ```
 
 #### Create Your Stream Feed Groups
@@ -267,9 +267,9 @@ From your app, click the "API Keys" button on the left to find your app ID and A
 Append your Algolia application ID, search-only API Key and Admin API Key to your `.env` file to look like this:
 
 ```
-REACT_APP_ALGOLIA_APP_ID=your-algolia-app-id
-REACT_APP_ALGOLIA_SEARCH_KEY=your-algolia-search-only-API-key
-ALGOLIA_WRITE_KEY=your-algolia-admin-API-key
+REACT_APP_ALGOLIA_APP_ID=YOUR_ALGOLIA_APP_ID
+REACT_APP_ALGOLIA_SEARCH_KEY=YOUR_ALGOLIA_SEARCH_ONLY_API_KEY
+ALGOLIA_WRITE_KEY=YOUR_ALGOLIA_ADMIN_API_KEY
 ```
 
 ### Start Backend Services
