@@ -70,28 +70,30 @@ class RSSArticle extends React.Component {
 			);
 		}
 		return (
-			<div className="rss-article-container">
-				<h1>{this.props.title}</h1>
-				<div className="article-info">
-					<i className="fa fa-bookmark" />
-					<div>
-						<i className="fas fa-external-link-alt" />
-						<a href={this.props.url}>{this.props.rss.title}</a>
-					</div>
-					{this.props.commentUrl ? (
+			<React.Fragment>
+				<div className="content-header">
+					<h1>{this.props.title}</h1>
+					<div className="article-info">
+						<i className="fa fa-bookmark" />
 						<div>
-							<i className="fas fa-comment-alt" />
-
-							<a href={this.props.commentUrl}>Comments</a>
+							<i className="fas fa-external-link-alt" />
+							<a href={this.props.url}>{this.props.rss.title}</a>
 						</div>
-					) : null}
-					<span className="muted">
-						{'Posted '}
-						<TimeAgo timestamp={this.props.publicationDate} />
-					</span>
+						{this.props.commentUrl ? (
+							<div>
+								<i className="fas fa-comment-alt" />
+
+								<a href={this.props.commentUrl}>Comments</a>
+							</div>
+						) : null}
+						<span className="muted">
+							{'Posted '}
+							<TimeAgo timestamp={this.props.publicationDate} />
+						</span>
+					</div>
 				</div>
-				{articleContents}
-			</div>
+				<div className="content">{articleContents}</div>
+			</React.Fragment>
 		);
 	}
 }

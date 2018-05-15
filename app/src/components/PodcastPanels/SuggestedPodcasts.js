@@ -93,40 +93,37 @@ class SuggestedPodcasts extends React.Component {
 
 	render() {
 		return (
-			<Panel>
-				<Panel.Header>Suggested Podcasts</Panel.Header>
-				<Panel.Contents>
-					{this.props.podcasts.map(podcast => {
-						return (
-							<Link key={podcast._id} to={`/podcasts/${podcast._id}`}>
-								<Img
-									src={[
-										podcast.images.favicon,
-										getPlaceholderImageURL(podcast._id),
-									]}
-								/>
-								<div>{podcast.title}</div>
-								<div
-									className={`clickable ${
-										this.props.followedPodcasts[podcast._id]
-											? 'active'
-											: ''
-									}`}
-									onClick={e => {
-										e.preventDefault();
-										if (this.props.followedPodcasts[podcast._id]) {
-											this.unfollowPodcast(podcast._id);
-										} else {
-											this.followPodcast(podcast._id);
-										}
-									}}
-								>
-									Follow
-								</div>{' '}
-							</Link>
-						);
-					})}
-				</Panel.Contents>
+			<Panel headerText="Suggested Podcasts">
+				{this.props.podcasts.map(podcast => {
+					return (
+						<Link key={podcast._id} to={`/podcasts/${podcast._id}`}>
+							<Img
+								src={[
+									podcast.images.favicon,
+									getPlaceholderImageURL(podcast._id),
+								]}
+							/>
+							<div>{podcast.title}</div>
+							<div
+								className={`clickable ${
+									this.props.followedPodcasts[podcast._id]
+										? 'active'
+										: ''
+								}`}
+								onClick={e => {
+									e.preventDefault();
+									if (this.props.followedPodcasts[podcast._id]) {
+										this.unfollowPodcast(podcast._id);
+									} else {
+										this.followPodcast(podcast._id);
+									}
+								}}
+							>
+								Follow
+							</div>
+						</Link>
+					);
+				})}
 			</Panel>
 		);
 	}

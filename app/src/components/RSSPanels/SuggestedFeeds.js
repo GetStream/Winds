@@ -107,40 +107,37 @@ class SuggestedFeeds extends React.Component {
 
 	render() {
 		return (
-			<Panel>
-				<Panel.Header>Suggested Feeds</Panel.Header>
-				<Panel.Contents>
-					{this.props.rssFeeds.map(rssFeed => {
-						return (
-							<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
-								<Img
-									src={[
-										rssFeed.images.favicon,
-										getPlaceholderImageURL(rssFeed._id),
-									]}
-								/>
-								<div>{rssFeed.title}</div>
-								<div
-									className={`clickable ${
-										this.props.followedRssFeeds[rssFeed._id]
-											? 'active'
-											: ''
-									}`}
-									onClick={e => {
-										e.preventDefault();
-										if (this.props.followedRssFeeds[rssFeed._id]) {
-											this.unfollowRssFeed(rssFeed._id);
-										} else {
-											this.followRssFeed(rssFeed._id);
-										}
-									}}
-								>
-									Follow
-								</div>{' '}
-							</Link>
-						);
-					})}
-				</Panel.Contents>
+			<Panel headerText="Suggested Feeds">
+				{this.props.rssFeeds.map(rssFeed => {
+					return (
+						<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
+							<Img
+								src={[
+									rssFeed.images.favicon,
+									getPlaceholderImageURL(rssFeed._id),
+								]}
+							/>
+							<div>{rssFeed.title}</div>
+							<div
+								className={`clickable ${
+									this.props.followedRssFeeds[rssFeed._id]
+										? 'active'
+										: ''
+								}`}
+								onClick={e => {
+									e.preventDefault();
+									if (this.props.followedRssFeeds[rssFeed._id]) {
+										this.unfollowRssFeed(rssFeed._id);
+									} else {
+										this.followRssFeed(rssFeed._id);
+									}
+								}}
+							>
+								Follow
+							</div>
+						</Link>
+					);
+				})}
 			</Panel>
 		);
 	}

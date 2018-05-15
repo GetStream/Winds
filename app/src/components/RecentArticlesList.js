@@ -3,8 +3,45 @@ import ArticleListItem from './ArticleListItem';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import fetch from '../util/fetch';
 
 class RecentArticlesList extends React.Component {
+	componentDidMount() {
+		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
+			type: 'article',
+		}).then(response => {
+			let articles = response.data.map(article => {
+				return { ...article, type: 'article' };
+			});
+
+			for (let article of articles) {
+				// update rss feed
+				this.props.dispatch({
+					rssFeed: article.rss,
+					type: 'UPDATE_RSS_FEED',
+				});
+				// update article
+				this.props.dispatch({
+					rssArticle: article,
+					type: 'UPDATE_ARTICLE',
+				});
+			}
+
+			// sort articles
+			articles.sort((a, b) => {
+				return (
+					new Date(b.publicationDate).valueOf() -
+					new Date(a.publicationDate).valueOf()
+				);
+			});
+
+			this.props.dispatch({
+				activities: articles,
+				feedID: `user_article:${localStorage['authedUser']}`,
+				type: 'UPDATE_FEED',
+			});
+		});
+	}
 	render() {
 		return (
 			<div className="rss-article-list-view">

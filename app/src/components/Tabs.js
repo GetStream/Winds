@@ -13,36 +13,42 @@ class Tabs extends React.Component {
 		// clever key deletion with es7 destructuring
 		let { tabTitle, ...selectedElementProps } = selectedElement.props; // eslint-disable-line no-unused-vars
 		return (
-			<div>
-				<ul className="tabs">
-					{this.props.children.map((element, i) => {
-						return (
-							<li
-								className={`tab ${
-									this.state.selectedTab === i ? 'active' : ''
-								}`}
-								key={i}
-								onClick={() => {
-									localStorage[this.props.tabGroup] = i;
-									this.setState({
-										selectedTab: i,
-									});
-								}}
-							>
-								{element.props.tabTitle}
-							</li>
-						);
-					})}
-				</ul>
-				<div>
+			<React.Fragment>
+				<div className={this.props.headerClass || ''}>
+					{this.props.headerComponent}
+					<ul className="tabs">
+						{this.props.children.map((element, i) => {
+							return (
+								<li
+									className={`tab ${
+										this.state.selectedTab === i ? 'active' : ''
+									}`}
+									key={i}
+									onClick={() => {
+										localStorage[this.props.tabGroup] = i;
+										this.setState({
+											selectedTab: i,
+										});
+									}}
+								>
+									{element.props.tabTitle}
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+				<div className={this.props.componentClass || ''}>
 					<selectedElement.type {...selectedElementProps} />
 				</div>
-			</div>
+			</React.Fragment>
 		);
 	}
 }
 Tabs.propTypes = {
 	children: PropTypes.arrayOf(PropTypes.element),
+	componentClass: PropTypes.string,
+	headerClass: PropTypes.string,
+	headerComponent: PropTypes.element,
 	tabGroup: PropTypes.string.isRequired,
 };
 

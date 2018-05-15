@@ -137,8 +137,8 @@ class RSSArticleList extends React.Component {
 			return <Loader />;
 		} else {
 			return (
-				<div className="rss-article-list-view">
-					<div className="rss-article-list-header">
+				<React.Fragment>
+					<div className="rss-article-list-header content-header">
 						<h1>{this.props.rssFeed.title}</h1>
 						<button
 							className={`btn primary alt ${
@@ -149,7 +149,7 @@ class RSSArticleList extends React.Component {
 							{this.props.following ? 'Unfollow' : 'Follow'}
 						</button>
 					</div>
-					<div className="list">
+					<div className="list content">
 						{this.props.articles.map(article => {
 							return (
 								<ArticleListItem
@@ -206,7 +206,7 @@ class RSSArticleList extends React.Component {
 							);
 						}}
 					/>
-				</div>
+			</React.Fragment>
 			);
 		}
 	}

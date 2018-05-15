@@ -98,35 +98,31 @@ class PodcastsView extends React.Component {
 		// 		</div>
 		// 	);
 		// }
+		let headerComponent = <h1>Podcasts</h1>;
 		return (
-			<div className="two-columns podcasts-view">
-				<div className="column">
-					<div className="column-header">
-						<h1>Podcasts</h1>
+			<div className="podcasts-view">
+				<Tabs
+					componentClass="panels"
+					headerClass="panels-header"
+					headerComponent={headerComponent}
+					tabGroup="podcast-view"
+				>
+					<div tabTitle="All Podcasts">
+						<RecentEpisodesPanel />
+						<PodcastList />
 					</div>
-					<Tabs tabGroup="podcast-view">
-						<div tabTitle="All Podcasts">
-							<RecentEpisodesPanel />
-							<PodcastList />
-						</div>
-						<div tabTitle="Bookmarks">
-							<BookmarkedEpisodes />
-						</div>
-						<div tabTitle="Suggestions">
-							<SuggestedPodcasts />
-						</div>
-					</Tabs>
-				</div>
-				<div className="column">
-					<Switch>
-						<Route component={RecentEpisodesList} path="/podcasts/recent" />
-						<Route
-							component={PodcastEpisodesView}
-							path="/podcasts/:podcastID"
-						/>
-						<Route component={AllEpisodesList} path="/podcasts" />
-					</Switch>
-				</div>
+					<div tabTitle="Bookmarks">
+						<BookmarkedEpisodes />
+					</div>
+					<div tabTitle="Suggestions">
+						<SuggestedPodcasts />
+					</div>
+				</Tabs>
+				<Switch>
+					<Route component={RecentEpisodesList} path="/podcasts/recent" />
+					<Route component={PodcastEpisodesView} path="/podcasts/:podcastID" />
+					<Route component={AllEpisodesList} path="/podcasts" />
+				</Switch>
 			</div>
 		);
 	}

@@ -32,33 +32,28 @@ class BookmarkedEpisodes extends React.Component {
 	}
 	render() {
 		return (
-			<Panel>
-				<Panel.Header>Bookmarks</Panel.Header>
-				<Panel.Contents>
-					{this.props.bookmarks.map(bookmark => {
-						return (
-							<Link
-								key={bookmark._id}
-								to={`/podcasts/${bookmark.episode.podcast._id}`}
-							>
-								<Img
-									src={[
-										bookmark.episode.podcast.images.favicon,
-										getPlaceholderImageURL(
-											bookmark.episode.podcast._id,
-										),
-									]}
-								/>
-								<div>{bookmark.episode.title}</div>
-								<TimeAgo
-									className="muted"
-									timestamp={bookmark.episode.publicationDate}
-									trim={true}
-								/>
-							</Link>
-						);
-					})}
-				</Panel.Contents>
+			<Panel headerText="Bookmarks">
+				{this.props.bookmarks.map(bookmark => {
+					return (
+						<Link
+							key={bookmark._id}
+							to={`/podcasts/${bookmark.episode.podcast._id}`}
+						>
+							<Img
+								src={[
+									bookmark.episode.podcast.images.favicon,
+									getPlaceholderImageURL(bookmark.episode.podcast._id),
+								]}
+							/>
+							<div>{bookmark.episode.title}</div>
+							<TimeAgo
+								className="muted"
+								timestamp={bookmark.episode.publicationDate}
+								trim={true}
+							/>
+						</Link>
+					);
+				})}
 			</Panel>
 		);
 	}

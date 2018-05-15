@@ -48,7 +48,6 @@ class AppRouter extends Component {
 			<Router history={history}>
 				<div className="app">
 					<AuthedRoute component={Header} redirect={false} showLoader={false} />
-					<AuthedRoute component={Player} redirect={false} showLoader={false} />
 					<AuthedRoute component={Dashboard} exact path="/" />
 					<AuthedRoute component={Onboarding} exact path="/onboarding" />
 					<AuthedRoute component={OnboardingOPML} exact path="/onboarding/2" />
@@ -70,6 +69,7 @@ class AppRouter extends Component {
 						exact
 						path="/reset-password"
 					/>
+					<AuthedRoute component={Player} redirect={false} showLoader={false} />
 				</div>
 			</Router>
 		);

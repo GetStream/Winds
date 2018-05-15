@@ -1,121 +1,130 @@
 .dashboard {
+	display: grid;
+	flex-grow: 1;
+	grid-column-gap: $gutters;
+	grid-template-areas: 'featured featured featured' 'podcast-header rss-header discover-header' 'podcast-content rss-content discover-content';
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: auto auto 1fr;
 	height: 100%;
+	max-width: 100%;
+	// padding: 0 ($gutters / 2);
+	overflow-y: hidden;
 
-	.hero-banner {
-		background-color: $background-black;
-		background-image: url('/images/hero.png');
-		background-position: center;
-		background-size: cover;
-		color: $foreground-white;
-		font-size: 150%;
-		margin-bottom: 2em;
-		margin-top: -7em;
-		padding-bottom: 5em;
-		padding-left: 10em;
-		padding-top: 7em;
-
-		h1 {
-			font-weight: 600;
-		}
-
-		p {
-			font-weight: 300;
-			line-height: 1.5em;
-			margin-bottom: 2em;
-
-			a:active,
-			a:focus,
-			a:hover,
-			a:link,
-			a:visited {
-				border-bottom: 2px solid #89a8a8;
-				color: inherit;
-				font-weight: 500;
-				text-decoration: none;
-			}
-		}
-
-		.buttons {
-			display: flex;
-			font-size: 11px;
-
-			.btn.link {
-				color: $foreground-white;
-			}
-		}
+	.podcast-header {
+		grid-area: podcast-header;
 	}
 
-	.podcast-dashboard-column {
-		.content-featured {
-			background: $background-white;
-			border-radius: 8px;
-			box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
-			color: inherit;
-			display: flex;
-			flex-direction: row;
-			flex-wrap: nowrap;
-			height: 124px;
-			margin-bottom: 2em;
-			padding: 12px;
-			text-decoration: inherit;
-			width: auto;
-
-			.left {
-				.poster {
-					height: 100px;
-					margin-right: 12px;
-					width: 100px;
-
-					.control {
-						align-items: center;
-						background: rgba(255, 255, 255, 0.8);
-						border-radius: 50%;
-						box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.11);
-						cursor: pointer;
-						display: flex;
-						height: 40px;
-						justify-content: center;
-						left: 30px;
-						position: relative;
-						top: -75px;
-						width: 40px;
-
-						img {
-							margin-left: 2px;
-						}
-					}
-				}
-			}
-
-			.right {
-				float: left;
-				font-family: $primary;
-				width: 70%;
-
-				.title {
-					font-size: 18px;
-					font-weight: 600;
-					margin-bottom: 20px;
-				}
-
-				.description {
-					font-size: 12px;
-					font-weight: 200;
-				}
-			}
-		}
-
-		.spacer {
-			background-color: $snowcap;
-			height: 1px;
-			margin: 12px 0;
-		}
-
-		.playlists {
-			display: grid;
-			grid-column-gap: 2em;
-			grid-row-gap: 2em;
-			grid-template-columns: 1fr 1fr;
-		}
+	.rss-header {
+		grid-area: rss-header;
 	}
+
+	.discover-header {
+		grid-area: discover-header;
+	}
+
+	.podcasts-section {
+		grid-area: podcast-content;
+		min-width: 0;
+		overflow-y: scroll;
+	}
+
+	.rss-section {
+		grid-area: rss-content;
+		min-width: 0;
+		overflow-y: scroll;
+	}
+
+	.discover-section {
+		grid-area: discover-content;
+		min-width: 0;
+		overflow-y: scroll;
+	}
+
+	.podcast-header,
+	.podcasts-section {
+		margin-left: ($gutters / 2);
+	}
+
+	.discover-header,
+	.discover-section {
+		margin-right: ($gutters / 2);
+	}
+
+	// .panel {
+	// 	overflow-y: scroll;
+	// }
+
+	// .podcast-dashboard-column {
+	// 	.content-featured {
+	// 		background: $background-white;
+	// 		border-radius: 8px;
+	// 		box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+	// 		color: inherit;
+	// 		display: flex;
+	// 		flex-direction: row;
+	// 		flex-wrap: nowrap;
+	// 		height: 124px;
+	// 		margin-bottom: 2em;
+	// 		padding: 12px;
+	// 		text-decoration: inherit;
+	// 		width: auto;
+	//
+	// 		.left {
+	// 			.poster {
+	// 				height: 100px;
+	// 				margin-right: 12px;
+	// 				width: 100px;
+	//
+	// 				.control {
+	// 					align-items: center;
+	// 					background: rgba(255, 255, 255, 0.8);
+	// 					border-radius: 50%;
+	// 					box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.11);
+	// 					cursor: pointer;
+	// 					display: flex;
+	// 					height: 40px;
+	// 					justify-content: center;
+	// 					left: 30px;
+	// 					position: relative;
+	// 					top: -75px;
+	// 					width: 40px;
+	//
+	// 					img {
+	// 						margin-left: 2px;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	//
+	// 		.right {
+	// 			float: left;
+	// 			font-family: $primary;
+	// 			width: 70%;
+	//
+	// 			.title {
+	// 				font-size: 18px;
+	// 				font-weight: 600;
+	// 				margin-bottom: 20px;
+	// 			}
+	//
+	// 			.description {
+	// 				font-size: 12px;
+	// 				font-weight: 200;
+	// 			}
+	// 		}
+	// 	}
+	//
+	// 	.spacer {
+	// 		background-color: $snowcap;
+	// 		height: 1px;
+	// 		margin: 12px 0;
+	// 	}
+	//
+	// 	.playlists {
+	// 		display: grid;
+	// 		grid-column-gap: 2em;
+	// 		grid-row-gap: 2em;
+	// 		grid-template-columns: 1fr 1fr;
+	// 	}
+	// }
 }
