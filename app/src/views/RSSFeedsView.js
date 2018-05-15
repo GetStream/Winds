@@ -15,15 +15,6 @@ import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
 import AllArticlesList from '../components/AllArticlesList';
 import RecentArticlesList from '../components/RecentArticlesList';
 
-const RSSNotSelected = () => {
-	return (
-		<div className="none-selected">
-			<Img src={partialIcon} />
-			<div>Select an RSS Feed</div>
-		</div>
-	);
-};
-
 class RSSFeedsView extends React.Component {
 	constructor(props) {
 		super(props);
@@ -60,43 +51,35 @@ class RSSFeedsView extends React.Component {
 	}
 
 	render() {
-		// let leftColumn;
-		// if (this.props.rssFeed && this.props.rssFeed.featured) {
-		// 	leftColumn = (
-		// 		<div className="column">
-		// 			<div className="column-header" />
-		// 			<div className="column-content featured-rss">
-		// 				<div
-		// 					className="hero-card"
-		// 					style={{
-		// 						backgroundImage: `linear-gradient(to top, black, transparent), url(${
-		// 							this.props.rssFeed.images.featured
-		// 						})`,
-		// 					}}
-		// 				>
-		// 					<h1>{this.props.rssFeed.title}</h1>
-		// 					<div className="info">rss</div>
-		// 				</div>
-		// 				<label>About {this.props.rssFeed.title}</label>
-		// 				<h1>{this.props.rssFeed.description}</h1>
-		// 				<div>{this.props.rssFeed.summary}</div>
-		// 				<FollowerList id={this.props.rssFeed._id} type="rss" />
-		// 			</div>
-		// 		</div>
-		// 	);
-		// } else {
-		// 	leftColumn = (
-		// 		<div className="column">
-		// 			<div className="column-content">{columnComponents}</div>
-		// 		</div>
-		// 	);
-		// }
-
 		let headerComponent = <h1>RSS</h1>;
-		return (
-			<div className="rss-view">
-				<div className="column-header" />
-
+		let leftColumn;
+		if (this.props.rssFeed && this.props.rssFeed.featured) {
+			leftColumn = (
+				<React.Fragment>
+					<div className="panels-header">
+						<div className="featured-rss">
+							<div
+								className="hero-card"
+								style={{
+									backgroundImage: `linear-gradient(to top, black, transparent), url(${
+										this.props.rssFeed.images.featured
+									})`,
+								}}
+							>
+								<h1>{this.props.rssFeed.title}</h1>
+								<div className="info">rss</div>
+							</div>
+						</div>
+					</div>
+					<div className="panels">
+						<label>About {this.props.rssFeed.title}</label>
+						<h1>{this.props.rssFeed.description}</h1>
+						<div>{this.props.rssFeed.summary}</div>
+					</div>
+				</React.Fragment>
+			);
+		} else {
+			leftColumn = (
 				<Tabs
 					componentClass="panels"
 					headerClass="panels-header"
@@ -114,6 +97,12 @@ class RSSFeedsView extends React.Component {
 						<SuggestedFeeds />
 					</div>
 				</Tabs>
+			);
+		}
+
+		return (
+			<div className="rss-view">
+				{leftColumn}
 				<Switch>
 					<Route
 						component={RSSArticle}

@@ -201,12 +201,14 @@ class RSSArticleList extends React.Component {
 									articleCursor: this.state.articleCursor + 1,
 								},
 								() => {
-									this.getRSSArticles(this.props.match.params.rssFeedID);
+									this.getRSSArticles(
+										this.props.match.params.rssFeedID,
+									);
 								},
 							);
 						}}
 					/>
-			</React.Fragment>
+				</React.Fragment>
 			);
 		}
 	}
@@ -242,9 +244,11 @@ const mapStateToProps = (state, ownProps) => {
 	let articles = [];
 	let loading = false;
 	if (state.articles) {
-		articles = Object.values(state.articles).filter(article => {
-			return article.rss === ownProps.match.params.rssFeedID;
-		});
+		for (let articleID of Object.keys(state.articles)) {
+			if (state.articles[articleID].rss === ownProps.match.params.rssFeedID) {
+				articles.push({ ...state.articles[articleID] }); // from @kenhoff - derp, make sure that you're pushing a _copy_ of the object, not the object itself, otherwise redux state is boom :(
+			}
+		}
 	} else {
 		loading = true;
 	}
@@ -252,7 +256,7 @@ const mapStateToProps = (state, ownProps) => {
 	let rssFeed = {};
 
 	if ('rssFeeds' in state && ownProps.match.params.rssFeedID in state.rssFeeds) {
-		rssFeed = state.rssFeeds[ownProps.match.params.rssFeedID];
+		rssFeed = { ...state.rssFeeds[ownProps.match.params.rssFeedID] };
 	}
 
 	for (let article of articles) {
@@ -263,6 +267,7 @@ const mapStateToProps = (state, ownProps) => {
 		} else {
 			article.pinned = false;
 		}
+		article.rss = { ...rssFeed };
 	}
 
 	articles.sort((a, b) => {

@@ -2145,9 +2145,9 @@ a.column-header:hover {
     overflow-y: scroll; }
   .podcasts-view .content-header {
     grid-area: content-header; }
-  .podcasts-view .column-content.featured-podcast > * {
+  .podcasts-view .featured-podcast > * {
     margin-bottom: 2em; }
-  .podcasts-view .column-content.featured-podcast label {
+  .podcasts-view .featured-podcast label {
     color: #000; }
   .podcasts-view .podcast-header {
     display: flex;
@@ -2251,10 +2251,10 @@ a.column-header:hover {
         text-decoration: underline; }
     .rss-view .rss-article-content img {
       max-width: 100%; }
-    .rss-view .rss-article-content .column-content.featured-rss > * {
-      margin-bottom: 2em; }
-    .rss-view .rss-article-content .column-content.featured-rss label {
-      color: #000; }
+  .rss-view .featured-rss > * {
+    margin-bottom: 2em; }
+  .rss-view .featured-rss label {
+    color: #000; }
   .rss-view .rss-article-list-view .rss-article-list-header {
     align-items: center;
     display: flex;
