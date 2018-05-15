@@ -1,3 +1,29 @@
+.list-view-header {
+	.alignment-box {
+		align-items: center;
+		display: flex;
+
+		.image {
+			img {
+				border-radius: $border-radius;
+				box-shadow: $box-shadow;
+				height: 50px;
+				width: 50px;
+			}
+		}
+
+		> * {
+			margin-right: 1em;
+
+			&.menu {
+				cursor: pointer;
+				margin-left: auto;
+				margin-right: 0;
+			}
+		}
+	}
+}
+
 .list {
 	.list-item {
 		border-bottom: 1px solid $foreground-lightgray;
@@ -6,6 +32,10 @@
 		display: flex;
 		padding: 2em 0;
 		text-decoration: inherit;
+
+		&:first-child {
+			padding-top: 0;
+		}
 
 		.left {
 			margin-right: 2em;

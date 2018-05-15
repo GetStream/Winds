@@ -143,6 +143,7 @@ RSSArticle.propTypes = {
 	_id: PropTypes.string,
 	commentUrl: PropTypes.string,
 	description: PropTypes.string,
+	dispatch: PropTypes.func.isRequired,
 	images: PropTypes.shape({
 		og: PropTypes.string,
 	}),
@@ -153,6 +154,8 @@ RSSArticle.propTypes = {
 			rssFeedID: PropTypes.string.isRequired,
 		}),
 	}),
+	pinID: PropTypes.string,
+	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
 	rss: PropTypes.shape({
 		title: PropTypes.string,

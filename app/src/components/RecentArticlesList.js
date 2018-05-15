@@ -48,7 +48,7 @@ class RecentArticlesList extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div className="rss-article-list-header content-header">
+				<div className="list-view-header content-header">
 					<h1>Recent Articles</h1>
 				</div>
 

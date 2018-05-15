@@ -68,7 +68,7 @@ class AllArticles extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="rss-article-list-header content-header">
+				<div className="list-view-header content-header">
 					<h1>All Articles</h1>
 				</div>
 

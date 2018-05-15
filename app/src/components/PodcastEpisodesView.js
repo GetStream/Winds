@@ -221,30 +221,32 @@ class PodcastEpisodesView extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="podcast-header">
-					<div className="image">
-						<Img
-							src={[
-								this.props.podcast.images.featured,
-								this.props.podcast.images.og,
-								getPlaceholderImageURL(this.props.podcast._id),
-							]}
-						/>
-					</div>
-					<div className="info">
-						<h1>{this.props.podcast.title}</h1>
-					</div>
-					<div className="menu">
-						<Popover
-							body={menuContent}
-							isOpen={this.state.menuIsOpen}
-							onOuterAction={this.toggleMenu}
-							place="below"
-						>
-							<div onClick={this.toggleMenu}>
-								<Img src={optionsIcon} />
-							</div>
-						</Popover>
+				<div className="content-header list-view-header">
+					<div className="alignment-box">
+						<div className="image">
+							<Img
+								src={[
+									this.props.podcast.images.featured,
+									this.props.podcast.images.og,
+									getPlaceholderImageURL(this.props.podcast._id),
+								]}
+							/>
+						</div>
+						<div className="info">
+							<h1>{this.props.podcast.title}</h1>
+						</div>
+						<div className="menu">
+							<Popover
+								body={menuContent}
+								isOpen={this.state.menuIsOpen}
+								onOuterAction={this.toggleMenu}
+								place="below"
+							>
+								<div onClick={this.toggleMenu}>
+									<Img src={optionsIcon} />
+								</div>
+							</Popover>
+						</div>
 					</div>
 				</div>
 
