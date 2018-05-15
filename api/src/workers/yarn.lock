@@ -2791,10 +2791,6 @@ lodash@4.17.5, lodash@^4.14.0, lodash@^4.15.0:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
 
-lodash@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.2.1.tgz#171fdcfbbc30d689c544cd18c0529f56de6c1aa9"
-
 lodash@^4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
@@ -3027,13 +3023,6 @@ nan@^2.3.5:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
-
-node-podcast-parser@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/node-podcast-parser/-/node-podcast-parser-2.1.0.tgz#5eff9f7cb28108e6c5c44c8a9ecf08ad1799d4be"
-  dependencies:
-    lodash "4.2.1"
-    sax "1.1.5"
 
 node-pre-gyp@^0.6.39:
   version "0.6.39"
@@ -3741,10 +3730,6 @@ sanitize-html@^1.18.2:
     postcss "^6.0.14"
     srcset "^1.0.0"
     xtend "^4.0.0"
-
-sax@1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/sax/-/sax-1.1.5.tgz#1da50a8d00cdecd59405659f5ff85349fe773743"
 
 sax@^1.2.4:
   version "1.2.4"

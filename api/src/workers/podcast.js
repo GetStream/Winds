@@ -48,8 +48,9 @@ podcastQueue.process((job, done) => {
 			// actually store the episodes
 			return Promise.all(
 				podcastContents.episodes.map(episode => {
+					let normalizedUrl = normalize(episode.url)
 					return Episode.findOne({
-						url: normalize(episode.url), // do not lowercase this - some podcast URLs are case-sensitive
+						url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
 						podcast: job.data.podcast,
 					}).then(exists => {
 						if (exists) {
@@ -60,7 +61,7 @@ podcastQueue.process((job, done) => {
 								podcast: job.data.podcast,
 								publicationDate: episode.publicationDate,
 								title: episode.title,
-								url: episode.url,
+								url: normalizedUrl,
 								images: episode.images
 							})
 								.then(episode => {
@@ -84,8 +85,8 @@ podcastQueue.process((job, done) => {
 											}),
 											ogQueue.add(
 												{
-													url: normalize(episode.url),
-													type: 'podcast',
+													url: episode.url,
+													type: 'episode',
 												},
 												{
 													removeOnComplete: true,

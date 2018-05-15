@@ -270,7 +270,7 @@ class AccountDetailsForm extends React.Component {
 
 				if (err.response && err.response.status === 409) {
 					errorMessage =
-						'The provided username or password already exists. Please try again.';
+						'The provided email or username combination already exists. Please try again.';
 				} else {
 					errorMessage =
 						'There was an error when attempting to create your account. Please try again later.';
