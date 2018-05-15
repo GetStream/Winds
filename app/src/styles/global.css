@@ -2251,10 +2251,10 @@ a.column-header:hover {
         text-decoration: underline; }
     .rss-view .rss-article-content img {
       max-width: 100%; }
-    .rss-view .rss-article-content .column-content.featured-rss > * {
-      margin-bottom: 2em; }
-    .rss-view .rss-article-content .column-content.featured-rss label {
-      color: #000; }
+  .rss-view .featured-rss > * {
+    margin-bottom: 2em; }
+  .rss-view .featured-rss label {
+    color: #000; }
   .rss-view .rss-article-list-view .rss-article-list-header {
     align-items: center;
     display: flex;

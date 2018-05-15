@@ -10,7 +10,7 @@ import PlaylistView from './views/PlaylistView.js';
 import PodcastsView from './views/PodcastsView.js';
 import Profile from './views/Profile.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
-import { Router } from 'react-router-dom';
+import { Router, Switch } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
 import analytics from './util/tracking';
 import config from './config';
@@ -55,7 +55,10 @@ class AppRouter extends Component {
 					<AuthedRoute component={Profile} path="/profile/:userID" />
 					<AuthedRoute component={PlaylistView} path="/playlists/:playlistID" />
 					<AuthedRoute component={PodcastsView} path="/podcasts" />
-					<AuthedRoute component={RSSFeedsView} path="/rss" />
+					<Switch>
+						<AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
+						<AuthedRoute component={RSSFeedsView} path="/rss" />
+					</Switch>
 					<AuthedRoute component={AdminView} path="/admin" />
 					<UnauthedRoute component={Login} exact path="/login" />
 					<UnauthedRoute component={Create} exact path="/create-account" />

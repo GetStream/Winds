@@ -67,15 +67,15 @@
 		img {
 			max-width: 100%;
 		}
+	}
 
-		.column-content.featured-rss {
-			> * {
-				margin-bottom: 2em;
-			}
+	.featured-rss {
+		> * {
+			margin-bottom: 2em;
+		}
 
-			label {
-				color: $foreground-black;
-			}
+		label {
+			color: $foreground-black;
 		}
 	}
 
