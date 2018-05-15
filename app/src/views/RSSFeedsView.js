@@ -15,15 +15,6 @@ import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
 import AllArticlesList from '../components/AllArticlesList';
 import RecentArticlesList from '../components/RecentArticlesList';
 
-const RSSNotSelected = () => {
-	return (
-		<div className="none-selected">
-			<Img src={partialIcon} />
-			<div>Select an RSS Feed</div>
-		</div>
-	);
-};
-
 class RSSFeedsView extends React.Component {
 	constructor(props) {
 		super(props);
