@@ -78,7 +78,7 @@ class AllEpisodesList extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div className="podcast-header content-header">
+				<div className="list-view-header content-header">
 					<h1>All Episodes</h1>
 				</div>
 				<div className="list content">

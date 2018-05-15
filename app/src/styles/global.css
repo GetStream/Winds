@@ -1049,6 +1049,21 @@ a.column-header:hover {
     .hero-card.selected label {
       color: #44bc75; }
 
+.list-view-header .alignment-box {
+  align-items: center;
+  display: flex; }
+  .list-view-header .alignment-box .image img {
+    border-radius: 8px;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+    height: 50px;
+    width: 50px; }
+  .list-view-header .alignment-box > * {
+    margin-right: 1em; }
+    .list-view-header .alignment-box > *.menu {
+      cursor: pointer;
+      margin-left: auto;
+      margin-right: 0; }
+
 .list .list-item {
   border-bottom: 1px solid #eee;
   color: inherit;
@@ -1056,6 +1071,8 @@ a.column-header:hover {
   display: flex;
   padding: 2em 0;
   text-decoration: inherit; }
+  .list .list-item:first-child {
+    padding-top: 0; }
   .list .list-item .left {
     margin-right: 2em; }
     .list .list-item .left > img,
@@ -2201,30 +2218,6 @@ a.column-header:hover {
     margin-bottom: 2em; }
   .podcasts-view .featured-podcast label {
     color: #000; }
-  .podcasts-view .podcast-header {
-    display: flex;
-    padding: 2em 0; }
-    .podcasts-view .podcast-header .image {
-      margin-right: 2em; }
-      .podcasts-view .podcast-header .image img {
-        border-radius: 8px;
-        box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
-        height: 70px;
-        width: 70px; }
-    .podcasts-view .podcast-header .info {
-      color: #aaa; }
-      .podcasts-view .podcast-header .info h1 {
-        color: #000;
-        font-size: 2em;
-        font-weight: lighter;
-        letter-spacing: normal;
-        margin: 0; }
-      .podcasts-view .podcast-header .info .unlistened {
-        font-size: 0.75em; }
-    .podcasts-view .podcast-header .menu {
-      align-self: center;
-      cursor: pointer;
-      margin-left: auto; }
 
 .podcast-episode {
   cursor: pointer;
@@ -2307,9 +2300,3 @@ a.column-header:hover {
     margin-bottom: 2em; }
   .rss-view .featured-rss label {
     color: #000; }
-  .rss-view .rss-article-list-view .rss-article-list-header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between; }
-    .rss-view .rss-article-list-view .rss-article-list-header h1 {
-      margin-bottom: 0; }
