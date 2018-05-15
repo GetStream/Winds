@@ -1,3 +1,4 @@
+import UserProfileSettingsDrawer from './UserProfileSettingsDrawer';
 import octocatDarkIcon from '../images/logos/octocat-dark.svg';
 import backIcon from '../images/icons/back.svg';
 import forwardIcon from '../images/icons/forward.svg';
@@ -21,6 +22,7 @@ class Header extends Component {
 		super(props);
 
 		this.state = {
+			editProfileDrawerIsOpen: false,
 			githubPopoverIsOpen: false,
 			newContentPopoverIsOpen: false,
 			newPodcastModalIsOpen: false,
@@ -32,6 +34,7 @@ class Header extends Component {
 		this.toggleNewContentPopover = this.toggleNewContentPopover.bind(this);
 		this.toggleNewRSSModal = this.toggleNewRSSModal.bind(this);
 		this.toggleNewPodcastModal = this.toggleNewPodcastModal.bind(this);
+		this.closeDrawer = this.closeDrawer.bind(this);
 	}
 
 	toggleGithubPopover(e) {
@@ -68,6 +71,24 @@ class Header extends Component {
 		});
 	}
 
+	closeProfilePopover() {
+		this.setState({
+			profilePopoverIsOpen: false,
+		});
+	}
+
+	closeDrawer() {
+		this.setState({
+			editProfileDrawerIsOpen: false,
+		});
+	}
+
+	openDrawer() {
+		this.setState({
+			editProfileDrawerIsOpen: true,
+		});
+	}
+
 	render() {
 		const { location } = this.props;
 
@@ -84,13 +105,15 @@ class Header extends Component {
 						<span className="username">{this.props.user.username}</span>
 					</div>
 					<div className="link-to-profile">
-						<Link
+						<button
 							className="btn primary alt"
-							onClick={this.toggleProfilePopover}
-							to="/profile"
+							onClick={() => {
+								this.openDrawer();
+								this.closeProfilePopover();
+							}}
 						>
-							View Profile
-						</Link>
+							Settings
+						</button>
 					</div>
 				</div>
 				{this.props.user.admin ? (
@@ -261,6 +284,10 @@ class Header extends Component {
 					done={this.toggleNewPodcastModal}
 					isOpen={this.state.newPodcastModalIsOpen}
 					toggleModal={this.toggleNewPodcastModal}
+				/>
+				<UserProfileSettingsDrawer
+					closeDrawer={this.closeDrawer}
+					isOpen={this.state.editProfileDrawerIsOpen}
 				/>
 			</header>
 		);

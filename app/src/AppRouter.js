@@ -3,12 +3,9 @@ import React, { Component } from 'react';
 import AuthedRoute from './AuthedRoute';
 import Dashboard from './views/Dashboard';
 import Header from './components/Header';
-import Onboarding from './views/OnboardingView';
-import OnboardingOPML from './views/OnboardingOPMLView';
 import Player from './components/Player.js';
 import PlaylistView from './views/PlaylistView.js';
 import PodcastsView from './views/PodcastsView.js';
-import Profile from './views/Profile.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
 import { Router, Switch } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
@@ -49,10 +46,6 @@ class AppRouter extends Component {
 				<div className="app">
 					<AuthedRoute component={Header} redirect={false} showLoader={false} />
 					<AuthedRoute component={Dashboard} exact path="/" />
-					<AuthedRoute component={Onboarding} exact path="/onboarding" />
-					<AuthedRoute component={OnboardingOPML} exact path="/onboarding/2" />
-					<AuthedRoute component={Profile} exact path="/profile" />
-					<AuthedRoute component={Profile} path="/profile/:userID" />
 					<AuthedRoute component={PlaylistView} path="/playlists/:playlistID" />
 					<Switch>
 						<AuthedRoute
