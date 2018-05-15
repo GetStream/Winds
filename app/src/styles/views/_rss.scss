@@ -78,16 +78,4 @@
 			color: $foreground-black;
 		}
 	}
-
-	.rss-article-list-view {
-		.rss-article-list-header {
-			h1 {
-				margin-bottom: 0;
-			}
-
-			align-items: center;
-			display: flex;
-			justify-content: space-between;
-		}
-	}
 }

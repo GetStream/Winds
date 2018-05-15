@@ -1,12 +1,16 @@
+import optionsIcon from '../images/icons/options.svg';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import { getPinnedArticles } from '../util/pins';
+import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
 import Waypoint from 'react-waypoint';
+import Img from 'react-image';
+import Popover from 'react-popover';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
@@ -14,12 +18,21 @@ class RSSArticleList extends React.Component {
 		this.state = {
 			articleCursor: 1,
 			loading: true,
+			menuIsOpen: false,
+			sortBy: 'latest',
 		};
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
 		this.getFollowState = this.getFollowState.bind(this);
-		this.handleFollowClick = this.handleFollowClick.bind(this);
+		this.toggleMenu = this.toggleMenu.bind(this);
 	}
+
+	toggleMenu() {
+		this.setState({
+			menuIsOpen: !this.state.menuIsOpen,
+		});
+	}
+
 	componentDidMount() {
 		this.getRSSFeed(this.props.match.params.rssFeedID);
 		this.getFollowState(this.props.match.params.rssFeedID);
@@ -95,83 +108,143 @@ class RSSArticleList extends React.Component {
 				});
 			});
 	}
-	handleFollowClick() {
+	follow() {
 		// if not currently following, optimistic dispatch follow, make post call, then handle error
-		if (!this.props.following) {
-			this.props.dispatch({
-				rssFeedID: this.props.match.params.rssFeedID,
-				type: 'FOLLOW_RSS_FEED',
-				userID: localStorage['authedUser'],
-			});
-			fetch('post', '/follows', null, {
-				rss: this.props.match.params.rssFeedID,
-				type: 'rss',
-			}).catch(error => {
-				console.log(error); // eslint-disable-line no-console
-				this.props.dispatch({
-					rssFeedID: this.props.match.params.rssFeedID,
-					type: 'UNFOLLOW_RSS_FEED',
-					userID: localStorage['authedUser'],
-				});
-			});
-		} else {
-			// if currently following, optimistic dispatch unfollow, make delete call, then handle error
+		this.props.dispatch({
+			rssFeedID: this.props.match.params.rssFeedID,
+			type: 'FOLLOW_RSS_FEED',
+			userID: localStorage['authedUser'],
+		});
+		fetch('post', '/follows', null, {
+			rss: this.props.match.params.rssFeedID,
+			type: 'rss',
+		}).catch(error => {
+			console.log(error); // eslint-disable-line no-console
 			this.props.dispatch({
 				rssFeedID: this.props.match.params.rssFeedID,
 				type: 'UNFOLLOW_RSS_FEED',
 				userID: localStorage['authedUser'],
 			});
-			fetch('delete', '/follows', null, {
-				rss: this.props.match.params.rssFeedID,
-				type: 'rss',
-			}).catch(error => {
-				console.log(error); // eslint-disable-line no-console
-				this.props.dispatch({
-					rssFeedID: this.props.match.params.rssFeedID,
-					type: 'FOLLOW_RSS_FEED',
-					userID: localStorage['authedUser'],
-				});
+		});
+	}
+	unfollow() {
+		// if currently following, optimistic dispatch unfollow, make delete call, then handle error
+		this.props.dispatch({
+			rssFeedID: this.props.match.params.rssFeedID,
+			type: 'UNFOLLOW_RSS_FEED',
+			userID: localStorage['authedUser'],
+		});
+		fetch('delete', '/follows', null, {
+			rss: this.props.match.params.rssFeedID,
+			type: 'rss',
+		}).catch(error => {
+			console.log(error); // eslint-disable-line no-console
+			this.props.dispatch({
+				rssFeedID: this.props.match.params.rssFeedID,
+				type: 'FOLLOW_RSS_FEED',
+				userID: localStorage['authedUser'],
 			});
-		}
+		});
 	}
 	render() {
+		let sortedArticles = [...this.props.articles];
+		if (this.state.sortBy === 'latest') {
+			sortedArticles.sort((a, b) => {
+				return (
+					moment(b.publicationDate).valueOf() -
+					moment(a.publicationDate).valueOf()
+				);
+			});
+		} else {
+			sortedArticles.sort((a, b) => {
+				return (
+					moment(a.publicationDate).valueOf() -
+					moment(b.publicationDate).valueOf()
+				);
+			});
+		}
+
+		let menuContent = (
+			<div className="podcast-episode-list-view-popover">
+				<div className="panel">
+					<div className="panel-element">
+						<label>
+							<input
+								checked={this.state.sortBy === 'latest'}
+								onChange={() => {
+									this.setState({
+										sortBy: 'latest',
+									});
+								}}
+								type="radio"
+							/>
+							<span>Latest</span>
+						</label>
+					</div>
+					<div className="panel-element">
+						<label>
+							<input
+								checked={this.state.sortBy === 'oldest'}
+								onChange={() => {
+									this.setState({
+										sortBy: 'oldest',
+									});
+								}}
+								type="radio"
+							/>
+							<span>Oldest</span>
+						</label>
+					</div>
+					<div
+						className="panel-element"
+						onClick={() => {
+							if (this.props.following) {
+								this.unfollow();
+							} else {
+								this.follow();
+							}
+						}}
+					>
+						{this.props.following ? 'Unfollow' : 'Follow'}
+					</div>
+				</div>
+			</div>
+		);
+
 		if (this.state.loading) {
 			return <Loader />;
 		} else {
 			return (
 				<React.Fragment>
-					<div className="rss-article-list-header content-header">
-						<h1>{this.props.rssFeed.title}</h1>
-						<button
-							className={`btn primary alt ${
-								this.props.following ? 'hollow' : ''
-							}`}
-							onClick={this.handleFollowClick}
-						>
-							{this.props.following ? 'Unfollow' : 'Follow'}
-						</button>
+					<div className="list-view-header content-header">
+						<div className="alignment-box">
+							<div className="image">
+								<Img
+									src={[
+										this.props.rssFeed.images.featured,
+										this.props.rssFeed.images.og,
+										getPlaceholderImageURL(this.props.rssFeed._id),
+									]}
+								/>
+							</div>
+							<h1>{this.props.rssFeed.title}</h1>
+							<div className="menu">
+								<Popover
+									body={menuContent}
+									isOpen={this.state.menuIsOpen}
+									onOuterAction={this.toggleMenu}
+									place="below"
+								>
+									<div onClick={this.toggleMenu}>
+										<Img src={optionsIcon} />
+									</div>
+								</Popover>
+							</div>
+						</div>
 					</div>
 					<div className="list content">
-						{this.props.articles.map(article => {
-							return (
-								<ArticleListItem
-									favicon={this.props.rssFeed.favicon}
-									key={article._id}
-									like={this.props.like}
-									pinArticle={() => {
-										this.props.pinArticle(article._id);
-									}}
-									rssFeedID={this.props.match.params.rssFeedID}
-									unlike={this.props.unlike}
-									unpinArticle={() => {
-										this.props.unpinArticle(
-											article.pinID,
-											article._id,
-										);
-									}}
-									{...article}
-								/>
-							);
+						{sortedArticles.map(article => {
+							return <ArticleListItem key={article._id} {...article} />;
 						})}
 						{this.props.articles.length === 0 ? (
 							<div>
@@ -219,25 +292,25 @@ class RSSArticleList extends React.Component {
 RSSArticleList.defaultProps = {
 	articles: [],
 	following: false,
-	loading: true,
 };
 
 RSSArticleList.propTypes = {
 	articles: PropTypes.array,
 	dispatch: PropTypes.func.isRequired,
 	following: PropTypes.bool,
-	loading: PropTypes.bool,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			rssFeedID: PropTypes.string.isRequired,
 		}),
 	}),
-	pinArticle: PropTypes.func.isRequired,
 	rssFeed: PropTypes.shape({
-		favicon: PropTypes.string,
+		_id: PropTypes.string,
+		images: PropTypes.shape({
+			featured: PropTypes.string,
+			og: PropTypes.string,
+		}),
 		title: PropTypes.string,
 	}),
-	unpinArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -294,49 +367,5 @@ const mapStateToProps = (state, ownProps) => {
 		...ownProps,
 	};
 };
-const mapDispatchToProps = dispatch => {
-	return {
-		dispatch,
-		pinArticle: articleID => {
-			fetch('POST', '/pins', {
-				article: articleID,
-			})
-				.then(response => {
-					dispatch({
-						pin: response.data,
-						type: 'PIN_ARTICLE',
-					});
-				})
-				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
-				});
-		},
-		unpinArticle: (pinID, articleID) => {
-			fetch('DELETE', `/pins/${pinID}`)
-				.then(() => {
-					dispatch({
-						articleID,
-						type: 'UNPIN_ARTICLE',
-					});
-				})
-				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
-				});
-		},
-	};
-};
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-	return {
-		...dispatchProps,
-		getRSSArticles: rssFeedID => {
-			dispatchProps.getRSSArticles(rssFeedID);
-		},
-		getRSSFeed: rssFeedID => {
-			dispatchProps.getRSSFeed(rssFeedID);
-		},
-		...stateProps,
-		...ownProps,
-	};
-};
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(RSSArticleList);
+export default connect(mapStateToProps)(RSSArticleList);

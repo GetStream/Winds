@@ -67,7 +67,7 @@ class RecentEpisodesList extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div className="podcast-header">
+				<div className="list-view-header content-header">
 					<h1>Recent Episodes</h1>
 				</div>
 				<div className="list content">
