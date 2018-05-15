@@ -1,34 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../../util/fetch';
+// import fetch from '../../util/fetch';
 import Panel from '../Panel';
 import { Link } from 'react-router-dom';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import Img from 'react-image';
 import TimeAgo from '../TimeAgo';
+import { getPinnedEpisodes } from '../../util/pins';
 
 class BookmarkedEpisodes extends React.Component {
 	componentDidMount() {
-		fetch('GET', '/pins', null, { type: 'episode' }).then(response => {
-			for (let pin of response.data) {
-				// dispatch update to podcast
-				this.props.dispatch({
-					podcast: pin.episode.podcast,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-				// dispatch updates to episodes
-				this.props.dispatch({
-					episode: pin.episode,
-					type: 'UPDATE_EPISODE',
-				});
-				// dispatch updates to pins
-				this.props.dispatch({
-					pin,
-					type: 'PIN_EPISODE',
-				});
-			}
-		});
+		getPinnedEpisodes(this.props.dispatch);
 	}
 	render() {
 		return (

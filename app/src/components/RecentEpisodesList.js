@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
+import { getPinnedEpisodes } from '../util/pins';
 
 class RecentEpisodesList extends React.Component {
 	pinEpisode(episodeID) {
@@ -32,6 +33,7 @@ class RecentEpisodesList extends React.Component {
 			});
 	}
 	componentDidMount() {
+		getPinnedEpisodes(this.props.dispatch);
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 			type: 'episode',
 		}).then(response => {
@@ -110,6 +112,13 @@ const mapStateToProps = (state, ownProps) => {
 				...state.episodes[episodeID],
 			};
 			episode.podcast = { ...state.podcasts[episode.podcast] };
+
+			if (state.pinnedEpisodes && state.pinnedEpisodes[episode._id]) {
+				episode.pinned = true;
+				episode.pinID = state.pinnedEpisodes[episode._id]._id;
+			} else {
+				episode.pinned = false;
+			}
 
 			episodes.push(episode);
 		}
