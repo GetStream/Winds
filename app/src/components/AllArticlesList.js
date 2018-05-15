@@ -5,10 +5,23 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import ArticleListItem from './ArticleListItem';
+import Waypoint from 'react-waypoint';
 
 class AllArticles extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			cursor: 0,
+		};
+	}
 	componentDidMount() {
+		this.getArticleFeed();
+	}
+	getArticleFeed() {
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
+			page: this.state.cursor,
+			per_page: 10,
+			sort_by: 'publicationDate,desc',
 			type: 'article',
 		}).then(response => {
 			let articles = response.data.map(article => {
@@ -44,6 +57,14 @@ class AllArticles extends React.Component {
 		});
 	}
 	render() {
+		let unsortedArticles = [...this.props.articles];
+		unsortedArticles.sort((a, b) => {
+			return (
+				new Date(b.publicationDate).valueOf() -
+				new Date(a.publicationDate).valueOf()
+			);
+		});
+
 		return (
 			<React.Fragment>
 				<div className="rss-article-list-header content-header">
@@ -51,7 +72,7 @@ class AllArticles extends React.Component {
 				</div>
 
 				<div className="list content">
-					{this.props.articles.map(article => {
+					{unsortedArticles.map(article => {
 						return (
 							<ArticleListItem
 								key={article._id}
@@ -65,6 +86,18 @@ class AllArticles extends React.Component {
 							/>
 						);
 					})}
+					<Waypoint
+						onEnter={() => {
+							this.setState(
+								{
+									cursor: this.state.cursor + 1,
+								},
+								() => {
+									this.getArticleFeed();
+								},
+							);
+						}}
+					/>
 				</div>
 			</React.Fragment>
 		);

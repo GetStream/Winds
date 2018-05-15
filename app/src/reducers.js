@@ -124,13 +124,20 @@ export default (previousState = {}, action) => {
 		return Object.assign({}, previousState, { user });
 	} else if (action.type === 'UPDATE_FEED') {
 		// generate array of activity IDs (with types) for new feed
+		let feedItems = [];
+		if (previousState.feeds && previousState.feeds[action.feedID]) {
+			feedItems = [...previousState.feeds[action.feedID]] || [];
+		}
+		for (let newFeedItem of action.activities) {
+			if (!feedItems.includes(newFeedItem._id)) {
+				feedItems.push(newFeedItem._id);
+			}
+		}
 		return {
 			...previousState,
 			feeds: {
 				...previousState.feeds,
-				[action.feedID]: action.activities.map(activity => {
-					return `${activity.type}:${activity._id}`;
-				}),
+				[action.feedID]: feedItems,
 			},
 		};
 	} else if (action.type === 'UPDATE_SHARE') {

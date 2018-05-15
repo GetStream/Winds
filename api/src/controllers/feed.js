@@ -197,9 +197,11 @@ exports.get = (req, res) => {
 				res.status(500).send(err);
 			});
 	} else if (query.type === 'article') {
+		let limit = query.per_page || 10;
+		let offset = query.page * limit || 0;
 		client
 			.feed('user_article', params.userId)
-			.get()
+			.get({ limit, offset })
 			.then(response => {
 				return Promise.all(
 					response.results.map(activity => {
