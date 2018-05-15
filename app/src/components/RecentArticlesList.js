@@ -44,12 +44,12 @@ class RecentArticlesList extends React.Component {
 	}
 	render() {
 		return (
-			<div className="rss-article-list-view">
-				<div className="rss-article-list-header">
+			<React.Fragment>
+				<div className="rss-article-list-header content-header">
 					<h1>Recent Articles</h1>
 				</div>
 
-				<div className="list">
+				<div className="list content">
 					{this.props.articles.map(article => {
 						return (
 							<ArticleListItem
@@ -65,7 +65,7 @@ class RecentArticlesList extends React.Component {
 						);
 					})}
 				</div>
-			</div>
+			</React.Fragment>
 		);
 	}
 }
