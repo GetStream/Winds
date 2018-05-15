@@ -58,11 +58,11 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 
 ### Algolia
 
-Algolia is used for lightning fast and relevant search. We use their [JavaScript search client](https://www.npmjs.com/package/algoliasearch?ref=winds) to easily setup the Winds search implementation. Algolia, accounts are free up to 10k records and 100k operations.
+[Algolia](https://algolia.com?ref=winds) is used for lightning fast and relevant search. We use their [JavaScript search client](https://www.npmjs.com/package/algoliasearch?ref=winds) to easily setup the Winds search implementation. Algolia, accounts are free up to 10k records and 100k operations.
 
 ### MongoDB
 
-MongoDB Atlas provides a Database as a Service, and serves as the backend datastore for Winds.
+[MongoDB Atlas](http://mbsy.co/mongodb/228644) provides a Database as a Service, and serves as the backend datastore for Winds.
 
 ## Tutorials
 
