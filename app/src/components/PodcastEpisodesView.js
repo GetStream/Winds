@@ -1,3 +1,4 @@
+import Waypoint from 'react-waypoint';
 import optionsIcon from '../images/icons/options.svg';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import EpisodeListItem from './EpisodeListItem';
@@ -16,20 +17,50 @@ class PodcastEpisodesView extends React.Component {
 		this.toggleFollowPodcast = this.toggleFollowPodcast.bind(this);
 		this.toggleMenu = this.toggleMenu.bind(this);
 		this.state = {
+			episodeCursor: 1,
 			menuIsOpen: false,
 			sortBy: 'latest',
 		};
 	}
 	componentDidMount() {
 		this.props.getPodcast(this.props.match.params.podcastID);
-		this.props.getEpisodes(this.props.match.params.podcastID);
+		this.getEpisodes(this.props.match.params.podcastID);
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
 			this.props.getPodcast(nextProps.match.params.podcastID);
-			this.props.getEpisodes(nextProps.match.params.podcastID);
+			this.getEpisodes(nextProps.match.params.podcastID);
+			this.setState({
+				episodeCursor: 1,
+			});
 		}
 	}
+
+	getEpisodes(forPodcastID) {
+		fetch(
+			'GET',
+			'/episodes',
+			{},
+			{
+				page: this.state.episodeCursor,
+				per_page: 10,
+				podcast: forPodcastID,
+				sort_by: 'publicationDate,desc',
+			},
+		)
+			.then(res => {
+				for (let episode of res.data) {
+					this.props.dispatch({
+						episode,
+						type: 'UPDATE_EPISODE',
+					});
+				}
+			})
+			.catch(err => {
+				console.log(err); // eslint-disable-line no-console
+			});
+	}
+
 	toggleFollowPodcast() {
 		if (this.props.isFollowing) {
 			this.props.unfollowPodcast();
@@ -171,13 +202,6 @@ class PodcastEpisodesView extends React.Component {
 								playable={true}
 								playing={this.props.context.playing}
 								position={i}
-								toggleLike={() => {
-									if (episode.liked) {
-										this.props.unlike(episode._id);
-									} else {
-										this.props.like(episode._id);
-									}
-								}}
 								unpinEpisode={() => {
 									this.props.unpinEpisode(episode.pinID, episode._id);
 								}}
@@ -185,6 +209,18 @@ class PodcastEpisodesView extends React.Component {
 							/>
 						);
 					})}
+					<Waypoint
+						onEnter={() => {
+							this.setState(
+								{
+									episodeCursor: this.state.episodeCursor + 1,
+								},
+								() => {
+									this.getEpisodes(this.props.match.params.podcastID);
+								},
+							);
+						}}
+					/>
 				</div>
 			</React.Fragment>
 		);
@@ -202,9 +238,9 @@ PodcastEpisodesView.propTypes = {
 		contextPosition: PropTypes.number,
 		playing: PropTypes.bool,
 	}),
+	dispatch: PropTypes.func.isRequired,
 	episodes: PropTypes.array,
 	followPodcast: PropTypes.func.isRequired,
-	getEpisodes: PropTypes.func.isRequired,
 	getPodcast: PropTypes.func.isRequired,
 	isFollowing: PropTypes.bool,
 	match: PropTypes.shape({
@@ -275,6 +311,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	let podcastID = ownProps.match.params.podcastID;
 	return {
+		dispatch,
 		followPodcast: () => {
 			// optimistic dispatch
 			// dispatch updated follow relationship
@@ -300,28 +337,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 					userID: localStorage['authedUser'],
 				});
 			});
-		},
-		getEpisodes: forPodcastID => {
-			fetch(
-				'GET',
-				'/episodes',
-				{},
-				{
-					per_page: '10',
-					podcast: forPodcastID,
-				},
-			)
-				.then(res => {
-					for (let episode of res.data) {
-						dispatch({
-							episode,
-							type: 'UPDATE_EPISODE',
-						});
-					}
-				})
-				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
-				});
 		},
 		getPodcast: podcastID => {
 			fetch('GET', `/podcasts/${podcastID}`)
@@ -401,20 +416,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	};
 };
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-	return {
-		...dispatchProps,
-		getEpisodes: forPodcastID => {
-			dispatchProps.getEpisodes(forPodcastID);
-		},
-		getPodcast: podcastID => {
-			dispatchProps.getPodcast(podcastID);
-		},
-		...stateProps,
-		...ownProps,
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(
-	PodcastEpisodesView,
-);
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastEpisodesView);
