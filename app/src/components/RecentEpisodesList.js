@@ -107,9 +107,9 @@ const mapStateToProps = (state, ownProps) => {
 		for (let episodeID of state.feeds[`user_episode:${localStorage['authedUser']}`]) {
 			// also get RSS feed
 			let episode = {
-				...state.episodes[episodeID.split(':')[1]],
+				...state.episodes[episodeID],
 			};
-			episode.podcast = state.podcasts[episode.podcast];
+			episode.podcast = { ...state.podcasts[episode.podcast] };
 
 			episodes.push(episode);
 		}
