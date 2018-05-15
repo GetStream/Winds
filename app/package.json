@@ -116,15 +116,12 @@
 				"bucket": "winds-2.0-releases",
 				"path": "releases"
 			},
-			"category": "public.app-category.news",
+			"category": "public.app-category.news"
+		},
+		"mas": {
 			"entitlements": "assets/entitlements.mas.plist",
 			"entitlementsInherit": "assets/entitlements.mas.inherit.plist",
 			"provisioningProfile": "../../winds-private/embedded.provisionprofile"
-		},
-		"mas": {
-			"icon": "assets/icon.icns",
-			"type": "distribution",
-			"category": "public.app-category.news"
 		},
 		"win": {
 			"target": "nsis",
