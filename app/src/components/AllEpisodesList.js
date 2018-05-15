@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
+import Waypoint from 'react-waypoint';
 
 class AllEpisodesList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			cursor: 0,
+		};
+	}
 	pinEpisode(episodeID) {
 		fetch('POST', '/pins', {
 			episode: episodeID,
@@ -32,7 +39,12 @@ class AllEpisodesList extends React.Component {
 			});
 	}
 	componentDidMount() {
+		this.getEpisodes();
+	}
+	getEpisodes() {
 		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
+			page: this.state.cursor,
+			per_page: 10,
 			type: 'episode',
 		}).then(response => {
 			let episodes = response.data.map(episode => {
@@ -85,6 +97,18 @@ class AllEpisodesList extends React.Component {
 							/>
 						);
 					})}
+					<Waypoint
+						onEnter={() => {
+							this.setState(
+								{
+									cursor: this.state.cursor + 1,
+								},
+								() => {
+									this.getEpisodes();
+								},
+							);
+						}}
+					/>
 				</div>
 			</React.Fragment>
 		);
@@ -106,9 +130,9 @@ const mapStateToProps = (state, ownProps) => {
 		for (let episodeID of state.feeds[`user_episode:${localStorage['authedUser']}`]) {
 			// also get RSS feed
 			let episode = {
-				...state.episodes[episodeID.split(':')[1]],
+				...state.episodes[episodeID],
 			};
-			episode.podcast = state.podcasts[episode.podcast];
+			episode.podcast = { ...state.podcasts[episode.podcast] };
 
 			episodes.push(episode);
 		}
