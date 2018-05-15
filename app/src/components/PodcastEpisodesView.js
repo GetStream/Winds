@@ -114,7 +114,7 @@ class PodcastEpisodesView extends React.Component {
 		);
 
 		return (
-			<div>
+			<React.Fragment>
 				<div className="podcast-header">
 					<div className="image">
 						<Img
@@ -142,7 +142,7 @@ class PodcastEpisodesView extends React.Component {
 					</div>
 				</div>
 
-				<div className="list podcast-episode-list">
+				<div className="list podcast-episode-list content">
 					{sortedEpisodes.map((episode, i) => {
 						let active = false;
 						if (
@@ -186,7 +186,7 @@ class PodcastEpisodesView extends React.Component {
 						);
 					})}
 				</div>
-			</div>
+			</React.Fragment>
 		);
 	}
 }

@@ -36,26 +36,23 @@ class RssFeedList extends React.Component {
 	}
 	render() {
 		return (
-			<Panel>
-				<Panel.Header>Feeds</Panel.Header>
-				<Panel.Contents>
-					{this.props.rssFeeds.map(rssFeed => {
-						return (
-							<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
-								<Img
-									src={[
-										rssFeed.images.favicon,
-										getPlaceholderImageURL(rssFeed._id),
-									]}
-								/>
-								<div>{rssFeed.title}</div>
-								<div>
-									<i className="fa fa-chevron-right" />
-								</div>
-							</Link>
-						);
-					})}
-				</Panel.Contents>
+			<Panel headerText="Feeds">
+				{this.props.rssFeeds.map(rssFeed => {
+					return (
+						<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
+							<Img
+								src={[
+									rssFeed.images.favicon,
+									getPlaceholderImageURL(rssFeed._id),
+								]}
+							/>
+							<div>{rssFeed.title}</div>
+							<div>
+								<i className="fa fa-chevron-right" />
+							</div>
+						</Link>
+					);
+				})}
 			</Panel>
 		);
 	}

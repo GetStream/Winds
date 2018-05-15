@@ -15,12 +15,34 @@
 }
 
 .podcasts-view {
-	.none-selected {
-		align-items: center;
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-		justify-content: center;
+	display: grid;
+	flex-grow: 1;
+	grid-column-gap: $gutters;
+	grid-template-areas: 'panels-header content-header' 'panels content';
+	grid-template-columns: 1fr 2fr;
+	grid-template-rows: auto 1fr;
+	height: 100%;
+	max-width: 100%;
+	overflow-y: hidden;
+	padding: 0 ($gutters / 2);
+
+	.panels-header {
+		grid-area: panels-header;
+	}
+
+	.panels {
+		grid-area: panels;
+		min-width: 0;
+		overflow-y: scroll;
+	}
+
+	.content {
+		grid-area: content;
+		overflow-y: scroll;
+	}
+
+	.content-header {
+		grid-area: content-header;
 	}
 
 	.column-content.featured-podcast {

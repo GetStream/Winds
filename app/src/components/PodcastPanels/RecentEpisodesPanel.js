@@ -44,31 +44,29 @@ class RecentEpisodesPanel extends React.Component {
 	}
 	render() {
 		return (
-			<Panel>
-				<Panel.Header to="/podcasts/recent">Recent Episodes</Panel.Header>
-				<Panel.Contents>
-					{this.props.episodes.slice(0, 20).map(episode => {
-						return (
-							<Link
-								key={episode._id}
-								to={`/podcasts/${episode.podcast._id}`}
-							>
-								<Img
-									src={[
-										episode.podcast.images.favicon,
-										getPlaceholderImageURL(episode.podcast._id),
-									]}
-								/>
-								<div>{episode.title}</div>
-								<TimeAgo
-									className="muted"
-									timestamp={episode.publicationDate}
-									trim={true}
-								/>
-							</Link>
-						);
-					})}
-				</Panel.Contents>
+			<Panel
+				expandable={true}
+				headerLink="/podcasts/recent"
+				headerText="Recent Episodes"
+			>
+				{this.props.episodes.slice(0, 20).map(episode => {
+					return (
+						<Link key={episode._id} to={`/podcasts/${episode.podcast._id}`}>
+							<Img
+								src={[
+									episode.podcast.images.favicon,
+									getPlaceholderImageURL(episode.podcast._id),
+								]}
+							/>
+							<div>{episode.title}</div>
+							<TimeAgo
+								className="muted"
+								timestamp={episode.publicationDate}
+								trim={true}
+							/>
+						</Link>
+					);
+				})}
 			</Panel>
 		);
 	}

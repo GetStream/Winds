@@ -7,6 +7,63 @@
 	position: relative;
 }
 
+// only allow hover state for link headers
+a.column-header:hover {
+	background-color: $background-lightgray;
+	border-radius: $border-radius;
+	transition: all 0.22s ease-in-out;
+}
+
+.column-header {
+	align-items: center;
+	color: $foreground-black;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 1em;
+	padding: 1em;
+	text-decoration: none;
+
+	h1 {
+		margin: 0;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: inherit;
+	}
+
+	img {
+		height: 8px;
+		width: 5px;
+	}
+
+	.drilldown {
+		align-items: baseline;
+		display: flex;
+
+		> *:not(:last-child) {
+			margin-right: 1em;
+		}
+	}
+
+	.heading-with-button {
+		align-items: baseline;
+		display: flex;
+		justify-content: space-between;
+
+		.plus-button {
+			background-color: $background-green;
+			border: 2px solid $background-green;
+			border-radius: 10000px;
+			cursor: pointer;
+			height: 2em;
+			padding: 0;
+			width: 2em;
+		}
+	}
+}
+
 .column {
 	border-image: linear-gradient(to top, #ebebeb, #f7f7f7) 1 100%;
 	border-right-style: solid;
@@ -71,63 +128,6 @@
 		flex-direction: row;
 		justify-content: space-between;
 		margin-bottom: 1em;
-	}
-
-	// only allow hover state for link headers
-	a.column-header:hover {
-		background-color: $background-lightgray;
-		border-radius: $border-radius;
-		transition: all 0.22s ease-in-out;
-	}
-
-	.column-header {
-		align-items: center;
-		color: $foreground-black;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		padding: 1em;
-		margin-bottom: 1em;
-		text-decoration: none;
-
-		h1 {
-			margin-bottom: 0;
-		}
-
-		a {
-			color: inherit;
-			text-decoration: inherit;
-		}
-
-		img {
-			height: 8px;
-			width: 5px;
-		}
-
-		.drilldown {
-			align-items: baseline;
-			display: flex;
-
-			> *:not(:last-child) {
-				margin-right: 1em;
-			}
-		}
-
-		.heading-with-button {
-			align-items: baseline;
-			display: flex;
-			justify-content: space-between;
-
-			.plus-button {
-				background-color: $background-green;
-				border: 2px solid $background-green;
-				border-radius: 10000px;
-				cursor: pointer;
-				height: 2em;
-				padding: 0;
-				width: 2em;
-			}
-		}
 	}
 
 	.column-content {

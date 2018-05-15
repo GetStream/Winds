@@ -48,31 +48,32 @@ class RecentArticlesPanel extends React.Component {
 	}
 	render() {
 		return (
-			<Panel>
-				<Panel.Header to="/rss/recent">Recent Articles</Panel.Header>
-				<Panel.Contents>
-					{this.props.articles.slice(0, 20).map(article => {
-						return (
-							<Link
-								key={article._id}
-								to={`/rss/${article.rss._id}/articles/${article._id}`}
-							>
-								<Img
-									src={[
-										article.rss.images.favicon,
-										getPlaceholderImageURL(article.rss._id),
-									]}
-								/>
-								<div>{article.title}</div>
-								<TimeAgo
-									className="muted"
-									timestamp={article.publicationDate}
-									trim={true}
-								/>
-							</Link>
-						);
-					})}
-				</Panel.Contents>
+			<Panel
+				expandable={true}
+				headerLink="/rss/recent"
+				headerText="Recent Articles"
+			>
+				{this.props.articles.slice(0, 20).map(article => {
+					return (
+						<Link
+							key={article._id}
+							to={`/rss/${article.rss._id}/articles/${article._id}`}
+						>
+							<Img
+								src={[
+									article.rss.images.favicon,
+									getPlaceholderImageURL(article.rss._id),
+								]}
+							/>
+							<div>{article.title}</div>
+							<TimeAgo
+								className="muted"
+								timestamp={article.publicationDate}
+								trim={true}
+							/>
+						</Link>
+					);
+				})}
 			</Panel>
 		);
 	}

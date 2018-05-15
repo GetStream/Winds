@@ -92,37 +92,37 @@ class RSSFeedsView extends React.Component {
 		// 	);
 		// }
 
+		let headerComponent = <h1>RSS</h1>;
 		return (
-			<div className="two-columns rss-view">
-				<div className="column">
-					<div className="column-header">
-						<h1>RSS</h1>
+			<div className="rss-view">
+				<div className="column-header" />
+
+				<Tabs
+					componentClass="panels"
+					headerClass="panels-header"
+					headerComponent={headerComponent}
+					tabGroup="rss-view"
+				>
+					<div tabTitle="All Feeds">
+						<RecentArticlesPanel />
+						<RssFeedList />
 					</div>
-					<Tabs tabGroup="rss-view">
-						<div tabTitle="All Feeds">
-							<RecentArticlesPanel />
-							<RssFeedList />
-						</div>
-						<div tabTitle="Bookmarks">
-							<BookmarkedArticles />
-						</div>
-						<div tabTitle="Suggestions">
-							<SuggestedFeeds />
-						</div>
-					</Tabs>
-				</div>
-				<div className="column">
-					<Switch>
-						<Route
-							component={RSSArticle}
-							path="/rss/:rssFeedID/articles/:articleID"
-						/>
-						<Route component={RecentArticlesList} path="/rss/recent" />
-						<Route component={RSSArticleList} path="/rss/:rssFeedID" />
-						<Route component={AllArticlesList} path="/rss" />
-						<Route component={RSSNotSelected} />
-					</Switch>
-				</div>
+					<div tabTitle="Bookmarks">
+						<BookmarkedArticles />
+					</div>
+					<div tabTitle="Suggestions">
+						<SuggestedFeeds />
+					</div>
+				</Tabs>
+				<Switch>
+					<Route
+						component={RSSArticle}
+						path="/rss/:rssFeedID/articles/:articleID"
+					/>
+					<Route component={RecentArticlesList} path="/rss/recent" />
+					<Route component={RSSArticleList} path="/rss/:rssFeedID" />
+					<Route component={AllArticlesList} path="/rss" />
+				</Switch>
 			</div>
 		);
 	}

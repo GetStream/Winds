@@ -9,8 +9,9 @@ body {
 
 .app {
 	-webkit-app-region: drag;
-	padding-bottom: 60px;
-	padding-top: 7em;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
 }
 
 .center {

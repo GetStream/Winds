@@ -36,26 +36,23 @@ class PodcastList extends React.Component {
 	}
 	render() {
 		return (
-			<Panel>
-				<Panel.Header>Podcasts</Panel.Header>
-				<Panel.Contents>
-					{this.props.podcasts.map(podcast => {
-						return (
-							<Link key={podcast._id} to={`/podcasts/${podcast._id}`}>
-								<Img
-									src={[
-										podcast.images.favicon,
-										getPlaceholderImageURL(podcast._id),
-									]}
-								/>
-								<div>{podcast.title}</div>
-								<div>
-									<i className="fa fa-chevron-right" />
-								</div>
-							</Link>
-						);
-					})}
-				</Panel.Contents>
+			<Panel headerText="Podcasts">
+				{this.props.podcasts.map(podcast => {
+					return (
+						<Link key={podcast._id} to={`/podcasts/${podcast._id}`}>
+							<Img
+								src={[
+									podcast.images.favicon,
+									getPlaceholderImageURL(podcast._id),
+								]}
+							/>
+							<div>{podcast.title}</div>
+							<div>
+								<i className="fa fa-chevron-right" />
+							</div>
+						</Link>
+					);
+				})}
 			</Panel>
 		);
 	}

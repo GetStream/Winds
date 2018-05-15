@@ -4,6 +4,10 @@
 	box-shadow: $box-shadow;
 	margin-bottom: 1em;
 
+	&.expanded {
+		height: 100%;
+	}
+
 	&.with-hero-card {
 		margin-top: -1em;
 		padding-top: 1em;
@@ -11,12 +15,17 @@
 
 	.panel-header {
 		align-items: center;
+		background-color: $background-white;
+		border-top-left-radius: $border-radius;
+		border-top-right-radius: $border-radius;
 		box-shadow: $box-shadow;
 		display: flex;
 		font-size: 11px;
 		font-weight: 700;
 		letter-spacing: 0.06em;
 		padding: 1em;
+		position: sticky;
+		top: 0;
 
 		.aside {
 			color: $foreground-darkgray;
@@ -90,7 +99,7 @@
 		}
 	}
 
-	.panel-expander {
+	.expander {
 		cursor: pointer;
 		display: flex;
 		flex-direction: row;

@@ -22,40 +22,38 @@ class Dashboard extends React.Component {
 		return (
 			<div className="dashboard">
 				<FeaturedItems />
-				<div className="three-columns">
-					<div className="column">
-						<Link className="column-header" to="/podcasts">
-							<h1>Podcasts</h1>
-							<div className="drilldown">
-								<div>View all</div>
-								<Img src={forwardBlackIcon} />
-							</div>
-						</Link>
-						<div className="column-content">
-							<RecentEpisodesPanel />
-							<PodcastList />
-						</div>
+				<Link className="column-header podcast-header" to="/podcasts">
+					<h1>Podcasts</h1>
+					<div className="drilldown">
+						<div>View all</div>
+						<Img src={forwardBlackIcon} />
 					</div>
-					<div className="column">
-						<Link className="column-header" to="/rss">
-							<h1>Read</h1>
-							<div className="drilldown">
-								<div>View all</div>
-								<Img src={forwardBlackIcon} />
-							</div>
-						</Link>
-						<div className="column-content">
-							<RecentArticlesPanel />
-							<RssFeedList />
-						</div>
+				</Link>
+				<div className="podcasts-section">
+					<div className="column-content">
+						<RecentEpisodesPanel />
+						<PodcastList />
 					</div>
-					<div className="column">
-						<div className="column-header">
-							<h1>Discover</h1>
-						</div>
-						<div className="column-content">
-							<DiscoverSection />
-						</div>
+				</div>
+				<Link className="column-header rss-header" to="/rss">
+					<h1>RSS</h1>
+					<div className="drilldown">
+						<div>View all</div>
+						<Img src={forwardBlackIcon} />
+					</div>
+				</Link>
+				<div className="rss-section">
+					<div className="column-content">
+						<RecentArticlesPanel />
+						<RssFeedList />
+					</div>
+				</div>
+				<div className="column-header discover-header">
+					<h1>Discover</h1>
+				</div>
+				<div className="discover-section ">
+					<div className="column-content">
+						<DiscoverSection />
 					</div>
 				</div>
 			</div>

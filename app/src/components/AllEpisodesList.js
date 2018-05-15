@@ -65,11 +65,11 @@ class AllEpisodesList extends React.Component {
 	}
 	render() {
 		return (
-			<div>
-				<div className="podcast-header">
+			<React.Fragment>
+				<div className="podcast-header content-header">
 					<h1>All Episodes</h1>
 				</div>
-				<div className="list">
+				<div className="list content">
 					{this.props.episodes.map(episode => {
 						return (
 							<EpisodeListItem
@@ -86,7 +86,7 @@ class AllEpisodesList extends React.Component {
 						);
 					})}
 				</div>
-			</div>
+			</React.Fragment>
 		);
 	}
 }
