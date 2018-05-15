@@ -1,13 +1,11 @@
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
-import inactivePinLogo from '../images/icons/pin-inactive.svg';
 import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
-import moment from 'moment';
 import pauseIcon from '../images/icons/pause.svg';
 import playIcon from '../images/icons/play.svg';
-import pinIcon from '../images/icons/pin.svg';
 import { withRouter } from 'react-router-dom';
+import TimeAgo from './TimeAgo';
 
 class EpisodeListItem extends React.Component {
 	constructor(props) {
@@ -82,13 +80,15 @@ class EpisodeListItem extends React.Component {
 							}}
 						>
 							{this.props.pinned ? (
-								<Img src={pinIcon} />
+								<i className="fas fa-bookmark" />
 							) : (
-								<Img src={inactivePinLogo} />
+								<i className="far fa-bookmark" />
 							)}
 						</span>
+						<span>{this.props.podcast.title}</span>
 						<span className="date">
-							{moment(this.props.publicationDate).format('MMM DD, YYYY')}
+							{'Posted '}
+							<TimeAgo timestamp={this.props.publicationDate} />
 						</span>
 					</div>
 					<div className="description">{this.props.description}</div>
@@ -107,7 +107,6 @@ EpisodeListItem.defaultProps = {
 };
 
 EpisodeListItem.propTypes = {
-	_id: PropTypes.string.isRequired,
 	active: PropTypes.bool,
 	description: PropTypes.string,
 	history: PropTypes.shape({
@@ -126,6 +125,7 @@ EpisodeListItem.propTypes = {
 		images: PropTypes.shape({
 			featured: PropTypes.string,
 		}),
+		title: PropTypes.string,
 	}).isRequired,
 	publicationDate: PropTypes.string,
 	title: PropTypes.string,
