@@ -81,53 +81,15 @@ class PodcastEpisodesView extends React.Component {
 		}
 
 		let sortedEpisodes = [...this.props.episodes];
-		if (this.state.sortBy === 'latest') {
-			sortedEpisodes.sort((a, b) => {
-				return (
-					moment(b.publicationDate).valueOf() -
-					moment(a.publicationDate).valueOf()
-				);
-			});
-		} else {
-			sortedEpisodes.sort((a, b) => {
-				return (
-					moment(a.publicationDate).valueOf() -
-					moment(b.publicationDate).valueOf()
-				);
-			});
-		}
+		sortedEpisodes.sort((a, b) => {
+			return (
+				moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf()
+			);
+		});
 
 		let menuContent = (
 			<div className="podcast-episode-list-view-popover">
 				<div className="panel">
-					<div className="panel-element">
-						<label>
-							<input
-								checked={this.state.sortBy === 'latest'}
-								onChange={() => {
-									this.setState({
-										sortBy: 'latest',
-									});
-								}}
-								type="radio"
-							/>
-							<span>Latest</span>
-						</label>
-					</div>
-					<div className="panel-element">
-						<label>
-							<input
-								checked={this.state.sortBy === 'oldest'}
-								onChange={() => {
-									this.setState({
-										sortBy: 'oldest',
-									});
-								}}
-								type="radio"
-							/>
-							<span>Oldest</span>
-						</label>
-					</div>
 					<div
 						className="panel-element"
 						onClick={() => {
