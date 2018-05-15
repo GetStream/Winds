@@ -1,0 +1,56 @@
+.gh-button {
+	display: inline-block;
+	background: none;
+	border: none;
+	font-family: Helvetica, Arial, sans-serif;
+	color: #333;
+}
+
+.gh-button__title,
+.gh-button__stat {
+	float: left;
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 20px;
+	padding: 5px 10px;
+	border: 1px solid #d5d5d5;
+}
+
+.gh-button__icon {
+	height: 20px;
+	width: 0px;
+	fill: #333;
+	vertical-align: bottom;
+}
+
+.gh-button__title {
+	background-color: #eee;
+	background-image: linear-gradient(#fcfcfc, #eee);
+	border-radius: 4px 0 0 4px;
+}
+
+.gh-button__icon--github-logo {
+	margin-right: 0.2em;
+}
+
+.gh-button__stat {
+	border-left: 0;
+	border-radius: 0 4px 4px 0;
+	background: white;
+}
+
+.gh-button:hover {
+}
+
+.gh-button:hover .gh-button__title {
+	background-color: #ddd;
+	background-image: linear-gradient(#eee, #ddd);
+}
+
+.gh-button:hover .gh-button__stat {
+	color: #4078c0;
+}
+
+.gh-button:hover .gh-button__icon--star {
+	fill: #4078c0;
+}
