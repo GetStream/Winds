@@ -30,6 +30,7 @@
 
 .new-content-popover {
 	margin-top: 1.75em;
+	cursor: pointer;
 
 	.popover-panel {
 		i {
@@ -280,8 +281,6 @@
 }
 
 .popover-panel.profile-popover {
-	cursor: pointer;
-
 	.panel-element.user {
 		display: grid;
 		grid-column-gap: 1em;
