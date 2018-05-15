@@ -589,11 +589,9 @@ body {
 
 .new-content-popover {
   margin-top: 1.75em; }
-  .new-content-popover .popover-panel {
-    cursor: pointer; }
-    .new-content-popover .popover-panel i {
-      color: #aaa;
-      margin-right: 0.5em; }
+  .new-content-popover .popover-panel i {
+    color: #aaa;
+    margin-right: 0.5em; }
 
 .header {
   background-color: #fff;
@@ -755,31 +753,32 @@ body {
       background-image: none;
       color: #fff; }
 
-.popover-panel.profile-popover .panel-element.user {
-  display: grid;
-  grid-column-gap: 1em;
-  grid-template-areas: 'avatar user-info' 'avatar link-to-profile'; }
-  .popover-panel.profile-popover .panel-element.user .avatar {
-    grid-area: avatar; }
-    .popover-panel.profile-popover .panel-element.user .avatar img {
-      border-radius: 10000px; }
-  .popover-panel.profile-popover .panel-element.user .user-info {
+.popover-panel.profile-popover {
+  cursor: pointer; }
+  .popover-panel.profile-popover .panel-element.user {
+    display: grid;
+    grid-column-gap: 1em;
+    grid-template-areas: 'avatar user-info' 'avatar link-to-profile'; }
+    .popover-panel.profile-popover .panel-element.user .avatar {
+      grid-area: avatar; }
+      .popover-panel.profile-popover .panel-element.user .avatar img {
+        border-radius: 10000px; }
+    .popover-panel.profile-popover .panel-element.user .user-info {
+      display: flex;
+      flex-direction: column;
+      grid-area: user-info; }
+      .popover-panel.profile-popover .panel-element.user .user-info .name {
+        font-weight: bolder;
+        margin-bottom: 0.25em; }
+      .popover-panel.profile-popover .panel-element.user .user-info .username {
+        font-size: 0.9em;
+        font-weight: lighter; }
+    .popover-panel.profile-popover .panel-element.user .link-to-profile {
+      grid-area: link-to-profile; }
+  .popover-panel.profile-popover .sign-out {
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
-    grid-area: user-info; }
-    .popover-panel.profile-popover .panel-element.user .user-info .name {
-      font-weight: bolder;
-      margin-bottom: 0.25em; }
-    .popover-panel.profile-popover .panel-element.user .user-info .username {
-      font-size: 0.9em;
-      font-weight: lighter; }
-  .popover-panel.profile-popover .panel-element.user .link-to-profile {
-    grid-area: link-to-profile; }
-
-.popover-panel.profile-popover .sign-out {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between; }
+    justify-content: space-between; }
 
 /* Components - Re-usable site elements.
 ========================================================================== */

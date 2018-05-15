@@ -32,8 +32,6 @@
 	margin-top: 1.75em;
 
 	.popover-panel {
-		cursor: pointer;
-
 		i {
 			color: $foreground-darkgray;
 			margin-right: 0.5em;
@@ -282,6 +280,8 @@
 }
 
 .popover-panel.profile-popover {
+	cursor: pointer;
+
 	.panel-element.user {
 		display: grid;
 		grid-column-gap: 1em;
