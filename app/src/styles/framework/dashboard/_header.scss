@@ -30,10 +30,9 @@
 
 .new-content-popover {
 	margin-top: 1.75em;
+	cursor: pointer;
 
 	.popover-panel {
-		cursor: pointer;
-
 		i {
 			color: $foreground-darkgray;
 			margin-right: 0.5em;

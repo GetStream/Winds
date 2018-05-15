@@ -588,12 +588,11 @@ body {
     text-decoration: inherit; }
 
 .new-content-popover {
-  margin-top: 1.75em; }
-  .new-content-popover .popover-panel {
-    cursor: pointer; }
-    .new-content-popover .popover-panel i {
-      color: #aaa;
-      margin-right: 0.5em; }
+  margin-top: 1.75em;
+  cursor: pointer; }
+  .new-content-popover .popover-panel i {
+    color: #aaa;
+    margin-right: 0.5em; }
 
 .header {
   background-color: #fff;
