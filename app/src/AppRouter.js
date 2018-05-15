@@ -54,7 +54,13 @@ class AppRouter extends Component {
 					<AuthedRoute component={Profile} exact path="/profile" />
 					<AuthedRoute component={Profile} path="/profile/:userID" />
 					<AuthedRoute component={PlaylistView} path="/playlists/:playlistID" />
-					<AuthedRoute component={PodcastsView} path="/podcasts" />
+					<Switch>
+						<AuthedRoute
+							component={PodcastsView}
+							path="/podcasts/:podcastID"
+						/>
+						<AuthedRoute component={PodcastsView} path="/podcasts" />
+					</Switch>
 					<Switch>
 						<AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
 						<AuthedRoute component={RSSFeedsView} path="/rss" />

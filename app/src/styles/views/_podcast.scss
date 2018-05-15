@@ -45,7 +45,7 @@
 		grid-area: content-header;
 	}
 
-	.column-content.featured-podcast {
+	.featured-podcast {
 		> * {
 			margin-bottom: 2em;
 		}
@@ -91,9 +91,6 @@
 			cursor: pointer;
 			margin-left: auto;
 		}
-	}
-
-	.podcast-episode-list {
 	}
 }
 

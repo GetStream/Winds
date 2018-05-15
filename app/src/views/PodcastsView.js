@@ -99,8 +99,34 @@ class PodcastsView extends React.Component {
 		// 	);
 		// }
 		let headerComponent = <h1>Podcasts</h1>;
-		return (
-			<div className="podcasts-view">
+		let leftColumn;
+		if (this.props.podcast && this.props.podcast.featured) {
+			leftColumn = (
+				<React.Fragment>
+					<div className="panels-header">
+						<div className="featured-podcast">
+							<div
+								className="hero-card"
+								style={{
+									backgroundImage: `linear-gradient(to top, black, transparent), url(${
+										this.props.podcast.images.featured
+									})`,
+								}}
+							>
+								<h1>{this.props.podcast.title}</h1>
+								<div className="info">podcast</div>
+							</div>
+						</div>
+					</div>
+					<div className="panels">
+						<label>About {this.props.podcast.title}</label>
+						<h1>{this.props.podcast.description}</h1>
+						<div>{this.props.podcast.summary}</div>
+					</div>
+				</React.Fragment>
+			);
+		} else {
+			leftColumn = (
 				<Tabs
 					componentClass="panels"
 					headerClass="panels-header"
@@ -118,6 +144,12 @@ class PodcastsView extends React.Component {
 						<SuggestedPodcasts />
 					</div>
 				</Tabs>
+			);
+		}
+
+		return (
+			<div className="podcasts-view">
+				{leftColumn}
 				<Switch>
 					<Route component={RecentEpisodesList} path="/podcasts/recent" />
 					<Route component={PodcastEpisodesView} path="/podcasts/:podcastID" />

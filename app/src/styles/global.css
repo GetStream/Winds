@@ -2145,9 +2145,9 @@ a.column-header:hover {
     overflow-y: scroll; }
   .podcasts-view .content-header {
     grid-area: content-header; }
-  .podcasts-view .column-content.featured-podcast > * {
+  .podcasts-view .featured-podcast > * {
     margin-bottom: 2em; }
-  .podcasts-view .column-content.featured-podcast label {
+  .podcasts-view .featured-podcast label {
     color: #000; }
   .podcasts-view .podcast-header {
     display: flex;
