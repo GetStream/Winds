@@ -53,51 +53,6 @@ class PodcastsView extends React.Component {
 	}
 
 	render() {
-		// let episodeView;
-		// if (!this.props.match.params.podcastID) {
-		// 	episodeView = (
-		// 		<div className="none-selected">
-		// 			<Img src={partialIcon} />
-		// 			<div>Select a Podcast</div>
-		// 		</div>
-		// 	);
-		// } else {
-		// 	episodeView = <EpisodesView podcastID={this.props.match.params.podcastID} />;
-		// }
-
-		//
-		// let leftColumn;
-
-		// if (this.props.podcast && this.props.podcast.featured) {
-		// 	leftColumn = (
-		// 		<div className="column">
-		// 			<div className="column-header" />
-		// 			<div className="column-content featured-podcast">
-		// 				<div
-		// 					className="hero-card"
-		// 					style={{
-		// 						backgroundImage: `linear-gradient(to top, black, transparent), url(${
-		// 							this.props.podcast.images.featured
-		// 						})`,
-		// 					}}
-		// 				>
-		// 					<h1>{this.props.podcast.title}</h1>
-		// 					<div className="info">podcast</div>
-		// 				</div>
-		// 				<label>About {this.props.podcast.title}</label>
-		// 				<h1>{this.props.podcast.description}</h1>
-		// 				<div>{this.props.podcast.summary}</div>
-		// 				<FollowerList id={this.props.podcast._id} type="podcast" />
-		// 			</div>
-		// 		</div>
-		// 	);
-		// } else {
-		// 	leftColumn = (
-		// 		<div className="column">
-		// 			<div className="column-content">{selectedTabComponents}</div>
-		// 		</div>
-		// 	);
-		// }
 		let headerComponent = <h1>Podcasts</h1>;
 		let leftColumn;
 		if (this.props.podcast && this.props.podcast.featured) {
