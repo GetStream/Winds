@@ -2,6 +2,7 @@
 	.list-item {
 		border-bottom: 1px solid $foreground-lightgray;
 		color: inherit;
+		cursor: pointer;
 		display: flex;
 		padding: 2em 0;
 		text-decoration: inherit;

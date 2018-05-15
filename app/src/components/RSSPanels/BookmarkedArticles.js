@@ -1,37 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../../util/fetch';
+// import fetch from '../../util/fetch';
 import Panel from '../Panel';
 import { Link } from 'react-router-dom';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
+import { getPinnedArticles } from '../../util/pins';
 import Img from 'react-image';
 import TimeAgo from '../TimeAgo';
 
 class BookmarkedArticles extends React.Component {
 	componentDidMount() {
-		fetch('GET', '/pins', null, {
-			type: 'article',
-			user: localStorage['authedUser'],
-		}).then(response => {
-			for (let pin of response.data) {
-				// dispatch update to rss feeds
-				this.props.dispatch({
-					rssFeed: pin.article.rss,
-					type: 'UPDATE_RSS_FEED',
-				});
-				// dispatch updates to articles
-				this.props.dispatch({
-					rssArticle: { ...pin.article, type: 'article' },
-					type: 'UPDATE_ARTICLE',
-				});
-				// dispatch updates to pins
-				this.props.dispatch({
-					pin,
-					type: 'PIN_ARTICLE',
-				});
-			}
-		});
+		getPinnedArticles(this.props.dispatch);
 	}
 	render() {
 		return (

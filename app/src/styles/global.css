@@ -790,12 +790,18 @@ body {
   letter-spacing: 0.1em;
   margin-bottom: 1em;
   text-transform: uppercase; }
+  .article-info .bookmark {
+    cursor: pointer; }
   .article-info > * {
-    margin-right: 1em; }
+    margin-right: 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
   .article-info .muted {
     color: #aaa; }
   .article-info a {
     color: #44bc75;
+    margin-left: 0.5em;
     text-decoration: none; }
     .article-info a:hover {
       text-decoration: underline; }
@@ -1047,6 +1053,7 @@ a.column-header:hover {
 .list .list-item {
   border-bottom: 1px solid #eee;
   color: inherit;
+  cursor: pointer;
   display: flex;
   padding: 2em 0;
   text-decoration: inherit; }

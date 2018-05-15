@@ -1,3 +1,4 @@
+import { pinArticle, unpinArticle, getPinnedArticles } from '../util/pins';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -16,15 +17,30 @@ class RSSArticle extends React.Component {
 		};
 	}
 	componentDidMount() {
-		this.props.getArticle(this.props.match.params.articleID);
+		getPinnedArticles(this.props.dispatch);
+		this.getArticle(this.props.match.params.articleID);
 		if (this.props.url) {
 			this.getRSSContent(this.props._id);
 		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps._id !== this.props._id) {
+			getPinnedArticles(this.props.dispatch);
+			this.getArticle(nextProps.match.params.articleID);
 			this.getRSSContent(nextProps._id);
 		}
+	}
+	getArticle(articleID) {
+		fetch('GET', `/articles/${articleID}`)
+			.then(res => {
+				this.props.dispatch({
+					rssArticle: res.data,
+					type: 'UPDATE_ARTICLE',
+				});
+			})
+			.catch(err => {
+				console.log(err); // eslint-disable-line no-console
+			});
 	}
 	getRSSContent(articleId) {
 		this.setState({
@@ -74,7 +90,28 @@ class RSSArticle extends React.Component {
 				<div className="content-header">
 					<h1>{this.props.title}</h1>
 					<div className="article-info">
-						<i className="fa fa-bookmark" />
+						<span
+							className="bookmark"
+							onClick={e => {
+								e.preventDefault();
+								e.stopPropagation();
+								if (this.props.pinned) {
+									unpinArticle(
+										this.props.pinID,
+										this.props._id,
+										this.props.dispatch,
+									);
+								} else {
+									pinArticle(this.props._id, this.props.dispatch);
+								}
+							}}
+						>
+							{this.props.pinned ? (
+								<i className="fa fa-bookmark" />
+							) : (
+								<i className="far fa-bookmark" />
+							)}
+						</span>{' '}
 						<div>
 							<i className="fas fa-external-link-alt" />
 							<a href={this.props.url}>{this.props.rss.title}</a>
@@ -106,7 +143,6 @@ RSSArticle.propTypes = {
 	_id: PropTypes.string,
 	commentUrl: PropTypes.string,
 	description: PropTypes.string,
-	getArticle: PropTypes.func.isRequired,
 	images: PropTypes.shape({
 		og: PropTypes.string,
 	}),
@@ -138,6 +174,14 @@ const mapStateToProps = (state, ownProps) => {
 		};
 		rss = { ...state.rssFeeds[article.rss] };
 	}
+
+	if (state.pinnedArticles && state.pinnedArticles[article._id]) {
+		article.pinned = true;
+		article.pinID = state.pinnedArticles[article._id]._id;
+	} else {
+		article.pinned = false;
+	}
+
 	// get article's rss feed
 	return {
 		loading,
@@ -146,31 +190,4 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
-	return {
-		getArticle: articleID => {
-			fetch('GET', `/articles/${articleID}`)
-				.then(res => {
-					dispatch({
-						rssArticle: res.data,
-						type: 'UPDATE_ARTICLE',
-					});
-				})
-				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
-				});
-		},
-	};
-};
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-	return {
-		getArticle: articleID => {
-			dispatchProps.getArticle(articleID);
-		},
-		...ownProps,
-		...dispatchProps,
-		...stateProps,
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(RSSArticle);
+export default connect(mapStateToProps)(RSSArticle);

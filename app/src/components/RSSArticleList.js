@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
+import { getPinnedArticles } from '../util/pins';
 import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
 import Waypoint from 'react-waypoint';
@@ -23,6 +24,7 @@ class RSSArticleList extends React.Component {
 		this.getRSSFeed(this.props.match.params.rssFeedID);
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
+		getPinnedArticles(this.props.dispatch);
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
@@ -224,7 +226,6 @@ RSSArticleList.propTypes = {
 	articles: PropTypes.array,
 	dispatch: PropTypes.func.isRequired,
 	following: PropTypes.bool,
-	like: PropTypes.func.isRequired,
 	loading: PropTypes.bool,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
@@ -236,7 +237,6 @@ RSSArticleList.propTypes = {
 		favicon: PropTypes.string,
 		title: PropTypes.string,
 	}),
-	unlike: PropTypes.func.isRequired,
 	unpinArticle: PropTypes.func.isRequired,
 };
 
@@ -297,29 +297,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
 	return {
 		dispatch,
-		like: articleID => {
-			// optimistic dispatch
-			dispatch({
-				objectID: articleID,
-				objectType: 'article',
-				type: 'LIKE',
-			});
-
-			fetch('POST', '/likes', {
-				article: articleID,
-				user: localStorage['user'],
-			}).catch(err => {
-				// rollback on failure
-				dispatch({
-					objectID: articleID,
-					objectType: 'article',
-					type: 'UNLIKE',
-				});
-
-				console.log(err); // eslint-disable-line no-console
-			});
-		},
-
 		pinArticle: articleID => {
 			fetch('POST', '/pins', {
 				article: articleID,
@@ -333,27 +310,6 @@ const mapDispatchToProps = dispatch => {
 				.catch(err => {
 					console.log(err); // eslint-disable-line no-console
 				});
-		},
-
-		unlike: articleID => {
-			// optimistic dispatch
-			dispatch({
-				objectID: articleID,
-				objectType: 'article',
-				type: 'UNLIKE',
-			});
-			fetch('DELETE', '/likes', null, {
-				article: articleID,
-			}).catch(err => {
-				// rollback if it fails
-				dispatch({
-					objectID: articleID,
-					objectType: 'article',
-					type: 'LIKE',
-				});
-
-				console.log(err); // eslint-disable-line no-console
-			});
 		},
 		unpinArticle: (pinID, articleID) => {
 			fetch('DELETE', `/pins/${pinID}`)

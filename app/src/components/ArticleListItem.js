@@ -1,62 +1,77 @@
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import TimeAgo from './TimeAgo';
 import React from 'react';
 import PropTypes from 'prop-types';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
+import { pinArticle, unpinArticle } from '../util/pins';
+import { connect } from 'react-redux';
 
-const ArticleListItem = props => {
-	return (
-		<Link className="list-item" to={`/rss/${props.rss._id}/articles/${props._id}`}>
-			<div className="left">
-				<div
-					className="background-image"
-					style={{
-						backgroundImage: `url(${props.images.og ||
-							getPlaceholderImageURL(props._id)})`,
-					}}
-				/>
-			</div>
-			<div className="right">
-				<h2>{props.title}</h2>
-				<div className="article-info">
-					<span
-						onClick={e => {
-							e.preventDefault();
-							e.stopPropagation();
-							if (props.pinned) {
-								props.unpinArticle(props._id);
-							} else {
-								props.pinArticle(props._id);
-							}
+class ArticleListItem extends React.Component {
+	render() {
+		return (
+			<div
+				className="list-item"
+				onClick={() => {
+					this.props.history.push(
+						`/rss/${this.props.rss._id}/articles/${this.props._id}`,
+					);
+				}}
+			>
+				<div className="left">
+					<div
+						className="background-image"
+						style={{
+							backgroundImage: `url(${this.props.images.og ||
+								getPlaceholderImageURL(this.props._id)})`,
 						}}
-					>
-						{props.pinned ? (
-							<i className="fa fa-bookmark" />
-						) : (
-							<i className="far fa-bookmark" />
-						)}
-					</span>
-					<div>
-						<i className="fas fa-external-link-alt" />
-						<a href={props.url}>{props.rss.title}</a>
-					</div>
-					{props.commentUrl ? (
-						<div>
-							<i className="fas fa-comment-alt" />
-
-							<a href={props.commentUrl}>Comments</a>
-						</div>
-					) : null}
-					<span className="muted">
-						{'Posted '}
-						<TimeAgo timestamp={props.publicationDate} />
-					</span>
+					/>
 				</div>
-				<div>{props.description}</div>
+				<div className="right">
+					<h2>{this.props.title}</h2>
+					<div className="article-info">
+						<span
+							className="bookmark"
+							onClick={e => {
+								e.preventDefault();
+								e.stopPropagation();
+								if (this.props.pinned) {
+									unpinArticle(
+										this.props.pinID,
+										this.props._id,
+										this.props.dispatch,
+									);
+								} else {
+									pinArticle(this.props._id, this.props.dispatch);
+								}
+							}}
+						>
+							{this.props.pinned ? (
+								<i className="fa fa-bookmark" />
+							) : (
+								<i className="far fa-bookmark" />
+							)}
+						</span>
+						<span>
+							<i className="fas fa-external-link-alt" />
+							<a href={this.props.url}>{this.props.rss.title}</a>
+						</span>
+						{this.props.commentUrl ? (
+							<span>
+								<i className="fas fa-comment-alt" />
+								<a href={this.props.commentUrl}>Comments</a>
+							</span>
+						) : null}
+						<span className="muted">
+							{'Posted '}
+							<TimeAgo timestamp={this.props.publicationDate} />
+						</span>
+					</div>
+					<div>{this.props.description}</div>
+				</div>
 			</div>
-		</Link>
-	);
-};
+		);
+	}
+}
 
 ArticleListItem.defaultProps = {
 	images: {},
@@ -69,11 +84,14 @@ ArticleListItem.propTypes = {
 	_id: PropTypes.string.isRequired,
 	commentUrl: PropTypes.string,
 	description: PropTypes.string,
-	favicon: PropTypes.string,
-	images: PropTypes.shape({ og: PropTypes.string }),
-	liked: PropTypes.bool,
-	likes: PropTypes.number,
-	pinArticle: PropTypes.func.isRequired,
+	dispatch: PropTypes.func.isRequired,
+	history: PropTypes.shape({
+		push: PropTypes.func.isRequired,
+	}).isRequired,
+	images: PropTypes.shape({
+		og: PropTypes.string,
+	}),
+	pinID: PropTypes.string,
 	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
 	rss: PropTypes.shape({
@@ -81,7 +99,7 @@ ArticleListItem.propTypes = {
 		title: PropTypes.string,
 	}),
 	title: PropTypes.string,
-	unpinArticle: PropTypes.func.isRequired,
 	url: PropTypes.string,
 };
-export default ArticleListItem;
+
+export default connect()(withRouter(ArticleListItem));

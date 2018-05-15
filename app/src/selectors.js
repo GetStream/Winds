@@ -49,7 +49,7 @@ const getArticle = (state, articleID) => {
 	// get podcast
 	return {
 		...state.articles[articleID],
-		rss: state.rssFeeds[state.articles[articleID].rss],
+		rss: { ...state.rssFeeds[state.articles[articleID].rss] },
 	};
 };
 
