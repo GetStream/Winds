@@ -113,36 +113,30 @@ class PodcastEpisodesView extends React.Component {
 			</div>
 		);
 
-		return (
-			<React.Fragment>
-				<div className="podcast-header">
-					<div className="image">
-						<Img
-							src={[
-								this.props.podcast.images.featured,
-								this.props.podcast.images.og,
-								getPlaceholderImageURL(this.props.podcast._id),
-							]}
-						/>
-					</div>
-					<div className="info">
-						<h1>{this.props.podcast.title}</h1>
-					</div>
-					<div className="menu">
-						<Popover
-							body={menuContent}
-							isOpen={this.state.menuIsOpen}
-							onOuterAction={this.toggleMenu}
-							place="below"
-						>
-							<div onClick={this.toggleMenu}>
-								<Img src={optionsIcon} />
-							</div>
-						</Popover>
-					</div>
-				</div>
+		let rightColumn;
 
-				<div className="list podcast-episode-list content">
+		if (sortedEpisodes.length === 0) {
+			rightColumn = (
+				<div>
+					<p>{'We haven\'t found any episodes for this podcast feed yet :('}</p>
+					<p>
+						{
+							'It might be because the podcast feed doesn\'t have any episodes, or because it just got added and we\'re still parsing them. Come check back in a few minutes.'
+						}
+					</p>
+					<p>
+						{
+							'If you\'re pretty sure there\'s supposed to be some episodes here, and they aren\'t showing up, please file a '
+						}
+						<a href="https://github.com/getstream/winds/issues">
+							GitHub Issue
+						</a>.
+					</p>
+				</div>
+			);
+		} else {
+			rightColumn = (
+				<div>
 					{sortedEpisodes.map((episode, i) => {
 						let active = false;
 						if (
@@ -186,6 +180,39 @@ class PodcastEpisodesView extends React.Component {
 						);
 					})}
 				</div>
+			);
+		}
+
+		return (
+			<React.Fragment>
+				<div className="podcast-header">
+					<div className="image">
+						<Img
+							src={[
+								this.props.podcast.images.featured,
+								this.props.podcast.images.og,
+								getPlaceholderImageURL(this.props.podcast._id),
+							]}
+						/>
+					</div>
+					<div className="info">
+						<h1>{this.props.podcast.title}</h1>
+					</div>
+					<div className="menu">
+						<Popover
+							body={menuContent}
+							isOpen={this.state.menuIsOpen}
+							onOuterAction={this.toggleMenu}
+							place="below"
+						>
+							<div onClick={this.toggleMenu}>
+								<Img src={optionsIcon} />
+							</div>
+						</Popover>
+					</div>
+				</div>
+
+				<div className="list podcast-episode-list content">{rightColumn}</div>
 			</React.Fragment>
 		);
 	}
