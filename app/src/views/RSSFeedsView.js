@@ -12,6 +12,7 @@ import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
 import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
 import AllArticlesList from '../components/AllArticlesList';
 import RecentArticlesList from '../components/RecentArticlesList';
+import queryString from 'query-string';
 
 class RSSFeedsView extends React.Component {
 	constructor(props) {
@@ -49,9 +50,8 @@ class RSSFeedsView extends React.Component {
 	}
 
 	render() {
-		let headerComponent = <h1>RSS</h1>;
 		let leftColumn;
-		if (this.props.rssFeed && this.props.rssFeed.featured) {
+		if (queryString.parse(this.props.location.search).featured === 'true') {
 			leftColumn = (
 				<React.Fragment>
 					<div className="panels-header">
@@ -77,6 +77,8 @@ class RSSFeedsView extends React.Component {
 				</React.Fragment>
 			);
 		} else {
+			let headerComponent = <h1>RSS</h1>;
+
 			leftColumn = (
 				<Tabs
 					componentClass="panels"
@@ -114,6 +116,12 @@ class RSSFeedsView extends React.Component {
 		);
 	}
 }
+
+RSSFeedsView.defaultProps = {
+	rssFeed: {
+		images: {},
+	},
+};
 
 RSSFeedsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,

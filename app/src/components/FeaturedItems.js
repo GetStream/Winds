@@ -43,9 +43,9 @@ class FeaturedItems extends React.Component {
 					{this.props.featuredItems.map(featuredItem => {
 						let linkURL = '#';
 						if (featuredItem.type === 'rss') {
-							linkURL = `/rss/${featuredItem._id}`;
+							linkURL = `/rss/${featuredItem._id}?featured=true`;
 						} else if (featuredItem.type === 'podcast') {
-							linkURL = `/podcasts/${featuredItem._id}`;
+							linkURL = `/podcasts/${featuredItem._id}?featured=true`;
 						}
 						return (
 							<Link
