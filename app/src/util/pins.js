@@ -53,4 +53,26 @@ const getPinnedArticles = dispatch => {
 	});
 };
 
-export { pinArticle, unpinArticle, getPinnedArticles };
+const getPinnedEpisodes = dispatch => {
+	fetch('GET', '/pins', null, { type: 'episode' }).then(response => {
+		for (let pin of response.data) {
+			// dispatch update to podcast
+			dispatch({
+				podcast: pin.episode.podcast,
+				type: 'UPDATE_PODCAST_SHOW',
+			});
+			// dispatch updates to episodes
+			dispatch({
+				episode: pin.episode,
+				type: 'UPDATE_EPISODE',
+			});
+			// dispatch updates to pins
+			dispatch({
+				pin,
+				type: 'PIN_EPISODE',
+			});
+		}
+	});
+};
+
+export { pinArticle, unpinArticle, getPinnedArticles, getPinnedEpisodes };

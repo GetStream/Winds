@@ -134,6 +134,13 @@ const mapStateToProps = (state, ownProps) => {
 			};
 			episode.podcast = { ...state.podcasts[episode.podcast] };
 
+			if (state.pinnedEpisodes && state.pinnedEpisodes[episode._id]) {
+				episode.pinned = true;
+				episode.pinID = state.pinnedEpisodes[episode._id]._id;
+			} else {
+				episode.pinned = false;
+			}
+
 			episodes.push(episode);
 		}
 	}

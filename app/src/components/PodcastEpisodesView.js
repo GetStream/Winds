@@ -9,6 +9,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import moment from 'moment';
+import { getPinnedEpisodes } from '../util/pins';
 import Loader from './Loader';
 
 class PodcastEpisodesView extends React.Component {
@@ -25,11 +26,13 @@ class PodcastEpisodesView extends React.Component {
 	componentDidMount() {
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.getEpisodes(this.props.match.params.podcastID);
+		getPinnedEpisodes(this.props.dispatch);
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
 			this.props.getPodcast(nextProps.match.params.podcastID);
 			this.getEpisodes(nextProps.match.params.podcastID);
+			getPinnedEpisodes(this.props.dispatch);
 			this.setState({
 				episodeCursor: 1,
 			});
