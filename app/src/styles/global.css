@@ -1063,6 +1063,21 @@ a.column-header:hover {
       margin-left: auto;
       margin-right: 0; }
 
+.list .end-loader,
+.list .end {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 30em;
+  text-align: center; }
+  .list .end-loader p,
+  .list .end p {
+    max-width: 30em; }
+  .list .end-loader > *,
+  .list .end > * {
+    margin: 2em; }
+
 .list .list-item {
   border-bottom: 1px solid #eee;
   color: inherit;

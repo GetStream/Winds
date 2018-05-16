@@ -25,6 +25,24 @@
 }
 
 .list {
+	.end-loader,
+	.end {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 30em;
+		text-align: center;
+
+		p {
+			max-width: 30em;
+		}
+
+		> * {
+			margin: 2em;
+		}
+	}
+
 	.list-item {
 		border-bottom: 1px solid $foreground-lightgray;
 		color: inherit;

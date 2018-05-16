@@ -1,3 +1,4 @@
+import loaderIcon from '../images/loaders/default.svg';
 import Waypoint from 'react-waypoint';
 import optionsIcon from '../images/icons/options.svg';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
@@ -52,6 +53,12 @@ class PodcastEpisodesView extends React.Component {
 			},
 		)
 			.then(res => {
+				if (res.data.length === 0) {
+					this.setState({
+						reachedEndOfFeed: true,
+					});
+				}
+
 				for (let episode of res.data) {
 					this.props.dispatch({
 						episode,
@@ -168,18 +175,36 @@ class PodcastEpisodesView extends React.Component {
 							/>
 						);
 					})}
-					<Waypoint
-						onEnter={() => {
-							this.setState(
+					{this.state.reachedEndOfFeed ? (
+						<div className="end">
+							<p>{'That\'s it! No more episodes here.'}</p>
+							<p>
 								{
-									episodeCursor: this.state.episodeCursor + 1,
-								},
-								() => {
-									this.getEpisodes(this.props.match.params.podcastID);
-								},
-							);
-						}}
-					/>
+									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+								}
+							</p>
+						</div>
+					) : (
+						<div>
+							<Waypoint
+								onEnter={() => {
+									this.setState(
+										{
+											episodeCursor: this.state.episodeCursor + 1,
+										},
+										() => {
+											this.getEpisodes(
+												this.props.match.params.podcastID,
+											);
+										},
+									);
+								}}
+							/>
+							<div className="end-loader">
+								<Img src={loaderIcon} />
+							</div>
+						</div>
+					)}
 				</div>
 			);
 		}

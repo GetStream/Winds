@@ -1,3 +1,4 @@
+import loaderIcon from '../images/loaders/default.svg';
 import optionsIcon from '../images/icons/options.svg';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
@@ -91,6 +92,12 @@ class RSSArticleList extends React.Component {
 			},
 		)
 			.then(res => {
+				if (res.data.length === 0) {
+					this.setState({
+						reachedEndOfFeed: true,
+					});
+				}
+
 				for (let rssArticle of res.data) {
 					this.props.dispatch({
 						rssArticle,
@@ -176,6 +183,67 @@ class RSSArticleList extends React.Component {
 		if (this.state.loading) {
 			return <Loader />;
 		} else {
+			let rightContents;
+			if (this.props.articles.length === 0) {
+				rightContents = (
+					<div>
+						<p>{'We haven\'t found any articles for this RSS feed yet :('}</p>
+						<p>
+							{
+								'It might be because the RSS feed doesn\'t have any articles, or because it just got added and we\'re still parsing them. Come check back in a few minutes?'
+							}
+						</p>
+						<p>
+							{
+								'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
+							}
+							<a href="https://github.com/getstream/winds/issues">
+								GitHub Issue
+							</a>.
+						</p>
+					</div>
+				);
+			} else {
+				rightContents = (
+					<React.Fragment>
+						{sortedArticles.map(article => {
+							return <ArticleListItem key={article._id} {...article} />;
+						})}
+
+						{this.state.reachedEndOfFeed ? (
+							<div className="end">
+								<p>{'That\'s it! No more articles here.'}</p>
+								<p>
+									{
+										'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+									}
+								</p>
+							</div>
+						) : (
+							<div>
+								<Waypoint
+									onEnter={() => {
+										this.setState(
+											{
+												articleCursor:
+													this.state.articleCursor + 1,
+											},
+											() => {
+												this.getRSSArticles(
+													this.props.match.params.rssFeedID,
+												);
+											},
+										);
+									}}
+								/>
+								<div className="end-loader">
+									<Img src={loaderIcon} />
+								</div>
+							</div>
+						)}
+					</React.Fragment>
+				);
+			}
 			return (
 				<React.Fragment>
 					<div className="list-view-header content-header">
@@ -204,47 +272,7 @@ class RSSArticleList extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="list content">
-						{sortedArticles.map(article => {
-							return <ArticleListItem key={article._id} {...article} />;
-						})}
-						{this.props.articles.length === 0 ? (
-							<div>
-								<p>
-									{
-										'We haven\'t found any articles for this RSS feed yet :('
-									}
-								</p>
-								<p>
-									{
-										'It might be because the RSS feed doesn\'t have any articles, or because it just got added and we\'re still parsing them. Come check back in a few minutes?'
-									}
-								</p>
-								<p>
-									{
-										'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
-									}
-									<a href="https://github.com/getstream/winds/issues">
-										GitHub Issue
-									</a>.
-								</p>
-							</div>
-						) : null}
-					</div>
-					<Waypoint
-						onEnter={() => {
-							this.setState(
-								{
-									articleCursor: this.state.articleCursor + 1,
-								},
-								() => {
-									this.getRSSArticles(
-										this.props.match.params.rssFeedID,
-									);
-								},
-							);
-						}}
-					/>
+					<div className="list content">{rightContents}</div>
 				</React.Fragment>
 			);
 		}
