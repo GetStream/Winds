@@ -538,7 +538,8 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
-  text-align: center; }
+  text-align: center;
+  -webkit-app-region: drag; }
   .auth-view > * {
     margin-bottom: 3rem; }
   .auth-view a {
