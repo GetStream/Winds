@@ -23,6 +23,7 @@ textarea {
   font-size: 0.9em;
   font-weight: 600;
   justify-content: center;
+  min-height: min-content;
   outline: none;
   overflow: visible;
   padding: 0.5em 2em;
@@ -310,7 +311,8 @@ body {
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh; }
+  height: 100vh;
+  justify-content: center; }
 
 .center {
   display: flex;
