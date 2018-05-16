@@ -6,12 +6,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ArticleListItem from './ArticleListItem';
 import Waypoint from 'react-waypoint';
+import loaderIcon from '../images/loaders/default.svg';
+import Img from 'react-image';
 
 class AllArticles extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			cursor: 0,
+			reachedEndOfFeed: false,
 		};
 	}
 	componentDidMount() {
@@ -28,6 +31,11 @@ class AllArticles extends React.Component {
 			let articles = response.data.map(article => {
 				return { ...article, type: 'article' };
 			});
+			if (articles.length === 0) {
+				this.setState({
+					reachedEndOfFeed: true,
+				});
+			}
 
 			for (let article of articles) {
 				// update rss feed
@@ -87,18 +95,34 @@ class AllArticles extends React.Component {
 							/>
 						);
 					})}
-					<Waypoint
-						onEnter={() => {
-							this.setState(
+					{this.state.reachedEndOfFeed ? (
+						<div className="end">
+							<p>{'That\'s it! No more articles here.'}</p>
+							<p>
 								{
-									cursor: this.state.cursor + 1,
-								},
-								() => {
-									this.getArticleFeed();
-								},
-							);
-						}}
-					/>
+									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+								}
+							</p>
+						</div>
+					) : (
+						<div>
+							<Waypoint
+								onEnter={() => {
+									this.setState(
+										{
+											cursor: this.state.cursor + 1,
+										},
+										() => {
+											this.getArticleFeed();
+										},
+									);
+								}}
+							/>
+							<div className="end-loader">
+								<Img src={loaderIcon} />
+							</div>
+						</div>
+					)}
 				</div>
 			</React.Fragment>
 		);
@@ -112,6 +136,8 @@ AllArticles.defaultProps = {
 AllArticles.propTypes = {
 	articles: PropTypes.arrayOf(PropTypes.shape({})),
 	dispatch: PropTypes.func.isRequired,
+	pinArticle: PropTypes.func,
+	unpinArticle: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => {

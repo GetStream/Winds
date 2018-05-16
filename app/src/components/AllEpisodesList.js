@@ -1,3 +1,5 @@
+import loaderIcon from '../images/loaders/default.svg';
+import Img from 'react-image';
 import fetch from '../util/fetch';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,6 +12,7 @@ class AllEpisodesList extends React.Component {
 		super(props);
 		this.state = {
 			cursor: 0,
+			reachedEndOfFeed: false,
 		};
 	}
 	pinEpisode(episodeID) {
@@ -50,6 +53,11 @@ class AllEpisodesList extends React.Component {
 			let episodes = response.data.map(episode => {
 				return { ...episode, type: 'episode' };
 			});
+			if (episodes.length === 0) {
+				this.setState({
+					reachedEndOfFeed: true,
+				});
+			}
 
 			for (let episode of episodes) {
 				if (episode._id) {
@@ -97,18 +105,34 @@ class AllEpisodesList extends React.Component {
 							/>
 						);
 					})}
-					<Waypoint
-						onEnter={() => {
-							this.setState(
+					{this.state.reachedEndOfFeed ? (
+						<div className="end">
+							<p>{'That\'s it! No more episodes here.'}</p>
+							<p>
 								{
-									cursor: this.state.cursor + 1,
-								},
-								() => {
-									this.getEpisodes();
-								},
-							);
-						}}
-					/>
+									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+								}
+							</p>
+						</div>
+					) : (
+						<div>
+							<Waypoint
+								onEnter={() => {
+									this.setState(
+										{
+											cursor: this.state.cursor + 1,
+										},
+										() => {
+											this.getEpisodes();
+										},
+									);
+								}}
+							/>
+							<div className="end-loader">
+								<Img src={loaderIcon} />
+							</div>
+						</div>
+					)}
 				</div>
 			</React.Fragment>
 		);

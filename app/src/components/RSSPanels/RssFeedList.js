@@ -74,7 +74,7 @@ const mapStateToProps = (state, ownProps) => {
 	}
 
 	let rssFeeds = rssFeedsUserFollows.map(rssFeedID => {
-		return state.rssFeeds[rssFeedID];
+		return { ...state.rssFeeds[rssFeedID] };
 	});
 
 	rssFeeds.sort((a, b) => {
