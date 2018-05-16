@@ -81,7 +81,8 @@ function main() {
   					if (feedTitle.toLowerCase() === 'rss') {
   						feedTitle = feeds.site.title;
   					}
-            console.log('c', feed.url)
+            console.log('c', feed.url, entities.decodeHTML(feed.title), moment().format())
+
 
   					RSS.findOneAndUpdate(
   						{ feedUrl: feed.url },
