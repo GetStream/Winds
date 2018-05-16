@@ -1,0 +1,91 @@
+{
+	"podcasts": [
+		{
+			"category": "UI/UX",
+			"name": "A List Apart",
+			"feedUrl": "http://alistapart.com/main/feed",
+			"site": "http://alistapart.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Design Details",
+			"feedUrl": "https://rss.simplecast.com/podcasts/1034/rss",
+			"site": "https://spec.fm/podcasts/design-details"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Layout.FM",
+			"feedUrl": "http://layout.fm/rss",
+			"site": "http://layout.fm/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Responsive Web Design",
+			"feedUrl": "https://responsivewebdesign.com/podcast/feed.xml",
+			"site": "https://responsivewebdesign.com/podcast/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Creative Coding Podcast",
+			"feedUrl": "http://creativecodingpodcast.com/feed/",
+			"site": "http://creativecodingpodcast.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "UX Pod",
+			"feedUrl": "http://uxpod.libsyn.com/rss",
+			"site": "http://uxpod.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Build and Launch",
+			"feedUrl": "https://rss.simplecast.com/podcasts/323/rss",
+			"site": "https://buildandlaunch.net/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Nice to meet you",
+			"feedUrl":
+				"http://feeds.soundcloud.com/users/soundcloud:users:5984399/sounds.rss",
+			"site": "http://www.vanschneider.com/show"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Design Review",
+			"feedUrl": "http://www.designreviewpodcast.com/design-review.rss",
+			"site": "http://www.designreviewpodcast.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Design Review",
+			"feedUrl": "http://www.designreviewpodcast.com/design-review.rss",
+			"site": "http://www.designreviewpodcast.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Overtime",
+			"feedUrl": "https://rss.simplecast.com/podcasts/1515/rss",
+			"site": "https://dribbble.com/overtime"
+		},
+		{
+			"category": "UI/UX",
+			"name": "DesignBetter",
+			"feedUrl": "http://designbetter.libsyn.com/rss",
+			"site": "https://www.designbetter.co/podcast"
+		}
+	],
+	"rss": [
+		{
+			"category": "UI/UX",
+			"name": "Design Details",
+			"feedUrl": "https://rss.simplecast.com/podcasts/1034/rss",
+			"site": "https://spec.fm/podcasts/design-details"
+		},
+		{
+			"category": "UI/UX",
+			"name": "The UX Blog",
+			"feedUrl": "http://uxblog.libsyn.com/rss",
+			"site": "https://theuxblog.com/"
+		}
+	]
+}
