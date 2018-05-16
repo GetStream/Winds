@@ -15,7 +15,18 @@ import podcastFinder from 'rss-finder';
 import { ParsePodcast } from '../workers/parsers';
 import strip from 'strip';
 import Podcast from '../models/podcast';
+import RSS from '../models/rss';
+import moment from 'moment';
+import entities from 'entities';
 
+import validUrl from 'valid-url';
+
+import User from '../models/user';
+
+import personalization from '../utils/personalization';
+import search from '../utils/search';
+
+const rssQueue = new Queue('rss', config.cache.uri);
 
 program
 	.version(version)
@@ -24,12 +35,31 @@ program
   .option('--task', 'Create a task on bull or not')
 	.parse(process.argv);
 
+
+  process.on('unhandledRejection', (err) => {
+    console.error(err)
+    process.exit(1)
+  })
+
+  function doubleAfter2Seconds(x) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(x * 2);
+      }, 2000);
+    });
+  }
+
+  async function test() {
+    const b = await doubleAfter2Seconds(20)
+    console.log('b', b)
+  }
+
+  test()
+
 function main() {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info('Starting to load the featured feeds');
   var featured = JSON.parse(fs.readFileSync('featured.json', 'utf8'));
-
-  console.log(typeof(featured), featured, featured.rss[0])
 
   async.mapLimit(featured.rss, 1, (featuredRSS, loopCb) => {
     logger.info(`Now Handling RSS Feed ${featuredRSS.name}`);
@@ -37,20 +67,21 @@ function main() {
     rssFinder(normalizeUrl(featuredRSS.feedUrl))
   		.then(feeds => {
   			if (!feeds.feedUrls.length) {
-  				return res
-  					.status(404)
-  					.send('We couldn\'t find any feeds for that RSS feed URL :(');
+  				logger.warn('We couldn\'t find any feeds for that RSS feed URL :(');
   			}
+        console.log('a')
 
   			async.mapLimit(
   				feeds.feedUrls,
   				feeds.feedUrls.length,
   				(feed, cb) => {
   					let feedTitle = feed.title;
+            console.log('b')
 
   					if (feedTitle.toLowerCase() === 'rss') {
   						feedTitle = feeds.site.title;
   					}
+            console.log('c', feed.url)
 
   					RSS.findOneAndUpdate(
   						{ feedUrl: feed.url },
@@ -74,6 +105,7 @@ function main() {
   						},
   					)
   						.then(rss => {
+                console.log('d')
   							if (rss.lastErrorObject.updatedExisting) {
   								cb(null, rss.value);
   							} else {
@@ -255,5 +287,6 @@ function main() {
   });
 
 }
+
 
 main();
