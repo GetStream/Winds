@@ -485,7 +485,7 @@
 		{
 			"category": "Lifehacks",
 			"name": "Lifehacker",
-			"feedUrl": "http://feeds.gawker.com/lifehacker/full",
+			"feedUrl": "https://lifehacker.com/rss",
 			"site": "https://lifehacker.com"
 		},
 		{
