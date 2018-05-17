@@ -250,6 +250,74 @@
 			"name": "Ted Talks",
 			"feedUrl": "https://www.ted.com/talks/rss",
 			"site": "https://www.ted.com"
+		},
+		{
+			"category": "News",
+			"name": "Policast",
+			"feedUrl": "https://feeds.publicradio.org/public_feeds/policast/npr/rss",
+			"site": "https://www.npr.org/podcasts/414694038/policast"
+		},
+		{
+			"category": "News",
+			"name": "The Daily",
+			"feedUrl": "http://rss.art19.com/the-daily",
+			"site": "https://www.nytimes.com/column/the-daily"
+		},
+		{
+			"category": "News",
+			"name": "BBC Global News",
+			"feedUrl": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
+			"site": "https://www.nytimes.com/column/the-daily"
+		},
+		{
+			"category": "News",
+			"name": "PBS NewsHour",
+			"feedUrl": "https://www.pbs.org/newshour/feeds/rss/podcasts/show",
+			"site": "https://www.pbs.org/newshour"
+		},
+		{
+			"category": "News",
+			"name": "Unfilter",
+			"feedUrl": "http://unfilter.show/rss",
+			"site": "http://unfilter.show"
+		},
+		{
+			"category": "News",
+			"name": "On The Media",
+			"feedUrl": "http://feeds.wnyc.org/onthemedia",
+			"site": "https://www.wnycstudios.org/shows/otm/"
+		},
+		{
+			"category": "VR",
+			"name": "Everything VR & AR",
+			"feedUrl": "http://everythingvrar.libsyn.com/rss",
+			"site": "http://everythingvrar.libsyn.com"
+		},
+		{
+			"category": "VR",
+			"name": "New School VR Podcast",
+			"feedUrl":
+				"http://feeds.soundcloud.com/users/soundcloud:users:265033871/sounds.rss",
+			"site": "http://newschoolvr.com/"
+		},
+		{
+			"category": "VR",
+			"name": "Voices of VR Podcast – Designing for Virtual Reality",
+			"feedUrl": "http://voicesofvr.com/?feed=podcast",
+			"site": "http://voicesofvr.com/"
+		},
+		{
+			"category": "VR",
+			"name": "Rev VR",
+			"feedUrl":
+				"http://www.reverendkyle.com/index.php/component/podcastmanager/?format=raw&feedname=2",
+			"site": "http://www.revvrstudios.com/"
+		},
+		{
+			"category": "VR",
+			"name": "VRScout Report",
+			"feedUrl": "http://vrscout.libsyn.com/rss",
+			"site": "https://vrscout.com/podcast/"
 		}
 	],
 	"rss": [
