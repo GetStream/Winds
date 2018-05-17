@@ -1356,9 +1356,9 @@ a.column-header:hover {
     width: 1.5em; }
   .tiny-list > * > *:nth-child(2) {
     flex-grow: 1;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    white-space: nowrap; }
   .tiny-list > * > *:last-child {
     font-weight: normal; }
     .tiny-list > * > *:last-child > *:not(:last-child) {
