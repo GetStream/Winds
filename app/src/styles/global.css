@@ -1362,7 +1362,8 @@ a.column-header:hover {
   .tiny-list > * > *:last-child {
     font-weight: normal; }
     .tiny-list > * > *:last-child > *:not(:last-child) {
-      margin-right: 1em; }
+      margin-right: 1em;
+      white-space: nowrap; }
 
 .gh-button {
   display: inline-block;
