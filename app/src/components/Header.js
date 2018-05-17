@@ -185,9 +185,13 @@ class Header extends Component {
 				</div>
 				<a
 					className="bottom"
-					href="https://github.com/GetStream/Winds"
-					rel="noopener noreferrer"
-					target="_blank"
+					onClick={e => {
+						e.preventDefault();
+						window.ipcRenderer.send(
+							'open-external-window',
+							'https://github.com/GetStream/Winds',
+						);
+					}}
 				>
 					<span>View on GitHub</span>
 					<Img src={forwardIcon} />
