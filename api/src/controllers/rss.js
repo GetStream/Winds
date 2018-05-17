@@ -201,9 +201,7 @@ exports.post = (req, res) => {
 			);
 		})
 		.catch(() => {
-			return res
-				.status(404)
-				.send('Sorry, we could not find a feed for the provided URL :(');
+			res.sendStatus(500);
 		});
 };
 
