@@ -4,7 +4,7 @@ module.exports = [
 		subtitle: 'Design',
 	},
 	{
-		name: 'Startups',
+		name: 'Startups & VC',
 		subtitle: 'Entrepreneur',
 	},
 	{
@@ -12,27 +12,28 @@ module.exports = [
 		subtitle: 'Engineering',
 	},
 	{
-		name: 'Lifehacks',
-		subtitle: 'Culture',
-	},
-	{
-		name: 'Venture Capital',
-		subtitle: 'Business',
-	},
-	{
-		name: 'Current News',
-		subtitle: 'World',
-	},
-	{
 		name: 'Gaming',
 		subtitle: 'Entertainment',
 	},
 	{
-		name: 'Virtual Reality',
+		name: 'Machine Learning & AI',
 		subtitle: 'Technology',
 	},
 	{
-		name: 'Artificial Intelligence',
+		name: 'News',
+		subtitle: 'World',
+	},
+	{
+		name: 'VR',
 		subtitle: 'Technology',
 	},
+	{
+		name: 'Lifehacks',
+		subtitle: 'Culture',
+	},
+	{
+		name: 'Marketing',
+		subtitle: 'Growth',
+	}
+
 ];
