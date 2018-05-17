@@ -825,7 +825,7 @@ body {
   position: relative; }
 
 a.column-header:hover {
-  background-color: #ddd;
+  background-color: #efefef;
   border-radius: 8px;
   transition: all 0.22s ease-in-out; }
 
