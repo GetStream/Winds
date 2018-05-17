@@ -23,6 +23,7 @@ textarea {
   font-size: 0.9em;
   font-weight: 600;
   justify-content: center;
+  min-height: min-content;
   outline: none;
   overflow: visible;
   padding: 0.5em 2em;
@@ -310,7 +311,8 @@ body {
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh; }
+  height: 100vh;
+  justify-content: center; }
 
 .center {
   display: flex;
@@ -536,7 +538,8 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
-  text-align: center; }
+  text-align: center;
+  -webkit-app-region: drag; }
   .auth-view > * {
     margin-bottom: 3rem; }
   .auth-view a {
@@ -2284,7 +2287,9 @@ a.column-header:hover {
     max-width: 100%;
     overflow-y: scroll; }
   .rss-view .content-header {
-    grid-area: content-header; }
+    grid-area: content-header;
+    margin: auto;
+    max-width: 720px; }
   .rss-view .none-selected {
     align-items: center;
     display: flex;

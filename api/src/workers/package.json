@@ -13,6 +13,7 @@
 		"entities": "^1.1.1",
 		"favicon": "^0.0.2",
 		"feedparser": "^2.2.9",
+		"global": "^4.3.2",
 		"iconv": "^2.3.0",
 		"iconv-js": "^0.3.5",
 		"moment": "^2.22.1",
