@@ -4,9 +4,8 @@ import Sentry from 'winston-transport-sentry';
 import path from 'path';
 
 // https://github.com/guzru/winston-sentry
-var transports = [new winston.transports.Console({ level: 'silly' })];
-
-var executable = path.basename(process.argv[1]);
+const transports = [new winston.transports.Console({ level: 'silly' })];
+const executable = path.basename(process.argv[1]);
 
 if (config.sentry.dsn) {
 	let sentryTransport = new Sentry({
@@ -18,7 +17,7 @@ if (config.sentry.dsn) {
 	transports.push(sentryTransport);
 }
 
-var logger = new winston.createLogger({
+let logger = new winston.createLogger({
 	format: winston.format.simple(),
 	transports: transports,
 });

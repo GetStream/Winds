@@ -3,6 +3,7 @@
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+	-webkit-app-region: drag;
 
 	> * {
 		margin-bottom: 3rem;
