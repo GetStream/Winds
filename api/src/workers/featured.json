@@ -202,26 +202,26 @@
 			"site": "https://player.fm/series/shoptalk-19036"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "Kinda Funny Gamescast",
 			"feedUrl":
 				"http://feeds.soundcloud.com/users/soundcloud:users:130508806/sounds.rss",
 			"site": "https://www.patreon.com/kindafunnygames"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "Giantbomn",
 			"feedUrl": "https://www.giantbomb.com/podcast-xml/giant-bombcast",
 			"site": "https://www.giantbomb.com/podcasts/"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "Three Moves Ahead",
 			"feedUrl": "https://www.idlethumbs.net/feeds/3ma",
 			"site": "https://www.idlethumbs.net/3ma"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "Whats Good Games",
 			"feedUrl":
 				"http://feeds.backtracks.fm/feeds/whatsgoodgames/whats-good-games-a-video-game-podcast/feed.xml",
@@ -398,25 +398,25 @@
 			"site": "http://thedailywtf.com/"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "Indie Games",
 			"feedUrl": "http://indiegames.com/atom.xml",
 			"site": "http://indiegames.com"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "IGN",
 			"feedUrl": "http://feeds.ign.com/ign/all",
 			"site": "http://ign.com/"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "Kotaku",
 			"feedUrl": "https://kotaku.com/rss",
 			"site": "https://kotaku.com/"
 		},
 		{
-			"category": "Games",
+			"category": "Gaming",
 			"name": "GameInformer",
 			"feedUrl":
 				"http://www.gameinformer.com/b/features/rsscomments.aspx?WeblogPostID=8597456",

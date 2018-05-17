@@ -224,7 +224,7 @@ function main() {
     logger.info(`Finished with Feeds`)
   });
 
-/*
+
 
   async.mapLimit(featured.podcasts, 10, (featuredPodcast, loopCb) => {
     logger.info(`Now Handling Podcast ${featuredPodcast.name}`);
@@ -355,7 +355,7 @@ function main() {
 
   }, function() {
     logger.info(`finished with podcasts`)
-  });*/
+  });
 
 }
 
