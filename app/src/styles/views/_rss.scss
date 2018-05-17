@@ -29,10 +29,10 @@
 	.content-header {
 		grid-area: content-header;
 		margin: auto;
-		max-width: 720px;
+		width: 720px;
 		&.list-view-header {
 			margin: 0;
-			max-width: unset;
+			width: unset;
 		}
 	}
 
