@@ -224,14 +224,7 @@
 			"category": "Games",
 			"name": "Three Moves Ahead",
 			"feedUrl": "https://www.idlethumbs.net/feeds/3ma",
-			"site": "https://www.idlethumbs.net/3ma/#"
-		},
-		{
-			"category": "Games",
-			"name": "Whats Good Games",
-			"feedUrl":
-				"http://feeds.backtracks.fm/feeds/whatsgoodgames/whats-good-games-a-video-game-podcast/feed.xml",
-			"site": "https://whatsgoodgames.com/"
+			"site": "https://www.idlethumbs.net/3ma"
 		},
 		{
 			"category": "Games",
@@ -275,8 +268,7 @@
 		{
 			"category": "UI/UX",
 			"name": "Fast Co Design",
-			"feedUrl":
-				"https://www.fastcodesign.com//latest/rss?truncated=true",
+			"feedUrl": "https://www.fastcodesign.com//latest/rss?truncated=true",
 			"site": "https://www.fastcodesign.com/"
 		},
 		{
@@ -402,15 +394,13 @@
 		{
 			"category": "Programming",
 			"name": "Toptail",
-			"feedUrl":
-				"https://www.toptal.com/developers/blog.rss",
+			"feedUrl": "https://www.toptal.com/developers/blog.rss",
 			"site": "https://www.toptal.com/developers/blog"
 		},
 		{
 			"category": "Programming",
 			"name": "Daily WTF",
-			"feedUrl":
-				"https://www.toptal.com/developers/blog/developers/blog.rss",
+			"feedUrl": "https://www.toptal.com/developers/blog/developers/blog.rss",
 			"site": "http://thedailywtf.com/"
 		},
 		{
@@ -430,18 +420,6 @@
 			"name": "Kotaku",
 			"feedUrl": "https://kotaku.com/rss",
 			"site": "https://kotaku.com/"
-		},
-		{
-			"category": "Games",
-			"name": "Pushsqare",
-			"feedUrl": "http://feeds.gawker.com/kotaku/full",
-			"site": "http://www.pushsquare.com/"
-		},
-		{
-			"category": "Games",
-			"name": "N4G",
-			"feedUrl": "http://feeds.gawker.com/kotaku/full",
-			"site": "http://n4g.com/"
 		},
 		{
 			"category": "Games",
@@ -579,8 +557,7 @@
 		{
 			"category": "News",
 			"name": "NY Times",
-			"feedUrl":
-				"http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+			"feedUrl": "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
 			"site": "https://nytimes.com"
 		},
 		{
