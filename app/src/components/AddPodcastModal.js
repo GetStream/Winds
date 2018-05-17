@@ -64,9 +64,10 @@ class AddPodcastModal extends React.Component {
 			})
 			.catch(err => {
 				this.setState({
-					errorMessage: err.message.includes('400')
-						? 'Please enter a valid podcast URL.'
-						: err.message,
+					errorMessage:
+						err.response.status === 400 || err.response.status === 500
+							? 'Please enter a valid podcast URL.'
+							: 'Oops, something went wrong. Please try again later.',
 					errored: true,
 					submitting: false,
 				});
@@ -89,7 +90,6 @@ class AddPodcastModal extends React.Component {
 					podcast: checkedPodcastToFollow,
 					type: 'podcast',
 				}).then(response => {
-					console.log(response);
 					this.props.dispatch({
 						podcastID: response.data.podcast,
 						type: 'FOLLOW_PODCAST',
@@ -153,7 +153,7 @@ class AddPodcastModal extends React.Component {
 						/>
 					</div>
 					<div className="info">
-						Enter a valid podcast url and we will add it to Winds.
+						Enter a valid podcast URL and we'll add it to Winds.
 					</div>
 					<div className="error-message">{this.state.errorMessage}</div>
 					<div className="buttons">
