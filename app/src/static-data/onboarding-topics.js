@@ -30,6 +30,10 @@ module.exports = [
 	{
 		name: 'Lifehacks',
 		subtitle: 'Culture',
+	},
+	{
+		name: 'Marketing',
+		subtitle: 'Growth',
 	}
 
 ];
