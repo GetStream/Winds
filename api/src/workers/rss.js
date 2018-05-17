@@ -67,60 +67,53 @@ rssQueue.process((job, done) => {
 				10,
 				(post, cb) => {
 					// lookup by url
-					let normalizedUrl = normalize(post.url)
-					Article.findOne({ url: normalizedUrl,rss: job.data.rss }).then(article => {
-						if (article) {
-							// article already exists
-							cb(null, null);
-							return;
-						} else {
-							Article.create({
-								description: post.description,
-								publicationDate: post.publicationDate,
-								commentUrl: post.commentUrl,
-								content: post.content,
-								images: post.images,
-								rss: job.data.rss,
-								title: post.title,
-								url: normalizedUrl,
-							}).then(article => {
-								// after article is created, add to algolia, stream, and opengraph scraper queue
-								return Promise.all([
-									client.feed('rss', article.rss).addActivity({
-										actor: article.rss,
-										foreign_id: `articles:${article._id}`,
-										object: article._id,
-										time: article.publicationDate,
-										verb: 'rss_article',
-									}),
-									ogQueue.add(
-										{
-											url: article.url,
-											type: 'rss',
-										},
-										{
-											removeOnComplete: true,
-											removeOnFail: true,
-										},
-									),
-								])
-									.then(function() {
-										// this is just returning the article created from the MongoDB `create` call
-										cb(null, article);
-									})
-									.catch(err => {
-										// error: either adding to algolia, adding to Stream, or adding to OGqueue - continuing on for the time being.
-										logger.error(err);
-										cb(null, article);
-									});
-							});
-						}
-					});
+					let normalizedUrl = normalize(post.url);
+					Article.findOne({ url: normalizedUrl, rss: job.data.rss }).then(
+						article => {
+							if (article) {
+								// article already exists
+								cb(null, null);
+								return;
+							} else {
+								Article.create({
+									description: post.description,
+									publicationDate: post.publicationDate,
+									commentUrl: post.commentUrl,
+									content: post.content,
+									images: post.images,
+									rss: job.data.rss,
+									title: post.title,
+									url: normalizedUrl,
+								}).then(article => {
+									// after article is created, add to algolia, stream, and opengraph scraper queue
+									return ogQueue
+										.add(
+											{
+												url: article.url,
+												type: 'rss',
+											},
+											{
+												removeOnComplete: true,
+												removeOnFail: true,
+											},
+										)
+										.then(function() {
+											// this is just returning the article created from the MongoDB `create` call
+											cb(null, article);
+										})
+										.catch(err => {
+											// error: either adding to algolia, or adding to OGqueue - continuing on for the time being.
+											logger.error(err);
+											cb(null, article);
+										});
+								});
+							}
+						},
+					);
 				},
-				(err, updatedArticles) => {
+				(err, allArticles) => {
 					// updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
-
-					updatedArticles = updatedArticles.filter(updatedArticle => {
+					let updatedArticles = allArticles.filter(updatedArticle => {
 						return updatedArticle;
 					});
 
@@ -131,7 +124,28 @@ rssQueue.process((job, done) => {
 						done(err);
 					} else {
 						if (updatedArticles.length > 0) {
-							sendRssFeedToCollections(job.data.rss);
+							let chunkSize = 100;
+							for (let i=0,j=updatedArticles.length; i<j; i+=chunkSize) {
+								let chunk = updatedEpisodes.slice(i,i+chunk);
+
+								let streamArticles = chunk.map(article => {
+									return {
+										actor: article.rss,
+										foreign_id: `articles:${article._id}`,
+										object: article._id,
+										time: article.publicationDate,
+										verb: 'rss_article',
+									};
+								});
+
+								client
+									.feed('rss', job.data.rss)
+									.addActivities(streamArticles)
+									.then(() => {
+										sendRssFeedToCollections(job.data.rss);
+									});
+							}
+
 						}
 						logger.info(`Completed scraping for ${job.data.url}`);
 						done();

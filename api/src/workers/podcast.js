@@ -22,7 +22,6 @@ const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 const podcastQueue = new Queue('podcast', config.cache.uri);
 const ogQueue = new Queue('og', config.cache.uri);
 
-
 logger.info('Starting to process podcasts....');
 
 podcastQueue.process((job, done) => {
@@ -48,7 +47,7 @@ podcastQueue.process((job, done) => {
 			// actually store the episodes
 			return Promise.all(
 				podcastContents.episodes.map(episode => {
-					let normalizedUrl = normalize(episode.url)
+					let normalizedUrl = normalize(episode.url);
 					return Episode.findOne({
 						url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
 						podcast: job.data.podcast,
@@ -62,7 +61,7 @@ podcastQueue.process((job, done) => {
 								publicationDate: episode.publicationDate,
 								title: episode.title,
 								url: normalizedUrl,
-								images: episode.images
+								images: episode.images,
 							})
 								.then(episode => {
 									return Promise.all([
@@ -74,25 +73,16 @@ podcastQueue.process((job, done) => {
 											title: episode.title,
 											type: 'episode',
 										}),
-										client
-											.feed('podcast', episode.podcast)
-											.addActivity({
-												actor: episode.podcast,
-												foreign_id: `episodes:${episode._id}`,
-												object: episode._id,
-												time: episode.publicationDate,
-												verb: 'podcast_episode',
-											}),
-											ogQueue.add(
-												{
-													url: episode.url,
-													type: 'episode',
-												},
-												{
-													removeOnComplete: true,
-													removeOnFail: true,
-												},
-											),
+										ogQueue.add(
+											{
+												url: episode.url,
+												type: 'episode',
+											},
+											{
+												removeOnComplete: true,
+												removeOnFail: true,
+											},
+										),
 									]).then(() => {
 										return episode;
 									});
@@ -104,13 +94,35 @@ podcastQueue.process((job, done) => {
 					});
 				}),
 			)
-				.then(updatedEpisodes => {
-					updatedEpisodes = updatedEpisodes.filter(updatedEpisode => {
+				.then(allEpisodes => {
+					let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
 						return updatedEpisode;
 					});
 
 					if (updatedEpisodes.length > 0) {
-						sendPodcastToCollections(job.data.podcast);
+						let chunkSize = 100;
+						for (let i=0,j=updatedEpisodes.length; i<j; i+=chunkSize) {
+						    let chunk = updatedEpisodes.slice(i,i+chunk);
+								let streamEpisodes = chunk.map(episode => {
+									return {
+										actor: episode.podcast,
+										foreign_id: `episodes:${episode._id}`,
+										object: episode._id,
+										time: episode.publicationDate,
+										verb: 'podcast_episode',
+									};
+								});
+
+								// addActivities to Stream
+								client
+									.feed('podcast', job.data.podcast)
+									.addActivities(streamEpisodes)
+									.then(() => {
+										sendPodcastToCollections(job.data.podcast);
+									});
+						}
+
+
 					}
 
 					logger.info(`Completed podcast ${job.data.url}`);

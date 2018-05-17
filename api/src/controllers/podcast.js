@@ -2,7 +2,6 @@ import Queue from 'bull';
 import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
-// import entities from 'entities';
 import validUrl from 'valid-url';
 
 import Podcast from '../models/podcast';
@@ -76,7 +75,7 @@ exports.get = (req, res) => {
 exports.post = (req, res) => {
 	const data = Object.assign(req.body, { user: req.user.sub }) || {};
 
-	if (!data.feedUrl || !validUrl.isUri(data.feedUrl)) {
+	if (!data.feedUrl || !validUrl.isUri(normalizeUrl(data.feedUrl))) {
 		return res.status(400).send('Please provide a valid podcast URL.');
 	}
 
@@ -107,7 +106,6 @@ exports.post = (req, res) => {
 							images = { favicon: feeds.site.favicon };
 							description = '';
 						}
-
 
 						Podcast.findOneAndUpdate(
 							{ feedUrl: feed.url },
@@ -156,24 +154,29 @@ exports.post = (req, res) => {
 											);
 										})
 										.then(() => {
-											logger.info(`api is scheduling ${podcast.value.url} for og scraping`)
+											logger.info(
+												`api is scheduling ${
+													podcast.value.url
+												} for og scraping`,
+											);
 											if (!podcast.value.images.og) {
-												ogQueue.add(
-													{
-														url: podcast.value.url,
-														type: 'podcast',
-													},
-													{
-														removeOnComplete: true,
-														removeOnFail: true,
-													},
-												).then(() => {
-													cb(null, podcast.value);
-												})
+												ogQueue
+													.add(
+														{
+															url: podcast.value.url,
+															type: 'podcast',
+														},
+														{
+															removeOnComplete: true,
+															removeOnFail: true,
+														},
+													)
+													.then(() => {
+														cb(null, podcast.value);
+													});
 											} else {
 												cb(null, podcast.value);
 											}
-
 										})
 										.catch(err => {
 											cb(err);

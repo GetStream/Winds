@@ -146,7 +146,7 @@ function ParsePodcast(podcastUrl, callback) {
 
 	request(opts, (error, response, responseData) => {
 		// easy way to detect charset or encoding issues
-		let partialBody = response.body.substring(0,500)
+		// let partialBody = response.body.substring(0,500)
 		//logger.debug(`${podcastUrl} response \n${partialBody}`)
 		podcastParser(responseData, (err, data) => {
 			if (err) {
