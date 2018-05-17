@@ -1,3 +1,5 @@
+import '../loadenv';
+
 import program from 'commander';
 import chalk from 'chalk';
 import logger from '../utils/logger';
@@ -17,6 +19,7 @@ import strip from 'strip';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import moment from 'moment';
+import '../utils/db';
 import entities from 'entities';
 
 import validUrl from 'valid-url';
@@ -36,55 +39,114 @@ program
 	.parse(process.argv);
 
 
-  process.on('unhandledRejection', (err) => {
-    console.error(err)
-    process.exit(1)
-  })
+process.on('unhandledRejection', (err) => {
+  console.error(err)
+  process.exit(1)
+})
 
-  function doubleAfter2Seconds(x) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(x * 2);
-      }, 2000);
-    });
+
+
+function FindMeSomeRSS(url) {
+  return rssFinder(normalizeUrl(url))
+}
+
+function UpdateThatRSS() {
+  var promise = RSS.findOneAndUpdate(
+    { feedUrl: feed.url },
+    {
+      categories: featuredRSS.category,
+      description: entities.decodeHTML(feed.title),
+      featured: false,
+      feedUrl: feed.url,
+      images: {
+        favicon: feeds.site.favicon,
+      },
+      lastScraped: moment().format(),
+      title: featuredRSS.name,
+      url: feeds.site.url,
+      valid: true,
+    },
+    {
+      new: true,
+      rawResult: true,
+      upsert: true,
+    },
+  )
+}
+
+async function test(featuredRSS) {
+  let structure = await FindMeSomeRSS("http://alistapart.com/main/feed")
+  let site = structure.site
+  for (let feed of structure.feedUrls) {
+    let feedTitle = feed.title;
+    if (feedTitle.toLowerCase() === 'rss') {
+      feedTitle = feeds.site.title
+    }
+
+    let feedUrl = feed.url
+    let rss = {
+      categories: featuredRSS.category,
+      description: entities.decodeHTML(feed.title),
+      featured: false,
+      feedUrl: feed.url,
+      images: {
+        favicon: site.favicon,
+      },
+      lastScraped: moment().format(),
+      title: featuredRSS.name,
+      url: site.url,
+      valid: true,
+    }
+
+    RSS.findOneAndUpdate(
+        { feedUrl: feedUrl },
+        rss,
+        {
+          new: true,
+          rawResult: true,
+          upsert: true,
+        },
+      ).then(function() {
+        console.log(arguments)
+      }).catch(function() {
+        console.log('err', arguments);
+      })
+    //console.log('result', result)
+
   }
 
-  async function test() {
-    const b = await doubleAfter2Seconds(20)
-    console.log('b', b)
-  }
+}
 
-  test()
 
 function main() {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info('Starting to load the featured feeds');
   var featured = JSON.parse(fs.readFileSync('featured.json', 'utf8'));
 
-  async.mapLimit(featured.rss, 1, (featuredRSS, loopCb) => {
+  async.mapLimit(featured.rss, 10, (featuredRSS, loopCb) => {
     logger.info(`Now Handling RSS Feed ${featuredRSS.name}`);
 
     rssFinder(normalizeUrl(featuredRSS.feedUrl))
-  		.then(feeds => {
-  			if (!feeds.feedUrls.length) {
-  				logger.warn('We couldn\'t find any feeds for that RSS feed URL :(');
+      .catch(function(err) {
+        logger.warn(`RSS Finder broke ${featuredRSS.feedUrl} with err ${err}`)
+        loopCb()
+      }).then(feeds => {
+  			if (!feeds || !feeds.feedUrls.length) {
+  				logger.warn(`We couldn\'t find any feeds for that RSS feed URL :( ${featuredRSS.feedUrl}`);
+          return loopCb()
   			}
-        console.log('a')
 
   			async.mapLimit(
   				feeds.feedUrls,
   				feeds.feedUrls.length,
   				(feed, cb) => {
   					let feedTitle = feed.title;
-            console.log('b')
 
   					if (feedTitle.toLowerCase() === 'rss') {
   						feedTitle = feeds.site.title;
   					}
-            console.log('c', feed.url, entities.decodeHTML(feed.title), moment().format())
 
-
-  					RSS.findOneAndUpdate(
+            var promise = RSS.findOneAndUpdate(
   						{ feedUrl: feed.url },
   						{
   							categories: featuredRSS.category,
@@ -105,8 +167,8 @@ function main() {
   							upsert: true,
   						},
   					)
-  						.then(rss => {
-                console.log('d')
+
+  						promise.then(rss => {
   							if (rss.lastErrorObject.updatedExisting) {
   								cb(null, rss.value);
   							} else {
@@ -142,27 +204,27 @@ function main() {
   							}
   						})
   						.catch(err => {
+                logger.warn('broken', err)
   							cb(err);
   						});
   				},
   				(err, results) => {
   					if (err) {
+              logger.warn('really broken', err)
   						return;
   					}
-
   					loopCb()
   				},
   			);
   		})
-  		.catch(() => {
-  			//res.sendStatus(500);
-  		});
+
 
   }, function() {
     logger.info(`Finished with Feeds`)
   });
 
-  async.mapLimit(featured.podcasts, 1, (featuredPodcast, loopCb) => {
+/*
+  async.mapLimit(featured.podcasts, 10, (featuredPodcast, loopCb) => {
     logger.info(`Now Handling Podcast ${featuredPodcast.name}`);
 
     podcastFinder(normalizeUrl(featuredPodcast.feedUrl))
@@ -192,7 +254,6 @@ function main() {
                 images = { favicon: feeds.site.favicon };
                 description = '';
               }
-
 
               Podcast.findOneAndUpdate(
                 { feedUrl: feed.url },
@@ -272,6 +333,7 @@ function main() {
           },
           (err, results) => {
             if (err) {
+              loopCb()
               return;
             }
 
@@ -280,13 +342,14 @@ function main() {
         );
       })
       .catch(err => {
-        logger.error(err);
+        logger.error('podcastbroke', err, featuredPodcast);
+        loopCb()
       });
 
   }, function() {
     logger.info(`finished with podcasts`)
   });
-
+*/
 }
 
 
