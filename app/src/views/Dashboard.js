@@ -1,11 +1,7 @@
-import forwardBlackIcon from '../images/icons/forward-black.svg';
 import FeaturedItems from '../components/FeaturedItems';
-import Img from 'react-image';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
-// import NewShareForm from '../components/NewShareForm';
 import PropTypes from 'prop-types';
-// import RSSPanelsContainer from '../components/RSSPanelsContainer';
 import React from 'react';
 import { connect } from 'react-redux';
 import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
