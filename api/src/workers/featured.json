@@ -51,12 +51,6 @@
 		},
 		{
 			"category": "UI/UX",
-			"name": "Design Review",
-			"feedUrl": "http://www.designreviewpodcast.com/design-review.rss",
-			"site": "http://www.designreviewpodcast.com/"
-		},
-		{
-			"category": "UI/UX",
 			"name": "Overtime",
 			"feedUrl": "https://rss.simplecast.com/podcasts/1515/rss",
 			"site": "https://dribbble.com/overtime"
@@ -81,6 +75,12 @@
 		},
 		{
 			"category": "Startups & VC",
+			"name": "a16z",
+			"feedUrl": "https://a16z.com/feed/",
+			"site": "https://a16z.com/"
+		},
+		{
+			"category": "Startups & VC",
 			"name": "To The Top",
 			"feedUrl": "http://nathanlatkathetop.libsyn.com/rss",
 			"site": "http://nathanlatkathetop.libsyn.com"
@@ -91,12 +91,6 @@
 			"feedUrl":
 				"https://www.omnycontent.com/d/playlist/20f38a10-1afe-4760-bb32-a7dd01317ee4/cfecce2e-033b-4f28-a323-a7de003f116b/b76fb826-9e99-4328-b3fa-a7de003f1179/podcast.rss",
 			"site": "http://rocketship.fm/"
-		},
-		{
-			"category": "Startups & VC",
-			"name": "To The Top",
-			"feedUrl": "http://nathanlatkathetop.libsyn.com/rss",
-			"site": "http://nathanlatkathetop.libsyn.com"
 		},
 		{
 			"category": "Startups & VC",
@@ -400,7 +394,7 @@
 		{
 			"category": "Programming",
 			"name": "Daily WTF",
-			"feedUrl": "https://www.toptal.com/developers/blog/developers/blog.rss",
+			"feedUrl": "http://syndication.thedailywtf.com/TheDailyWtf",
 			"site": "http://thedailywtf.com/"
 		},
 		{
@@ -451,12 +445,6 @@
 			"name": "OpenAI",
 			"feedUrl": "https://blog.openai.com/rss/",
 			"site": "https://blog.openai.com/"
-		},
-		{
-			"category": "News",
-			"name": "Jalopnik",
-			"feedUrl": "https://jalopnik.com/rss",
-			"site": "https://jalopnik.com/"
 		},
 		{
 			"category": "News",
@@ -541,12 +529,6 @@
 			"name": "1000 Lifehacks",
 			"feedUrl": "http://1000lifehacks.com/feed/",
 			"site": "http://1000lifehacks.com/"
-		},
-		{
-			"category": "UI/UX",
-			"name": "A List Apart",
-			"feedUrl": "http://alistapart.com/main/feed",
-			"site": "http://alistapart.com/"
 		},
 		{
 			"category": "News",
