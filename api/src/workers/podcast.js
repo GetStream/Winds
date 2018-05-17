@@ -59,9 +59,12 @@ podcastQueue.process((job, done) => {
 								description: episode.description,
 								podcast: job.data.podcast,
 								publicationDate: episode.publicationDate,
+								duration: episode.duration,
 								title: episode.title,
 								url: normalizedUrl,
-								images: episode.images,
+								link: episode.link,
+								enclosure: episode.enclosure,
+								images: episode.images
 							})
 								.then(episode => {
 									return Promise.all([

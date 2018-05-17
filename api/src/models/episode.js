@@ -14,6 +14,8 @@ export const EpisodeSchema = new Schema(
 				select: [
 					'title',
 					'url',
+					'link',
+					'enclosure',
 					'feedUrl',
 					'image',
 					'categories',
@@ -27,11 +29,22 @@ export const EpisodeSchema = new Schema(
 				],
 			},
 		},
+		// legacy field, only used for episode uniqueness lookup
 		url: {
 			type: String,
 			trim: true,
 			index: true,
 			required: true,
+		},
+		// link stores a link to the podcast (not always available)
+		link: {
+			type: String,
+			trim: true
+		},
+		// enclosure stores the mp3 for the episode (not always available)
+		enclosure: {
+			type: String,
+			trim: true
 		},
 		title: {
 			type: String,

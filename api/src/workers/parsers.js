@@ -153,6 +153,7 @@ function ParsePodcast(podcastUrl, callback) {
 				return callback(null, err);
 			}
 
+
 			// the podcast metadata we care about:
 			podcastContents.title = data.title;
 			podcastContents.link = data.link;
@@ -174,6 +175,9 @@ function ParsePodcast(podcastUrl, callback) {
 							moment().toISOString(),
 						title: strip(episode.title),
 						url: normalize(url),
+						link: episode.link,
+						enclosure: episode.enclosure && episode.enclosure.url,
+						duration: episode.duration,
 						images: { og: episode.image },
 					});
 				} catch (e) {

@@ -68,8 +68,12 @@ function main() {
 					logger.info(chalk.red('Image missing :('));
 				}
 				if (program.podcast) {
-					logger.info(chalk.red('Image missing :('));
-					logger.info(chalk.green('Image found :)'));
+					if (article.enclosure) {
+						logger.info(chalk.green('Enclosure found :)'))
+						logger.info(article.enclosure)
+					} else {
+						logger.info(chalk.red('Missing enclosure :('))
+					}
 				}
 
 			}
