@@ -2247,8 +2247,8 @@ a.column-header:hover {
     .podcast-episode .left .play-icon,
     .podcast-episode .left .pause-icon {
       align-items: center;
-      bottom: 0;
       display: flex;
+      height: 100px;
       justify-content: center;
       left: 0;
       position: absolute;
