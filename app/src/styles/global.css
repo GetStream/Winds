@@ -2290,6 +2290,9 @@ a.column-header:hover {
     grid-area: content-header;
     margin: auto;
     max-width: 720px; }
+    .rss-view .content-header.list-view-header {
+      margin: 0;
+      max-width: unset; }
   .rss-view .none-selected {
     align-items: center;
     display: flex;
