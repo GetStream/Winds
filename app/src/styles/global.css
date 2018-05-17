@@ -1619,12 +1619,11 @@ a.column-header:hover {
       color: #fff;
       display: flex;
       flex-direction: column-reverse;
-      height: 250px;
+      height: 190px;
       margin-right: 2em;
-      min-width: 250px;
       padding: 2em;
       text-decoration: inherit;
-      width: 250px; }
+      width: 200px; }
       .featured-items-section .featured-item-list .featured-item:first-child {
         margin-left: 2em; }
       .featured-items-section .featured-item-list .featured-item h1 {
