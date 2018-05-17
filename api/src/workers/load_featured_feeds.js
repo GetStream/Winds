@@ -152,7 +152,8 @@ function main() {
             var promise = RSS.findOneAndUpdate(
   						{ feedUrl: feed.url },
   						{
-  							categories: featuredRSS.category,
+                interest: featuredRSS.category,
+  							categories: 'RSS',
   							description: entities.decodeHTML(feed.title),
   							featured: false,
   							feedUrl: feed.url,
@@ -268,7 +269,8 @@ function main() {
               Podcast.findOneAndUpdate(
                 { feedUrl: feed.url },
                 {
-                  categories: featuredPodcast.category,
+                  interest: featuredPodcast.category,
+                  categories: 'podcast',
                   description: description,
                   featured: false,
                   feedUrl: feed.url,
