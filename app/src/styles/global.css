@@ -1190,7 +1190,7 @@ a.column-header:hover {
     border-top-right-radius: 8px;
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
     display: flex;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.06em;
     padding: 1em;
@@ -1206,6 +1206,7 @@ a.column-header:hover {
     border-bottom: 1px solid #eee;
     color: inherit;
     display: flex;
+    font-size: 12px;
     font-weight: 600;
     margin: 0 1em;
     padding: 1em 0;
@@ -1248,7 +1249,7 @@ a.column-header:hover {
     flex-direction: row;
     justify-content: center;
     margin: 0 1em;
-    padding: 1em 0;
+    padding: 0.5em 0;
     position: relative; }
   .panel a {
     color: inherit;
