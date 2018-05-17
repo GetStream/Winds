@@ -587,7 +587,8 @@ body {
     font-weight: bolder;
     justify-content: space-between;
     padding: 2em;
-    text-decoration: inherit; }
+    text-decoration: inherit;
+    cursor: pointer; }
 
 .new-content-popover {
   margin-top: 1.75em;
