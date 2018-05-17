@@ -52,6 +52,8 @@ class Dashboard extends React.Component {
 						<DiscoverSection />
 					</div>
 				</div>
+				<div className="border1" />
+				<div className="border2" />
 			</div>
 		);
 	}

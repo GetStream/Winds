@@ -83,29 +83,32 @@ class PodcastsView extends React.Component {
 			);
 		} else {
 			leftColumn = (
-				<Tabs
-					componentClass="panels"
-					headerClass="panels-header"
-					headerComponent={headerComponent}
-					tabGroup="podcast-view"
-				>
-					<div tabTitle="All Podcasts">
-						<RecentEpisodesPanel />
-						<PodcastList />
-					</div>
-					<div tabTitle="Bookmarks">
-						<BookmarkedEpisodes />
-					</div>
-					<div tabTitle="Suggestions">
-						<SuggestedPodcasts />
-					</div>
-				</Tabs>
+				<React.Fragment>
+					<Tabs
+						componentClass="panels"
+						headerClass="panels-header"
+						headerComponent={headerComponent}
+						tabGroup="podcast-view"
+					>
+						<div tabTitle="All Podcasts">
+							<RecentEpisodesPanel />
+							<PodcastList />
+						</div>
+						<div tabTitle="Bookmarks">
+							<BookmarkedEpisodes />
+						</div>
+						<div tabTitle="Suggestions">
+							<SuggestedPodcasts />
+						</div>
+					</Tabs>
+				</React.Fragment>
 			);
 		}
 
 		return (
 			<div className="podcasts-view">
 				{leftColumn}
+				<div className="border" />
 				<Switch>
 					<Route component={RecentEpisodesList} path="/podcasts/recent" />
 					<Route component={PodcastEpisodesView} path="/podcasts/:podcastID" />
@@ -115,6 +118,10 @@ class PodcastsView extends React.Component {
 		);
 	}
 }
+
+PodcastsView.defaultProps = {
+	podcast: { images: {} },
+};
 
 PodcastsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,
