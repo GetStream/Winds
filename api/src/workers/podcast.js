@@ -105,7 +105,7 @@ podcastQueue.process((job, done) => {
 					if (updatedEpisodes.length > 0) {
 						let chunkSize = 100;
 						for (let i=0,j=updatedEpisodes.length; i<j; i+=chunkSize) {
-						    let chunk = updatedEpisodes.slice(i,i+chunk);
+						    let chunk = updatedEpisodes.slice(i,i+chunkSize);
 								let streamEpisodes = chunk.map(episode => {
 									return {
 										actor: episode.podcast,

@@ -126,7 +126,7 @@ rssQueue.process((job, done) => {
 						if (updatedArticles.length > 0) {
 							let chunkSize = 100;
 							for (let i=0,j=updatedArticles.length; i<j; i+=chunkSize) {
-								let chunk = updatedEpisodes.slice(i,i+chunk);
+								let chunk = updatedEpisodes.slice(i,i+chunkSize);
 
 								let streamArticles = chunk.map(article => {
 									return {
