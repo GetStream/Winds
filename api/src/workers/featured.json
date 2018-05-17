@@ -699,6 +699,48 @@
 			"name": "Reddit - Virtual Reality",
 			"feedUrl": "https://www.reddit.com/r/virtualreality/.rss",
 			"site": "https://reddit.com/r/virtualreality"
+		},
+		{
+			"category": "Marketing",
+			"name": "Hubspot Marketing",
+			"feedUrl": "https://blog.hubspot.com/marketing/rss.xml",
+			"site": "https://hubspot.com"
+		},
+		{
+			"category": "Marketing",
+			"name": "MarketingProfs Daily",
+			"feedUrl": "http://rss.marketingprofs.com/marketingprofs/daily",
+			"site": "https://marketingprofs.com"
+		},
+		{
+			"category": "Marketing",
+			"name": "Quicksprout",
+			"feedUrl": "http://feeds2.feedburner.com/quicksprout",
+			"site": "https://www.quicksprout.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Kissmetrics Marketing Blog",
+			"feedUrl": "http://feeds.feedburner.com/KISSmetrics",
+			"site": "https://www.kissmetrics.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Copyblogger",
+			"feedUrl": "http://feeds.copyblogger.com/copyblogger",
+			"site": "https://www.copyblogger.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Moz",
+			"feedUrl": "http://feedpress.me/mozblog",
+			"site": "https://moz.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Duct Tape Marketing",
+			"feedUrl": "https://www.ducttapemarketing.com/feed",
+			"site": "https://www.ducttapemarketing.com"
 		}
 	]
 }
