@@ -1942,6 +1942,8 @@ a.column-header:hover {
   .dashboard .discover-header,
   .dashboard .discover-section {
     margin-right: 20px; }
+  .dashboard .drilldown {
+    color: #747474; }
 
 .onboarding-2-view {
   margin: auto;

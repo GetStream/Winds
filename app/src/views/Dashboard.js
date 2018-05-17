@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
 					<h1>Podcasts</h1>
 					<div className="drilldown">
 						<div>View all</div>
-						<Img src={forwardBlackIcon} />
+						<i className="fa fa-chevron-right" />
 					</div>
 				</Link>
 				<div className="podcasts-section">
@@ -39,7 +39,7 @@ class Dashboard extends React.Component {
 					<h1>RSS</h1>
 					<div className="drilldown">
 						<div>View all</div>
-						<Img src={forwardBlackIcon} />
+						<i className="fa fa-chevron-right" />
 					</div>
 				</Link>
 				<div className="rss-section">
