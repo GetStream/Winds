@@ -306,6 +306,54 @@
 			"name": "VRScout Report",
 			"feedUrl": "http://vrscout.libsyn.com/rss",
 			"site": "https://vrscout.com/podcast/"
+		},
+		{
+			"category": "Marketing",
+			"name": "The GaryVee Audio Experience",
+			"feedUrl": "http://askgaryvee.garyvee.libsynpro.com/rss",
+			"site": "http://www.garyvaynerchuk.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Jocko Podcast",
+			"feedUrl": "http://jockopodcast.libsyn.com/rss",
+			"site": "http://jockopodcast.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Starting from nothing",
+			"feedUrl": "http://thefoundation.libsyn.com/rss",
+			"site": "http://www.thefoundation.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "HBR IdeaCast",
+			"feedUrl": "http://feeds.harvardbusiness.org/harvardbusiness/ideacast",
+			"site": "http://hbrideacast.org/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Business & Biceps",
+			"feedUrl": "http://businessandbiceps.libsyn.com/rss",
+			"site": "http://businessandbiceps.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Advanced Selling Podcast",
+			"feedUrl": "http://billcaskey01.libsyn.com/rss",
+			"site": "http://www.advancedsellingpodcast.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Marketing School",
+			"feedUrl": "http://mschool.growtheverywhere.libsynpro.com/rss",
+			"site": "http://mschool.growtheverywhere.libsynpro.com/podcast"
+		},
+		{
+			"category": "Marketing",
+			"name": "Online Marketing Strategies",
+			"feedUrl": "http://onlinemarketingpodcast.libsyn.com/rss",
+			"site": "http://onlinemarketingpodcast.libsyn.com/"
 		}
 	],
 	"rss": [
