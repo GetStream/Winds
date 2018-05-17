@@ -122,7 +122,7 @@ function main() {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info('Starting to load the featured feeds');
   var featured = JSON.parse(fs.readFileSync('featured.json', 'utf8'));
-
+/*
   async.mapLimit(featured.rss, 10, (featuredRSS, loopCb) => {
     logger.info(`Now Handling RSS Feed ${featuredRSS.name}`);
 
@@ -222,15 +222,22 @@ function main() {
   }, function() {
     logger.info(`Finished with Feeds`)
   });
+  */
 
-/*
+
   async.mapLimit(featured.podcasts, 10, (featuredPodcast, loopCb) => {
     logger.info(`Now Handling Podcast ${featuredPodcast.name}`);
 
     podcastFinder(normalizeUrl(featuredPodcast.feedUrl))
+      .catch(err => {
+        logger.error(`podcastFinder broke ${featuredPodcast.feedUrl}`);
+        loopCb()
+      })
       .then(feeds => {
-        if (!feeds.feedUrls.length) {
-          return
+        if (!feeds || !feeds.feedUrls.length) {
+
+          logger.error(`no feeds found for ${featuredPodcast.feedUrl}`);
+          return loopCb()
         }
 
         async.mapLimit(
@@ -327,12 +334,14 @@ function main() {
                   }
                 })
                 .catch(err => {
+                  logger.error('broken stuff a');
                   cb(err);
                 });
             });
           },
           (err, results) => {
             if (err) {
+              logger.error('broken stuff');
               loopCb()
               return;
             }
@@ -341,15 +350,12 @@ function main() {
           },
         );
       })
-      .catch(err => {
-        logger.error('podcastbroke', err, featuredPodcast);
-        loopCb()
-      });
+
 
   }, function() {
     logger.info(`finished with podcasts`)
   });
-*/
+
 }
 
 

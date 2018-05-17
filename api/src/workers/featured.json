@@ -243,13 +243,7 @@
 		{
 			"category": "Machine Learning & AI",
 			"name": "Data Skeptic",
-			"feedUrl": "https://dataskeptic.com/podcast",
-			"site": "https://dataskeptic.com"
-		},
-		{
-			"category": "Machine Learning & AI",
-			"name": "Data Skeptic",
-			"feedUrl": "https://dataskeptic.com/podcast",
+			"feedUrl": "https://dataskeptic.com/api/blog/rss",
 			"site": "https://dataskeptic.com"
 		},
 		{
