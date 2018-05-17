@@ -1,0 +1,746 @@
+{
+	"podcasts": [
+		{
+			"category": "UI/UX",
+			"name": "Design Details",
+			"feedUrl": "https://rss.simplecast.com/podcasts/1034/rss",
+			"site": "https://spec.fm/podcasts/design-details"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Layout.FM",
+			"feedUrl": "http://layout.fm/rss",
+			"site": "http://layout.fm/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Responsive Web Design",
+			"feedUrl": "https://responsivewebdesign.com/podcast/feed.xml",
+			"site": "https://responsivewebdesign.com/podcast/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Creative Coding Podcast",
+			"feedUrl": "http://creativecodingpodcast.com/feed/",
+			"site": "http://creativecodingpodcast.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "UX Pod",
+			"feedUrl": "http://uxpod.libsyn.com/rss",
+			"site": "http://uxpod.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Build and Launch",
+			"feedUrl": "https://rss.simplecast.com/podcasts/323/rss",
+			"site": "https://buildandlaunch.net/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Nice to meet you",
+			"feedUrl":
+				"http://feeds.soundcloud.com/users/soundcloud:users:5984399/sounds.rss",
+			"site": "http://www.vanschneider.com/show"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Design Review",
+			"feedUrl": "http://www.designreviewpodcast.com/design-review.rss",
+			"site": "http://www.designreviewpodcast.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Overtime",
+			"feedUrl": "https://rss.simplecast.com/podcasts/1515/rss",
+			"site": "https://dribbble.com/overtime"
+		},
+		{
+			"category": "UI/UX",
+			"name": "DesignBetter",
+			"feedUrl": "http://designbetter.libsyn.com/rss",
+			"site": "https://www.designbetter.co/podcast"
+		},
+		{
+			"category": "UI/UX",
+			"name": "High Resolution",
+			"feedUrl": "https://rss.simplecast.com/podcasts/2652/rss",
+			"site": "https://www.highresolution.design/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "UI Breakfast",
+			"feedUrl": "https://rss.simplecast.com/podcasts/1441/rss",
+			"site": "https://uibreakfast.com/category/podcast/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "a16z",
+			"feedUrl": "https://a16z.com/feed/",
+			"site": "https://a16z.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "To The Top",
+			"feedUrl": "http://nathanlatkathetop.libsyn.com/rss",
+			"site": "http://nathanlatkathetop.libsyn.com"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Rocketship.fm",
+			"feedUrl":
+				"https://www.omnycontent.com/d/playlist/20f38a10-1afe-4760-bb32-a7dd01317ee4/cfecce2e-033b-4f28-a323-a7de003f116b/b76fb826-9e99-4328-b3fa-a7de003f1179/podcast.rss",
+			"site": "http://rocketship.fm/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Twenty Minute VC",
+			"feedUrl": "http://thetwentyminutevc.libsyn.com/rss",
+			"site": "http://www.thetwentyminutevc.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "This Week in Startups",
+			"feedUrl":
+				"http://feeds.soundcloud.com/users/soundcloud:users:6888303/sounds.rss",
+			"site": "https://thisweekinstartups.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Acquired.fm",
+			"feedUrl": "http://www.acquired.fm/episodes?format=rss",
+			"site": "http://www.acquired.fm/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "The Impact Podcast",
+			"feedUrl": "http://feeds.feedburner.com/soundcloud/ZGMH",
+			"site": "https://georgianpartners.com/category/podcast/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Startup Podcast",
+			"feedUrl": "http://feeds.hearstartup.com/hearstartup",
+			"site": "https://www.gimletmedia.com/startup/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "EntreLeadership",
+			"feedUrl": "http://entreleadershippodcast.ramsey.libsynpro.com/rss",
+			"site": "https://www.entreleadership.com/blog/podcast"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Founders Talk",
+			"feedUrl": "https://changelog.com/founderstalk/feed",
+			"site": "https://changelog.com/founderstalk"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Startups for the Rest of Us",
+			"feedUrl": "http://www.startupsfortherestofus.com/feed",
+			"site": "http://www.startupsfortherestofus.com/"
+		},
+		{
+			"category": "Programming",
+			"name": "Merge Conflict",
+			"feedUrl": "http://www.mergeconflict.fm/rss",
+			"site": "http://www.mergeconflict.fm/"
+		},
+		{
+			"category": "Programming",
+			"name": "Software Engineering Daily",
+			"feedUrl": "http://softwareengineeringdaily.com/feed/podcast/",
+			"site": "https://softwareengineeringdaily.com/"
+		},
+		{
+			"category": "Programming",
+			"name": "Cynical Developer",
+			"feedUrl": "https://cynicaldeveloper.com/feed/podcast/",
+			"site": "https://cynicaldeveloper.com/Podcast/"
+		},
+		{
+			"category": "Programming",
+			"name": "Changelog",
+			"feedUrl": "https://changelog.com/podcast/feed",
+			"site": "https://changelog.com"
+		},
+		{
+			"category": "Programming",
+			"name": "Go Time",
+			"feedUrl": "https://changelog.com/gotime/feed",
+			"site": "https://changelog.com/gotime"
+		},
+		{
+			"category": "Programming",
+			"name": "JS Party",
+			"feedUrl": "https://changelog.com/jsparty/feed",
+			"site": "https://changelog.com/jsparty"
+		},
+		{
+			"category": "Programming",
+			"name": "Software Engineering Radio",
+			"feedUrl": "http://feeds.feedburner.com/se-radio",
+			"site": "http://www.se-radio.net/"
+		},
+		{
+			"category": "Programming",
+			"name": "Talking Machines",
+			"feedUrl": "https://rss.art19.com/talking-machines",
+			"site": "https://art19.com/shows/talking-machines"
+		},
+		{
+			"category": "Programming",
+			"name": "The Modern Web",
+			"feedUrl": "http://modernweb.podbean.com/feed/",
+			"site": "http://modernweb.podbean.com/"
+		},
+		{
+			"category": "Programming",
+			"name": "Shoptalk",
+			"feedUrl": "http://shoptalkshow.com/feed/podcast",
+			"site": "https://player.fm/series/shoptalk-19036"
+		},
+		{
+			"category": "Gaming",
+			"name": "Kinda Funny Gamescast",
+			"feedUrl":
+				"http://feeds.soundcloud.com/users/soundcloud:users:130508806/sounds.rss",
+			"site": "https://www.patreon.com/kindafunnygames"
+		},
+		{
+			"category": "Gaming",
+			"name": "Giantbomn",
+			"feedUrl": "https://www.giantbomb.com/podcast-xml/giant-bombcast",
+			"site": "https://www.giantbomb.com/podcasts/"
+		},
+		{
+			"category": "Gaming",
+			"name": "Three Moves Ahead",
+			"feedUrl": "https://www.idlethumbs.net/feeds/3ma",
+			"site": "https://www.idlethumbs.net/3ma"
+		},
+		{
+			"category": "Gaming",
+			"name": "Whats Good Games",
+			"feedUrl":
+				"http://feeds.backtracks.fm/feeds/whatsgoodgames/whats-good-games-a-video-game-podcast/feed.xml",
+			"site": "https://whatsgoodgames.com/"
+		},
+		{
+			"category": "Machine Learning & AI",
+			"name": "Data Skeptic",
+			"feedUrl": "https://dataskeptic.com/api/blog/rss",
+			"site": "https://dataskeptic.com"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "Ted Talks",
+			"feedUrl": "https://www.ted.com/talks/rss",
+			"site": "https://www.ted.com"
+		},
+		{
+			"category": "News",
+			"name": "Policast",
+			"feedUrl": "https://feeds.publicradio.org/public_feeds/policast/npr/rss",
+			"site": "https://www.npr.org/podcasts/414694038/policast"
+		},
+		{
+			"category": "News",
+			"name": "The Daily",
+			"feedUrl": "http://rss.art19.com/the-daily",
+			"site": "https://www.nytimes.com/column/the-daily"
+		},
+		{
+			"category": "News",
+			"name": "BBC Global News",
+			"feedUrl": "https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
+			"site": "https://www.nytimes.com/column/the-daily"
+		},
+		{
+			"category": "News",
+			"name": "PBS NewsHour",
+			"feedUrl": "https://www.pbs.org/newshour/feeds/rss/podcasts/show",
+			"site": "https://www.pbs.org/newshour"
+		},
+		{
+			"category": "News",
+			"name": "Unfilter",
+			"feedUrl": "http://unfilter.show/rss",
+			"site": "http://unfilter.show"
+		},
+		{
+			"category": "News",
+			"name": "On The Media",
+			"feedUrl": "http://feeds.wnyc.org/onthemedia",
+			"site": "https://www.wnycstudios.org/shows/otm/"
+		},
+		{
+			"category": "VR",
+			"name": "Everything VR & AR",
+			"feedUrl": "http://everythingvrar.libsyn.com/rss",
+			"site": "http://everythingvrar.libsyn.com"
+		},
+		{
+			"category": "VR",
+			"name": "New School VR Podcast",
+			"feedUrl":
+				"http://feeds.soundcloud.com/users/soundcloud:users:265033871/sounds.rss",
+			"site": "http://newschoolvr.com/"
+		},
+		{
+			"category": "VR",
+			"name": "Voices of VR Podcast – Designing for Virtual Reality",
+			"feedUrl": "http://voicesofvr.com/?feed=podcast",
+			"site": "http://voicesofvr.com/"
+		},
+		{
+			"category": "VR",
+			"name": "Rev VR",
+			"feedUrl":
+				"http://www.reverendkyle.com/index.php/component/podcastmanager/?format=raw&feedname=2",
+			"site": "http://www.revvrstudios.com/"
+		},
+		{
+			"category": "VR",
+			"name": "VRScout Report",
+			"feedUrl": "http://vrscout.libsyn.com/rss",
+			"site": "https://vrscout.com/podcast/"
+		},
+		{
+			"category": "Marketing",
+			"name": "The GaryVee Audio Experience",
+			"feedUrl": "http://askgaryvee.garyvee.libsynpro.com/rss",
+			"site": "http://www.garyvaynerchuk.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Jocko Podcast",
+			"feedUrl": "http://jockopodcast.libsyn.com/rss",
+			"site": "http://jockopodcast.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Starting from nothing",
+			"feedUrl": "http://thefoundation.libsyn.com/rss",
+			"site": "http://www.thefoundation.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "HBR IdeaCast",
+			"feedUrl": "http://feeds.harvardbusiness.org/harvardbusiness/ideacast",
+			"site": "http://hbrideacast.org/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Business & Biceps",
+			"feedUrl": "http://businessandbiceps.libsyn.com/rss",
+			"site": "http://businessandbiceps.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Advanced Selling Podcast",
+			"feedUrl": "http://billcaskey01.libsyn.com/rss",
+			"site": "http://www.advancedsellingpodcast.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Marketing School",
+			"feedUrl": "http://mschool.growtheverywhere.libsynpro.com/rss",
+			"site": "http://mschool.growtheverywhere.libsynpro.com/podcast"
+		},
+		{
+			"category": "Marketing",
+			"name": "Online Marketing Strategies",
+			"feedUrl": "http://onlinemarketingpodcast.libsyn.com/rss",
+			"site": "http://onlinemarketingpodcast.libsyn.com/"
+		}
+	],
+	"rss": [
+		{
+			"category": "UI/UX",
+			"name": "A List Apart",
+			"feedUrl": "http://alistapart.com/main/feed",
+			"site": "http://alistapart.com"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Smashing Magazine",
+			"feedUrl": "https://www.smashingmagazine.com/feed/",
+			"site": "https://www.smashingmagazine.com"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Invision Blog",
+			"feedUrl": "https://www.invisionapp.com/blog/feed/",
+			"site": "https://www.invisionapp.com"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Fast Co Design",
+			"feedUrl": "https://www.fastcodesign.com//latest/rss?truncated=true",
+			"site": "https://www.fastcodesign.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Yanko Design",
+			"feedUrl": "http://www.yankodesign.com/feed/",
+			"site": "http://www.yankodesign.com/"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Dexigner",
+			"feedUrl": "http://feeds.dexigner.com/news",
+			"site": "http://dexigner.com"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Behance",
+			"feedUrl": "http://feeds.feedburner.com/behance/vorr",
+			"site": "https://behance.net"
+		},
+		{
+			"category": "UI/UX",
+			"name": "HOW",
+			"feedUrl": "http://www.howdesign.com/feed/",
+			"site": "http://www.howdesign.com"
+		},
+		{
+			"category": "UI/UX",
+			"name": "Web Designer Depot",
+			"feedUrl": "http://feeds2.feedburner.com/webdesignerdepot",
+			"site": "https://www.webdesignerdepot.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "AVC",
+			"feedUrl": "http://feeds.feedburner.com/avc",
+			"site": "https://avc.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Y Combinator Blog",
+			"feedUrl": "https://blog.ycombinator.com/feed/",
+			"site": "https://blog.ycombinator.com"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Alex Iskold",
+			"feedUrl": "https://alexiskold.net/feed/",
+			"site": "https://alexiskold.net"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "David Cohen",
+			"feedUrl": "http://feeds.feedburner.com/DavidGCohen",
+			"site": "http://davidgcohen.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "VC Adventure",
+			"feedUrl": "https://www.sethlevine.com/feed",
+			"site": "https://www.sethlevine.com"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Mattermark Daily",
+			"feedUrl": "https://mattermark.com/category/mattermark-daily/feed/",
+			"site": "https://mattermark.com/category/mattermark-daily"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Feld Thoughts",
+			"feedUrl": "http://feeds.feedburner.com/FeldThoughts",
+			"site": "https://www.feld.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Product Hunt Blog",
+			"feedUrl": "https://blog.producthunt.com/feed",
+			"site": "https://blog.producthunt.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Both Sides of the Table",
+			"feedUrl": "https://bothsidesofthetable.com/feed",
+			"site": "https://bothsidesofthetable.com/"
+		},
+		{
+			"category": "Startups & VC",
+			"name": "Seeing Both Sides",
+			"feedUrl": "https://seeingbothsides.com/feed/",
+			"site": "https://seeingbothsides.com/"
+		},
+		{
+			"category": "Programming",
+			"name": "Lobste.rs",
+			"feedUrl": "https://lobste.rs/rss",
+			"site": "https://lobste.rs/"
+		},
+		{
+			"category": "Programming",
+			"name": "Reddit - Programming",
+			"feedUrl": "https://www.reddit.com/r/programming/.rss",
+			"site": "https://www.reddit.com/r/programming/"
+		},
+		{
+			"category": "Programming",
+			"name": "Hacker News",
+			"feedUrl": "https://news.ycombinator.com/rss",
+			"site": "https://news.ycombinator.com/"
+		},
+		{
+			"category": "Programming",
+			"name": "Joel on Software",
+			"feedUrl": "https://www.joelonsoftware.com/feed/",
+			"site": "https://www.joelonsoftware.com/"
+		},
+		{
+			"category": "Programming",
+			"name": "GitHub",
+			"feedUrl": "https://blog.github.com/feed.xml",
+			"site": "https://blog.github.com/"
+		},
+		{
+			"category": "Programming",
+			"name": "Toptail",
+			"feedUrl": "https://www.toptal.com/developers/blog.rss",
+			"site": "https://www.toptal.com/developers/blog"
+		},
+		{
+			"category": "Programming",
+			"name": "Daily WTF",
+			"feedUrl": "http://syndication.thedailywtf.com/TheDailyWtf",
+			"site": "http://thedailywtf.com/"
+		},
+		{
+			"category": "Gaming",
+			"name": "Indie Games",
+			"feedUrl": "http://indiegames.com/atom.xml",
+			"site": "http://indiegames.com"
+		},
+		{
+			"category": "Gaming",
+			"name": "IGN",
+			"feedUrl": "http://feeds.ign.com/ign/all",
+			"site": "http://ign.com/"
+		},
+		{
+			"category": "Gaming",
+			"name": "Kotaku",
+			"feedUrl": "https://kotaku.com/rss",
+			"site": "https://kotaku.com/"
+		},
+		{
+			"category": "Gaming",
+			"name": "GameInformer",
+			"feedUrl":
+				"http://www.gameinformer.com/b/features/rsscomments.aspx?WeblogPostID=8597456",
+			"site": "http://www.gameinformer.com"
+		},
+		{
+			"category": "Machine Learning & AI",
+			"name": "R Bloggers",
+			"feedUrl": "https://www.r-bloggers.com/feed/",
+			"site": "https://www.r-bloggers.com"
+		},
+		{
+			"category": "Machine Learning & AI",
+			"name": "KD Nuggets",
+			"feedUrl": "http://www.kdnuggets.com/feed",
+			"site": "http://www.kdnuggets.com"
+		},
+		{
+			"category": "Machine Learning & AI",
+			"name": "Kaggle",
+			"feedUrl": "http://blog.kaggle.com/feed",
+			"site": "https://www.kaggle.com/"
+		},
+		{
+			"category": "Machine Learning & AI",
+			"name": "OpenAI",
+			"feedUrl": "https://blog.openai.com/rss/",
+			"site": "https://blog.openai.com/"
+		},
+		{
+			"category": "News",
+			"name": "BBC",
+			"feedUrl": "http://feeds.bbci.co.uk/news/rss.xml?edition=us",
+			"site": "http://www.bbc.com/news"
+		},
+		{
+			"category": "VR",
+			"name": "Oculus",
+			"feedUrl": "http://uploadvr.com/feed/",
+			"site": "https://www.oculus.com/"
+		},
+		{
+			"category": "VR",
+			"name": "HTC Vive",
+			"feedUrl": "http://blog.vive.com/us/feed/",
+			"site": "http://blog.vive.com"
+		},
+		{
+			"category": "VR",
+			"name": "Road to VR",
+			"feedUrl": "https://www.roadtovr.com/feed/",
+			"site": "https://www.roadtovr.com/"
+		},
+		{
+			"category": "VR",
+			"name": "VR Scout",
+			"feedUrl": "https://vrscout.com/feed/",
+			"site": "https://vrscout.com/"
+		},
+		{
+			"category": "VR",
+			"name": "VR Focus",
+			"feedUrl": "https://www.vrfocus.com/feed/",
+			"site": "https://www.vrfocus.com"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "Lifehacker",
+			"feedUrl": "https://lifehacker.com/rss",
+			"site": "https://lifehacker.com"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "How to Geek",
+			"feedUrl": "https://feeds.howtogeek.com/HowToGeek",
+			"site": "https://www.howtogeek.com/"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "Marc & Angle Hack Life",
+			"feedUrl": "http://feeds.feedburner.com/MarcAndAngel",
+			"site": "http://www.marcandangel.com/"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "Lifehack",
+			"feedUrl": "https://www.lifehack.org/feed",
+			"site": "http://lifehack.org"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "Dumb Little Man",
+			"feedUrl": "https://www.dumblittleman.com/feed/",
+			"site": "https://www.dumblittleman.com/"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "Get Rich Slowly",
+			"feedUrl": "https://www.getrichslowly.org/feed/",
+			"site": "https://www.getrichslowly.org/"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "Reddit - /r/lifehacks",
+			"feedUrl": "https://www.reddit.com/r/lifehacks/.rss",
+			"site": "https://www.reddit.com/r/lifehacks/"
+		},
+		{
+			"category": "Lifehacks",
+			"name": "1000 Lifehacks",
+			"feedUrl": "http://1000lifehacks.com/feed/",
+			"site": "http://1000lifehacks.com/"
+		},
+		{
+			"category": "News",
+			"name": "Reuters",
+			"feedUrl": "http://feeds.reuters.com/reuters/topNews",
+			"site": "https://www.reuters.com/"
+		},
+		{
+			"category": "News",
+			"name": "NY Times",
+			"feedUrl": "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+			"site": "https://nytimes.com"
+		},
+		{
+			"category": "News",
+			"name": "CNN - Top Stories",
+			"feedUrl": "http://rss.cnn.com/rss/cnn_topstories.rss",
+			"site": "https://cnn.com"
+		},
+		{
+			"category": "VR",
+			"name": "Road to VR",
+			"feedUrl": "http://roadtovr.com/feed",
+			"site": "https://roadtovr.com"
+		},
+		{
+			"category": "VR",
+			"name": "Upload VR",
+			"feedUrl": "https://uploadvr.com/feed",
+			"site": "https://uploadvr.com"
+		},
+		{
+			"category": "VR",
+			"name": "VR Scout",
+			"feedUrl": "https://vrscout.com/feed",
+			"site": "https://vrscout.com"
+		},
+		{
+			"category": "VR",
+			"name": "VRFocus",
+			"feedUrl": "https://vrfocus.com/feed",
+			"site": "https://vrfocus.com"
+		},
+		{
+			"category": "VR",
+			"name": "Virtual Reality Reporter",
+			"feedUrl": "https://virtualrealityreporter.com/feed",
+			"site": "https://virtualrealityreporter.com"
+		},
+		{
+			"category": "VR",
+			"name": "Reddit - Virtual Reality",
+			"feedUrl": "https://www.reddit.com/r/virtualreality/.rss",
+			"site": "https://reddit.com/r/virtualreality"
+		},
+		{
+			"category": "Marketing",
+			"name": "Hubspot Marketing",
+			"feedUrl": "https://blog.hubspot.com/marketing/rss.xml",
+			"site": "https://hubspot.com"
+		},
+		{
+			"category": "Marketing",
+			"name": "MarketingProfs Daily",
+			"feedUrl": "http://rss.marketingprofs.com/marketingprofs/daily",
+			"site": "https://marketingprofs.com"
+		},
+		{
+			"category": "Marketing",
+			"name": "Quicksprout",
+			"feedUrl": "http://feeds2.feedburner.com/quicksprout",
+			"site": "https://www.quicksprout.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Kissmetrics Marketing Blog",
+			"feedUrl": "http://feeds.feedburner.com/KISSmetrics",
+			"site": "https://www.kissmetrics.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Copyblogger",
+			"feedUrl": "http://feeds.copyblogger.com/copyblogger",
+			"site": "https://www.copyblogger.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Moz",
+			"feedUrl": "http://feedpress.me/mozblog",
+			"site": "https://moz.com/"
+		},
+		{
+			"category": "Marketing",
+			"name": "Duct Tape Marketing",
+			"feedUrl": "https://www.ducttapemarketing.com/feed",
+			"site": "https://www.ducttapemarketing.com"
+		}
+	]
+}
