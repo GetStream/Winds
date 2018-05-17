@@ -30,6 +30,8 @@ import personalization from '../utils/personalization';
 import search from '../utils/search';
 
 const rssQueue = new Queue('rss', config.cache.uri);
+const podcastQueue = new Queue('podcast', config.cache.uri);
+
 
 program
 	.version(version)
