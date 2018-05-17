@@ -111,9 +111,9 @@ rssQueue.process((job, done) => {
 						},
 					);
 				},
-				(err, updatedArticles) => {
+				(err, allArticles) => {
 					// updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
-					updatedArticles = updatedArticles.filter(updatedArticle => {
+					let updatedArticles = allArticles.filter(updatedArticle => {
 						return updatedArticle;
 					});
 
@@ -124,22 +124,28 @@ rssQueue.process((job, done) => {
 						done(err);
 					} else {
 						if (updatedArticles.length > 0) {
-							streamArticles = updatedArticles.map(article => {
-								return {
-									actor: article.rss,
-									foreign_id: `articles:${article._id}`,
-									object: article._id,
-									time: article.publicationDate,
-									verb: 'rss_article',
-								};
-							});
+							let chunkSize = 100;
+							for (let i=0,j=updatedArticles.length; i<j; i+=chunkSize) {
+								let chunk = updatedEpisodes.slice(i,i+chunk);
 
-							client
-								.feed('rss', job.data.rss)
-								.addActivities(streamArticles)
-								.then(() => {
-									sendRssFeedToCollections(job.data.rss);
+								let streamArticles = chunk.map(article => {
+									return {
+										actor: article.rss,
+										foreign_id: `articles:${article._id}`,
+										object: article._id,
+										time: article.publicationDate,
+										verb: 'rss_article',
+									};
 								});
+
+								client
+									.feed('rss', job.data.rss)
+									.addActivities(streamArticles)
+									.then(() => {
+										sendRssFeedToCollections(job.data.rss);
+									});
+							}
+
 						}
 						logger.info(`Completed scraping for ${job.data.url}`);
 						done();

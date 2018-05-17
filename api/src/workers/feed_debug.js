@@ -60,14 +60,16 @@ function main() {
 					logger.info(`Content: ${article.content}`);
 				}
 
-
 				// for RSS we rely on OG scraping, for podcasts the images are already in the feed
 				if (article.images && article.images.og) {
 					logger.info(chalk.green('Image found :)'));
 					logger.info(`Image: ${article.images.og}`);
 				} else {
 					logger.info(chalk.red('Image missing :('));
-
+				}
+				if (program.podcast) {
+					logger.info(chalk.red('Image missing :('));
+					logger.info(chalk.green('Image found :)'));
 				}
 
 			}

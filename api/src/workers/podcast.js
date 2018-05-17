@@ -94,28 +94,35 @@ podcastQueue.process((job, done) => {
 					});
 				}),
 			)
-				.then(updatedEpisodes => {
-					updatedEpisodes = updatedEpisodes.filter(updatedEpisode => {
+				.then(allEpisodes => {
+					let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
 						return updatedEpisode;
 					});
 
 					if (updatedEpisodes.length > 0) {
-						streamEpisodes = updatedEpisodes.map(episode => {
-							return {
-								actor: episode.podcast,
-								foreign_id: `episodes:${episode._id}`,
-								object: episode._id,
-								time: episode.publicationDate,
-								verb: 'podcast_episode',
-							};
-						});
+						let chunkSize = 100;
+						for (let i=0,j=updatedEpisodes.length; i<j; i+=chunkSize) {
+						    let chunk = updatedEpisodes.slice(i,i+chunk);
+								let streamEpisodes = chunk.map(episode => {
+									return {
+										actor: episode.podcast,
+										foreign_id: `episodes:${episode._id}`,
+										object: episode._id,
+										time: episode.publicationDate,
+										verb: 'podcast_episode',
+									};
+								});
 
-						client
-							.feed('podcast', episode.podcast)
-							.addActivities(streamEpisodes)
-							.then(() => {
-								sendPodcastToCollections(job.data.podcast);
-							});
+								// addActivities to Stream
+								client
+									.feed('podcast', job.data.podcast)
+									.addActivities(streamEpisodes)
+									.then(() => {
+										sendPodcastToCollections(job.data.podcast);
+									});
+						}
+
+
 					}
 
 					logger.info(`Completed podcast ${job.data.url}`);
