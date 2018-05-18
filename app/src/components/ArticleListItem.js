@@ -28,7 +28,7 @@ class ArticleListItem extends React.Component {
 				</div>
 				<div className="right">
 					<h2>{this.props.title}</h2>
-					<div className="article-info">
+					<div className="item-info">
 						<span
 							className="bookmark"
 							onClick={e => {

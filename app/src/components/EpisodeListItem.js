@@ -67,7 +67,7 @@ class EpisodeListItem extends React.Component {
 				</div>
 				<div className="right">
 					<h2>{`${this.props.title}`}</h2>
-					<div className="info">
+					<div className="item-info">
 						<span
 							onClick={e => {
 								e.preventDefault();
@@ -85,6 +85,12 @@ class EpisodeListItem extends React.Component {
 								<i className="far fa-bookmark" />
 							)}
 						</span>
+						{this.props.link ? (
+							<span>
+								<i className="fa fa-external-link-alt" />
+								<a href={this.props.link}>View on site</a>
+							</span>
+						) : null}
 						<span>{this.props.podcast.title}</span>
 						<span className="date">
 							{'Posted '}

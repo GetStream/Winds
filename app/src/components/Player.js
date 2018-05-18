@@ -291,7 +291,7 @@ class Player extends Component {
 					ref={element => {
 						this.audioPlayerElement = element;
 					}}
-					src={this.props.episode.url}
+					src={this.props.episode.enclosure}
 					volume={this.state.volume}
 				/>
 			</div>
@@ -314,13 +314,13 @@ Player.propTypes = {
 	currentUserID: PropTypes.string,
 	episode: PropTypes.shape({
 		_id: PropTypes.string,
+		enclosure: PropTypes.string,
 		podcast: PropTypes.shape({
 			image: PropTypes.string,
 			title: PropTypes.string,
 		}),
 		publicationDate: PropTypes.string,
 		title: PropTypes.string,
-		url: PropTypes.string,
 	}),
 	nextTrack: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
