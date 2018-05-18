@@ -86,6 +86,3 @@ function handleJob(job, done) {
 			});
 	});
 }
-let endsWith = (input, suffix) => {
-	return input.indexOf(suffix, input.length - suffix.length) !== -1;
-};
