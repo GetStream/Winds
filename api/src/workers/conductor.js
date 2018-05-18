@@ -21,41 +21,55 @@ const conductor = () => {
 	async.parallel(
 		[
 			cb => {
-				RSS.find({
-					isParsing: {
-						$ne: true,
-					},
-					lastScraped: {
-						$lte: moment()
-							.subtract(15, 'minutes')
-							.toDate(),
-					},
-				})
-					.then(rssFeeds => {
-						Promise.all(
-							rssFeeds.map(rssFeed => {
-								return RSS.findByIdAndUpdate(rssFeed._id, {
-									isParsing: true,
+				RSS.count({})
+					.then(count => {
+						RSS.find({
+							isParsing: {
+								$ne: true,
+							},
+							lastScraped: {
+								$lte: moment()
+									.subtract(15, 'minutes')
+									.toDate(),
+							},
+						})
+							.limit(count / 15)
+							.then(rssFeeds => {
+								Promise.all(
+									rssFeeds.map(rssFeed => {
+										return RSS.findByIdAndUpdate(rssFeed._id, {
+											isParsing: true,
+										});
+									}),
+								).then(() => {
+									cb(null, rssFeeds);
 								});
-							}),
-						).then(() => {
-							cb(null, rssFeeds);
-						});
+							})
+							.catch(err => {
+								cb(err);
+							});
 					})
 					.catch(err => {
 						cb(err);
 					});
 			},
 			cb => {
-				Podcast.find({
-					lastScraped: {
-						$lte: moment()
-							.subtract(15, 'minutes')
-							.toDate(),
-					},
-				})
-					.then(feeds => {
-						cb(null, feeds);
+				Podcast.count({})
+					.then(count => {
+						Podcast.find({
+							lastScraped: {
+								$lte: moment()
+									.subtract(15, 'minutes')
+									.toDate(),
+							},
+						})
+							.limit(count / 15)
+							.then(feeds => {
+								cb(null, feeds);
+							})
+							.catch(err => {
+								cb(err);
+							});
 					})
 					.catch(err => {
 						cb(err);
@@ -69,7 +83,7 @@ const conductor = () => {
 			}
 
 			if (!results[0].length && !results[1].length) {
-				logger.info('No feeds to update...');
+				logger.info('No feeds to update at this time...');
 				return;
 			}
 
@@ -93,7 +107,7 @@ const conductor = () => {
 					},
 				);
 
-				logger.info(`Enqueuing ${rss.url} for RSS processing`);
+				logger.info(`Enqueuing ${rss.url} for RSS processing...`);
 			}
 
 			logger.info(`found ${podcastFeeds.length} podcasts`);
@@ -111,7 +125,7 @@ const conductor = () => {
 					},
 				);
 
-				logger.info(`Enqueuing ${podcast.url} for podcast processing`);
+				logger.info(`Enqueuing ${podcast.url} for podcast processing...`);
 			}
 
 			logger.info('Processing complete! Will try again in 60s...');
