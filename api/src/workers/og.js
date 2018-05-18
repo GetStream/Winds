@@ -33,8 +33,9 @@ function handleJob(job, done) {
 	// lookup the right type of schema: article, episode or podcast
 	let schemaMap = {'podcast': Podcast, 'episode': Episode}
 	let mongoSchema = schemaMap[jobType] || Article;
+	let field = (job.data.type == 'podcast') ? 'link' : 'url';
 
-	mongoSchema.findOne({ url: url })
+	mongoSchema.findOne({ field: url })
 		.then(instance => {
 			// if the instance hasn't been created yet, or it already has an OG image, ignore
 			if (!instance || instance.images.og) {
