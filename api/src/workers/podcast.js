@@ -48,49 +48,52 @@ podcastQueue.process((job, done) => {
 			return Promise.all(
 				podcastContents.episodes.map(episode => {
 					let normalizedUrl = normalize(episode.url);
-					return Episode.findOne({
+					return Episode.findOneAndUpdate({
 						url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
 						podcast: job.data.podcast,
-					}).then(exists => {
-						if (exists) {
+					},
+					{
+						description: episode.description,
+						podcast: job.data.podcast,
+						publicationDate: episode.publicationDate,
+						duration: episode.duration,
+						title: episode.title,
+						url: normalizedUrl,
+						link: episode.link,
+						enclosure: episode.enclosure,
+						images: episode.images
+					},
+					{
+						upsert: true,
+						rawResult: true,
+						new: true
+					}).catch(err => {
+						logger.error(`Failed to run findOneAndUpdate for Episode with ${normalizedUrl} with error ${err}`)
+					}).then(rawEpisode => {
+						if (rawEpisode.lastErrorObject.updatedExisting) {
 							return null;
 						} else {
-							return Episode.create({
-								description: episode.description,
-								podcast: job.data.podcast,
-								publicationDate: episode.publicationDate,
-								duration: episode.duration,
-								title: episode.title,
-								url: normalizedUrl,
-								link: episode.link,
-								enclosure: episode.enclosure,
-								images: episode.images
-							})
-								.then(episode => {
-									return Promise.all([
-										search({
-											_id: episode._id,
-											description: episode.description,
-											podcast: episode.podcast,
-											publicationDate: episode.publicationDate,
-											title: episode.title,
+							  let episode = episode.value
+								return Promise.all([
+									search({
+										_id: episode._id,
+										description: episode.description,
+										podcast: episode.podcast,
+										publicationDate: episode.publicationDate,
+										title: episode.title,
+										type: 'episode',
+									}),
+									ogQueue.add(
+										{
+											url: episode.url,
 											type: 'episode',
-										}),
-										ogQueue.add(
-											{
-												url: episode.url,
-												type: 'episode',
-											},
-											{
-												removeOnComplete: true,
-												removeOnFail: true,
-											},
-										),
-									]).then(() => {
-										return episode;
-									});
-								})
-								.then(() => {
+										},
+										{
+											removeOnComplete: true,
+											removeOnFail: true,
+										},
+									),
+								]).then(() => {
 									return episode;
 								});
 						}
