@@ -35,22 +35,30 @@ function main() {
       logger.info(chalk.green(`Image found for ${normalizedUrl}: ${image.data.ogImage.url}`));
     }
 
-    if (program.task) {
-      logger.info(`creating a task on the bull queue`)
-      ogQueue.add(
-        {
-          url: normalizedUrl,
-          type: program.type,
-        },
-        {
-          removeOnComplete: true,
-          removeOnFail: true,
-        }
-      )
-      logger.info(`task sent to bull, time to run pm2 log og`)
-    }
 
-  });
+
+  }).catch(err => {
+		logger.info(`failed to parse OG images`)
+	});
+
+	if (program.task) {
+		logger.info(`creating a task on the bull queue`)
+		ogQueue.add(
+			{
+				url: normalizedUrl,
+				type: program.type,
+			},
+			{
+				removeOnComplete: true,
+				removeOnFail: true,
+			}
+		).then(() => {
+			logger.info(`task sent to bull, time to run pm2 log og`)
+		}).catch(err => {
+			logger.error(`Failed to schedule task on og queue`)
+		})
+
+	}
 }
 
 main();
