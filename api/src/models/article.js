@@ -8,7 +8,6 @@ export const ArticleSchema = new Schema(
 		rss: {
 			type: Schema.Types.ObjectId,
 			ref: 'RSS',
-			index: true,
 			required: true,
 			autopopulate: {
 				select: [
@@ -30,7 +29,6 @@ export const ArticleSchema = new Schema(
 		url: {
 			type: String,
 			trim: true,
-			index: true,
 			required: true,
 		},
 		title: {
@@ -95,5 +93,7 @@ export const ArticleSchema = new Schema(
 ArticleSchema.plugin(timestamps);
 ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
+
+ArticleSchema.index({ rss: 1, url: 1 });
 
 module.exports = exports = mongoose.model('Article', ArticleSchema);
