@@ -8,7 +8,6 @@ export const EpisodeSchema = new Schema(
 		podcast: {
 			type: Schema.Types.ObjectId,
 			ref: 'Podcast',
-			index: true,
 			required: true,
 			autopopulate: {
 				select: [
@@ -29,22 +28,18 @@ export const EpisodeSchema = new Schema(
 				],
 			},
 		},
-		// legacy field, only used for episode uniqueness lookup
 		url: {
 			type: String,
 			trim: true,
-			index: true,
 			required: true,
 		},
-		// link stores a link to the podcast (not always available)
 		link: {
 			type: String,
-			trim: true
+			trim: true,
 		},
-		// enclosure stores the mp3 for the episode (not always available)
 		enclosure: {
 			type: String,
-			trim: true
+			trim: true,
 		},
 		title: {
 			type: String,
@@ -102,5 +97,7 @@ export const EpisodeSchema = new Schema(
 EpisodeSchema.plugin(timestamps);
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
+
+EpisodeSchema.index({ podcast: 1, url: 1 });
 
 module.exports = exports = mongoose.model('Episode', EpisodeSchema);
