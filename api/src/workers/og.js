@@ -23,8 +23,9 @@ const ogQueue = new Queue('og', config.cache.uri);
 logger.info('Starting the OG worker, now supporting podcasts, episodes and articles');
 ogQueue.process(handleJob);
 
-// run the scraping job
+// Run the OG scraping job
 function handleJob(job, done) {
+	// Raven context for easy debugging in sentry
 	Raven.context(() => {
 		logger.info(`Processing opengraph images for ${job.data.url}...`);
 		// Note dont normalize the url, this is done when the object is created
@@ -34,7 +35,7 @@ function handleJob(job, done) {
 		Raven.setContext(context)
 		Raven.captureBreadcrumb(context)
 
-		// lookup the right type of schema: article, episode or podcast
+		// Lookup the right type of schema: article, episode or podcast
 		let schemaMap = {'podcast': Podcast, 'episode': Episode}
 		let mongoSchema = schemaMap[jobType] || Article;
 
@@ -58,11 +59,12 @@ function handleJob(job, done) {
 							return;
 						} else {
 							logger.info(`Found an image for ${url}`)
+							return mongoSchema.update(
+								{ _id: instance._id },
+								{ $set: { 'images.og': normalize(image.data.ogImage.url) } },
+							);
 						}
-						return mongoSchema.update(
-							{ _id: instance._id },
-							{ $set: { 'images.og': normalize(image.data.ogImage.url) } },
-						);
+
 					});
 				}
 			})
