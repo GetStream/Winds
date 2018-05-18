@@ -1814,6 +1814,9 @@ a.column-header:hover {
     margin-left: auto;
     padding: 0;
     width: unset; }
+    .results.panel > * .right .algolia-logo {
+      height: unset;
+      width: unset; }
 
 .click-catcher {
   z-index: 10000; }
