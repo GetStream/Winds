@@ -1350,8 +1350,6 @@ a.column-header:hover {
   font-weight: bolder;
   padding: 1em 0;
   text-decoration: inherit; }
-  .tiny-list > *:last-child {
-    border-bottom: none; }
   .tiny-list > * > *:not(:last-child) {
     margin-right: 1em; }
   .tiny-list > * > *:first-child {
@@ -1363,10 +1361,12 @@ a.column-header:hover {
     text-overflow: ellipsis;
     white-space: nowrap; }
   .tiny-list > * > *:last-child {
-    font-weight: normal; }
+    font-weight: normal;
+    white-space: nowrap; }
     .tiny-list > * > *:last-child > *:not(:last-child) {
-      margin-right: 1em;
-      white-space: nowrap; }
+      margin-right: 1em; }
+  .tiny-list > *:last-child {
+    border-bottom: none; }
 
 .gh-button {
   display: inline-block;

@@ -58,7 +58,11 @@ class DiscoverSection extends React.Component {
 				<div className="shows-grid">
 					{podcastGrid.map(podcast => {
 						return (
-							<div className="shows-grid-item" key={podcast._id}>
+							<Link
+								className="shows-grid-item"
+								key={podcast._id}
+								to={`/podcasts/${podcast._id}`}
+							>
 								<div
 									className="shows-grid-item-image"
 									style={{
@@ -69,7 +73,7 @@ class DiscoverSection extends React.Component {
 									}}
 								/>
 								{podcast.title}
-							</div>
+							</Link>
 						);
 					})}
 				</div>
@@ -87,6 +91,7 @@ class DiscoverSection extends React.Component {
 										suggestion.images.favicon,
 										getPlaceholderImageURL(suggestion._id),
 									]}
+									unloader={<div />}
 								/>
 								<span>{suggestion.title}</span>
 								<div>
