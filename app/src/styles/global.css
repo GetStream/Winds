@@ -2293,6 +2293,15 @@ a.column-header:hover {
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .rss-view.featured {
+    grid-template-areas: 'featured border content-header' 'featured border content' 'desc border content';
+    grid-template-columns: 1fr auto 2fr;
+    grid-template-rows: 101px 101px auto;
+    padding-top: 2em; }
+    .rss-view.featured .panels-header {
+      grid-area: featured; }
+    .rss-view.featured .panels {
+      grid-area: desc; }
   .rss-view .border {
     background: linear-gradient(to top, #ebebeb, #f7f7f7);
     grid-area: border;

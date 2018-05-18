@@ -101,7 +101,13 @@ class RSSFeedsView extends React.Component {
 		}
 
 		return (
-			<div className="rss-view">
+			<div
+				className={`rss-view ${
+					queryString.parse(this.props.location.search).featured === 'true'
+						? 'featured'
+						: ''
+				}`}
+			>
 				{leftColumn}
 				<div className="border" />
 				<Switch>
