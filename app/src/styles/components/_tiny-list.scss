@@ -7,10 +7,6 @@
 		padding: 1em 0;
 		text-decoration: inherit;
 
-		&:last-child {
-			border-bottom: none;
-		}
-
 		> * {
 			&:not(:last-child) {
 				margin-right: 1em;
@@ -30,12 +26,16 @@
 
 			&:last-child {
 				font-weight: normal;
+				white-space: nowrap;
 
 				> *:not(:last-child) {
 					margin-right: 1em;
-					white-space: nowrap;
 				}
 			}
+		}
+
+		&:last-child {
+			border-bottom: none;
 		}
 	}
 }
