@@ -1,11 +1,7 @@
-import forwardBlackIcon from '../images/icons/forward-black.svg';
 import FeaturedItems from '../components/FeaturedItems';
-import Img from 'react-image';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
-// import NewShareForm from '../components/NewShareForm';
 import PropTypes from 'prop-types';
-// import RSSPanelsContainer from '../components/RSSPanelsContainer';
 import React from 'react';
 import { connect } from 'react-redux';
 import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
@@ -26,7 +22,7 @@ class Dashboard extends React.Component {
 					<h1>Podcasts</h1>
 					<div className="drilldown">
 						<div>View all</div>
-						<Img src={forwardBlackIcon} />
+						<i className="fa fa-chevron-right" />
 					</div>
 				</Link>
 				<div className="podcasts-section">
@@ -39,7 +35,7 @@ class Dashboard extends React.Component {
 					<h1>RSS</h1>
 					<div className="drilldown">
 						<div>View all</div>
-						<Img src={forwardBlackIcon} />
+						<i className="fa fa-chevron-right" />
 					</div>
 				</Link>
 				<div className="rss-section">
@@ -56,6 +52,8 @@ class Dashboard extends React.Component {
 						<DiscoverSection />
 					</div>
 				</div>
+				<div className="border1" />
+				<div className="border2" />
 			</div>
 		);
 	}

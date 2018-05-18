@@ -1,6 +1,8 @@
 .featured-items-section {
+	background-color: $background-lightishgray;
 	grid-area: featured;
-	margin-bottom: 2.5em;
+	margin-bottom: 1em;
+	padding-bottom: 1.5em;
 
 	.featured-items-header {
 		margin-left: 2em;
@@ -24,12 +26,11 @@
 			color: $foreground-white;
 			display: flex;
 			flex-direction: column-reverse;
-			height: 250px;
+			height: 190px;
 			margin-right: 2em;
-			min-width: 250px;
 			padding: 2em;
 			text-decoration: inherit;
-			width: 250px;
+			width: 200px;
 
 			&:first-child {
 				margin-left: 2em;

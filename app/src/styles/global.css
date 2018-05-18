@@ -826,7 +826,7 @@ body {
   position: relative; }
 
 a.column-header:hover {
-  background-color: #ddd;
+  background-color: #efefef;
   border-radius: 8px;
   transition: all 0.22s ease-in-out; }
 
@@ -1191,7 +1191,7 @@ a.column-header:hover {
     border-top-right-radius: 8px;
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
     display: flex;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.06em;
     padding: 1em;
@@ -1207,6 +1207,7 @@ a.column-header:hover {
     border-bottom: 1px solid #eee;
     color: inherit;
     display: flex;
+    font-size: 12px;
     font-weight: 600;
     margin: 0 1em;
     padding: 1em 0;
@@ -1249,7 +1250,7 @@ a.column-header:hover {
     flex-direction: row;
     justify-content: center;
     margin: 0 1em;
-    padding: 1em 0;
+    padding: 0.5em 0;
     position: relative; }
   .panel a {
     color: inherit;
@@ -1356,13 +1357,14 @@ a.column-header:hover {
     width: 1.5em; }
   .tiny-list > * > *:nth-child(2) {
     flex-grow: 1;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    white-space: nowrap; }
   .tiny-list > * > *:last-child {
     font-weight: normal; }
     .tiny-list > * > *:last-child > *:not(:last-child) {
-      margin-right: 1em; }
+      margin-right: 1em;
+      white-space: nowrap; }
 
 .gh-button {
   display: inline-block;
@@ -1601,8 +1603,10 @@ a.column-header:hover {
   justify-content: center; }
 
 .featured-items-section {
+  background-color: #efefef;
   grid-area: featured;
-  margin-bottom: 2.5em; }
+  margin-bottom: 1em;
+  padding-bottom: 1.5em; }
   .featured-items-section .featured-items-header {
     margin-left: 2em; }
   .featured-items-section .featured-item-list {
@@ -1620,12 +1624,11 @@ a.column-header:hover {
       color: #fff;
       display: flex;
       flex-direction: column-reverse;
-      height: 250px;
+      height: 190px;
       margin-right: 2em;
-      min-width: 250px;
       padding: 2em;
       text-decoration: inherit;
-      width: 250px; }
+      width: 200px; }
       .featured-items-section .featured-item-list .featured-item:first-child {
         margin-left: 2em; }
       .featured-items-section .featured-item-list .featured-item h1 {
@@ -1911,13 +1914,21 @@ a.column-header:hover {
 .dashboard {
   display: grid;
   flex-grow: 1;
-  grid-column-gap: 40px;
-  grid-template-areas: 'featured featured featured' 'podcast-header rss-header discover-header' 'podcast-content rss-content discover-content';
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+  grid-template-areas: 'featured featured featured featured featured' 'podcast-header border1 rss-header border2 discover-header' 'podcast-content border1 rss-content border2 discover-content';
+  grid-template-columns: 1fr auto 1fr auto 1fr;
   grid-template-rows: auto auto 1fr;
   height: 100%;
   max-width: 100%;
   overflow-y: hidden; }
+  .dashboard .border1 {
+    grid-area: border1; }
+  .dashboard .border2 {
+    grid-area: border2; }
+  .dashboard .border1,
+  .dashboard .border2 {
+    background: linear-gradient(to top, #ebebeb, #f7f7f7);
+    width: 5px; }
   .dashboard .podcast-header {
     grid-area: podcast-header; }
   .dashboard .rss-header {
@@ -1925,15 +1936,14 @@ a.column-header:hover {
   .dashboard .discover-header {
     grid-area: discover-header; }
   .dashboard .podcasts-section {
-    grid-area: podcast-content;
-    min-width: 0;
-    overflow-y: scroll; }
+    grid-area: podcast-content; }
   .dashboard .rss-section {
-    grid-area: rss-content;
-    min-width: 0;
-    overflow-y: scroll; }
+    grid-area: rss-content; }
   .dashboard .discover-section {
-    grid-area: discover-content;
+    grid-area: discover-content; }
+  .dashboard .podcasts-section,
+  .dashboard .rss-section,
+  .dashboard .discover-section {
     min-width: 0;
     overflow-y: scroll; }
   .dashboard .podcast-header,
@@ -1942,6 +1952,8 @@ a.column-header:hover {
   .dashboard .discover-header,
   .dashboard .discover-section {
     margin-right: 20px; }
+  .dashboard .drilldown {
+    color: #747474; }
 
 .onboarding-2-view {
   margin: auto;
@@ -2213,14 +2225,18 @@ a.column-header:hover {
 .podcasts-view {
   display: grid;
   flex-grow: 1;
-  grid-column-gap: 40px;
-  grid-template-areas: 'panels-header content-header' 'panels content';
-  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 20px;
+  grid-template-areas: 'panels-header border content-header' 'panels border content';
+  grid-template-columns: 1fr auto 2fr;
   grid-template-rows: auto 1fr;
   height: 100%;
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .podcasts-view .border {
+    background: linear-gradient(to top, #ebebeb, #f7f7f7);
+    grid-area: border;
+    width: 5px; }
   .podcasts-view .panels-header {
     grid-area: panels-header; }
   .podcasts-view .panels {
@@ -2245,8 +2261,8 @@ a.column-header:hover {
     .podcast-episode .left .play-icon,
     .podcast-episode .left .pause-icon {
       align-items: center;
-      bottom: 0;
       display: flex;
+      height: 100px;
       justify-content: center;
       left: 0;
       position: absolute;
@@ -2269,14 +2285,18 @@ a.column-header:hover {
 .rss-view {
   display: grid;
   flex-grow: 1;
-  grid-column-gap: 40px;
-  grid-template-areas: 'panels-header content-header' 'panels content';
-  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 20px;
+  grid-template-areas: 'panels-header border content-header' 'panels border content';
+  grid-template-columns: 1fr auto 2fr;
   grid-template-rows: auto 1fr;
   height: 100%;
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .rss-view .border {
+    background: linear-gradient(to top, #ebebeb, #f7f7f7);
+    grid-area: border;
+    width: 5px; }
   .rss-view .panels-header {
     grid-area: panels-header; }
   .rss-view .panels {
@@ -2290,7 +2310,10 @@ a.column-header:hover {
   .rss-view .content-header {
     grid-area: content-header;
     margin: auto;
-    max-width: 720px; }
+    width: 720px; }
+    .rss-view .content-header.list-view-header {
+      margin: 0;
+      width: unset; }
   .rss-view .none-selected {
     align-items: center;
     display: flex;

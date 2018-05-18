@@ -1,14 +1,22 @@
 .rss-view {
 	display: grid;
 	flex-grow: 1;
-	grid-column-gap: $gutters;
-	grid-template-areas: 'panels-header content-header' 'panels content';
-	grid-template-columns: 1fr 2fr;
+	grid-column-gap: ($gutters / 2);
+	grid-template-areas:
+		'panels-header border content-header'
+		'panels border content';
+	grid-template-columns: 1fr auto 2fr;
 	grid-template-rows: auto 1fr;
 	height: 100%;
 	max-width: 100%;
 	overflow-y: hidden;
 	padding: 0 ($gutters / 2);
+
+	.border {
+		background: linear-gradient(to top, #ebebeb, #f7f7f7);
+		grid-area: border;
+		width: 5px;
+	}
 
 	.panels-header {
 		grid-area: panels-header;
@@ -29,7 +37,12 @@
 	.content-header {
 		grid-area: content-header;
 		margin: auto;
-		max-width: 720px;
+		width: 720px;
+
+		&.list-view-header {
+			margin: 0;
+			width: unset;
+		}
 	}
 
 	.none-selected {

@@ -23,9 +23,9 @@
 
 			&:nth-child(2) {
 				flex-grow: 1;
-				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 
 			&:last-child {
@@ -33,6 +33,7 @@
 
 				> *:not(:last-child) {
 					margin-right: 1em;
+					white-space: nowrap;
 				}
 			}
 		}

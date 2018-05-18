@@ -103,6 +103,7 @@ class RSSFeedsView extends React.Component {
 		return (
 			<div className="rss-view">
 				{leftColumn}
+				<div className="border" />
 				<Switch>
 					<Route
 						component={RSSArticle}

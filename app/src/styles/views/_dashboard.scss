@@ -1,13 +1,30 @@
 .dashboard {
 	display: grid;
 	flex-grow: 1;
-	grid-column-gap: $gutters;
-	grid-template-areas: 'featured featured featured' 'podcast-header rss-header discover-header' 'podcast-content rss-content discover-content';
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: $gutters / 2;
+	grid-template-areas:
+		'featured featured featured featured featured'
+		'podcast-header border1 rss-header border2 discover-header'
+		'podcast-content border1 rss-content border2 discover-content';
+	grid-template-columns: 1fr auto 1fr auto 1fr;
 	grid-template-rows: auto auto 1fr;
 	height: 100%;
 	max-width: 100%;
 	overflow-y: hidden;
+
+	.border1 {
+		grid-area: border1;
+	}
+
+	.border2 {
+		grid-area: border2;
+	}
+
+	.border1,
+	.border2 {
+		background: linear-gradient(to top, #ebebeb, #f7f7f7);
+		width: 5px;
+	}
 
 	.podcast-header {
 		grid-area: podcast-header;
@@ -23,18 +40,19 @@
 
 	.podcasts-section {
 		grid-area: podcast-content;
-		min-width: 0;
-		overflow-y: scroll;
 	}
 
 	.rss-section {
 		grid-area: rss-content;
-		min-width: 0;
-		overflow-y: scroll;
 	}
 
 	.discover-section {
 		grid-area: discover-content;
+	}
+
+	.podcasts-section,
+	.rss-section,
+	.discover-section {
 		min-width: 0;
 		overflow-y: scroll;
 	}
@@ -49,81 +67,7 @@
 		margin-right: ($gutters / 2);
 	}
 
-	// .panel {
-	// 	overflow-y: scroll;
-	// }
-
-	// .podcast-dashboard-column {
-	// 	.content-featured {
-	// 		background: $background-white;
-	// 		border-radius: 8px;
-	// 		box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
-	// 		color: inherit;
-	// 		display: flex;
-	// 		flex-direction: row;
-	// 		flex-wrap: nowrap;
-	// 		height: 124px;
-	// 		margin-bottom: 2em;
-	// 		padding: 12px;
-	// 		text-decoration: inherit;
-	// 		width: auto;
-	//
-	// 		.left {
-	// 			.poster {
-	// 				height: 100px;
-	// 				margin-right: 12px;
-	// 				width: 100px;
-	//
-	// 				.control {
-	// 					align-items: center;
-	// 					background: rgba(255, 255, 255, 0.8);
-	// 					border-radius: 50%;
-	// 					box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.11);
-	// 					cursor: pointer;
-	// 					display: flex;
-	// 					height: 40px;
-	// 					justify-content: center;
-	// 					left: 30px;
-	// 					position: relative;
-	// 					top: -75px;
-	// 					width: 40px;
-	//
-	// 					img {
-	// 						margin-left: 2px;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	//
-	// 		.right {
-	// 			float: left;
-	// 			font-family: $primary;
-	// 			width: 70%;
-	//
-	// 			.title {
-	// 				font-size: 18px;
-	// 				font-weight: 600;
-	// 				margin-bottom: 20px;
-	// 			}
-	//
-	// 			.description {
-	// 				font-size: 12px;
-	// 				font-weight: 200;
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	.spacer {
-	// 		background-color: $snowcap;
-	// 		height: 1px;
-	// 		margin: 12px 0;
-	// 	}
-	//
-	// 	.playlists {
-	// 		display: grid;
-	// 		grid-column-gap: 2em;
-	// 		grid-row-gap: 2em;
-	// 		grid-template-columns: 1fr 1fr;
-	// 	}
-	// }
+	.drilldown {
+		color: $foreground-reallydarkgray;
+	}
 }

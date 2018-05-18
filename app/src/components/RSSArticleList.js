@@ -282,6 +282,9 @@ class RSSArticleList extends React.Component {
 RSSArticleList.defaultProps = {
 	articles: [],
 	following: false,
+	rssFeed: {
+		images: {},
+	},
 };
 
 RSSArticleList.propTypes = {
@@ -316,7 +319,7 @@ const mapStateToProps = (state, ownProps) => {
 		loading = true;
 	}
 
-	let rssFeed = {};
+	let rssFeed = { images: {} };
 
 	if ('rssFeeds' in state && ownProps.match.params.rssFeedID in state.rssFeeds) {
 		rssFeed = { ...state.rssFeeds[ownProps.match.params.rssFeedID] };
