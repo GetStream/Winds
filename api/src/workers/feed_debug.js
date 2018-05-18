@@ -1,7 +1,16 @@
+import '../loadenv';
+import '../utils/db';
 import { ParseFeed, ParsePodcast } from './parsers';
 import program from 'commander';
 import chalk from 'chalk';
 import logger from '../utils/logger';
+import Podcast from '../models/podcast';
+import RSS from '../models/rss';
+import config from '../config';
+import Queue from 'bull';
+
+const rssQueue = new Queue('rss', config.cache.uri);
+const podcastQueue = new Queue('podcast', config.cache.uri);
 
 const version = '0.1.1';
 
@@ -10,6 +19,7 @@ program
 	.option('--rss <value>', 'Parse a specific RSS feed')
 	.option('--podcast <value>', 'Parse a specific podcast')
 	.option('-l, --limit <n>', 'The number of articles to parse', 2)
+	.option('--task', 'Create a task on bull or not')
 	.parse(process.argv);
 
 function main() {
@@ -68,15 +78,59 @@ function main() {
 					logger.info(chalk.red('Image missing :('));
 				}
 				if (program.podcast) {
-					logger.info(chalk.red('Image missing :('));
-					logger.info(chalk.green('Image found :)'));
+					if (article.enclosure) {
+						logger.info(chalk.green('Enclosure found :)'))
+						logger.info(article.enclosure)
+					} else {
+						logger.info(chalk.red('Missing enclosure :('))
+					}
 				}
 
 			}
 		} else {
 			logger.info(chalk.red('Didn\'t find any articles or episodes.'));
 		}
+
+		let schema = (program.rss) ? RSS : Podcast
+		let lookup = {feedUrl: target}
+		if (program.task) {
+			logger.info(`trying to create a task on the bull queue`)
+			schema.findOne(lookup).catch(err => {
+					console.log('failed', err)
+				}).then(instance => {
+
+				if (program.rss) {
+					logger.info(`scheduled RSS feed to the queue for parsing ${target}`)
+					rssQueue.add(
+						{
+							rss: instance._id,
+							url: instance.feedUrl,
+							update: true
+						},
+						{
+							priority: 1,
+							removeOnComplete: true,
+							removeOnFail: true,
+						})
+				} else {
+					logger.info(`scheduled Podcast to the queue for parsing ${target}`)
+
+					podcastQueue.add(
+						{
+							podcast: instance._id,
+							url: instance.feedUrl,
+							update: true
+						},
+						{
+							priority: 1,
+							removeOnComplete: true,
+							removeOnFail: true,
+						})
+				}
+			})
+		}
 	}
+
 
 	if (program.rss) {
 		ParseFeed(program.rss, validate);
@@ -86,6 +140,8 @@ function main() {
 	logger.info(
 		'Note that upgrading feedparser can sometimes improve parsing.',
 	);
+
+
 }
 
 main();

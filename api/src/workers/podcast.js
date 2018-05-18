@@ -59,9 +59,12 @@ podcastQueue.process((job, done) => {
 								description: episode.description,
 								podcast: job.data.podcast,
 								publicationDate: episode.publicationDate,
+								duration: episode.duration,
 								title: episode.title,
 								url: normalizedUrl,
-								images: episode.images,
+								link: episode.link,
+								enclosure: episode.enclosure,
+								images: episode.images
 							})
 								.then(episode => {
 									return Promise.all([
@@ -102,7 +105,7 @@ podcastQueue.process((job, done) => {
 					if (updatedEpisodes.length > 0) {
 						let chunkSize = 100;
 						for (let i=0,j=updatedEpisodes.length; i<j; i+=chunkSize) {
-						    let chunk = updatedEpisodes.slice(i,i+chunk);
+						    let chunk = updatedEpisodes.slice(i,i+chunkSize);
 								let streamEpisodes = chunk.map(episode => {
 									return {
 										actor: episode.podcast,
