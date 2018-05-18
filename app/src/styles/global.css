@@ -1628,6 +1628,7 @@ a.column-header:hover {
       flex-direction: column-reverse;
       height: 190px;
       margin-right: 2em;
+      min-width: 200px;
       padding: 2em;
       text-decoration: inherit;
       width: 200px; }
