@@ -30,7 +30,6 @@
     "babel-preset-env": "^1.7.0",
     "franc-min": "^4.0.0",
     "open-graph-scraper": "^3.3.0",
-    "raven": "^2.6.2",
     "valid-url": "^1.0.9"
   }
 }

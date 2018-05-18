@@ -1,10 +1,9 @@
 import config from '../config';
 import winston from 'winston';
 import Raven from 'raven';
-import path from 'path';
-const executable = path.basename(process.argv[1]);
+let readmePath = require.resolve("raven");
 
-// https://github.com/guzru/winston-sentry
+const executable = path.basename(process.argv[1]);
 var ravenInstance
 
 let sentryOptions = {

@@ -2234,10 +2234,6 @@ globals@^9.18.0:
   version "9.18.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-9.18.0.tgz#aa3896b3e69b487f17e31ed2143d69a8e30c2d8a"
 
-glossy@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/glossy/-/glossy-0.1.7.tgz#769b5984a96f6066ab9ea758224825ee6c210f0b"
-
 got@^6.7.1:
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/got/-/got-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
@@ -2862,7 +2858,7 @@ json-stable-stringify@^1.0.1:
   dependencies:
     jsonify "~0.0.0"
 
-json-stringify-safe@5.0.1, json-stringify-safe@~5.0.1:
+json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
@@ -3165,10 +3161,6 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
-
-lsmod@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/lsmod/-/lsmod-1.0.0.tgz#9a00f76dca36eb23fa05350afe1b585d4299e64b"
 
 make-dir@^1.0.0:
   version "1.0.0"
@@ -3947,23 +3939,13 @@ range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
 
-raven@^1.1.4:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/raven/-/raven-1.2.1.tgz#949c134db028a190b7bbf8f790aae541b7c020bd"
-  dependencies:
-    cookie "0.3.1"
-    json-stringify-safe "5.0.1"
-    lsmod "1.0.0"
-    stack-trace "0.0.9"
-    uuid "3.0.0"
-
-raven@^2.3.0:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/raven/-/raven-2.4.2.tgz#0129e2adc30788646fd530b67d08a8ce25d4f6dc"
+raven@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/raven/-/raven-2.6.2.tgz#c92f30890e2dfcd15258d184e43e39326e58032e"
   dependencies:
     cookie "0.3.1"
     md5 "^2.2.1"
-    stack-trace "0.0.9"
+    stack-trace "0.0.10"
     timed-out "4.0.1"
     uuid "3.0.0"
 
@@ -4556,11 +4538,7 @@ sshpk@^1.7.0:
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
 
-stack-trace@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.9.tgz#a8f6eaeca90674c333e7c43953f275b451510695"
-
-stack-trace@0.0.x:
+stack-trace@0.0.10, stack-trace@0.0.x:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
 
@@ -4994,27 +4972,6 @@ widest-line@^1.0.0:
   resolved "https://registry.yarnpkg.com/widest-line/-/widest-line-1.0.0.tgz#0c09c85c2a94683d0d7eaf8ee097d564bf0e105c"
   dependencies:
     string-width "^1.0.1"
-
-winston-papertrail@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/winston-papertrail/-/winston-papertrail-1.0.5.tgz#54a23b16e5046652bf687b37dc802714bfd462c9"
-  dependencies:
-    glossy "^0.1.7"
-
-winston-sentry@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/winston-sentry/-/winston-sentry-0.2.1.tgz#dfdcc828f35a735a8e01e781918af652eb97c75c"
-  dependencies:
-    lodash "^4.17.4"
-    raven "^1.1.4"
-
-winston-transport-sentry@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/winston-transport-sentry/-/winston-transport-sentry-1.0.0.tgz#8c6443e851b06b2724cfcfb321d676489c5d83df"
-  dependencies:
-    lodash "^4.17.4"
-    raven "^2.3.0"
-    winston-transport "^3.0.1"
 
 winston-transport@^3.0.1:
   version "3.0.1"

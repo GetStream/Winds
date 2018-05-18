@@ -10,12 +10,12 @@ const executable = path.basename(process.argv[1]);
 
 if (config.sentry.dsn) {
 	let sentryTransport = createSentryTransport(Raven)
-	transports.push(sentryTransport);
+	transports.push(sentryTransport)
 }
 
 let logger = new winston.createLogger({
 	format: winston.format.simple(),
-	transports: transports,
+	transports: transports
 });
 
 export default logger;
