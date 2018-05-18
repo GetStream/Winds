@@ -26,7 +26,6 @@
 		"strip": "^3.0.0",
 		"winston": "^3.0.0-rc3",
 		"winston-sentry": "^0.2.1",
-		"winston-transport-sentry": "^1.0.0",
 		"yargs": "^11.0.0",
 		"zlib": "^1.0.5"
 	},

@@ -1,6 +1,6 @@
 import config from '../config';
 import winston from 'winston';
-const Raven = require('raven');
+import Raven from 'raven';
 import path from 'path';
 const executable = path.basename(process.argv[1]);
 
@@ -14,6 +14,7 @@ let sentryOptions = {
   tags: { key: executable },
 }
 ravenInstance = Raven.config(sentryOptions.dsn, sentryOptions);
+ravenInstance.install()
 
 function captureError(err, msg) {
   Raven.captureException(err)

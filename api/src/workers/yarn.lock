@@ -3463,16 +3463,6 @@ raven@^1.1.4:
     stack-trace "0.0.9"
     uuid "3.0.0"
 
-raven@^2.3.0:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/raven/-/raven-2.4.2.tgz#0129e2adc30788646fd530b67d08a8ce25d4f6dc"
-  dependencies:
-    cookie "0.3.1"
-    md5 "^2.2.1"
-    stack-trace "0.0.9"
-    timed-out "4.0.1"
-    uuid "3.0.0"
-
 raven@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/raven/-/raven-2.6.2.tgz#c92f30890e2dfcd15258d184e43e39326e58032e"
@@ -4321,14 +4311,6 @@ winston-sentry@^0.2.1:
   dependencies:
     lodash "^4.17.4"
     raven "^1.1.4"
-
-winston-transport-sentry@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/winston-transport-sentry/-/winston-transport-sentry-1.0.0.tgz#8c6443e851b06b2724cfcfb321d676489c5d83df"
-  dependencies:
-    lodash "^4.17.4"
-    raven "^2.3.0"
-    winston-transport "^3.0.1"
 
 winston-transport@^3.0.1:
   version "3.0.1"
