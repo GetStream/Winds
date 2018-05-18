@@ -11,7 +11,6 @@ import Podcast from '../models/podcast'; // eslint-disable-line
 import Article from '../models/article';
 import Episode from '../models/episode';
 
-
 import '../utils/db';
 
 import config from '../config';
@@ -31,11 +30,12 @@ function handleJob(job, done) {
 	const jobType = job.data.type;
 
 	// lookup the right type of schema: article, episode or podcast
-	let schemaMap = {'podcast': Podcast, 'episode': Episode}
+	let schemaMap = { podcast: Podcast, episode: Episode };
 	let mongoSchema = schemaMap[jobType] || Article;
-	let field = (job.data.type == 'podcast') ? 'link' : 'url';
+	let field = job.data.type == 'podcast' ? 'link' : 'url';
 
-	mongoSchema.findOne({ field: url })
+	mongoSchema
+		.findOne({ field: url })
 		.then(instance => {
 			// if the instance hasn't been created yet, or it already has an OG image, ignore
 			if (!instance || instance.images.og) {
@@ -54,7 +54,7 @@ function handleJob(job, done) {
 						logger.info(`didn't find image for ${url}`);
 						return;
 					} else {
-						logger.info(`Found an image for ${url}`)
+						logger.info(`Found an image for ${url}`);
 					}
 					return mongoSchema.update(
 						{ _id: instance._id },
@@ -67,7 +67,9 @@ function handleJob(job, done) {
 			return done();
 		})
 		.catch(err => {
-			logger.error(`Error retrieving/saving image for instance: ${url} type ${jobType}`);
+			logger.error(
+				`Error retrieving/saving image for instance: ${url} type ${jobType}`,
+			);
 			logger.error(JSON.stringify(err));
 			return done(err);
 		});
