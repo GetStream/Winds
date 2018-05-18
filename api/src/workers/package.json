@@ -13,7 +13,6 @@
 		"entities": "^1.1.1",
 		"favicon": "^0.0.2",
 		"feedparser": "^2.2.9",
-		"global": "^4.3.2",
 		"iconv": "^2.3.0",
 		"iconv-js": "^0.3.5",
 		"moment": "^2.22.1",
@@ -25,7 +24,6 @@
 		"sanitize-html": "^1.18.2",
 		"strip": "^3.0.0",
 		"winston": "^3.0.0-rc3",
-		"winston-sentry": "^0.2.1",
 		"yargs": "^11.0.0",
 		"zlib": "^1.0.5"
 	},
