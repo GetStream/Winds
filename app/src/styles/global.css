@@ -2224,6 +2224,9 @@ a.column-header:hover {
       cursor: pointer;
       text-transform: none; }
 
+.panels-header {
+  grid-area: panels-header; }
+
 .podcasts-view {
   display: grid;
   flex-grow: 1;
@@ -2235,6 +2238,22 @@ a.column-header:hover {
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .podcasts-view .featured-podcast label {
+    color: #000; }
+  .podcasts-view .featured-podcast > * {
+    margin-bottom: 2em; }
+  .podcasts-view .panels {
+    grid-area: panels;
+    min-width: 0;
+    overflow-y: scroll; }
+    .podcasts-view .panels.featured-description {
+      font-size: 15px; }
+      .podcasts-view .panels.featured-description label {
+        font-size: 11px;
+        font-weight: bold; }
+      .podcasts-view .panels.featured-description h1 {
+        font-size: 25px;
+        font-weight: bold; }
   .podcasts-view.featured {
     grid-template-areas: 'featured border content-header' 'featured border content' 'desc border content';
     grid-template-columns: 1fr auto 2fr;
@@ -2248,21 +2267,11 @@ a.column-header:hover {
     background: linear-gradient(to top, #ebebeb, #f7f7f7);
     grid-area: border;
     width: 5px; }
-  .podcasts-view .panels-header {
-    grid-area: panels-header; }
-  .podcasts-view .panels {
-    grid-area: panels;
-    min-width: 0;
-    overflow-y: scroll; }
   .podcasts-view .content {
     grid-area: content;
     overflow-y: scroll; }
   .podcasts-view .content-header {
     grid-area: content-header; }
-  .podcasts-view .featured-podcast > * {
-    margin-bottom: 2em; }
-  .podcasts-view .featured-podcast label {
-    color: #000; }
 
 .podcast-episode {
   cursor: pointer;
@@ -2304,43 +2313,8 @@ a.column-header:hover {
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
-  .rss-view.featured {
-    grid-template-areas: 'featured border content-header' 'featured border content' 'desc border content';
-    grid-template-columns: 1fr auto 2fr;
-    grid-template-rows: 101px 101px auto;
-    padding-top: 2em; }
-    .rss-view.featured .panels-header {
-      grid-area: featured; }
-    .rss-view.featured .panels {
-      grid-area: desc; }
-  .rss-view .border {
-    background: linear-gradient(to top, #ebebeb, #f7f7f7);
-    grid-area: border;
-    width: 5px; }
   .rss-view .panels-header {
     grid-area: panels-header; }
-  .rss-view .panels {
-    grid-area: panels;
-    min-width: 0;
-    overflow-y: scroll; }
-  .rss-view .content {
-    grid-area: content;
-    max-width: 100%;
-    overflow-y: scroll; }
-  .rss-view .content-header {
-    grid-area: content-header;
-    margin: auto;
-    width: 720px; }
-    .rss-view .content-header.list-view-header {
-      margin: 0;
-      width: unset; }
-  .rss-view .none-selected {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    max-height: 100vh; }
   .rss-view .rss-article-content {
     -webkit-app-region: no-drag;
     margin: auto;
@@ -2359,7 +2333,50 @@ a.column-header:hover {
         text-decoration: underline; }
     .rss-view .rss-article-content img {
       max-width: 100%; }
-  .rss-view .featured-rss > * {
-    margin-bottom: 2em; }
   .rss-view .featured-rss label {
     color: #000; }
+  .rss-view .featured-rss > * {
+    margin-bottom: 2em; }
+  .rss-view .panels {
+    grid-area: panels;
+    min-width: 0;
+    overflow-y: scroll; }
+    .rss-view .panels.featured-description {
+      font-size: 15px; }
+      .rss-view .panels.featured-description label {
+        font-size: 11px;
+        font-weight: bold; }
+      .rss-view .panels.featured-description h1 {
+        font-size: 25px;
+        font-weight: bold; }
+  .rss-view.featured {
+    grid-template-areas: 'featured border content-header' 'featured border content' 'desc border content';
+    grid-template-columns: 1fr auto 2fr;
+    grid-template-rows: 101px 101px auto;
+    padding-top: 2em; }
+    .rss-view.featured .panels-header {
+      grid-area: featured; }
+    .rss-view.featured .panels {
+      grid-area: desc; }
+  .rss-view .border {
+    background: linear-gradient(to top, #ebebeb, #f7f7f7);
+    grid-area: border;
+    width: 5px; }
+  .rss-view .content {
+    grid-area: content;
+    max-width: 100%;
+    overflow-y: scroll; }
+  .rss-view .content-header {
+    grid-area: content-header;
+    margin: auto;
+    width: 720px; }
+    .rss-view .content-header.list-view-header {
+      margin: 0;
+      width: unset; }
+  .rss-view .none-selected {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    max-height: 100vh; }

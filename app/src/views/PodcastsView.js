@@ -74,7 +74,7 @@ class PodcastsView extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="panels">
+					<div className="panels featured-description">
 						<label>About {this.props.podcast.title}</label>
 						<h1>{this.props.podcast.description}</h1>
 						<div>{this.props.podcast.summary}</div>

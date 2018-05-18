@@ -69,7 +69,7 @@ class RSSFeedsView extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="panels">
+					<div className="panels featured-description">
 						<label>About {this.props.rssFeed.title}</label>
 						<h1>{this.props.rssFeed.description}</h1>
 						<div>{this.props.rssFeed.summary}</div>
