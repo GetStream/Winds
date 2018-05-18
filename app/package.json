@@ -138,7 +138,12 @@
 			"target": [
 				"snap",
 				"AppImage"
-			]
+			],
+			"publish": {
+				"provider": "s3",
+				"bucket": "winds-2.0-releases",
+				"path": "releases"
+			}
 		}
 	}
 }
