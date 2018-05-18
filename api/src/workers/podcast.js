@@ -76,10 +76,10 @@ podcastQueue.process((job, done) => {
 							);
 						})
 						.then(rawEpisode => {
+							let episode = rawEpisode.value;
 							if (rawEpisode.lastErrorObject.updatedExisting) {
 								return null;
 							} else {
-								let episode = episode.value;
 								return Promise.all([
 									search({
 										_id: episode._id,
