@@ -785,29 +785,6 @@ body {
 
 /* Components - Re-usable site elements.
 ========================================================================== */
-.article-info {
-  display: flex;
-  flex-direction: row;
-  font-weight: bolder;
-  letter-spacing: 0.1em;
-  margin-bottom: 1em;
-  text-transform: uppercase; }
-  .article-info .bookmark {
-    cursor: pointer; }
-  .article-info > * {
-    margin-right: 1em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
-  .article-info .muted {
-    color: #aaa; }
-  .article-info a {
-    color: #44bc75;
-    margin-left: 0.5em;
-    text-decoration: none; }
-    .article-info a:hover {
-      text-decoration: underline; }
-
 .click-catcher {
   bottom: 0;
   height: 100%;
@@ -1051,6 +1028,29 @@ a.column-header:hover {
     border-width: 3px; }
     .hero-card.selected label {
       color: #44bc75; }
+
+.item-info {
+  display: flex;
+  flex-direction: row;
+  font-weight: bolder;
+  letter-spacing: 0.1em;
+  margin-bottom: 1em;
+  text-transform: uppercase; }
+  .item-info .bookmark {
+    cursor: pointer; }
+  .item-info > * {
+    margin-right: 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .item-info .muted {
+    color: #aaa; }
+  .item-info a {
+    color: #44bc75;
+    margin-left: 0.5em;
+    text-decoration: none; }
+    .item-info a:hover {
+      text-decoration: underline; }
 
 .list-view-header .alignment-box {
   align-items: center;
