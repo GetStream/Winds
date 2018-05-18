@@ -20,7 +20,7 @@ import logger from '../utils/logger';
 const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting the OG worker, now supporting podcasts, episodes and articles');
-ogQueue.process(handleJob);
+ogQueue.process(25, handleJob);
 
 // Run the OG scraping job
 function handleJob(job, done) {
