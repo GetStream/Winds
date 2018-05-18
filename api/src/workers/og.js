@@ -12,7 +12,7 @@ import Article from '../models/article';
 import Episode from '../models/episode';
 
 import '../utils/db';
-import { Raven, CaptureError } from '../utils/errors';
+import { Raven } from '../utils/errors';
 
 import config from '../config';
 import logger from '../utils/logger';
@@ -30,17 +30,23 @@ function handleJob(job, done) {
 		// Note dont normalize the url, this is done when the object is created
 		const url = job.data.url;
 		const jobType = job.data.type;
-		let context = { url, jobType };
+		let context = {
+			jobType,
+			url,
+		};
 		Raven.setContext(context);
 		Raven.captureBreadcrumb(context);
 
 		// Lookup the right type of schema: article, episode or podcast
-		let schemaMap = { podcast: Podcast, episode: Episode };
+		let schemaMap = {
+			episode: Episode,
+			podcast: Podcast,
+		};
 		let mongoSchema = schemaMap[jobType] || Article;
-		let field = job.data.type == 'podcast' ? 'link' : 'url';
+		let field = job.data.type === 'podcast' ? 'link' : 'url';
 
 		mongoSchema
-			.findOne({ field: url })
+			.findOne({ [field]: url })
 			.then(instance => {
 				// if the instance hasn't been created yet, or it already has an OG image, ignore
 				if (!instance || instance.images.og) {
@@ -74,12 +80,9 @@ function handleJob(job, done) {
 				return done();
 			})
 			.catch(err => {
-				let msg = `Error retrieving/saving image for OG scraping`;
+				let msg = 'Error retrieving/saving image for OG scraping';
 				Raven.captureException(err);
 				return done(err);
 			});
 	});
 }
-let endsWith = (input, suffix) => {
-	return input.indexOf(suffix, input.length - suffix.length) !== -1;
-};

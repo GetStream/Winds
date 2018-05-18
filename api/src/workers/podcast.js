@@ -48,32 +48,38 @@ podcastQueue.process((job, done) => {
 			return Promise.all(
 				podcastContents.episodes.map(episode => {
 					let normalizedUrl = normalize(episode.url);
-					return Episode.findOneAndUpdate({
-						url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
-						podcast: job.data.podcast,
-					},
-					{
-						description: episode.description,
-						podcast: job.data.podcast,
-						publicationDate: episode.publicationDate,
-						duration: episode.duration,
-						title: episode.title,
-						url: normalizedUrl,
-						link: episode.link,
-						enclosure: episode.enclosure,
-						images: episode.images
-					},
-					{
-						upsert: true,
-						rawResult: true,
-						new: true
-					}).catch(err => {
-						logger.error(`Failed to run findOneAndUpdate for Episode with ${normalizedUrl} with error ${err}`)
-					}).then(rawEpisode => {
-						if (rawEpisode.lastErrorObject.updatedExisting) {
-							return null;
-						} else {
-							  let episode = episode.value
+					return Episode.findOneAndUpdate(
+						{
+							podcast: job.data.podcast,
+							url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
+						},
+						{
+							description: episode.description,
+							duration: episode.duration,
+							enclosure: episode.enclosure,
+							images: episode.images,
+							link: episode.link,
+							podcast: job.data.podcast,
+							publicationDate: episode.publicationDate,
+							title: episode.title,
+							url: normalizedUrl,
+						},
+						{
+							new: true,
+							rawResult: true,
+							upsert: true,
+						},
+					)
+						.catch(err => {
+							logger.error(
+								`Failed to run findOneAndUpdate for Episode with ${normalizedUrl} with error ${err}`,
+							);
+						})
+						.then(rawEpisode => {
+							if (rawEpisode.lastErrorObject.updatedExisting) {
+								return null;
+							} else {
+								let episode = episode.value;
 								return Promise.all([
 									search({
 										_id: episode._id,
@@ -85,8 +91,8 @@ podcastQueue.process((job, done) => {
 									}),
 									ogQueue.add(
 										{
-											url: episode.url,
 											type: 'episode',
+											url: episode.url,
 										},
 										{
 											removeOnComplete: true,
@@ -96,8 +102,8 @@ podcastQueue.process((job, done) => {
 								]).then(() => {
 									return episode;
 								});
-						}
-					});
+							}
+						});
 				}),
 			)
 				.then(allEpisodes => {
@@ -107,35 +113,40 @@ podcastQueue.process((job, done) => {
 
 					if (updatedEpisodes.length > 0) {
 						let chunkSize = 100;
-						for (let i=0,j=updatedEpisodes.length; i<j; i+=chunkSize) {
-						    let chunk = updatedEpisodes.slice(i,i+chunkSize);
-								let streamEpisodes = chunk.map(episode => {
-									return {
-										actor: episode.podcast,
-										foreign_id: `episodes:${episode._id}`,
-										object: episode._id,
-										time: episode.publicationDate,
-										verb: 'podcast_episode',
-									};
+						for (
+							let i = 0, j = updatedEpisodes.length;
+							i < j;
+							i += chunkSize
+						) {
+							let chunk = updatedEpisodes.slice(i, i + chunkSize);
+							let streamEpisodes = chunk.map(episode => {
+								return {
+									actor: episode.podcast,
+									foreign_id: `episodes:${episode._id}`,
+									object: episode._id,
+									time: episode.publicationDate,
+									verb: 'podcast_episode',
+								};
+							});
+
+							// addActivities to Stream
+							return client
+								.feed('podcast', job.data.podcast)
+								.addActivities(streamEpisodes)
+								.then(() => {
+									return sendPodcastToCollections(job.data.podcast);
 								});
-
-								// addActivities to Stream
-								client
-									.feed('podcast', job.data.podcast)
-									.addActivities(streamEpisodes)
-									.then(() => {
-										sendPodcastToCollections(job.data.podcast);
-									});
 						}
-
-
+					} else {
+						return;
 					}
-
+				})
+				.then(() => {
 					logger.info(`Completed podcast ${job.data.url}`);
 					done();
-					return;
 				})
 				.catch(err => {
+					logger.info(`Failed processing for podcast ${job.data.url}`);
 					logger.error(err);
 				});
 		});

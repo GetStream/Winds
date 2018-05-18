@@ -13,7 +13,6 @@ import async from 'async';
 import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
-import search from '../utils/search';
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
 import { ParseFeed } from './parsers';
 
@@ -69,36 +68,45 @@ rssQueue.process((job, done) => {
 					// lookup by url
 					let normalizedUrl = normalize(post.url);
 					Article.findOneAndUpdate(
-						{ url: normalizedUrl, rss: job.data.rss },
-					{
-						description: post.description,
-						publicationDate: post.publicationDate,
-						commentUrl: post.commentUrl,
-						content: post.content,
-						images: post.images,
-						rss: job.data.rss,
-						title: post.title,
-						url: normalizedUrl,
-					},{
-						upsert: true,
-						rawResult: true,
-						new: true
-					}).catch(err => {
-						logger.error(`Failed to findOneAndUpdate for article with url ${normalizedUrl} ${err}`)
-						cb(null, null);
-					}).then(rawArticle => {
+						{
+							rss: job.data.rss,
+							url: normalizedUrl,
+						},
+						{
+							commentUrl: post.commentUrl,
+							content: post.content,
+							description: post.description,
+							images: post.images || {},
+							publicationDate: post.publicationDate,
+							rss: job.data.rss,
+							title: post.title,
+							url: normalizedUrl,
+						},
+						{
+							new: true,
+							rawResult: true,
+							upsert: true,
+						},
+					)
+						.catch(err => {
+							logger.error(
+								`Failed to findOneAndUpdate for article with url ${normalizedUrl} ${err}`,
+							);
+							cb(null, null);
+						})
+						.then(rawArticle => {
 							if (rawArticle.lastErrorObject.updatedExisting) {
 								// article already exists
 								cb(null, null);
 								return;
 							} else {
-								let article = rawArticle.value
+								let article = rawArticle.value;
 								// after article is created, add to algolia, stream, and opengraph scraper queue
 								return ogQueue
 									.add(
 										{
-											url: article.url,
 											type: 'rss',
+											url: article.url,
 										},
 										{
 											removeOnComplete: true,
@@ -111,12 +119,13 @@ rssQueue.process((job, done) => {
 									})
 									.catch(err => {
 										// error: either adding to algolia, or adding to OGqueue - continuing on for the time being.
-										logger.error(`failed to publish to ogQueue ${err}`);
+										logger.error(
+											`failed to publish to ogQueue ${err}`,
+										);
 										cb(null, article);
 									});
 							}
-						},
-					);
+						});
 				},
 				(err, allArticles) => {
 					// updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
@@ -132,8 +141,12 @@ rssQueue.process((job, done) => {
 					} else {
 						if (updatedArticles.length > 0) {
 							let chunkSize = 100;
-							for (let i=0,j=updatedArticles.length; i<j; i+=chunkSize) {
-								let chunk = updatedEpisodes.slice(i,i+chunkSize);
+							for (
+								let i = 0, j = updatedArticles.length;
+								i < j;
+								i += chunkSize
+							) {
+								let chunk = updatedArticles.slice(i, i + chunkSize);
 
 								let streamArticles = chunk.map(article => {
 									return {
@@ -149,13 +162,27 @@ rssQueue.process((job, done) => {
 									.feed('rss', job.data.rss)
 									.addActivities(streamArticles)
 									.then(() => {
-										sendRssFeedToCollections(job.data.rss);
+										return sendRssFeedToCollections(job.data.rss);
+									})
+									.then(() => {
+										logger.info(
+											`Completed scraping for ${job.data.url}`,
+										);
+										done();
+									})
+									.catch(err => {
+										logger.warn(
+											`Adding activities to Stream and personalization failed for ${
+												job.data.url
+											} with error ${err}`,
+										);
+										done(err);
 									});
 							}
-
+						} else {
+							logger.info(`Completed scraping for ${job.data.url}`);
+							done();
 						}
-						logger.info(`Completed scraping for ${job.data.url}`);
-						done();
 					}
 				},
 			);
