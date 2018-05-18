@@ -85,6 +85,7 @@ export const RSSSchema = new Schema(
 		interest: {
 			type: String,
 			default: '',
+			index: true,
 		},
 		isParsing: {
 			type: Boolean,

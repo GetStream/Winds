@@ -80,6 +80,7 @@ export const PodcastSchema = new Schema(
 		interest: {
 			type: String,
 			default: '',
+			index: true,
 		},
 		language: {
 			type: String,
