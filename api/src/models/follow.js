@@ -21,6 +21,7 @@ export const FollowSchema = new Schema(
 					'admin',
 				],
 			},
+			index: true,
 		},
 		followee: {
 			type: Schema.Types.ObjectId,
@@ -36,6 +37,7 @@ export const FollowSchema = new Schema(
 					'background',
 				],
 			},
+			index: true,
 		},
 		podcast: {
 			type: Schema.Types.ObjectId,
@@ -53,6 +55,7 @@ export const FollowSchema = new Schema(
 					'images',
 				],
 			},
+			index: true,
 		},
 		rss: {
 			type: Schema.Types.ObjectId,
@@ -70,6 +73,7 @@ export const FollowSchema = new Schema(
 					'images',
 				],
 			},
+			index: true,
 		},
 		feed: {
 			type: String,
