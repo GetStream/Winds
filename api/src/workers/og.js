@@ -74,8 +74,6 @@ function handleJob(job, done) {
 				return done();
 			})
 			.catch(err => {
-				console.log("ITS BROKEN")
-				console.log(err)
 				let msg = `Error retrieving/saving image for OG scraping`
 				Raven.captureException(err)
 				return done(err);
