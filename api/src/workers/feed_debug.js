@@ -98,10 +98,10 @@ function main() {
 			schema.findOne(lookup).catch(err => {
 					console.log('failed', err)
 				}).then(instance => {
+				let queuePromise
 
 				if (program.rss) {
-					logger.info(`scheduled RSS feed to the queue for parsing ${target} with id ${instance._id}`)
-					rssQueue.add(
+					queuePromise = rssQueue.add(
 						{
 							rss: instance._id,
 							url: instance.feedUrl,
@@ -112,9 +112,7 @@ function main() {
 							removeOnFail: true,
 						})
 				} else {
-					logger.info(`scheduled Podcast to the queue for parsing ${target}`)
-
-					podcastQueue.add(
+					queuePromise=podcastQueue.add(
 						{
 							podcast: instance._id,
 							url: instance.feedUrl,
@@ -125,6 +123,16 @@ function main() {
 							removeOnFail: true,
 						})
 				}
+
+				queuePromise.then(() => {
+					if (program.rss) {
+						logger.info(`Scheduled RSS feed to the queue for parsing ${target} with id ${instance._id}`)
+					} else {
+						logger.info(`Scheduled Podcast to the queue for parsing ${target}`)
+					}
+				}).catch(err => {
+					logger.error(`Failed to schedule task on og queue`)
+				})
 			})
 		}
 	}
