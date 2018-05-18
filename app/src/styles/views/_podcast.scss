@@ -94,6 +94,9 @@
 	.content-header {
 		grid-area: content-header;
 	}
+	.alignment-box{
+		margin-top: 1.7em;
+	}
 }
 
 .podcast-episode {
@@ -128,6 +131,10 @@
 		.play-icon {
 			display: none;
 		}
+	}
+	.description{
+		font-size: 14px;
+		line-height: 20px;
 	}
 
 	&:hover {

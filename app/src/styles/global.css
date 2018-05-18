@@ -1030,12 +1030,15 @@ a.column-header:hover {
       color: #44bc75; }
 
 .item-info {
+  font-size: .77em;
   display: flex;
   flex-direction: row;
   font-weight: bolder;
   letter-spacing: 0.1em;
-  margin-bottom: 1em;
-  text-transform: uppercase; }
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+  text-transform: uppercase;
+  color: #aaa; }
   .item-info .bookmark {
     cursor: pointer; }
   .item-info > * {
@@ -1043,6 +1046,8 @@ a.column-header:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .item-info i {
+    color: #000; }
   .item-info .muted {
     color: #aaa; }
   .item-info a {
@@ -2276,6 +2281,8 @@ a.column-header:hover {
     overflow-y: scroll; }
   .podcasts-view .content-header {
     grid-area: content-header; }
+  .podcasts-view .alignment-box {
+    margin-top: 1.7em; }
 
 .podcast-episode {
   cursor: pointer;
@@ -2303,6 +2310,9 @@ a.column-header:hover {
         width: 3em; }
     .podcast-episode .left .play-icon {
       display: none; }
+  .podcast-episode .description {
+    font-size: 14px;
+    line-height: 20px; }
   .podcast-episode:hover .left .play-icon {
     display: flex; }
 
@@ -2317,6 +2327,8 @@ a.column-header:hover {
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .rss-view .alignment-box {
+    margin-top: 1.7em; }
   .rss-view .panels-header {
     grid-area: panels-header; }
   .rss-view .rss-article-content {
@@ -2337,10 +2349,12 @@ a.column-header:hover {
         text-decoration: underline; }
     .rss-view .rss-article-content img {
       max-width: 100%; }
-  .rss-view .featured-rss label {
+  .rss-view.featured label {
     color: #000; }
-  .rss-view .featured-rss > * {
+  .rss-view.featured > * {
     margin-bottom: 2em; }
+  .rss-view.featured .alignment-box {
+    margin-top: 0; }
   .rss-view .panels {
     grid-area: panels;
     min-width: 0;

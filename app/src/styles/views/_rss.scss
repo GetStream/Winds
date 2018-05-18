@@ -12,6 +12,10 @@
 	overflow-y: hidden;
 	padding: 0 ($gutters / 2);
 
+	.alignment-box{
+		margin-top: 1.7em;
+	}
+
 	.panels-header {
 		grid-area: panels-header;
 	}
@@ -46,13 +50,16 @@
 		}
 	}
 
-	.featured-rss {
+	&.featured{
 		label {
 			color: $foreground-black;
 		}
 
 		> * {
 			margin-bottom: 2em;
+		}
+		.alignment-box{
+			margin-top: 0;
 		}
 	}
 
@@ -125,4 +132,5 @@
 		justify-content: center;
 		max-height: 100vh;
 	}
+
 }
