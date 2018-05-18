@@ -38,8 +38,9 @@ function handleJob(job, done) {
 		// Lookup the right type of schema: article, episode or podcast
 		let schemaMap = {'podcast': Podcast, 'episode': Episode}
 		let mongoSchema = schemaMap[jobType] || Article;
+		let field = (job.data.type == 'podcast') ? 'link' : 'url';
 
-		mongoSchema.findOne({ url: url })
+		mongoSchema.findOne({ field: url })
 			.then(instance => {
 				// if the instance hasn't been created yet, or it already has an OG image, ignore
 				if (!instance || instance.images.og) {
@@ -59,12 +60,13 @@ function handleJob(job, done) {
 							return;
 						} else {
 							logger.info(`Found an image for ${url}`)
+							let images = instance.images || {}
+							images.og = normalize(image.data.ogImage.url)
 							return mongoSchema.update(
 								{ _id: instance._id },
-								{ $set: { 'images.og': normalize(image.data.ogImage.url) } },
+								{ $set: { 'images': images } },
 							);
 						}
-
 					});
 				}
 			})
@@ -72,6 +74,7 @@ function handleJob(job, done) {
 				return done();
 			})
 			.catch(err => {
+				console.log(err)
 				let msg = `Error retrieving/saving image for OG scraping`
 				Raven.captureException(err)
 				return done(err);

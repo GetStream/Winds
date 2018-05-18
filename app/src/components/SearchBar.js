@@ -229,7 +229,7 @@ class SearchBar extends React.Component {
 								{results}
 								<div className="panel-element">
 									<div className="right">
-										<Img src={algoliaLogo} />
+										<Img className="algolia-logo" src={algoliaLogo} />
 									</div>
 								</div>
 							</div>

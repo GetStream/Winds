@@ -93,6 +93,7 @@ class AddRSSModal extends React.Component {
 			submitting: true,
 			success: false,
 		});
+
 		axios({
 			baseURL: config.api.url,
 			data: { feedUrl: this.state.rssInputValue },
@@ -118,10 +119,7 @@ class AddRSSModal extends React.Component {
 			})
 			.catch(err => {
 				this.setState({
-					errorMessage:
-						err.response.status === 400 || err.response.status === 500
-							? 'Please enter a valid RSS URL.'
-							: 'Oops, something went wrong. Please try again later.',
+					errorMessage: 'Oops, something went wrong. Please try again later.',
 					errored: true,
 					submitting: false,
 				});

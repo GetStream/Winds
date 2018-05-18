@@ -89,7 +89,7 @@ class RSSArticle extends React.Component {
 			<React.Fragment>
 				<div className="content-header">
 					<h1>{this.props.title}</h1>
-					<div className="article-info">
+					<div className="item-info">
 						<span
 							className="bookmark"
 							onClick={e => {
