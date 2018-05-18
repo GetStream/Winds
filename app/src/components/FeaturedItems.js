@@ -7,31 +7,33 @@ import { Link } from 'react-router-dom';
 
 class FeaturedItems extends React.Component {
 	componentDidMount() {
-		fetch('GET', '/featured').then(response => {
-			// first, go through and update each item
-			for (let item of response.data) {
-				if (item.type === 'rss') {
-					this.props.dispatch({
-						rssFeed: item,
-						type: 'UPDATE_RSS_FEED',
-					});
-				} else if (item.type === 'podcast') {
-					this.props.dispatch({
-						podcast: item,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
+		if (this.props.featuredItems.length === 0) {
+			fetch('GET', '/featured').then(response => {
+				// first, go through and update each item
+				for (let item of response.data) {
+					if (item.type === 'rss') {
+						this.props.dispatch({
+							rssFeed: item,
+							type: 'UPDATE_RSS_FEED',
+						});
+					} else if (item.type === 'podcast') {
+						this.props.dispatch({
+							podcast: item,
+							type: 'UPDATE_PODCAST_SHOW',
+						});
+					}
 				}
-			}
 
-			let featuredItemIDs = response.data.map(item => {
-				return `${item.type}:${item._id}`;
+				let featuredItemIDs = response.data.map(item => {
+					return `${item.type}:${item._id}`;
+				});
+				// then, update the list of featured items
+				this.props.dispatch({
+					featuredItemIDs,
+					type: 'UPDATE_FEATURED_ITEMS',
+				});
 			});
-			// then, update the list of featured items
-			this.props.dispatch({
-				featuredItemIDs,
-				type: 'UPDATE_FEATURED_ITEMS',
-			});
-		});
+		}
 	}
 	render() {
 		return (
