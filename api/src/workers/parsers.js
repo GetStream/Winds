@@ -15,18 +15,19 @@ import Article from '../models/rss';
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 
-
-const WindsUserAgent = 'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/'
-const BrowserUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36'
+const WindsUserAgent =
+	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
+const BrowserUserAgent =
+	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36';
 const AcceptHeader = 'text/html,application/xhtml+xml,application/xml';
 
 // sanitize cleans the html before returning it to the frontend
 var sanitize = function(dirty) {
 	return sanitizeHtml(dirty, {
-		allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
 		allowedAttributes: {
 			img: ['src', 'title', 'alt'],
 		},
+		allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
 	});
 };
 
@@ -37,10 +38,7 @@ function ParseFeed(feedUrl, callback) {
 	});
 
 	req.setMaxListeners(50);
-	req.setHeader(
-		'User-Agent',
-		WindsUserAgent,
-	);
+	req.setHeader('User-Agent', WindsUserAgent);
 	req.setHeader('Accept', AcceptHeader);
 
 	let feedparser = new FeedParser();
@@ -87,13 +85,13 @@ function ParseFeed(feedUrl, callback) {
 			);
 
 			let parsedArticle = {
+				content: sanitize(post.summary),
 				description: description,
 				publicationDate:
 					moment(post.pubdate).toISOString() || moment().toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
 				// For some sites like XKCD the content from RSS is better than Mercury
-				content: sanitize(post.summary),
 				// note that we don't actually get the images, OG scraping is more reliable
 			};
 
@@ -103,7 +101,7 @@ function ParseFeed(feedUrl, callback) {
 			}
 
 			// product hunt comments url
-			if (post.link.indexOf('https://www.producthunt.com') == 0) {
+			if (post.link.indexOf('https://www.producthunt.com') === 0) {
 				let matches = post.description.match(
 					/(https:\/\/www.producthunt.com\/posts\/.*)"/,
 				);
@@ -113,7 +111,7 @@ function ParseFeed(feedUrl, callback) {
 			}
 
 			// nice images for XKCD
-			if (post.link.indexOf('https://xkcd') == 0) {
+			if (post.link.indexOf('https://xkcd') === 0) {
 				let matches = post.description.match(
 					/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/,
 				);
@@ -135,7 +133,7 @@ function ParsePodcast(podcastUrl, callback) {
 	let opts = {
 		headers: {
 			'Accept': AcceptHeader,
-			'User-Agent': WindsUserAgent
+			'User-Agent': WindsUserAgent,
 		},
 		pool: false,
 		timeout: 10000,
@@ -153,7 +151,6 @@ function ParsePodcast(podcastUrl, callback) {
 				return callback(null, err);
 			}
 
-
 			// the podcast metadata we care about:
 			podcastContents.title = data.title;
 			podcastContents.link = data.link;
@@ -170,15 +167,15 @@ function ParsePodcast(podcastUrl, callback) {
 					}
 					var parsedEpisode = new Episode({
 						description: strip(episode.description).substring(0, 280),
+						duration: episode.duration,
+						enclosure: episode.enclosure && episode.enclosure.url,
+						images: { og: episode.image },
+						link: episode.link,
 						publicationDate:
 							moment(episode.published).toISOString() ||
 							moment().toISOString(),
 						title: strip(episode.title),
 						url: normalize(url),
-						link: episode.link,
-						enclosure: episode.enclosure && episode.enclosure.url,
-						duration: episode.duration,
-						images: { og: episode.image },
 					});
 				} catch (e) {
 					logger.error('Failed to parse episode', e);
