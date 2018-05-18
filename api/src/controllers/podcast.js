@@ -159,11 +159,11 @@ exports.post = (req, res) => {
 													podcast.value.url
 												} for og scraping`,
 											);
-											if (!podcast.value.images.og) {
+											if (!podcast.value.images.og && podcast.value.link) {
 												ogQueue
 													.add(
 														{
-															url: podcast.value.url,
+															url: podcast.value.link,
 															type: 'podcast',
 														},
 														{
