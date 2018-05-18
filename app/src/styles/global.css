@@ -1055,6 +1055,8 @@ a.column-header:hover {
 .list-view-header .alignment-box {
   align-items: center;
   display: flex; }
+  .list-view-header .alignment-box h1 {
+    margin: 0; }
   .list-view-header .alignment-box .image img {
     border-radius: 8px;
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
@@ -2233,6 +2235,15 @@ a.column-header:hover {
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .podcasts-view.featured {
+    grid-template-areas: 'featured border content-header' 'featured border content' 'desc border content';
+    grid-template-columns: 1fr auto 2fr;
+    grid-template-rows: 101px 101px auto;
+    padding-top: 2em; }
+    .podcasts-view.featured .panels-header {
+      grid-area: featured; }
+    .podcasts-view.featured .panels {
+      grid-area: desc; }
   .podcasts-view .border {
     background: linear-gradient(to top, #ebebeb, #f7f7f7);
     grid-area: border;

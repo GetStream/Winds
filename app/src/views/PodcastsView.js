@@ -106,7 +106,13 @@ class PodcastsView extends React.Component {
 		}
 
 		return (
-			<div className="podcasts-view">
+			<div
+				className={`podcasts-view ${
+					queryString.parse(this.props.location.search).featured === 'true'
+						? 'featured'
+						: ''
+				}`}
+			>
 				{leftColumn}
 				<div className="border" />
 				<Switch>

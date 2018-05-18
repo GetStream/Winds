@@ -28,6 +28,24 @@
 	overflow-y: hidden;
 	padding: 0 ($gutters / 2);
 
+	&.featured {
+		grid-template-areas:
+			'featured border content-header'
+			'featured border content'
+			'desc border content';
+		grid-template-columns: 1fr auto 2fr;
+		grid-template-rows: 101px 101px auto;
+		padding-top: 2em;
+
+		.panels-header {
+			grid-area: featured;
+		}
+
+		.panels {
+			grid-area: desc;
+		}
+	}
+
 	.border {
 		background: linear-gradient(to top, #ebebeb, #f7f7f7);
 		grid-area: border;
