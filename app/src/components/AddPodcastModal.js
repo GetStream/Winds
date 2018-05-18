@@ -64,10 +64,7 @@ class AddPodcastModal extends React.Component {
 			})
 			.catch(err => {
 				this.setState({
-					errorMessage:
-						err.response.status === 400 || err.response.status === 500
-							? 'Please enter a valid podcast URL.'
-							: 'Oops, something went wrong. Please try again later.',
+					errorMessage: 'Oops, something went wrong. Please try again later.',
 					errored: true,
 					submitting: false,
 				});
