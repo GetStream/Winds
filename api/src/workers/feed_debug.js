@@ -100,12 +100,11 @@ function main() {
 				}).then(instance => {
 
 				if (program.rss) {
-					logger.info(`scheduled RSS feed to the queue for parsing ${target}`)
+					logger.info(`scheduled RSS feed to the queue for parsing ${target} with id ${instance._id}`)
 					rssQueue.add(
 						{
 							rss: instance._id,
 							url: instance.feedUrl,
-							update: true
 						},
 						{
 							priority: 1,
@@ -119,7 +118,6 @@ function main() {
 						{
 							podcast: instance._id,
 							url: instance.feedUrl,
-							update: true
 						},
 						{
 							priority: 1,

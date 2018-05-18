@@ -68,45 +68,52 @@ rssQueue.process((job, done) => {
 				(post, cb) => {
 					// lookup by url
 					let normalizedUrl = normalize(post.url);
-					Article.findOne({ url: normalizedUrl, rss: job.data.rss }).then(
-						article => {
-							if (article) {
+					Article.findOneAndUpdate(
+						{ url: normalizedUrl, rss: job.data.rss },
+					{
+						description: post.description,
+						publicationDate: post.publicationDate,
+						commentUrl: post.commentUrl,
+						content: post.content,
+						images: post.images,
+						rss: job.data.rss,
+						title: post.title,
+						url: normalizedUrl,
+					},{
+						upsert: true,
+						rawResult: true,
+						new: true
+					}).catch(err => {
+						logger.error(`Failed to findOneAndUpdate for article with url ${normalizedUrl} ${err}`)
+						cb(null, null);
+					}).then(rawArticle => {
+							if (rawArticle.lastErrorObject.updatedExisting) {
 								// article already exists
 								cb(null, null);
 								return;
 							} else {
-								Article.create({
-									description: post.description,
-									publicationDate: post.publicationDate,
-									commentUrl: post.commentUrl,
-									content: post.content,
-									images: post.images,
-									rss: job.data.rss,
-									title: post.title,
-									url: normalizedUrl,
-								}).then(article => {
-									// after article is created, add to algolia, stream, and opengraph scraper queue
-									return ogQueue
-										.add(
-											{
-												url: article.url,
-												type: 'rss',
-											},
-											{
-												removeOnComplete: true,
-												removeOnFail: true,
-											},
-										)
-										.then(function() {
-											// this is just returning the article created from the MongoDB `create` call
-											cb(null, article);
-										})
-										.catch(err => {
-											// error: either adding to algolia, or adding to OGqueue - continuing on for the time being.
-											logger.error(err);
-											cb(null, article);
-										});
-								});
+								let article = rawArticle.value
+								// after article is created, add to algolia, stream, and opengraph scraper queue
+								return ogQueue
+									.add(
+										{
+											url: article.url,
+											type: 'rss',
+										},
+										{
+											removeOnComplete: true,
+											removeOnFail: true,
+										},
+									)
+									.then(function() {
+										// this is just returning the article created from the MongoDB `create` call
+										cb(null, article);
+									})
+									.catch(err => {
+										// error: either adding to algolia, or adding to OGqueue - continuing on for the time being.
+										logger.error(`failed to publish to ogQueue ${err}`);
+										cb(null, article);
+									});
 							}
 						},
 					);
