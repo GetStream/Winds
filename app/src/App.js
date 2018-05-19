@@ -49,20 +49,6 @@ document.body.addEventListener('click', e => {
 });
 
 class App extends Component {
-	componentDidMount() {
-		if (window.isElectron) {
-			window.ipcRenderer.on('update-downloaded', () => {
-				if (
-					window.confirm(
-						'There is a new version available. Would you like to quit and install the update?',
-					)
-				) {
-					window.ipcRenderer.send('quit-and-install');
-				}
-			});
-		}
-	}
-
 	render() {
 		return (
 			<Provider store={store}>
