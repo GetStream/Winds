@@ -27,10 +27,14 @@ api.use(
 	}),
 );
 
+api.set('json spaces', 4);
+
 api.use(
 	jwt({ secret: config.jwt.secret }).unless({
 		path: [
 			'/',
+			'/health',
+			'/test',
 			'/auth/signup',
 			'/auth/login',
 			'/auth/forgot-password',

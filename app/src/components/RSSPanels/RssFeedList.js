@@ -5,6 +5,8 @@ import Img from 'react-image';
 import React from 'react';
 import Panel from '../Panel';
 import fetch from '../../util/fetch';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class RssFeedList extends React.Component {
 	componentDidMount() {
@@ -36,10 +38,24 @@ class RssFeedList extends React.Component {
 	}
 	render() {
 		return (
-			<Panel headerText="Feeds">
+			<Panel
+				hasHighlight={
+					this.props.match.params.rssFeedID &&
+					this.props.match.params.rssFeedID !== 'recent'
+				}
+				headerText="Feeds"
+			>
 				{this.props.rssFeeds.map(rssFeed => {
 					return (
-						<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
+						<Link
+							className={
+								this.props.match.params.rssFeedID === rssFeed._id
+									? 'highlighted'
+									: ''
+							}
+							key={rssFeed._id}
+							to={`/rss/${rssFeed._id}`}
+						>
 							<Img
 								src={[
 									rssFeed.images.favicon,
@@ -57,6 +73,16 @@ class RssFeedList extends React.Component {
 		);
 	}
 }
+
+RssFeedList.propTypes = {
+	dispatch: PropTypes.func.isRequired,
+	match: PropTypes.shape({
+		params: PropTypes.shape({
+			rssFeedID: PropTypes.string,
+		}),
+	}),
+	rssFeeds: PropTypes.arrayOf(PropTypes.shape({})),
+};
 
 const mapStateToProps = (state, ownProps) => {
 	// convert rssFeeds object into array
@@ -85,4 +111,5 @@ const mapStateToProps = (state, ownProps) => {
 		rssFeeds,
 	};
 };
-export default connect(mapStateToProps)(RssFeedList);
+
+export default connect(mapStateToProps)(withRouter(RssFeedList));

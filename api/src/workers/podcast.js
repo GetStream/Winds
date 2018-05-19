@@ -24,7 +24,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting to process podcasts....');
 
-podcastQueue.process((job, done) => {
+podcastQueue.process(5, (job, done) => {
 	logger.info(`Processing ${job.data.url}`);
 
 	Podcast.findOne({ _id: job.data.podcast }).then(doc => {

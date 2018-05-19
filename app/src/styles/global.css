@@ -1109,13 +1109,16 @@ a.column-header:hover {
       height: 100px;
       width: 100px; }
   .list .list-item .right {
-    font-size: 14px; }
+    width: 85%; }
     .list .list-item .right h2 {
-      font-size: 18px;
+      display: inline-block;
       font-weight: 600;
-      margin-bottom: 0.5em;
+      margin-bottom: 0;
       margin-top: 0;
-      white-space: nowrap; }
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 90%; }
     .list .list-item .right .info {
       align-items: center;
       color: #aaa;
@@ -1191,6 +1194,10 @@ a.column-header:hover {
   border-radius: 8px;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
   margin-bottom: 1em; }
+  .panel.hasHighlight .panel-element {
+    color: #aaa; }
+    .panel.hasHighlight .panel-element.highlighted {
+      color: #000; }
   .panel.expanded {
     height: 100%; }
   .panel.with-hero-card {
@@ -1218,12 +1225,14 @@ a.column-header:hover {
     align-items: center;
     border-bottom: 1px solid #eee;
     color: inherit;
+    cursor: pointer;
     display: flex;
     font-size: 12px;
     font-weight: 600;
     margin: 0 1em;
     padding: 1em 0;
-    text-decoration: inherit; }
+    text-decoration: inherit;
+    white-space: nowrap; }
     .panel .panel-element i {
       font-size: 0.8em; }
     .panel .panel-element > * {

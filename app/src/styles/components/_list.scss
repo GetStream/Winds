@@ -74,14 +74,17 @@
 		}
 
 		.right {
-			font-size: 14px;
+			width: 85%;
 
 			h2 {
-				font-size: 18px;
-				font-weight: 600;
-				margin-bottom: 0.5em;
+				display: inline-block;
+				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
+				margin-bottom: 0;
 				margin-top: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
 				white-space: nowrap;
+				width: 90%;
 			}
 
 			.info {

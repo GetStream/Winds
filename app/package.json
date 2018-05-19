@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.170",
+	"version": "2.0.176",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Nick Parsons <nick@getstream.io>",
@@ -110,7 +110,8 @@
 			"icon": "assets/icon.icns",
 			"type": "distribution",
 			"target": [
-				"mas"
+				"pkg",
+				"dmg"
 			],
 			"publish": {
 				"provider": "s3",
@@ -120,6 +121,9 @@
 			"category": "public.app-category.news"
 		},
 		"mas": {
+			"target": [
+				"mas"
+			],
 			"entitlements": "assets/entitlements.mas.plist",
 			"entitlementsInherit": "assets/entitlements.mas.inherit.plist",
 			"provisioningProfile": "../../winds-private/embedded.provisionprofile"
