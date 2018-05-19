@@ -1,5 +1,4 @@
 import loaderIcon from '../images/loaders/default.svg';
-import optionsIcon from '../images/icons/options.svg';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -264,9 +263,10 @@ class RSSArticleList extends React.Component {
 									isOpen={this.state.menuIsOpen}
 									onOuterAction={this.toggleMenu}
 									place="below"
+									tipSize={0.1}
 								>
 									<div onClick={this.toggleMenu}>
-										<Img src={optionsIcon} />
+										<i className="fa fa-ellipsis-h fa-2x" />
 									</div>
 								</Popover>
 							</div>

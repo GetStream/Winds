@@ -231,6 +231,7 @@ class PodcastEpisodesView extends React.Component {
 								isOpen={this.state.menuIsOpen}
 								onOuterAction={this.toggleMenu}
 								place="below"
+								tipSize={0.1}
 							>
 								<div onClick={this.toggleMenu}>
 									<Img src={optionsIcon} />
