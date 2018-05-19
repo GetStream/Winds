@@ -13,24 +13,30 @@ class PodcastList extends React.Component {
 		// get a list of all followed podcasts, then update podcasts + following relationships
 		fetch('GET', '/follows', null, { type: 'podcast' })
 			.then(response => {
+				// should only need to update this once - returns back follow relationships for just the user
+				// update user
+				this.props.dispatch({
+					type: 'UPDATE_USER',
+					user: response.data[0].user,
+				});
+				let podcasts = [];
+				let podcastFollowRelationships = [];
 				for (let followRelationship of response.data) {
-					// update podcast
-					this.props.dispatch({
-						podcast: followRelationship.podcast,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-					// update user
-					this.props.dispatch({
-						type: 'UPDATE_USER',
-						user: followRelationship.user,
-					});
-					// set user to follow podcast
-					this.props.dispatch({
+					podcasts.push(followRelationship.podcast);
+					podcastFollowRelationships.push({
 						podcastID: followRelationship.podcast._id,
-						type: 'FOLLOW_PODCAST',
 						userID: followRelationship.user._id,
 					});
 				}
+				// batch update podcasts
+				this.props.dispatch({
+					podcasts,
+					type: 'BATCH_UPDATE_PODCASTS',
+				});
+				this.props.dispatch({
+					podcastFollowRelationships,
+					type: 'BATCH_FOLLOW_PODCASTS',
+				});
 			})
 			.catch(err => {
 				console.log(err); // eslint-disable-line no-console

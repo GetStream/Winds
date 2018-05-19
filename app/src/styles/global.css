@@ -1010,7 +1010,8 @@ a.column-header:hover {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   height: 178px;
   padding: 2em;
-  position: relative; }
+  position: relative;
+  text-align: left; }
   .hero-card h1 {
     color: #fff;
     font-size: 22px;
@@ -1265,7 +1266,6 @@ a.column-header:hover {
       margin-right: 1em; }
       .panel .panel-element > *:last-child {
         margin-right: unset;
-        min-width: 4em;
         text-align: right; }
       .panel .panel-element > *:nth-child(2) {
         flex-grow: 1;

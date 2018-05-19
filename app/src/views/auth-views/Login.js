@@ -55,6 +55,7 @@ class Login extends Component {
 				<form className="auth-form" onSubmit={this.submit}>
 					<label>
 						<input
+							autoComplete="username"
 							autoFocus={true}
 							name="email"
 							onChange={e => {
@@ -71,6 +72,7 @@ class Login extends Component {
 					<br />
 					<label>
 						<input
+							autoComplete="current-password"
 							name="password"
 							onChange={e => {
 								e.preventDefault();
