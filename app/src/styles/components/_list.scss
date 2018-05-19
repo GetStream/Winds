@@ -66,14 +66,15 @@
 			background-color: $foreground-green;
 			border-radius: 10000px;
 			height: 8px;
-			width: 8px;
+			left: -4px;
 			position: absolute;
 			top: -4px;
-			left: -4px;
+			width: 8px;
 		}
 
 		.left {
 			margin-right: 2em;
+			position: relative;
 
 			> img,
 			> .background-image {

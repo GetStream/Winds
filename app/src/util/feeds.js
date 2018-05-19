@@ -1,6 +1,9 @@
 import fetch from './fetch';
 
-const getEpisodesFeed = (dispatch, page = 0, per_page = 10) => {
+const getEpisodesFeed = (dispatch, type, page = 0, per_page = 10) => {
+	if (!type) {
+		throw new Error('"type" not provided when fetching feed');
+	}
 	fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 		page,
 		per_page,

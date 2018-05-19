@@ -159,6 +159,19 @@ const mapStateToProps = (state, ownProps) => {
 		} else {
 			article.pinned = false;
 		}
+
+		if (
+			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
+				article._id,
+			) < 20 &&
+			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
+				article._id,
+			) !== -1
+		) {
+			article.recent = true;
+		} else {
+			article.recent = false;
+		}
 	}
 
 	return { ...ownProps, articles };

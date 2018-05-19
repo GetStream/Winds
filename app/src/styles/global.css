@@ -1104,12 +1104,13 @@ a.column-header:hover {
       background-color: #44bc75;
       border-radius: 10000px;
       height: 8px;
-      width: 8px;
+      left: -4px;
       position: absolute;
       top: -4px;
-      left: -4px; }
+      width: 8px; }
     .list .list-item .left {
-      margin-right: 2em; }
+      margin-right: 2em;
+      position: relative; }
       .list .list-item .left > img,
       .list .list-item .left > .background-image {
         background-position: center;

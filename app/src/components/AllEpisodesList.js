@@ -46,7 +46,7 @@ class AllEpisodesList extends React.Component {
 		this.getEpisodes();
 	}
 	getEpisodes() {
-		getEpisodesFeed(this.props.dispatch, this.state.cursor, 10);
+		getEpisodesFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
 	}
 	render() {
 		return (
