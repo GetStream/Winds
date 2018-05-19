@@ -10,16 +10,29 @@ class Panel extends React.Component {
 		};
 	}
 	render() {
-		let children = Array.isArray(this.props.children) ? (
-			this.props.children.map((child, i) => {
-				return <child.type className="panel-element" key={i} {...child.props} />;
-			})
-		) : (
-			<this.props.children.type
-				className="panel-element"
-				{...this.props.children.props}
-			/>
-		);
+		let children;
+
+		if (Array.isArray(this.props.children)) {
+			children = this.props.children.map((child, i) => {
+				let { className, ...restProps } = child.props;
+
+				return (
+					<child.type
+						className={`panel-element ${className}`}
+						key={i}
+						{...restProps}
+					/>
+				);
+			});
+		} else {
+			let { className, ...restProps } = this.props.children.props;
+			children = (
+				<this.props.children.type
+					className={`panel-element ${className}`}
+					{...restProps}
+				/>
+			);
+		}
 
 		if (
 			this.props.expandable &&
@@ -33,7 +46,7 @@ class Panel extends React.Component {
 			<div
 				className={`panel ${
 					this.props.expandable && this.state.expanded ? 'expanded' : ''
-				}`}
+				} ${this.props.hasHighlight ? 'hasHighlight' : ''}`}
 			>
 				{this.props.headerLink ? (
 					<Link className="panel-header" to={this.props.headerLink}>
@@ -48,8 +61,7 @@ class Panel extends React.Component {
 					{this.props.expandable ? (
 						<div
 							className="expander"
-							onClick={e => {
-								console.log('clicked');
+							onClick={() => {
 								this.setState({
 									expanded: !this.state.expanded,
 								});
@@ -80,6 +92,7 @@ Panel.propTypes = {
 		PropTypes.arrayOf(PropTypes.element),
 	]),
 	expandable: PropTypes.bool,
+	hasHighlight: PropTypes.bool,
 	headerLink: PropTypes.string,
 	headerText: PropTypes.string,
 };
