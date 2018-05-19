@@ -27,23 +27,26 @@
 			display: flex;
 			flex-direction: column-reverse;
 			height: 190px;
-			margin-right: 2em;
+			margin-right: 1.2em;
 			min-width: 200px;
-			padding: 2em;
+			padding: 1.2em;
 			text-decoration: inherit;
 			width: 200px;
 
 			&:first-child {
-				margin-left: 2em;
+				margin-left: 1.2em;
 			}
 
 			h1 {
 				margin-bottom: 0;
+				font-size: 1.65em;
+
 			}
 
 			label {
 				color: $foreground-white;
 				margin-bottom: auto;
+				font-size: 1em;
 			}
 		}
 	}
