@@ -25,6 +25,7 @@ class ArticleListItem extends React.Component {
 								getPlaceholderImageURL(this.props._id)})`,
 						}}
 					/>
+					{this.props.recent ? <div className="recent-indicator" /> : null}
 				</div>
 				<div className="right">
 					<h2>{this.props.title}</h2>
@@ -66,7 +67,7 @@ class ArticleListItem extends React.Component {
 							<TimeAgo timestamp={this.props.publicationDate} />
 						</span>
 					</div>
-					<div>{this.props.description}</div>
+					<div className="description">{this.props.description}</div>
 				</div>
 			</div>
 		);
@@ -78,6 +79,7 @@ ArticleListItem.defaultProps = {
 	liked: false,
 	likes: 0,
 	pinned: false,
+	recent: false,
 };
 
 ArticleListItem.propTypes = {
@@ -94,6 +96,7 @@ ArticleListItem.propTypes = {
 	pinID: PropTypes.string,
 	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
+	recent: PropTypes.bool,
 	rss: PropTypes.shape({
 		_id: PropTypes.string,
 		title: PropTypes.string,

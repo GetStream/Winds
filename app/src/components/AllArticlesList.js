@@ -1,6 +1,5 @@
 import { getPinnedArticles } from '../util/pins';
 import { getArticle } from '../selectors';
-import fetch from '../util/fetch';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -8,6 +7,7 @@ import ArticleListItem from './ArticleListItem';
 import Waypoint from 'react-waypoint';
 import loaderIcon from '../images/loaders/default.svg';
 import Img from 'react-image';
+import { getFeed } from '../util/feeds';
 
 class AllArticles extends React.Component {
 	constructor(props) {
@@ -22,58 +22,9 @@ class AllArticles extends React.Component {
 		getPinnedArticles(this.props.dispatch);
 	}
 	getArticleFeed() {
-		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
-			page: this.state.cursor,
-			per_page: 10,
-			sort_by: 'publicationDate,desc',
-			type: 'article',
-		}).then(response => {
-			let articles = response.data.map(article => {
-				return { ...article, type: 'article' };
-			});
-			if (articles.length === 0) {
-				this.setState({
-					reachedEndOfFeed: true,
-				});
-			}
-
-			for (let article of articles) {
-				// update rss feed
-				this.props.dispatch({
-					rssFeed: article.rss,
-					type: 'UPDATE_RSS_FEED',
-				});
-				// update article
-				this.props.dispatch({
-					rssArticle: article,
-					type: 'UPDATE_ARTICLE',
-				});
-			}
-
-			// sort articles
-			articles.sort((a, b) => {
-				return (
-					new Date(b.publicationDate).valueOf() -
-					new Date(a.publicationDate).valueOf()
-				);
-			});
-
-			this.props.dispatch({
-				activities: articles,
-				feedID: `user_article:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
-			});
-		});
+		getFeed(this.props.dispatch, 'article', this.state.cursor, 10);
 	}
 	render() {
-		let unsortedArticles = [...this.props.articles];
-		unsortedArticles.sort((a, b) => {
-			return (
-				new Date(b.publicationDate).valueOf() -
-				new Date(a.publicationDate).valueOf()
-			);
-		});
-
 		return (
 			<React.Fragment>
 				<div className="list-view-header content-header">
@@ -81,7 +32,7 @@ class AllArticles extends React.Component {
 				</div>
 
 				<div className="list content">
-					{unsortedArticles.map(article => {
+					{this.props.articles.map(article => {
 						return (
 							<ArticleListItem
 								key={article._id}
@@ -158,6 +109,19 @@ const mapStateToProps = (state, ownProps) => {
 			article.pinID = state.pinnedArticles[article._id]._id;
 		} else {
 			article.pinned = false;
+		}
+
+		if (
+			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
+				article._id,
+			) < 20 &&
+			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
+				article._id,
+			) !== -1
+		) {
+			article.recent = true;
+		} else {
+			article.recent = false;
 		}
 	}
 

@@ -1,11 +1,11 @@
 import loaderIcon from '../images/loaders/default.svg';
-import optionsIcon from '../images/icons/options.svg';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import { getPinnedArticles } from '../util/pins';
+import { getFeed } from '../util/feeds';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
@@ -39,12 +39,15 @@ class RSSArticleList extends React.Component {
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
 		getPinnedArticles(this.props.dispatch);
+		getFeed(this.props.dispatch, 'article', 0, 20);
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
+			// if navigating between rss feeds
 			this.getRSSFeed(nextProps.match.params.rssFeedID);
 			this.getFollowState(nextProps.match.params.rssFeedID);
 			this.getRSSArticles(nextProps.match.params.rssFeedID);
+			getFeed(this.props.dispatch, 'article', 0, 20);
 		}
 	}
 	getRSSFeed(rssFeedID) {
@@ -264,9 +267,10 @@ class RSSArticleList extends React.Component {
 									isOpen={this.state.menuIsOpen}
 									onOuterAction={this.toggleMenu}
 									place="below"
+									tipSize={0.1}
 								>
 									<div onClick={this.toggleMenu}>
-										<Img src={optionsIcon} />
+										<i className="fa fa-ellipsis-h fa-2x" />
 									</div>
 								</Popover>
 							</div>
@@ -333,6 +337,22 @@ const mapStateToProps = (state, ownProps) => {
 		} else {
 			article.pinned = false;
 		}
+
+		if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
+			if (
+				state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
+					article._id,
+				) < 20 &&
+				state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
+					article._id,
+				) !== -1
+			) {
+				article.recent = true;
+			} else {
+				article.recent = false;
+			}
+		}
+
 		article.rss = { ...rssFeed };
 	}
 

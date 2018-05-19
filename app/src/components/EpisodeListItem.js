@@ -64,6 +64,7 @@ class EpisodeListItem extends React.Component {
 						width="100"
 					/>
 					{this.props.playable ? icon : null}
+					{this.props.recent ? <div className="recent-indicator" /> : null}
 				</div>
 				<div className="right">
 					<h2>{`${this.props.title}`}</h2>
@@ -110,6 +111,7 @@ EpisodeListItem.defaultProps = {
 	pinned: false,
 	playable: false,
 	playing: false,
+	recent: false,
 };
 
 EpisodeListItem.propTypes = {
@@ -134,6 +136,7 @@ EpisodeListItem.propTypes = {
 		title: PropTypes.string,
 	}).isRequired,
 	publicationDate: PropTypes.string,
+	recent: PropTypes.bool,
 	title: PropTypes.string,
 	unpinEpisode: PropTypes.func.isRequired,
 };

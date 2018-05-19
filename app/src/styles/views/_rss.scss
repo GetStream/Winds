@@ -132,5 +132,13 @@
 		justify-content: center;
 		max-height: 100vh;
 	}
+	.description {
+		font-size: 14px;
+		line-height: 20px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 100%;
+	}
 
 }

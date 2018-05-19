@@ -3,7 +3,6 @@
 		align-items: center;
 		display: flex;
 
-
 		h1 {
 			margin: 0;
 		}
@@ -30,6 +29,9 @@
 }
 
 .list {
+	padding-left: 4px;
+	padding-top: 4px;
+
 	.end-loader,
 	.end {
 		align-items: center;
@@ -60,8 +62,19 @@
 			padding-top: 0;
 		}
 
+		.recent-indicator {
+			background-color: $foreground-green;
+			border-radius: 10000px;
+			height: 8px;
+			left: -4px;
+			position: absolute;
+			top: -4px;
+			width: 8px;
+		}
+
 		.left {
 			margin-right: 2em;
+			position: relative;
 
 			> img,
 			> .background-image {
@@ -69,23 +82,24 @@
 				background-size: cover;
 				border-radius: $border-radius;
 				box-shadow: $box-shadow;
-				height: 100px;
-				width: 100px;
+				height: 75px;
+				width: 75px;
 			}
 		}
 
 		.right {
-			width: 85%;
+			max-width: 90%;
+			@media only screen and (max-width: 1400px) { width: 80%;}
+			@media only screen and (max-width: 970px) { width: 70%;}
+
 			h2 {
 				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
-				margin-bottom: 0em;
+				margin-bottom: 0;
 				margin-top: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
 				white-space: nowrap;
-			  overflow: hidden;
-			  display: inline-block;
-			  text-overflow: ellipsis;
-				width:90%;
-
+				width: 100%;
 			}
 
 			.info {
@@ -93,16 +107,11 @@
 				color: $foreground-darkgray;
 				display: flex;
 				font-family: $primary;
-				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
+				font-size: 11px;
+				font-weight: bold;
 				letter-spacing: 0.1em;
 				margin-bottom: 0.5em;
 				text-transform: uppercase;
-
-				.likes {
-					img {
-						margin-right: 0.5em;
-					}
-				}
 
 				.date {
 					font-size: 11px;
