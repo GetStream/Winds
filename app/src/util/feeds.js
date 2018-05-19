@@ -14,23 +14,17 @@ const getFeed = (dispatch, type, page = 0, per_page = 10) => {
 		});
 
 		if (type === 'episode') {
+			let podcasts = [];
 			for (let episode of items) {
-				// update podcast
-				dispatch({
-					podcast: episode.podcast,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-				// update episode
-				dispatch({
-					episode,
-					type: 'UPDATE_EPISODE',
-				});
+				podcasts.push(episode.podcast);
 			}
-
 			dispatch({
-				activities: items,
-				feedID: `user_episode:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
+				podcasts,
+				type: 'BATCH_UPDATE_PODCASTS',
+			});
+			dispatch({
+				episodes: items,
+				type: 'BATCH_UPDATE_EPISODES',
 			});
 		} else if (type === 'article') {
 			for (let article of items) {
@@ -45,12 +39,12 @@ const getFeed = (dispatch, type, page = 0, per_page = 10) => {
 					type: 'UPDATE_ARTICLE',
 				});
 			}
-			dispatch({
-				activities: items,
-				feedID: `user_article:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
-			});
 		}
+		dispatch({
+			activities: items,
+			feedID: `user_${type}:${localStorage['authedUser']}`,
+			type: 'UPDATE_FEED',
+		});
 	});
 };
 
