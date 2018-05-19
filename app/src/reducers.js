@@ -282,7 +282,7 @@ export default (previousState = {}, action) => {
 		episodes[episode._id] = episode;
 		return { ...previousState, episodes };
 	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
-		// convert episode IDs
+		// convert podcast IDs
 		let previousEpisodes = { ...previousState.episodes };
 		for (let episode of action.episodes) {
 			previousEpisodes[episode._id] = {
@@ -293,6 +293,21 @@ export default (previousState = {}, action) => {
 		return {
 			...previousState,
 			episodes: { ...previousEpisodes },
+		};
+	} else if (action.type === 'BATCH_UPDATE_ARTICLES') {
+		// convert rss feed IDs
+		let previousArticles = { ...previousState.articles };
+		for (let article of action.articles) {
+			previousArticles[article._id] = {
+				...article,
+				rss: article.rss._id,
+			};
+		}
+		return {
+			...previousState,
+			articles: {
+				...previousArticles,
+			},
 		};
 	} else if (action.type === 'UPDATE_PODCAST_SHOW') {
 		return {
