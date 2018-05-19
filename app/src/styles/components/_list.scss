@@ -29,6 +29,9 @@
 }
 
 .list {
+	padding-left: 4px;
+	padding-top: 4px;
+
 	.end-loader,
 	.end {
 		align-items: center;
@@ -59,8 +62,19 @@
 			padding-top: 0;
 		}
 
+		.recent-indicator {
+			background-color: $foreground-green;
+			border-radius: 10000px;
+			height: 8px;
+			left: -4px;
+			position: absolute;
+			top: -4px;
+			width: 8px;
+		}
+
 		.left {
 			margin-right: 2em;
+			position: relative;
 
 			> img,
 			> .background-image {
@@ -98,12 +112,6 @@
 				letter-spacing: 0.1em;
 				margin-bottom: 0.5em;
 				text-transform: uppercase;
-
-				.likes {
-					img {
-						margin-right: 0.5em;
-					}
-				}
 
 				.date {
 					font-size: 11px;
