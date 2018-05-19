@@ -24,7 +24,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 // connect the handler to the queue
 logger.info('Starting the RSS worker');
 
-rssQueue.process((job, done) => {
+rssQueue.process(5, (job, done) => {
 	logger.info(`Processing RSS feed ${job.data.url}...`);
 
 	// start by looking up the RSS object
