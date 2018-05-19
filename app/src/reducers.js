@@ -262,6 +262,7 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_PLAYLIST_ORDER') {
+		// TODO: @kenhoff - remove
 		// serialize user
 		// and convert episode IDs
 		return {
@@ -280,6 +281,34 @@ export default (previousState = {}, action) => {
 		let episodes = { ...previousState.episodes };
 		episodes[episode._id] = episode;
 		return { ...previousState, episodes };
+	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
+		// convert podcast IDs
+		let previousEpisodes = { ...previousState.episodes };
+		for (let episode of action.episodes) {
+			previousEpisodes[episode._id] = {
+				...episode,
+				podcast: episode.podcast._id,
+			};
+		}
+		return {
+			...previousState,
+			episodes: { ...previousEpisodes },
+		};
+	} else if (action.type === 'BATCH_UPDATE_ARTICLES') {
+		// convert rss feed IDs
+		let previousArticles = { ...previousState.articles };
+		for (let article of action.articles) {
+			previousArticles[article._id] = {
+				...article,
+				rss: article.rss._id,
+			};
+		}
+		return {
+			...previousState,
+			articles: {
+				...previousArticles,
+			},
+		};
 	} else if (action.type === 'UPDATE_PODCAST_SHOW') {
 		return {
 			...previousState,
@@ -482,6 +511,20 @@ export default (previousState = {}, action) => {
 				...previousPodcastFollows,
 			},
 		};
+	} else if (action.type === 'BATCH_FOLLOW_RSS_FEEDS') {
+		let previousRssFeedFollows = { ...(previousState.followedRssFeeds || {}) };
+		for (let followRelationship of action.rssFeedFollowRelationships) {
+			if (!(followRelationship.userID in previousRssFeedFollows)) {
+				previousRssFeedFollows[followRelationship.userID] = {
+					[followRelationship.rssFeedID]: true,
+				};
+			} else {
+				previousRssFeedFollows[followRelationship.userID][
+					followRelationship.rssFeedID
+				] = true;
+			}
+		}
+		return { ...previousState, followedRssFeeds: { ...previousRssFeedFollows } };
 	} else if (action.type === 'UNFOLLOW_PODCAST') {
 		let userFollows = {};
 		if (!previousState.followedPodcasts) {
