@@ -179,11 +179,8 @@ rssQueue.process(5, (job, done) => {
 										done(err);
 									});
 
-								RSS.findByIdAndUpdate(job.data.rss, {
-									$set: {
-										isParsing: false,
-										lastScraped: moment().toISOString(),
-									},
+								RSS.update(job.data.rss, {
+									isParsing: false,
 								})
 									.then(res => {
 										logger.info(
