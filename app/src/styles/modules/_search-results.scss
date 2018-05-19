@@ -1,7 +1,9 @@
 .results.panel {
 	border-radius: 0.25em;
+	left: 0;
 	margin-top: 0.5em;
-	position: relative;
+	position: absolute;
+	right: 0;
 	z-index: 10001;
 
 	> * {
@@ -22,6 +24,12 @@
 		.left {
 			padding: unset;
 			width: unset;
+		}
+
+		.center {
+			display: block;
+			text-align: left;
+			text-overflow: ellipsis;
 		}
 
 		.right {

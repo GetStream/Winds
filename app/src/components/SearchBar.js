@@ -195,7 +195,7 @@ class SearchBar extends React.Component {
 		}
 
 		return (
-			<div>
+			<React.Fragment>
 				<div
 					className={`search ${
 						this.props.bannerIsShown ? 'banner-is-shown' : ''
@@ -224,13 +224,11 @@ class SearchBar extends React.Component {
 						<Img className="icon" src={searchOpacityIcon} />
 					</form>
 					{this.state.displayResults ? (
-						<div>
-							<div className="results panel">
-								{results}
-								<div className="panel-element">
-									<div className="right">
-										<Img className="algolia-logo" src={algoliaLogo} />
-									</div>
+						<div className="results panel">
+							{results}
+							<div className="panel-element">
+								<div className="right">
+									<Img className="algolia-logo" src={algoliaLogo} />
 								</div>
 							</div>
 						</div>
@@ -247,7 +245,7 @@ class SearchBar extends React.Component {
 						}}
 					/>
 				) : null}
-			</div>
+			</React.Fragment>
 		);
 	}
 }

@@ -3,7 +3,7 @@ import franc from 'franc-min';
 
 export default podcastUrl => {
 	return new Promise((resolve, reject) => {
-		ParsePodcast(podcastUrl, (podcastContents, err) => {
+		ParsePodcast(podcastUrl, (err, podcastContents) => {
 			if (err) {
 				// sometimes rss feeds throw a 503 when being added and parsed immediately - in that case, just resolve to english
 				return resolve('eng');
