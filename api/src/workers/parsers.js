@@ -132,7 +132,7 @@ function ParsePodcast(podcastUrl, callback) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
 	let opts = {
 		headers: {
-			'Accept': AcceptHeader,
+			Accept: AcceptHeader,
 			'User-Agent': WindsUserAgent,
 		},
 		pool: false,
