@@ -3,7 +3,6 @@
 		align-items: center;
 		display: flex;
 
-
 		h1 {
 			margin: 0;
 		}
@@ -75,10 +74,14 @@
 		}
 
 		.right {
+			font-size: 14px;
+
 			h2 {
-				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
+				font-size: 18px;
+				font-weight: 600;
 				margin-bottom: 0.5em;
 				margin-top: 0;
+				white-space: nowrap;
 			}
 
 			.info {
@@ -86,7 +89,8 @@
 				color: $foreground-darkgray;
 				display: flex;
 				font-family: $primary;
-				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
+				font-size: 11px;
+				font-weight: bold;
 				letter-spacing: 0.1em;
 				margin-bottom: 0.5em;
 				text-transform: uppercase;
