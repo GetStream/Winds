@@ -9,24 +9,32 @@ class FeaturedItems extends React.Component {
 	componentDidMount() {
 		if (this.props.featuredItems.length === 0) {
 			fetch('GET', '/featured').then(response => {
+				// split responses into rss feeds and podcasts
+				let rssFeeds = [];
+				let podcasts = [];
 				// first, go through and update each item
 				for (let item of response.data) {
 					if (item.type === 'rss') {
-						this.props.dispatch({
-							rssFeed: item,
-							type: 'UPDATE_RSS_FEED',
-						});
+						rssFeeds.push(item);
 					} else if (item.type === 'podcast') {
-						this.props.dispatch({
-							podcast: item,
-							type: 'UPDATE_PODCAST_SHOW',
-						});
+						podcasts.push(item);
 					}
 				}
+
+				this.props.dispatch({
+					rssFeeds,
+					type: 'BATCH_UPDATE_RSS_FEEDS',
+				});
+
+				this.props.dispatch({
+					podcasts,
+					type: 'BATCH_UPDATE_PODCASTS',
+				});
 
 				let featuredItemIDs = response.data.map(item => {
 					return `${item.type}:${item._id}`;
 				});
+
 				// then, update the list of featured items
 				this.props.dispatch({
 					featuredItemIDs,
