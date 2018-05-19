@@ -6,6 +6,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
 import Waypoint from 'react-waypoint';
+import { getEpisodesFeed } from '../util/feeds';
 
 class AllEpisodesList extends React.Component {
 	constructor(props) {
@@ -45,43 +46,7 @@ class AllEpisodesList extends React.Component {
 		this.getEpisodes();
 	}
 	getEpisodes() {
-		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
-			page: this.state.cursor,
-			per_page: 10,
-			type: 'episode',
-		}).then(response => {
-			let episodes = response.data.map(episode => {
-				return { ...episode, type: 'episode' };
-			});
-			if (episodes.length === 0) {
-				this.setState({
-					reachedEndOfFeed: true,
-				});
-			}
-
-			for (let episode of episodes) {
-				if (episode._id) {
-					// update podcast
-					this.props.dispatch({
-						podcast: episode.podcast,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-					// update episode
-					this.props.dispatch({
-						episode,
-						type: 'UPDATE_EPISODE',
-					});
-				} else {
-					return;
-				}
-			}
-
-			this.props.dispatch({
-				activities: episodes,
-				feedID: `user_episode:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
-			});
-		});
+		getEpisodesFeed(this.props.dispatch, this.state.cursor, 10);
 	}
 	render() {
 		return (
@@ -163,6 +128,19 @@ const mapStateToProps = (state, ownProps) => {
 				episode.pinID = state.pinnedEpisodes[episode._id]._id;
 			} else {
 				episode.pinned = false;
+			}
+
+			if (
+				state.feeds[`user_episode:${localStorage['authedUser']}`].indexOf(
+					episodeID,
+				) < 20 &&
+				state.feeds[`user_episode:${localStorage['authedUser']}`].indexOf(
+					episodeID,
+				) !== -1
+			) {
+				episode.recent = true;
+			} else {
+				episode.recent = false;
 			}
 
 			episodes.push(episode);

@@ -3,7 +3,6 @@
 		align-items: center;
 		display: flex;
 
-
 		h1 {
 			margin: 0;
 		}
@@ -30,6 +29,9 @@
 }
 
 .list {
+	padding-left: 4px;
+	padding-top: 4px;
+
 	.end-loader,
 	.end {
 		align-items: center;
@@ -58,6 +60,16 @@
 
 		&:first-child {
 			padding-top: 0;
+		}
+
+		.recent-indicator {
+			background-color: $foreground-green;
+			border-radius: 10000px;
+			height: 8px;
+			width: 8px;
+			position: absolute;
+			top: -4px;
+			left: -4px;
 		}
 
 		.left {
@@ -90,12 +102,6 @@
 				letter-spacing: 0.1em;
 				margin-bottom: 0.5em;
 				text-transform: uppercase;
-
-				.likes {
-					img {
-						margin-right: 0.5em;
-					}
-				}
 
 				.date {
 					font-size: 11px;
