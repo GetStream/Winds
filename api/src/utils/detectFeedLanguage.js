@@ -3,7 +3,7 @@ import franc from 'franc-min';
 
 export default feedUrl => {
 	return new Promise((resolve, reject) => {
-		ParseFeed(feedUrl, (feedContents, err) => {
+		ParseFeed(feedUrl, (err, feedContents) => {
 			if (err) {
 				// sometimes rss feeds throw a 503 when being added and parsed immediately - in that case, just resolve to english
 				return resolve('eng');
