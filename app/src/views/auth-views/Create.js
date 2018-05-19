@@ -98,7 +98,7 @@ class OnboardingGrid extends React.Component {
 									this.toggleInterest(interest.name);
 								}}
 								style={{
-									backgroundImage: `linear-gradient(to top, black, transparent), url(${interest.image ||
+									backgroundImage: `url(${interest.image ||
 										getPlaceholderImageURL(i.toString())})`,
 								}}
 							>
