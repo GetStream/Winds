@@ -27,18 +27,19 @@ const getFeed = (dispatch, type, page = 0, per_page = 10) => {
 				type: 'BATCH_UPDATE_EPISODES',
 			});
 		} else if (type === 'article') {
+			// need to batch this up
+			let rssFeeds = [];
 			for (let article of items) {
-				// update rss feed
-				dispatch({
-					rssFeed: article.rss,
-					type: 'UPDATE_RSS_FEED',
-				});
-				// update article
-				dispatch({
-					rssArticle: article,
-					type: 'UPDATE_ARTICLE',
-				});
+				rssFeeds.push(article.rss);
 			}
+			dispatch({
+				rssFeeds,
+				type: 'BATCH_UPDATE_RSS_FEEDS',
+			});
+			dispatch({
+				articles: items,
+				type: 'BATCH_UPDATE_ARTICLES',
+			});
 		}
 		dispatch({
 			activities: items,
