@@ -4,6 +4,16 @@
 	box-shadow: $box-shadow;
 	margin-bottom: 1em;
 
+	&.hasHighlight {
+		.panel-element {
+			color: $foreground-darkgray;
+
+			&.highlighted {
+				color: $foreground-black;
+			}
+		}
+	}
+
 	&.expanded {
 		height: 100%;
 	}
@@ -41,12 +51,18 @@
 		align-items: center;
 		border-bottom: 1px solid $foreground-lightgray;
 		color: inherit;
+		cursor: pointer;
 		display: flex;
 		font-size: 12px;
 		font-weight: 600; // TODO: @kenhoff - figure out why we have to set this explicitly, rather than with 'bolder'
 		margin: 0 1em;
 		padding: 1em 0;
 		text-decoration: inherit;
+		white-space: nowrap;
+
+		i {
+			font-size: 0.8em;
+		}
 
 		> * {
 			margin-right: 1em;

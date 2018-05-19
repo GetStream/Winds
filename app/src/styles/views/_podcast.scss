@@ -1,6 +1,6 @@
 .podcast-episode-list-view-popover {
 	background-color: $background-white;
-	border-radius: $border-radius;
+	border-radius: 4px;
 	box-shadow: $box-shadow;
 
 	.panel-element {
@@ -94,7 +94,8 @@
 	.content-header {
 		grid-area: content-header;
 	}
-	.alignment-box{
+
+	.alignment-box {
 		margin-top: 1.7em;
 	}
 }
@@ -132,7 +133,8 @@
 			display: none;
 		}
 	}
-	.description{
+
+	.description {
 		font-size: 14px;
 		line-height: 20px;
 	}

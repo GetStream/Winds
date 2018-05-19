@@ -1,13 +1,13 @@
 .item-info {
-	font-size: .77em;
+	color: $foreground-darkgray;
 	display: flex;
 	flex-direction: row;
+	font-size: 0.77em;
 	font-weight: bolder;
 	letter-spacing: $label-letter-spacing;
-	margin-top: 1.4em;
 	margin-bottom: 1.4em;
+	margin-top: 1.4em;
 	text-transform: uppercase;
-	color: $foreground-darkgray;
 
 	.bookmark {
 		cursor: pointer;
@@ -19,7 +19,8 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	i{
+
+	i {
 		color: $batman;
 	}
 
