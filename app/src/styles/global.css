@@ -1074,67 +1074,76 @@ a.column-header:hover {
       margin-left: auto;
       margin-right: 0; }
 
-.list .end-loader,
-.list .end {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 30em;
-  text-align: center; }
-  .list .end-loader p,
-  .list .end p {
-    max-width: 30em; }
-  .list .end-loader > *,
-  .list .end > * {
-    margin: 2em; }
-
-.list .list-item {
-  border-bottom: 1px solid #eee;
-  color: inherit;
-  cursor: pointer;
-  display: flex;
-  padding: 2em 0;
-  text-decoration: inherit; }
-  .list .list-item:first-child {
-    padding-top: 0; }
-  .list .list-item .left {
-    margin-right: 2em; }
-    .list .list-item .left > img,
-    .list .list-item .left > .background-image {
-      background-position: center;
-      background-size: cover;
-      border-radius: 8px;
-      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
-      height: 100px;
-      width: 100px; }
-  .list .list-item .right {
-    width: 85%; }
-    .list .list-item .right h2 {
-      display: inline-block;
-      font-weight: 600;
-      margin-bottom: 0;
-      margin-top: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width: 90%; }
-    .list .list-item .right .info {
-      align-items: center;
-      color: #aaa;
-      display: flex;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5em;
-      text-transform: uppercase; }
-      .list .list-item .right .info .likes img {
-        margin-right: 0.5em; }
-      .list .list-item .right .info .date {
-        font-size: 11px; }
-      .list .list-item .right .info > * {
-        margin-right: 1em; }
+.list {
+  padding-left: 4px;
+  padding-top: 4px; }
+  .list .end-loader,
+  .list .end {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 30em;
+    text-align: center; }
+    .list .end-loader p,
+    .list .end p {
+      max-width: 30em; }
+    .list .end-loader > *,
+    .list .end > * {
+      margin: 2em; }
+  .list .list-item {
+    border-bottom: 1px solid #eee;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    padding: 2em 0;
+    text-decoration: inherit; }
+    .list .list-item:first-child {
+      padding-top: 0; }
+    .list .list-item .recent-indicator {
+      background-color: #44bc75;
+      border-radius: 10000px;
+      height: 8px;
+      left: -4px;
+      position: absolute;
+      top: -4px;
+      width: 8px; }
+    .list .list-item .left {
+      margin-right: 2em;
+      position: relative; }
+      .list .list-item .left > img,
+      .list .list-item .left > .background-image {
+        background-position: center;
+        background-size: cover;
+        border-radius: 8px;
+        box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+        height: 100px;
+        width: 100px; }
+    .list .list-item .right {
+      width: 85%; }
+      .list .list-item .right h2 {
+        display: inline-block;
+        font-weight: 600;
+        margin-bottom: 0;
+        margin-top: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 90%; }
+      .list .list-item .right .info {
+        align-items: center;
+        color: #aaa;
+        display: flex;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5em;
+        text-transform: uppercase; }
+        .list .list-item .right .info .date {
+          font-size: 11px; }
+        .list .list-item .right .info > * {
+          margin-right: 1em; }
 
 .loader {
   height: 100%; }
