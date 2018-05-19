@@ -1224,6 +1224,8 @@ a.column-header:hover {
     margin: 0 1em;
     padding: 1em 0;
     text-decoration: inherit; }
+    .panel .panel-element i {
+      font-size: 0.8em; }
     .panel .panel-element > * {
       margin-right: 1em; }
       .panel .panel-element > *:last-child {
