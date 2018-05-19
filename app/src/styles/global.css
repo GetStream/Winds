@@ -294,9 +294,13 @@ textarea {
     letter-spacing: 1px;
     margin-right: 24px;
     padding-bottom: 6px;
-    text-transform: uppercase; }
-    .tabs .tab.active, .tabs .tab:hover {
+    text-transform: uppercase;
+    transition-duration: 0.3s;
+    transition-property: color; }
+    .tabs .tab.active {
       border-bottom: 2px solid #44bc75;
+      color: #000; }
+    .tabs .tab:hover {
       color: #000; }
 
 /* FRAMEWORK - Structure and layout files.
@@ -1246,7 +1250,11 @@ a.column-header:hover {
     margin: 0 1em;
     padding: 1em 0;
     text-decoration: inherit;
-    white-space: nowrap; }
+    white-space: nowrap;
+    transition-duration: 0.2s;
+    transition-property: margin-left; }
+    .panel .panel-element:hover {
+      margin-left: 15px; }
     .panel .panel-element i {
       font-size: 0.8em; }
     .panel .panel-element > * {
@@ -1355,7 +1363,11 @@ a.column-header:hover {
       border-radius: 8px;
       box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
       margin-bottom: 1em;
-      padding-bottom: 100%; }
+      padding-bottom: 100%;
+      transition-duration: 0.3s;
+      transition-property: transform; }
+      .shows-grid .shows-grid-item .shows-grid-item-image:hover {
+        transform: scale(1.01); }
 
 .simple-progress-bar {
   width: 100%; }
@@ -1641,13 +1653,14 @@ a.column-header:hover {
 .featured-items-section {
   background-color: #efefef;
   grid-area: featured;
-  margin-bottom: 1em;
-  padding-bottom: 1.5em; }
+  margin-bottom: 1em; }
   .featured-items-section .featured-items-header {
     margin-left: 2em; }
   .featured-items-section .featured-item-list {
     display: flex;
     max-width: 100%;
+    padding-top: 10px;
+    padding-bottom: 20px;
     overflow-x: scroll; }
     .featured-items-section .featured-item-list::-webkit-scrollbar {
       display: none; }
@@ -1663,9 +1676,14 @@ a.column-header:hover {
       height: 190px;
       margin-right: 1.2em;
       min-width: 200px;
-      padding: 1.2em;
+      padding: 18px;
       text-decoration: inherit;
-      width: 200px; }
+      width: 200px;
+      box-shadow: 0 6px 18px 0 rgba(15, 40, 34, 0.1);
+      transition-duration: 0.3s;
+      transition-property: transform; }
+      .featured-items-section .featured-item-list .featured-item:hover {
+        transform: scale(1.01); }
       .featured-items-section .featured-item-list .featured-item:first-child {
         margin-left: 1.2em; }
       .featured-items-section .featured-item-list .featured-item h1 {
@@ -2346,7 +2364,9 @@ a.column-header:hover {
         justify-content: center;
         width: 3em; }
     .podcast-episode .left .play-icon {
-      display: none; }
+      display: none;
+      transition-duration: 0.2s;
+      transition-property: margin-left; }
   .podcast-episode .description {
     font-size: 14px;
     line-height: 20px;
