@@ -32,7 +32,7 @@ function main() {
 	let target = program.rss || program.podcast;
 	logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
-	function validate(response, error) {
+	function validate(error, response) {
 		if (error) {
 			console.warn(error)
 			return
@@ -99,6 +99,11 @@ function main() {
 					console.log('failed', err)
 				}).then(instance => {
 				let queuePromise
+
+				if (!instance) {
+					logger.info(`failed to find publication`)
+					return
+				}
 
 				if (program.rss) {
 					queuePromise = rssQueue.add(

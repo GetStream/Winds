@@ -39,7 +39,7 @@ async function handleJob(job) {
 
 	// Lookup the right type of schema: article, episode or podcast
 	let mongoSchema = schemaMap[jobType] || Article;
-	let field = job.data.type === 'podcast' ? 'link' : 'url';
+	let field = job.data.type === 'episode' ? 'link' : 'url';
 
 	// if the instance hasn't been created yet, or it already has an OG image, ignore
 	let instance = await mongoSchema.findOne({ [field]: url });

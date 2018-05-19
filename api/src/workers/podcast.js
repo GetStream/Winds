@@ -16,160 +16,134 @@ import logger from '../utils/logger';
 import search from '../utils/search';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from './parsers';
+import util from 'util';
 
-const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 const podcastQueue = new Queue('podcast', config.cache.uri);
 const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting to process podcasts....');
 
-podcastQueue.process(5, (job, done) => {
+podcastQueue.process(5, handlePodcast);
+
+// Handle Podcast scrapes the podcast and updates the episodes
+async function handlePodcast(job) {
 	logger.info(`Processing ${job.data.url}`);
 
-	Podcast.findOne({ _id: job.data.podcast }).then(doc => {
-		if (!doc) {
-			return done(new Error('Podcast feed does not exist.'));
-		}
+	// verify we have the podcast object
+	let podcastID = job.data.podcast;
+	let podcast = await Podcast.findOne({ _id: podcastID });
+	if (!podcast) {
+		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
+		return;
+	}
 
-		ParsePodcast(job.data.url, function(podcastContents, err) {
-			// mark as done
-			setLastScraped(job.data.podcast);
+	// mark as done, will be schedule again in 15 min from now
+	// we do this early so a temporary failure doesnt leave things in a broken state
+	let completed = await markDone(podcastID);
 
-			// log the error
-			if (err) {
-				logger.error(err);
-				return done(err);
-			}
+	// parse the episodes
+	let podcastContent = await util.promisify(ParsePodcast)(job.data.url);
 
-			logger.debug(`updating ${podcastContents.episodes.length} episodes`);
+	// update the episodes
+	logger.info(`Updating ${podcastContent.episodes.length} episodes`);
+	let allEpisodes = await Promise.all(
+		podcastContent.episodes.map(episode => {
+			let normalizedUrl = normalize(episode.url);
+			episode.url = normalizedUrl;
+			return updateEpisode(podcast._id, normalizedUrl, episode);
+		}),
+	);
 
-			// actually store the episodes
-			return Promise.all(
-				podcastContents.episodes.map(episode => {
-					let normalizedUrl = normalize(episode.url);
-					return Episode.findOneAndUpdate(
-						{
-							podcast: job.data.podcast,
-							url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
-						},
-						{
-							description: episode.description,
-							duration: episode.duration,
-							enclosure: episode.enclosure,
-							images: episode.images,
-							link: episode.link,
-							podcast: job.data.podcast,
-							publicationDate: episode.publicationDate,
-							title: episode.title,
-							url: normalizedUrl,
-						},
-						{
-							new: true,
-							rawResult: true,
-							upsert: true,
-						},
-					)
-						.catch(err => {
-							logger.error(
-								`Failed to run findOneAndUpdate for Episode with ${normalizedUrl} with error ${err}`,
-							);
-						})
-						.then(rawEpisode => {
-							let episode = rawEpisode.value;
-							if (rawEpisode.lastErrorObject.updatedExisting) {
-								return null;
-							} else {
-								return Promise.all([
-									search({
-										_id: episode._id,
-										description: episode.description,
-										podcast: episode.podcast,
-										publicationDate: episode.publicationDate,
-										title: episode.title,
-										type: 'episode',
-									}),
-									ogQueue.add(
-										{
-											type: 'episode',
-											url: episode.url,
-										},
-										{
-											removeOnComplete: true,
-											removeOnFail: true,
-										},
-									),
-								]).then(() => {
-									return episode;
-								});
-							}
-						});
-				}),
-			)
-				.then(allEpisodes => {
-					let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
-						return updatedEpisode;
-					});
-
-					if (updatedEpisodes.length > 0) {
-						let chunkSize = 100;
-						for (
-							let i = 0, j = updatedEpisodes.length;
-							i < j;
-							i += chunkSize
-						) {
-							let chunk = updatedEpisodes.slice(i, i + chunkSize);
-							let streamEpisodes = chunk.map(episode => {
-								return {
-									actor: episode.podcast,
-									foreign_id: `episodes:${episode._id}`,
-									object: episode._id,
-									time: episode.publicationDate,
-									verb: 'podcast_episode',
-								};
-							});
-
-							// addActivities to Stream
-							return client
-								.feed('podcast', job.data.podcast)
-								.addActivities(streamEpisodes)
-								.then(() => {
-									return sendPodcastToCollections(job.data.podcast);
-								});
-						}
-					} else {
-						return;
-					}
-				})
-				.then(() => {
-					logger.info(`Completed podcast ${job.data.url}`);
-					done();
-				})
-				.catch(err => {
-					logger.info(`Failed processing for podcast ${job.data.url}`);
-					logger.error(err);
-				});
-		});
+	// Only send updated episodes to Stream
+	let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
+		return updatedEpisode;
 	});
-});
 
-function setLastScraped(podcastID) {
+	if (updatedEpisodes.length > 0) {
+		let chunkSize = 100;
+		let podcastFeed = streamClient.feed('podcast', podcastID);
+		for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
+			let chunk = updatedEpisodes.slice(i, i + chunkSize);
+			let streamEpisodes = chunk.map(episode => {
+				return {
+					actor: episode.podcast,
+					foreign_id: `episodes:${episode._id}`,
+					object: episode._id,
+					time: episode.publicationDate,
+					verb: 'podcast_episode',
+				};
+			});
+
+			// addActivities to Stream
+			let streamResponse = await podcastFeed.addActivities(streamEpisodes);
+			// update the collection information for follow suggestions
+			let collectionResponse = await sendPodcastToCollections(podcastID);
+		}
+	}
+}
+
+// updateEpisode updates 1 episode and sync the data to og scraping
+async function updateEpisode(podcastId, normalizedUrl, episode) {
+	let rawEpisode = await Episode.findOneAndUpdate(
+		{
+			podcast: podcastId,
+			url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
+		},
+		{
+			description: episode.description,
+			duration: episode.duration,
+			enclosure: episode.enclosure,
+			images: episode.images,
+			link: episode.link,
+			podcast: podcastId,
+			publicationDate: episode.publicationDate,
+			title: episode.title,
+			url: episode.url,
+		},
+		{
+			new: true,
+			rawResult: true,
+			upsert: true,
+		},
+	);
+	let newEpisode = rawEpisode.value;
+	if (rawEpisode.lastErrorObject.updatedExisting) {
+		return;
+	} else if (newEpisode.link) {
+		await ogQueue.add(
+			{
+				type: 'episode',
+				url: newEpisode.link,
+			},
+			{
+				removeOnComplete: true,
+				removeOnFail: true,
+			},
+		);
+		return newEpisode;
+	}
+}
+
+// markDone sets lastScraped to now and isParsing to false
+async function markDone(podcastID) {
 	/*
 	Set the last scraped for the given rssID
 	*/
 	let now = moment().toISOString();
-	Podcast.findByIdAndUpdate(
+	let podcast = await Podcast.findByIdAndUpdate(
 		podcastID,
 		{
 			$set: {
 				lastScraped: now,
+				isParsing: false,
 			},
 		},
 		{
 			new: true,
 			upsert: false,
 		},
-	).catch(err => {
-		logger.error(err);
-	});
+	);
+	return podcast;
 }
