@@ -6,7 +6,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
 import Waypoint from 'react-waypoint';
-import { getEpisodesFeed } from '../util/feeds';
+import { getFeed } from '../util/feeds';
 
 class AllEpisodesList extends React.Component {
 	constructor(props) {
@@ -46,7 +46,7 @@ class AllEpisodesList extends React.Component {
 		this.getEpisodes();
 	}
 	getEpisodes() {
-		getEpisodesFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
+		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
 	}
 	render() {
 		return (

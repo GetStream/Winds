@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import moment from 'moment';
 import { getPinnedEpisodes } from '../util/pins';
-import { getEpisodesFeed } from '../util/feeds';
+import { getFeed } from '../util/feeds';
 import Loader from './Loader';
 
 class PodcastEpisodesView extends React.Component {
@@ -29,14 +29,15 @@ class PodcastEpisodesView extends React.Component {
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.getEpisodes(this.props.match.params.podcastID);
 		getPinnedEpisodes(this.props.dispatch);
-		getEpisodesFeed(this.props.dispatch, 0, 20); // this is to populate 'recent' state indicators
+		getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 	}
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) { // essentially, if we've just switched views from one podcast to another
+		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
+			// essentially, if we've just switched views from one podcast to another
 			this.props.getPodcast(nextProps.match.params.podcastID);
 			this.getEpisodes(nextProps.match.params.podcastID);
 			getPinnedEpisodes(this.props.dispatch);
-			getEpisodesFeed(this.props.dispatch, 0, 20); // this is to populate 'recent' state indicators
+			getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 			this.setState({
 				episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
 			});

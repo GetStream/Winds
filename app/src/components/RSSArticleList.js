@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import { getPinnedArticles } from '../util/pins';
+import { getFeed } from '../util/feeds';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
@@ -38,12 +39,15 @@ class RSSArticleList extends React.Component {
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
 		getPinnedArticles(this.props.dispatch);
+		getFeed(this.props.dispatch, 'article', 0, 20);
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
+			// if navigating between rss feeds
 			this.getRSSFeed(nextProps.match.params.rssFeedID);
 			this.getFollowState(nextProps.match.params.rssFeedID);
 			this.getRSSArticles(nextProps.match.params.rssFeedID);
+			getFeed(this.props.dispatch, 'article', 0, 20);
 		}
 	}
 	getRSSFeed(rssFeedID) {

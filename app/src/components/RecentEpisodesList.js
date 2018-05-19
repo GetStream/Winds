@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
 import { getPinnedEpisodes } from '../util/pins';
-import { getEpisodesFeed } from '../util/feeds';
+import { getFeed } from '../util/feeds';
 
 class RecentEpisodesList extends React.Component {
 	pinEpisode(episodeID) {
@@ -35,7 +35,7 @@ class RecentEpisodesList extends React.Component {
 	}
 	componentDidMount() {
 		getPinnedEpisodes(this.props.dispatch);
-		getEpisodesFeed(this.props.dispatch, 0, 20);
+		getFeed(this.props.dispatch, 'episode', 0, 20);
 	}
 
 	render() {

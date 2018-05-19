@@ -1,20 +1,20 @@
 import fetch from './fetch';
 
-const getEpisodesFeed = (dispatch, type, page = 0, per_page = 10) => {
+const getFeed = (dispatch, type, page = 0, per_page = 10) => {
 	if (!type) {
 		throw new Error('"type" not provided when fetching feed');
 	}
 	fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
 		page,
 		per_page,
-		type: 'episode',
+		type,
 	}).then(response => {
-		let episodes = response.data.map(episode => {
-			return { ...episode, type: 'episode' };
+		let items = response.data.map(item => {
+			return { ...item, type };
 		});
 
-		for (let episode of episodes) {
-			if (episode._id) {
+		if (type === 'episode') {
+			for (let episode of items) {
 				// update podcast
 				dispatch({
 					podcast: episode.podcast,
@@ -25,17 +25,33 @@ const getEpisodesFeed = (dispatch, type, page = 0, per_page = 10) => {
 					episode,
 					type: 'UPDATE_EPISODE',
 				});
-			} else {
-				return;
 			}
-		}
 
-		dispatch({
-			activities: episodes,
-			feedID: `user_episode:${localStorage['authedUser']}`,
-			type: 'UPDATE_FEED',
-		});
+			dispatch({
+				activities: items,
+				feedID: `user_episode:${localStorage['authedUser']}`,
+				type: 'UPDATE_FEED',
+			});
+		} else if (type === 'article') {
+			for (let article of items) {
+				// update rss feed
+				dispatch({
+					rssFeed: article.rss,
+					type: 'UPDATE_RSS_FEED',
+				});
+				// update article
+				dispatch({
+					rssArticle: article,
+					type: 'UPDATE_ARTICLE',
+				});
+			}
+			dispatch({
+				activities: items,
+				feedID: `user_article:${localStorage['authedUser']}`,
+				type: 'UPDATE_FEED',
+			});
+		}
 	});
 };
 
-export { getEpisodesFeed };
+export { getFeed };
