@@ -25,7 +25,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting to process podcasts....');
 
-podcastQueue.process(5, handlePodcast);
+podcastQueue.process(10, handlePodcast);
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function handlePodcast(job) {

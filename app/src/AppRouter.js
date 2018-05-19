@@ -77,7 +77,5 @@ class AppRouter extends Component {
 		);
 	}
 }
-// <AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
 
-// export default AppRouter;
 export default connect()(AppRouter);
