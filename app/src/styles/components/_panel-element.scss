@@ -30,9 +30,8 @@
 		border-top-right-radius: $border-radius;
 		box-shadow: $box-shadow;
 		display: flex;
-		font-size: 15px;
+		font-size: 1.07em;
 		font-weight: 700;
-		letter-spacing: 0.06em;
 		padding: 1em;
 		position: sticky;
 		top: 0;
@@ -53,8 +52,8 @@
 		color: inherit;
 		cursor: pointer;
 		display: flex;
-		font-size: 12px;
-		font-weight: 600; // TODO: @kenhoff - figure out why we have to set this explicitly, rather than with 'bolder'
+		font-size: .98em;
+		font-weight: 500; // TODO: @kenhoff - figure out why we have to set this explicitly, rather than with 'bolder'
 		margin: 0 1em;
 		padding: 1em 0;
 		text-decoration: inherit;

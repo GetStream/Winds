@@ -1224,9 +1224,8 @@ a.column-header:hover {
     border-top-right-radius: 8px;
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
     display: flex;
-    font-size: 15px;
+    font-size: 1.07em;
     font-weight: 700;
-    letter-spacing: 0.06em;
     padding: 1em;
     position: sticky;
     top: 0; }
@@ -1241,8 +1240,8 @@ a.column-header:hover {
     color: inherit;
     cursor: pointer;
     display: flex;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: .98em;
+    font-weight: 500;
     margin: 0 1em;
     padding: 1em 0;
     text-decoration: inherit;
@@ -1662,18 +1661,20 @@ a.column-header:hover {
       display: flex;
       flex-direction: column-reverse;
       height: 190px;
-      margin-right: 2em;
+      margin-right: 1.2em;
       min-width: 200px;
-      padding: 2em;
+      padding: 1.2em;
       text-decoration: inherit;
       width: 200px; }
       .featured-items-section .featured-item-list .featured-item:first-child {
-        margin-left: 2em; }
+        margin-left: 1.2em; }
       .featured-items-section .featured-item-list .featured-item h1 {
-        margin-bottom: 0; }
+        margin-bottom: 0;
+        font-size: 1.65em; }
       .featured-items-section .featured-item-list .featured-item label {
         color: #fff;
-        margin-bottom: auto; }
+        margin-bottom: auto;
+        font-size: 1em; }
 
 .follow-suggestions-section {
   margin-top: 5em; }
