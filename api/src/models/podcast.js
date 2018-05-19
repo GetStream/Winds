@@ -39,6 +39,10 @@ export const PodcastSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		isParsing: {
+			type: Boolean,
+			default: false,
+		},
 		images: {
 			featured: {
 				type: String,
