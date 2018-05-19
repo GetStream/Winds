@@ -44,7 +44,7 @@ function ParseFeed(feedUrl, callback) {
 	let feedparser = new FeedParser();
 
 	req.on('error', err => {
-		callback(null, err); // quick note from @kenhoff - in Node.js, these should really be reversed - err should always come before callback.
+		callback(err, null)
 	});
 
 	req.on('response', res => {
@@ -64,13 +64,13 @@ function ParseFeed(feedUrl, callback) {
 	});
 
 	feedparser.on('error', err => {
-		callback(null, err);
+		callback(err, null)
 	});
 
 	let feedContents = { articles: [] };
 
 	feedparser.on('end', () => {
-		callback(feedContents);
+		callback(null, feedContents);
 	});
 
 	feedparser.on('readable', () => {

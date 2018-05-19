@@ -2,7 +2,7 @@
 	background-color: $background-lightishgray;
 	grid-area: featured;
 	margin-bottom: 1em;
-	padding-bottom: 1.5em;
+
 
 	.featured-items-header {
 		margin-left: 2em;
@@ -11,6 +11,8 @@
 	.featured-item-list {
 		display: flex;
 		max-width: 100%;
+		padding-top: 10px;
+		padding-bottom: 20px;
 		overflow-x: scroll;
 
 		&::-webkit-scrollbar {
@@ -29,9 +31,16 @@
 			height: 190px;
 			margin-right: 1.2em;
 			min-width: 200px;
-			padding: 1.2em;
+			padding: 18px;
 			text-decoration: inherit;
 			width: 200px;
+			box-shadow: 0 6px 18px 0 rgba(15,40,34,0.10);
+			transition-duration: 0.3s;
+			transition-property: transform;
+
+			&:hover{
+				transform: scale(1.01);
+			}
 
 			&:first-child {
 				margin-left: 1.2em;

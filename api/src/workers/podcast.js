@@ -25,7 +25,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting to process podcasts....');
 
-podcastQueue.process(5, handlePodcast);
+podcastQueue.process(10, handlePodcast);
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function handlePodcast(job) {
@@ -85,10 +85,10 @@ async function handlePodcast(job) {
 }
 
 // updateEpisode updates 1 episode and sync the data to og scraping
-async function updateEpisode(podcastId, normalizedUrl, episode) {
+async function updateEpisode(podcastID, normalizedUrl, episode) {
 	let rawEpisode = await Episode.findOneAndUpdate(
 		{
-			podcast: podcastId,
+			podcast: podcastID,
 			url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
 		},
 		{
@@ -97,7 +97,7 @@ async function updateEpisode(podcastId, normalizedUrl, episode) {
 			enclosure: episode.enclosure,
 			images: episode.images,
 			link: episode.link,
-			podcast: podcastId,
+			podcast: podcastID,
 			publicationDate: episode.publicationDate,
 			title: episode.title,
 			url: episode.url,
@@ -108,7 +108,7 @@ async function updateEpisode(podcastId, normalizedUrl, episode) {
 			upsert: true,
 		},
 	);
-	let newEpisode = rawEpisode.value;
+	let newEpisode = rawEpisode.value
 	if (rawEpisode.lastErrorObject.updatedExisting) {
 		return;
 	} else if (newEpisode.link) {
@@ -132,18 +132,12 @@ async function markDone(podcastID) {
 	Set the last scraped for the given rssID
 	*/
 	let now = moment().toISOString();
-	let podcast = await Podcast.findByIdAndUpdate(
-		podcastID,
+	let updated = await Podcast.update(
+		{ _id: podcastID },
 		{
-			$set: {
-				lastScraped: now,
-				isParsing: false,
-			},
-		},
-		{
-			new: true,
-			upsert: false,
-		},
-	);
-	return podcast;
+			lastScraped: now,
+			isParsing: false,
+		}
+	)
+	return updated
 }

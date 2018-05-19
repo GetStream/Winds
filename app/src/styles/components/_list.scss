@@ -58,6 +58,7 @@
 		padding: 2em 0;
 		text-decoration: inherit;
 
+
 		&:first-child {
 			padding-top: 0;
 		}
@@ -92,6 +93,7 @@
 			@media only screen and (max-width: 1400px) { width: 80%;}
 			@media only screen and (max-width: 970px) { width: 70%;}
 
+
 			h2 {
 				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
 				margin-bottom: 0;
@@ -100,6 +102,7 @@
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				width: 100%;
+				
 			}
 
 			.info {

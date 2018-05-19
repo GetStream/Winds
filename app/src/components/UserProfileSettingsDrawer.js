@@ -234,38 +234,6 @@ class UserProfileSettingsDrawer extends React.Component {
 						<span>Follow Notifications</span>
 					</label>
 				</div>
-				<div className="form-section">
-					<h2>Background Image</h2>
-					<div className="background-image-grid">
-						{[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
-							let checkmarkElement = null;
-							if (this.state.background === i) {
-								checkmarkElement = <span className="checkmark">✓</span>;
-							}
-							return (
-								<div
-									className="background-image"
-									key={i}
-									onClick={() => {
-										this.setState({
-											background: i,
-										});
-									}}
-								>
-									<Img
-										className={`${
-											this.state.background === i ? 'active' : null
-										}`}
-										src={require('../images/cards/pattern-' +
-											i +
-											'.png')}
-									/>
-									{checkmarkElement}
-								</div>
-							);
-						})}
-					</div>
-				</div>
 				<footer>
 					<button className="btn primary with-circular-icon" type="submit">
 						<Img src={saveIcon} />

@@ -12,6 +12,7 @@
 		min-width: 0;
 		text-decoration: inherit;
 
+
 		.shows-grid-item-image {
 			background-position: center;
 			background-repeat: no-repeat;
@@ -21,6 +22,12 @@
 			margin-bottom: 1em;
 			// this is a "hack" to give us a perfectly square container, regardless of width
 			padding-bottom: 100%;
+			transition-duration: 0.3s;
+			transition-property: transform;
+
+			&:hover{
+				transform: scale(1.01);
+			}
 		}
 	}
 }

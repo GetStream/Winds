@@ -288,6 +288,20 @@ export default (previousState = {}, action) => {
 				[action.podcast._id]: { ...action.podcast },
 			},
 		};
+	} else if (action.type === 'BATCH_UPDATE_PODCASTS') {
+		let newPodcasts = {};
+
+		for (let podcast of action.podcasts) {
+			newPodcasts[podcast._id] = podcast;
+		}
+
+		return {
+			...previousState,
+			podcasts: {
+				...previousState.podcasts,
+				...newPodcasts,
+			},
+		};
 	} else if (action.type === 'PLAY_EPISODE') {
 		let player = { ...action, playing: true };
 		delete player.type;
@@ -358,6 +372,18 @@ export default (previousState = {}, action) => {
 			rssFeeds: {
 				...previousState.rssFeeds,
 				[action.rssFeed._id]: { ...action.rssFeed },
+			},
+		};
+	} else if (action.type === 'BATCH_UPDATE_RSS_FEEDS') {
+		let newRssFeeds = {};
+		for (let rssFeed of action.rssFeeds) {
+			newRssFeeds[rssFeed._id] = rssFeed;
+		}
+		return {
+			...previousState,
+			rssFeeds: {
+				...previousState.rssFeeds,
+				...newRssFeeds,
 			},
 		};
 	} else if (action.type === 'UPDATE_ARTICLE') {
@@ -431,6 +457,29 @@ export default (previousState = {}, action) => {
 			followedPodcasts: {
 				...previousState.followedPodcasts,
 				[action.userID]: userFollows,
+			},
+		};
+	} else if (action.type === 'BATCH_FOLLOW_PODCASTS') {
+		let previousPodcastFollows = { ...(previousState.followedPodcasts || {}) };
+		for (let followRelationship of action.podcastFollowRelationships) {
+			// followRelationship.podcastID
+			// followRelationship.userID
+			if (!(followRelationship.userID in previousPodcastFollows)) {
+				// create new object just for that user/podcast
+				previousPodcastFollows[followRelationship.userID] = {
+					[followRelationship.podcastID]: true,
+				};
+			} else {
+				// just add new key for that user/podcast
+				previousPodcastFollows[followRelationship.userID][
+					followRelationship.podcastID
+				] = true;
+			}
+		}
+		return {
+			...previousState,
+			followedPodcasts: {
+				...previousPodcastFollows,
 			},
 		};
 	} else if (action.type === 'UNFOLLOW_PODCAST') {

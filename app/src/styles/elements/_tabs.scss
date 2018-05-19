@@ -16,10 +16,15 @@
 		margin-right: 24px;
 		padding-bottom: 6px;
 		text-transform: uppercase;
+		transition-duration: 0.3s;
+		transition-property: color;
 
-		&.active,
-		&:hover {
+		&.active{
 			border-bottom: 2px solid $foreground-green;
+			color: $foreground-black;
+		}
+
+		&:hover {
 			color: $foreground-black;
 		}
 	}

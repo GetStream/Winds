@@ -27,7 +27,7 @@ const maxRedirects = 10;
 const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting the OG worker, now supporting podcasts, episodes and articles');
-ogQueue.process(15, handleJob);
+ogQueue.process(25, handleJob);
 
 // Run the OG scraping job
 async function handleJob(job) {

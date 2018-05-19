@@ -9,24 +9,32 @@ class FeaturedItems extends React.Component {
 	componentDidMount() {
 		if (this.props.featuredItems.length === 0) {
 			fetch('GET', '/featured').then(response => {
+				// split responses into rss feeds and podcasts
+				let rssFeeds = [];
+				let podcasts = [];
 				// first, go through and update each item
 				for (let item of response.data) {
 					if (item.type === 'rss') {
-						this.props.dispatch({
-							rssFeed: item,
-							type: 'UPDATE_RSS_FEED',
-						});
+						rssFeeds.push(item);
 					} else if (item.type === 'podcast') {
-						this.props.dispatch({
-							podcast: item,
-							type: 'UPDATE_PODCAST_SHOW',
-						});
+						podcasts.push(item);
 					}
 				}
+
+				this.props.dispatch({
+					rssFeeds,
+					type: 'BATCH_UPDATE_RSS_FEEDS',
+				});
+
+				this.props.dispatch({
+					podcasts,
+					type: 'BATCH_UPDATE_PODCASTS',
+				});
 
 				let featuredItemIDs = response.data.map(item => {
 					return `${item.type}:${item._id}`;
 				});
+
 				// then, update the list of featured items
 				this.props.dispatch({
 					featuredItemIDs,
@@ -85,35 +93,24 @@ const mapStateToProps = (state, ownProps) => {
 	let deserializedFeaturedItems = [];
 	if (state.featuredItems) {
 		for (let featuredItemID of state.featuredItems) {
-			if (featuredItemID.split(':')[0] === 'rss') {
+			let [featuredItemType, featuredItemValue] = featuredItemID.split(':');
+			if (featuredItemType === 'rss') {
 				deserializedFeaturedItems.push({
-					...state.rssFeeds[featuredItemID.split(':')[1]],
+					...state.rssFeeds[featuredItemValue],
 					type: 'rss',
 				});
-			} else if (featuredItemID.split(':')[0] === 'podcast') {
+			} else if (featuredItemType === 'podcast') {
 				deserializedFeaturedItems.push({
-					...state.podcasts[featuredItemID.split(':')[1]],
+					...state.podcasts[featuredItemValue],
 					type: 'podcast',
 				});
 			}
 		}
 	}
-	return { ...ownProps, featuredItems: deserializedFeaturedItems };
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		...ownProps,
-		dispatch,
+		featuredItems: deserializedFeaturedItems,
 	};
 };
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-	return {
-		...ownProps,
-		...dispatchProps,
-		...stateProps,
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(FeaturedItems);
+export default connect(mapStateToProps)(FeaturedItems);
