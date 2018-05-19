@@ -32,10 +32,12 @@ export const EpisodeSchema = new Schema(
 			type: String,
 			trim: true,
 			required: true,
+			index: true,
 		},
 		link: {
 			type: String,
 			trim: true,
+			index: true,
 		},
 		enclosure: {
 			type: String,
