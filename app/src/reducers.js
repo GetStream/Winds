@@ -288,6 +288,20 @@ export default (previousState = {}, action) => {
 				[action.podcast._id]: { ...action.podcast },
 			},
 		};
+	} else if (action.type === 'BATCH_UPDATE_PODCASTS') {
+		let newPodcasts = {};
+
+		for (let podcast of action.podcasts) {
+			newPodcasts[podcast._id] = podcast;
+		}
+
+		return {
+			...previousState,
+			podcasts: {
+				...previousState.podcasts,
+				...newPodcasts,
+			},
+		};
 	} else if (action.type === 'PLAY_EPISODE') {
 		let player = { ...action, playing: true };
 		delete player.type;
