@@ -21,7 +21,6 @@ const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 const rssQueue = new Queue('rss', config.cache.uri);
 const ogQueue = new Queue('og', config.cache.uri);
 
-// connect the handler to the queue
 logger.info('Starting the RSS worker');
 
 rssQueue.process(5, (job, done) => {

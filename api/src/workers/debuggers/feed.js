@@ -1,12 +1,12 @@
-import '../loadenv';
-import '../utils/db';
-import { ParseFeed, ParsePodcast } from './parsers';
+import '../../loadenv';
+import '../../utils/db';
+import { ParseFeed, ParsePodcast } from '../parsers';
 import program from 'commander';
 import chalk from 'chalk';
-import logger from '../utils/logger';
-import Podcast from '../models/podcast';
-import RSS from '../models/rss';
-import config from '../config';
+import logger from '../../utils/logger';
+import Podcast from '../../models/podcast';
+import RSS from '../../models/rss';
+import config from '../../config';
 import Queue from 'bull';
 
 const rssQueue = new Queue('rss', config.cache.uri);
@@ -34,14 +34,14 @@ function main() {
 
 	function validate(response, error) {
 		if (error) {
-			console.warn(error)
-			return
+			console.warn(error);
+			return;
 		}
 
 		// validate the podcast or RSS feed
-		logger.info(`========== Validating Publication ==========`)
-		logger.info(`Title: ${response.title}`)
-		logger.info(`Link: ${response.link}`)
+		logger.info(`========== Validating Publication ==========`);
+		logger.info(`Title: ${response.title}`);
+		logger.info(`Link: ${response.link}`);
 		if (response.image && response.image.og) {
 			logger.info(chalk.green('Image found :)'));
 			logger.info(`Image: ${response.image.og}`);
@@ -49,10 +49,10 @@ function main() {
 			logger.info(chalk.red('Image missing :('));
 		}
 
-		logger.info(`========== Validating episodes/articles now ==========`)
+		logger.info(`========== Validating episodes/articles now ==========`);
 
 		// validate the articles or episodes
-		let articles = (response.articles) ? response.articles : response.episodes;
+		let articles = response.articles ? response.articles : response.episodes;
 		let selectedArticles = articles.slice(0, program.limit);
 		logger.info(`Found ${articles.length} articles showing ${program.limit}`);
 
@@ -79,75 +79,82 @@ function main() {
 				}
 				if (program.podcast) {
 					if (article.enclosure) {
-						logger.info(chalk.green('Enclosure found :)'))
-						logger.info(article.enclosure)
+						logger.info(chalk.green('Enclosure found :)'));
+						logger.info(article.enclosure);
 					} else {
-						logger.info(chalk.red('Missing enclosure :('))
+						logger.info(chalk.red('Missing enclosure :('));
 					}
 				}
-
 			}
 		} else {
-			logger.info(chalk.red('Didn\'t find any articles or episodes.'));
+			logger.info(chalk.red("Didn't find any articles or episodes."));
 		}
 
-		let schema = (program.rss) ? RSS : Podcast
-		let lookup = {feedUrl: target}
+		let schema = program.rss ? RSS : Podcast;
+		let lookup = { feedUrl: target };
 		if (program.task) {
-			logger.info(`trying to create a task on the bull queue`)
-			schema.findOne(lookup).catch(err => {
-					console.log('failed', err)
-				}).then(instance => {
-				let queuePromise
-
-				if (program.rss) {
-					queuePromise = rssQueue.add(
-						{
-							rss: instance._id,
-							url: instance.feedUrl,
-						},
-						{
-							priority: 1,
-							removeOnComplete: true,
-							removeOnFail: true,
-						})
-				} else {
-					queuePromise=podcastQueue.add(
-						{
-							podcast: instance._id,
-							url: instance.feedUrl,
-						},
-						{
-							priority: 1,
-							removeOnComplete: true,
-							removeOnFail: true,
-						})
-				}
-
-				queuePromise.then(() => {
-					if (program.rss) {
-						logger.info(`Scheduled RSS feed to the queue for parsing ${target} with id ${instance._id}`)
-					} else {
-						logger.info(`Scheduled Podcast to the queue for parsing ${target}`)
-					}
-				}).catch(err => {
-					logger.error(`Failed to schedule task on og queue`)
+			logger.info(`trying to create a task on the bull queue`);
+			schema
+				.findOne(lookup)
+				.catch(err => {
+					console.log('failed', err);
 				})
-			})
+				.then(instance => {
+					let queuePromise;
+
+					if (program.rss) {
+						queuePromise = rssQueue.add(
+							{
+								rss: instance._id,
+								url: instance.feedUrl,
+							},
+							{
+								priority: 1,
+								removeOnComplete: true,
+								removeOnFail: true,
+							},
+						);
+					} else {
+						queuePromise = podcastQueue.add(
+							{
+								podcast: instance._id,
+								url: instance.feedUrl,
+							},
+							{
+								priority: 1,
+								removeOnComplete: true,
+								removeOnFail: true,
+							},
+						);
+					}
+
+					queuePromise
+						.then(() => {
+							if (program.rss) {
+								logger.info(
+									`Scheduled RSS feed to the queue for parsing ${target} with id ${
+										instance._id
+									}`,
+								);
+							} else {
+								logger.info(
+									`Scheduled Podcast to the queue for parsing ${target}`,
+								);
+							}
+						})
+						.catch(err => {
+							logger.error(`Failed to schedule task on og queue`);
+						});
+				});
 		}
 	}
-
 
 	if (program.rss) {
 		ParseFeed(program.rss, validate);
 	} else {
 		ParsePodcast(program.podcast, validate);
 	}
-	logger.info(
-		'Note that upgrading feedparser can sometimes improve parsing.',
-	);
-
-
+	logger.info('Note that upgrading feedparser can sometimes improve parsing.');
 }
 
 main();

@@ -82,6 +82,10 @@ export const PodcastSchema = new Schema(
 			default: '',
 			index: true,
 		},
+		isParsing: {
+			type: Boolean,
+			default: false,
+		},
 		language: {
 			type: String,
 			default: '',
