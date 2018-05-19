@@ -1,5 +1,4 @@
 import loaderIcon from '../images/loaders/default.svg';
-import optionsIcon from '../images/icons/options.svg';
 import Loader from './Loader';
 import PropTypes from 'prop-types';
 import React from 'react';

@@ -1030,15 +1030,15 @@ a.column-header:hover {
       color: #44bc75; }
 
 .item-info {
-  font-size: .77em;
+  color: #aaa;
   display: flex;
   flex-direction: row;
+  font-size: 0.77em;
   font-weight: bolder;
   letter-spacing: 0.1em;
-  margin-top: 1.4em;
   margin-bottom: 1.4em;
-  text-transform: uppercase;
-  color: #aaa; }
+  margin-top: 1.4em;
+  text-transform: uppercase; }
   .item-info .bookmark {
     cursor: pointer; }
   .item-info > * {
