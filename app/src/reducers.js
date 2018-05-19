@@ -360,6 +360,18 @@ export default (previousState = {}, action) => {
 				[action.rssFeed._id]: { ...action.rssFeed },
 			},
 		};
+	} else if (action.type === 'BATCH_UPDATE_RSS_FEEDS') {
+		let newRssFeeds = {};
+		for (let rssFeed of action.rssFeeds) {
+			newRssFeeds[rssFeed._id] = rssFeed;
+		}
+		return {
+			...previousState,
+			rssFeeds: {
+				...previousState.rssFeeds,
+				...newRssFeeds,
+			},
+		};
 	} else if (action.type === 'UPDATE_ARTICLE') {
 		let articles = { ...previousState.articles };
 		articles[action.rssArticle._id] = { ...action.rssArticle };
