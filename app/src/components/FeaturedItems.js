@@ -85,35 +85,24 @@ const mapStateToProps = (state, ownProps) => {
 	let deserializedFeaturedItems = [];
 	if (state.featuredItems) {
 		for (let featuredItemID of state.featuredItems) {
-			if (featuredItemID.split(':')[0] === 'rss') {
+			let [featuredItemType, featuredItemValue] = featuredItemID.split(':');
+			if (featuredItemType === 'rss') {
 				deserializedFeaturedItems.push({
-					...state.rssFeeds[featuredItemID.split(':')[1]],
+					...state.rssFeeds[featuredItemValue],
 					type: 'rss',
 				});
-			} else if (featuredItemID.split(':')[0] === 'podcast') {
+			} else if (featuredItemType === 'podcast') {
 				deserializedFeaturedItems.push({
-					...state.podcasts[featuredItemID.split(':')[1]],
+					...state.podcasts[featuredItemValue],
 					type: 'podcast',
 				});
 			}
 		}
 	}
-	return { ...ownProps, featuredItems: deserializedFeaturedItems };
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		...ownProps,
-		dispatch,
+		featuredItems: deserializedFeaturedItems,
 	};
 };
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-	return {
-		...ownProps,
-		...dispatchProps,
-		...stateProps,
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(FeaturedItems);
+export default connect(mapStateToProps)(FeaturedItems);
