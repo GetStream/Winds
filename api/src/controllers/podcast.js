@@ -90,7 +90,7 @@ exports.post = (req, res) => {
 				feeds.feedUrls.length,
 				(feed, cb) => {
 					// Get more metadata
-					ParsePodcast(feed.url, function(podcastContents) {
+					ParsePodcast(feed.url, function(err, podcastContents) {
 						let title, url, images, description;
 						if (podcastContents) {
 							title = strip(podcastContents.title) || strip(feed.title);
@@ -163,8 +163,8 @@ exports.post = (req, res) => {
 												ogQueue
 													.add(
 														{
-															url: podcast.value.link,
-															type: 'podcast',
+															url: podcast.value.url,
+															type: 'podcast'
 														},
 														{
 															removeOnComplete: true,

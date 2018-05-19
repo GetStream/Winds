@@ -249,7 +249,7 @@ function main() {
           feeds.feedUrls.length,
           (feed, cb) => {
             // Get more metadata
-            ParsePodcast(feed.url, function(podcastContents) {
+            ParsePodcast(feed.url, function(err, podcastContents) {
               let title, url, images, description;
               if (podcastContents) {
                 title = strip(podcastContents.title) || strip(feed.title);

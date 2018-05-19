@@ -148,7 +148,7 @@ function ParsePodcast(podcastUrl, callback) {
 		//logger.debug(`${podcastUrl} response \n${partialBody}`)
 		podcastParser(responseData, (err, data) => {
 			if (err) {
-				return callback(null, err);
+				return callback(err, null);
 			}
 
 			// the podcast metadata we care about:
@@ -182,7 +182,7 @@ function ParsePodcast(podcastUrl, callback) {
 				}
 				podcastContents.episodes.push(parsedEpisode);
 			});
-			callback(podcastContents);
+			callback(null, podcastContents);
 		});
 	});
 }
