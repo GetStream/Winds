@@ -33,7 +33,7 @@ class Panel extends React.Component {
 			<div
 				className={`panel ${
 					this.props.expandable && this.state.expanded ? 'expanded' : ''
-				}`}
+				} ${this.props.hasHighlight ? 'hasHighlight' : ''}`}
 			>
 				{this.props.headerLink ? (
 					<Link className="panel-header" to={this.props.headerLink}>
@@ -48,8 +48,7 @@ class Panel extends React.Component {
 					{this.props.expandable ? (
 						<div
 							className="expander"
-							onClick={e => {
-								console.log('clicked');
+							onClick={() => {
 								this.setState({
 									expanded: !this.state.expanded,
 								});
@@ -80,6 +79,7 @@ Panel.propTypes = {
 		PropTypes.arrayOf(PropTypes.element),
 	]),
 	expandable: PropTypes.bool,
+	hasHighlight: PropTypes.bool,
 	headerLink: PropTypes.string,
 	headerText: PropTypes.string,
 };
