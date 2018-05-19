@@ -496,6 +496,20 @@ export default (previousState = {}, action) => {
 				...previousPodcastFollows,
 			},
 		};
+	} else if (action.type === 'BATCH_FOLLOW_RSS_FEEDS') {
+		let previousRssFeedFollows = { ...(previousState.followedRssFeeds || {}) };
+		for (let followRelationship of action.rssFeedFollowRelationships) {
+			if (!(followRelationship.userID in previousRssFeedFollows)) {
+				previousRssFeedFollows[followRelationship.userID] = {
+					[followRelationship.rssFeedID]: true,
+				};
+			} else {
+				previousRssFeedFollows[followRelationship.userID][
+					followRelationship.rssFeedID
+				] = true;
+			}
+		}
+		return { ...previousState, followedRssFeeds: { ...previousRssFeedFollows } };
 	} else if (action.type === 'UNFOLLOW_PODCAST') {
 		let userFollows = {};
 		if (!previousState.followedPodcasts) {
