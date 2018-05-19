@@ -238,7 +238,7 @@ class PodcastEpisodesView extends React.Component {
 								tipSize={0.1}
 							>
 								<div onClick={this.toggleMenu}>
-									<Img src={optionsIcon} />
+									<i className="fa fa-ellipsis-h fa-2x" />
 								</div>
 							</Popover>
 						</div>
