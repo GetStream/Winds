@@ -66,7 +66,7 @@ class ArticleListItem extends React.Component {
 							<TimeAgo timestamp={this.props.publicationDate} />
 						</span>
 					</div>
-					<div>{this.props.description}</div>
+					<div className="description">{this.props.description}</div>
 				</div>
 			</div>
 		);
