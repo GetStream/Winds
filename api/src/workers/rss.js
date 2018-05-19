@@ -5,10 +5,10 @@ import Queue from 'bull';
 import stream from 'getstream';
 import moment from 'moment';
 import normalize from 'normalize-url';
+import async from 'async';
 
 import RSS from '../models/rss';
 import Article from '../models/article';
-import async from 'async';
 
 import '../utils/db';
 import config from '../config';
@@ -28,7 +28,7 @@ rssQueue.process(5, (job, done) => {
 	logger.info(`Processing RSS feed ${job.data.url}...`);
 
 	// start by looking up the RSS object
-	RSS.findOne({ _id: job.data.rss }).then(doc => {
+	RSS.findById(job.data.rss).then(doc => {
 		if (!doc) {
 			return done(new Error('RSS feed does not exist.'));
 		}
@@ -48,7 +48,7 @@ rssQueue.process(5, (job, done) => {
 				job.data.rss,
 				{
 					$set: {
-						isParsing: false,
+						isParsing: true,
 						lastScraped: moment().toISOString(),
 					},
 				},
@@ -65,8 +65,8 @@ rssQueue.process(5, (job, done) => {
 				feedContents.articles,
 				10,
 				(post, cb) => {
-					// lookup by url
 					let normalizedUrl = normalize(post.url);
+
 					Article.findOneAndUpdate(
 						{
 							rss: job.data.rss,
@@ -101,7 +101,7 @@ rssQueue.process(5, (job, done) => {
 								return;
 							} else {
 								let article = rawArticle.value;
-								// after article is created, add to algolia, stream, and opengraph scraper queue
+								// after article is created, add to algolia, stream, and og scraper queue
 								return ogQueue
 									.add(
 										{
@@ -118,7 +118,7 @@ rssQueue.process(5, (job, done) => {
 										cb(null, article);
 									})
 									.catch(err => {
-										// error: either adding to algolia, or adding to OGqueue - continuing on for the time being.
+										// error: either adding to algolia, or adding to og queue - continuing on for the time being.
 										logger.error(
 											`failed to publish to ogQueue ${err}`,
 										);
@@ -177,6 +177,21 @@ rssQueue.process(5, (job, done) => {
 											} with error ${err}`,
 										);
 										done(err);
+									});
+
+								RSS.findByIdAndUpdate(job.data.rss, {
+									$set: {
+										isParsing: false,
+										lastScraped: moment().toISOString(),
+									},
+								})
+									.then(res => {
+										logger.info(
+											`Completed scraping for ${job.data.url}`,
+										);
+									})
+									.catch(err => {
+										logger.error(err);
 									});
 							}
 						} else {

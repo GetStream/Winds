@@ -110,7 +110,7 @@ const conductor = () => {
 				logger.info(`Enqueuing ${rss.url} for RSS processing...`);
 			}
 
-			logger.info(`found ${podcastFeeds.length} podcasts`);
+			logger.info(`Found ${podcastFeeds.length} podcasts`);
 
 			for (let podcast of podcastFeeds) {
 				podcastQueue.add(
