@@ -1110,8 +1110,13 @@ a.column-header:hover {
       width: 100px; }
   .list .list-item .right h2 {
     font-weight: 600;
-    margin-bottom: 0.5em;
-    margin-top: 0; }
+    margin-bottom: 0em;
+    margin-top: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    width: 80%; }
   .list .list-item .right .info {
     align-items: center;
     color: #aaa;
