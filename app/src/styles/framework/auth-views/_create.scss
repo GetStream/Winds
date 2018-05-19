@@ -5,9 +5,21 @@
 		grid-row-gap: 2em;
 		grid-template-columns: 1fr 1fr 1fr;
 
+		.hero-card{
+			transition-duration: 0.3s;
+			transition-property: transform;
+			&:hover{
+				transform: scale(1.01);
+			}
+		}
+
+
+
+
 		> * {
 			&:hover {
 				cursor: pointer;
+
 			}
 		}
 	}
