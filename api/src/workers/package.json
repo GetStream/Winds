@@ -4,7 +4,8 @@
 		"conductor": "babel-node conductor.js",
 		"rss": "babel-node rss.js",
 		"podcast": "babel-node podcast.js",
-		"og": "babel-node og.js"
+		"og": "babel-node og.js",
+		"reset": "babel-node reset.js"
 	},
 	"license": "BSD-3-Clause",
 	"dependencies": {
