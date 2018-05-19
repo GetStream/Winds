@@ -262,6 +262,7 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_PLAYLIST_ORDER') {
+		// TODO: @kenhoff - remove
 		// serialize user
 		// and convert episode IDs
 		return {
@@ -280,6 +281,19 @@ export default (previousState = {}, action) => {
 		let episodes = { ...previousState.episodes };
 		episodes[episode._id] = episode;
 		return { ...previousState, episodes };
+	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
+		// convert episode IDs
+		let previousEpisodes = { ...previousState.episodes };
+		for (let episode of action.episodes) {
+			previousEpisodes[episode._id] = {
+				...episode,
+				podcast: episode.podcast._id,
+			};
+		}
+		return {
+			...previousState,
+			episodes: { ...previousEpisodes },
+		};
 	} else if (action.type === 'UPDATE_PODCAST_SHOW') {
 		return {
 			...previousState,
