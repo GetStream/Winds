@@ -459,6 +459,29 @@ export default (previousState = {}, action) => {
 				[action.userID]: userFollows,
 			},
 		};
+	} else if (action.type === 'BATCH_FOLLOW_PODCASTS') {
+		let previousPodcastFollows = { ...(previousState.followedPodcasts || {}) };
+		for (let followRelationship of action.podcastFollowRelationships) {
+			// followRelationship.podcastID
+			// followRelationship.userID
+			if (!(followRelationship.userID in previousPodcastFollows)) {
+				// create new object just for that user/podcast
+				previousPodcastFollows[followRelationship.userID] = {
+					[followRelationship.podcastID]: true,
+				};
+			} else {
+				// just add new key for that user/podcast
+				previousPodcastFollows[followRelationship.userID][
+					followRelationship.podcastID
+				] = true;
+			}
+		}
+		return {
+			...previousState,
+			followedPodcasts: {
+				...previousPodcastFollows,
+			},
+		};
 	} else if (action.type === 'UNFOLLOW_PODCAST') {
 		let userFollows = {};
 		if (!previousState.followedPodcasts) {
