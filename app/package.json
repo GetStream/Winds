@@ -110,7 +110,8 @@
 			"icon": "assets/icon.icns",
 			"type": "distribution",
 			"target": [
-				"pkg"
+				"pkg",
+				"dmg"
 			],
 			"publish": {
 				"provider": "s3",
