@@ -137,6 +137,10 @@
 	.description {
 		font-size: 14px;
 		line-height: 20px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 100%;
 	}
 
 	&:hover {

@@ -68,23 +68,24 @@
 				background-size: cover;
 				border-radius: $border-radius;
 				box-shadow: $box-shadow;
-				height: 100px;
-				width: 100px;
+				height: 75px;
+				width: 75px;
 			}
 		}
 
 		.right {
-			width: 85%;
+			max-width: 90%;
+			@media only screen and (max-width: 1400px) { width: 80%;}
+			@media only screen and (max-width: 970px) { width: 70%;}
 
 			h2 {
-				display: inline-block;
 				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
 				margin-bottom: 0;
 				margin-top: 0;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				width: 90%;
+				width: 100%;
 			}
 
 			.info {
