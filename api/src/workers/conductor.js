@@ -18,12 +18,14 @@ const publicationTypes = {
 	rss: { schema: RSS, queue: rssQueue },
 	podcast: { schema: Podcast, queue: podcastQueue },
 };
-const conductorInterval = 60
-const durationInMinutes = 15
+const conductorInterval = 60;
+const durationInMinutes = 15;
 
 // conductor runs conduct every interval seconds
 const conductor = () => {
-	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
+	logger.info(
+		`Starting the conductor... will conduct every ${conductorInterval} seconds`,
+	);
 
 	function forever() {
 		conduct();
@@ -53,7 +55,7 @@ async function conduct() {
 					$lte: moment()
 						.subtract(durationInMinutes, 'minutes')
 						.toDate(),
-				}
+				},
 			})
 			.limit(maxToSchedule);
 
@@ -67,8 +69,11 @@ async function conduct() {
 			{
 				isParsing: true,
 			},
+			{
+				multi: true,
+			},
 		);
-		logger.info(`marked ${updated.nModified} publications as isParsing`)
+		logger.info(`marked ${updated.nModified} publications as isParsing`);
 
 		// actually schedule the update
 		logger.info(
@@ -76,18 +81,18 @@ async function conduct() {
 		);
 		let promises = [];
 		for (let publication of publications) {
-			let job = {url: publication.feedUrl}
-			job[publicationType] = publication._id
-			let promise = publicationConfig.queue.add(job,
-				{
-					removeOnComplete: true,
-					removeOnFail: true,
-				},
-			);
+			let job = { url: publication.feedUrl };
+			job[publicationType] = publication._id;
+			let promise = publicationConfig.queue.add(job, {
+				removeOnComplete: true,
+				removeOnFail: true,
+			});
 			promises.push(promise);
 		}
 		let results = await Promise.all(promises);
 
-		logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`);
+		logger.info(
+			`Processing complete! Will try again in ${conductorInterval} seconds...`,
+		);
 	}
 }
