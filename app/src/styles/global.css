@@ -1104,9 +1104,9 @@ a.column-header:hover {
       background-color: #44bc75;
       border-radius: 10000px;
       height: 8px;
-      left: -4px;
+      left: 83px;
       position: absolute;
-      top: -4px;
+      top: 6px;
       width: 8px; }
     .list .list-item .left {
       margin-right: 2em;
@@ -2323,7 +2323,7 @@ a.column-header:hover {
     .podcast-episode .left .pause-icon {
       align-items: center;
       display: flex;
-      height: 100px;
+      height: 79px;
       justify-content: center;
       left: 0;
       position: absolute;
