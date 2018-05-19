@@ -1833,8 +1833,10 @@ a.column-header:hover {
 
 .results.panel {
   border-radius: 0.25em;
+  left: 0;
   margin-top: 0.5em;
-  position: relative;
+  position: absolute;
+  right: 0;
   z-index: 10001; }
   .results.panel > *.panel-element {
     margin: 0;
@@ -1847,6 +1849,10 @@ a.column-header:hover {
   .results.panel > * .left {
     padding: unset;
     width: unset; }
+  .results.panel > * .center {
+    display: block;
+    text-align: left;
+    text-overflow: ellipsis; }
   .results.panel > * .right {
     margin-left: auto;
     padding: 0;
