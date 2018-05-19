@@ -43,7 +43,10 @@ export const PlaylistSchema = new Schema(
 	{ collection: 'playlists' },
 );
 
-PlaylistSchema.plugin(timestamps);
+PlaylistSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 PlaylistSchema.plugin(mongooseStringQuery);
 PlaylistSchema.plugin(autopopulate);
 

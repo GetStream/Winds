@@ -43,7 +43,10 @@ export const CommentSchema = new Schema(
 	{ collection: 'comments' },
 );
 
-CommentSchema.plugin(timestamps);
+CommentSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 CommentSchema.plugin(mongooseStringQuery);
 CommentSchema.plugin(autopopulate);
 

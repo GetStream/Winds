@@ -128,7 +128,10 @@ UserSchema.pre('findOneAndUpdate', function(next) {
 });
 
 UserSchema.plugin(bcrypt);
-UserSchema.plugin(timestamps);
+UserSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 UserSchema.plugin(mongooseStringQuery);
 
 UserSchema.index({ email: 1, username: 1 });

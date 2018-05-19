@@ -81,7 +81,10 @@ export const ShareSchema = new Schema(
 	{ collection: 'shares' },
 );
 
-ShareSchema.plugin(timestamps);
+ShareSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 ShareSchema.plugin(mongooseStringQuery);
 ShareSchema.plugin(autopopulate);
 

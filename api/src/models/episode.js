@@ -96,7 +96,10 @@ export const EpisodeSchema = new Schema(
 	{ collection: 'episodes' },
 );
 
-EpisodeSchema.plugin(timestamps);
+EpisodeSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
 
