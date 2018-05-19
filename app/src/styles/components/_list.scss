@@ -75,10 +75,17 @@
 		}
 
 		.right {
+			width: 85%;
 			h2 {
 				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
-				margin-bottom: 0.5em;
+				margin-bottom: 0em;
 				margin-top: 0;
+				white-space: nowrap;
+			  overflow: hidden;
+			  display: inline-block;
+			  text-overflow: ellipsis;
+				width:90%;
+
 			}
 
 			.info {
