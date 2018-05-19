@@ -306,6 +306,7 @@ class AccountDetailsForm extends React.Component {
 					<label>
 						<input
 							autoFocus={true}
+							autoComplete="name"
 							tabIndex="1"
 							type="text"
 							name="name"
@@ -325,6 +326,7 @@ class AccountDetailsForm extends React.Component {
 					</label>
 					<label>
 						<input
+							autoComplete="email"
 							tabIndex="3"
 							type="email"
 							name="email"
@@ -335,6 +337,7 @@ class AccountDetailsForm extends React.Component {
 					<label>
 						<input
 							tabIndex="4"
+							autoComplete="current-password"
 							type="password"
 							name="password"
 							placeholder="Password"
