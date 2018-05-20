@@ -31,7 +31,7 @@ ogQueue.process(25, handleJob);
 
 // Run the OG scraping job
 async function handleJob(job) {
-	logger.info(`Processing opengraph images for ${job.data.url}...`);
+	logger.info(`OG image scraping: ${job.data.url}`);
 	// Note dont normalize the url, this is done when the object is created
 	const url = job.data.url;
 	const jobType = job.data.type;
@@ -45,20 +45,23 @@ async function handleJob(job) {
 	let instance = await mongoSchema.findOne({ [field]: url });
 
 
-	if (!instance || instance.images.og) {
-		return;
+	if (!instance || (instance.images.og && !job.data.update)) {
+		logger.warn(`instance not found for type ${jobType}`)
+		return
 	} else if (url.endsWith('.mp3')) {
 		// ends with mp3, no point in scraping, returning early
+		logger.warn(`skipping mp3 url ${url}, jobtype ${jobType}`)
 		return;
 	} else {
 		// TODO: on failure conditions the ogs script has some leaks
+		let image
 		try {
-			let image = await ogs({
+			image = await ogs({
 				followAllRedirects: true,
 				maxRedirects: maxRedirects,
 				timeout: requestTimeout,
 				url: url,
-			});
+			})
 		} catch (e) {
 			logger.info(`OGS scraping broke for URL ${url}`)
 			return
@@ -68,13 +71,13 @@ async function handleJob(job) {
 			logger.info(`Didn't find image for ${url}`)
 			return
 		} else {
-			logger.info(`Found an image for ${url}`)
 			let images = instance.images || {}
 			images.og = normalize(image.data.ogImage.url)
 			let result = await mongoSchema.update(
 				{ _id: instance._id },
-				{ $set: { images: images } },
+				{ images: images }
 			)
+			logger.info(`Stored ${images.og} image for ${url}`)
 		}
 	}
 

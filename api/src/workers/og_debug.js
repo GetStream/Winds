@@ -47,6 +47,7 @@ function main() {
 			{
 				url: normalizedUrl,
 				type: program.type,
+				update: true,
 			},
 			{
 				removeOnComplete: true,
