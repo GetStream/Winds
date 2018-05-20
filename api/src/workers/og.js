@@ -42,16 +42,15 @@ async function handleJob(job) {
 	let field = job.data.type === 'episode' ? 'link' : 'url';
 
 	// if the instance hasn't been created yet, or it already has an OG image, ignore
-	let instance = await mongoSchema.findOne({ [field]: url });
+	let instance = await mongoSchema.findOne({ [field]: url })
 
-
-	if (!instance || (instance.images.og && !job.data.update)) {
-		logger.warn(`instance not found for type ${jobType}`)
-		return
+	if (!instance) {
+		logger.warn(`instance not found for type ${jobType} with lookup ${field}: ${url}`)
+	} else if (instance.images.og && !job.data.update) {
+		logger.info(`instance already has an image ${instance.images.og}: ${jobType} with lookup ${field}: ${url}`)
 	} else if (url.endsWith('.mp3')) {
 		// ends with mp3, no point in scraping, returning early
 		logger.warn(`skipping mp3 url ${url}, jobtype ${jobType}`)
-		return;
 	} else {
 		// TODO: on failure conditions the ogs script has some leaks
 		let image

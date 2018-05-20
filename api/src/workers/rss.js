@@ -43,10 +43,12 @@ async function handleRSS(job) {
 	// mark as done, will be schedule again in 15 min from now
 	// we do this early so a temporary failure doesnt leave things in a broken state
 	let completed = await markDone(rssID)
+	logger.info(`Marked ${rssID} as done`)
 
 	// parse the articles
+	let rssContent
 	try {
-		let rssContent = await util.promisify(ParseFeed)(job.data.url)
+		rssContent = await util.promisify(ParseFeed)(job.data.url)
 	} catch (e) {
 		logger.info(`rss scraping broke for url ${job.data.url}`)
 		return
