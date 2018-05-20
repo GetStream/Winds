@@ -36,7 +36,7 @@ async function handleRSS(job) {
 	let rssID = job.data.rss;
 	let rss = await RSS.findOne({ _id: rssID });
 	if (!rss) {
-		logger.warn(`RSS with ID ${rssID} does not exist`);
+		logger.warn(`RSS with ID ${rssID} does not exist`)
 		return
 	}
 
@@ -45,7 +45,12 @@ async function handleRSS(job) {
 	let completed = await markDone(rssID)
 
 	// parse the articles
-	let rssContent = await util.promisify(ParseFeed)(job.data.url)
+	try {
+		let rssContent = await util.promisify(ParseFeed)(job.data.url)
+	} catch (e) {
+		logger.info(`rss scraping broke for url ${job.data.url}`)
+		return
+	}
 
 	// update the articles
 	logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`)
