@@ -13,10 +13,12 @@ import Article from '../models/article';
 import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
+import util from 'util';
+
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
 import { ParseFeed } from './parsers';
 
-const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 const rssQueue = new Queue('rss', config.cache.uri);
 const ogQueue = new Queue('og', config.cache.uri);
@@ -24,180 +26,121 @@ const ogQueue = new Queue('og', config.cache.uri);
 // connect the handler to the queue
 logger.info('Starting the RSS worker');
 
-rssQueue.process(25, (job, done) => {
-	logger.info(`Processing RSS feed ${job.data.url}...`);
+rssQueue.process(25, handleRSS);
 
-	// start by looking up the RSS object
-	RSS.findById(job.data.rss).then(doc => {
-		if (!doc) {
-			return done(new Error('RSS feed does not exist.'));
-		}
+// Handle Podcast scrapes the podcast and updates the episodes
+async function handleRSS(job) {
+	logger.info(`Processing ${job.data.url}`);
 
-		// update the feed
-		ParseFeed(job.data.url, function(err, feedContents) {
-			// log the error
-			if (err) {
-				logger.error(err);
-				done(err);
-				return;
-			}
+	// verify we have the rss object
+	let rssID = job.data.rss;
+	let rss = await RSS.findOne({ _id: rssID });
+	if (!rss) {
+		logger.warn(`RSS with ID ${rssID} does not exist`);
+		return
+	}
 
-			// mark it done (even if we have a failure)
-			// set last scraped date on rss object in DB
-			RSS.findByIdAndUpdate(
-				job.data.rss,
-				{
-					$set: {
-						isParsing: true,
-						lastScraped: moment().toISOString(),
-					},
-				},
-				{
-					new: true,
-					upsert: false,
-				},
-			).catch(err => {
-				logger.error(err);
+	// mark as done, will be schedule again in 15 min from now
+	// we do this early so a temporary failure doesnt leave things in a broken state
+	let completed = await markDone(rssID)
+
+	// parse the articles
+	let rssContent = await util.promisify(ParseFeed)(job.data.url)
+
+	// update the articles
+	logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`)
+	let allArticles = await Promise.all(
+		rssContent.articles.map(article => {
+			let normalizedUrl = normalize(article.url)
+			article.url = normalizedUrl
+			return updateArticle(rssID, normalizedUrl, article)
+		})
+	)
+
+	// updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
+	let updatedArticles = allArticles.filter(updatedArticle => {
+		return updatedArticle;
+	});
+
+	let rssFeed = streamClient.feed('rss', rssID);
+	logger.info(`Syncing ${updatedArticles.length} articles to Stream`)
+	if (updatedArticles.length > 0) {
+		let chunkSize = 100;
+		for (let i = 0, j = updatedArticles.length; i < j; i += chunkSize) {
+			let chunk = updatedArticles.slice(i, i + chunkSize);
+
+			let streamArticles = chunk.map(article => {
+				return {
+					actor: article.rss,
+					foreign_id: `articles:${article._id}`,
+					object: article._id,
+					time: article.publicationDate,
+					verb: 'rss_article',
+				};
 			});
 
-			// process all the feedContents we found
-			async.mapLimit(
-				feedContents.articles,
-				10,
-				(post, cb) => {
-					let normalizedUrl = normalize(post.url);
+			let streamResponse = await rssFeed.addActivities(streamArticles);
+			let response = await sendRssFeedToCollections(job.data.rss);
+		}
+	}
+	logger.info(`Completed scraping for ${job.data.url}`);
+}
 
-					Article.findOneAndUpdate(
-						{
-							rss: job.data.rss,
-							url: normalizedUrl,
-						},
-						{
-							commentUrl: post.commentUrl,
-							content: post.content,
-							description: post.description,
-							images: post.images || {},
-							publicationDate: post.publicationDate,
-							rss: job.data.rss,
-							title: post.title,
-							url: normalizedUrl,
-						},
-						{
-							new: true,
-							rawResult: true,
-							upsert: true,
-						},
-					)
-						.catch(err => {
-							logger.error(
-								`Failed to findOneAndUpdate for article with url ${normalizedUrl} ${err}`,
-							);
-							cb(null, null);
-						})
-						.then(rawArticle => {
-							if (rawArticle.lastErrorObject.updatedExisting) {
-								// article already exists
-								cb(null, null);
-								return;
-							} else {
-								let article = rawArticle.value;
-								// after article is created, add to algolia, stream, and og scraper queue
-								return ogQueue
-									.add(
-										{
-											type: 'rss',
-											url: article.url,
-										},
-										{
-											removeOnComplete: true,
-											removeOnFail: true,
-										},
-									)
-									.then(function() {
-										// this is just returning the article created from the MongoDB `create` call
-										cb(null, article);
-									})
-									.catch(err => {
-										// error: either adding to algolia, or adding to og queue - continuing on for the time being.
-										logger.error(
-											`failed to publish to ogQueue ${err}`,
-										);
-										cb(null, article);
-									});
-							}
-						});
-				},
-				(err, allArticles) => {
-					// updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
-					let updatedArticles = allArticles.filter(updatedArticle => {
-						return updatedArticle;
-					});
+// updateArticle updates the article in mongodb
+async function updateArticle(rssID, normalizedUrl, post) {
+	let rawArticle = await Article.findOneAndUpdate(
+		{
+			rss: rssID,
+			url: normalizedUrl,
+		},
+		{
+			commentUrl: post.commentUrl,
+			content: post.content,
+			description: post.description,
+			images: post.images || {},
+			publicationDate: post.publicationDate,
+			rss: rssID,
+			title: post.title,
+			url: post.url,
+		},
+		{
+			new: true,
+			rawResult: true,
+			upsert: true,
+		},
+	);
+	if (rawArticle.lastErrorObject.updatedExisting) {
+		// article already exists
+		return
+	}
 
-					if (err) {
-						logger.warn(
-							`Scraping failed for ${job.data.url} with error ${err}`,
-						);
-						done(err);
-					} else {
-						if (updatedArticles.length > 0) {
-							let chunkSize = 100;
-							for (
-								let i = 0, j = updatedArticles.length;
-								i < j;
-								i += chunkSize
-							) {
-								let chunk = updatedArticles.slice(i, i + chunkSize);
+	let article = rawArticle.value
+	// after article is created, add to algolia, stream, and og scraper queue
+	let response = await ogQueue.add(
+		{
+			type: 'rss',
+			url: article.url
+		},
+		{
+			removeOnComplete: true,
+			removeOnFail: true,
+		}
+	)
+	return article
+}
 
-								let streamArticles = chunk.map(article => {
-									return {
-										actor: article.rss,
-										foreign_id: `articles:${article._id}`,
-										object: article._id,
-										time: article.publicationDate,
-										verb: 'rss_article',
-									};
-								});
-
-								client
-									.feed('rss', job.data.rss)
-									.addActivities(streamArticles)
-									.then(() => {
-										return sendRssFeedToCollections(job.data.rss);
-									})
-									.then(() => {
-										logger.info(
-											`Completed scraping for ${job.data.url}`,
-										);
-										done();
-									})
-									.catch(err => {
-										logger.warn(
-											`Adding activities to Stream and personalization failed for ${
-												job.data.url
-											} with error ${err}`,
-										);
-										done(err);
-									});
-
-								RSS.update(job.data.rss, {
-									isParsing: false,
-								})
-									.then(res => {
-										logger.info(
-											`Completed scraping for ${job.data.url}`,
-										);
-									})
-									.catch(err => {
-										logger.error(err);
-									});
-							}
-						} else {
-							logger.info(`Completed scraping for ${job.data.url}`);
-							done();
-						}
-					}
-				},
-			);
-		});
-	});
-});
+// markDone sets lastScraped to now and isParsing to false
+async function markDone(rssID) {
+	/*
+	Set the last scraped for the given rssID
+	*/
+	let now = moment().toISOString();
+	let updated = await RSS.update(
+		{ _id: rssID },
+		{
+			lastScraped: now,
+			isParsing: false,
+		}
+	)
+	return updated
+}
