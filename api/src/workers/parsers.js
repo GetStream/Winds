@@ -88,7 +88,10 @@ function ParseFeed(feedUrl, callback) {
 				content: sanitize(post.summary),
 				description: description,
 				publicationDate:
-					moment(post.pubdate).toISOString() || moment().toISOString(),
+					moment(post.pubdate).toISOString() ||
+					moment()
+						.subtract(feedContents.articles.length, 'minutes') // feedContents.articles only gets pushed to every time we parse an article, so it serves as a reasonable offset.
+						.toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
 				// For some sites like XKCD the content from RSS is better than Mercury
@@ -173,7 +176,9 @@ function ParsePodcast(podcastUrl, callback) {
 						link: episode.link,
 						publicationDate:
 							moment(episode.published).toISOString() ||
-							moment().toISOString(),
+							moment()
+								.subtract(podcastContents.episodes.length, 'minutes')
+								.toISOString(),
 						title: strip(episode.title),
 						url: normalize(url),
 					});
