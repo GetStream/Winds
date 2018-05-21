@@ -24,8 +24,8 @@ exports.health = (req, res) => {
 exports.test = async (req, res) => {
 	let output = { version, code: 200 };
 	// verify that we've recently parsed either an article and an episode
-	let latestArticle = await Article.findOne({}, {}, { sort: { createdAt: -1 } });
-	let latestEpisode = await Episode.findOne({}, {}, { sort: { createdAt: -1 } });
+	let latestArticle = await Article.findOne({}, {}, { sort: { _id: -1 } });
+	let latestEpisode = await Episode.findOne({}, {}, { sort: { _id: -1 } });
 	let now = new Date();
 	output.mostRecentArticle = moment(latestArticle.createdAt).fromNow();
 	output.mostRecentEpisode = moment(latestEpisode.createdAt).fromNow();
