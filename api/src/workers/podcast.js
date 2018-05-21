@@ -35,6 +35,7 @@ async function handlePodcast(job) {
 	})
 	return promise
 }
+
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handlePodcast(job) {
 	logger.info(`Processing ${job.data.url}`);

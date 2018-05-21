@@ -26,7 +26,16 @@ const ogQueue = new Queue('og', config.cache.uri);
 // connect the handler to the queue
 logger.info('Starting the RSS worker');
 
-rssQueue.process(25, handleRSS);
+rssQueue.process(25, handleRSS)
+
+// the top level handleRSS just intercepts error handling before it goes to Bull
+async function handleRSS(job) {
+	let promise = _handleRSS(job)
+	promise.catch(err => {
+		logger.warn(`rss job ${job} broke with err ${err}`)
+	})
+	return promise
+}
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function handleRSS(job) {
