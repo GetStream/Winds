@@ -11,14 +11,10 @@ class SuggestedFeeds extends React.Component {
 	componentDidMount() {
 		fetch('get', '/rss', {}, { type: 'recommended' })
 			.then(response => {
-				for (let rssFeed of response.data) {
-					// first, update each rss feed object
-					this.props.dispatch({
-						rssFeed,
-						type: 'UPDATE_RSS_FEED',
-					});
-				}
-				// then, update the `suggestedRssFeeds` field
+				this.props.dispatch({
+					rssFeeds: response.data,
+					type: 'BATCH_UPDATE_RSS_FEEDS',
+				});
 				this.props.dispatch({
 					rssFeeds: response.data,
 					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
@@ -32,24 +28,31 @@ class SuggestedFeeds extends React.Component {
 			user: localStorage['authedUser'],
 		})
 			.then(response => {
+				let rssFeeds = [];
+				let rssFeedFollowRelationships = [];
+
+				this.props.dispatch({
+					type: 'UPDATE_USER',
+					user: response.data[0].user,
+				});
+
 				for (let followRelationship of response.data) {
-					// update rss feed
-					this.props.dispatch({
-						rssFeed: followRelationship.rss,
-						type: 'UPDATE_RSS_FEED',
-					});
-					// update user
-					this.props.dispatch({
-						type: 'UPDATE_USER',
-						user: followRelationship.user,
-					});
-					// update follow relationship
-					this.props.dispatch({
+					rssFeeds.push(followRelationship.rss);
+					rssFeedFollowRelationships.push({
 						rssFeedID: followRelationship.rss._id,
-						type: 'FOLLOW_RSS_FEED',
 						userID: followRelationship.user._id,
 					});
 				}
+
+				this.props.dispatch({
+					rssFeeds,
+					type: 'BATCH_UPDATE_RSS_FEEDS',
+				});
+
+				this.props.dispatch({
+					rssFeedFollowRelationships,
+					type: 'BATCH_FOLLOW_RSS_FEEDS',
+				});
 			})
 			.catch(err => {
 				console.log(err); // eslint-disable-line no-console

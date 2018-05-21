@@ -61,13 +61,10 @@ class PodcastEpisodesView extends React.Component {
 						reachedEndOfFeed: true,
 					});
 				}
-
-				for (let episode of res.data) {
-					this.props.dispatch({
-						episode,
-						type: 'UPDATE_EPISODE',
-					});
-				}
+				this.props.dispatch({
+					episodes: res.data,
+					type: 'BATCH_UPDATE_EPISODES',
+				});
 			})
 			.catch(err => {
 				console.log(err); // eslint-disable-line no-console
