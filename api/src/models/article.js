@@ -86,6 +86,7 @@ export const ArticleSchema = new Schema(
 		valid: {
 			type: Boolean,
 			default: true,
+			valid: true,
 		},
 	},
 	{ collection: 'articles' },
