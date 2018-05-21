@@ -91,7 +91,10 @@ export const ArticleSchema = new Schema(
 	{ collection: 'articles' },
 );
 
-ArticleSchema.plugin(timestamps);
+ArticleSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 

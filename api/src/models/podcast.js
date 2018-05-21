@@ -94,7 +94,10 @@ export const PodcastSchema = new Schema(
 	{ collection: 'podcasts' },
 );
 
-PodcastSchema.plugin(timestamps);
+PodcastSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 PodcastSchema.plugin(mongooseStringQuery);
 
 module.exports = exports = mongoose.model('Podcast', PodcastSchema);

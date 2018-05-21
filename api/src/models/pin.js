@@ -55,7 +55,10 @@ export const PinSchema = new Schema(
 	{ collection: 'pins' },
 );
 
-PinSchema.plugin(timestamps);
+PinSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 PinSchema.plugin(mongooseStringQuery);
 PinSchema.plugin(autopopulate);
 

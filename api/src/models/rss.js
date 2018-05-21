@@ -99,7 +99,10 @@ export const RSSSchema = new Schema(
 	{ collection: 'rss' },
 );
 
-RSSSchema.plugin(timestamps);
+RSSSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 RSSSchema.plugin(mongooseStringQuery);
 
 module.exports = exports = mongoose.model('RSS', RSSSchema);

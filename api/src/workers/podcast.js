@@ -35,8 +35,8 @@ async function handlePodcast(job) {
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
-		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`)
-		return
+		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
+		return;
 	}
 
 	// mark as done, will be schedule again in 15 min from now
@@ -45,10 +45,10 @@ async function handlePodcast(job) {
 
 	// parse the episodes
 	try {
-		let podcastContent = await util.promisify(ParsePodcast)(job.data.url)
+		let podcastContent = await util.promisify(ParsePodcast)(job.data.url);
 	} catch (e) {
-		logger.info(`podcast scraping broke for url ${job.data.url}`)
-		return
+		logger.info(`podcast scraping broke for url ${job.data.url}`);
+		return;
 	}
 
 	// update the episodes

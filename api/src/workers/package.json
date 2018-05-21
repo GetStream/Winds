@@ -17,6 +17,7 @@
 		"iconv": "^2.3.0",
 		"iconv-js": "^0.3.5",
 		"moment": "^2.22.1",
+		"mongodb": "^3.1.0-beta4",
 		"music-metadata": "^1.0.0",
 		"normalize-url": "^2.0.1",
 		"open-graph-scraper": "^3.3.0",

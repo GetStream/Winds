@@ -102,7 +102,10 @@ export const LikeSchema = new Schema(
 	{ collection: 'likes' },
 );
 
-LikeSchema.plugin(timestamps);
+LikeSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 LikeSchema.plugin(mongooseStringQuery);
 LikeSchema.plugin(autopopulate);
 

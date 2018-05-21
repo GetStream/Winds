@@ -47,7 +47,10 @@ export const ListenSchema = new Schema(
 	{ collection: 'listens' },
 );
 
-ListenSchema.plugin(timestamps);
+ListenSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 ListenSchema.plugin(mongooseStringQuery);
 ListenSchema.plugin(autopopulate);
 

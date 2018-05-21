@@ -36,7 +36,10 @@ export const CacheSchema = new Schema(
 	{ collection: 'cache' },
 );
 
-CacheSchema.plugin(timestamps);
+CacheSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 CacheSchema.plugin(mongooseStringQuery);
 
 module.exports = exports = mongoose.model('Cache', CacheSchema);

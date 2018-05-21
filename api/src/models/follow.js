@@ -83,7 +83,10 @@ export const FollowSchema = new Schema(
 	{ collection: 'follows' },
 );
 
-FollowSchema.plugin(timestamps);
+FollowSchema.plugin(timestamps, {
+	createdAt: { index: true },
+	updatedAt: { index: true },
+});
 FollowSchema.plugin(mongooseStringQuery);
 FollowSchema.plugin(autopopulate);
 
