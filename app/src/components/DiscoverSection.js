@@ -10,13 +10,10 @@ class DiscoverSection extends React.Component {
 	componentDidMount() {
 		fetch('GET', '/podcasts', {}, { type: 'recommended' })
 			.then(res => {
-				// loop through podcasts, update each podcast
-				for (let podcast of res.data) {
-					this.props.dispatch({
-						podcast,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-				}
+				this.props.dispatch({
+					podcasts: res.data,
+					type: 'BATCH_UPDATE_PODCASTS',
+				});
 
 				// set "recommendedPodcasts" value in state
 				// map podcasts to IDs, dispatch
@@ -30,13 +27,10 @@ class DiscoverSection extends React.Component {
 			});
 		fetch('GET', '/rss', {}, { type: 'recommended' })
 			.then(res => {
-				// loop through podcasts, update each podcast
-				for (let rssFeed of res.data) {
-					this.props.dispatch({
-						rssFeed,
-						type: 'UPDATE_RSS_FEED',
-					});
-				}
+				this.props.dispatch({
+					rssFeeds: res.data,
+					type: 'BATCH_UPDATE_RSS_FEEDS',
+				});
 
 				// map rssFeeds to IDs, dispatch
 				this.props.dispatch({

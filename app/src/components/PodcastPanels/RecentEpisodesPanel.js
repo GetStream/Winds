@@ -4,43 +4,14 @@ import React from 'react';
 import Panel from '../Panel';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import fetch from '../../util/fetch';
 import { getEpisode } from '../../selectors';
+import { getFeed } from '../../util/feeds';
 import TimeAgo from '../TimeAgo';
 import PropTypes from 'prop-types';
 
 class RecentEpisodesPanel extends React.Component {
 	componentDidMount() {
-		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
-			type: 'episode',
-		}).then(response => {
-			let episodes = response.data.map(episode => {
-				return { ...episode, type: 'episode' };
-			});
-
-			for (let episode of episodes) {
-				if (episode._id) {
-					// update podcast
-					this.props.dispatch({
-						podcast: episode.podcast,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-					// update episode
-					this.props.dispatch({
-						episode,
-						type: 'UPDATE_EPISODE',
-					});
-				} else {
-					return;
-				}
-			}
-
-			this.props.dispatch({
-				activities: episodes,
-				feedID: `user_episode:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
-			});
-		});
+		getFeed(this.props.dispatch, 'episode', 0, 20);
 	}
 	render() {
 		return (

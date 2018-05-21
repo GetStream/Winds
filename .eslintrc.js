@@ -27,5 +27,6 @@ module.exports = {
 		'react/jsx-sort-props': 'error',
 		eqeqeq: 'warn',
 		'quote-props': ['warn', 'consistent-as-needed'],
+		'react/no-deprecated': 'off',
 	},
 };

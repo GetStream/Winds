@@ -5,46 +5,13 @@ import React from 'react';
 import Panel from '../Panel';
 import { getArticle } from '../../selectors';
 import { connect } from 'react-redux';
-import fetch from '../../util/fetch';
 import TimeAgo from '../TimeAgo';
 import PropTypes from 'prop-types';
+import { getFeed } from '../../util/feeds';
 
 class RecentArticlesPanel extends React.Component {
 	componentDidMount() {
-		fetch('GET', `/users/${localStorage['authedUser']}/feeds`, null, {
-			type: 'article',
-		}).then(response => {
-			let articles = response.data.map(article => {
-				return { ...article, type: 'article' };
-			});
-
-			for (let article of articles) {
-				// update rss feed
-				this.props.dispatch({
-					rssFeed: article.rss,
-					type: 'UPDATE_RSS_FEED',
-				});
-				// update article
-				this.props.dispatch({
-					rssArticle: article,
-					type: 'UPDATE_ARTICLE',
-				});
-			}
-
-			// sort articles
-			articles.sort((a, b) => {
-				return (
-					new Date(b.publicationDate).valueOf() -
-					new Date(a.publicationDate).valueOf()
-				);
-			});
-
-			this.props.dispatch({
-				activities: articles,
-				feedID: `user_article:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
-			});
-		});
+		getFeed(this.props.dispatch, 'article', 0, 20);
 	}
 	render() {
 		return (
@@ -80,6 +47,7 @@ class RecentArticlesPanel extends React.Component {
 }
 
 RecentArticlesPanel.propTypes = {
+	articles: PropTypes.arrayOf(PropTypes.shape({})),
 	dispatch: PropTypes.func.isRequired,
 };
 

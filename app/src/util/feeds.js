@@ -14,43 +14,38 @@ const getFeed = (dispatch, type, page = 0, per_page = 10) => {
 		});
 
 		if (type === 'episode') {
+			let podcasts = [];
 			for (let episode of items) {
-				// update podcast
-				dispatch({
-					podcast: episode.podcast,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-				// update episode
-				dispatch({
-					episode,
-					type: 'UPDATE_EPISODE',
-				});
+				podcasts.push(episode.podcast);
 			}
-
 			dispatch({
-				activities: items,
-				feedID: `user_episode:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
+				podcasts,
+				type: 'BATCH_UPDATE_PODCASTS',
+			});
+			dispatch({
+				episodes: items,
+				type: 'BATCH_UPDATE_EPISODES',
 			});
 		} else if (type === 'article') {
+			// need to batch this up
+			let rssFeeds = [];
 			for (let article of items) {
-				// update rss feed
-				dispatch({
-					rssFeed: article.rss,
-					type: 'UPDATE_RSS_FEED',
-				});
-				// update article
-				dispatch({
-					rssArticle: article,
-					type: 'UPDATE_ARTICLE',
-				});
+				rssFeeds.push(article.rss);
 			}
 			dispatch({
-				activities: items,
-				feedID: `user_article:${localStorage['authedUser']}`,
-				type: 'UPDATE_FEED',
+				rssFeeds,
+				type: 'BATCH_UPDATE_RSS_FEEDS',
+			});
+			dispatch({
+				articles: items,
+				type: 'BATCH_UPDATE_ARTICLES',
 			});
 		}
+		dispatch({
+			activities: items,
+			feedID: `user_${type}:${localStorage['authedUser']}`,
+			type: 'UPDATE_FEED',
+		});
 	});
 };
 

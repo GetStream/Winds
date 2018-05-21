@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import Tabs from '../components/Tabs';
 import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
 import SuggestedPodcasts from '../components/PodcastPanels/SuggestedPodcasts';
@@ -56,7 +55,8 @@ class PodcastsView extends React.Component {
 	render() {
 		let headerComponent = <h1>Podcasts</h1>;
 		let leftColumn;
-		if (queryString.parse(this.props.location.search).featured === 'true') {
+		// console.log(new URLSearchParams(this.props.location.search));
+		if (new URLSearchParams(this.props.location.search).get('featured') === 'true') {
 			leftColumn = (
 				<React.Fragment>
 					<div className="panels-header">
@@ -108,7 +108,7 @@ class PodcastsView extends React.Component {
 		return (
 			<div
 				className={`podcasts-view ${
-					queryString.parse(this.props.location.search).featured === 'true'
+					new URLSearchParams(this.props.location.search).get('featured') === 'true'
 						? 'featured'
 						: ''
 				}`}

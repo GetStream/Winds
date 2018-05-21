@@ -13,7 +13,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 const podcastQueue = new Queue('podcast', config.cache.uri);
 
 const queues = { rss: rssQueue, og: ogQueue, podcast: podcastQueue };
-const tooOld = 60 * 60 * 1000;
+const tooOld = 3 * 60 * 60 * 1000;
 
 // Is the webserver running.... yes no
 exports.health = (req, res) => {
@@ -58,9 +58,9 @@ exports.test = async (req, res) => {
 	for (const [key, queue] of Object.entries(queues)) {
 		let queueStatus = await queue.getJobCounts();
 		output[key] = queueStatus;
-		if (queueStatus.waiting > 100) {
+		if (queueStatus.waiting > 1000) {
 			output.code = 500;
-			output.error = `Queue ${key} has more than 100 items waiting to be processed: ${
+			output.error = `Queue ${key} has more than 1000 items waiting to be processed: ${
 				queueStatus.waiting
 			} are waiting`;
 		}

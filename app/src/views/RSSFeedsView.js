@@ -12,7 +12,6 @@ import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
 import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
 import AllArticlesList from '../components/AllArticlesList';
 import RecentArticlesList from '../components/RecentArticlesList';
-import queryString from 'query-string';
 
 class RSSFeedsView extends React.Component {
 	constructor(props) {
@@ -51,7 +50,7 @@ class RSSFeedsView extends React.Component {
 
 	render() {
 		let leftColumn;
-		if (queryString.parse(this.props.location.search).featured === 'true') {
+		if (new URLSearchParams(this.props.location.search).get('featured') === 'true') {
 			leftColumn = (
 				<React.Fragment>
 					<div className="panels-header">
@@ -103,7 +102,8 @@ class RSSFeedsView extends React.Component {
 		return (
 			<div
 				className={`rss-view ${
-					queryString.parse(this.props.location.search).featured === 'true'
+					new URLSearchParams(this.props.location.search).get('featured') ===
+					'true'
 						? 'featured'
 						: ''
 				}`}

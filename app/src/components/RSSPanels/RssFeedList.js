@@ -12,25 +12,30 @@ class RssFeedList extends React.Component {
 	componentDidMount() {
 		fetch('GET', '/follows', null, { type: 'rss' })
 			.then(response => {
+				// update user - only needs to be done once
+				this.props.dispatch({
+					type: 'UPDATE_USER',
+					user: response.data[0].user,
+				});
+				let rssFeeds = [];
+				let rssFeedFollowRelationships = [];
 				for (let followRelationship of response.data) {
-					// update user
-					this.props.dispatch({
-						type: 'UPDATE_USER',
-						user: followRelationship.user,
-					});
-
-					// update rss feed
-					this.props.dispatch({
-						rssFeed: followRelationship.rss,
-						type: 'UPDATE_RSS_FEED',
-					});
+					rssFeeds.push(followRelationship.rss);
 					// set user to follow rss feed
-					this.props.dispatch({
+					rssFeedFollowRelationships.push({
 						rssFeedID: followRelationship.rss._id,
-						type: 'FOLLOW_RSS_FEED',
 						userID: followRelationship.user._id,
 					});
 				}
+				// update rss feed
+				this.props.dispatch({
+					rssFeeds,
+					type: 'BATCH_UPDATE_RSS_FEEDS',
+				});
+				this.props.dispatch({
+					rssFeedFollowRelationships,
+					type: 'BATCH_FOLLOW_RSS_FEEDS',
+				});
 			})
 			.catch(err => {
 				console.log(err); // eslint-disable-line no-console

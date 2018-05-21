@@ -1,6 +1,5 @@
 import loaderIcon from '../images/loaders/default.svg';
 import Waypoint from 'react-waypoint';
-import optionsIcon from '../images/icons/options.svg';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import EpisodeListItem from './EpisodeListItem';
 import Img from 'react-image';
