@@ -79,7 +79,7 @@ SentryWinstonTransport.prototype.name = 'sentry';
 
 
 function createSentryTransport(ravenInstance) {
-  let transport = new SentryWinstonTransport({level: 'warn'})
+  let transport = new SentryWinstonTransport({level: 'error'})
   transport.raven = ravenInstance
   return transport
 }
