@@ -27,8 +27,16 @@ logger.info('Starting to process podcasts....');
 
 podcastQueue.process(10, handlePodcast);
 
-// Handle Podcast scrapes the podcast and updates the episodes
+// the top level handlePodcast just handles error handling
 async function handlePodcast(job) {
+	let promise = _handlePodcast(job)
+	promise.catch(err => {
+		logger.warn(`podcast job ${job} broke with err ${err}`)
+	})
+	return promise
+}
+// Handle Podcast scrapes the podcast and updates the episodes
+async function _handlePodcast(job) {
 	logger.info(`Processing ${job.data.url}`);
 
 	// verify we have the podcast object
@@ -44,11 +52,12 @@ async function handlePodcast(job) {
 	let completed = await markDone(podcastID);
 
 	// parse the episodes
+	let podcastContent
 	try {
-		let podcastContent = await util.promisify(ParsePodcast)(job.data.url);
+		podcastContent = await util.promisify(ParsePodcast)(job.data.url)
 	} catch (e) {
-		logger.info(`podcast scraping broke for url ${job.data.url}`);
-		return;
+		logger.info(`podcast scraping broke for url ${job.data.url}`)
+		return
 	}
 
 	// update the episodes
