@@ -44,7 +44,7 @@ function ParseFeed(feedUrl, callback) {
 	let feedparser = new FeedParser();
 
 	req.on('error', err => {
-		callback(err, null)
+		callback(err, null);
 	});
 
 	req.on('response', res => {
@@ -64,7 +64,7 @@ function ParseFeed(feedUrl, callback) {
 	});
 
 	feedparser.on('error', err => {
-		callback(err, null)
+		callback(err, null);
 	});
 
 	let feedContents = { articles: [] };
@@ -132,7 +132,7 @@ function ParsePodcast(podcastUrl, callback) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
 	let opts = {
 		headers: {
-			'Accept': AcceptHeader,
+			Accept: AcceptHeader,
 			'User-Agent': WindsUserAgent,
 		},
 		pool: false,

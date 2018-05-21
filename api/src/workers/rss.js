@@ -36,33 +36,33 @@ async function handleRSS(job) {
 	let rssID = job.data.rss;
 	let rss = await RSS.findOne({ _id: rssID });
 	if (!rss) {
-		logger.warn(`RSS with ID ${rssID} does not exist`)
-		return
+		logger.warn(`RSS with ID ${rssID} does not exist`);
+		return;
 	}
 
 	// mark as done, will be schedule again in 15 min from now
 	// we do this early so a temporary failure doesnt leave things in a broken state
-	let completed = await markDone(rssID)
-	logger.info(`Marked ${rssID} as done`)
+	let completed = await markDone(rssID);
+	logger.info(`Marked ${rssID} as done`);
 
 	// parse the articles
-	let rssContent
+	let rssContent;
 	try {
-		rssContent = await util.promisify(ParseFeed)(job.data.url)
+		rssContent = await util.promisify(ParseFeed)(job.data.url);
 	} catch (e) {
-		logger.info(`rss scraping broke for url ${job.data.url}`)
-		return
+		logger.info(`rss scraping broke for url ${job.data.url}`);
+		return;
 	}
 
 	// update the articles
-	logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`)
+	logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`);
 	let allArticles = await Promise.all(
 		rssContent.articles.map(article => {
-			let normalizedUrl = normalize(article.url)
-			article.url = normalizedUrl
-			return updateArticle(rssID, normalizedUrl, article)
-		})
-	)
+			let normalizedUrl = normalize(article.url);
+			article.url = normalizedUrl;
+			return updateArticle(rssID, normalizedUrl, article);
+		}),
+	);
 
 	// updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
 	let updatedArticles = allArticles.filter(updatedArticle => {
@@ -70,7 +70,7 @@ async function handleRSS(job) {
 	});
 
 	let rssFeed = streamClient.feed('rss', rssID);
-	logger.info(`Syncing ${updatedArticles.length} articles to Stream`)
+	logger.info(`Syncing ${updatedArticles.length} articles to Stream`);
 	if (updatedArticles.length > 0) {
 		let chunkSize = 100;
 		for (let i = 0, j = updatedArticles.length; i < j; i += chunkSize) {
@@ -118,22 +118,22 @@ async function updateArticle(rssID, normalizedUrl, post) {
 	);
 	if (rawArticle.lastErrorObject.updatedExisting) {
 		// article already exists
-		return
+		return;
 	}
 
-	let article = rawArticle.value
+	let article = rawArticle.value;
 	// after article is created, add to algolia, stream, and og scraper queue
 	let response = await ogQueue.add(
 		{
 			type: 'rss',
-			url: article.url
+			url: article.url,
 		},
 		{
 			removeOnComplete: true,
 			removeOnFail: true,
-		}
-	)
-	return article
+		},
+	);
+	return article;
 }
 
 // markDone sets lastScraped to now and isParsing to false
@@ -147,7 +147,7 @@ async function markDone(rssID) {
 		{
 			lastScraped: now,
 			isParsing: false,
-		}
-	)
-	return updated
+		},
+	);
+	return updated;
 }
