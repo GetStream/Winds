@@ -1,5 +1,7 @@
 # Winds 2.0 - A Beautiful Open Source RSS & Podcast App
 
+[<img src="https://i.imgur.com/hpIey73.png">](https://producthunt.com)
+
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](httpds://shields.io/)
 [![Platform](https://img.shields.io/badge/Platform-Electron-green.svg)](httpds://shields.io/)
 [![Awesome Badge](https://img.shields.io/badge/Awesomeness-Very%20High-green.svg)](https://shields.io/)
@@ -8,48 +10,48 @@
 
 Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
-**To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/) (OSx, Linux, Windows)**
+**To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/) (macOS, Linux, Windows)**
 
 ![Winds 2.0](https://i.imgur.com/n2eKwPf.gif)
 
-## TOC
+## TOCd
 
-* [Roadmap](#roadmap)
-* [Powered By](#powered-by)
-  * [Stream](#stream)
-  * [Algolia](#algolia)
-  * [MongoDB](#mongodb)
-  * [SendGrid](https://sendgrid.com)
-  * [AWS](https://aws.amazon.com/)
-* [Tutorials](#tutorials)
-* [Download](#download)
-* [Contributing to Winds](#contributing-to-winds)
-* [Support](#support)
-* [Maintenance & Contributions](#maintenance-and-contributions)
+*   [Roadmap](#roadmap)
+*   [Powered By](#powered-by)
+    *   [Stream](#stream)
+    *   [Algolia](#algolia)
+    *   [MongoDB](#mongodb)
+    *   [SendGrid](https://sendgrid.com)
+    *   [AWS](https://aws.amazon.com/)
+*   [Tutorials](#tutorials)
+*   [Download](#download)
+*   [Contributing to Winds](#contributing-to-winds)
+*   [Support](#support)
+*   [Maintenance & Contributions](#maintenance-and-contributions)
 
 ## Roadmap
 
 Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/GetStream/Winds/issues/191)
 
-* [ ] Mark Read (partially implemented)
-* [ ] Playlist support (partially implemented)
-* [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
-* [ ] Mobile application powered by React Native
-* [ ] SSO (Google & Twitter)
-* [ ] Folder Support
-* [ ] Listen to feed changes in realtime
+*   [ ] Mark Read (partially implemented)
+*   [ ] Playlist support (partially implemented)
+*   [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
+*   [ ] Mobile application powered by React Native
+*   [ ] SSO (Google & Twitter)
+*   [ ] Folder Support
+*   [ ] Listen to feed changes in realtime
 
 ## Powered By
 
-1. [Express](https://expressjs.com?ref=winds)
-2. [React](https://reactjs.org?ref=winds) & [Redux](https://redux.js.org?ref=winds)
-3. [Algolia](https://www.algolia.com?ref=winds)
-4. [MongoDB Atlas](http://mbsy.co/mongodb/228644)
-5. [SendGrid](https://sendgrid.com?ref=winds)
-6. [Bull](https://github.com/OptimalBits/bull?ref=winds)
-7. [Mercury](https://mercury.postlight.com?ref=winds)
-8. [Stream](https://getstream.io?ref=winds)
-9. [Sentry](https://sentry.io/?ref=winds)
+1.  [Express](https://expressjs.com?ref=winds)
+2.  [React](https://reactjs.org?ref=winds) & [Redux](https://redux.js.org?ref=winds)
+3.  [Algolia](https://www.algolia.com?ref=winds)
+4.  [MongoDB Atlas](http://mbsy.co/mongodb/228644)
+5.  [SendGrid](https://sendgrid.com?ref=winds)
+6.  [Bull](https://github.com/OptimalBits/bull?ref=winds)
+7.  [Mercury](https://mercury.postlight.com?ref=winds)
+8.  [Stream](https://getstream.io?ref=winds)
+9.  [Sentry](https://sentry.io/?ref=winds)
 10. [AWS](https://aws.amazon.com/?ref=winds)
 
 ### Stream
@@ -70,15 +72,15 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 **Note:** We're actively working on this portion of the README. To stay up to date with the latest information, please signup for the hosted version at [https://getstream.io/winds](https://getstream.io/winds).
 
-1. Architecting a large React/Redux codebase
-2. Building activity streams and newsfeeds on top of Stream
-3. Implementing search with Algolia
-4. Deploying to AWS ECS
-5. MongoDB database schema design
-6. Design thought process for Winds 2.0
-7. PM2 in production environments
-8. Creating a RESTful API design with Express.js
-9. Preparing an Electron app for deployment to the macOS store
+1.  Architecting a large React/Redux codebase
+2.  Building activity streams and newsfeeds on top of Stream
+3.  Implementing search with Algolia
+4.  Deploying to AWS ECS
+5.  MongoDB database schema design
+6.  Design thought process for Winds 2.0
+7.  PM2 in production environments
+8.  Creating a RESTful API design with Express.js
+9.  Preparing an Electron app for deployment to the macOS store
 10. Deploying to the macOS store
 11. Electron gotchas
 
@@ -92,17 +94,17 @@ To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/
 
 Commands:
 
-* `brew install pkg-config cairo redis mongodb`
-* `cd winds`
-* `yarn install`
-* `cd api`
-* `yarn install`
-* `cd src && yarn install`
-* `cd workers && yarn install`
-* `cd ../../../`
-* `cd app && yarn install`
-* `brew services start mongodb`
-* `brew services start redis`
+*   `brew install pkg-config cairo redis mongodb`
+*   `cd winds`
+*   `yarn install`
+*   `cd api`
+*   `yarn install`
+*   `cd src && yarn install`
+*   `cd workers && yarn install`
+*   `cd ../../../`
+*   `cd app && yarn install`
+*   `brew services start mongodb`
+*   `brew services start redis`
 
 Sign up for both Stream and Algolia, and create the following `.env` file in the `app` directory, replacing the keys where indicated:
 
@@ -127,8 +129,8 @@ MERCURY_KEY=YOUR_KEY_HERE
 
 Then run:
 
-* `pm2 start process_dev.json`
-* `cd app && yarn start`
+*   `pm2 start process_dev.json`
+*   `cd app && yarn start`
 
 ### Clone the Repo
 
@@ -140,14 +142,14 @@ git clone git@github.com:GetStream/winds.git
 
 The following instructions are geared towards Mac users who can use `brew` ([Homebrew](https://brew.sh/)) to install most dependencies. Ubuntu users can use `apt`, and Windows users will have to install directly from the dependency's site. Non-debian-based Linux users will probably be able to figure it out on their own :)
 
-* `cd Winds`
-* `yarn install`
-* `cd api`
-* `yarn install`
-* `cd src && yarn install`
-* `cd workers && yarn install`
-* `cd ../../../`
-* `cd app && yarn install`
+*   `cd Winds`
+*   `yarn install`
+*   `cd api`
+*   `yarn install`
+*   `cd src && yarn install`
+*   `cd workers && yarn install`
+*   `cd ../../../`
+*   `cd app && yarn install`
 
 ### Create a dotenv file
 
@@ -217,9 +219,9 @@ To contribute to Winds, sign up for [Stream](https://getstream.io/get_started?re
 
 _(Reminder: Stream is free for applications with less than 3,000,000 updates per month.)_
 
-* [Sign up for Stream here](https://getstream.io/get_started?ref=winds)
-* Create a new Stream app
-* Find the App ID, API Key, and API Secret for your new Stream app
+*   [Sign up for Stream here](https://getstream.io/get_started?ref=winds)
+*   Create a new Stream app
+*   Find the App ID, API Key, and API Secret for your new Stream app
 
 #### Add your Stream App ID, API Key, and API Secret to your `.env`
 
@@ -251,14 +253,15 @@ It's fine to enable "Realtime Notifications" for each of these feed groups, thou
 ### Algolia
 
 #### Sign up for Algolia and Create an Algolia App and Index
-In addition to Stream, you also need to sign up for [Algolia](https://www.algolia.com/users/sign_up?ref=winds), to contribute to Winds, for the search functionality.  
+
+In addition to Stream, you also need to sign up for [Algolia](https://www.algolia.com/users/sign_up?ref=winds), to contribute to Winds, for the search functionality.
 
 _(Algolia is free for applications with up to 10k records.)_
 
-* [Sign up for Algolia here](https://www.algolia.com/users/sign_up?ref=winds)
-* From the [Applications page](https://www.algolia.com/manage/applications), click "New Application" and create a new Algolia application. (We recommend something similar to `my-winds-app`)
-    * (Select the datacenter that's closest to you.)
-* From the application page, select "Indices" and click "Add New Index". (We recommend something similar to `winds-main-index`)
+*   [Sign up for Algolia here](https://www.algolia.com/users/sign_up?ref=winds)
+*   From the [Applications page](https://www.algolia.com/manage/applications), click "New Application" and create a new Algolia application. (We recommend something similar to `my-winds-app`)
+    *   (Select the datacenter that's closest to you.)
+*   From the application page, select "Indices" and click "Add New Index". (We recommend something similar to `winds-main-index`)
 
 #### Add Your Algolia Application Id, Search-Only Api Key and Admin Api Key to Your `.env` File
 
@@ -335,25 +338,25 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 
 ### Special Shoutouts To:
 
-* [Hackernoon](https://hackernoon.com/)
-* [Product Hunt](https://www.producthunt.com/)
+*   [Hackernoon](https://hackernoon.com/)
+*   [Product Hunt](https://www.producthunt.com/)
 
 ### Primary Maintainers
 
-* [Nick Parsons](https://github.com/nparsons08)
-* [Ken Hoff](https://github.com/kenhoff)
-* [Thierry Schellenbach](https://github.com/tschellenbach)
-* [Josh Tilton](https://github.com/tilton)
+*   [Nick Parsons](https://github.com/nparsons08)
+*   [Ken Hoff](https://github.com/kenhoff)
+*   [Thierry Schellenbach](https://github.com/tschellenbach)
+*   [Josh Tilton](https://github.com/tilton)
 
 ### Contributors
 
-* [Tommaso Barbugli](https://github.com/tbarbugli)
-* [Dwight Gunning](https://github.com/dwightgunning)
-* [Matt Gauger](https://github.com/mathias)
-* [Zhomart Mukhamejanov](https://github.com/Zhomart)
-* [Julian Xhokaxhiu](https://github.com/julianxhokaxhiu)
-* [Jonathon Belotti](https://github.com/thundergolfer)
-* [The Gitter Badger](https://github.com/gitter-badger)
-* [Meriadec Pillet](https://github.com/meriadec)
-* [Alex Sinnott](https://github.com/sifex)
-* [Lawal Sauban](https://github.com/sauban)
+*   [Tommaso Barbugli](https://github.com/tbarbugli)
+*   [Dwight Gunning](https://github.com/dwightgunning)
+*   [Matt Gauger](https://github.com/mathias)
+*   [Zhomart Mukhamejanov](https://github.com/Zhomart)
+*   [Julian Xhokaxhiu](https://github.com/julianxhokaxhiu)
+*   [Jonathon Belotti](https://github.com/thundergolfer)
+*   [The Gitter Badger](https://github.com/gitter-badger)
+*   [Meriadec Pillet](https://github.com/meriadec)
+*   [Alex Sinnott](https://github.com/sifex)
+*   [Lawal Sauban](https://github.com/sauban)
