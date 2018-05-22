@@ -1,6 +1,6 @@
 # Winds 2.0 - A Beautiful Open Source RSS & Podcast App
 
-[<img src="https://i.imgur.com/hpIey73.png">](https://producthunt.com)
+[<img src="https://i.imgur.com/hpIey73.png">](https://www.producthunt.com/posts/winds-2-0)
 
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](httpds://shields.io/)
 [![Platform](https://img.shields.io/badge/Platform-Electron-green.svg)](httpds://shields.io/)
@@ -10,7 +10,7 @@
 
 **----------------- \0/ -----------------**
 
-:smirk_cat: :joy_cat: :scream_cat: [Winds is trending on Product Hunt](https://www.producthunt.com/)! Amplify the news and share your thoughts about RSS & Podcasts! :heart_eyes_cat: :cat: :tada:
+:smirk_cat: :joy_cat: :scream_cat: [Winds is trending on Product Hunt](https://www.producthunt.com/posts/winds-2-0)! Amplify the news and share your thoughts about RSS & Podcasts! :heart_eyes_cat: :cat: :tada:
 
 
 **----------------- \0/ -----------------**
