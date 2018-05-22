@@ -160,7 +160,7 @@ class AddPodcastModal extends React.Component {
 							type="submit"
 						>
 							<Img src={saveIcon} />
-							<span className="button-text">Go</span>
+							<span className="button-text">Add</span>
 						</button>
 						<button
 							className="btn link cancel"
