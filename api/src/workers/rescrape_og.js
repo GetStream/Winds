@@ -40,7 +40,7 @@ async function main() {
       let chunk = instances.slice(i, i + chunkSize);
       logger.info(`handling chunk of size ${chunk.length}`)
       let promises = []
-      for (const instance of instances) {
+      for (const instance of chunk) {
         if (!instance.images || !instance.images.og) {
           let promise = ogQueue.add(
             {
