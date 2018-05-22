@@ -62,6 +62,8 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 9.  [Sentry](https://sentry.io/?ref=winds)
 10. [AWS](https://aws.amazon.com/?ref=winds)
 
+The full stack can be found on [StackShare.io](https://stackshare.io/stream/winds).
+
 ### Stream
 
 [Stream](https://getstream.io/?ref=winds) is an API for building activity feeds. For Winds the follow suggestions and the list of articles from the feeds you follow is powered by Stream. Stream accounts are free for up to 3 million feed updates and handle personalization (machine learning) for up to 100 users.
