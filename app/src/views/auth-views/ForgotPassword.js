@@ -89,6 +89,7 @@ class ForgotPassword extends Component {
 								<input
 									type="email"
 									name="email"
+									placeholder="Email"
 									onChange={this.validateEmail}
 								/>
 							</label>
