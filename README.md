@@ -62,7 +62,7 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 9.  [Sentry](https://sentry.io/?ref=winds)
 10. [AWS](https://aws.amazon.com/?ref=winds)
 
-The full stack can be found on [StackShare.io](https://stackshare.io/stream/winds).
+**The full stack can be found on [StackShare.io](https://stackshare.io/stream/winds).**
 
 ### Stream
 
