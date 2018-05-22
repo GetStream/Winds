@@ -121,7 +121,7 @@
 			},
 			"category": "public.app-category.news"
 		},
-		"mas": {
+    "mas": {
 			"entitlements": "assets/entitlements.mas.plist",
 			"entitlementsInherit": "assets/entitlements.mas.inherit.plist",
 			"provisioningProfile": "../../winds-private/embedded.provisionprofile"
