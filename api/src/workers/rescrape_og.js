@@ -34,26 +34,31 @@ async function main() {
     let instances = await schema.find({})
     let field = fieldMap[contentType]
     logger.info(`found ${instances.length} for ${contentType} with url field ${field}`)
+    let chunkSize = 1000
 
-
-    let promises = []
-    for (const instance of instances) {
-      if (!instance.images || !instance.images.og) {
-        let promise = ogQueue.add(
-          {
-            type: contentType,
-            url: instance[field],
-          },
-          {
-            removeOnComplete: true,
-            removeOnFail: true,
-          },
-        )
-        promises.push(promise)
+    for (let i = 0, j = instances.length; i < j; i += chunkSize) {
+      let chunk = instances.slice(i, i + chunkSize);
+      logger.info(`handling chunk of size ${chunk.length}`)
+      let promises = []
+      for (const instance of instances) {
+        if (!instance.images || !instance.images.og) {
+          let promise = ogQueue.add(
+            {
+              type: contentType,
+              url: instance[field],
+            },
+            {
+              removeOnComplete: true,
+              removeOnFail: true,
+            },
+          )
+          promises.push(promise)
+        }
       }
+      logger.info(`scheduled ${promises.length} for og scraping, waiting now`)
+      let results = await Promise.all(promises)
     }
-    logger.info(`scheduled ${promises.length} for og scraping, waiting now`)
-    let results = await Promise.all(promises)
+
     logger.info(`completed for type ${contentType} with field ${field}`)
   }
 }
