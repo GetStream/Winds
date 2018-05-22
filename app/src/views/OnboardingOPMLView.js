@@ -106,7 +106,7 @@ class OnboardingOPMLView extends React.Component {
 					</Link>
 					<div className="input-box">
 						<Dropzone
-							accept=".opml"
+							accept="application/xml, text/xml, text/x-opml"
 							className="dropzone"
 							onDrop={acceptedFiles => {
 								this.setState({
