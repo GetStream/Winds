@@ -123,6 +123,15 @@ class OnboardingGrid extends React.Component {
 						? 'Continue'
 						: 'Select at least 3 interests to continue'}
 				</button>
+				<button
+					className="btn link"
+					onClick={e => {
+						e.preventDefault();
+						this.props.done();
+					}}
+				>
+					Skip
+				</button>
 			</div>
 		);
 	}
