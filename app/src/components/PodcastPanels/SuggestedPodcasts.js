@@ -11,13 +11,11 @@ class SuggestedPodcasts extends React.Component {
 	componentDidMount() {
 		fetch('GET', '/podcasts', {}, { type: 'recommended' })
 			.then(response => {
-				// dispatch podcast updates
-				for (let podcast of response.data) {
-					this.props.dispatch({
-						podcast,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-				}
+				this.props.dispatch({
+					podcasts: response.data,
+					type: 'BATCH_UPDATE_PODCASTS',
+				});
+
 				// dispatch follow suggestion updates
 				this.props.dispatch({
 					podcasts: response.data,
@@ -30,24 +28,29 @@ class SuggestedPodcasts extends React.Component {
 
 		fetch('GET', '/follows', null, { type: 'podcast' })
 			.then(response => {
+				// update the user
+				this.props.dispatch({
+					type: 'UPDATE_USER',
+					user: response.data[0].user,
+				});
+				let podcasts = [];
+				let podcastFollowRelationships = [];
 				for (let followRelationship of response.data) {
-					// update podcast
-					this.props.dispatch({
-						podcast: followRelationship.podcast,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-					// update user
-					this.props.dispatch({
-						type: 'UPDATE_USER',
-						user: followRelationship.user,
-					});
-					// set user to follow podcast
-					this.props.dispatch({
+					podcasts.push(followRelationship.podcast);
+					podcastFollowRelationships.push({
 						podcastID: followRelationship.podcast._id,
-						type: 'FOLLOW_PODCAST',
 						userID: followRelationship.user._id,
 					});
 				}
+
+				this.props.dispatch({
+					podcasts,
+					type: 'BATCH_UPDATE_PODCASTS',
+				});
+				this.props.dispatch({
+					podcastFollowRelationships,
+					type: 'BATCH_FOLLOW_PODCASTS',
+				});
 			})
 			.catch(err => {
 				console.log(err); // eslint-disable-line no-console

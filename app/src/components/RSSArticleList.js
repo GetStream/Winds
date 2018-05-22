@@ -101,12 +101,11 @@ class RSSArticleList extends React.Component {
 					});
 				}
 
-				for (let rssArticle of res.data) {
-					this.props.dispatch({
-						rssArticle,
-						type: 'UPDATE_ARTICLE',
-					});
-				}
+				this.props.dispatch({
+					articles: res.data,
+					type: 'BATCH_UPDATE_ARTICLES',
+				});
+
 				this.setState({
 					loading: false,
 				});

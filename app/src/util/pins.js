@@ -33,45 +33,49 @@ const getPinnedArticles = dispatch => {
 		type: 'article',
 		user: localStorage['authedUser'],
 	}).then(response => {
+		let rssFeeds = [];
+		let articles = [];
 		for (let pin of response.data) {
-			// dispatch update to rss feeds
-			dispatch({
-				rssFeed: pin.article.rss,
-				type: 'UPDATE_RSS_FEED',
-			});
-			// dispatch updates to articles
-			dispatch({
-				rssArticle: { ...pin.article, type: 'article' },
-				type: 'UPDATE_ARTICLE',
-			});
-			// dispatch updates to pins
-			dispatch({
-				pin,
-				type: 'PIN_ARTICLE',
-			});
+			rssFeeds.push(pin.article.rss);
+			articles.push(pin.article);
 		}
+
+		dispatch({
+			rssFeeds,
+			type: 'BATCH_UPDATE_RSS_FEEDS',
+		});
+		dispatch({
+			articles,
+			type: 'BATCH_UPDATE_ARTICLES',
+		});
+		dispatch({
+			pins: response.data,
+			type: 'BATCH_PIN_ARTICLES',
+		});
 	});
 };
 
 const getPinnedEpisodes = dispatch => {
 	fetch('GET', '/pins', null, { type: 'episode' }).then(response => {
+		let podcasts = [];
+		let episodes = [];
 		for (let pin of response.data) {
-			// dispatch update to podcast
-			dispatch({
-				podcast: pin.episode.podcast,
-				type: 'UPDATE_PODCAST_SHOW',
-			});
-			// dispatch updates to episodes
-			dispatch({
-				episode: pin.episode,
-				type: 'UPDATE_EPISODE',
-			});
-			// dispatch updates to pins
-			dispatch({
-				pin,
-				type: 'PIN_EPISODE',
-			});
+			podcasts.push(pin.episode.podcast);
+			episodes.push(pin.episode);
 		}
+
+		dispatch({
+			podcasts,
+			type: 'BATCH_UPDATE_PODCASTS',
+		});
+		dispatch({
+			episodes,
+			type: 'BATCH_UPDATE_EPISODES',
+		});
+		dispatch({
+			pins: response.data,
+			type: 'BATCH_PIN_EPISODES',
+		});
 	});
 };
 

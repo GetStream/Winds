@@ -558,6 +558,22 @@ export default (previousState = {}, action) => {
 				[pin.episode]: pin,
 			},
 		};
+	} else if (action.type === 'BATCH_PIN_EPISODES') {
+		let newPinnedEpisodes = {};
+		for (let pin of action.pins) {
+			newPinnedEpisodes[pin.episode._id] = {
+				...pin,
+				episode: pin.episode._id,
+				user: pin.user._id,
+			};
+		}
+		return {
+			...previousState,
+			pinnedEpisodes: {
+				...previousState.pinnedEpisodes,
+				...newPinnedEpisodes,
+			},
+		};
 	} else if (action.type === 'UNPIN_EPISODE') {
 		let allPins = { ...previousState.pinnedEpisodes };
 		delete allPins[action.episodeID];
@@ -577,6 +593,22 @@ export default (previousState = {}, action) => {
 			pinnedArticles: {
 				...previousState.pinnedArticles,
 				[pin.article]: pin,
+			},
+		};
+	} else if (action.type === 'BATCH_PIN_ARTICLES') {
+		let newPinnedArticles = {};
+		for (let pin of action.pins) {
+			newPinnedArticles[pin.article._id] = {
+				...pin,
+				article: pin.article._id,
+				user: pin.user._id,
+			};
+		}
+		return {
+			...previousState,
+			pinnedArticles: {
+				...previousState.pinnedArticles,
+				...newPinnedArticles,
 			},
 		};
 	} else if (action.type === 'UNPIN_ARTICLE') {
