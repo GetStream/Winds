@@ -27,7 +27,7 @@ const maxRedirects = 10;
 const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting the OG worker, now supporting podcasts, episodes and articles');
-ogQueue.process(15, handleOg);
+ogQueue.process(10, handleOg);
 
 // the top level handleOg just intercepts error handling before it goes to Bull
 async function handleOg(job) {

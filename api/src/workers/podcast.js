@@ -25,7 +25,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 
 logger.info('Starting to process podcasts....');
 
-podcastQueue.process(10, handlePodcast);
+podcastQueue.process(5, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {

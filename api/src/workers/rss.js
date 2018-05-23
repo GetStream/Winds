@@ -26,7 +26,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 // connect the handler to the queue
 logger.info('Starting the RSS worker');
 
-rssQueue.process(20, handleRSS);
+rssQueue.process(15, handleRSS);
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
 async function handleRSS(job) {
