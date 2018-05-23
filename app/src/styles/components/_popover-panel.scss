@@ -2,6 +2,9 @@
 	background-color: $background-white;
 	border-radius: $border-radius;
 	box-shadow: $box-shadow;
+	color: inherit;
+	display: block;
+	text-decoration: inherit;
 
 	.panel-element {
 		align-items: center;

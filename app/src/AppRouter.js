@@ -11,12 +11,21 @@ import { Router, Switch } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
 import analytics from './util/tracking';
 import config from './config';
-import { createHashHistory } from 'history';
+import { createHashHistory, createBrowserHistory } from 'history';
 import fetch from './util/fetch';
 import AdminView from './views/AdminView';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const history = createHashHistory();
+var userAgent = navigator.userAgent.toLowerCase();
+let isElectron = userAgent.indexOf(' electron/') > -1;
+
+let history;
+if (isElectron) {
+	history = createHashHistory();
+} else {
+	history = createBrowserHistory();
+}
 
 history.listen(location => {
 	return analytics.pageview(`http://localhost:${config.port}`, location.pathname);
@@ -77,5 +86,9 @@ class AppRouter extends Component {
 		);
 	}
 }
+
+AppRouter.propTypes = {
+	dispatch: PropTypes.func.isRequired,
+};
 
 export default connect()(AppRouter);
