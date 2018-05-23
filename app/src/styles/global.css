@@ -551,6 +551,8 @@ body {
   -webkit-app-region: drag; }
   .auth-view > * {
     margin-bottom: 3rem; }
+  .auth-view > button {
+    margin-bottom: 1rem; }
   .auth-view a {
     color: #44bc75;
     text-decoration: none; }

@@ -284,18 +284,33 @@ class AddRSSModal extends React.Component {
 						) : null}
 					</div>
 					<div className="buttons">
-						<button
-							className="btn primary alt with-circular-icon"
-							disabled={
-								this.state.submitting ||
-								this.state.success ||
-								!this.stageOneFormIsValid()
-							}
-							type="submit"
-						>
-							<Img src={saveIcon} />
-							<span className="button-text">Go</span>
-						</button>
+						{this.state.opmlSectionExpanded ? (
+							<button
+								className="btn primary alt with-circular-icon"
+								disabled={
+									this.state.submitting ||
+									this.state.success ||
+									!this.stageOneFormIsValid()
+								}
+								type="submit"
+							>
+								<Img src={saveIcon} />
+								<span className="button-text">Import OPML</span>
+							</button>
+						) : (
+							<button
+								className="btn primary alt with-circular-icon"
+								disabled={
+									this.state.submitting ||
+									this.state.success ||
+									!this.stageOneFormIsValid()
+								}
+								type="submit"
+							>
+								<Img src={saveIcon} />
+								<span className="button-text">Add RSS</span>
+							</button>
+						)}
 						<button
 							className="btn link cancel"
 							onClick={e => {
