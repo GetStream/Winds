@@ -9,7 +9,7 @@
 	"bugs": {
 		"url": "https://github.com/getstream/winds/issues"
 	},
-	"homepage": "./",
+	"homepage": "https://winds.getstream.io",
 	"main": "public/electron.js",
 	"keywords": [
 		"Winds",
