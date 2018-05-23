@@ -31,22 +31,33 @@ if (localStorage['dismissedIntroBanner'] === 'true') {
 	initialState['showIntroBanner'] = false;
 }
 
-let store = createStore(
-	reducer,
-	initialState,
-	window.__REDUX_DEVTOOLS_EXTENSION__ &&
-		window.__REDUX_DEVTOOLS_EXTENSION__({ maxAge: 1000 }),
-);
+var userAgent = navigator.userAgent.toLowerCase();
+let isElectron = userAgent.indexOf(' electron/') > -1;
 
-document.body.addEventListener('click', e => {
-	if (e.target.nodeName === 'A') {
-		const href = e.target.getAttribute('href');
-		if (!href.includes('#/')) {
-			e.preventDefault();
-			window.ipcRenderer.send('open-external-window', href);
+let store;
+
+if (isElectron) {
+	store = createStore(reducer, initialState);
+} else {
+	store = createStore(
+		reducer,
+		initialState,
+		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+	);
+}
+
+if (isElectron) {
+	// Electron-specific code
+	document.body.addEventListener('click', e => {
+		if (e.target.nodeName === 'A') {
+			const href = e.target.getAttribute('href');
+			if (!href.includes('#/')) {
+				e.preventDefault();
+				window.ipcRenderer.send('open-external-window', href);
+			}
 		}
-	}
-});
+	});
+}
 
 class App extends Component {
 	render() {
