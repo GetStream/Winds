@@ -34,6 +34,7 @@ api.use(
 		path: [
 			'/',
 			'/health',
+			'/status',
 			'/auth/signup',
 			'/auth/login',
 			'/auth/forgot-password',
