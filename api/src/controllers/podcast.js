@@ -159,12 +159,15 @@ exports.post = (req, res) => {
 													podcast.value.url
 												} for og scraping`,
 											);
-											if (!podcast.value.images.og && podcast.value.link) {
+											if (
+												!podcast.value.images.og &&
+												podcast.value.link
+											) {
 												ogQueue
 													.add(
 														{
 															url: podcast.value.url,
-															type: 'podcast'
+															type: 'podcast',
 														},
 														{
 															removeOnComplete: true,

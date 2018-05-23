@@ -88,7 +88,7 @@ exports.put = (req, res) => {
 					// else, unauthorized
 					return res
 						.status(401)
-						.send('You\'re not authorized to edit this comment.');
+						.send("You're not authorized to edit this comment.");
 				}
 			}
 		})
