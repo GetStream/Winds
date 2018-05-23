@@ -14,9 +14,9 @@ const ogQueue = new Queue('og', config.cache.uri);
 const podcastQueue = new Queue('podcast', config.cache.uri);
 
 const queues = {
-	RSS: rssQueue,
-	OG: ogQueue,
-	Podcasat: podcastQueue,
+	'RSS Queue': rssQueue,
+	'OG Queue': ogQueue,
+	'Podcast Queue': podcastQueue,
 };
 
 const tooOld = 3 * 60 * 60 * 1000;

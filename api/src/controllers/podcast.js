@@ -39,7 +39,6 @@ exports.list = (req, res) => {
 				res.json(results);
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
 				res.status(500).send(err);
 			});
 	} else {
