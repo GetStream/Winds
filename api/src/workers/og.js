@@ -19,8 +19,6 @@ import logger from "../utils/logger"
 import async_tasks from "../async_tasks"
 import axios from "axios"
 
-
-
 const schemaMap = {
     episode: Episode,
     podcast: Podcast,
@@ -43,8 +41,9 @@ async function handleOg(job) {
 }
 
 async function isValidContentType(url) {
+    let response
     try {
-        let response = await axios({
+        response = await axios({
             method: "get",
             url: url,
             timeout: requestTimeout,
@@ -115,7 +114,10 @@ async function _handleOg(job) {
         } else {
             let images = instance.images || {}
             images.og = normalize(image.data.ogImage.url)
-            let result = await mongoSchema.update({ _id: instance._id }, { images: images })
+            let result = await mongoSchema.update(
+                { _id: instance._id },
+                { images: images },
+            )
             logger.info(`Stored ${images.og} image for ${url}`)
         }
     }
