@@ -139,6 +139,8 @@
 			"icon": "assets/icon.png",
 			"target": [
 				"snap",
+				"deb",
+				"rpm",
 				"AppImage"
 			],
 			"publish": {

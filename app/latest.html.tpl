@@ -192,7 +192,7 @@
 
             if (os.indexOf('Mac') != -1) {
                 el.innerHTML = `
-                    <a href="https://itunes.apple.com/us/app/winds-by-getstream-io/id1381446741" id="download">
+                    <a href="https://itunes.apple.com/us/app/winds-by-getstream-io/id1381446741" title="macOS" id="download">
                         <svg width="20px" height="24px" viewBox="0 0 20 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <defs></defs>
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -206,7 +206,7 @@
                 `;
             } else if (os.indexOf('Linux') != -1 || os.indexOf('X11') != -1) {
                 el.innerHTML = `
-                    <a href="https://snapcraft.io/winds" id="download">
+                    <a href="https://snapcraft.io/winds" title="Linux" id="download">
                         <svg width="18px" height="24px" viewBox="0 0 18 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <defs></defs>
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -220,7 +220,7 @@
                 `;
             } else if (os.indexOf('Windows') != -1 || os.indexOf('Win64') != -1) {
                 el.innerHTML = `
-                    <a href="https://s3.amazonaws.com/winds-2.0-releases/releases/Winds%20Setup%20${version}.exe" id="download">
+                    <a href="https://s3.amazonaws.com/winds-2.0-releases/releases/Winds%20Setup%20${version}.exe" title="Windows" id="download">
                         <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <defs></defs>
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
