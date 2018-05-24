@@ -130,7 +130,7 @@ async function updateArticle(rssID, normalizedUrl, post) {
 
 	let article = rawArticle.value;
 	// after article is created, add to algolia, stream, and og scraper queue
-	let response = await async_tasks.ogQueueAdd(
+	let response = await async_tasks.OgQueueAdd(
 		{
 			type: 'rss',
 			url: article.url,

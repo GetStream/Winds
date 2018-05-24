@@ -41,7 +41,7 @@ async function main() {
       let promises = []
       for (const instance of chunk) {
         if (!instance.images || !instance.images.og) {
-          let promise = async_tasks.ogQueueAdd(
+          let promise = async_tasks.OgQueueAdd(
             {
               type: contentType,
               url: instance[field],

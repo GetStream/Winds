@@ -138,7 +138,7 @@ exports.post = (req, res) => {
 										type: 'podcast',
 									})
 										.then(() => {
-											return podcastQueueAdd(
+											return async_tasks.PodcastQueueAdd(
 												{
 													podcast: podcast.value._id,
 													url: podcast.value.feedUrl,
@@ -160,7 +160,7 @@ exports.post = (req, res) => {
 												!podcast.value.images.og &&
 												podcast.value.link
 											) {
-												async_tasks.ogQueueAdd(
+												async_tasks.OgQueueAdd(
 														{
 															url: podcast.value.url,
 															type: 'podcast',
