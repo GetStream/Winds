@@ -210,9 +210,15 @@
 		},
 		{
 			"category": "Gaming",
-			"name": "Giantbomn",
+			"name": "Giant Bombcast",
 			"feedUrl": "https://www.giantbomb.com/podcast-xml/giant-bombcast",
-			"site": "https://www.giantbomb.com/podcasts/"
+			"site": "https://www.giantbomb.com/podcasts/giant-bombcast/"
+		},
+		{
+			"category": "Gaming",
+			"name": "The Giant Beastcast",
+			"feedUrl": "https://www.giantbomb.com/podcast-xml/beastcast",
+			"site": "https://www.giantbomb.com/podcasts/beastcast/"
 		},
 		{
 			"category": "Gaming",

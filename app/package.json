@@ -1,6 +1,6 @@
 {
 	"name": "winds",
-	"version": "2.0.208",
+	"version": "2.0.215",
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Winds Team <winds@getstream.io>",
@@ -9,7 +9,7 @@
 	"bugs": {
 		"url": "https://github.com/getstream/winds/issues"
 	},
-	"homepage": "./",
+	"homepage": "https://winds.getstream.io",
 	"main": "public/electron.js",
 	"keywords": [
 		"Winds",
@@ -84,7 +84,7 @@
 		"concurrently": "^3.5.1",
 		"cross-env": "^5.1.5",
 		"electron": "^2.0.1",
-		"electron-builder": "^20.13.4",
+		"electron-builder": "20.14.7",
 		"electron-devtools-installer": "^2.2.4",
 		"electron-osx-sign": "^0.4.10",
 		"eslint": "^4.19.1",

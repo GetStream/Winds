@@ -27,7 +27,7 @@ const maxRedirects = 10;
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker, now supporting podcasts, episodes and articles');
-async_tasks.ProcessOgQueue(25, handleOg);
+async_tasks.ProcessOgQueue(10, handleOg);
 
 // the top level handleOg just intercepts error handling before it goes to Bull
 async function handleOg(job) {

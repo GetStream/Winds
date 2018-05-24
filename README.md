@@ -1,25 +1,18 @@
 # Winds 2.0 - A Beautiful Open Source RSS & Podcast App
 
-[<img src="https://i.imgur.com/hpIey73.png">](https://www.producthunt.com/posts/winds-2-0)
 
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](httpds://shields.io/)
 [![Platform](https://img.shields.io/badge/Platform-Electron-green.svg)](httpds://shields.io/)
 [![Awesome Badge](https://img.shields.io/badge/Awesomeness-Very%20High-green.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
 
-**----------------- \0/ -----------------**
-
-:smirk_cat: :joy_cat: :scream_cat: [Winds is trending on Product Hunt](https://www.producthunt.com/posts/winds-2-0)! Amplify the news and share your thoughts about RSS & Podcasts! :heart_eyes_cat: :cat: :tada:
-
-
-**----------------- \0/ -----------------**
-
-
+**What's new: In addition to the desktop apps there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)**
 
 Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
-**To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/) (macOS, Linux, Windows)**
+## **To get started with Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/)**
 
 ![Winds 2.0](https://i.imgur.com/n2eKwPf.gif)
 
@@ -62,6 +55,8 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 8.  [Stream](https://getstream.io?ref=winds)
 9.  [Sentry](https://sentry.io/?ref=winds)
 10. [AWS](https://aws.amazon.com/?ref=winds)
+
+**The full stack can be found on [StackShare.io](https://stackshare.io/stream/winds).**
 
 ### Stream
 

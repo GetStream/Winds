@@ -37,7 +37,6 @@ exports.list = (req, res) => {
 				res.json(results);
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
 				res.status(500).send(err);
 			});
 	} else {
@@ -157,11 +156,14 @@ exports.post = (req, res) => {
 													podcast.value.url
 												} for og scraping`,
 											);
-											if (!podcast.value.images.og && podcast.value.link) {
+											if (
+												!podcast.value.images.og &&
+												podcast.value.link
+											) {
 												async_tasks.ogQueueAdd(
 														{
 															url: podcast.value.url,
-															type: 'podcast'
+															type: 'podcast',
 														},
 														{
 															removeOnComplete: true,

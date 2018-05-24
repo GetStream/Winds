@@ -83,7 +83,7 @@ exports.delete = (req, res) => {
 				res.status(404).send();
 				return;
 			} else if (listen.user !== req.user.sub) {
-				res.status(401).send('You aren\'t authorized to delete that listen.');
+				res.status(401).send("You aren't authorized to delete that listen.");
 				return;
 			} else {
 				return Listen.remove({ _id: req.params.listenId }).then(() => {

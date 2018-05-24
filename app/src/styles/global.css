@@ -551,6 +551,8 @@ body {
   -webkit-app-region: drag; }
   .auth-view > * {
     margin-bottom: 3rem; }
+  .auth-view > button {
+    margin-bottom: 1rem; }
   .auth-view a {
     color: #44bc75;
     text-decoration: none; }
@@ -1326,7 +1328,10 @@ a.column-header:hover {
 .popover-panel {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05); }
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+  color: inherit;
+  display: block;
+  text-decoration: inherit; }
   .popover-panel .panel-element {
     align-items: center;
     border-bottom: 1px solid #eee;

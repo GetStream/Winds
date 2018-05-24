@@ -22,7 +22,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-async_tasks.ProcessPodcastQueue(10, handlePodcast);
+async_tasks.ProcessPodcastQueue(5, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {

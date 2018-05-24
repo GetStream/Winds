@@ -24,7 +24,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info('Starting the RSS worker');
 
 // TODO: move this to a separate main.js
-async_tasks.ProcessRssQueue(25, handleRSS);
+async_tasks.ProcessRssQueue(15, handleRSS);
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
 async function handleRSS(job) {
