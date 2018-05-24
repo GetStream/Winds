@@ -30,8 +30,8 @@ function AddQueueTracking(queue){
     })
 
     queue.on('completed', function(job, result){
-        statsd.timing(makeMetricKey(queue, 'elapsed'), job.timestamp - new Date());
-        statsd.increment(queue, 'completed');
+        statsd.timing(makeMetricKey(queue, 'elapsed'), new Date() - job.timestamp);
+        statsd.increment(makeMetricKey(queue, 'completed'));
     })
 
     queue.on('failed', function(job, err){
@@ -57,17 +57,17 @@ exports.RssQueueAdd = rssQueue.add.bind(rssQueue);
 exports.OgQueueAdd = ogQueue.add.bind(ogQueue);
 exports.PodcastQueueAdd = podcastQueue.add.bind(podcastQueue);
 
-exports.ProcessRssQueue = () => { 
+exports.ProcessRssQueue = function() { 
     getStatsDClient().increment(makeMetricKey(rssQueue, 'started'));
-    return rssQueue.process.bind(rssQueue);
+    return rssQueue.process(...arguments);
 }
 
-exports.ProcessOgQueue = () => { 
+exports.ProcessOgQueue = function() { 
     getStatsDClient().increment(makeMetricKey(ogQueue, 'started'));
-    ogQueue.process.bind(ogQueue);
+    ogQueue.process(...arguments);
 }
 
-exports.ProcessPodcastQueue = () => { 
+exports.ProcessPodcastQueue = function() { 
     getStatsDClient().increment(makeMetricKey(podcastQueue, 'started'));
-    podcastQueue.process.bind(podcastQueue);
+    podcastQueue.process(...arguments);
 }
