@@ -95,7 +95,8 @@
 		"stylelint": "^9.2.1",
 		"stylelint-config-standard": "^18.2.0",
 		"stylelint-order": "^0.8.1",
-		"wait-on": "^2.1.0"
+		"wait-on": "^2.1.0",
+		"version-bump-prompt": "^4.1.0"
 	},
 	"build": {
 		"appId": "io.getstream.winds",
