@@ -1,5 +1,5 @@
-import Featured from '../controllers/featured';
+import Featured from "../controllers/featured"
 
 module.exports = api => {
-	api.route('/featured').get(Featured.list);
-};
+    api.route("/featured").get(Featured.list)
+}

@@ -1,7 +1,7 @@
-import '../loadenv';
-import config from '../config';
+import "../loadenv"
+import config from "../config"
 
-import { StatsD } from 'node-statsd';
+import { StatsD } from "node-statsd"
 
 var statsDClient = null
 
@@ -16,4 +16,4 @@ function getStatsDClient() {
     return statsDClient
 }
 
-exports.getStatsDClient = getStatsDClient;
+exports.getStatsDClient = getStatsDClient
