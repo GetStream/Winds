@@ -9,7 +9,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 const podcastQueue = new Queue('podcast', config.cache.uri);
 
 function makeMetricKey(queue, event) {
-    return ['winds', 'bull', queue.name, event].join(':');
+    return ['winds', 'bull', queue.name, event].join('.');
 }
 
 async function trackQueueSize(statsd, queue) {
