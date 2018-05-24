@@ -138,9 +138,9 @@
 		"linux": {
 			"icon": "assets/icon.png",
 			"target": [
-				"snap",
 				"deb",
 				"rpm",
+				"snap",
 				"AppImage"
 			],
 			"publish": {
