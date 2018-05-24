@@ -1,4 +1,3 @@
-import Queue from 'bull';
 import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
@@ -14,8 +13,7 @@ import config from '../config';
 import { ParsePodcast } from '../workers/parsers';
 import strip from 'strip';
 
-const ogQueue = new Queue('og', config.cache.uri);
-const podcastQueue = new Queue('podcast', config.cache.uri);
+import async_tasks from '../async_tasks';
 
 exports.list = (req, res) => {
 	let query = req.query || {};
@@ -141,7 +139,7 @@ exports.post = (req, res) => {
 										type: 'podcast',
 									})
 										.then(() => {
-											return podcastQueue.add(
+											return podcastQueueAdd(
 												{
 													podcast: podcast.value._id,
 													url: podcast.value.feedUrl,
@@ -160,8 +158,7 @@ exports.post = (req, res) => {
 												} for og scraping`,
 											);
 											if (!podcast.value.images.og && podcast.value.link) {
-												ogQueue
-													.add(
+												async_tasks.ogQueueAdd(
 														{
 															url: podcast.value.url,
 															type: 'podcast'

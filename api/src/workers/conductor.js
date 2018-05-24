@@ -1,7 +1,5 @@
 import '../loadenv';
 
-import Queue from 'bull';
-
 import async from 'async';
 import moment from 'moment';
 
@@ -12,11 +10,11 @@ import db from '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 
-const rssQueue = new Queue('rss', config.cache.uri);
-const podcastQueue = new Queue('podcast', config.cache.uri);
+import async_tasks from '../async_tasks';
+
 const publicationTypes = {
-	rss: { schema: RSS, queue: rssQueue },
-	podcast: { schema: Podcast, queue: podcastQueue },
+	rss: { schema: RSS, enqueue: async_tasks.RssQueueAdd },
+	podcast: { schema: Podcast, enqueue: async_tasks.PodcastQueueAdd },
 };
 const conductorInterval = 60;
 const durationInMinutes = 15;
@@ -83,7 +81,7 @@ async function conduct() {
 		for (let publication of publications) {
 			let job = { url: publication.feedUrl };
 			job[publicationType] = publication._id;
-			let promise = publicationConfig.queue.add(job, {
+			let promise = publicationConfig.enqueue(job, {
 				removeOnComplete: true,
 				removeOnFail: true,
 			});

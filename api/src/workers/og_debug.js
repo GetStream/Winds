@@ -4,9 +4,9 @@ import logger from '../utils/logger';
 import Queue from 'bull';
 import config from '../config';
 const version = '0.0.1';
-const ogQueue = new Queue('og', config.cache.uri);
 import ogs from 'open-graph-scraper';
 import normalize from 'normalize-url';
+import async_tasks from '../async_tasks';
 
 program
 	.version(version)
@@ -46,8 +46,7 @@ function main() {
 
 	if (program.task) {
 		logger.info(`creating a task on the bull queue`);
-		ogQueue
-			.add(
+		async_tasks.OgQueueAdd(
 				{
 					url: normalizedUrl,
 					type: program.type,
