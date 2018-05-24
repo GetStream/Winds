@@ -10,6 +10,8 @@
 
 **What's new: In addition to the desktop apps there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)**
 
+**Due to overwhelming success of Wind's launch we could use a bit of help. We're hiring a remote Node fullstack dev to work on this open source project fulltime. Contact tommaso@getstream.io for details. Due to budget limitations the position is a better match for developers outside of the US.**
+
 Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
 ### **To get started with Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/)**
