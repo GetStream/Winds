@@ -123,14 +123,14 @@
                 <h2>Downloads</h2>
                 <table>
                     <tbody>
-                        <tr class="jsx-3566463233">
+                        <tr>
                             <td id="invisible-top-left"></td>
                             <td style="width:33.333%" class="center">64-bit</td>
                         </tr>
-                        <tr class="jsx-3566463233">
-                            <td class="jsx-3566463233"><b class="jsx-3566463233">macOS</b> (.app)</td>
+                        <tr>
+                            <td><b>macOS</b> (.dmg)</td>
                             <td id="td-mac-os" class="download-alt">
-                                <a href="#">
+                                <a href="https://s3.amazonaws.com/winds-2.0-releases/releases/Winds-${version}.dmg" title="macOS">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 59">
                                         <path d="M20.2 28.3c-0.4-0.4-1-0.4-1.4 0s-0.4 1 0 1.4l10 10C28.9 39.9 29.2 40 29.5 40c0 0 0 0 0 0 0 0 0 0 0 0 0.3 0 0.6-0.2 0.8-0.4l9.9-9.9c0.4-0.4 0.4-1 0-1.4s-1-0.4-1.4 0L30.5 36.5V1c0-0.6-0.4-1-1-1s-1 0.4-1 1v35.6L20.2 28.3z" class="a"/>
                                         <path d="M36.5 16c-0.6 0-1 0.4-1 1s0.4 1 1 1h13v39h-40V18h13c0.6 0 1-0.4 1-1s-0.4-1-1-1h-15v43h44V16H36.5z" class="a"/>
@@ -138,8 +138,8 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr class="jsx-3566463233">
-                            <td class="jsx-3566463233"><b class="jsx-3566463233">Windows</b> (.exe)</td>
+                        <tr>
+                            <td><b>Windows</b> (.exe)</td>
                             <td id="td-win" class="download-alt">
                                 <a href="https://s3.amazonaws.com/winds-2.0-releases/releases/Winds%20Setup%20${version}.exe" title="Windows">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 59">
@@ -149,30 +149,8 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr class="jsx-3566463233">
-                            <td class="jsx-3566463233"><b class="jsx-3566463233">Debian</b> (.deb)</td>
-                            <td id="td-debian" class="download-alt">
-                                <a href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 59">
-                                        <path d="M20.2 28.3c-0.4-0.4-1-0.4-1.4 0s-0.4 1 0 1.4l10 10C28.9 39.9 29.2 40 29.5 40c0 0 0 0 0 0 0 0 0 0 0 0 0.3 0 0.6-0.2 0.8-0.4l9.9-9.9c0.4-0.4 0.4-1 0-1.4s-1-0.4-1.4 0L30.5 36.5V1c0-0.6-0.4-1-1-1s-1 0.4-1 1v35.6L20.2 28.3z" class="a"/>
-                                        <path d="M36.5 16c-0.6 0-1 0.4-1 1s0.4 1 1 1h13v39h-40V18h13c0.6 0 1-0.4 1-1s-0.4-1-1-1h-15v43h44V16H36.5z" class="a"/>
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="jsx-3566463233">
-                            <td class="jsx-3566463233"><b class="jsx-3566463233">Fedora</b> (.rpm)</td>
-                            <td id="td-fedora" class="download-alt">
-                                <a href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 59">
-                                        <path d="M20.2 28.3c-0.4-0.4-1-0.4-1.4 0s-0.4 1 0 1.4l10 10C28.9 39.9 29.2 40 29.5 40c0 0 0 0 0 0 0 0 0 0 0 0 0.3 0 0.6-0.2 0.8-0.4l9.9-9.9c0.4-0.4 0.4-1 0-1.4s-1-0.4-1.4 0L30.5 36.5V1c0-0.6-0.4-1-1-1s-1 0.4-1 1v35.6L20.2 28.3z" class="a"/>
-                                        <path d="M36.5 16c-0.6 0-1 0.4-1 1s0.4 1 1 1h13v39h-40V18h13c0.6 0 1-0.4 1-1s-0.4-1-1-1h-15v43h44V16H36.5z" class="a"/>
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="jsx-3566463233">
-                            <td class="jsx-3566463233"><b class="jsx-3566463233">Other Linux distros</b> (.AppImage)</td>
+                        <tr>
+                            <td><b>Linux Distros</b> (.AppImage)</td>
                             <td id="td-appimage" class="download-alt">
                                 <a href="https://s3.amazonaws.com/winds-2.0-releases/releases/winds-${version}-x86_64.AppImage" title="AppImage">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 59">
