@@ -62,9 +62,7 @@
             </svg>
         </a>
         <script type="text/javascript">
-            function redirect(e) {
-            	e.preventDefault();
-
+            function redirect() {
             	var os = navigator.appVersion;
 
             	if (os.indexOf('Mac') != -1) {
