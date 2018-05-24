@@ -16,10 +16,10 @@ module.exports = {
 	},
 	plugins: ['react'],
 	rules: {
-		indent: ['error', 'tab'],
+		indent: ['error', 4],
 		'linebreak-style': ['error', 'unix'],
-		quotes: ['error', 'single'],
-		semi: ['error', 'always'],
+		quotes: ['error', 'double'],
+		semi: ['error', 'never'],
 		'comma-dangle': ['error', 'always-multiline'],
 		'sort-keys': 'error',
 		'no-case-declarations': 'off',

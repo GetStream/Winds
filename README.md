@@ -99,16 +99,13 @@ To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/
 Commands:
 
 *   `brew install pkg-config cairo redis mongodb`
-*   `cd winds`
-*   `yarn install`
-*   `cd api`
-*   `yarn install`
-*   `cd src && yarn install`
-*   `cd workers && yarn install`
-*   `cd ../../../`
-*   `cd app && yarn install`
 *   `brew services start mongodb`
 *   `brew services start redis`
+*   `cd winds/api`
+*   `yarn`
+*   `cd ../app`
+*   `yarn`
+
 
 Sign up for both Stream and Algolia, and create the following `.env` file in the `app` directory, replacing the keys where indicated:
 
