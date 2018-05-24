@@ -1,6 +1,10 @@
 {
 	"name": "winds",
+<<<<<<< HEAD
+	"version": "2.0.219",
+=======
 	"version": "2.0.218",
+>>>>>>> c26a73bc02d1865da7b0c56ba375544d17401b9f
 	"description": "https://getstream.io/winds",
 	"private": true,
 	"author": "Winds Team <winds@getstream.io>",
