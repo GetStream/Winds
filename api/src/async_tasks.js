@@ -46,7 +46,7 @@ function AddQueueTracking(queue){
         statsd.increment(makeMetricKey(queue, 'resumed'));
     })
 
-    setInterval(trackQueueSize, 1000, statsd, queue);
+    setInterval(trackQueueSize, 30000, statsd, queue);
 }
 
 AddQueueTracking(rssQueue);
