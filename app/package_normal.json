@@ -138,8 +138,6 @@
 		"linux": {
 			"icon": "assets/icon.png",
 			"target": [
-				"deb",
-				"rpm",
 				"snap",
 				"AppImage"
 			],
