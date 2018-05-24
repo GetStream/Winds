@@ -17,6 +17,7 @@ import config from "../config"
 import logger from "../utils/logger"
 
 import async_tasks from "../async_tasks"
+import axios from "axios"
 
 const schemaMap = {
     episode: Episode,
@@ -24,6 +25,7 @@ const schemaMap = {
 }
 const requestTimeout = 10000
 const maxRedirects = 10
+const maxContentLengthBytes = 5 * 1024 * 1024
 
 // TODO: move this to a different main.js
 logger.info("Starting the OG worker, now supporting podcasts, episodes and articles")
@@ -36,6 +38,28 @@ async function handleOg(job) {
         logger.warn(`rss job ${job} broke with err ${err}`)
     })
     return promise
+}
+
+async function isValidContentType(url) {
+    try {
+        let response = await axios({
+            method: "get",
+            url: url,
+            timeout: requestTimeout,
+            maxContentLength: maxContentLengthBytes,
+        })
+    } catch (err) {
+        logger.warn(`File is probably too large, failed with err ${err} for url ${url}`)
+        return false
+    }
+
+    let headers = response.headers
+    let contentType = headers["content-type"].toLowerCase()
+    if (contentType.indexOf("html") == -1) {
+        logger.warn(`Doesn't look like anything to me... ${contentType} for url ${url}`)
+        return false
+    }
+    return true
 }
 
 // Run the OG scraping job
@@ -67,6 +91,10 @@ async function _handleOg(job) {
     } else {
         // TODO: on failure conditions the ogs script has some leaks
         let image
+        if (!isValidContentType(url)) {
+            return
+        }
+
         try {
             image = await ogs({
                 followAllRedirects: true,
