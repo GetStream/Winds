@@ -109,7 +109,6 @@ exports.post = (req, res) => {
                             {
                                 categories: "podcast",
                                 description: description,
-                                featured: false,
                                 feedUrl: feed.url,
                                 images: images,
                                 lastScraped: new Date(0),

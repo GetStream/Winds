@@ -133,7 +133,6 @@ exports.post = (req, res) => {
                         {
                             categories: "RSS",
                             description: entities.decodeHTML(feed.title),
-                            featured: false,
                             feedUrl: feed.url,
                             images: {
                                 favicon: feeds.site.favicon,
