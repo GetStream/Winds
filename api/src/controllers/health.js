@@ -5,19 +5,8 @@ import Podcast from '../models/podcast';
 import logger from '../utils/logger';
 import moment from 'moment';
 import config from '../config';
-import Queue from 'bull';
 
 import { version } from '../../../app/package.json';
-
-const rssQueue = new Queue('rss', config.cache.uri);
-const ogQueue = new Queue('og', config.cache.uri);
-const podcastQueue = new Queue('podcast', config.cache.uri);
-
-const queues = {
-	'RSS Queue': rssQueue,
-	'OG Queue': ogQueue,
-	'Podcast Queue': podcastQueue,
-};
 
 const tooOld = 3 * 60 * 60 * 1000;
 
@@ -66,18 +55,6 @@ exports.status = async (req, res) => {
 		output.error = `There are too many Podcast feeds currently parsing ${
 			output.podcastCurrentlyParsing
 		}`;
-	}
-
-	// check the queue status
-	for (const [key, queue] of Object.entries(queues)) {
-		let queueStatus = await queue.getJobCounts();
-		output[key] = queueStatus;
-		if (queueStatus.waiting > 1000) {
-			output.code = 500;
-			output.error = `Queue ${key} has more than 1000 items waiting to be processed: ${
-				queueStatus.waiting
-			} are waiting`;
-		}
 	}
 
 	// send the response

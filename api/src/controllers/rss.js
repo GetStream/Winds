@@ -1,4 +1,3 @@
-import Queue from 'bull';
 import async from 'async';
 import rssFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
@@ -14,7 +13,7 @@ import logger from '../utils/logger';
 import moment from 'moment';
 import config from '../config';
 
-const rssQueue = new Queue('rss', config.cache.uri);
+import async_tasks from '../async_tasks';
 
 exports.list = (req, res) => {
 	const query = req.query || {};
@@ -167,7 +166,7 @@ exports.post = (req, res) => {
 									type: 'rss',
 								})
 									.then(() => {
-										return rssQueue.add(
+										return async_tasks.RssQueueAdd(
 											{
 												rss: rss.value._id,
 												url: rss.value.feedUrl,

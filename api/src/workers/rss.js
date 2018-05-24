@@ -1,7 +1,5 @@
 import '../loadenv';
 
-import Queue from 'bull';
-
 import stream from 'getstream';
 import moment from 'moment';
 import normalize from 'normalize-url';
@@ -18,15 +16,15 @@ import util from 'util';
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
 import { ParseFeed } from './parsers';
 
-const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+import async_tasks from '../async_tasks';
 
-const rssQueue = new Queue('rss', config.cache.uri);
-const ogQueue = new Queue('og', config.cache.uri);
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 // connect the handler to the queue
 logger.info('Starting the RSS worker');
 
-rssQueue.process(15, handleRSS);
+// TODO: move this to a separate main.js
+async_tasks.ProcessRssQueue(15, handleRSS);
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
 async function handleRSS(job) {
@@ -132,7 +130,7 @@ async function updateArticle(rssID, normalizedUrl, post) {
 
 	let article = rawArticle.value;
 	// after article is created, add to algolia, stream, and og scraper queue
-	let response = await ogQueue.add(
+	let response = await async_tasks.OgQueueAdd(
 		{
 			type: 'rss',
 			url: article.url,

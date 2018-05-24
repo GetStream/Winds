@@ -7,10 +7,8 @@ import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import config from '../config';
-import Queue from 'bull';
 
-const rssQueue = new Queue('rss', config.cache.uri);
-const podcastQueue = new Queue('podcast', config.cache.uri);
+import async_tasks from '../async_tasks';
 
 const version = '0.1.1';
 
@@ -108,7 +106,7 @@ function main() {
 					}
 
 					if (program.rss) {
-						queuePromise = rssQueue.add(
+						queuePromise = async_tasks.RssQueueAdd(
 							{
 								rss: instance._id,
 								url: instance.feedUrl,
@@ -120,7 +118,7 @@ function main() {
 							},
 						);
 					} else {
-						queuePromise = podcastQueue.add(
+						queuePromise = async_tasks.PodcastQueueAdd(
 							{
 								podcast: instance._id,
 								url: instance.feedUrl,

@@ -1,6 +1,5 @@
 import '../loadenv';
 
-import Queue from 'bull';
 import normalize from 'normalize-url';
 import ogs from 'open-graph-scraper';
 
@@ -17,6 +16,8 @@ import { Raven } from '../utils/errors';
 import config from '../config';
 import logger from '../utils/logger';
 
+import async_tasks from '../async_tasks';
+
 const schemaMap = {
 	episode: Episode,
 	podcast: Podcast,
@@ -24,10 +25,9 @@ const schemaMap = {
 const requestTimeout = 10000;
 const maxRedirects = 10;
 
-const ogQueue = new Queue('og', config.cache.uri);
-
+// TODO: move this to a different main.js
 logger.info('Starting the OG worker, now supporting podcasts, episodes and articles');
-ogQueue.process(10, handleOg);
+async_tasks.ProcessOgQueue(10, handleOg);
 
 // the top level handleOg just intercepts error handling before it goes to Bull
 async function handleOg(job) {

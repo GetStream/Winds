@@ -1,8 +1,6 @@
 // this should be the first import
 import '../loadenv';
 
-import Queue from 'bull';
-
 import stream from 'getstream';
 import normalize from 'normalize-url';
 import moment from 'moment';
@@ -18,14 +16,13 @@ import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from './parsers';
 import util from 'util';
 
+import async_tasks from '../async_tasks';
+
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
-const podcastQueue = new Queue('podcast', config.cache.uri);
-const ogQueue = new Queue('og', config.cache.uri);
-
+// TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-
-podcastQueue.process(5, handlePodcast);
+async_tasks.ProcessPodcastQueue(5, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {
@@ -127,7 +124,7 @@ async function updateEpisode(podcastID, normalizedUrl, episode) {
 	if (rawEpisode.lastErrorObject.updatedExisting) {
 		return;
 	} else if (newEpisode.link) {
-		await ogQueue.add(
+		await async_tasks.OgQueueAdd(
 			{
 				type: 'episode',
 				url: newEpisode.link,

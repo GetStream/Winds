@@ -11,9 +11,8 @@ import Episode from '../models/episode';
 
 import RSS from '../models/rss';
 import config from '../config';
-import Queue from 'bull';
 
-const ogQueue = new Queue('og', config.cache.uri);
+import async_tasks from '../async_tasks';
 
 const version = '0.1.1';
 
@@ -42,7 +41,7 @@ async function main() {
       let promises = []
       for (const instance of chunk) {
         if (!instance.images || !instance.images.og) {
-          let promise = ogQueue.add(
+          let promise = async_tasks.OgQueueAdd(
             {
               type: contentType,
               url: instance[field],

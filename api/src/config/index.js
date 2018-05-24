@@ -54,4 +54,9 @@ module.exports = {
 		baseUrl: process.env.STREAM_API_BASE_URL,
 	},
 	analyticsDisabled: process.env.ANALYTICS_DISABLED || false,
+	statsd: {
+		host: process.env.STATSD_HOST || 'localhost',
+		port: process.env.STATSD_PORT || 8125,
+		prefix: process.env.STATSD_PREFIX || ''
+	},
 };
