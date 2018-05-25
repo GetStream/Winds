@@ -359,3 +359,14 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 *   [Meriadec Pillet](https://github.com/meriadec)
 *   [Alex Sinnott](https://github.com/sifex)
 *   [Lawal Sauban](https://github.com/sauban)
+
+## Revive RSS
+
+RSS is an amazing open standard. It is probably the most pleasant way to stay up to date with the sites and podcasts you care about. Our reasons for contributing to Winds are explained in the blogpost [Winds 2.0 It's time to Revive RSS](https://getstream.io/blog/winds-2-0-its-time-to-revive-rss/). In this section we will list other open source and commercial projects that are having an impact on Reviving RSS:
+
+* [Miniflux](https://github.com/miniflux/miniflux)
+* [TwitRSSMe](https://twitrss.me/)
+* [Feedly](https://feedly.com/)
+* [NewsBlur](https://newsblur.com/)
+* [Feedity](https://feedity.com/)
+
