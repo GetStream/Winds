@@ -1,25 +1,25 @@
-import async from "async"
-import moment from "moment"
+import async from 'async'
+import moment from 'moment'
 
-import Article from "../models/article"
-import User from "../models/user"
-import Like from "../models/like"
-import Cache from "../models/cache"
+import Article from '../models/article'
+import User from '../models/user'
+import Like from '../models/like'
+import Cache from '../models/cache'
 
-import config from "../config"
+import config from '../config'
 
-import logger from "../utils/logger"
-import parser from "../utils/parser"
-import events from "../utils/events"
-import search from "../utils/search"
-import personalization from "../utils/personalization"
+import logger from '../utils/logger'
+import parser from '../utils/parser'
+import events from '../utils/events'
+import search from '../utils/search'
+import personalization from '../utils/personalization'
 
 exports.list = (req, res) => {
     const query = req.query || {}
 
-    if (query.type === "recommended") {
+    if (query.type === 'recommended') {
         personalization({
-            endpoint: "/winds_article_recommendations",
+            endpoint: '/winds_article_recommendations',
             userId: req.user.sub,
         })
             .then(data => {
@@ -117,13 +117,13 @@ exports.list = (req, res) => {
 }
 
 exports.get = (req, res) => {
-    if (req.params.articleId === "undefined") {
+    if (req.params.articleId === 'undefined') {
         return res.sendStatus(404)
     }
 
     let query = req.query || {}
 
-    if (query.type === "parsed") {
+    if (query.type === 'parsed') {
         async.waterfall(
             [
                 cb => {
@@ -157,7 +157,7 @@ exports.get = (req, res) => {
                             content: {
                                 foreign_id: `articles:${article._id}`,
                             },
-                            label: "parse",
+                            label: 'parse',
                         },
                         user: user._id,
                     })
@@ -179,15 +179,16 @@ exports.get = (req, res) => {
                                 .then(parsed => {
                                     let content = parsed.content
                                     // XKCD doesn't like Mercury
-                                    if (article.url.indexOf("https://xkcd") == 0) {
+                                    if (article.url.indexOf('https://xkcd') == 0) {
                                         content = article.content
                                     }
 
                                     Cache.create({
                                         content: content,
                                         excerpt: parsed.excerpt,
-                                        image: parsed.lead_image_url || "",
-                                        publicationDate: parsed.date_published || moment().toDate(),
+                                        image: parsed.lead_image_url || '',
+                                        publicationDate:
+                                            parsed.date_published || moment().toDate(),
                                         title: parsed.title,
                                         url: article.url,
                                         commentUrl: article.commentUrl,
@@ -260,7 +261,7 @@ exports.get = (req, res) => {
                                     foreign_id: `articles:${article.id}`,
                                 },
                             ],
-                            label: "view",
+                            label: 'view',
                         },
                         user: user._id,
                     })

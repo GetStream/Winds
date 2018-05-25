@@ -2,10 +2,10 @@
     "useTabs": false,
     "printWidth": 90,
     "tabWidth": 4,
-    "singleQuote": false,
+    "singleQuote": true,
     "trailingComma": "all",
     "jsxBracketSameLine": false,
     "parser": "babylon",
-    "semi": false,
+    "noSemi": false,
     "rcVerbose": true
 }

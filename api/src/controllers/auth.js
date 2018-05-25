@@ -1,20 +1,20 @@
-import md5 from "md5"
-import jwt from "jsonwebtoken"
-import bcrypt from "bcryptjs"
-import stream from "getstream"
-import uuidv4 from "uuid/v4"
-import validator from "validator"
+import md5 from 'md5'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import stream from 'getstream'
+import uuidv4 from 'uuid/v4'
+import validator from 'validator'
 
-import User from "../models/user"
-import Podcast from "../models/podcast"
-import RSS from "../models/rss"
+import User from '../models/user'
+import Podcast from '../models/podcast'
+import RSS from '../models/rss'
 
-import logger from "../utils/logger"
-import events from "../utils/events"
-import config from "../config"
+import logger from '../utils/logger'
+import events from '../utils/events'
+import config from '../config'
 
-import followRssFeed from "../shared/followRssFeed"
-import followPodcast from "../shared/followPodcast"
+import followRssFeed from '../shared/followRssFeed'
+import followPodcast from '../shared/followPodcast'
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret)
 
@@ -26,30 +26,30 @@ exports.signup = (req, res) => {
     }
 
     if (data.email && !validator.isEmail(data.email)) {
-        return res.status(422).send("Invalid email address.")
+        return res.status(422).send('Invalid email address.')
     }
 
     if (data.username && !validator.isAlphanumeric(data.username)) {
-        return res.status(422).send("Usernames must be alphanumeric.")
+        return res.status(422).send('Usernames must be alphanumeric.')
     }
 
     User.findOne({
         $or: [{ email: data.email.toLowerCase() }, { username: data.username }],
     }).then(exists => {
         if (exists) {
-            res.status(409).send("A user already exists with that username or email.")
+            res.status(409).send('A user already exists with that username or email.')
             return
         } else {
             User.create(data)
                 .then(user => {
                     return Promise.all([
-                        client.feed("timeline", user._id).follow("user", user._id),
+                        client.feed('timeline', user._id).follow('user', user._id),
                     ]).then(() => {
                         return user
                     })
                 })
                 .then(user => {
-                    if (process.env.NODE_ENV === "production") {
+                    if (process.env.NODE_ENV === 'production') {
                         let obj = {
                             meta: {
                                 data: {},
@@ -101,7 +101,10 @@ exports.signup = (req, res) => {
                                 RSS.find({ interest }).then(interestRssFeeds => {
                                     return Promise.all(
                                         interestRssFeeds.map(interestRssFeed => {
-                                            return followRssFeed(user._id, interestRssFeed._id)
+                                            return followRssFeed(
+                                                user._id,
+                                                interestRssFeed._id,
+                                            )
                                         }),
                                     )
                                 }),
@@ -109,7 +112,10 @@ exports.signup = (req, res) => {
                                 Podcast.find({ interest }).then(interestPodcasts => {
                                     return Promise.all(
                                         interestPodcasts.map(interestPodcast => {
-                                            return followPodcast(user._id, interestPodcast._id)
+                                            return followPodcast(
+                                                user._id,
+                                                interestPodcast._id,
+                                            )
                                         }),
                                     )
                                 }),
@@ -198,7 +204,11 @@ exports.forgotPassword = (req, res) => {
 
     const passcode = uuidv4()
 
-    User.findOneAndUpdate({ email: data.email.toLowerCase() }, { recoveryCode: passcode }, opts)
+    User.findOneAndUpdate(
+        { email: data.email.toLowerCase() },
+        { recoveryCode: passcode },
+        opts,
+    )
         .then(user => {
             if (!user) {
                 return res.sendStatus(404)

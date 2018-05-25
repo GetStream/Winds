@@ -1,8 +1,8 @@
-import Comment from "../models/comment"
-import Share from "../models/share"
+import Comment from '../models/comment'
+import Share from '../models/share'
 
-import config from "../config"
-import logger from "../utils/logger"
+import config from '../config'
+import logger from '../utils/logger'
 
 exports.list = (req, res) => {
     Comment.apiQuery(req.query)
@@ -16,7 +16,7 @@ exports.list = (req, res) => {
 }
 
 exports.get = (req, res) => {
-    if (req.params.commentId == "undefined") {
+    if (req.params.commentId == 'undefined') {
         return res.sendStatus(404)
     }
 
@@ -77,14 +77,18 @@ exports.put = (req, res) => {
             } else {
                 // if it's just updating the flags, or the user matches, update the comment
                 if (data.flags || comment.user === res.sub.user) {
-                    Comment.findByIdAndUpdate({ _id: req.params.commentId }, data, opts).then(
-                        comment => {
-                            return res.json(comment)
-                        },
-                    )
+                    Comment.findByIdAndUpdate(
+                        { _id: req.params.commentId },
+                        data,
+                        opts,
+                    ).then(comment => {
+                        return res.json(comment)
+                    })
                 } else {
                     // else, unauthorized
-                    return res.status(401).send("You're not authorized to edit this comment.")
+                    return res
+                        .status(401)
+                        .send("You're not authorized to edit this comment.")
                 }
             }
         })
