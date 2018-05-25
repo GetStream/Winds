@@ -1,134 +1,133 @@
-import { Link, Redirect } from 'react-router-dom';
-import React, { Component } from 'react';
-import Img from 'react-image';
-import axios from 'axios';
-import config from '../../config';
+import { Link, Redirect } from "react-router-dom"
+import React, { Component } from "react"
+import Img from "react-image"
+import axios from "axios"
+import backArrow from "../../images/icons/back-arrow.svg"
+import lock from "../../images/icons/lock.svg"
+import config from "../../config"
 
 class ResetPassword extends Component {
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props)
 
-		this.state = {
-			email: null,
-			passphrase: null,
-			password: null,
-			redirect: false,
-			valid: false,
-		};
+        this.state = {
+            email: null,
+            code: null,
+            password: null,
+            redirect: false,
+            valid: false,
+        }
 
-		this.validateEmail = this.validateEmail.bind(this);
-		this.validatePassphrase = this.validatePassphrase.bind(this);
-		this.validatePassword = this.validatePassword.bind(this);
+        this.validateEmail = this.validateEmail.bind(this)
+        this.validateCode = this.validateCode.bind(this)
+        this.validatePassword = this.validatePassword.bind(this)
 
-		this.requestPasswordReset = this.requestPasswordReset.bind(this);
-	}
+        this.requestPasswordReset = this.requestPasswordReset.bind(this)
+    }
 
-	validateForm() {
-		if (this.state.email && this.state.passphrase && this.state.password) {
-			this.setState({ valid: true });
-		} else {
-			this.setState({ valid: false });
-		}
-	}
+    validateForm() {
+        if (this.state.email && this.state.code && this.state.password) {
+            this.setState({ valid: true })
+        } else {
+            this.setState({ valid: false })
+        }
+        console.log(this.state.valid)
+    }
 
-	validateEmail(e) {
-		let email = e.target.value.toLowerCase().trim();
+    validateEmail(e) {
+        let email = e.target.value.toLowerCase().trim()
 
-		/* eslint-disable */
-		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        /* eslint-disable */
+		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 		if (reg.test(email)) {
-			this.setState(
-				{
-					email: email,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
+			this.setState({
+				email: email,
+			})
 		} else {
 			this.setState(
 				{
 					email: null,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		}
 	}
 
-	validatePassphrase(e) {
-		let passphrase = e.target.value.trim();
+	validateCode(e) {
+		let code = e.target.value.trim()
 
-		if (passphrase.length >= 10) {
+		if (code.length >= 10) {
 			this.setState(
 				{
-					passphrase: passphrase,
+					code,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		} else {
 			this.setState(
 				{
-					passphrase: null,
+					code: null,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		}
 	}
 
 	validatePassword(e) {
-		let password = e.target.value.trim();
+		let password = e.target.value.trim()
 
-		if (password.length >= 8) {
+		if (password.length >= 2) {
 			this.setState(
 				{
 					password: password,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		} else {
 			this.setState(
 				{
 					password: null,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		}
 	}
 
 	requestPasswordReset(e) {
-		e.preventDefault();
+		e.preventDefault()
+
 		axios
 			.post(config.api.url + '/auth/reset-password', {
-				email: this.state.email,
-				passcode: this.state.passphrase,
+				email: this.state.email.toLowerCase(),
+				passphrase: this.state.code,
 				password: this.state.password,
 			})
 			.then(() => {
 				this.setState({
 					redirect: true,
-				});
+				})
 			})
 			.catch(err => {
-				console.log(err);
-			});
+				console.log(err)
+			})
 	}
 
 	render() {
-		const { redirect } = this.state;
+		const { redirect } = this.state
 
 		if (redirect) {
-			return <Redirect to="/login" />;
+			return <Redirect to="/login" />
 		}
 
 		return (
@@ -136,16 +135,16 @@ class ResetPassword extends Component {
 				<div className="reset-password-wrapper">
 					<div className="back">
 						<Link to={'/forgot-password'}>
-							<Img src="images/icons/back-arrow.svg" />
+							<Img src={backArrow} />
 							Back
 						</Link>
 					</div>
 					<div className="lock">
-						<Img src="images/icons/lock.svg" />
+						<Img src={lock} />
 					</div>
 					<div className="cta">
 						<p>
-							Enter the passphrase you received and we'll <br />
+							Enter the code you received and we'll <br />
 							reset your password.
 						</p>
 					</div>
@@ -162,12 +161,12 @@ class ResetPassword extends Component {
 							</label>
 							<br />
 							<label>
-								Passphrase <span className="required">Required</span>
+								Code <span className="required">Required</span>
 								<br />
 								<input
 									type="text"
-									name="passphrase"
-									onChange={this.validatePassphrase}
+									name="code"
+									onChange={this.validateCode}
 								/>
 							</label>
 							<br />
@@ -177,7 +176,6 @@ class ResetPassword extends Component {
 								<input
 									type="password"
 									name="password"
-									placeholder="Password (>= 8 characters)"
 									onChange={this.validatePassword}
 								/>
 							</label>
@@ -186,7 +184,7 @@ class ResetPassword extends Component {
 								className="btn primary"
 								type="submit"
 								name="reset-password"
-								disabled={!this.state.email}
+								disabled={!this.state.valid}
 							>
 								Reset Password
 							</button>
@@ -194,8 +192,8 @@ class ResetPassword extends Component {
 					</div>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 
-export default ResetPassword;
+export default ResetPassword
