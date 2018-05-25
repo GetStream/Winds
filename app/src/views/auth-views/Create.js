@@ -1,221 +1,220 @@
-import { Link, withRouter } from 'react-router-dom';
-import React, { Component } from 'react';
-import axios from 'axios';
-import config from '../../config';
-import PropTypes from 'prop-types';
-import interests from '../../static-data/onboarding-topics.js';
-import getPlaceholderImageURL from '../../util/getPlaceholderImageURL.js';
+import { Link, withRouter } from "react-router-dom"
+import React, { Component } from "react"
+import axios from "axios"
+import config from "../../config"
+import PropTypes from "prop-types"
+import interests from "../../static-data/onboarding-topics.js"
+import getPlaceholderImageURL from "../../util/getPlaceholderImageURL.js"
 
-// convert to 2-stage form - first stage is onboarding, second stage is account details
 class Create extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			stage: 'onboarding',
-		};
-	}
+    constructor(props) {
+        super(props)
+        this.state = {
+            stage: "onboarding",
+        }
+    }
 
-	render() {
-		if (this.state.stage === 'onboarding') {
-			return (
-				<OnboardingGrid
-					done={interests => {
-						this.setState({
-							interests,
-							stage: 'account-details',
-						});
-					}}
-				/>
-			);
-		} else {
-			return (
-				<AccountDetailsForm
-					done={(userID, jwt) => {
-						localStorage['authedUser'] = userID;
-						localStorage['jwt'] = jwt;
-						this.props.history.push('/');
-					}}
-					interests={this.state.interests}
-				/>
-			);
-		}
-	}
+    render() {
+        if (this.state.stage === "onboarding") {
+            return (
+                <OnboardingGrid
+                    done={interests => {
+                        this.setState({
+                            interests,
+                            stage: "account-details",
+                        })
+                    }}
+                />
+            )
+        } else {
+            return (
+                <AccountDetailsForm
+                    done={(userID, jwt) => {
+                        localStorage["authedUser"] = userID
+                        localStorage["jwt"] = jwt
+                        this.props.history.push("/")
+                    }}
+                    interests={this.state.interests}
+                />
+            )
+        }
+    }
 }
 
 Create.propTypes = {
-	history: PropTypes.shape({ push: PropTypes.func.isRequired }),
-};
+    history: PropTypes.shape({ push: PropTypes.func.isRequired }),
+}
 
 class OnboardingGrid extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			selectedInterests: [],
-		};
-	}
-	toggleInterest(interestName) {
-		// look through this.state.selectedInterests - if it's in there, pop and return
-		let foundInterestIndex = this.state.selectedInterests.findIndex(
-			selectedInterest => {
-				return selectedInterest === interestName;
-			},
-		);
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedInterests: [],
+        }
+    }
+    toggleInterest(interestName) {
+        // look through this.state.selectedInterests - if it's in there, pop and return
+        let foundInterestIndex = this.state.selectedInterests.findIndex(
+            selectedInterest => {
+                return selectedInterest === interestName
+            },
+        )
 
-		if (foundInterestIndex !== -1) {
-			let newInterests = this.state.selectedInterests.slice();
-			newInterests.splice(foundInterestIndex, 1);
-			this.setState({
-				selectedInterests: newInterests,
-			});
-		} else {
-			// else, push the interest on
-			this.setState({
-				selectedInterests: [...this.state.selectedInterests, interestName],
-			});
-		}
-	}
+        if (foundInterestIndex !== -1) {
+            let newInterests = this.state.selectedInterests.slice()
+            newInterests.splice(foundInterestIndex, 1)
+            this.setState({
+                selectedInterests: newInterests,
+            })
+        } else {
+            // else, push the interest on
+            this.setState({
+                selectedInterests: [...this.state.selectedInterests, interestName],
+            })
+        }
+    }
 
-	render() {
-		return (
-			<div className="center auth-view create-account-view">
-				<h1>Welcome to Winds!</h1>
-				<p>
-					Select at least three interests to get started. Have an account?{' '}
-					<Link to="/login">Sign in</Link>.
-				</p>
-				<div className="interests-grid">
-					{interests.map((interest, i) => {
-						let isSelected =
+    render() {
+        return (
+            <div className="center auth-view create-account-view">
+                <h1>Welcome to Winds!</h1>
+                <p>
+					Select at least three interests to get started. Have an account?{" "}
+                    <Link to="/login">Sign in</Link>.
+                </p>
+                <div className="interests-grid">
+                    {interests.map((interest, i) => {
+                        let isSelected =
 							this.state.selectedInterests.findIndex(selectedInterest => {
-								return selectedInterest === interest.name;
-							}) !== -1;
-						return (
-							<div
-								className={`hero-card ${isSelected ? 'selected' : ''}`}
-								key={interest.name}
-								onClick={e => {
-									e.preventDefault();
-									this.toggleInterest(interest.name);
-								}}
-								style={{
-									backgroundImage: `url(${interest.image ||
+							    return selectedInterest === interest.name
+							}) !== -1
+                        return (
+                            <div
+                                className={`hero-card ${isSelected ? "selected" : ""}`}
+                                key={interest.name}
+                                onClick={e => {
+                                    e.preventDefault()
+                                    this.toggleInterest(interest.name)
+                                }}
+                                style={{
+                                    backgroundImage: `url(${interest.image ||
 										getPlaceholderImageURL(i.toString())})`,
-								}}
-							>
-								<h1>{interest.name}</h1>
-								<p>{interest.subtitle}</p>
-								<label>
-									{isSelected ? 'Selected' : 'Select interest'}
-								</label>
-							</div>
-						);
-					})}
-				</div>
-				<button
-					className={'btn primary'}
-					disabled={this.state.selectedInterests.length < 3}
-					onClick={e => {
-						e.preventDefault();
-						this.props.done(this.state.selectedInterests);
-					}}
-				>
-					{this.state.selectedInterests.length >= 3
-						? 'Continue'
-						: 'Select at least 3 interests to continue'}
-				</button>
-				<button
-					className="btn link"
-					onClick={e => {
-						e.preventDefault();
-						this.props.done();
-					}}
-				>
+                                }}
+                            >
+                                <h1>{interest.name}</h1>
+                                <p>{interest.subtitle}</p>
+                                <label>
+                                    {isSelected ? "Selected" : "Select interest"}
+                                </label>
+                            </div>
+                        )
+                    })}
+                </div>
+                <button
+                    className={"btn primary"}
+                    disabled={this.state.selectedInterests.length < 3}
+                    onClick={e => {
+                        e.preventDefault()
+                        this.props.done(this.state.selectedInterests)
+                    }}
+                >
+                    {this.state.selectedInterests.length >= 3
+                        ? "Continue"
+                        : "Select at least 3 interests to continue"}
+                </button>
+                <button
+                    className="btn link"
+                    onClick={e => {
+                        e.preventDefault()
+                        this.props.done()
+                    }}
+                >
 					Skip
-				</button>
-			</div>
-		);
-	}
+                </button>
+            </div>
+        )
+    }
 }
 
 OnboardingGrid.propTypes = {
-	done: PropTypes.func.isRequired,
-};
+    done: PropTypes.func.isRequired,
+}
 
 class AccountDetailsForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-		this.validateName = this.validateName.bind(this);
-		this.validateUsername = this.validateUsername.bind(this);
-		this.validateEmail = this.validateEmail.bind(this);
-		this.validatePassword = this.validatePassword.bind(this);
-	}
-	validateForm() {
-		if (
-			this.state.username &&
+    constructor(props) {
+        super(props)
+        this.state = {}
+        this.validateName = this.validateName.bind(this)
+        this.validateUsername = this.validateUsername.bind(this)
+        this.validateEmail = this.validateEmail.bind(this)
+        this.validatePassword = this.validatePassword.bind(this)
+    }
+    validateForm() {
+        if (
+            this.state.username &&
 			this.state.email &&
 			this.state.password &&
 			this.state.name
-		) {
-			this.setState({ valid: true });
-		} else {
-			this.setState({ valid: false });
-		}
-	}
+        ) {
+            this.setState({ valid: true })
+        } else {
+            this.setState({ valid: false })
+        }
+    }
 
-	validateName(e) {
-		let name = e.target.value.trim();
+    validateName(e) {
+        let name = e.target.value.trim()
 
-		if (name.length >= 2) {
-			this.setState(
-				{
-					name: name,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		} else {
-			this.setState(
-				{
-					name: null,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		}
-	}
+        if (name.length >= 2) {
+            this.setState(
+                {
+                    name: name,
+                },
+                () => {
+                    this.validateForm()
+                },
+            )
+        } else {
+            this.setState(
+                {
+                    name: null,
+                },
+                () => {
+                    this.validateForm()
+                },
+            )
+        }
+    }
 
-	validateUsername(e) {
-		let username = e.target.value.trim();
+    validateUsername(e) {
+        let username = e.target.value.trim()
 
-		if (username.length >= 2) {
-			this.setState(
-				{
-					username: username,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		} else {
-			this.setState(
-				{
-					username: null,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		}
-	}
+        if (username.length >= 2) {
+            this.setState(
+                {
+                    username: username,
+                },
+                () => {
+                    this.validateForm()
+                },
+            )
+        } else {
+            this.setState(
+                {
+                    username: null,
+                },
+                () => {
+                    this.validateForm()
+                },
+            )
+        }
+    }
 
-	validateEmail(e) {
-		let email = e.target.value.toLowerCase().trim();
+    validateEmail(e) {
+        let email = e.target.value.toLowerCase().trim()
 
-		/* eslint-disable */
-		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        /* eslint-disable */
+		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 		if (reg.test(email)) {
 			this.setState(
@@ -223,42 +222,42 @@ class AccountDetailsForm extends React.Component {
 					email: email,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		} else {
 			this.setState(
 				{
 					email: null,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		}
 	}
 
 	validatePassword(e) {
-		let password = e.target.value.trim();
+		let password = e.target.value.trim()
 
-		if (password.length >= 8) {
+		if (password.length >= 2) {
 			this.setState(
 				{
 					password: password,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		} else {
 			this.setState(
 				{
 					password: null,
 				},
 				() => {
-					this.validateForm();
+					this.validateForm()
 				},
-			);
+			)
 		}
 	}
 
@@ -272,26 +271,26 @@ class AccountDetailsForm extends React.Component {
 				interests: this.props.interests,
 			})
 			.then(res => {
-				this.props.done(res.data._id, res.data.jwt);
+				this.props.done(res.data._id, res.data.jwt)
 			})
 			.catch(err => {
-				let errorMessage;
+				let errorMessage
 				if (
 					err.response &&
 					err.response.status > 399 &&
 					err.response.status < 500 &&
 					err.response.data
 				) {
-					errorMessage = err.response.data;
+					errorMessage = err.response.data
 				} else {
 					errorMessage =
-						'There was an error when attempting to create your account. Please try again later.';
+						'There was an error when attempting to create your account. Please try again later.'
 				}
 
 				this.setState({
 					errorMessage,
-				});
-			});
+				})
+			})
 	}
 
 	render() {
@@ -306,13 +305,13 @@ class AccountDetailsForm extends React.Component {
 				<form
 					className="auth-form"
 					onSubmit={e => {
-						e.preventDefault();
+						e.preventDefault()
 						this.submit(
 							this.state.username,
 							this.state.email,
 							this.state.password,
 							this.state.name,
-						);
+						)
 					}}
 				>
 					<label>
@@ -372,8 +371,8 @@ class AccountDetailsForm extends React.Component {
 					</p>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 
-export default withRouter(Create);
+export default withRouter(Create)
