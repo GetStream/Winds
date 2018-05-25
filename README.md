@@ -188,7 +188,7 @@ brew services start mongodb
 
 At Stream, we use Redis as an in-memory storage for the Winds podcast processing and RSS processing workers. It contains a list of podcasts and RSS feeds, which the workers pick up and process using the `bull` messaging system.
 
-If you're on a Mac, you can install MongoDB through [Homebrew](https://brew.sh/) by running:
+If you're on a Mac, you can install Redis through [Homebrew](https://brew.sh/) by running:
 
 ```
 brew install redis
