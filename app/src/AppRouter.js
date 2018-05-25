@@ -4,7 +4,6 @@ import AuthedRoute from './AuthedRoute';
 import Dashboard from './views/Dashboard';
 import Header from './components/Header';
 import Player from './components/Player.js';
-import PlaylistView from './views/PlaylistView.js';
 import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
 import { Router, Switch } from 'react-router-dom';
@@ -55,7 +54,6 @@ class AppRouter extends Component {
 				<div className="app">
 					<AuthedRoute component={Header} redirect={false} showLoader={false} />
 					<AuthedRoute component={Dashboard} exact path="/" />
-					<AuthedRoute component={PlaylistView} path="/playlists/:playlistID" />
 					<Switch>
 						<AuthedRoute
 							component={PodcastsView}
