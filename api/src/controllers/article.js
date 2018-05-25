@@ -1,5 +1,6 @@
-import async from 'async';
+import mapLimit from 'async/mapLimit';
 import moment from 'moment';
+import promisify from 'util';
 
 import Article from '../models/article';
 import User from '../models/user';
@@ -14,272 +15,125 @@ import events from '../utils/events';
 import search from '../utils/search';
 import personalization from '../utils/personalization';
 
-exports.list = (req, res) => {
-	const query = req.query || {};
+exports.list = async (req, res, _) => {
+    const query = req.query || {};
 
-	if (query.type === 'recommended') {
-		personalization({
-			endpoint: '/winds_article_recommendations',
-			userId: req.user.sub,
-		})
-			.then(data => {
-				async.mapLimit(
-					data,
-					data.length,
-					(article, cb) => {
-						Article.findOne({ _id: article })
-							.then(enriched => {
-								if (!enriched) {
-									return cb(null);
-								}
+    const markLiked = async (article, user, target) => {
+        const like = await Like.findOne({ article, user }).lean()
 
-								Like.findOne({
-									article: enriched._id,
-									user: req.user.sub,
-								})
-									.lean()
-									.then(like => {
-										enriched = enriched.toObject();
+        target = target.toObject();
+        target.liked = !!like;
 
-										if (like) {
-											enriched.liked = true;
-										} else {
-											enriched.liked = false;
-										}
+        return target;
+    }
 
-										cb(null, enriched);
-									})
-									.catch(err => {
-										cb(err);
-									});
-							})
-							.catch(err => {
-								cb(err);
-							});
-					},
-					(err, results) => {
-						if (err) {
-							logger.error(err);
-							return res.sendStatus(422);
-						}
+    if (query.type !== 'recommended') {
+        try {
+            const articles = await Article.apiQuery(req.query)
+            const results = await promisify(async.mapLimit(articles, articles.length, async (article) => {
+                return await markLiked(article._id, req.user.sub, article)
+            }));
 
-						res.json(
-							[].concat(
-								...results.filter(val => {
-									return val;
-								}),
-							),
-						);
-					},
-				);
-			})
-			.catch(err => {
-				res.status(503).send(err);
-			});
-	} else {
-		Article.apiQuery(req.query)
-			.then(articles => {
-				async.mapLimit(
-					articles,
-					articles.length,
-					(article, cb) => {
-						Like.findOne({ article: article._id, user: req.user.sub })
-							.lean()
-							.then(like => {
-								article = article.toObject();
+            return res.json(results.filter(result => result.valid));
+        } catch(err) {
+            logger.error(err);
+            return res.status(422).send(err.errors);
+        }
+    }
 
-								if (like) {
-									article.liked = true;
-								} else {
-									article.liked = false;
-								}
+    try {
+        const data = await personalization({
+            endpoint: '/winds_article_recommendations',
+            userId: req.user.sub,
+        })
+        try {
+            const results = await promisify(mapLimit(data, data.length, async (article) => {
+                let enriched = await Article.findOne({ _id: article })
+                if (!enriched) {
+                    return null;
+                }
 
-								cb(null, article);
-							})
-							.catch(err => {
-								cb(err);
-							});
-					},
-					(err, results) => {
-						if (err) {
-							logger.error(err);
-							return res.status(422).send(err.errors);
-						}
-						res.json(results.filter(result => result.valid));
-					},
-				);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(422).send(err.errors);
-			});
-	}
+                return await markLiked(enriched._id, req.user.sub, enriched)
+            }));
+
+            res.json(results.filter(val => !!val));
+        } catch(err) {
+            logger.error(err);
+            res.sendStatus(422);
+        }
+    } catch(err) {
+        res.status(503).send(err);
+    }
 };
 
-exports.get = (req, res) => {
-	if (req.params.articleId === 'undefined') {
-		return res.sendStatus(404);
-	}
+exports.get = async (req, res, _) => {
+    if (req.params.articleId === 'undefined') {
+        return res.sendStatus(404);
+    }
 
-	let query = req.query || {};
+    let query = req.query || {};
+    try {
+        const article = await Article.findById(req.params.articleId)
+        if (!article) {
+            return res.sendStatus(404);
+        }
+        const user = await User.findById(req.user.sub)
+        if (!user) {
+            return res.sendStatus(404);
+        }
+        await events({
+            email: user.email.toLowerCase(),
+            engagement: {
+                content: {
+                    foreign_id: `articles:${article._id}`,
+                },
+                label: query.type === 'parsed' ? 'parse' : 'view',
+            },
+            user: user._id,
+        })
+    } catch(err) {
+        logger.error(err);
+        return res.status(422).send(err.errors);
+    }
 
-	if (query.type === 'parsed') {
-		async.waterfall(
-			[
-				cb => {
-					Article.findById(req.params.articleId)
-						.then(article => {
-							if (!article) {
-								return res.sendStatus(404);
-							}
-							cb(null, article);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(article, cb) => {
-					User.findById(req.user.sub)
-						.then(user => {
-							if (!user) {
-								return res.sendStatus(404);
-							}
-							cb(null, article, user);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(article, user, cb) => {
-					events({
-						email: user.email.toLowerCase(),
-						engagement: {
-							content: {
-								foreign_id: `articles:${article._id}`,
-							},
-							label: 'parse',
-						},
-						user: user._id,
-					})
-						.then(() => {
-							cb(null, article);
-						})
-						.catch(err => {
-							logger.error(err);
-							cb(err);
-						});
-				},
-				(article, cb) => {
-					Cache.findOne({ url: article.url })
-						.then(cached => {
-							if (cached) {
-								return cb(null, cached);
-							}
-							parser({ url: article.url })
-								.then(parsed => {
-									let content = parsed.content;
-									// XKCD doesn't like Mercury
-									if (article.url.indexOf('https://xkcd') == 0) {
-										content = article.content;
-									}
+    if (query.type !== 'parsed') {
+        return res.json(article)
+    }
 
-									Cache.create({
-										content: content,
-										excerpt: parsed.excerpt,
-										image: parsed.lead_image_url || '',
-										publicationDate:
-											parsed.date_published || moment().toDate(),
-										title: parsed.title,
-										url: article.url,
-										commentUrl: article.commentUrl,
-									})
-										.then(cache => {
-											cb(null, cache);
-										})
-										.catch(err => {
-											logger.error(err);
-											cb(err);
-										});
-								})
-								.catch(() => {
-									Article.findById(article._id).then(article => {
-										article.valid = false;
-										article.save(function(err) {
-											if (err) {
-												logger.error(err);
-												return cb(err);
-											}
-											cb(err);
-										});
-									});
-								});
-						})
-						.catch(err => {
-							logger.error(err);
-							res.sendStatus(503);
-						});
-				},
-			],
-			(err, parsed) => {
-				if (err) {
-					logger.error(err);
-					return res.status(422).send(err.errors);
-				}
-				res.json(parsed);
-			},
-		);
-	} else {
-		async.waterfall(
-			[
-				cb => {
-					Article.findById(req.params.articleId)
-						.then(article => {
-							if (!article) {
-								return res.sendStatus(404);
-							}
-							cb(null, article);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(article, cb) => {
-					User.findById(req.user.sub)
-						.then(user => {
-							cb(null, article, user);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(article, user, cb) => {
-					events({
-						email: user.email.toLowerCase(),
-						impression: {
-							content_list: [
-								{
-									foreign_id: `articles:${article.id}`,
-								},
-							],
-							label: 'view',
-						},
-						user: user._id,
-					})
-						.then(() => {
-							cb(null, article);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-			],
-			(err, article) => {
-				if (err) {
-					logger.error(err);
-					res.status(422).send(err.errors);
-				}
-				res.json(article);
-			},
-		);
-	}
+    try {
+        const cached = await Cache.findOne({ url: article.url })
+        if (cached) {
+            return res.json(cached);
+        }
+        try {
+            const parsed = await parser({ url: article.url })
+            let content = parsed.content;
+            // XKCD doesn't like Mercury
+            if (article.url.indexOf('https://xkcd') == 0) {
+                content = article.content;
+            }
+
+            await Cache.create({
+                content: content,
+                excerpt: parsed.excerpt,
+                image: parsed.lead_image_url || '',
+                publicationDate:
+                    parsed.date_published || moment().toDate(),
+                title: parsed.title,
+                url: article.url,
+                commentUrl: article.commentUrl,
+            })
+            res.json(parsed)
+        } catch(err) {
+            const article = await Article.findById(article._id)
+            article.valid = false;
+            await promisify(article.save)
+
+            logger.error(err);
+            res.status(422).send(err.errors);
+        }
+    } catch(err) {
+        logger.error(err);
+        res.sendStatus(503);
+    }
 };

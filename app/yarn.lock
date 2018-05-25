@@ -7007,7 +7007,7 @@ node-sass-chokidar@^1.3.0:
     get-stdin "^4.0.1"
     glob "^7.0.3"
     meow "^3.7.0"
-    node-sass "^4.7.2"
+    node-sass "^4.9.0"
     sass-graph "^2.1.1"
     stdout-stream "^1.4.0"
 

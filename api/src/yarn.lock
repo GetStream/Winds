@@ -2109,9 +2109,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-getstream@^3.16.0:
-  version "3.16.0"
-  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.16.0.tgz#924419d75a620516ae05b4878cf9f51c4f8e0f78"
+getstream@^3.17.0:
+  version "3.17.0"
+  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.17.0.tgz#69868691acca92b30cbbc0f320624f70ff7e1c08"
   dependencies:
     Base64 "^1.0.1"
     faye "^1.2.4"
