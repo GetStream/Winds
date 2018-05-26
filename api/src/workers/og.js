@@ -26,6 +26,7 @@ const schemaMap = {
 const requestTimeout = 10000
 const maxRedirects = 10
 const maxContentLengthBytes = 5 * 1024 * 1024
+const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg']
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker, now supporting podcasts, episodes and articles')
@@ -40,7 +41,18 @@ async function handleOg(job) {
     return promise
 }
 
-async function isValidContentType(url) {
+async function isValidUrl(url) {
+    let invalid = invalidExtensions.some(extension=> {
+      if( url.endsWith(`.${extensions}`)) {
+        return extension
+      }
+    })
+    if (invalid) {
+      logger.warn(`Invalid file extension for url ${url}`)
+      return false
+    }
+
+
     let response
     try {
         response = await axios({
@@ -86,13 +98,10 @@ async function _handleOg(job) {
                 instance.images.og
             }: ${jobType} with lookup ${field}: ${url}`,
         )
-    } else if (url.endsWith('.mp3')) {
-        // ends with mp3, no point in scraping, returning early
-        logger.warn(`skipping mp3 url ${url}, jobtype ${jobType}`)
     } else {
         // TODO: on failure conditions the ogs script has some leaks
         let image
-        let isValid = await isValidContentType(url)
+        let isValid = await isValidUrl(url)
         if (!isValid) {
             return
         }
