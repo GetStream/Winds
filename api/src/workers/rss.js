@@ -67,7 +67,7 @@ async function handleRSS(job) {
         rssContent.articles.map(article => {
             let normalizedUrl = normalize(article.url)
             article.url = normalizedUrl
-            return updateArticle(rssID, normalizedUrl, article)
+            return upsertArticle(rssID, normalizedUrl, article)
         }),
     )
 
@@ -101,46 +101,64 @@ async function handleRSS(job) {
 }
 
 // updateArticle updates the article in mongodb
-async function updateArticle(rssID, normalizedUrl, post) {
-    let rawArticle = await Article.findOneAndUpdate(
-        {
-            rss: rssID,
-            url: normalizedUrl,
-        },
-        {
-            commentUrl: post.commentUrl,
-            content: post.content,
-            description: post.description,
-            images: post.images || {},
-            publicationDate: post.publicationDate,
-            rss: rssID,
-            title: post.title,
-            url: post.url,
-        },
-        {
-            new: true,
-            rawResult: true,
-            upsert: true,
-        },
-    )
-    if (rawArticle.lastErrorObject.updatedExisting) {
-        // article already exists
-        return
-    }
+async function upsertArticle(rssID, normalizedUrl, post) {
+	let update = {
+		commentUrl: post.commentUrl,
+		content: post.content,
+		description: post.description,
+		images: post.images || {},
+		publicationDate: post.publicationDate,
+		rss: rssID,
+		title: post.title,
+		url: post.url,
+	};
 
-    let article = rawArticle.value
-    // after article is created, add to algolia, stream, and og scraper queue
-    let response = await async_tasks.OgQueueAdd(
-        {
-            type: "rss",
-            url: article.url,
-        },
-        {
-            removeOnComplete: true,
-            removeOnFail: true,
-        },
-    )
-    return article
+	let rawArticle = await Article.findOneAndUpdate(
+		{
+			$and: [
+				{
+					rss: rssID,
+					url: normalizedUrl,
+				},
+				{
+					$or: Object.assign(
+						{},
+						...Object.keys(update).map(k => {
+							return {
+								[k]: {
+									$ne: update[k],
+								},
+							};
+						}),
+					),
+				},
+			],
+		},
+		update,
+		{
+			new: true,
+			rawResult: true,
+			upsert: true,
+		},
+	);
+
+	if (rawArticle.lastErrorObject.updatedExisting) {
+		// article already exists
+		return;
+	}
+
+	let article = rawArticle.value;
+	await async_tasks.OgQueueAdd(
+		{
+			type: 'rss',
+			url: article.url,
+		},
+		{
+			removeOnComplete: true,
+			removeOnFail: true,
+		},
+	);
+	return article;
 }
 
 // markDone sets lastScraped to now and isParsing to false
