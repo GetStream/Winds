@@ -10,23 +10,20 @@ async function sendRssFeedToCollections(rssFeed) {
 		await RSS.findByIdAndUpdate(rssFeed.id, { [language]: rssFeed.language }, { new: true });
 	}
 
-	let personalizationInfo = await Article.find({
+	let articles = await Article.find({
 		rss: rssFeed.id,
-	}).sort({ publicationDate: -1 }).limit(1000).then(articles => {
-		// grab count and latest publicationDate
-		return {
-			articleCount: articles.length,
-			description: rssFeed.description,
-			language: rssFeed.language,
-			mostRecentPublicationDate: articles[0].publicationDate,
-			title: rssFeed.title,
-		};
-	});
+	}).sort({ publicationDate: -1 }).limit(1000)
 
 	await events({
 		meta: {
 			data: {
-				[`rss:${rssFeed.id}`]: personalizationInfo,
+				[`rss:${rssFeed.id}`]: {
+					articleCount: articles.length,
+					description: rssFeed.description,
+					language: rssFeed.language,
+					mostRecentPublicationDate: articles[0].publicationDate,
+					title: rssFeed.title,
+				},
 			},
 		},
 	});
