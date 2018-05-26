@@ -49,7 +49,7 @@ async function handleRSS(job) {
 
     // mark as done, will be schedule again in 15 min from now
     // we do this early so a temporary failure doesnt leave things in a broken state
-    let completed = await markDone(rssID)
+    await markDone(rssID)
     logger.info(`Marked ${rssID} as done`)
 
     // parse the articles
@@ -93,9 +93,9 @@ async function handleRSS(job) {
                 }
             })
 
-            let streamResponse = await rssFeed.addActivities(streamArticles)
-            let response = await sendRssFeedToCollections(job.data.rss)
+            await rssFeed.addActivities(streamArticles)
         }
+		await sendRssFeedToCollections(rss)
     }
     logger.info(`Completed scraping for ${job.data.url}`)
 }
