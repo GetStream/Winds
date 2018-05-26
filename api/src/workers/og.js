@@ -43,7 +43,7 @@ async function handleOg(job) {
 
 async function isValidUrl(url) {
     let invalid = invalidExtensions.some(extension=> {
-      if( url.endsWith(`.${extensions}`)) {
+      if( url.endsWith(`.${extension}`)) {
         return extension
       }
     })
