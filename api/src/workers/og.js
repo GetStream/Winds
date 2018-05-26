@@ -92,7 +92,8 @@ async function _handleOg(job) {
     } else {
         // TODO: on failure conditions the ogs script has some leaks
         let image
-        if (!isValidContentType(url)) {
+        let isValid = await isValidContentType(url)
+        if (!isValid) {
             return
         }
 
