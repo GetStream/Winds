@@ -12,7 +12,7 @@ async function sendRssFeedToCollections(rssFeed) {
 
 	let personalizationInfo = await Article.find({
 		rss: rssFeed.id,
-	}).sort({ publicationDate: -1 }).then(articles => {
+	}).sort({ publicationDate: -1 }).limit(1000).then(articles => {
 		// grab count and latest publicationDate
 		return {
 			articleCount: articles.length,
