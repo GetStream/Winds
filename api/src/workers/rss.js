@@ -121,16 +121,13 @@ async function upsertArticle(rssID, normalizedUrl, post) {
 					url: normalizedUrl,
 				},
 				{
-					$or: Object.assign(
-						{},
-						...Object.keys(update).map(k => {
-							return {
-								[k]: {
-									$ne: update[k],
-								},
-							};
-						}),
-					),
+					$or: Object.keys(update).map(k => {
+						return {
+							[k]: {
+								$ne: update[k],
+							},
+						};
+                    }),
 				},
 			],
 		},

@@ -64,7 +64,7 @@ async function _handlePodcast(job) {
         podcastContent.episodes.map(episode => {
             let normalizedUrl = normalize(episode.url)
             episode.url = normalizedUrl
-            return updateEpisode(podcast._id, normalizedUrl, episode)
+            return upsertEpisode(podcast._id, normalizedUrl, episode)
         }),
     )
 
@@ -97,29 +97,45 @@ async function _handlePodcast(job) {
 }
 
 // updateEpisode updates 1 episode and sync the data to og scraping
-async function updateEpisode(podcastID, normalizedUrl, episode) {
+async function upsertEpisode(podcastID, normalizedUrl, episode) {
+	let update = {
+		description: episode.description,
+		duration: episode.duration,
+		enclosure: episode.enclosure,
+		images: episode.images,
+		link: episode.link,
+		podcast: podcastID,
+		publicationDate: episode.publicationDate,
+		title: episode.title,
+		url: episode.url,
+    };
+
     let rawEpisode = await Episode.findOneAndUpdate(
-        {
-            podcast: podcastID,
-            url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
-        },
-        {
-            description: episode.description,
-            duration: episode.duration,
-            enclosure: episode.enclosure,
-            images: episode.images,
-            link: episode.link,
-            podcast: podcastID,
-            publicationDate: episode.publicationDate,
-            title: episode.title,
-            url: episode.url,
-        },
+		{
+			$and: [
+				{
+					podcast: podcastID,
+					url: normalizedUrl,
+				},
+				{
+					$or: Object.keys(update).map(k => {
+						return {
+							[k]: {
+								$ne: update[k],
+							},
+						};
+					}),
+				},
+			],
+		},
+		update,
         {
             new: true,
             rawResult: true,
             upsert: true,
         },
-    )
+    );
+
     let newEpisode = rawEpisode.value
     if (rawEpisode.lastErrorObject.updatedExisting) {
         return
