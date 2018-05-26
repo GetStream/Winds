@@ -52,7 +52,6 @@ async function isValidUrl(url) {
       return false
     }
 
-
     let response
     try {
         response = await axios({
