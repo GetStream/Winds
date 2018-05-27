@@ -71,7 +71,7 @@ async function handleRSS(job) {
         }),
     )
 
-    // updatedArticles will contain `null` for all articles that didn't get updated, that we alrady have in the system.
+    // updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
     let updatedArticles = allArticles.filter(updatedArticle => {
         return updatedArticle
     })
