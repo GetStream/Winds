@@ -99,6 +99,6 @@ ArticleSchema.plugin(timestamps, {
 ArticleSchema.plugin(mongooseStringQuery)
 ArticleSchema.plugin(autopopulate)
 
-ArticleSchema.index({ rss: 1, url: 1 })
+ArticleSchema.index({ rss: 1, url: 1 }, {unique: true})
 
 module.exports = exports = mongoose.model("Article", ArticleSchema)
