@@ -1,7 +1,7 @@
 import "../loadenv"
 
 import RSS from "../models/rss"
-import Podcast from "../models/rss"
+import Podcast from "../models/podcast"
 
 import "../utils/db"
 import logger from "../utils/logger"
