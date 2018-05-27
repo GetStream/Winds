@@ -11,7 +11,6 @@ import Episode from "../models/episode"
 import "../utils/db"
 import config from "../config"
 import logger from "../utils/logger"
-import search from "../utils/search"
 import sendPodcastToCollections from "../utils/events/sendPodcastToCollections"
 import { ParsePodcast } from "./parsers"
 import util from "util"
@@ -47,7 +46,7 @@ async function _handlePodcast(job) {
 
     // mark as done, will be schedule again in 15 min from now
     // we do this early so a temporary failure doesnt leave things in a broken state
-    let completed = await markDone(podcastID)
+    await markDone(podcastID)
 
     // parse the episodes
     let podcastContent
@@ -89,11 +88,11 @@ async function _handlePodcast(job) {
             })
 
             // addActivities to Stream
-            let streamResponse = await podcastFeed.addActivities(streamEpisodes)
-            // update the collection information for follow suggestions
-            let collectionResponse = await sendPodcastToCollections(podcastID)
+            await podcastFeed.addActivities(streamEpisodes)
         }
-    }
+		// update the collection information for follow suggestions
+		await sendPodcastToCollections(podcast)
+	}
 }
 
 // updateEpisode updates 1 episode and sync the data to og scraping

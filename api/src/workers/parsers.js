@@ -10,14 +10,11 @@ import podcastParser from "./podcast_parser_sax"
 
 import Podcast from "../models/podcast" // eslint-disable-line
 import Episode from "../models/episode"
-import Article from "../models/rss"
 
 import config from "../config" // eslint-disable-line
 import logger from "../utils/logger"
 
 const WindsUserAgent = "Winds: Open Source RSS & Podcast app: https://getstream.io/winds/"
-const BrowserUserAgent =
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
 const AcceptHeader = "text/html,application/xhtml+xml,application/xml"
 
 // sanitize cleans the html before returning it to the frontend
