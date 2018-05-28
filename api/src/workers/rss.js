@@ -16,6 +16,7 @@ import sendRssFeedToCollections from "../utils/events/sendRssFeedToCollections"
 import { ParseFeed } from "./parsers"
 
 import async_tasks from "../async_tasks"
+import { getStatsDClient } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret)
 
@@ -24,6 +25,8 @@ logger.info("Starting the RSS worker")
 
 // TODO: move this to a separate main.js
 async_tasks.ProcessRssQueue(30, handleRSS)
+
+const statsd = getStatsDClient()
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
 async function handleRSS(job) {
@@ -60,8 +63,11 @@ async function _handleRSS(job) {
         return
     }
 
-    // update the articles
+	// update the articles
     logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`)
+
+	statsd.increment("winds.handle_rss.articles.parsed", rssContent.articles.length)
+
     let allArticles = await Promise.all(
         rssContent.articles.map(article => {
             let normalizedUrl = normalize(article.url)
@@ -74,6 +80,8 @@ async function _handleRSS(job) {
     let updatedArticles = allArticles.filter(updatedArticle => {
         return updatedArticle
     })
+
+	statsd.increment("winds.handle_rss.articles.upserted", updatedArticles.length)
 
 	await Promise.all(updatedArticles.map(article => {
 		async_tasks.OgQueueAdd(
@@ -150,6 +158,7 @@ async function upsertArticle(rssID, normalizedUrl, post) {
 		)
 	} catch(err) {
 		if (err.code === 11000){
+			statsd.increment("winds.handle_rss.articles.ignored")
 			return null
 		} else {
 			throw error;
