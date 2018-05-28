@@ -32,6 +32,7 @@ export const CacheSchema = new Schema(
             type: Date,
             default: Date.now,
         },
+        enclosures: [],
     },
     { collection: "cache" },
 )

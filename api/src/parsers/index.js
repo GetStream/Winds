@@ -80,6 +80,7 @@ function ParseFeed(feedUrl, callback) {
             let parsedArticle = {
                 content: sanitize(post.summary),
                 description: description,
+                enclosures: post.enclosures,
                 publicationDate:
                     moment(post.pubdate).toISOString() ||
                     moment()

@@ -12,7 +12,7 @@ import "../utils/db"
 import config from "../config"
 import logger from "../utils/logger"
 import sendPodcastToCollections from "../utils/events/sendPodcastToCollections"
-import { ParsePodcast } from "./parsers"
+import { ParsePodcast } from "../parsers"
 import util from "util"
 
 import async_tasks from "../async_tasks"

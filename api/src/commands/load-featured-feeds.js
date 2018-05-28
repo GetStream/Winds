@@ -11,13 +11,14 @@ import async from "async"
 import rssFinder from "rss-finder"
 import normalizeUrl from "normalize-url"
 import podcastFinder from "rss-finder"
-import { ParsePodcast } from "../workers/parsers"
+import { ParsePodcast } from "../parsers"
 import strip from "strip"
 import Podcast from "../models/podcast"
 import RSS from "../models/rss"
 import moment from "moment"
 import "../utils/db"
 import entities from "entities"
+import path from "path"
 
 import validUrl from "valid-url"
 
@@ -41,77 +42,11 @@ process.on("unhandledRejection", err => {
     process.exit(1)
 })
 
-function FindMeSomeRSS(url) {
-    return rssFinder(normalizeUrl(url))
-}
-
-function UpdateThatRSS() {
-    var promise = RSS.findOneAndUpdate(
-        { feedUrl: feed.url },
-        {
-            categories: featuredRSS.category,
-            description: entities.decodeHTML(feed.title),
-            featured: false,
-            feedUrl: feed.url,
-            images: {
-                favicon: feeds.site.favicon,
-            },
-            lastScraped: moment().format(),
-            title: featuredRSS.name,
-            url: feeds.site.url,
-            valid: true,
-        },
-        {
-            new: true,
-            rawResult: true,
-            upsert: true,
-        },
-    )
-}
-
-async function test(featuredRSS) {
-    let structure = await FindMeSomeRSS("http://alistapart.com/main/feed")
-    let site = structure.site
-    for (let feed of structure.feedUrls) {
-        let feedTitle = feed.title
-        if (feedTitle.toLowerCase() === "rss") {
-            feedTitle = feeds.site.title
-        }
-
-        let feedUrl = feed.url
-        let rss = {
-            categories: featuredRSS.category,
-            description: entities.decodeHTML(feed.title),
-            featured: false,
-            feedUrl: feed.url,
-            images: {
-                favicon: site.favicon,
-            },
-            lastScraped: moment().format(),
-            title: featuredRSS.name,
-            url: site.url,
-            valid: true,
-        }
-
-        RSS.findOneAndUpdate({ feedUrl: feedUrl }, rss, {
-            new: true,
-            rawResult: true,
-            upsert: true,
-        })
-            .then(function() {
-                console.log(arguments)
-            })
-            .catch(function() {
-                console.log("err", arguments)
-            })
-        //console.log('result', result)
-    }
-}
-
+// TODO: refactor all code used in this command
 function main() {
     // This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
     logger.info("Starting to load the featured feeds")
-    var featured = JSON.parse(fs.readFileSync("featured.json", "utf8"))
+    var featured = JSON.parse(fs.readFileSync(path.join("..", "fixtures", "featured.json"), "utf8"))
 
     async.mapLimit(
         featured.rss,

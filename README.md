@@ -312,20 +312,27 @@ pm2 start process_prod.json
 
 ## Debugging RSS & Podcast Issues
 
-Unfortunately there is no unified standard for RSS. To test your preferred feed, go to `api/src/workers` and run:
+Unfortunately there is no unified standard for RSS.
+Go to the `api` directory and run `yarn link` to make these commands available:
 
 ```
-babel-node feed_debug.js --rss https://techcrunch.com/feed/
+winds rss https://techcrunch.com/feed/
 ```
 
-For podcasts run:
+For podcasts:
 
 ```
-babel-node feed_debug.js --podcast https://www.npr.org/rss/podcast.php\?id\=510289
+winds podcast https://www.npr.org/rss/podcast.php\?id\=510289
+```
+
+For Open Graph scraping
+
+```
+winds og http://www.planetary.org/multimedia/planetary-radio/show/2018/0509-amy-mainzer-neowise.html
 ```
 
 Pull requests for improved RSS compatibility are much appreciated.
-Most of the parsing codebase is located in `api/src/workers/parsers.js`.
+Most of the parsing codebase is located in `api/src/parsers/`.
 
 ## Support
 
@@ -369,4 +376,3 @@ RSS is an amazing open standard. It is probably the most pleasant way to stay up
 * [Feedly](https://feedly.com/)
 * [NewsBlur](https://newsblur.com/)
 * [Feedity](https://feedity.com/)
-

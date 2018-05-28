@@ -13,7 +13,7 @@ import logger from "../utils/logger"
 import util from "util"
 
 import sendRssFeedToCollections from "../utils/events/sendRssFeedToCollections"
-import { ParseFeed } from "./parsers"
+import { ParseFeed } from "../parsers"
 
 import async_tasks from "../async_tasks"
 import { getStatsDClient } from '../utils/statsd';
@@ -33,6 +33,8 @@ async function handleRSS(job) {
     let promise = _handleRSS(job)
     promise.catch(err => {
         logger.warn(`rss job ${job} broke with err ${err}`)
+        console.log(err)
+
     })
     return promise
 }
@@ -129,6 +131,7 @@ async function upsertArticle(rssID, normalizedUrl, post) {
 		rss: rssID,
 		title: post.title,
 		url: post.url,
+    enclosures: post.enclosures,
 	};
 
 	// in almost all cases images are added by OG scraping, only include images if not empty
