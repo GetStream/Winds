@@ -1,28 +1,43 @@
-import mongoose, { Schema } from "mongoose"
-import timestamps from "mongoose-timestamp"
-import mongooseStringQuery from "mongoose-string-query"
-import autopopulate from "mongoose-autopopulate"
+import mongoose, { Schema } from 'mongoose';
+import timestamps from 'mongoose-timestamp';
+import mongooseStringQuery from 'mongoose-string-query';
+import autopopulate from 'mongoose-autopopulate';
+
+export const EnclosureSchema = new Schema({
+    url: {
+        type: String,
+        trim: true,
+    },
+    type: {
+        type: String,
+        trim: true,
+    },
+    length: {
+        type: String,
+        trim: true,
+    }
+});
 
 export const ArticleSchema = new Schema(
     {
         rss: {
             type: Schema.Types.ObjectId,
-            ref: "RSS",
+            ref: 'RSS',
             required: true,
             autopopulate: {
                 select: [
-                    "title",
-                    "url",
-                    "feedUrl",
-                    "favicon",
-                    "categories",
-                    "description",
-                    "public",
-                    "valid",
-                    "publicationDate",
-                    "lastScraped",
-                    "images",
-                    "featured",
+                    'title',
+                    'url',
+                    'feedUrl',
+                    'favicon',
+                    'categories',
+                    'description',
+                    'public',
+                    'valid',
+                    'publicationDate',
+                    'lastScraped',
+                    'images',
+                    'featured',
                 ],
             },
         },
@@ -41,44 +56,45 @@ export const ArticleSchema = new Schema(
             type: String,
             trim: true,
             maxLength: 240,
-            default: "",
+            default: '',
         },
         content: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         commentUrl: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         images: {
             featured: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
             banner: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
             favicon: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
             og: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
         },
         publicationDate: {
             type: Date,
             default: Date.now,
         },
+        enclosures: [EnclosureSchema],
         likes: {
             type: Number,
             default: 0,
@@ -89,16 +105,16 @@ export const ArticleSchema = new Schema(
             valid: true,
         },
     },
-    { collection: "articles" },
-)
+    { collection: 'articles' },
+);
 
 ArticleSchema.plugin(timestamps, {
     createdAt: { index: true },
     updatedAt: { index: true },
-})
-ArticleSchema.plugin(mongooseStringQuery)
-ArticleSchema.plugin(autopopulate)
+});
+ArticleSchema.plugin(mongooseStringQuery);
+ArticleSchema.plugin(autopopulate);
 
-ArticleSchema.index({ rss: 1, url: 1 }, {unique: true})
+ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
 
-module.exports = exports = mongoose.model("Article", ArticleSchema)
+module.exports = exports = mongoose.model('Article', ArticleSchema);

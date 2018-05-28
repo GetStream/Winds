@@ -31,12 +31,14 @@ async function handleRSS(job) {
     let promise = _handleRSS(job)
     promise.catch(err => {
         logger.warn(`rss job ${job} broke with err ${err}`)
+        console.log(err)
+
     })
     return promise
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
-async function handleRSS(job) {
+async function _handleRSS(job) {
     logger.info(`Processing ${job.data.url}`)
 
     // verify we have the rss object
@@ -111,6 +113,7 @@ async function upsertArticle(rssID, normalizedUrl, post) {
 		rss: rssID,
 		title: post.title,
 		url: post.url,
+    enclosures: post.enclosures,
 	};
 
 	let rawArticle = await Article.findOneAndUpdate(

@@ -7,6 +7,9 @@ import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import config from '../config';
+import normalize from "normalize-url"
+import async_tasks from "../async_tasks"
+
 
 // do stuff
 function debugFeed(feedType, feedUrls) {
@@ -19,6 +22,7 @@ function debugFeed(feedType, feedUrls) {
     logger.info(`Handling ${feedUrls.length} urls`);
 
     for (let target of feedUrls) {
+      target = normalize(target)
         logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
         function validate(error, response) {
@@ -96,7 +100,7 @@ function debugFeed(feedType, feedUrls) {
                             return;
                         }
 
-                        if (program.rss) {
+                        if (feedType=='rss') {
                             queuePromise = async_tasks.RssQueueAdd(
                                 {
                                     rss: instance._id,

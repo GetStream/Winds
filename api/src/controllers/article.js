@@ -183,6 +183,9 @@ exports.get = (req, res) => {
                                         content = article.content
                                     }
 
+                                    // TODO: this endpoint should return the cache as well as the article
+                                    console.log("encloser", article.enclosures)
+
                                     Cache.create({
                                         content: content,
                                         excerpt: parsed.excerpt,
@@ -192,6 +195,7 @@ exports.get = (req, res) => {
                                         title: parsed.title,
                                         url: article.url,
                                         commentUrl: article.commentUrl,
+                                        enclosures: article.enclosures,
                                     })
                                         .then(cache => {
                                             cb(null, cache)
