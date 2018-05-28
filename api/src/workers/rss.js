@@ -119,13 +119,16 @@ async function _handleRSS(job) {
     logger.info(`Completed scraping for ${job.data.url}`)
 }
 
-async function upsertManyArticles(rssID, articles){
+async function upsertManyArticles(rssID, articles) {
+	articles = articles.map(a => {
+		a.url = normalize(a.url)
+		return a
+	})
+
 	let articlesData = articles.map(article => {
 		const clone = Object.assign({}, article)
-		clone.url = normalize(article.url)
-		if (!clone.images || Object.keys(clone.images).length < 1) {
-			delete(clone.images)
-		}
+		delete(clone.images)
+		delete(clone.enclosures)
 		return clone
 	})
 
@@ -147,7 +150,7 @@ async function upsertManyArticles(rssID, articles){
 
 // updateArticle updates the article in mongodb if it changed and create a new one if it did not exist
 async function upsertArticle(rssID, post) {
-	let update = {
+	let search = {
 		commentUrl: post.commentUrl,
 		content: post.content,
 		description: post.description,
@@ -155,8 +158,11 @@ async function upsertArticle(rssID, post) {
 		rss: rssID,
 		title: post.title,
 		url: post.url,
-    	enclosures: post.enclosures,
 	};
+
+	let update = Object.assign({}, search)
+	update.enclosures = post.enclosures
+	update.images = post.images
 
 	try {
 		return await Article.findOneAndUpdate(
@@ -167,10 +173,10 @@ async function upsertArticle(rssID, post) {
 						url: post.url,
 					},
 					{
-						$or: Object.keys(update).map(k => {
+						$or: Object.keys(search).map(k => {
 							return {
 								[k]: {
-									$ne: update[k],
+									$ne: search[k],
 								},
 							};
 						}),
