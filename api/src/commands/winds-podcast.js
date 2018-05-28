@@ -7,7 +7,7 @@ import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import config from '../config';
-import { debugFeed } from './winds-rss';
+import { debugFeed } from './_debug-feed';
 import async_tasks from '../async_tasks';
 
 program
