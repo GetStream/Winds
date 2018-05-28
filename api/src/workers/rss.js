@@ -68,16 +68,13 @@ async function _handleRSS(job) {
 	// update the articles
     logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`)
 
-	statsd.increment("winds.handle_rss.articles.parsed", rssContent.articles.length)
+	if (rssContent.articles.length < 1) {
+		return
+	}
 
-    let allArticles = await Promise.all(
-        rssContent.articles.map(article => {
-            let normalizedUrl = normalize(article.url)
-            article.url = normalizedUrl
-			// XXX: this is an easy way to rewrite all articles in case normalize ever changes
-            return upsertArticle(rssID, normalizedUrl, article)
-        }),
-    )
+	statsd.timing("winds.handle_rss.articles.parsed", rssContent.articles.length)
+
+    let allArticles = await upsertManyArticles(rssID, rssContent.articles)
 
     // updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
     let updatedArticles = allArticles.filter(updatedArticle => {
@@ -121,8 +118,34 @@ async function _handleRSS(job) {
     logger.info(`Completed scraping for ${job.data.url}`)
 }
 
+async function upsertManyArticles(rssID, articles){
+	let articlesData = articles.map(article => {
+		const clone = Object.assign({}, article)
+		clone.url = normalize(article.url)
+		if (!clone.images || Object.keys(clone.images).length > 0) {
+			delete(clone.images)
+		}
+		return clone
+	})
+
+	let existingArticles = await Article.find({$or: articlesData}, { "url": 1 })
+	let existingArticleUrls = existingArticles.map(a => {return a.url})
+
+	statsd.increment("winds.handle_rss.articles.already_in_mongo", existingArticleUrls.length)
+
+	let articlesToUpsert = articlesData.filter(article => {
+		return existingArticleUrls.indexOf(article.url) === -1
+	})
+
+	logger.info(`Feed ${rssID}: got ${articles.length} articles of which ${articlesToUpsert.length} need a sync`)
+
+	return Promise.all(articlesToUpsert.map(article => {
+		return upsertArticle(rssID, article)
+	}))
+}
+
 // updateArticle updates the article in mongodb if it changed and create a new one if it did not exist
-async function upsertArticle(rssID, normalizedUrl, post) {
+async function upsertArticle(rssID, post) {
 	let update = {
 		commentUrl: post.commentUrl,
 		content: post.content,
@@ -134,18 +157,13 @@ async function upsertArticle(rssID, normalizedUrl, post) {
     enclosures: post.enclosures,
 	};
 
-	// in almost all cases images are added by OG scraping, only include images if not empty
-	if (post.images && Object.keys(post.images).length > 0) {
-		update.images = post.images
-	}
-
 	try {
 		return await Article.findOneAndUpdate(
 			{
 				$and: [
 					{
 						rss: rssID,
-						url: normalizedUrl,
+						url: post.url,
 					},
 					{
 						$or: Object.keys(update).map(k => {
