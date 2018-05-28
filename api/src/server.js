@@ -1,4 +1,3 @@
-import "./loadenv"
 import fs from "fs"
 import path from "path"
 import express from "express"
@@ -54,19 +53,23 @@ api.use((req, res, next) => {
     next()
 })
 
-api.listen(config.server.port, err => {
-    if (err) {
-        logger.error(err)
-        process.exit(1)
-    }
+if (require.main === module) {
+    api.listen(config.server.port, err => {
+        if (err) {
+            logger.error(err)
+            process.exit(1)
+        }
 
-    require("./utils/db")
+        require("./utils/db")
 
-    fs.readdirSync(path.join(__dirname, "routes")).map(file => {
-        require("./routes/" + file)(api)
+        fs.readdirSync(path.join(__dirname, "routes")).map(file => {
+            if (file.endsWith(".js")) {
+                require("./routes/" + file)(api)
+            }
+        })
+
+        logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`)
     })
-
-    logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`)
-})
+}
 
 module.exports = api

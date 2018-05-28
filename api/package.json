@@ -5,7 +5,8 @@
 				"start": "cd dist && node server.js",
 				"watch": "nodemon start",
 				"build": "./build.sh",
-				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\""
+				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\"",
+				"test": "NODE_ENV=test ../node_modules/babel-cli/bin/babel-node.js node_modules/mocha/bin/_mocha test/index.js"
 		},
 		"author": [
 				{
@@ -97,7 +98,13 @@
 				"babel-polyfill": "^6.26.0",
 				"babel-preset-env": "^1.7.0",
 				"babel-preset-stage-2": "^6.24.1",
+				"chai": "^4.1.2",
+				"chai-http": "^4.0.0",
+				"klaw-sync": "^4.0.0",
+				"mocha": "^5.2.0",
 				"prettier": "^1.12.1",
-				"prettierrc": "^0.0.0-5"
+				"prettierrc": "^0.0.0-5",
+				"rewiremock": "^3.7.2",
+				"sinon": "^5.0.10"
 		}
 }
