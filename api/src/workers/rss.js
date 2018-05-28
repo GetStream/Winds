@@ -72,6 +72,7 @@ async function _handleRSS(job) {
         rssContent.articles.map(article => {
             let normalizedUrl = normalize(article.url)
             article.url = normalizedUrl
+			// XXX: this is an easy way to rewrite all articles in case normalize ever changes
             return upsertArticle(rssID, normalizedUrl, article)
         }),
     )
@@ -124,12 +125,16 @@ async function upsertArticle(rssID, normalizedUrl, post) {
 		commentUrl: post.commentUrl,
 		content: post.content,
 		description: post.description,
-		images: post.images || {},
 		publicationDate: post.publicationDate,
 		rss: rssID,
 		title: post.title,
 		url: post.url,
 	};
+
+	// in almost all cases images are added by OG scraping, only include images if not empty
+	if (post.images && Object.keys(post.images).length > 0) {
+		update.images = post.images
+	}
 
 	try {
 		return await Article.findOneAndUpdate(
