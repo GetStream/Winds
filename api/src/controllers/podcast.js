@@ -10,7 +10,7 @@ import personalization from "../utils/personalization"
 import logger from "../utils/logger"
 import search from "../utils/search"
 import config from "../config"
-import { ParsePodcast } from "../workers/parsers"
+import { ParsePodcast } from "../parsers"
 import strip from "strip"
 
 import async_tasks from "../async_tasks"
