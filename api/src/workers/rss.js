@@ -129,6 +129,7 @@ async function upsertManyArticles(rssID, articles) {
 		const clone = Object.assign({}, article)
 		delete(clone.images)
 		delete(clone.enclosures)
+		delete(clone.publicationDate)
 		return clone
 	})
 
@@ -162,10 +163,10 @@ async function upsertArticle(rssID, post) {
 	update.images = post.images
 	update.publicationDate = post.publicationDate
 	update.url = post.url
-	update.rss = post.rssID
+	update.rss = rssID
 
 	try {
-		return await Article.findOneAndUpdate(
+		let rawArticle = await Article.findOneAndUpdate(
 			{
 				$and: [
 					{
@@ -187,14 +188,18 @@ async function upsertArticle(rssID, post) {
 			{
 				new: true,
 				upsert: true,
+				rawResult: true
 			},
 		)
+		if (!rawArticle.lastErrorObject.updatedExisting){
+			return rawArticle.value
+		}
 	} catch(err) {
 		if (err.code === 11000){
 			statsd.increment("winds.handle_rss.articles.ignored")
 			return null
 		} else {
-			throw error;
+			throw err;
 		}
 	}
 }
