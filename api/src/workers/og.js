@@ -25,7 +25,7 @@ const schemaMap = {
 }
 const requestTimeout = 10000
 const maxRedirects = 10
-const maxContentLengthBytes = 5 * 1024 * 1024
+const maxContentLengthBytes = 1024 * 1024
 const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg']
 
 // TODO: move this to a different main.js

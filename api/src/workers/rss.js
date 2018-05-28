@@ -3,7 +3,6 @@ import "../loadenv"
 import stream from "getstream"
 import moment from "moment"
 import normalize from "normalize-url"
-import async from "async"
 
 import RSS from "../models/rss"
 import Article from "../models/article"
@@ -36,7 +35,7 @@ async function handleRSS(job) {
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
-async function handleRSS(job) {
+async function _handleRSS(job) {
     logger.info(`Processing ${job.data.url}`)
 
     // verify we have the rss object
@@ -76,13 +75,25 @@ async function handleRSS(job) {
         return updatedArticle
     })
 
+	await Promise.all(updatedArticles.map(article => {
+		async_tasks.OgQueueAdd(
+			{
+				type: 'rss',
+				url: article.url,
+			},
+			{
+				removeOnComplete: true,
+				removeOnFail: true,
+			},
+		)
+	}))
+
     let rssFeed = streamClient.feed("rss", rssID)
     logger.info(`Syncing ${updatedArticles.length} articles to Stream`)
     if (updatedArticles.length > 0) {
         let chunkSize = 100
         for (let i = 0, j = updatedArticles.length; i < j; i += chunkSize) {
             let chunk = updatedArticles.slice(i, i + chunkSize)
-
             let streamArticles = chunk.map(article => {
                 return {
                     actor: article.rss,
@@ -92,7 +103,6 @@ async function handleRSS(job) {
                     verb: "rss_article",
                 }
             })
-
             await rssFeed.addActivities(streamArticles)
         }
 		await sendRssFeedToCollections(rss)
@@ -100,7 +110,7 @@ async function handleRSS(job) {
     logger.info(`Completed scraping for ${job.data.url}`)
 }
 
-// updateArticle updates the article in mongodb
+// updateArticle updates the article in mongodb if it changed and create a new one if it did not exist
 async function upsertArticle(rssID, normalizedUrl, post) {
 	let update = {
 		commentUrl: post.commentUrl,
@@ -113,49 +123,38 @@ async function upsertArticle(rssID, normalizedUrl, post) {
 		url: post.url,
 	};
 
-	let rawArticle = await Article.findOneAndUpdate(
-		{
-			$and: [
-				{
-					rss: rssID,
-					url: normalizedUrl,
-				},
-				{
-					$or: Object.keys(update).map(k => {
-						return {
-							[k]: {
-								$ne: update[k],
-							},
-						};
-                    }),
-				},
-			],
-		},
-		update,
-		{
-			new: true,
-			rawResult: true,
-			upsert: true,
-		},
-	);
-
-	if (rawArticle.lastErrorObject.updatedExisting) {
-		// article already exists
-		return;
+	try {
+		return await Article.findOneAndUpdate(
+			{
+				$and: [
+					{
+						rss: rssID,
+						url: normalizedUrl,
+					},
+					{
+						$or: Object.keys(update).map(k => {
+							return {
+								[k]: {
+									$ne: update[k],
+								},
+							};
+						}),
+					},
+				],
+			},
+			update,
+			{
+				new: true,
+				upsert: true,
+			},
+		)
+	} catch(err) {
+		if (err.code === 11000){
+			return null
+		} else {
+			throw error;
+		}
 	}
-
-	let article = rawArticle.value;
-	await async_tasks.OgQueueAdd(
-		{
-			type: 'rss',
-			url: article.url,
-		},
-		{
-			removeOnComplete: true,
-			removeOnFail: true,
-		},
-	);
-	return article;
 }
 
 // markDone sets lastScraped to now and isParsing to false
