@@ -9,11 +9,9 @@ import { version } from "../../../app/package.json"
 
 program
     .version(version)
-    .command('og <urls>', 'OG debugging')
-    .command('feed', 'Debug RSS feeds')
-    .command('rescrape-og', 'rescrape og for everything')
-    .command('reset-parsing-state', 'reset the parsing state on rss and podcass')
-
+    .command('og <urls>', 'Debug OG')
+    .command('rss', 'Debug RSS feeds')
+    .command('podcast', 'Debug Podcasts')
     .parse(process.argv)
 
 function main() {

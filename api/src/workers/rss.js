@@ -14,7 +14,7 @@ import logger from "../utils/logger"
 import util from "util"
 
 import sendRssFeedToCollections from "../utils/events/sendRssFeedToCollections"
-import { ParseFeed } from "./parsers"
+import { ParseFeed } from "../parsers"
 
 import async_tasks from "../async_tasks"
 
