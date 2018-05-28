@@ -154,7 +154,7 @@ async function upsertArticle(rssID, post) {
 		rss: rssID,
 		title: post.title,
 		url: post.url,
-    enclosures: post.enclosures,
+    	enclosures: post.enclosures,
 	};
 
 	try {
