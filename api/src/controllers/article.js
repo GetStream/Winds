@@ -184,7 +184,6 @@ exports.get = (req, res) => {
                                     }
 
                                     // TODO: this endpoint should return the cache as well as the article
-                                    console.log("encloser", article.enclosures)
 
                                     Cache.create({
                                         content: content,
