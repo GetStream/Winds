@@ -7,6 +7,9 @@
 				"build": "./build.sh",
 				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\""
 		},
+		"bin": {
+				"winds": "src/commands/winds.js"
+		},
 		"author": [
 				{
 						"name": "Nick Parsons",
@@ -93,6 +96,7 @@
 		"devDependencies": {
 				"babel-cli": "^6.26.0",
 				"babel-core": "^6.26.3",
+				"babel-plugin-shebang": "^0.0.0",
 				"babel-plugin-transform-regenerator": "^6.26.0",
 				"babel-polyfill": "^6.26.0",
 				"babel-preset-env": "^1.7.0",

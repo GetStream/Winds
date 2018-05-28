@@ -1,7 +1,7 @@
+import program from "commander"
 import "../loadenv"
 import "../utils/db"
-import { ParseFeed, ParsePodcast } from "./parsers"
-import program from "commander"
+import { ParseFeed, ParsePodcast } from "../parsers"
 import chalk from "chalk"
 import logger from "../utils/logger"
 import Podcast from "../models/podcast"
@@ -10,16 +10,16 @@ import config from "../config"
 
 import async_tasks from "../async_tasks"
 
-const version = "0.1.1"
-
 program
-    .version(version)
-    .option("--rss <value>", "Parse a specific RSS feed")
-    .option("--podcast <value>", "Parse a specific podcast")
-    .option("-l, --limit <n>", "The number of articles to parse", 2)
-    .option("--task", "Create a task on bull or not")
-    .parse(process.argv)
+  .option('-t, --task', 'create a task')
+  .option("-l, --limit <n>", "The number of articles to parse", 2)
+  .option("--rss <value>", "Parse a specific RSS feed")
+  .option("--podcast <value>", "Parse a specific podcast")
+  .parse(process.argv);
 
+var feedUrls = program.args;
+
+// do stuff
 function main() {
     // This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
     logger.info("Starting the RSS Debugger \\0/")
