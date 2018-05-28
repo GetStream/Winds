@@ -72,6 +72,7 @@ async function _handleRSS(job) {
 		return
 	}
 
+	statsd.increment("winds.handle_rss.articles.parsed", rssContent.articles.length)
 	statsd.timing("winds.handle_rss.articles.parsed", rssContent.articles.length)
 
     let allArticles = await upsertManyArticles(rssID, rssContent.articles)
@@ -122,7 +123,7 @@ async function upsertManyArticles(rssID, articles){
 	let articlesData = articles.map(article => {
 		const clone = Object.assign({}, article)
 		clone.url = normalize(article.url)
-		if (!clone.images || Object.keys(clone.images).length > 0) {
+		if (!clone.images || Object.keys(clone.images).length < 1) {
 			delete(clone.images)
 		}
 		return clone
