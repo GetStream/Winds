@@ -118,7 +118,7 @@ async function _handleRSS(job) {
 
 async function upsertManyArticles(rssID, articles){
 	let articlesData = articles.map(article => {
-		const clone = {...article}
+		const clone = Object.assign({}, article)
 		clone.url = normalize(article.url)
 		if (!clone.images || Object.keys(clone.images).length > 0) {
 			delete(clone.images)
