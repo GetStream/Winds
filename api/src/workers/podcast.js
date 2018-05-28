@@ -69,8 +69,21 @@ async function _handlePodcast(job) {
 
     // Only send updated episodes to Stream
     let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
-        return updatedEpisode
+        return updatedEpisode && updatedEpisode.link
     })
+
+	await Promise.all(updatedEpisodes.map( episode => {
+		async_tasks.OgQueueAdd(
+			{
+				type: "episode",
+				url: episode.link,
+			},
+			{
+				removeOnComplete: true,
+				removeOnFail: true,
+			},
+		)
+	}))
 
     if (updatedEpisodes.length > 0) {
         let chunkSize = 100
@@ -109,48 +122,38 @@ async function upsertEpisode(podcastID, normalizedUrl, episode) {
 		url: episode.url,
     };
 
-    let rawEpisode = await Episode.findOneAndUpdate(
-		{
-			$and: [
-				{
-					podcast: podcastID,
-					url: normalizedUrl,
-				},
-				{
-					$or: Object.keys(update).map(k => {
-						return {
-							[k]: {
-								$ne: update[k],
-							},
-						};
-					}),
-				},
-			],
-		},
-		update,
-        {
-            new: true,
-            rawResult: true,
-            upsert: true,
-        },
-    );
-
-    let newEpisode = rawEpisode.value
-    if (rawEpisode.lastErrorObject.updatedExisting) {
-        return
-    } else if (newEpisode.link) {
-        await async_tasks.OgQueueAdd(
-            {
-                type: "episode",
-                url: newEpisode.link,
-            },
-            {
-                removeOnComplete: true,
-                removeOnFail: true,
-            },
-        )
-        return newEpisode
-    }
+	try {
+		return await Episode.findOneAndUpdate(
+			{
+				$and: [
+					{
+						podcast: podcastID,
+						url: normalizedUrl,
+					},
+					{
+						$or: Object.keys(update).map(k => {
+							return {
+								[k]: {
+									$ne: update[k],
+								},
+							};
+						}),
+					},
+				],
+			},
+			update,
+			{
+				new: true,
+				upsert: true,
+			},
+		);
+	} catch(err) {
+		if (err.code === 11000){
+			return null
+		} else {
+			throw error
+		}
+	}
 }
 
 // markDone sets lastScraped to now and isParsing to false
