@@ -154,15 +154,15 @@ async function upsertArticle(rssID, post) {
 		commentUrl: post.commentUrl,
 		content: post.content,
 		description: post.description,
-		publicationDate: post.publicationDate,
-		rss: rssID,
 		title: post.title,
-		url: post.url,
 	};
 
 	let update = Object.assign({}, search)
 	update.enclosures = post.enclosures
 	update.images = post.images
+	update.publicationDate = post.publicationDate
+	update.url = post.url
+	update.rss = post.rssID
 
 	try {
 		return await Article.findOneAndUpdate(
