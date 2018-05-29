@@ -9,8 +9,7 @@
 				"test": "NODE_ENV=test ../node_modules/babel-cli/bin/babel-node.js node_modules/mocha/bin/_mocha test/index.js"
 		},
 		"bin": {
-				"winds": "src/commands/winds.js",
-				"async": "src/commands/async.js"
+				"winds": "src/commands/winds.js"
 		},
 		"author": [
 				{

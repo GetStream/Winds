@@ -20,6 +20,12 @@ import { getStatsDClient } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret)
 
+// connect the handler to the queue
+logger.info("Starting the RSS worker")
+
+// TODO: move this to a separate main.js
+async_tasks.ProcessRssQueue(100, handleRSS)
+
 const statsd = getStatsDClient()
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
@@ -233,5 +239,3 @@ async function markDone(rssID) {
     )
     return updated
 }
-
-export default handleRSS
