@@ -4,16 +4,20 @@ import rewiremock from 'rewiremock'
 import stream from 'getstream'
 import mongoose from 'mongoose'
 
-export const mockClient = sinon.createStubInstance(stream.Client);
-
+const mockClient = null;
 const mockFeeds = {};
 
 export function getMockFeed(group, id) {
     return mockFeeds[group + ':' + id];
 }
 
+export function getMockClient() {
+    return mockClient;
+}
+
 export function setupMocks() {
-    mockClient.feed.callsFake((group, id) => {
+    const client = mockClient = sinon.createStubInstance(stream.Client);
+    client.feed.callsFake((group, id) => {
         const mock = {
             slug: group,
             userId: id,
@@ -24,7 +28,7 @@ export function setupMocks() {
         return mock;
     });
 
-    rewiremock('getstream').with({ connect: sinon.stub().returns(mockClient) });
+    rewiremock('getstream').with({ connect: sinon.stub().returns(client) });
     rewiremock('../events').with(sinon.stub().returns(Promise.resolve()));
 
     rewiremock.enable();
@@ -41,7 +45,7 @@ export async function loadFixture(fixture) {
 
     for (const modelName in models) {
         const model = mongoose.model(modelName);
-        const filter = filters[modelName] || Promise.resolve;
+        const filter = filters[modelName] || ((x) => Promise.resolve(x));
         const filteredData = await Promise.all(models[modelName].map(filter));
 
         await model.collection.insertMany(filteredData);

@@ -6,7 +6,7 @@ import auth from '../../src/controllers/auth'
 import Podcast from '../../src/models/podcast'
 import RSS from '../../src/models/rss'
 import User from '../../src/models/user'
-import { mockClient, loadFixture, getMockFeed } from '../../src/utils/test'
+import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test'
 
 describe('Auth controller', () => {
     describe('signup', () => {
@@ -20,6 +20,8 @@ describe('Auth controller', () => {
             before(async () => {
                 expect(await User.findOne({ email: 'valid@email.com' })).to.be.null;
 
+                await loadFixture('featured');
+
                 response = await request(api).post('/auth/signup').send({
                     email: 'valid@email.com',
                     username: 'valid',
@@ -28,6 +30,11 @@ describe('Auth controller', () => {
                 });
 
                 user = await User.findOne({ email: 'valid@email.com' });
+            })
+
+            after(async () => {
+                await RSS.remove().exec();
+                await Podcast.remove().exec();
             })
 
             it('should return 200', () => {
@@ -49,6 +56,8 @@ describe('Auth controller', () => {
                     { sourceModel: Podcast, userFeed: 'user_episode', contentFeed: 'rss' },
                     { sourceModel: RSS, userFeed: 'user_article', contentFeed: 'podcast' }
                 ];
+                const mockClient = getMockClient();
+
                 for (const contentType of content) {
                     const entries = await contentType.sourceModel.find({ featured: true });
 

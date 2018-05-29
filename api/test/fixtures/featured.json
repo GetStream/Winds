@@ -1,0 +1,27 @@
+{
+    "RSS": [
+        {
+            "featured": true,
+            "title"   : "Featured RSS feed #1",
+            "feedUrl" : "http://google.com"
+        },
+        {
+            "featured": true,
+            "title"   : "Featured RSS feed #2",
+            "feedUrl" : "http://bing.com"
+        }
+    ],
+    "Podcast": [
+        {
+            "featured": true,
+            "title"   : "Featured Podcast #1",
+            "feedUrl" : "http://google.com"
+        },
+        {
+            "featured": true,
+            "title"   : "Featured Podcast #2",
+            "feedUrl" : "http://bing.com"
+        }
+    ]
+}
+
