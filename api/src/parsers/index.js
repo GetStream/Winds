@@ -47,7 +47,6 @@ function ParseFeed(feedUrl, callback) {
 		t2 = new Date()
 		feedparser.end(body, ()=>{
 			statsd.timing("winds.parsers.feed.write_to_parser_stream", (new Date() - t2))
-            console.log(`body size: ${body.length}`)
 		})
     })
 
