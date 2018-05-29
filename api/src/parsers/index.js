@@ -35,6 +35,7 @@ function ParseFeed(feedUrl, callback) {
     let req = request(feedUrl, {
         pool: false,
         timeout: 10000,
+		gzip: true,
     })
 
     req.setMaxListeners(50)
@@ -60,7 +61,6 @@ function ParseFeed(feedUrl, callback) {
         } else if (encoding.match(/\bgzip\b/)) {
             res = res.pipe(zlib.createGunzip())
         }
-
         res.pipe(feedparser)
     })
 
