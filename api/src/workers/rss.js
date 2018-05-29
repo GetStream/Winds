@@ -24,7 +24,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info("Starting the RSS worker")
 
 // TODO: move this to a separate main.js
-async_tasks.ProcessRssQueue(30, handleRSS)
+async_tasks.ProcessRssQueue(100, handleRSS)
 
 const statsd = getStatsDClient()
 
@@ -53,7 +53,9 @@ async function _handleRSS(job) {
 
     // verify we have the rss object
     let rssID = job.data.rss
-    let rss = await RSS.findOne({ _id: rssID })
+    let rss = await timeIt('winds.handle_rss.get_rss', () => {
+    	return RSS.findOne({ _id: rssID }).read('sp')
+	})
     if (!rss) {
         logger.warn(`RSS with ID ${rssID} does not exist`)
         return
@@ -151,7 +153,7 @@ async function upsertManyArticles(rssID, articles) {
 		return clone
 	})
 
-	let existingArticles = await Article.find({$or: articlesData}, { "url": 1 })
+	let existingArticles = await Article.find({$or: articlesData}, { "url": 1 }).read('sp')
 	let existingArticleUrls = existingArticles.map(a => {return a.url})
 
 	statsd.increment("winds.handle_rss.articles.already_in_mongo", existingArticleUrls.length)
