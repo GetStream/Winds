@@ -101,6 +101,14 @@ export const PodcastSchema = new Schema(
                 }
             },
         },
+        toObject: {
+            transform: function(doc, ret) {
+              // Frontend breaks if images is null, should be {} instead
+                if (!ret.images) {
+                  ret.images = {}
+                }
+            },
+        },
     },
 );
 
