@@ -1,6 +1,6 @@
-import mongoose, { Schema } from "mongoose"
-import timestamps from "mongoose-timestamp"
-import mongooseStringQuery from "mongoose-string-query"
+import mongoose, { Schema } from 'mongoose';
+import timestamps from 'mongoose-timestamp';
+import mongooseStringQuery from 'mongoose-string-query';
 
 export const PodcastSchema = new Schema(
     {
@@ -23,17 +23,17 @@ export const PodcastSchema = new Schema(
         description: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         summary: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         categories: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         featured: {
             type: Boolean,
@@ -47,22 +47,22 @@ export const PodcastSchema = new Schema(
             featured: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
             banner: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
             favicon: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
             og: {
                 type: String,
                 trim: true,
-                default: "",
+                default: '',
             },
         },
         public: {
@@ -83,21 +83,31 @@ export const PodcastSchema = new Schema(
         },
         interest: {
             type: String,
-            default: "",
+            default: '',
             index: true,
         },
         language: {
             type: String,
-            default: "",
+            default: '',
         },
     },
-    { collection: "podcasts" },
-)
+    {
+        collection: 'podcasts',
+        toJSON: {
+            transform: function(doc, ret) {
+                // Frontend breaks if images is null, should be {} instead
+                if (!ret.images) {
+                    ret.images = {};
+                }
+            },
+        },
+    },
+);
 
 PodcastSchema.plugin(timestamps, {
     createdAt: { index: true },
     updatedAt: { index: true },
-})
-PodcastSchema.plugin(mongooseStringQuery)
+});
+PodcastSchema.plugin(mongooseStringQuery);
 
-module.exports = exports = mongoose.model("Podcast", PodcastSchema)
+module.exports = exports = mongoose.model('Podcast', PodcastSchema);

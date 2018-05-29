@@ -15,7 +15,7 @@ export const EnclosureSchema = new Schema({
     length: {
         type: String,
         trim: true,
-    }
+    },
 });
 
 export const ArticleSchema = new Schema(
@@ -105,7 +105,18 @@ export const ArticleSchema = new Schema(
             valid: true,
         },
     },
-    { collection: 'articles' },
+    {
+        collection: 'articles',
+
+        toJSON: {
+            transform: function(doc, ret) {
+              // Frontend breaks if images is null, should be {} instead
+                if (!ret.images) {
+                  ret.images = {}
+                }
+            },
+        },
+    },
 );
 
 ArticleSchema.plugin(timestamps, {
