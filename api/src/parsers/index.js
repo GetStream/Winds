@@ -5,7 +5,6 @@ import moment from "moment"
 import request from "request"
 import normalize from "normalize-url"
 import FeedParser from "feedparser"
-import zlib from "zlib"
 import podcastParser from "./podcast_parser_sax"
 
 import Podcast from "../models/podcast" // eslint-disable-line
@@ -31,11 +30,25 @@ var sanitize = function(dirty) {
 
 function ParseFeed(feedUrl, callback) {
     let t0 = new Date()
-
+    let t1 = null
+    let t2 = null
     let req = request(feedUrl, {
         pool: false,
         timeout: 10000,
 		gzip: true,
+    }, (error, response, body) => {
+        if (error) {
+            return
+        }
+		if (response.statusCode !== 200) {
+			return feedparser.emit("error", new Error("Bad status code"))
+		}
+		statsd.timing("winds.parsers.feed.transfer", (new Date() - t1))
+		t2 = new Date()
+		feedparser.end(body, ()=>{
+			statsd.timing("winds.parsers.feed.write_to_parser_stream", (new Date() - t2))
+            console.log(`body size: ${body.length}`)
+		})
     })
 
     req.setMaxListeners(50)
@@ -49,19 +62,10 @@ function ParseFeed(feedUrl, callback) {
     })
 
     req.on("response", res => {
-		statsd.timing("winds.parsers.feed.ttfb", (new Date() - t0))
-        if (res.statusCode !== 200) {
-            return feedparser.emit("error", new Error("Bad status code"))
-        }
-
-        let encoding = res.headers["content-encoding"] || "identity"
-
-        if (encoding.match(/\bdeflate\b/)) {
-            res = res.pipe(zlib.createInflate())
-        } else if (encoding.match(/\bgzip\b/)) {
-            res = res.pipe(zlib.createGunzip())
-        }
-        res.pipe(feedparser)
+		if (res.statusCode === 200) {
+			t1 = new Date()
+			statsd.timing("winds.parsers.feed.ttfb", (new Date() - t0))
+		}
     })
 
     feedparser.on("error", err => {
@@ -71,11 +75,13 @@ function ParseFeed(feedUrl, callback) {
     let feedContents = { articles: [] }
 
     feedparser.on("end", () => {
+        if (t2 !== null){
+			statsd.timing("winds.parsers.feed.finished_parsing", (new Date() - t2))
+        }
         callback(null, feedContents)
     })
 
     feedparser.on("readable", () => {
-		let t0 = new Date()
         let postBuffer
         while ((postBuffer = feedparser.read())) {
             let post = Object.assign({}, postBuffer)
@@ -123,7 +129,6 @@ function ParseFeed(feedUrl, callback) {
             feedContents.link = post.meta.link
             feedContents.image = post.meta.image
         }
-		statsd.timing("winds.parsers.feed.parse", (new Date() - t0))
     })
 }
 
