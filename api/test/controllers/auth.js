@@ -1,4 +1,5 @@
 import { expect, request } from 'chai'
+import bcrypt from 'bcryptjs'
 
 import api from '../../src/server'
 import auth from '../../src/controllers/auth'
@@ -18,6 +19,16 @@ describe('Auth controller', () => {
             });
 
             expect(response).to.have.status(200);
+
+            const user = await User.findOne({ email: 'valid@email.com' });
+
+            expect(user).to.not.be.null;
+            expect(user).to.include({
+                email: 'valid@email.com',
+                username: 'valid',
+                name: 'Valid Name'
+            });
+            expect(await bcrypt.compare('valid_password', user.password)).to.be.true;
         })
 
         it('should return 422 for missing/empty data in request', async () => {
