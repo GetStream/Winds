@@ -1,3 +1,6 @@
+// this should be the first import
+import "../loadenv"
+
 import stream from "getstream"
 import normalize from "normalize-url"
 import moment from "moment"
@@ -15,6 +18,10 @@ import util from "util"
 import async_tasks from "../async_tasks"
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret)
+
+// TODO: move this to separate main.js
+logger.info("Starting to process podcasts....")
+async_tasks.ProcessPodcastQueue(5, handlePodcast)
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {
@@ -164,5 +171,3 @@ async function markDone(podcastID) {
     )
     return updated
 }
-
-export default handlePodcast
