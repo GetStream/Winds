@@ -17,50 +17,38 @@ import logger from "../utils/logger"
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret)
 
-exports.get = (req, res) => {
-    Follow.find({
-        rss: { $exists: true },
-        user: req.user.sub,
+// TODO:
+// - refactor using async
+// - detect podcast vs rss
+// - test coverage
+
+exports.get = async (req, res) => {
+    let follows, user = await Follow.find({user: req.user.sub}), User.find({req.user.sub})
+    let header = {
+        dateCreated: moment().toISOString(),
+        ownerName: user.name,
+        title: `Subscriptions in Winds - Powered by ${config.product.author}`,
+    }
+
+    let outlines = follows.map(follow => {
+        let feed = (follow.rss) ? follow.rss : follow.podcast
+        let feedType = (follow.rss) ? 'rss': 'podcast'
+        let obj = {
+            htmlUrl: feed.url,
+            title: feed.title,
+            type: feedType,
+            xmlUrl: feed.feedUrl,
+        }
+        return obj
     })
-        .then(rss => {
-            const header = {
-                dateCreated: moment().toISOString(),
-                ownerName: rss[0].follower.name,
-                title: `Subscriptions in Winds - Powered by ${config.product.author}`,
-            }
+    let opml = opmlGenerator(header, outlines)
 
-            async.mapLimit(
-                rss,
-                rss.length,
-                (feed, cb) => {
-                    let obj = {
-                        htmlUrl: feed.rss.url,
-                        title: feed.rss.title,
-                        type: "rss",
-                        xmlUrl: feed.rss.feedUrl,
-                    }
+    res.set({
+        "Content-Disposition": "attachment; filename=export.opml;",
+        "Content-Type": "application/xml",
+    })
 
-                    cb(null, obj)
-                },
-                (err, outlines) => {
-                    const opml = opmlGenerator(header, outlines)
-
-                    res.set({
-                        "Content-Disposition": "attachment; filename=export.opml;",
-                        "Content-Type": "application/xml",
-                    })
-
-                    res.end(opml)
-                },
-            )
-        })
-        .catch(err => {
-            if (err) {
-                logger.error(err)
-            }
-
-            res.status(422).send(err.errors)
-        })
+    res.end(opml)
 }
 
 exports.post = (req, res) => {
@@ -71,29 +59,46 @@ exports.post = (req, res) => {
         return res.sendStatus(422)
     }
 
-    opmlParser(upload, (err, feeds) => {
-        if (err) {
-            logger.error(err)
-            res.status(422).send(err.errors)
+    let feeds = await utils.promisify(opmlParser)(upload)
+    let parsedFeeds = feeds.map(feed => {
+        let url = feed.url || ""
+        let feedUrl = feed.feedUrl || ""
+
+        if (isUrl().test(url)) {
+            url = normalizeUrl(url)
         }
+
+        if (isUrl().test(feedUrl)) {
+            feedUrl = normalizeUrl(feedUrl)
+        }
+
+        let favicon = ""
+        if (feeds.site && feeds.site.favicon) {
+            favicon = feeds.site.favicon
+        }
+        return feed
+    }
+
+    // find or update the RSS feeds specified in the OPML
+    let promises = []
+    for (let feed of parsedFeeds) {
+      let data = {
+          categories: "RSS",
+          description: entities.decodeHTML(feed.title),
+          favicon: favicon,
+          feedUrl: feedUrl,
+          lastScraped: moment().subtract(12, "hours"),
+          public: true,
+          publicationDate: moment().toISOString(),
+          title: entities.decodeHTML(feed.title),
+          url: url,
+      }
+    }
+
+    opmlParser(upload, (err, feeds) => {
 
         Promise.all(
             feeds.map(feed => {
-                let url = feed.url || ""
-                let feedUrl = feed.feedUrl || ""
-
-                if (isUrl().test(url)) {
-                    url = normalizeUrl(url)
-                }
-
-                if (isUrl().test(feedUrl)) {
-                    feedUrl = normalizeUrl(feedUrl)
-                }
-
-                let favicon = ""
-                if (feeds.site && feeds.site.favicon) {
-                    favicon = feeds.site.favicon
-                }
 
                 // first, check to see if there's an RSS feed with the same feedURL
                 return RSS.findOne({ feedUrl })
