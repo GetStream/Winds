@@ -32,17 +32,23 @@ function ParseFeed(feedUrl, callback) {
     let t0 = new Date()
     let t1 = null
     let t2 = null
+
+	let feedparser = new FeedParser()
+
     let req = request(feedUrl, {
         pool: false,
         timeout: 10000,
 		gzip: true,
     }, (error, response, body) => {
+
         if (error) {
-            return
+			return callback(error, null)
         }
-		if (response.statusCode !== 200) {
-			return feedparser.emit("error", new Error("Bad status code"))
+
+        if (response.statusCode !== 200) {
+			return callback(new Error("Bad status code"), null)
 		}
+
 		statsd.timing("winds.parsers.feed.transfer", (new Date() - t1))
 		t2 = new Date()
 		feedparser.end(body, ()=>{
@@ -53,8 +59,6 @@ function ParseFeed(feedUrl, callback) {
     req.setMaxListeners(50)
     req.setHeader("User-Agent", WindsUserAgent)
     req.setHeader("Accept", AcceptHeader)
-
-    let feedparser = new FeedParser()
 
     req.on("error", err => {
         callback(err, null)
