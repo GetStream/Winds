@@ -39,6 +39,14 @@ async function handleRSS(job) {
     return promise
 }
 
+async function timeIt(name, fn){
+	let t0 = new Date()
+	let r = await fn()
+	statsd.timing(name, (new Date() - t0))
+	return r
+}
+
+
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handleRSS(job) {
     logger.info(`Processing ${job.data.url}`)
@@ -53,13 +61,17 @@ async function _handleRSS(job) {
 
     // mark as done, will be schedule again in 15 min from now
     // we do this early so a temporary failure doesnt leave things in a broken state
-    await markDone(rssID)
+    await timeIt('winds.handle_rss.ack', () => {
+    	return markDone(rssID)
+    })
     logger.info(`Marked ${rssID} as done`)
 
     // parse the articles
     let rssContent
     try {
-        rssContent = await util.promisify(ParseFeed)(job.data.url)
+        rssContent = await timeIt('winds.handle_rss.parsing', () => {
+        	return util.promisify(ParseFeed)(job.data.url)
+        })
     } catch (e) {
         logger.info(`rss scraping broke for url ${job.data.url}`)
         return
@@ -75,7 +87,9 @@ async function _handleRSS(job) {
 	statsd.increment("winds.handle_rss.articles.parsed", rssContent.articles.length)
 	statsd.timing("winds.handle_rss.articles.parsed", rssContent.articles.length)
 
-    let allArticles = await upsertManyArticles(rssID, rssContent.articles)
+    let allArticles = await timeIt('winds.handle_rss.upsertManyArticles', () => {
+    	return upsertManyArticles(rssID, rssContent.articles)
+    })
 
     // updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
     let updatedArticles = allArticles.filter(updatedArticle => {
@@ -84,19 +98,22 @@ async function _handleRSS(job) {
 
 	statsd.increment("winds.handle_rss.articles.upserted", updatedArticles.length)
 
-	await Promise.all(updatedArticles.map(article => {
-		async_tasks.OgQueueAdd(
-			{
-				type: 'rss',
-				url: article.url,
-			},
-			{
-				removeOnComplete: true,
-				removeOnFail: true,
-			},
-		)
-	}))
+	await timeIt('winds.handle_rss.OgQueueAdd', () => {
+		return Promise.all(updatedArticles.map(article => {
+			async_tasks.OgQueueAdd(
+				{
+					type: 'rss',
+					url: article.url,
+				},
+				{
+					removeOnComplete: true,
+					removeOnFail: true,
+				},
+			)
+		}))
+	})
 
+	let t0 = new Date()
     let rssFeed = streamClient.feed("rss", rssID)
     logger.info(`Syncing ${updatedArticles.length} articles to Stream`)
     if (updatedArticles.length > 0) {
@@ -116,6 +133,7 @@ async function _handleRSS(job) {
         }
 		await sendRssFeedToCollections(rss)
     }
+	statsd.timing("winds.handle_rss.send_to_stream", (new Date() - t0))
     logger.info(`Completed scraping for ${job.data.url}`)
 }
 
