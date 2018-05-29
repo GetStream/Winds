@@ -6,14 +6,22 @@ import mongoose from 'mongoose'
 
 export const mockClient = sinon.createStubInstance(stream.Client);
 
+const mockFeeds = {};
+
+export function getMockFeed(group, id) {
+    return mockFeeds[group + ':' + id];
+}
+
 export function setupMocks() {
     mockClient.feed.callsFake((group, id) => {
-        return {
+        const mock = {
             slug: group,
             userId: id,
             id: group + ':' + id,
-            follow: sinon.stub().returns(Promise.resolve())
+            follow: sinon.spy(sinon.stub().returns(Promise.resolve()))
         };
+        mockFeeds[group + ':' + id] = mock;
+        return mock;
     });
 
     rewiremock('getstream').with({ connect: sinon.stub().returns(mockClient) });

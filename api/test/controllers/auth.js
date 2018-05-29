@@ -3,85 +3,124 @@ import bcrypt from 'bcryptjs'
 
 import api from '../../src/server'
 import auth from '../../src/controllers/auth'
+import Podcast from '../../src/models/podcast'
+import RSS from '../../src/models/rss'
 import User from '../../src/models/user'
-import { loadFixture } from '../../src/utils/test'
+import { mockClient, loadFixture, getMockFeed } from '../../src/utils/test'
 
 describe('Auth controller', () => {
     describe('signup', () => {
+        before(() => User.remove().exec())
         beforeEach(() => User.remove().exec())
 
-        it('should return 200 for valid request', async () => {
-            const response = await request(api).post('/auth/signup').send({
-                email: 'valid@email.com',
-                username: 'valid',
-                name: 'Valid Name',
-                password: 'valid_password'
-            });
+        describe('valid request', () => {
+            let response
+            let user
 
-            expect(response).to.have.status(200);
+            before(async () => {
+                expect(await User.findOne({ email: 'valid@email.com' })).to.be.null;
 
-            const user = await User.findOne({ email: 'valid@email.com' });
+                response = await request(api).post('/auth/signup').send({
+                    email: 'valid@email.com',
+                    username: 'valid',
+                    name: 'Valid Name',
+                    password: 'valid_password'
+                });
 
-            expect(user).to.not.be.null;
-            expect(user).to.include({
-                email: 'valid@email.com',
-                username: 'valid',
-                name: 'Valid Name'
-            });
-            expect(await bcrypt.compare('valid_password', user.password)).to.be.true;
+                user = await User.findOne({ email: 'valid@email.com' });
+            })
+
+            it('should return 200', () => {
+                expect(response).to.have.status(200);
+            })
+
+            it('shoud create a User entity', async () => {
+                expect(user).to.not.be.null;
+                expect(user).to.include({
+                    email: 'valid@email.com',
+                    username: 'valid',
+                    name: 'Valid Name'
+                });
+                expect(await bcrypt.compare('valid_password', user.password)).to.be.true;
+            })
+
+            it('should follow featured podcasts and RSS feeds', async () => {
+                const content = [
+                    { sourceModel: Podcast, userFeed: 'user_episode', contentFeed: 'rss' },
+                    { sourceModel: RSS, userFeed: 'user_article', contentFeed: 'podcast' }
+                ];
+                for (const contentType of content) {
+                    const entries = await contentType.sourceModel.find({ featured: true });
+
+                    for (const data of entries) {
+                        expect(mockClient.feed.calledWith(data.userFeed, user._id)).to.be.true;
+                        expect(mockClient.feed.calledWith('timeline', user._id)).to.be.true;
+
+                        const userFeed = getMockFeed(data.userFeed, user._id)
+                        const timelineFeed = getMockFeed('timeline', user._id)
+                        expect(userFeed).to.not.be.null;
+                        expect(timelineFeed).to.not.be.null;
+
+                        expect(userFeed.follow.calledWith(data.contentFeed, data._id)).to.be.true;
+                        expect(timelineFeed.follow.calledWith(data.contentFeed, data._id)).to.be.true;
+                    }
+                }
+            })
         })
 
-        it('should return 422 for missing/empty data in request', async () => {
-            const bodies = [
-                { username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                { email: 'valid@email.com', name: 'Valid Name', password: 'valid_password' },
-                { email: 'valid@email.com', username: 'valid', password: 'valid_password' },
-                { email: 'valid@email.com', username: 'valid', name: 'Valid Name' },
-                { email: '', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                { email: 'invalid.email.com', username: '', name: 'Valid Name', password: 'valid_password' },
-                { email: 'invalid.email.com', username: 'valid', name: '', password: 'valid_password' },
-                { email: 'invalid.email.com', username: 'valid', name: 'Valid Name', password: '' }
-            ];
-            const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
-            for await (const response of requests) {
+        describe('invalid request', () => {
+            it('should return 422 for missing/empty data', async () => {
+                const bodies = [
+                    { username: 'valid', name: 'Valid Name', password: 'valid_password' },
+                    { email: 'valid@email.com', name: 'Valid Name', password: 'valid_password' },
+                    { email: 'valid@email.com', username: 'valid', password: 'valid_password' },
+                    { email: 'valid@email.com', username: 'valid', name: 'Valid Name' },
+                    { email: '', username: 'valid', name: 'Valid Name', password: 'valid_password' },
+                    { email: 'invalid.email.com', username: '', name: 'Valid Name', password: 'valid_password' },
+                    { email: 'invalid.email.com', username: 'valid', name: '', password: 'valid_password' },
+                    { email: 'invalid.email.com', username: 'valid', name: 'Valid Name', password: '' }
+                ];
+                const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
+                for await (const response of requests) {
+                    expect(response).to.have.status(422);
+                }
+            })
+
+            it('should return 422 for invalid email', async () => {
+                const bodies = [
+                    { email: 'invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password' },
+                    { email: 'invalid@email', username: 'valid', name: 'Valid Name', password: 'valid_password' },
+                    { email: '@invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password' },
+                ];
+                const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
+                for await (const response of requests) {
+                    expect(response).to.have.status(422);
+                }
+            })
+
+            it('should return 422 for invalid username', async () => {
+                const response = await request(api).post('/auth/signup').send({
+                    email: 'valid@email.com',
+                    username: 'invalid-username',
+                    name: 'Valid Name',
+                    password: 'valid_password'
+                });
+
                 expect(response).to.have.status(422);
-            }
-        })
+            })
 
-        it('should return 422 for invalid email in request', async () => {
-            const bodies = [
-                { email: 'invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                { email: 'invalid@email', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                { email: '@invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-            ];
-            const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
-            for await (const response of requests) {
-                expect(response).to.have.status(422);
-            }
-        })
+            it('should return 409 for existing user', async () => {
+                await loadFixture('example')
 
-        it('should return 422 for invalid username in request', async () => {
-            const response = await request(api).post('/auth/signup').send({
-                email: 'valid@email.com',
-                username: 'invalid-username',
-                name: 'Valid Name',
-                password: 'valid_password'
-            });
+                const response = await request(api).post('/auth/signup').send({
+                    email: 'valid@email.com',
+                    username: 'valid',
+                    name: 'Valid Name',
+                    password: 'valid_password'
+                });
 
-            expect(response).to.have.status(422);
-        })
-
-        it('should return 409 for existing user', async () => {
-            await loadFixture('example')
-
-            const response = await request(api).post('/auth/signup').send({
-                email: 'valid@email.com',
-                username: 'valid',
-                name: 'Valid Name',
-                password: 'valid_password'
-            });
-
-            expect(response).to.have.status(409);
+                expect(response).to.have.status(409);
+            })
         })
     })
 
