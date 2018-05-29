@@ -13,9 +13,11 @@ import Episode from "../models/episode"
 
 import config from "../config" // eslint-disable-line
 import logger from "../utils/logger"
+import { getStatsDClient } from '../utils/statsd';
 
 const WindsUserAgent = "Winds: Open Source RSS & Podcast app: https://getstream.io/winds/"
 const AcceptHeader = "text/html,application/xhtml+xml,application/xml"
+const statsd = getStatsDClient()
 
 // sanitize cleans the html before returning it to the frontend
 var sanitize = function(dirty) {
@@ -28,6 +30,8 @@ var sanitize = function(dirty) {
 }
 
 function ParseFeed(feedUrl, callback) {
+    let t0 = new Date()
+
     let req = request(feedUrl, {
         pool: false,
         timeout: 10000,
@@ -44,6 +48,7 @@ function ParseFeed(feedUrl, callback) {
     })
 
     req.on("response", res => {
+		statsd.timing("winds.parsers.feed.ttfb", (new Date() - t0))
         if (res.statusCode !== 200) {
             return feedparser.emit("error", new Error("Bad status code"))
         }
@@ -70,8 +75,8 @@ function ParseFeed(feedUrl, callback) {
     })
 
     feedparser.on("readable", () => {
+		let t0 = new Date()
         let postBuffer
-
         while ((postBuffer = feedparser.read())) {
             let post = Object.assign({}, postBuffer)
 
@@ -118,6 +123,7 @@ function ParseFeed(feedUrl, callback) {
             feedContents.link = post.meta.link
             feedContents.image = post.meta.image
         }
+		statsd.timing("winds.parsers.feed.parse", (new Date() - t0))
     })
 }
 
