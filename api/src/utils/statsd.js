@@ -11,6 +11,7 @@ function getStatsDClient() {
             host: config.statsd.host,
             port: config.statsd.port,
             prefix: config.statsd.prefix,
+			cacheDns: true,
         })
     }
     return statsDClient
