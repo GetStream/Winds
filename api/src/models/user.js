@@ -1,10 +1,10 @@
-import mongoose, { Schema } from "mongoose"
-import bcrypt from "mongoose-bcrypt"
-import timestamps from "mongoose-timestamp"
-import mongooseStringQuery from "mongoose-string-query"
+import mongoose, { Schema } from 'mongoose';
+import bcrypt from 'mongoose-bcrypt';
+import timestamps from 'mongoose-timestamp';
+import mongooseStringQuery from 'mongoose-string-query';
 
-import logger from "../utils/logger"
-import email from "../utils/email"
+import logger from '../utils/logger';
+import email from '../utils/email';
 
 export const UserSchema = new Schema(
     {
@@ -37,17 +37,17 @@ export const UserSchema = new Schema(
         bio: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         url: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         twitter: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         background: {
             type: Number,
@@ -76,7 +76,7 @@ export const UserSchema = new Schema(
         recoveryCode: {
             type: String,
             trim: true,
-            default: "",
+            default: '',
         },
         active: {
             type: Boolean,
@@ -87,53 +87,67 @@ export const UserSchema = new Schema(
             default: false,
         },
     },
-    { collection: "users" },
-)
+    {
+        collection: 'users',
+        toJSON: {
+            transform: function(doc, ret) {
+                delete ret.email;
+                delete ret.password;
+            },
+        },
+        toObject: {
+            transform: function(doc, ret) {
+                delete ret.email;
+                delete ret.password;
+            },
+        },
+    },
+);
 
-UserSchema.pre("save", function(next) {
+UserSchema.pre('save', function(next) {
     if (!this.isNew) {
-        next()
+        next();
     }
 
     email({
         email: this.email,
-        type: "welcome",
+        type: 'welcome',
     })
         .then(() => {
-            next()
+            next();
         })
         .catch(err => {
-            logger.error(err)
-            next()
-        })
-})
+            logger.error(err);
+            next();
+        });
+});
 
-UserSchema.pre("findOneAndUpdate", function(next) {
+UserSchema.pre('findOneAndUpdate', function(next) {
     if (!this._update.recoveryCode) {
-        return next()
+        return next();
     }
 
     email({
         email: this._conditions.email,
         passcode: this._update.recoveryCode,
-        type: "password",
+        type: 'password',
     })
         .then(() => {
-            next()
+            next();
         })
         .catch(err => {
-            logger.error(err)
-            next()
-        })
-})
+            logger.error(err);
+            next();
+        });
+});
 
-UserSchema.plugin(bcrypt)
+UserSchema.plugin(bcrypt);
 UserSchema.plugin(timestamps, {
     createdAt: { index: true },
     updatedAt: { index: true },
-})
-UserSchema.plugin(mongooseStringQuery)
+});
+UserSchema.plugin(mongooseStringQuery);
 
-UserSchema.index({ email: 1, username: 1 })
+UserSchema.index({ email: 1, username: 1 });
 
-module.exports = exports = mongoose.model("User", UserSchema)
+module.exports = exports = mongoose.model('User', UserSchema);
