@@ -6,5 +6,4 @@ let envPath = path.resolve(__dirname, "..", "..", "app", ".env")
 
 console.log(`Loading .env from ${envPath}`)
 
-console.trace("Here I am!")
 dotenv.config({ path: envPath })
