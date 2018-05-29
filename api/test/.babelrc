@@ -9,4 +9,5 @@
 			}
 		]
 	],
+	"plugins": ["transform-async-generator-functions"]
 }
