@@ -8,7 +8,8 @@
 				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\""
 		},
 		"bin": {
-				"winds": "src/commands/winds.js"
+				"winds": "src/commands/winds.js",
+				"async": "src/commands/async.js"
 		},
 		"author": [
 				{
