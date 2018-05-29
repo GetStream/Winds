@@ -120,4 +120,64 @@ describe('Auth controller', () => {
             expect(response).to.have.status(403);
         })
     })
+
+    describe('password recovery', () => {
+        before(async () => {
+            await User.remove().exec();
+            await loadFixture('example');
+        })
+
+        describe('recovery code endpoint', () => {
+            it('should return 200 for existing user', async () => {
+                const response = await request(api).post('/auth/forgot-password').send({
+                    email: 'valid@email.com'
+                });
+
+                expect(response).to.have.status(200);
+            })
+
+            it('should return 404 for nonexistent user', async () => {
+                const response = await request(api).post('/auth/forgot-password').send({
+                    email: 'invalid@email.com'
+                });
+
+                expect(response).to.have.status(404);
+            })
+        })
+
+        describe('password reset endpoint', () => {
+            let user;
+
+            before(async () => {
+                user = await User.findOne({ email: 'valid@email.com' });
+            })
+
+            it('should return 200 for existing user', async () => {
+                const response = await request(api).post('/auth/reset-password').send({
+                    email: 'valid@email.com',
+                    passcode: user.recoveryCode,
+                    password: 'new-password'
+                });
+
+                expect(response).to.have.status(200);
+            })
+
+            it('should return 404 for nonexistent user', async () => {
+                const response = await request(api).post('/auth/reset-password').send({
+                    email: 'invalid@email.com'
+                });
+
+                expect(response).to.have.status(404);
+            })
+
+            it('should return 404 for incorrect passcode', async () => {
+                const response = await request(api).post('/auth/reset-password').send({
+                    email: 'valid@email.com',
+                    passcode: 'incorrect-passcode'
+                });
+
+                expect(response).to.have.status(404);
+            })
+        })
+    })
 })
