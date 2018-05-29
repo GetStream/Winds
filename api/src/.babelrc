@@ -1,4 +1,5 @@
 {
+	"plugins": ["shebang"],
 	"presets": [
 		[
 			"env",

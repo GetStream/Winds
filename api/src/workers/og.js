@@ -1,5 +1,3 @@
-import '../loadenv'
-
 import normalize from 'normalize-url'
 import ogs from 'open-graph-scraper'
 
@@ -11,12 +9,9 @@ import Article from '../models/article'
 import Episode from '../models/episode'
 
 import '../utils/db'
-import { Raven } from '../utils/errors'
 
-import config from '../config'
 import logger from '../utils/logger'
 
-import async_tasks from '../async_tasks'
 import axios from 'axios'
 
 const schemaMap = {
@@ -25,12 +20,8 @@ const schemaMap = {
 }
 const requestTimeout = 10000
 const maxRedirects = 10
-const maxContentLengthBytes = 5 * 1024 * 1024
+const maxContentLengthBytes = 1024 * 1024
 const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg']
-
-// TODO: move this to a different main.js
-logger.info('Starting the OG worker, now supporting podcasts, episodes and articles')
-async_tasks.ProcessOgQueue(10, handleOg)
 
 // the top level handleOg just intercepts error handling before it goes to Bull
 async function handleOg(job) {
@@ -130,7 +121,6 @@ async function _handleOg(job) {
             logger.info(`Stored ${images.og} image for ${url}`)
         }
     }
-
-    //let msg = 'Error retrieving/saving image for OG scraping';
-    //Raven.captureException(err);
 }
+
+export default handleOg

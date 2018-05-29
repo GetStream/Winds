@@ -1,6 +1,6 @@
 import "../loadenv"
 import "../utils/db"
-import { ParseFeed, ParsePodcast } from "./parsers"
+import { ParseFeed, ParsePodcast } from "../parsers"
 import program from "commander"
 import chalk from "chalk"
 import logger from "../utils/logger"

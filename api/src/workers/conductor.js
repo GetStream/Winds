@@ -1,15 +1,9 @@
-import "../loadenv"
-
-import async from "async"
 import moment from "moment"
 
 import RSS from "../models/rss"
 import Podcast from "../models/podcast"
 
-import db from "../utils/db"
-import config from "../config"
 import logger from "../utils/logger"
-
 import async_tasks from "../async_tasks"
 
 const publicationTypes = {
@@ -29,7 +23,6 @@ const conductor = () => {
     }
     forever()
 }
-conductor()
 
 // conduct does the actual work of scheduling the scraping
 async function conduct() {
@@ -88,3 +81,5 @@ async function conduct() {
         logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`)
     }
 }
+
+export default conductor

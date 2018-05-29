@@ -5,7 +5,6 @@ import moment from "moment"
 import request from "request"
 import normalize from "normalize-url"
 import FeedParser from "feedparser"
-import zlib from "zlib"
 import podcastParser from "./podcast_parser_sax"
 
 import Podcast from "../models/podcast" // eslint-disable-line
@@ -13,9 +12,11 @@ import Episode from "../models/episode"
 
 import config from "../config" // eslint-disable-line
 import logger from "../utils/logger"
+import { getStatsDClient } from '../utils/statsd';
 
 const WindsUserAgent = "Winds: Open Source RSS & Podcast app: https://getstream.io/winds/"
 const AcceptHeader = "text/html,application/xhtml+xml,application/xml"
+const statsd = getStatsDClient()
 
 // sanitize cleans the html before returning it to the frontend
 var sanitize = function(dirty) {
@@ -28,35 +29,46 @@ var sanitize = function(dirty) {
 }
 
 function ParseFeed(feedUrl, callback) {
+    let t0 = new Date()
+    let t1 = null
+    let t2 = null
+
+	let feedparser = new FeedParser()
+
     let req = request(feedUrl, {
         pool: false,
         timeout: 10000,
+		gzip: true,
+    }, (error, response, body) => {
+
+        if (error) {
+			return callback(error, null)
+        }
+
+        if (response.statusCode !== 200) {
+			return callback(new Error("Bad status code"), null)
+		}
+
+		statsd.timing("winds.parsers.feed.transfer", (new Date() - t1))
+		t2 = new Date()
+		feedparser.end(body, ()=>{
+			statsd.timing("winds.parsers.feed.write_to_parser_stream", (new Date() - t2))
+		})
     })
 
     req.setMaxListeners(50)
     req.setHeader("User-Agent", WindsUserAgent)
     req.setHeader("Accept", AcceptHeader)
 
-    let feedparser = new FeedParser()
-
     req.on("error", err => {
         callback(err, null)
     })
 
     req.on("response", res => {
-        if (res.statusCode !== 200) {
-            return feedparser.emit("error", new Error("Bad status code"))
-        }
-
-        let encoding = res.headers["content-encoding"] || "identity"
-
-        if (encoding.match(/\bdeflate\b/)) {
-            res = res.pipe(zlib.createInflate())
-        } else if (encoding.match(/\bgzip\b/)) {
-            res = res.pipe(zlib.createGunzip())
-        }
-
-        res.pipe(feedparser)
+		if (res.statusCode === 200) {
+			t1 = new Date()
+			statsd.timing("winds.parsers.feed.ttfb", (new Date() - t0))
+		}
     })
 
     feedparser.on("error", err => {
@@ -66,12 +78,14 @@ function ParseFeed(feedUrl, callback) {
     let feedContents = { articles: [] }
 
     feedparser.on("end", () => {
+        if (t2 !== null){
+			statsd.timing("winds.parsers.feed.finished_parsing", (new Date() - t2))
+        }
         callback(null, feedContents)
     })
 
     feedparser.on("readable", () => {
         let postBuffer
-
         while ((postBuffer = feedparser.read())) {
             let post = Object.assign({}, postBuffer)
 
@@ -80,6 +94,7 @@ function ParseFeed(feedUrl, callback) {
             let parsedArticle = {
                 content: sanitize(post.summary),
                 description: description,
+                enclosures: post.enclosures,
                 publicationDate:
                     moment(post.pubdate).toISOString() ||
                     moment()

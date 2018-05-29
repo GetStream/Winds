@@ -8,6 +8,10 @@
 				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\"",
 				"test": "NODE_ENV=test ../node_modules/babel-cli/bin/babel-node.js node_modules/mocha/bin/_mocha test/index.js"
 		},
+		"bin": {
+				"winds": "src/commands/winds.js",
+				"async": "src/commands/async.js"
+		},
 		"author": [
 				{
 						"name": "Nick Parsons",
@@ -95,6 +99,7 @@
 				"babel-cli": "^6.26.0",
 				"babel-core": "^6.26.3",
 				"babel-plugin-transform-async-generator-functions": "^6.24.1",
+				"babel-plugin-shebang": "^0.0.0",
 				"babel-plugin-transform-regenerator": "^6.26.0",
 				"babel-polyfill": "^6.26.0",
 				"babel-preset-env": "^1.7.0",
