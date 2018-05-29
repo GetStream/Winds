@@ -34,19 +34,21 @@ function ParseFeed(feedUrl, callback) {
     let t2 = null
 
 	let feedparser = new FeedParser()
+	let feedContents = { articles: [] }
 
     let req = request(feedUrl, {
         pool: false,
-        timeout: 10000,
+        timeout: 6000,
 		gzip: true,
     }, (error, response, body) => {
 
         if (error) {
-			return callback(error, null)
+			return callback(error, feedContents)
         }
 
         if (response.statusCode !== 200) {
-			return callback(new Error("Bad status code"), null)
+            logger.warn(`${feedUrl} returned status code ${response.statusCode}, skipping`)
+			return callback(null, feedContents)
 		}
 
 		statsd.timing("winds.parsers.feed.transfer", (new Date() - t1))
@@ -61,7 +63,7 @@ function ParseFeed(feedUrl, callback) {
     req.setHeader("Accept", AcceptHeader)
 
     req.on("error", err => {
-        callback(err, null)
+        callback(err, feedContents)
     })
 
     req.on("response", res => {
@@ -72,10 +74,8 @@ function ParseFeed(feedUrl, callback) {
     })
 
     feedparser.on("error", err => {
-        callback(err, null)
+        callback(err, feedContents)
     })
-
-    let feedContents = { articles: [] }
 
     feedparser.on("end", () => {
         if (t2 !== null){

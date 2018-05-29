@@ -16,7 +16,7 @@ import sendRssFeedToCollections from "../utils/events/sendRssFeedToCollections"
 import { ParseFeed } from "../parsers"
 
 import async_tasks from "../async_tasks"
-import { getStatsDClient } from '../utils/statsd';
+import { getStatsDClient, timeIt } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret)
 
@@ -39,14 +39,6 @@ async function handleRSS(job) {
     return promise
 }
 
-async function timeIt(name, fn){
-	let t0 = new Date()
-	let r = await fn()
-	statsd.timing(name, (new Date() - t0))
-	return r
-}
-
-
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handleRSS(job) {
     logger.info(`Processing ${job.data.url}`)
@@ -54,7 +46,7 @@ async function _handleRSS(job) {
     // verify we have the rss object
     let rssID = job.data.rss
     let rss = await timeIt('winds.handle_rss.get_rss', () => {
-    	return RSS.findOne({ _id: rssID }).read('sp')
+    	return RSS.findOne({ _id: rssID })
 	})
     if (!rss) {
         logger.warn(`RSS with ID ${rssID} does not exist`)
@@ -74,15 +66,15 @@ async function _handleRSS(job) {
         rssContent = await timeIt('winds.handle_rss.parsing', () => {
         	return util.promisify(ParseFeed)(job.data.url)
         })
-    } catch (e) {
-        logger.info(`rss scraping broke for url ${job.data.url}`)
+    } catch (err) {
+        logger.warn(err)
         return
     }
 
 	// update the articles
     logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`)
 
-	if (rssContent.articles.length < 1) {
+	if (rssContent.articles.length === 0) {
 		return
 	}
 
@@ -90,7 +82,11 @@ async function _handleRSS(job) {
 	statsd.timing("winds.handle_rss.articles.parsed", rssContent.articles.length)
 
     let allArticles = await timeIt('winds.handle_rss.upsertManyArticles', () => {
-    	return upsertManyArticles(rssID, rssContent.articles)
+		let articles = rssContent.articles.map(a => {
+			a.url = normalize(a.url)
+			return a
+		})
+    	return upsertManyArticles(rssID, articles)
     })
 
     // updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
@@ -140,15 +136,9 @@ async function _handleRSS(job) {
 }
 
 async function upsertManyArticles(rssID, articles) {
-	articles = articles.map(a => {
-		a.url = normalize(a.url)
-		return a
-	})
-
 	let articlesData = articles.map(article => {
 		const clone = Object.assign({}, article)
 		delete(clone.images)
-		delete(clone.enclosures)
 		delete(clone.publicationDate)
 		return clone
 	})
@@ -179,11 +169,14 @@ async function upsertArticle(rssID, post) {
 	};
 
 	let update = Object.assign({}, search)
-	update.enclosures = post.enclosures
-	update.images = post.images
 	update.publicationDate = post.publicationDate
 	update.url = post.url
 	update.rss = rssID
+
+	let defaults = {
+		enclosures: post.enclosures || {},
+		images: post.images || {},
+	}
 
 	try {
 		let rawArticle = await Article.findOneAndUpdate(
@@ -208,7 +201,8 @@ async function upsertArticle(rssID, post) {
 			{
 				new: true,
 				upsert: true,
-				rawResult: true
+				rawResult: true,
+				setDefaultsOnInsert: defaults,
 			},
 		)
 		if (!rawArticle.lastErrorObject.updatedExisting){
