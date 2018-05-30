@@ -4,7 +4,7 @@ import rewiremock from 'rewiremock'
 import stream from 'getstream'
 import mongoose from 'mongoose'
 
-const mockClient = null;
+let mockClient = null;
 const mockFeeds = {};
 
 export function getMockFeed(group, id) {

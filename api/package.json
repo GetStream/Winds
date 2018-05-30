@@ -97,8 +97,8 @@
 		"devDependencies": {
 				"babel-cli": "^6.26.0",
 				"babel-core": "^6.26.3",
-				"babel-plugin-transform-async-generator-functions": "^6.24.1",
 				"babel-plugin-shebang": "^0.0.0",
+				"babel-plugin-transform-async-generator-functions": "^6.24.1",
 				"babel-plugin-transform-regenerator": "^6.26.0",
 				"babel-polyfill": "^6.26.0",
 				"babel-preset-env": "^1.7.0",
@@ -109,6 +109,7 @@
 				"mocha": "^5.2.0",
 				"prettier": "^1.12.1",
 				"prettierrc": "^0.0.0-5",
+				"redis": "^2.8.0",
 				"rewiremock": "^3.7.2",
 				"sinon": "^5.0.10"
 		}
