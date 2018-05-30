@@ -5,6 +5,7 @@ import auth from '../../src/controllers/auth'
 import Podcast from '../../src/models/podcast'
 import RSS from '../../src/models/rss'
 import User from '../../src/models/user'
+
 import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test'
 
 describe('Auth controller', () => {
