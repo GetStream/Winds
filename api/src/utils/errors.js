@@ -11,7 +11,7 @@ function sendSourceMaps(data){
 	var stacktrace = data.exception && data.exception[0].stacktrace
 	if (stacktrace && stacktrace.frames) {
 		stacktrace.frames.forEach(function(frame) {
-			if (frame.filename.indexOf('/api/dist/') !== -1 ) {
+			if (frame.filename.indexOf('/api/dist/') !== -1 && frame.filename.indexOf('/node_modules/') === -1) {
 				frame.filename = `app:///${frame.filename.split('api/dist/')[1]}`
 			}
 		});
