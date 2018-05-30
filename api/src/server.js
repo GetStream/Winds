@@ -10,8 +10,12 @@ import limit from "express-rate-limit"
 
 import config from "./config"
 import logger from "./utils/logger"
+import "./utils/db"
+import { setupExpressRequestHandler, setupExpressErrorHandler } from "./utils/errors"
 
 const api = express()
+
+setupExpressRequestHandler(api);
 
 api.use(cors())
 api.use(compression())
@@ -35,6 +39,8 @@ api.use(
             "/",
             "/health",
             "/status",
+            "/sentry/log",
+            "/sentry/throw",
             "/auth/signup",
             "/auth/login",
             "/auth/forgot-password",
@@ -54,19 +60,18 @@ api.use((req, res, next) => {
     next()
 })
 
+fs.readdirSync(path.join(__dirname, "routes")).map(file => {
+    require("./routes/" + file)(api)
+})
+
 api.listen(config.server.port, err => {
     if (err) {
         logger.error(err)
         process.exit(1)
     }
-
-    require("./utils/db")
-
-    fs.readdirSync(path.join(__dirname, "routes")).map(file => {
-        require("./routes/" + file)(api)
-    })
-
     logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`)
 })
+
+setupExpressErrorHandler(api);
 
 module.exports = api
