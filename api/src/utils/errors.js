@@ -26,7 +26,7 @@ let sentryOptions = {
 		environment: config.env,
     tags: { script: executable },
 		dataCallback: sendSourceMaps,
-		release: version,
+		release: `v${version}`,
 }
 
 ravenInstance = Raven.config(sentryOptions.dsn, sentryOptions)
