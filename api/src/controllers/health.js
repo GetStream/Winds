@@ -42,9 +42,9 @@ exports.status = async (req, res) => {
 	if (now - latestArticle.createdAt > tooOld || now - latestEpisode.createdAt > tooOld) {
 		output.code = 500;
 		output.error =
-            now - latestArticle.createdAt > tooOld
-            	? 'The most recent article is too old'
-            	: 'The most recent episode is too old';
+			now - latestArticle.createdAt > tooOld
+				? 'The most recent article is too old'
+				: 'The most recent episode is too old';
 	}
 
 	// check for publications stuck in the isParsing state
@@ -87,9 +87,9 @@ exports.sentryThrow = (req, res) => {
 
 exports.sentryLog = async (req, res) => {
 	try {
-		    Throw();
+		Throw();
 	} catch (err) {
-		    logger.error(err);
+		logger.error(err);
 	}
 	try {
 		Throw();
