@@ -10,7 +10,7 @@ require('babel-register')({
         ]
     ],
     "plugins": [
-        "transform-async-generator-functions"
+        "shebang", "transform-async-generator-functions"
     ]
 });
 
