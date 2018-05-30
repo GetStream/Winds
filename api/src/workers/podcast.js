@@ -25,12 +25,12 @@ async_tasks.ProcessPodcastQueue(5, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {
-    let promise = _handlePodcast(job)
-    promise.catch(err => {
-        logger.info(`podcast job ${job} broke with err ${err}`)
-      	logger.error(err)
-    })
-    return promise
+	let promise = _handlePodcast(job);
+	promise.catch(err => {
+		logger.info(`podcast job ${job} broke with err ${err}`);
+      	logger.error(err);
+	});
+	return promise;
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes

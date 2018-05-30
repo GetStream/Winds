@@ -1,4 +1,4 @@
-import Transport from "winston-transport"
+import Transport from 'winston-transport';
 
 const winstonLevelToSentryLevel = {
 	silly: 'debug',
@@ -22,25 +22,25 @@ const errorHandler = error => {
  * @return {{}}
  */
 const prepareMeta = info => {
-    let extra = Object.assign({}, info)
-    delete extra.message
-    delete extra.level
-    delete extra.tags
-    let msg
+	let extra = Object.assign({}, info);
+	delete extra.message;
+	delete extra.level;
+	delete extra.tags;
+	let msg;
 
-    if (info instanceof Error) {
-        msg = info
-        extra.stackError = info.stack
-    } else {
-      msg = info.message
-    }
+	if (info instanceof Error) {
+		msg = info;
+		extra.stackError = info.stack;
+	} else {
+		msg = info.message;
+	}
 
-    return [msg, {
-        level: winstonLevelToSentryLevel[info.level],
-        tags: info.tags || {},
-        extra,
-    }]
-}
+	return [msg, {
+		level: winstonLevelToSentryLevel[info.level],
+		tags: info.tags || {},
+		extra,
+	}];
+};
 
 class SentryWinstonTransport extends Transport {
 	constructor(options) {
@@ -65,19 +65,19 @@ class SentryWinstonTransport extends Transport {
      * @param {Error|string} info.message
      * @param {Function} done
      */
-    async log(info, done) {
-        if (this.silent) return done(null, true)
-        let [msg, meta] = prepareMeta(info)
+	async log(info, done) {
+		if (this.silent) return done(null, true);
+		let [msg, meta] = prepareMeta(info);
 
-        let method = info instanceof Error ? 'captureException': 'captureMessage'
+		let method = info instanceof Error ? 'captureException': 'captureMessage';
 
-        try {
-            let eventId = await this.raven[method](msg, meta)
-            done(null, eventId)
-        } catch (error) {
-            done(error)
-        }
-    }
+		try {
+			let eventId = await this.raven[method](msg, meta);
+			done(null, eventId);
+		} catch (error) {
+			done(error);
+		}
+	}
 }
 SentryWinstonTransport.prototype.name = 'sentry';
 

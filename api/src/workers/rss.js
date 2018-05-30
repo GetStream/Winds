@@ -30,12 +30,12 @@ const statsd = getStatsDClient();
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
 async function handleRSS(job) {
-    let promise = _handleRSS(job)
-    promise.catch(err => {
-        logger.info(`rss job ${job} broke with err ${err}`)
-        logger.error(err)
-    })
-    return promise
+	let promise = _handleRSS(job);
+	promise.catch(err => {
+		logger.info(`rss job ${job} broke with err ${err}`);
+		logger.error(err);
+	});
+	return promise;
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes

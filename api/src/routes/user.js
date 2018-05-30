@@ -4,10 +4,10 @@ import Following from '../controllers/following';
 import Follower from '../controllers/follower';
 
 module.exports = api => {
-    api.route("/users").get(User.list)
-    api.route("/users/:userId").get(User.get)
-    api.route("/users/:userId").put(User.put)
-    api.route("/users/:userId").delete(User.delete)
+	api.route('/users').get(User.list);
+	api.route('/users/:userId').get(User.get);
+	api.route('/users/:userId').put(User.put);
+	api.route('/users/:userId').delete(User.delete);
 
 	api.route('/users/:userId/feeds').get(Feed.get);
 	api.route('/users/:userId/following').get(Following.get);
