@@ -1,4 +1,3 @@
-import "../loadenv"
 import config from "../config"
 
 import { StatsD } from "node-statsd"

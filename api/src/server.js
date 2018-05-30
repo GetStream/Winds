@@ -1,4 +1,3 @@
-import "./loadenv"
 import fs from "fs"
 import path from "path"
 import express from "express"
@@ -10,7 +9,6 @@ import limit from "express-rate-limit"
 
 import config from "./config"
 import logger from "./utils/logger"
-import "./utils/db"
 import { setupExpressRequestHandler, setupExpressErrorHandler } from "./utils/errors"
 
 const api = express()
@@ -64,13 +62,16 @@ fs.readdirSync(path.join(__dirname, "routes")).map(file => {
     require("./routes/" + file)(api)
 })
 
-api.listen(config.server.port, err => {
-    if (err) {
-        logger.error(err)
-        process.exit(1)
-    }
-    logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`)
-})
+if (require.main === module) {
+    require("./utils/db")
+    api.listen(config.server.port, err => {
+        if (err) {
+            logger.error(err)
+            process.exit(1)
+        }
+        logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`)
+    })
+}
 
 setupExpressErrorHandler(api);
 
