@@ -1,6 +1,4 @@
-import Raven from "raven"
 import Transport from "winston-transport"
-const util = require("util")
 
 const winstonLevelToSentryLevel = {
     silly: "debug",
@@ -28,15 +26,20 @@ const prepareMeta = info => {
     delete extra.message
     delete extra.level
     delete extra.tags
+    let msg
 
-    let error = info.message instanceof Error ? info.message : new Error(info.message)
-    extra.stackError = error.stack
+    if (info instanceof Error) {
+        msg = info
+        extra.stackError = info.stack
+    } else {
+      msg = info.message
+    }
 
-    return {
+    return [msg, {
         level: winstonLevelToSentryLevel[info.level],
         tags: info.tags || {},
         extra,
-    }
+    }]
 }
 
 class SentryWinstonTransport extends Transport {
@@ -64,12 +67,12 @@ class SentryWinstonTransport extends Transport {
      */
     async log(info, done) {
         if (this.silent) return done(null, true)
-        let meta = prepareMeta(info)
+        let [msg, meta] = prepareMeta(info)
 
-        let method = info.message === "error" ? "captureException" : "captureMessage"
+        let method = info instanceof Error ? 'captureException': 'captureMessage'
 
         try {
-            let eventId = await this.raven[method](info.message, meta)
+            let eventId = await this.raven[method](msg, meta)
             done(null, eventId)
         } catch (error) {
             done(error)
