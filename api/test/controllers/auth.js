@@ -89,7 +89,7 @@ describe('Auth controller', () => {
                     { email: 'invalid.email.com', username: 'valid', name: 'Valid Name', password: '' }
                 ];
                 const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
-                for await (const response of requests) {
+                for (const response of await Promise.all(requests)) {
                     expect(response).to.have.status(422);
                 }
             })
@@ -101,7 +101,7 @@ describe('Auth controller', () => {
                     { email: '@invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password' },
                 ];
                 const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
-                for await (const response of requests) {
+                for (const response of await Promise.all(requests)) {
                     expect(response).to.have.status(422);
                 }
             })
@@ -158,7 +158,7 @@ describe('Auth controller', () => {
                 { email: 'valid@email.com', password: '' },
             ];
             const requests = bodies.map((body) => request(api).post('/auth/login').send(body));
-            for await (const response of requests) {
+            for (const response of await Promise.all(requests)) {
                 expect(response).to.have.status(401);
             }
         })
