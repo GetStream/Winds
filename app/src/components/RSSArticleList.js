@@ -43,11 +43,17 @@ class RSSArticleList extends React.Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
+			console.log("next props did not match");
 			// if navigating between rss feeds
-			this.getRSSFeed(nextProps.match.params.rssFeedID);
-			this.getFollowState(nextProps.match.params.rssFeedID);
-			this.getRSSArticles(nextProps.match.params.rssFeedID);
-			getFeed(this.props.dispatch, 'article', 0, 20);
+			this.setState({
+				articleCursor: 1,
+			}, () => {
+				this.getRSSFeed(nextProps.match.params.rssFeedID);
+				this.getFollowState(nextProps.match.params.rssFeedID);
+				this.getRSSArticles(nextProps.match.params.rssFeedID);
+				getPinnedArticles(this.props.dispatch);
+				getFeed(this.props.dispatch, 'article', 0, 20);
+			});
 		}
 	}
 	getRSSFeed(rssFeedID) {
@@ -189,15 +195,15 @@ class RSSArticleList extends React.Component {
 			if (this.props.articles.length === 0) {
 				rightContents = (
 					<div>
-						<p>{'We haven\'t found any articles for this RSS feed yet :('}</p>
+						<p>{"We haven't found any articles for this RSS feed yet :("}</p>
 						<p>
 							{
-								'It might be because the RSS feed doesn\'t have any articles, or because it just got added and we\'re still parsing them. Come check back in a few minutes?'
+								"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
 							}
 						</p>
 						<p>
 							{
-								'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
+								"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
 							}
 							<a href="https://github.com/getstream/winds/issues">
 								GitHub Issue
@@ -214,10 +220,10 @@ class RSSArticleList extends React.Component {
 
 						{this.state.reachedEndOfFeed ? (
 							<div className="end">
-								<p>{'That\'s it! No more articles here.'}</p>
+								<p>{"That's it! No more articles here."}</p>
 								<p>
 									{
-										'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+										"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 									}
 								</p>
 							</div>
