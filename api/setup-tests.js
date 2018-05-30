@@ -13,6 +13,11 @@ import api from './src/server'
 chai.use(chaiHttp);
 
 prepare((done) => {
+    if (!config.database.uri)
+        throw new Error('Missing MongoDB connection string. Check config');
+    if (!config.cache.uri)
+        throw new Error('Missing Redis connection string. Check config');
+
     const redisClient = redis.createClient(config.cache.uri);
 
     //XXX: drop all data before running tests
