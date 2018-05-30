@@ -1,5 +1,3 @@
-import "../../loadenv"
-
 import algolia from "algoliasearch"
 
 import logger from "../logger"

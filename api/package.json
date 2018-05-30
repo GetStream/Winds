@@ -5,7 +5,8 @@
 				"start": "cd dist && node server.js",
 				"watch": "nodemon start",
 				"build": "./build.sh",
-				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\""
+				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\"",
+				"test": "NODE_ENV=test node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\""
 		},
 		"bin": {
 				"winds": "src/commands/winds.js"
@@ -97,11 +98,18 @@
 				"babel-cli": "^6.26.0",
 				"babel-core": "^6.26.3",
 				"babel-plugin-shebang": "^0.0.0",
-				"babel-plugin-transform-regenerator": "^6.26.0",
+				"babel-plugin-transform-async-generator-functions": "^6.24.1",
 				"babel-polyfill": "^6.26.0",
 				"babel-preset-env": "^1.7.0",
-				"babel-preset-stage-2": "^6.24.1",
+				"babel-register": "^6.26.0",
+				"chai": "^4.1.2",
+				"chai-http": "^4.0.0",
+				"mocha": "^5.2.0",
+				"mocha-prepare": "^0.1.0",
+				"mock-require": "^3.0.2",
 				"prettier": "^1.12.1",
-				"prettierrc": "^0.0.0-5"
+				"prettierrc": "^0.0.0-5",
+				"redis": "^2.8.0",
+				"sinon": "^5.0.10"
 		}
 }
