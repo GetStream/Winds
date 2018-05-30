@@ -77,34 +77,7 @@ describe('Auth controller', () => {
         })
 
         describe('invalid request', () => {
-            it('should return 422 for missing/empty data', async () => {
-                const bodies = [
-                    { username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                    { email: 'valid@email.com', name: 'Valid Name', password: 'valid_password' },
-                    { email: 'valid@email.com', username: 'valid', password: 'valid_password' },
-                    { email: 'valid@email.com', username: 'valid', name: 'Valid Name' },
-                    { email: '', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                    { email: 'invalid.email.com', username: '', name: 'Valid Name', password: 'valid_password' },
-                    { email: 'invalid.email.com', username: 'valid', name: '', password: 'valid_password' },
-                    { email: 'invalid.email.com', username: 'valid', name: 'Valid Name', password: '' }
-                ];
-                const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
-                for await (const response of requests) {
-                    expect(response).to.have.status(422);
-                }
-            })
 
-            it('should return 422 for invalid email', async () => {
-                const bodies = [
-                    { email: 'invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                    { email: 'invalid@email', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                    { email: '@invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password' },
-                ];
-                const requests = bodies.map((body) => request(api).post('/auth/signup').send(body));
-                for await (const response of requests) {
-                    expect(response).to.have.status(422);
-                }
-            })
 
             it('should return 422 for invalid username', async () => {
                 const response = await request(api).post('/auth/signup').send({
@@ -150,18 +123,7 @@ describe('Auth controller', () => {
             expect(response).to.have.status(200);
         })
 
-        it('should return 401 for missing/empty data in request', async () => {
-            const bodies = [
-                { password: 'valid_password' },
-                { email: 'valid@email.com' },
-                { email: '', password: 'valid_password' },
-                { email: 'valid@email.com', password: '' },
-            ];
-            const requests = bodies.map((body) => request(api).post('/auth/login').send(body));
-            for await (const response of requests) {
-                expect(response).to.have.status(401);
-            }
-        })
+
 
         it('should return 404 for nonexistent user', async () => {
             const response = await request(api).post('/auth/login').send({
