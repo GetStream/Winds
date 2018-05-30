@@ -13,7 +13,7 @@ if (config.sentry.dsn) {
     transports.push(sentryTransport)
 }
 
-let logger = new winston.createLogger({
+let logger = winston.createLogger({
     format: winston.format.simple(),
     transports: transports,
 })
