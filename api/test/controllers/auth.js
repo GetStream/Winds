@@ -1,5 +1,4 @@
 import { expect, request } from 'chai'
-import bcrypt from 'bcryptjs'
 
 import api from '../../src/server'
 import auth from '../../src/controllers/auth'
@@ -48,13 +47,13 @@ describe('Auth controller', () => {
                     username: 'valid',
                     name: 'Valid Name'
                 });
-                expect(await bcrypt.compare('valid_password', user.password)).to.be.true;
+                expect(await user.verifyPassword('valid_password')).to.be.true;
             })
 
             it('should follow featured podcasts and RSS feeds', async () => {
                 const content = [
-                    { sourceModel: Podcast, userFeed: 'user_episode', contentFeed: 'rss' },
-                    { sourceModel: RSS, userFeed: 'user_article', contentFeed: 'podcast' }
+                    { sourceModel: Podcast, userFeed: 'user_episode', contentFeed: 'podcast' },
+                    { sourceModel: RSS, userFeed: 'user_article', contentFeed: 'rss' }
                 ];
                 const mockClient = getMockClient();
 
@@ -62,16 +61,16 @@ describe('Auth controller', () => {
                     const entries = await contentType.sourceModel.find({ featured: true });
 
                     for (const data of entries) {
-                        expect(mockClient.feed.calledWith(data.userFeed, user._id)).to.be.true;
+                        expect(mockClient.feed.calledWith(contentType.userFeed, user._id)).to.be.true;
                         expect(mockClient.feed.calledWith('timeline', user._id)).to.be.true;
 
-                        const userFeed = getMockFeed(data.userFeed, user._id)
+                        const userFeed = getMockFeed(contentType.userFeed, user._id)
                         const timelineFeed = getMockFeed('timeline', user._id)
                         expect(userFeed).to.not.be.null;
                         expect(timelineFeed).to.not.be.null;
 
-                        expect(userFeed.follow.calledWith(data.contentFeed, data._id)).to.be.true;
-                        expect(timelineFeed.follow.calledWith(data.contentFeed, data._id)).to.be.true;
+                        expect(userFeed.follow.calledWith(contentType.contentFeed, data._id)).to.be.true;
+                        expect(timelineFeed.follow.calledWith(contentType.contentFeed, data._id)).to.be.true;
                     }
                 }
             })
@@ -137,6 +136,9 @@ describe('Auth controller', () => {
         before(async () => {
             await User.remove().exec();
             await loadFixture('example');
+            const user = await User.findOne({ email: 'valid@email.com' });
+            expect(user).to.not.be.null;
+            expect(await user.verifyPassword('valid_password')).to.be.true;
         })
 
         it('should return 200 for existing user', async () => {

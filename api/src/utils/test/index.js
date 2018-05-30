@@ -1,7 +1,6 @@
 import sinon from 'sinon'
 import bcrypt from 'bcryptjs'
-import rewiremock from 'rewiremock'
-import stream from 'getstream'
+import StreamClient from 'getstream/src/lib/client'
 import mongoose from 'mongoose'
 
 let mockClient = null;
@@ -11,14 +10,10 @@ export function getMockFeed(group, id) {
     return mockFeeds[group + ':' + id];
 }
 
-export function getMockClient() {
-    return mockClient;
-}
-
-export function setupMocks() {
-    const client = mockClient = sinon.createStubInstance(stream.Client);
-    client.feed.callsFake((group, id) => {
-        const mock = {
+function setupMocks() {
+    mockClient = sinon.createStubInstance(StreamClient);
+    mockClient.feed.callsFake((group, id) => {
+        const mock = mockFeeds[group + ':' + id] || {
             slug: group,
             userId: id,
             id: group + ':' + id,
@@ -27,17 +22,25 @@ export function setupMocks() {
         mockFeeds[group + ':' + id] = mock;
         return mock;
     });
+}
 
-    rewiremock('getstream').with({ connect: sinon.stub().returns(client) });
-    rewiremock('../events').with(sinon.stub().returns(Promise.resolve()));
+export function getMockClient() {
+    if (mockClient == null) {
+        setupMocks();
+    }
 
-    rewiremock.enable();
+    return mockClient;
 }
 
 export async function loadFixture(fixture) {
     const filters = {
         'User': async (user) => {
-            user.password = await bcrypt.hash(user.password, 8)
+            //XXX: cloning loaded json to enable filtering without thinking about module cache
+            user = Object.assign({}, user);
+
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(user.password, salt);
+            user.password = hash;
             return user;
         }
     };
