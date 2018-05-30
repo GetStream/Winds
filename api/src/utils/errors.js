@@ -21,7 +21,7 @@ function sendSourceMaps(data){
 
 let sentryOptions = {
     dsn: config.sentry.dsn,
-    level: "warn",
+    level: "error",
     patchGlobal: config.env === "production",
 		environment: config.env,
     tags: { script: executable },
