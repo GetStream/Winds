@@ -32,9 +32,8 @@ const statsd = getStatsDClient()
 async function handleRSS(job) {
     let promise = _handleRSS(job)
     promise.catch(err => {
-        logger.warn(`rss job ${job} broke with err ${err}`)
-        console.log(err)
-
+        logger.info(`rss job ${job} broke with err ${err}`)
+        logger.error(err)
     })
     return promise
 }

@@ -2,13 +2,13 @@ import Article from "../models/article"
 import Episode from "../models/episode"
 import RSS from "../models/rss"
 import Podcast from "../models/podcast"
-import logger from "../utils/logger"
 import moment from "moment"
 import config from "../config"
 
 import { version } from "../../../app/package.json"
-
+import { Throw } from "../utils/errors"
 import Queue from 'bull';
+import logger from "../utils/logger"
 
 const rssQueue = new Queue('rss', config.cache.uri);
 const ogQueue = new Queue('og', config.cache.uri);
@@ -21,8 +21,6 @@ const queues = {
 	'Podcast Queue': podcastQueue,
 }
 
-
-// Is the webserver running.... yes no
 exports.health = (req, res) => {
     res.status(200).send({ version, healthy: "100%" })
 }
@@ -81,4 +79,24 @@ exports.status = async (req, res) => {
 
     // send the response
     res.status(output.code).send(output)
+}
+
+exports.sentryThrow = (req, res) => {
+	Throw()
+}
+
+exports.sentryLog = async (req, res) => {
+    try {
+		    Throw()
+    } catch (err) {
+		    logger.error(err)
+    }
+  try {
+    Throw()
+  } catch (err) {
+    logger.error(err)
+  }
+  logger.error('0')
+  logger.error('1')
+	res.status(200).send("{}")
 }
