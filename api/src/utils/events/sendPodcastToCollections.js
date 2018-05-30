@@ -6,7 +6,7 @@ import detectPodcastLanguage from '../detectPodcastLanguage';
 async function sendPodcastToCollections(podcast) {
 	if (!podcast.language) {
 		podcast.language = await detectPodcastLanguage(podcast.feedUrl);
-		await Podcast.findByIdAndUpdate(podcast.id, { [language]: podcast.language }, { new: true });
+		await Podcast.findByIdAndUpdate(podcast.id, { language: podcast.language }, { new: true });
 	}
 	let episodes = await Episode.find({
 		podcast: podcast.id,

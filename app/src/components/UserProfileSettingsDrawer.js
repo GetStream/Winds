@@ -2,6 +2,7 @@ import saveIcon from '..//images/icons/save.svg';
 import Avatar from './Avatar';
 import Drawer from './Drawer';
 import Img from 'react-image';
+import Popover from 'react-popover';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -25,11 +26,14 @@ class UserProfileSettingsDrawer extends React.Component {
 		this.state = {
 			confirmPassword: '',
 			currentTab: 'account',
+			deleteAccountPopoverIsOpen: false,
 			dailyNotifications,
 			followNotifications,
 			password: '',
 			weeklyNotifications,
 		};
+		this.toggleDeleteAccountPopover = this.toggleDeleteAccountPopover.bind(this);
+		this.handleDeleteAccountConfirmationClick = this.handleDeleteAccountConfirmationClick.bind(this);
 		this.handleAccountFormSubmit = this.handleAccountFormSubmit.bind(this);
 		this.handlePasswordFormSubmit = this.handlePasswordFormSubmit.bind(this);
 	}
@@ -53,6 +57,25 @@ class UserProfileSettingsDrawer extends React.Component {
 			followNotifications,
 			weeklyNotifications,
 		});
+	}
+	toggleDeleteAccountPopover(e) {
+		e.preventDefault();
+		this.setState({
+			deleteAccountPopoverIsOpen: !this.state.deleteAccountPopoverIsOpen,
+		});
+	}
+	handleDeleteAccountConfirmationClick(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		fetch('DELETE', `/users/${this.props._id}`)
+			.then(response => {
+				this.props.closeDrawer();
+				localStorage.clear();
+				window.location.reload();
+			})
+			.catch(err => {
+				console.log(err); // eslint-disable-line no-console
+			});
 	}
 	handleAccountFormSubmit(e) {
 		e.preventDefault();
@@ -117,6 +140,23 @@ class UserProfileSettingsDrawer extends React.Component {
 		);
 	}
 	render() {
+		let deleteAccountPopover = (
+			<div className="popover-panel delete-account-confirmation-popover">
+				<div className="panel-element">
+					<div className="header">
+						<h3>Delete Account</h3>
+						<p class="message"><strong>Warning:</strong> This cannot be undone.</p>
+					</div>
+				</div>
+				<div className="panel-element menu-item" onClick={this.handleDeleteAccountConfirmationClick}>
+					<span>Yes - Delete my account</span>
+				</div>
+				<div className="panel-element menu-item"  onClick={this.toggleDeleteAccountPopover}>
+					<span>Cancel</span>
+				</div>
+			</div>
+		);
+
 		let accountTab = (
 			<form id="settings-account-form" onSubmit={this.handleAccountFormSubmit}>
 				<a
@@ -235,6 +275,18 @@ class UserProfileSettingsDrawer extends React.Component {
 					</label>
 				</div>
 				<footer>
+					<div className="secondary">
+						<Popover
+							body={deleteAccountPopover}
+							isOpen={this.state.deleteAccountPopoverIsOpen}
+							onOuterAction={this.toggleDeleteAccountPopover}
+							preferPlace="above"
+							tipSize={0.1}>
+						<button className="btn link cancel" type="button" onClick={this.toggleDeleteAccountPopover}>
+							Delete account
+						</button>
+					</Popover>
+					</div>
 					<button className="btn primary with-circular-icon" type="submit">
 						<Img src={saveIcon} />
 						<span>Save</span>

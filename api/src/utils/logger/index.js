@@ -1,12 +1,10 @@
-import config from '../../config';
-import winston from 'winston';
-import { createSentryTransport } from './sentry';
-import path from 'path';
-import { Raven } from '../errors';
+import config from "../../config"
+import winston from "winston"
+import { createSentryTransport } from "./sentry"
+import { Raven } from "../errors"
 
 // https://github.com/guzru/winston-sentry
-const transports = [new winston.transports.Console({ level: 'silly' })];
-const executable = path.basename(process.argv[1]);
+const transports = [new winston.transports.Console({ level: "silly" })]
 
 if (config.sentry.dsn) {
 	let sentryTransport = createSentryTransport(Raven);
