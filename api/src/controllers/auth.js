@@ -122,30 +122,26 @@ exports.login = async (req, res, _) => {
     }
 };
 
-exports.forgotPassword = (req, res) => {
+exports.forgotPassword = async (req, res, _) => {
     const data = req.body || {};
-    let opts = {
-        new: true,
-    };
-
+    const opts = { new: true, };
     const passcode = uuidv4();
 
-    User.findOneAndUpdate(
-        { email: data.email.toLowerCase() },
-        { recoveryCode: passcode },
-        opts,
-    )
-        .then(user => {
-            if (!user) {
-                return res.sendStatus(404);
-            }
+    try {
+        const user = await User.findOneAndUpdate(
+            { email: data.email.toLowerCase() },
+            { recoveryCode: passcode },
+            opts,
+        );
+        if (!user) {
+            return res.sendStatus(404);
+        }
 
-            res.sendStatus(200);
-        })
-        .catch(err => {
-            logger.error(err);
-            res.sendStatus(500);
-        });
+        res.sendStatus(200);
+    } catch (err) {
+        logger.error(err);
+        res.sendStatus(500);
+    }
 };
 
 exports.resetPassword = (req, res) => {
