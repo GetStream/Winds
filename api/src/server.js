@@ -48,10 +48,8 @@ api.use(
 )
 
 api.use((err, req, res, next) => {
-    if (err.name === "UnauthorizedError" && process.env.NODE_ENV !== 'test') {
+    if (err.name === "UnauthorizedError") {
         res.status(401).send("Missing authentication credentials.")
-    } else {
-        next();
     }
 })
 

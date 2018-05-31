@@ -60,7 +60,6 @@ exports.get = (req, res) => {
 }
 
 exports.post = (req, res) => {
-    console.log('got it!');
     const data = Object.assign({}, req.body, { user: req.user.sub }) || {}
 
     let type
