@@ -2,6 +2,7 @@ import sinon from 'sinon';
 import bcrypt from 'bcryptjs';
 import StreamClient from 'getstream/src/lib/client';
 import mongoose from 'mongoose';
+import logger from '../logger';
 
 let mockClient = null;
 const mockFeeds = {};
@@ -32,7 +33,7 @@ export function getMockClient() {
 	return mockClient;
 }
 
-export async function loadFixture(fixture) {
+export async function loadFixture(...fixtures) {
 	const filters = {
 		User: async (user) => {
 			//XXX: cloning loaded json to enable filtering without thinking about module cache
@@ -44,13 +45,19 @@ export async function loadFixture(fixture) {
 			return user;
 		},
 	};
-	const models = require(`../../../test/fixtures/${fixture}.json`);
 
-	for (const modelName in models) {
-		const model = mongoose.model(modelName);
-		const filter = filters[modelName] || ((x) => Promise.resolve(x));
-		const filteredData = await Promise.all(models[modelName].map(filter));
+	for (let fixture of fixtures) {
+		logger.info(`loaded fixture with name ${fixture}`)
+		const models = require(`../../../test/fixtures/${fixture}.json`);
 
-		await model.collection.insertMany(filteredData);
+		for (let modelName in models) {
+			let model = mongoose.model(modelName);
+			let filter = filters[modelName] || ((x) => Promise.resolve(x));
+			let filteredData = await Promise.all(models[modelName].map(filter));
+			console.log(filteredData)
+
+			await model.collection.insertMany(filteredData);
+		}
 	}
+
 }

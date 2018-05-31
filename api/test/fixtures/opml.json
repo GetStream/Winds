@@ -2,19 +2,19 @@
   "RSS": [
       {
         "_id": "5acfe3928125f655c1004f45",
-          "title"   : "OPML RSS 1",
+          "title"   : "OPML CNN",
           "feedUrl" : "http://rss.cnn.com/rss/cnn_topstories.rss"
       }
   ],
   "Podcast": [
       {
           "_id": "5acfd99ec393652e812cd569",
-          "title"   : "OPML Podcast 2",
+          "title"   : "OPML LayoutFM",
           "feedUrl" : "http://layout.fm/rss"
       }
   ],
   "Follow": [
-    {"rss":"5acfe3928125f655c1004f45","user":""},
-    {"podcast":"5acfd99ec393652e812cd569","user":""}
+    {"rss":"5acfe3928125f655c1004f45","user":"5b0f306d8e147f10f16aceaf"},
+    {"podcast":"5acfd99ec393652e812cd569","user":"5b0f306d8e147f10f16aceaf"}
   ]
 }

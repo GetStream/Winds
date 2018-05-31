@@ -11,6 +11,8 @@ import search from '../utils/search';
 
 import RSS from '../models/rss';
 import Follow from '../models/follow';
+import User from '../models/user';
+
 
 import config from '../config';
 import logger from '../utils/logger';
@@ -23,38 +25,43 @@ const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 // - test coverage
 
 exports.get = async (req, res) => {
-  let userID = req.user.sub
-    let follows, user = await Promise.all([Follow.find({user: userID}),  User.find({userID})])
-    let header = {
-        dateCreated: moment().toISOString(),
-        ownerName: user.name,
-        title: `Subscriptions in Winds - Powered by ${config.product.author}`,
-    }
+	let userID = req.user.sub;
+  let follows = await Follow.find({ user: userID })
+  console.log('start', userID);
 
-    let outlines = follows.map(follow => {
-        let feed = (follow.rss) ? follow.rss : follow.podcast
-        let feedType = (follow.rss) ? 'rss': 'podcast'
-        let obj = {
-            htmlUrl: feed.url,
-            title: feed.title,
-            type: feedType,
-            xmlUrl: feed.feedUrl,
-        }
-        return obj
-    })
-    let opml = opmlGenerator(header, outlines)
+  let user = await User.find({ userID })
 
-    res.set({
-        "Content-Disposition": "attachment; filename=export.opml;",
-        "Content-Type": "application/xml",
-    })
+	let header = {
+		dateCreated: moment().toISOString(),
+		ownerName: user.name,
+		title: `Subscriptions in Winds - Powered by ${config.product.author}`,
+	};
 
-    res.end(opml)
-}
+  console.log('follows', follows)
+
+	let outlines = follows.map(follow => {
+		let feed = follow.rss ? follow.rss : follow.podcast;
+		let feedType = follow.rss ? 'rss' : 'podcast';
+		let obj = {
+			htmlUrl: feed.url,
+			title: feed.title,
+			type: feedType,
+			xmlUrl: feed.feedUrl,
+		};
+		return obj;
+	});
+	let opml = opmlGenerator(header, outlines);
+
+	res.set({
+		'Content-Disposition': 'attachment; filename=export.opml;',
+		'Content-Type': 'application/xml',
+	});
+
+	res.end(opml);
+};
 
 exports.post = async (req, res) => {
-
-  /*
+	/*
     const upload = Buffer.from(req.file.buffer).toString("utf8")
     const data = Object.assign({}, req.body, { user: req.user.sub }) || {}
 
@@ -193,4 +200,4 @@ exports.post = async (req, res) => {
                 res.status(500).send(err.message)
             })
     })*/
-}
+};

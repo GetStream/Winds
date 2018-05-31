@@ -9,6 +9,9 @@ import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
 import fs from 'fs';
 import path from 'path';
 import FeedParser from 'feedparser';
+import jwt from 'jsonwebtoken';
+import config from '../../src/config';
+
 
 // load fixture with follows and feeds
 // setup a users
@@ -22,10 +25,21 @@ import FeedParser from 'feedparser';
 // detect feed type codebase
 // - various formats
 
+function authGetRequest(getPath) {
+  const token = jwt.sign(
+      {
+          email: 'test+test@test.com',
+          sub: '5b0f306d8e147f10f16aceaf',
+      },
+      config.jwt.secret,
+  );
+  return request(api).get(getPath).set('Authorization', `Bearer ${token}`)
+}
+
 describe.only('OPML', () => {
-	describe('Export', () => {
+	describe.only('Export', () => {
 		before(async () => {
-			await loadFixture('opml');
+			await loadFixture('initialData', 'opml');
 		});
 
 		describe('invalid request', () => {
@@ -33,7 +47,7 @@ describe.only('OPML', () => {
 			let user;
 
 			before(async () => {
-				response = await request(api).get('/opml');
+				response = await request(api).get('/opml/download');
 			});
 
 			it('should return 401', () => {
@@ -41,18 +55,17 @@ describe.only('OPML', () => {
 			});
 		});
 
-		describe('valid request', () => {
+		describe.only('valid request', () => {
 			let response;
 			let user;
 
 			before(async () => {
-				response = await request(api)
-					.get('/opml')
-					.set('Bearer', '123');
+				response = await authGetRequest('/opml/download')
 			});
 
-			it('should return 401', () => {
-				expect(response).to.have.status(401);
+			it('should return 200', () => {
+				expect(response).to.have.status(200);
+        console.log('r', response.body)
 			});
 		});
 	});
@@ -77,7 +90,7 @@ describe.only('OPML', () => {
 			});
 		});
 	});
-	describe.only('Feed Type', () => {
+	describe('Feed Type', () => {
 		async function isPodcast() {
 			// its a podcast if every article has an enclosure of the audio type
 			let p = path.join(__dirname, '..', 'data', 'feed', 'giant-bomcast')
