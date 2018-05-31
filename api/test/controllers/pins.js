@@ -1,5 +1,6 @@
 import { expect, request } from 'chai'
-import Chance from 'chance';
+import jwt from 'jsonwebtoken';
+import config from '../../src/config';
 
 import api from '../../src/server';
 import pins from '../../src/controllers/pin';
@@ -7,12 +8,17 @@ import Pin from '../../src/models/pin';
 
 import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
 
-const chance = new Chance();
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-
 describe.only('Pins controller', () => {
     describe('create', () => {
         describe('valid request', () => {
+
+            const token = jwt.sign(
+                {
+                    email: 'test+test@test.com',
+                    sub: '5b0f306d8e147f10f16aceaf',
+                },
+                config.jwt.secret,
+            );
 
             before(async () => {
                 expect(await Pin.find({ article: { $exists: true, } })).to.be.empty;
@@ -21,11 +27,10 @@ describe.only('Pins controller', () => {
                 await loadFixture('initialData');
             });
 
-            it('should create a new pin', async () => {
-                let payload = {};
-                payload[chance.pickone(['article', 'episode'])] = chance.guid();
-
-                let res = await request(api).post('/pins').send(payload);
+            it('should create a new article pin', async () => {
+                let res = await request(api).post('/pins').set('Authorization', `Bearer ${token}`).send({
+                    article: '5b0ad37226dc3db38194e5eb',
+                });
 
                 expect(res).to.have.status(200);
             });
