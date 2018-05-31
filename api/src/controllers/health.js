@@ -81,7 +81,7 @@ exports.status = async (req, res) => {
 	res.status(output.code).send(output);
 };
 
-exports.sentryThrow = (req, res) => {
+exports.sentryThrow = async (req, res) => {
 	Throw();
 };
 

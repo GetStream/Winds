@@ -7,7 +7,6 @@ const parser = data => {
 	return new Promise((resolve, reject) => {
 		if (!data.url) {
 			const err = 'Missing URL (data.url)!';
-			logger.error(err);
 			reject(err);
 		}
 
@@ -25,7 +24,6 @@ const parser = data => {
 				resolve(res.data);
 			})
 			.catch(err => {
-				logger.error(err);
 				reject(err);
 			});
 	});
