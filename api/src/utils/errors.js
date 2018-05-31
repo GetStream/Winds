@@ -40,13 +40,13 @@ function captureError(err, msg) {
 }
 
 exports.setupExpressRequestHandler = (app) => {
-	if (ravenInstance) {
+	if (config.sentry.dsn) {
 		app.use(ravenInstance.requestHandler());
 	}
 };
 
 exports.setupExpressErrorHandler = (app) => {
-	if (ravenInstance) {
+	if (config.sentry.dsn) {
 		app.use(ravenInstance.errorHandler());
 	}
 };
