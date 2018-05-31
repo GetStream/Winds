@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>TechCrunch</title>
+	<atom:link href="https://techcrunch.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://techcrunch.com</link>
+	<description>Startup and Technology News</description>
+	<lastBuildDate>Thu, 31 May 2018 19:04:19 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.6</generator>
+
+<image>
+	<url>https://techcrunch.com/wp-content/uploads/2015/02/cropped-cropped-favicon-gradient.png?w=32</url>
+	<title>TechCrunch</title>
+	<link>https://techcrunch.com</link>
+	<width>32</width>
+	<height>32</height>
+</image>
+<site xmlns="com-wordpress:feed-additions:1">136296444</site>	<item>
+		<title>Google&#8217;s Area 120 incubator aims to improve your NYC subway commute with Pigeon</title>
+		<link>https://techcrunch.com/2018/05/31/area-120-subway-pigeon/</link>
+		<comments>https://techcrunch.com/2018/05/31/area-120-subway-pigeon/#respond</comments>
+		<pubDate>Thu, 31 May 2018 18:33:37 +0000</pubDate>
+		<dc:creator><![CDATA[Anthony Ha]]></dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[Area 120]]></category>
+		<category><![CDATA[Google]]></category>
+		<category><![CDATA[pigeon]]></category>
+		<category><![CDATA[transit]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648957</guid>
+		<description><![CDATA[There&#8217;s a new app coming out of Google&#8217;s Area 120 incubator that could help New York City subway commuters navigate the ever-growing number of delays. While the Pigeon app is already live on the Apple App store, it currently requires an invite code to access, so I wasn&#8217;t able to try it out myself. However, [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>There&#8217;s a new app coming out of <a class="crunchbase-link" href="https://www.crunchbase.com/organization/google/" target="_blank" data-type="organization" data-entity="google">Google&#8217;s <span class="crunchbase-tooltip-indicator"></span></a> Area 120 incubator that could help New York City subway commuters navigate <a href="https://www.nytimes.com/interactive/2018/05/09/nyregion/subway-crisis-mta-decisions-signals-rules.html">the ever-growing number of delays</a>.</p>
+<p>While the Pigeon app is already <a href="https://itunes.apple.com/app/id1318928385">live on the Apple App store</a>, it currently requires an invite code to access, so I wasn&#8217;t able to try it out myself.</p>
+<p>However, <a href="https://pigeon.area120.com/">the Pigeon website</a> describes it as a way for users save their favorite routes, then get recommendations on which route to take on a given day based on delays and crowds reported by other users. It&#8217;s almost like a transit-oriented version of Google-owned navigation app Waze.</p>
+<p>&#8220;After years of living in New York City and commuting on the subway, the Pigeon team knows first-hand that public <a class="crunchbase-link" href="https://www.crunchbase.com/organization/transit/" target="_blank" data-type="organization" data-entity="transit">transit <span class="crunchbase-tooltip-indicator"></span></a> can be frustratingly unpredictable,&#8221; the website says. &#8220;So when we started this project, we decided to create a product that lets subway riders help each other avoid delays, crowds, and incidents that make can make commuting so stressful.&#8221;</p>
+<p><img class="vertical aligncenter size-large wp-image-1648979" src="https://techcrunch.com/wp-content/uploads/2018/05/phonerouteiso.png?w=348" alt="Pigeon" width="348" height="680" /></p>
+<p>As a New Yorker myself, I mostly rely on Google Maps for subway navigation — it does a reasonably good job of including arrival times and information about delays provided by the MTA, but there&#8217;s definitely room for more up-to-date and accurate data. Plus, I usually don&#8217;t check the app on my normal commute, which can mean I end up late to important meetings, or missing them entirely, due to an unexpected delay.</p>
+<p>Startups like Transit (<a href="https://techcrunch.com/2017/09/26/transit-raises-another-5m-from-accel-to-become-a-hub-for-public-transportation/">backed by Accel Partners</a>) and Moovit <a href="https://techcrunch.com/2017/09/26/transit-raises-another-5m-from-accel-to-become-a-hub-for-public-transportation/">(backed by Sequoia and Intel Capital</a>) are also trying to offer better navigation for public transit commuters.</p>
+<p>When asked about the app, a Google spokesperson sent us the following statement:</p>
+<blockquote><p>One of the many projects that we&#8217;re working on within Area 120 is Pigeon, an iOS app that helps New York City subway goers find the best route with live alerts from other riders. Like other projects within Area 120, it&#8217;s a very early experiment so there aren&#8217;t many details to share right now.</p></blockquote>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/area-120-subway-pigeon/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648957</post-id>	</item>
+		<item>
+		<title>Roblox follows Minecraft into the education market</title>
+		<link>https://techcrunch.com/2018/05/31/roblox-follows-minecraft-into-the-education-market/</link>
+		<comments>https://techcrunch.com/2018/05/31/roblox-follows-minecraft-into-the-education-market/#respond</comments>
+		<pubDate>Thu, 31 May 2018 18:18:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sarah Perez]]></dc:creator>
+				<category><![CDATA[Gaming]]></category>
+		<category><![CDATA[coding]]></category>
+		<category><![CDATA[Education]]></category>
+		<category><![CDATA[kids]]></category>
+		<category><![CDATA[Roblox]]></category>
+		<category><![CDATA[Teens]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648913</guid>
+		<description><![CDATA[Roblox, the massively multiplayer online game favored by the under 13 crowd, is following in Minecraft&#8217;s footsteps with a move into the education market. The company this morning announced a new education initiative, Roblox Education, that will offer a free curriculum to educators, along with international summer coding camps, and a free online &#8220;Creator Challenge&#8221; in [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="https://www.roblox.com/">Roblox</a>, the massively multiplayer online game favored by the under 13 crowd, is following in <a href="https://techcrunch.com/2016/11/01/minecraft-education-edition-officially-launches/">Minecraft&#8217;s footsteps</a> with a move into the education market. The company this morning announced a new education initiative, Roblox Education, that will offer a free curriculum to educators, along with international summer coding camps, and a free online &#8220;Creator Challenge&#8221; in partnership with Universal Brand Development, which will see kids building Roblox games inspired by <em>Jurassic World: Fallen Kingdom. </em></p>
+<p>The gaming company has been around for many years, but only <a href="https://techcrunch.com/2018/03/21/roblox-the-club-penguin-for-gen-z-is-now-cash-flow-positive/">recently</a> reached a critical mass where it was ready to talk about its numbers. Today, Roblox sees over 60 million monthly active users, and its creator community building new worlds for kids to explore has doubled to 2 million this year from the year prior, it said earlier this year.</p>
+<p>Roblox gets kids coding by hooking them on the game itself when they&#8217;re young &#8211; around elementary school age. By middle school, users are downloading <a href="https://www.roblox.com/develop">Roblox Studio</a> to build their own games and experiences. And by high school, they&#8217;ve learned to code to customize their games even further.</p>
+<p><img class="alignnone size-large wp-image-1648962" src="https://techcrunch.com/wp-content/uploads/2018/05/day13_2017_gems_2278.jpg?w=680" alt="" width="680" height="453" /></p>
+<p>And the kids aren&#8217;t just building for fun &#8211; there&#8217;s money to be made, too. The top creators make two to three million a year, the company claims. The games are free, but creators monetize through the sale of virtual goods. Roblox says it paid out $30 million to its creator community last year, and is now <a href="https://techcrunch.com/2018/03/21/roblox-the-club-penguin-for-gen-z-is-now-cash-flow-positive/">cash-flow positive</a>.</p>
+<p>With Roblox Education, the aim is to get more kids coding by working with educators directly.</p>
+<p>The new <a href="https://corp.roblox.com/education/">curriculum</a> offers teachers 12 hours of step-by-step tutorials, handouts, technical setup guides, outlines, lesson guides, and more. It&#8217;s shared freely under a Creative Commons license so teachers can use or modify it as they see fit. In the future, the curriculum will be expanded to include other subjects, as well, like Physics and Design, the company says.</p>
+<p><img class="alignnone size-large wp-image-1648965" src="https://techcrunch.com/wp-content/uploads/2018/05/day4_2017_villagehigh_1061.jpg?w=680" alt="" width="680" height="453" /></p>
+<p>In addition, teaching kids how to use Roblox Studio will be the main focus of more than 500 coding <a href="https://corp.roblox.com/education/">camps</a> and online programs this summer in the U.S., U.K. Hong Kong, Singapore, Canada, Spain, Brazil, and Portugal. The kids will learn how to create, publish and market their games to others.</p>
+<p>The company will also run its 4th annual Roblox Summer Accelerator, and host 45 young developers at its HQ for the summer. The program has previously produced some of the more popular Roblox titles, like MeepCity and Lumber Tycoon.</p>
+<p>And it will host its annual Roblox Developer Conference in San Francisco July 13-15, 2018, and in Amsterdam August 17-19, 2018. It&#8217;s doubling the number of attendees this year at both.</p>
+<p>Finally, Roblox will host its first <a href="https://www.roblox.com/jwcreatorchallenge">Creator Challenge</a> with Universal, where kids learn tricks of game building via a <em>Jurassic Park-</em>themed, self-paced course.</p>
+<p>“Roblox’s mission is to power and fuel imagination while inspiring a new generation of creators,” said Grace Francisco, VP of Developer Relations at Roblox, said in a statement about the launch. ”We are thrilled to be launching our education initiative that gives young people of all ages and backgrounds the chance to develop the crucial skills needed to be tomorrow’s entrepreneurs and creators.”</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/roblox-follows-minecraft-into-the-education-market/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648913</post-id>	</item>
+		<item>
+		<title>Come mix your realities at our AR/VR event in LA in October</title>
+		<link>https://techcrunch.com/2018/05/31/come-mix-your-realities-at-our-ar-vr-event-in-la-in-october/</link>
+		<comments>https://techcrunch.com/2018/05/31/come-mix-your-realities-at-our-ar-vr-event-in-la-in-october/#respond</comments>
+		<pubDate>Thu, 31 May 2018 17:49:03 +0000</pubDate>
+		<dc:creator><![CDATA[Matthew Panzarino]]></dc:creator>
+				<category><![CDATA[Augmented Reality]]></category>
+		<category><![CDATA[Events]]></category>
+		<category><![CDATA[Virtual Reality]]></category>
+		<category><![CDATA[AR]]></category>
+		<category><![CDATA[TechCrunch Sessions: AR/VR]]></category>
+		<category><![CDATA[TechCrunch: Sessions]]></category>
+		<category><![CDATA[VR]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648877</guid>
+		<description><![CDATA[TechCrunch is hosting one of our single-topic Sessions events centered on AR/VR and mixed reality in Los Angeles on October 18th at UCLA’s Royce Hall. We’re going to be doing some very cool stuff that we’re not quite ready to talk about, but at the core we’re looking to have incredible discussions with the best [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>TechCrunch is hosting one of our single-topic Sessions events centered on <a href="https://techcrunch.com/events/tc-sessions-ar-vr-2018/?ref=editpost1">AR/VR and mixed reality</a> in Los Angeles on October 18th at UCLA’s Royce Hall. We’re going to be doing some very cool stuff that we’re not quite ready to talk about, but at the core we’re looking to have incredible discussions with the best and brightest in reality creation.</p>
+<p>The goal is to get folks into one room to see some demos, hear some talks and take part in a salon of sorts about the state of AR/VR. We’ll talk shop, philosophy, hardware, software and inclusion.</p>
+<p>As someone who has logged hundreds of hours in a headset, reported on the space and been an advocate of what augmented and virtual realities could do for us, I’m pretty excited. I’ll be programming the event personally, along with our crack reporter in the space, Lucas Matney. The show promises to be bang-up cool with attention paid to the hardware and software that will enable the next generation of experiences in the augmented reality and virtual reality worlds, as well as some more metaphysical chit-chat about how we all go about building these worlds.</p>
+<p>Check out the site for <a href="https://techcrunch.com/events/tc-sessions-ar-vr-2018/?ref=editpost1">Sessions: AR/VR 2018</a>; we’ll be fleshing it out with speakers and more details as we lock them down. You can grab early tickets <a href="https://techcrunch.com/events/tc-sessions-ar-vr-2018/?ref=editpost1&amp;unii-trigger-open=2LGN89">here</a> for $95, which includes access to all the day’s talks and demos and, if you’re a student, we’ve got special tickets just for you <a href="https://techcrunch.com/events/tc-sessions-ar-vr-2018/?ref=editpost1&amp;unii-trigger-open=C82L57">here</a> for $45.</p>
+<p>More to come soon. See you in October!</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/come-mix-your-realities-at-our-ar-vr-event-in-la-in-october/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648877</post-id>	</item>
+		<item>
+		<title>Steve Case and JD Vance are speaking at Disrupt SF on startup opportunities outside of Silicon Valley</title>
+		<link>https://techcrunch.com/2018/05/31/steve-case-and-jd-vance-are-speaking-at-disrupt-sf-on-startup-opportunities-outside-of-silicon-valley/</link>
+		<comments>https://techcrunch.com/2018/05/31/steve-case-and-jd-vance-are-speaking-at-disrupt-sf-on-startup-opportunities-outside-of-silicon-valley/#respond</comments>
+		<pubDate>Thu, 31 May 2018 17:47:17 +0000</pubDate>
+		<dc:creator><![CDATA[Matt Burns]]></dc:creator>
+				<category><![CDATA[Startups]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[disrupt sf 2018]]></category>
+		<category><![CDATA[revolution]]></category>
+		<category><![CDATA[rise of the rest]]></category>
+		<category><![CDATA[steve case]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648811</guid>
+		<description><![CDATA[We’re excited to announce Steve Case and JD Vance will sit down for a fireside chat at Disrupt SF this September. There’s plenty to talk about, too, including the pair’s latest venture: A massive $150 million seed fund backed by an impressive group of investors that are targeted at startups outside of Silicon Valley. As The [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>We’re excited to announce <a class="crunchbase-link" href="https://www.crunchbase.com/person/steve-case/" target="_blank" data-type="person" data-entity="steve-case">Steve Case <span class="crunchbase-tooltip-indicator"></span></a> and JD Vance will sit down for a fireside chat at <a href="https://techcrunch.com/events/disrupt-sf-2018/?ref=speakerpost9&amp;unii-trigger-open=GSLDXW">Disrupt SF</a> this September. There’s plenty to talk about, too, including the pair’s latest venture: A massive $150 million seed fund backed by an impressive group of investors that are targeted at startups outside of Silicon Valley.</p>
+<p>As <a href="https://www.nytimes.com/2017/12/04/business/dealbook/midwest-start-ups.html">The New York Times</a> put it after the fund’s announcement, the complete list of investors in the Rise of the Rest fund “may be the greatest concentration of American wealth and power in one investment fund.” It includes among others Jeff Bezos, Eric Schmidt, John Doerr, Jim Breyer, Dan Gilbert and members of the Walton, Koch and Pritzker families.</p>
+<p>This fund is core to what Case and Vance are championing at <a class="crunchbase-link" href="https://www.crunchbase.com/organization/revolution/" target="_blank" data-type="organization" data-entity="revolution">Revolution <span class="crunchbase-tooltip-indicator"></span></a>. The Washington, D.C.-based venture capital firm primarily backs companies outside of major tech hubs. At Disrupt New York in May, <a href="https://techcrunch.com/2017/05/15/aol-co-founder-steve-case-on-why-vcs-need-to-look-beyond-silicon-valley/">Case told the audience</a> that many regions are overlooked simply because investors can’t “get in their cars and drive to those companies” and he wants to convince other VCs to look outside of their comfort zones.</p>
+<p>In August of 2017 Steve Case, founder of AOL and Revolution, tapped JD Vance to run Revolution as its Managing Partner.</p>
+<p>“I don’t know if I’m ever going to be comfortable with being the media-dubbed spokesperson,” <a href="https://beta.techcrunch.com/2017/03/22/jd-vance-revolution-llc/?_ga=2.58863149.1081417055.1527782756-524205141.1488847824">Vance told TechCrunch at the time</a>. “But I do think you can talk about the issues and try to raise awareness or you can do something about the issues — my goal here is to try to do both. There’s an opportunity I’ve been given here with the platform the book has afforded.”</p>
+<p>Vance is seemingly of the same mind as Case. In his book, which is a must read by the way, Hillbilly Elegy, he lays out his upbringing in Appalachia’s working class and explains the importance of striving to overcome obstacles — and startups outside the Valley have different obstacles to overcome than those located around San Francisco. As the managing partner of Revolution, we hear he has a keen focus that resonates with founders. Vance served in the Golf War, eventually graduating from The Ohio State and Yale and went on to serve as a law clerk and a principle at Peter Thiel’s  VC firm, Mithril Capital Management LLC.</p>
+<p><a href="https://techcrunch.com/2017/05/15/aol-co-founder-steve-case-on-why-vcs-need-to-look-beyond-silicon-valley/">Steve Case spoke at Disrupt NY last year</a> about his current passion in shining a light on startups outside traditional tech hubs.</p>
+<p>“It’s worth remembering that Detroit 75 years ago was like the Silicon Valley,” said Case at Disrupt NY in 2017. “At the time, it was the hottest innovation city in the country, because the automobile was the hot new technology at the time. Silicon Valley was like fruit orchards. These things change. But they lost their way. Detroit lost 60 percent of its population in the last 50 years and they went bankrupt because they lost their entrepreneur mojo.”</p>
+<p>Case’s fireside chat was fascinating and we’re thrilled to have him back with Revolution’s managing partner, JD Vance. While Disrupt SF happens in the heart of Silicon Valley, there are plenty of founders, developers and investors who are constantly looking for opportunities in new regions — just like Steve Case and JD Vance.</p>
+<p>If you&#8217;re looking to purchase tickets to Disrupt, you can grab those right <a href="https://techcrunch.com/events/disrupt-sf-2018/?ref=speakerpost9&amp;unii-trigger-open=GSLDXW">here</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/steve-case-and-jd-vance-are-speaking-at-disrupt-sf-on-startup-opportunities-outside-of-silicon-valley/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648811</post-id>	</item>
+		<item>
+		<title>The Microsoft Launcher for Android now lets you track your kids&#8217; whereabouts</title>
+		<link>https://techcrunch.com/2018/05/31/the-microsoft-launcher-for-android-now-lets-you-track-your-kids-whereabouts/</link>
+		<comments>https://techcrunch.com/2018/05/31/the-microsoft-launcher-for-android-now-lets-you-track-your-kids-whereabouts/#respond</comments>
+		<pubDate>Thu, 31 May 2018 17:46:32 +0000</pubDate>
+		<dc:creator><![CDATA[Frederic Lardinois]]></dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[Android]]></category>
+		<category><![CDATA[blocking]]></category>
+		<category><![CDATA[Microsoft]]></category>
+		<category><![CDATA[MSN]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648875</guid>
+		<description><![CDATA[Microsoft is launching an update to its Android launcher today that gives parents the ability to track their kids&#8217; location. This is one out of a number of parent- and kid-focused announcements the company made today. Others include the ability to block sites in Microsoft Edge on Android and the launch of MSN Kids, a [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Microsoft is launching an update to its <a href="http://aka.ms/microsoftlauncher">Android launcher</a> today that gives parents the ability to track their kids&#8217; location. This is one out of a number of parent- and kid-focused announcements the company made today. Others include the ability to block sites in <a href="http://aka.ms/MicrosoftEdgeforAndroid">Microsoft Edge on Android</a> and the launch of <a href="http://www.msnkids.com/">MSN Kids</a>, a new curated news website for children.</p>
+<p>At the core of these new features are Microsoft&#8217;s <a href="https://support.microsoft.com/en-us/help/12413/microsoft-account-what-is-family">family group settings</a> that already allowed you to do things like track a child&#8217;s activity on Windows 10 and Xbox One devices or limit screen time in general.</p>
+<p><img class="vertical alignright size-full wp-image-1648882" src="https://techcrunch.com/wp-content/uploads/2018/05/2e29ecde37a3cfab3b9b839d564b4338-min.gif" alt="" width="410" height="720" />&#8220;As a mother to a young and curious daughter, I deeply understand the need for tools to help balance the use of technology in the home as well as out of the home,&#8221; writes Shilpa Ranganathan, the General Manager of Microsoft&#8217;s Mobile Experiences group, in today&#8217;s announcement. &#8220;It’s especially near and dear to me as leader of a team building experiences for mobile devices. We emphasize the idea of transparency as a guiding principle for these new experiences.&#8221;</p>
+<p>The new tracking tool is rolling out with today&#8217;s update of the Microsoft Launcher for Android and will put the latest known location of your kids right in its personalized news feed.</p>
+<p>I&#8217;m not sure how useful blocking access to sites in Edge for Android really is, but if you manage to lock your kids out from Chrome or any other pre-installed browser &#8212; and block them from downloading them &#8212; then I guess this could work.</p>
+<p>As for <a href="http://www.msnkids.com/">MSN Kids</a>, Microsoft notes that the site will curate information from trusted sources, including Time for Kids, Popular Science, Sports Illustrated for Kids, National Geographic, and USA TODAY. It&#8217;s worth noting that there is no sponsored content or advertising on the site.</p>
+<p><img class="breakout aligncenter size-full wp-image-1648906" src="https://techcrunch.com/wp-content/uploads/2018/05/2018-05-31_1028.png" alt="" width="1024" height="673" /></p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/the-microsoft-launcher-for-android-now-lets-you-track-your-kids-whereabouts/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648875</post-id>	</item>
+		<item>
+		<title>Spotify’s CEO says company botched ‘hateful conduct’ policy roll out</title>
+		<link>https://techcrunch.com/2018/05/31/spotifys-ceo-says-company-botched-hateful-conduct-policy-roll-out/</link>
+		<comments>https://techcrunch.com/2018/05/31/spotifys-ceo-says-company-botched-hateful-conduct-policy-roll-out/#respond</comments>
+		<pubDate>Thu, 31 May 2018 17:40:50 +0000</pubDate>
+		<dc:creator><![CDATA[Brian Heater]]></dc:creator>
+				<category><![CDATA[Policy]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[Spotify]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648897</guid>
+		<description><![CDATA[Two weeks after his company attempted to impose a policy targeted at curbing “hate content and hateful conduct,” Spotify’s CEO admitted the company mishandled its roll out. During an interview at this week’s Code Conference, Daniel Ek told the crowd, “The whole goal with this was to make sure that we didn’t have hate speech [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p class="p1"><span class="s1">Two weeks after his company attempted to<a href="https://techcrunch.com/2018/05/10/spotify-hateful-conduct-policy/"> impose a policy</a> targeted at curbing “hate content and hateful conduct,” Spotify’s CEO admitted the company mishandled its roll out. </span></p>
+<p class="p1"><span class="s1">During <a href="https://www.youtube.com/watch?v=cdQ7mippAiU">an interview at this week’s Code Conference</a>, Daniel Ek told the crowd, “The whole goal with this was to make sure that we didn’t have hate speech on the service. It was never about punishing one individual artist, or even naming one individual artist as well.”</span></p>
+<p class="p1"><span class="s1">The policy, introduced on May 10, pulled certain artists from Spotify’s curated content streams over bad conduct in their personal lives. Pushback on the policy was almost instantaneous,<span class="Apple-converted-space"> </span>and reports surfaced last week that Spotify was rethinking its approach. In particular, rapper XXXTencion, who was one of two artists single out by the service (along with R. Kelly), was reportedly going to be added back to Spotify’s popular Rap Caviar playlist at some unspecified point. </span></p>
+<p class="p1"><span class="s1">Ek acknowledged that the implementation could have been handled better, and that Spotify’s intention was never to play the role of “moral police.” The executive added that the policy is continuing to evolve, with Spotify soliciting user feedback. Among the many thorny issues the company is navigating here is how to address those artists who have been accused &#8212; but not actually charged or convicted &#8212; of a given crime. </span></p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/spotifys-ceo-says-company-botched-hateful-conduct-policy-roll-out/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648897</post-id>	</item>
+		<item>
+		<title>Klaxoon gets $50M to try to make boring meetings more interactive and productive</title>
+		<link>https://techcrunch.com/2018/05/31/klaxoon-gets-50m-to-try-to-make-boring-meetings-more-interactive-and-productive/</link>
+		<comments>https://techcrunch.com/2018/05/31/klaxoon-gets-50m-to-try-to-make-boring-meetings-more-interactive-and-productive/#respond</comments>
+		<pubDate>Thu, 31 May 2018 17:39:27 +0000</pubDate>
+		<dc:creator><![CDATA[Matthew Lynley]]></dc:creator>
+				<category><![CDATA[Enterprise]]></category>
+		<category><![CDATA[Fundings & Exits]]></category>
+		<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[Startups]]></category>
+		<category><![CDATA[Klaxoon]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648892</guid>
+		<description><![CDATA[If you&#8217;ve ever been in a pointless meeting at work, odds are you&#8217;ve spent part of the time responding to messages or just putzing around on the Internet — but Klaxoon hopes to convert that into something a bit more productive with more interactive meetings. The French startup today said it&#8217;s raised $50 million in [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>If you&#8217;ve ever been in a pointless meeting at work, odds are you&#8217;ve spent part of the time responding to messages or just putzing around on the Internet — but <a href="https://klaxoon.com/">Klaxoon</a> hopes to convert that into something a bit more productive with more interactive meetings.</p>
+<p>The French startup today said it&#8217;s raised $50 million in a new financing round led by Idinvest Partners, with early round investors BPI, Sofiouest, Arkea and White Star Capital Fund also participating. The company offers a suite of tools designed to make those meetings more engaging and generally just cut down on useless meetings with a room of bored and generally unengaged people that might be better off working away at their desk or even taking <em>other</em> meetings. The company has raised about $55.6 million in total.</p>
+<p>The whole point of <a class="crunchbase-link" href="https://www.crunchbase.com/organization/klaxoon/" target="_blank" data-type="organization" data-entity="klaxoon">Klaxoon <span class="crunchbase-tooltip-indicator"></span></a> is to make meetings more engaging, and there are a couple ways to do that. The obvious point is to translate what some classrooms are doing in the form of making the whole session more engaging with the use of connected devices. You might actually remember those annoying clickers in classrooms used to answer multiple choice questions throughout a session, but it is at least one way to engage people in a room — and offering a more robust way of doing that may be something that helps making the session as a whole more productive.</p>
+<p><img class="aligncenter size-large wp-image-1648920" src="https://techcrunch.com/wp-content/uploads/2018/05/klaxoon-3.jpg?w=680" alt="" width="680" height="383" /></p>
+<p>Klaxoon also offers other tools like an interactive whiteboard (remember Smartboards, also in classrooms?) as well as a closed networks for meeting participants that aims to be air-gapped from a broader network so those employees can conduct a meeting in private or if the room isn&#8217;t available. All this is wrapped together with a set of analytics to help employees — or managers — better conduct meetings and generally be more productive. All this is going to be more important going forward as workplaces become more distributed, and it may be tempting to just have a virtual meeting on one screen while either working on a different one — or just messing around on the Internet.</p>
+<p>Of course, lame meetings are a known issue — especially within larger companies. So there are multiple interpretations of ways to try to fix that problem, including Worklytics — a <a href="https://techcrunch.com/2018/03/06/worklytics-wants-to-cut-down-on-lame-meetings-and-help-make-teams-more-efficient/">company that came out of Y Combinator earlier this year</a> — that are trying to make teams more efficient in general. The idea is that if you are able to reduce the time spent in meetings that aren&#8217;t really productive, that&#8217;ll increase the output of a team in general. The goal is not to monitor teams closely, but just find ways to encourage them to spend their time more wisely. Creating a better set of productivity tools inside those meetings is one approach, and one Klaxoon seems to hope plays out.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/klaxoon-gets-50m-to-try-to-make-boring-meetings-more-interactive-and-productive/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648892</post-id>	</item>
+		<item>
+		<title>This newly funded startup wants to help women gauge their reproductive health a lot sooner in life</title>
+		<link>https://techcrunch.com/2018/05/31/this-newly-funded-startup-wants-to-help-women-gauge-their-reproductive-health-a-lot-sooner-in-life/</link>
+		<comments>https://techcrunch.com/2018/05/31/this-newly-funded-startup-wants-to-help-women-gauge-their-reproductive-health-a-lot-sooner-in-life/#respond</comments>
+		<pubDate>Thu, 31 May 2018 17:34:01 +0000</pubDate>
+		<dc:creator><![CDATA[Connie Loizos]]></dc:creator>
+				<category><![CDATA[Education]]></category>
+		<category><![CDATA[Health]]></category>
+		<category><![CDATA[Recent Funding]]></category>
+		<category><![CDATA[Startups]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[maveron]]></category>
+		<category><![CDATA[Modern Fertility]]></category>
+		<category><![CDATA[sound ventures]]></category>
+		<category><![CDATA[sv angel]]></category>
+		<category><![CDATA[Union Square Ventures]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648791</guid>
+		<description><![CDATA[It&#8217;s often the case that women don&#8217;t think much about their reproductive health until they have to. Sometimes it begins with an aside from a well-meaning gynecologist &#8212; or one&#8217;s impatient parents. Sometimes, it&#8217;s because a couple is ready to try conceiving and it&#8217;s proving harder than they imagined it would be. A San Francisco-based [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>It&#8217;s often the case that women don&#8217;t think much about their reproductive health until they have to. Sometimes it begins with an aside from a well-meaning gynecologist &#8212; or one&#8217;s impatient parents. Sometimes, it&#8217;s because a couple is ready to try conceiving and it&#8217;s proving harder than they imagined it would be.</p>
+<p>A San Francisco-based startup called <a href="https://modernfertility.com/">Modern Fertility</a> wants to educate women about their reproductive health much earlier in their lives, enabling them to become more &#8220;proactive&#8221; instead of reactive, says co-founder and CEO Afton Vechery, who worked formerly as a product manager at the genetic testing company 23andMe and, before that, at a healthcare-focused private equity firm in Greenwich, Conn.</p>
+<p>At both places, she learned a lot about the growing number of companies that are empowering customers with information about their own bodies. She also learned, particularly at 23andMe, about the importance of making that information affordable. Indeed, after shelling out $1,500 for tests run by a reproductive endocrinologist to get a better picture of her own reproductive health, Vechery set out to create similar tests that one needn&#8217;t be a Rockefeller to order. Toward that end, an at-home finger-prick hormone test that <a class="crunchbase-link" href="https://www.crunchbase.com/organization/modern-fertility/" target="_blank" data-type="organization" data-entity="modern-fertility">Modern Fertility <span class="crunchbase-tooltip-indicator"></span></a> began selling today for $199.</p>
+<p>The vast difference in price owes to economies of scale, says Vechery. Because there are just 500 infertility clinics in the U.S. and roughly 6,000 endocrinologists &#8212; just 2,000 of which are focused on reproductive health &#8212; the cost of individual testing has been prohibitively high. Modern Fertility, meanwhile, has &#8220;systems and tech and integrations that support a high volume of tests&#8221; conducted at the same time, she says, explaining that with volume comes discounted pricing.</p>
+<p>Modern Fertility is not analyzing its customers&#8217; hormones. It is using all <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/CLIA/How_to_Apply_for_a_CLIA_Certificate_International_Laboratories.html">CLIA-certified</a> labs, including Quest Diagnostics, the 50-year-old, publicly traded clinical laboratory company. &#8220;We’re not making new instruments,&#8221; says Vechery. &#8220;Our differentiation is in access and the information that we provide to women.&#8221;</p>
+<p>In fact, Modern Fertility is billing itself as more of an educational company than anything else. While it will tell consumers about nine hormone levels related to ovarian reserves and overall reproductive health &#8212; which can be important, especially when it comes to considerations around egg freezing &#8212; much of what it offers is related to content based on peer-reviewed studies about menopause and when women typically start to lose their fertility.</p>
+<p>Customers also receive one optional one-on-one phone consultation with a fertility nurse who won&#8217;t give out medical advice but can share more information about which hormones are being tracked and why.</p>
+<p>For the price, that may be enough for many women. It was enough for investors. Modern Fertility just closed on $6 million in funding led by Maveron and Union Square Ventures, which were joined by <a class="crunchbase-link" href="https://www.crunchbase.com/organization/sound-ventures/" target="_blank" data-type="organization" data-entity="sound-ventures">Sound Ventures, <span class="crunchbase-tooltip-indicator"></span></a> #Angels, SV Angel and additional individual investors.</p>
+<p>No doubt these backers see a future where an offering like that from Modern Fertility is a perk offered by employers, more of which are <a href="https://www.huffingtonpost.com/entry/more-employers-offering-fertility-benefits-means-happier_us_5a21a008e4b05072e8b568d7">offering fertility benefits</a> to keep their employees happy and in place. Already, Vechery says that a &#8220;handful of companies&#8221; are interested in layering Modern Fertility&#8217;s tests into their other wellness benefits.</p>
+<p>Modern Fertility is also counting on repeat customers, suggesting to them that re-taking its test every now and then will give a woman a better idea of how her &#8220;fertility curve&#8221; is changing over time.</p>
+<p>Most immediately, says Vechery, Modern Fertility &#8212; co-founded by Carly Leahy, a creative strategist who moved to California from Boston in 2014 after Google recruited her, and who most recently logged two years at Uber &#8212; will be adding to its current, eight-person team.</p>
+<p>It also will be &#8220;trying to understand the best way it can get this information&#8221; to potential customers, says Vechery. &#8220;We want to meet women where they are and educate them that this type of testing is important.&#8221;</p>
+<p><em>Pictured above: Modern Fertility co-founders Afton Vechery, left, and Carly Leahy</em></p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/this-newly-funded-startup-wants-to-help-women-gauge-their-reproductive-health-a-lot-sooner-in-life/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648791</post-id>	</item>
+		<item>
+		<title>AWS launches pay-per-session pricing for its QuickSight BI tool</title>
+		<link>https://techcrunch.com/2018/05/31/aws-launches-pay-per-session-pricing-for-its-quicksight-bi-tool/</link>
+		<comments>https://techcrunch.com/2018/05/31/aws-launches-pay-per-session-pricing-for-its-quicksight-bi-tool/#respond</comments>
+		<pubDate>Thu, 31 May 2018 17:08:41 +0000</pubDate>
+		<dc:creator><![CDATA[Frederic Lardinois]]></dc:creator>
+				<category><![CDATA[Cloud]]></category>
+		<category><![CDATA[Enterprise]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[Amazon]]></category>
+		<category><![CDATA[AWS]]></category>
+		<category><![CDATA[business intelligence]]></category>
+		<category><![CDATA[tableau]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648803</guid>
+		<description><![CDATA[Amazon QuickSight, the company&#8217;s business intelligence tool for AWS, launched back in 2015, but it&#8217;s hard to say how much impact the service has made in the highly competitive BI market. The company has far from given up on this project, though, and today, it&#8217;s introducing a new pay-per-session pricing plan for access to QuickSight dashboards that [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="https://aws.amazon.com/quicksight/pricing/">Amazon QuickSight</a>, the company&#8217;s business intelligence tool for AWS, <a href="https://techcrunch.com/2015/10/07/amazon-launches-quicksight-business-intelligence-service-for-aws/">launched</a> back in 2015, but it&#8217;s hard to say how much impact the service has made in the highly competitive BI market. The company has far from given up on this project, though, and today, it&#8217;s introducing a new pay-per-session pricing plan for access to QuickSight dashboards that is surely meant to give it a bit of a lift in a market where <a href="https://www.tableau.com/">Tableau</a> and Microsoft&#8217;s <a href="https://powerbi.microsoft.com/en-us/">Power BI</a> have captured much of the mindshare.</p>
+<p>Under the new pricing plan, creating and publishing dashboards will stay cost $18 per user and month. For readers, though, who only need to have access to these dashboards, AWS now offers a very simple option: they will now pay $0.30 per session up to a maximum of $5 per month and user. Under this scheme, a session is defined as the first 30 minutes from login.</p>
+<p>Previously, AWS offered two tiers of QuickSight plans: a $9 per user/month standard plan and a $24/user/month enterprise edition with support for Active Directory and encryption at rest.</p>
+<p>That $9/user/month is still available and probably still makes sense for smaller companies where those who build dashboards and consume them are often the same person. The new pricing plan replaces the existing enterprise edition.</p>
+<p>QuickSight already significantly undercuts the pricing of services like Tableau and others, though we&#8217;re also talking about a somewhat more limited <a href="https://www.infoworld.com/article/3187445/analytics/review-amazon-quicksight-covers-the-bi-basics.html">feature set</a>. This new pay-per-session offering only widens the pricing gap.</p>
+<p>&#8220;With highly scalable object storage in Amazon Simple Storage Service (Amazon S3), data warehousing at one-tenth the cost of traditional solutions in Amazon Redshift, and serverless analytics offered by Amazon Athena, customers are moving data into AWS at an unprecedented pace,&#8221; said Dorothy Nicholls, Vice President of Amazon <span class="il">QuickSight</span> at AWS, in a canned comment. &#8220;What&#8217;s changed is that virtually all knowledge workers want easy access to that data and the insights that can be derived. It&#8217;s been cost-prohibitive to enable that access for entire companies until the Amazon <span class="il">QuickSight</span> pay-per-session pricing &#8212; this is a game-changer in terms of information and analytics access.&#8221;</p>
+<p>Current QuickSight users include the NFL, Siemens, Volvo and AutoTrader.</p>
+<p><iframe class='youtube-player' type='text/html' width='640' height='390' src='https://www.youtube.com/embed/C_eT0xRNjCs?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/aws-launches-pay-per-session-pricing-for-its-quicksight-bi-tool/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648803</post-id>	</item>
+		<item>
+		<title>Waymo expands autonomous driving partnership with Fiat Chrysler</title>
+		<link>https://techcrunch.com/2018/05/31/waymo-expands-autonomous-driving-partnership-with-fiat-chrysler/</link>
+		<comments>https://techcrunch.com/2018/05/31/waymo-expands-autonomous-driving-partnership-with-fiat-chrysler/#respond</comments>
+		<pubDate>Thu, 31 May 2018 16:59:42 +0000</pubDate>
+		<dc:creator><![CDATA[Megan Rose Dickey]]></dc:creator>
+				<category><![CDATA[Automotive]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[Transportation]]></category>
+		<category><![CDATA[autonomous driving]]></category>
+		<category><![CDATA[chrysler]]></category>
+		<category><![CDATA[waymo]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648820</guid>
+		<description><![CDATA[On the same day of a massive $2.25 billion Softbank investment into General Motors&#8217; Cruise, Fiat Chrysler Automobiles (FCA) is announcing an expanded partnership with Waymo that will add up to 62,000 more Chrysler Pacifica minivans to Waymo&#8217;s self-driving car fleet later this year. This isn&#8217;t too surprising, given Waymo said earlier this year that [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>On the same day of a massive <a href="https://techcrunch.com/2018/05/31/gms-cruise-gets-2-25b-from-softbanks-vision-fund-1-1b-from-gm/">$2.25 billion Softbank investment</a> into General Motors&#8217; Cruise, Fiat Chrysler Automobiles (FCA) is announcing an expanded partnership with Waymo that will add up to 62,000 more <a class="crunchbase-link" href="https://www.crunchbase.com/organization/chrysler-2/" target="_blank" data-type="organization" data-entity="chrysler-2">Chrysler <span class="crunchbase-tooltip-indicator"></span></a> Pacifica minivans to Waymo&#8217;s self-driving car fleet later this year. This isn&#8217;t too surprising, <a href="https://techcrunch.com/2018/01/29/waymo-orders-thousands-of-pacificas-for-2018-self-driving-fleet-rollout/">given Waymo said earlier this year that it had ordered thousands of new Chrysler Pacifica&#8217;s from FCA</a>.</p>
+<p><a class="crunchbase-link" href="https://www.crunchbase.com/organization/google-s-self-driving-car-project/" target="_blank" data-type="organization" data-entity="google-s-self-driving-car-project">Waymo <span class="crunchbase-tooltip-indicator"></span></a> and FCA are also exploring ways to license Waymo&#8217;s self-driving car technology in order to deploy the tech in cars for consumers.</p>
+<p>&#8220;FCA is committed to bringing self-driving technology to our customers in a manner that is safe, efficient and realistic,&#8221; FCA CEO Sergio Marchionne said in a statement. &#8220;Strategic partnerships, such as the one we have with Waymo, will help to drive innovative technology to the forefront.&#8221;</p>
+<p>This expanded partnership comes a couple of months after <a href="https://techcrunch.com/2018/03/27/waymo-teams-up-with-jaguar-to-intro-a-new-premium-self-driving-car/">Waymo partnered with Jaguar to introduce a premium self-driving car</a>. Earlier this year, Waymo began testing its Chrysler self-driving car fleet in San Francisco. As of May 18, <a href="https://techcrunch.com/2018/05/14/apples-self-driving-car-fleet-grows-to-55-in-california/">Waymo had 51 cars registered</a> with the state of California for self-driving testing with a safety driver. Waymo has also applied for driverless testing in California.</p>
+<p><span style="font-size: 1rem; letter-spacing: -0.1px;">Waymo&#8217;s plan is to launch a full-fledged self-driving transportation service later this year. The idea is for anyone to be able to pop open the Waymo app to request a driverless vehicle. Since 2009, Waymo has logged six million miles driven on public roads, five billion miles in simulated environments and run tests covering more than 20,000 types of driving scenarios.</span></p>
+<p><span style="font-size: 1rem; letter-spacing: -0.1px;">&#8220;Waymo&#8217;s goal from day one has been to build the world’s most experienced driver and give people access to self-driving technology that will make our roads safer,” Waymo CEO John Krafcik said in a statement. “We&#8217;re excited to deepen our relationship with FCA that will support the launch of our driverless service, and explore future products that support Waymo&#8217;s mission.”</span></p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/waymo-expands-autonomous-driving-partnership-with-fiat-chrysler/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648820</post-id>	</item>
+		<item>
+		<title>Philo&#8217;s low-cost TV service expands its lineup with Cheddar, Tastemade, and PeopleTV</title>
+		<link>https://techcrunch.com/2018/05/31/philos-low-cost-tv-service-expands-its-lineup-with-cheddar-tastemade-and-peopletv/</link>
+		<comments>https://techcrunch.com/2018/05/31/philos-low-cost-tv-service-expands-its-lineup-with-cheddar-tastemade-and-peopletv/#respond</comments>
+		<pubDate>Thu, 31 May 2018 16:29:17 +0000</pubDate>
+		<dc:creator><![CDATA[Sarah Perez]]></dc:creator>
+				<category><![CDATA[Media]]></category>
+		<category><![CDATA[cheddar]]></category>
+		<category><![CDATA[live tv]]></category>
+		<category><![CDATA[peopleTV]]></category>
+		<category><![CDATA[philo]]></category>
+		<category><![CDATA[streaming service]]></category>
+		<category><![CDATA[tastemade]]></category>
+		<category><![CDATA[television]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648789</guid>
+		<description><![CDATA[Following the new trend among streaming TV services to combine digital-first channels with traditional TV content, Philo today announced it&#8217;s expanding its live TV service with the addition of Cheddar Big News, People TV, and Tastemade. The Tastemade channel goes live today, with the other two shortly after. Philo is a relative newcomer to the [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Following the new trend among streaming TV services to combine digital-first channels with traditional TV content, <a href="http://philo.com">Philo</a> today announced it&#8217;s expanding its live TV service with the addition of Cheddar Big News, People TV, and Tastemade. The <a class="crunchbase-link" href="https://www.crunchbase.com/organization/tastemade/" target="_blank" data-type="organization" data-entity="tastemade">Tastemade <span class="crunchbase-tooltip-indicator"></span></a> channel goes live today, with the other two shortly after.</p>
+<p><a class="crunchbase-link" href="https://www.crunchbase.com/organization/philo/" target="_blank" data-type="organization" data-entity="philo">Philo <span class="crunchbase-tooltip-indicator"></span></a> is a relative newcomer to the streaming TV market, having <a href="https://techcrunch.com/2017/11/14/philo-ditches-sports-to-introduce-a-16-per-month-live-tv-service/">launched its service in November</a> following its early endeavors as an on-campus TV provider. Its $16-per-month option is designed for cord cutters who care more about entertainment than they do sports.</p>
+<p>By ditching sports programming, Philo undercut its competitors to become one of the cheapest ways to watch traditional cable TV channels, like A&amp;E, AMC, BBC America, Comedy Central, Discovery Channel, Food Network, HGTV, Investigation Discovery (ID), Lifetime, MTV, TLC, Travel Channel, VH1, Viceland and others.</p>
+<p>It also later added an expansion pack for $4 more per month that adds nine more channels, while still providing a 30-day cloud DVR and the ability to stream in HD on up to 3 devices at once.</p>
+<p>Despite its affordable pricing, Philo is still something of an unknown in a market where even big brands like YouTube TV and Hulu are having to spend large marketing budgets just to create awareness around their live TV offerings. YouTube TV, for example, became a sponsor for the <a href="https://techcrunch.com/2018/03/26/youtube-tv-becomes-first-ever-presenting-partner-for-the-nba-finals-following-similar-deal-with-mlb/">NBA Finals</a> and the <a href="https://techcrunch.com/2018/03/08/youtube-tv-will-be-all-over-the-world-series-for-two-more-years/">World Series</a> to spread the word.</p>
+<p>A new angle these services are trying now is to add on digital channels to bring in the internet audience. In April, YouTube TV <a href="https://techcrunch.com/2018/04/18/youtube-tv-adds-its-first-digital-only-networks-with-launch-of-two-channels-from-cheddar/">added its first digital-only networks</a> with the launch of two channels from <a class="crunchbase-link" href="https://www.crunchbase.com/organization/cheddar-tv/" target="_blank" data-type="organization" data-entity="cheddar-tv">Cheddar, <span class="crunchbase-tooltip-indicator"></span></a> <a href="https://techcrunch.com/2018/05/18/youtube-tv-adds-tastemade-and-the-young-turks-as-it-expands-its-digital-media-content/">followed in May</a> by the additions of Tastemade and The Young Turks. Hulu, too, <a href="https://techcrunch.com/2018/04/19/cheddars-digital-news-network-is-coming-to-hulu-too/">recently added Cheddar</a>. Meanwhile, Sling TV already offers Cheddar, as does Pluto.</p>
+<p>These additions also serve as a cheap way to offer viewers more programming, without having to increase prices. The same hold true for Philo, which is keeping the same rates as before, following the expansion.</p>
+<p>“We built Philo for everyone who feels like TV was no longer serving them, and this is one more way we can stand apart,&#8221; said Philo CEO Andrew McCollum, in a statement.</p>
+<p>As for gaining exposure, that&#8217;s a harder nut to crack. Philo&#8217;s newest attempt here is a just launched referral <a href="http://philo.com/refer">program</a>, offering a $5 credit for each referral, and $5 for the person referred.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/philos-low-cost-tv-service-expands-its-lineup-with-cheddar-tastemade-and-peopletv/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648789</post-id>	</item>
+		<item>
+		<title>Scout.fm turns podcasts into personalized talk radio</title>
+		<link>https://techcrunch.com/2018/05/31/scout-fm-turns-podcasts-into-personalized-talk-radio/</link>
+		<comments>https://techcrunch.com/2018/05/31/scout-fm-turns-podcasts-into-personalized-talk-radio/#respond</comments>
+		<pubDate>Thu, 31 May 2018 16:00:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sarah Perez]]></dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[Fundings & Exits]]></category>
+		<category><![CDATA[Media]]></category>
+		<category><![CDATA[Recent Funding]]></category>
+		<category><![CDATA[Startups]]></category>
+		<category><![CDATA[android apps]]></category>
+		<category><![CDATA[iOS apps]]></category>
+		<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[Podcasting]]></category>
+		<category><![CDATA[podcasts]]></category>
+		<category><![CDATA[scout.fm]]></category>
+		<category><![CDATA[voice]]></category>
+		<category><![CDATA[voice app]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648672</guid>
+		<description><![CDATA[Scout.fm wants to change the way people listen to podcasts. Instead of scouring through the over 500,000 shows in your current podcast app, this startup&#8217;s new curated podcast service will just ask you a few questions to find out what you like, then create a podcast station customized to you. The experience is primarily designed [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://scout.fm">Scout.fm</a> wants to change the way people listen to podcasts. Instead of scouring through the over 500,000 shows in your current podcast app, this startup&#8217;s new curated podcast service will just ask you a few questions to find out what you like, then create a podcast station customized to you. The experience is primarily designed for use on smart speakers, like Amazon&#8217;s Alexa-powered Echo devices, but is also available as iOS and Android applications.</p>
+<p>The company was founded just over a year ago by<a href="https://www.linkedin.com/in/carameverden/"> Cara Meverden</a> (CEO), previously of Google, Twitter, Indiegogo, and Medium; along with <a href="https://www.linkedin.com/in/saulcarlin/?lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_people%3BCOqHm4WdTWWpxCl31znq0Q%3D%3D&amp;licu=urn%3Ali%3Acontrol%3Ad_flagship3_search_srp_people-search_srp_result&amp;lici=MbzE1sSrRmCwiDz8htr10w%3D%3D">Saul Carlin</a> (president and COO), previously head of publisher development at Medium, and before that, Politico; and <a href="https://www.linkedin.com/in/daniel-john-mccartney/">Daniel McCartney,</a> (CTO) previously an engineer at GrubHub, Klout and Medium.</p>
+<p><img class=" wp-image-1648702 alignright" src="https://techcrunch.com/wp-content/uploads/2018/05/cara-meverden.jpg?w=400" alt="" width="374" height="374" />At Medium, Meverden explains, they saw an explosion of people creating great written content; but now those publishers had begun to create great audio content, as well.</p>
+<p>But unlike on Medium, which helps to guide readers to topics they like, people today have to seek out new podcasts for themselves. <a class="crunchbase-link" href="https://www.crunchbase.com/organization/scout-fm/" target="_blank" data-type="organization" data-entity="scout-fm">Scout.fm <span class="crunchbase-tooltip-indicator"></span></a> wants to offer a better system, and hopefully bring more listeners to podcasts as a result.</p>
+<p>&#8220;We want to take <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">podcast</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">listening</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">mainstream</span><span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">,&#8221; she says. &#8220;W</span><span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">e</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">think</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">the</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">key</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">to</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">that</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">is</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">making</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">podcasts</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">as</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">easy</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">to</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">listen</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">to</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">as</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">the</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">radio &#8211;</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">and</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">we</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">think</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">that&#8217;s</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">even</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">more</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">critically</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">important, a</span><span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">s</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">we</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">enter</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">the</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">smart</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">speaker</span> <span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">era</span><span class="transcript-snippet__content__body__word ng-star-inserted" role="singleSeekWord">.&#8221; </span></p>
+<p>The Scout.fm service began as a series of experiments on Alexa.</p>
+<p>The company launched over 30 Alexa skills, including a &#8220;Game of Thones&#8221;-themed podcast radio that was popular while the show was airing on HBO. The goal was to test what worked, what topics and formats drew listeners, and gain feedback through calls-to-action to participate in user surveys.</p>
+<p>The result is Scout.fm, a curated podcast service that&#8217;s personalized to your listening preferences &#8211; and one that improves over time.</p>
+<p>Here&#8217;s how it works on the Alexa platform. You first launch the app by saying &#8220;Alexa, open Scout fm.&#8221; The app will respond (using a human voice actor&#8217;s voice, not Alexa&#8217;s) by explaining briefly what Scout.fm does then asks you to choose one of three types of talk radio stations: &#8220;Daily news, brain food, or true stories.&#8221;</p>
+<p>The first is a news station, similar to Alexa&#8217;s &#8220;Flash Briefing;&#8221; the second, &#8220;brain food,&#8221; focuses on other interesting and informative content, that&#8217;s not day-to-day news; and the last is a true crime podcast station.</p>
+<p>The voice app will then ask you a few more questions as part of this setup process to find out what other subjects appeal to you by having you respond, on a scale of one to ten, how much of a history buff you are, or how much you&#8217;re interested in culture, like art, film and literature, for example.</p>
+<p><iframe class='youtube-player' type='text/html' width='640' height='390' src='https://www.youtube.com/embed/hnHu3L0fGKQ?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p>On subsequent launches, the app will simply ask if you want to return to your &#8220;Brain Food&#8221; (or other selected) station. If you say no, you can try one of the other options.</p>
+<p>However, once the setup process is over, the experience becomes very much like listening to talk radio.</p>
+<p>A podcast will begin playing &#8211; Scout.fm favors those without ads at the very beginning &#8211; allowing you to listen as long as you&#8217;d like, or say &#8220;next&#8221; to move to the next one. Each new podcast episodes has a brief, spoken introduction that Scout.fm handwrites, so you know what&#8217;s coming up. Your listening can go on for hours, offering you a hands-free means of switching podcasts and discovering new favorites.</p>
+<p>The app will also adjust to your preferences over time, removing those you tend to skip &#8211; much like how the thumbs down works on Pandora.</p>
+<p>Scout.fm doesn&#8217;t include every podcast that&#8217;s out there. Instead, it&#8217;s a curated selection of a few hundred with high production values, narrative storytelling and tight editing.</p>
+<p><img class="vertical size-large wp-image-1648708 alignleft" src="https://techcrunch.com/wp-content/uploads/2018/05/scout-fm-screenshot-browse2x.png?w=394" alt="" width="394" height="680" />&#8220;So if we listen to something and the two co-hosts kind of go on for half an hour at the beginning, that&#8217;s not a great podcast for this format,&#8221; Meverden says. &#8220;We want shows where they&#8217;re going to get right into it. That right away limits things, but there&#8217;s still an abundance of content.&#8221;</p>
+<p>For example, some of the podcasts Scout.fm includes come from The Wall St. Journal, The New York Times, ESPN, and podcast networks like Gimlet, Wondery, Parcast and others.</p>
+<p>The same curated selection of podcasts is also available in Scout.fm&#8217;s mobile apps for iOS and Android, which work with the voice assistant on the phone. (For example, you can tap your AirPods to wake Siri then say &#8220;Next&#8221; to move between podcasts.)</p>
+<p>&#8220;If you&#8217;re jogging, our apps are an excellent companion because you don&#8217;t have to go back to your phone and try to find a new thing to listen to,&#8221; notes Meverden.</p>
+<p>Since Scout.fm&#8217;s launch, it has accrued 1.5 million minutes listened across its network of experimental apps ahead of today&#8217;s public debut. The Alexa user base listened for twice as long as mobile users.</p>
+<p>Currently, the service is not generating revenue, but, in the future, the team envisions call-to-action ads that could work with the Alexa app to share more information about the products, as well as ways it could utilize the newer in-app purchase mechanisms for Alexa skills.</p>
+<p>The company is backed by $1.4M in seed funding from Bloomberg Beta, Precursor Ventures, Advancit and #Angels.</p>
+<p>“The Scout team’s unique insight is that podcasts, no matter how good, won’t go mainstream until it is much simpler for consumers to find and listen to the content that’s right for them,” said Charles Hudson, managing partner at Precursor Ventures, in a statement about the investment. “The fast adoption of smart speakers changes this. We can open up podcasts to an entirely new audience,&#8221; he said.</p>
+<p>Scout.fm is available on <a href="https://www.amazon.com/Subcast-Scout-FM/dp/B07D7L4YDP">Alexa</a>, <a href="https://subcast.app.link/iOS">iOS</a> and <a href="https://subcast.app.link/android">Android</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/scout-fm-turns-podcasts-into-personalized-talk-radio/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648672</post-id>	</item>
+		<item>
+		<title>iOS App Store has seen over 170B downloads, over $130B in revenue since July 2010</title>
+		<link>https://techcrunch.com/2018/05/31/ios-app-store-has-seen-over-170b-downloads-over-130b-in-revenue-since-july-2010/</link>
+		<comments>https://techcrunch.com/2018/05/31/ios-app-store-has-seen-over-170b-downloads-over-130b-in-revenue-since-july-2010/#respond</comments>
+		<pubDate>Thu, 31 May 2018 15:43:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sarah Perez]]></dc:creator>
+				<category><![CDATA[Apps]]></category>
+		<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[App Annie]]></category>
+		<category><![CDATA[app-store]]></category>
+		<category><![CDATA[Apple]]></category>
+		<category><![CDATA[Google]]></category>
+		<category><![CDATA[Google Play]]></category>
+		<category><![CDATA[iOS apps]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648732</guid>
+		<description><![CDATA[The App Store has seen over 170 billion downloads over the past decade, totaling over $130 billion in consumer spend. This data was shared this morning by app intelligence firm App Annie, which is marking the App Store&#8217;s 10th Anniversary with a look back on the store&#8217;s growth and the larger trends it&#8217;s seen. These [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>The App Store has seen over 170 billion downloads over the past decade, totaling over $130 billion in consumer spend. This data was <a href="https://www.appannie.com/en/insights/market-data/data-behind-10-years-ios-app-store/">shared</a> this morning by app intelligence firm App Annie, which is marking the App Store&#8217;s 10th Anniversary with a look back on the store&#8217;s growth and the larger trends it&#8217;s seen. These figures aren&#8217;t the full picture, however &#8211; the App Store launched on July 10, 2008 with just 500 applications, but <a class="crunchbase-link" href="https://www.crunchbase.com/organization/app-annie/" target="_blank" data-type="organization" data-entity="app-annie">App Annie <span class="crunchbase-tooltip-indicator"></span></a> arrived in 2010. The historical data for this report, therefore, goes from July 2010 through December 2017.</p>
+<p>That means the true numbers are even higher that what App Annie can confirm.</p>
+<p>The report paints a picture of the continued growth of the App Store over the years, noting that iOS App Store revenue growth outpaces downloads, and that nearly doubled between 2015 to 2017.</p>
+<p><img class="alignnone size-large wp-image-1648752" src="https://techcrunch.com/wp-content/uploads/2018/05/ios-app-store-revenue-growth.png?w=680" alt="" width="680" height="312" /></p>
+<p>iOS device owners apparently love to spend on apps, too.</p>
+<p>The iOS App Store only has a 30 percent share of worldwide downloads, but accounts for 66 percent of consumer spend, the report says.</p>
+<p>But this isn&#8217;t a complete picture of the iOS vs. Android battle, as <a class="crunchbase-link" href="https://www.crunchbase.com/organization/google/" target="_blank" data-type="organization" data-entity="google">Google <span class="crunchbase-tooltip-indicator"></span></a> Play isn&#8217;t available in China. App Annie&#8217;s data is incomplete on this front as it&#8217;s not accounting for the third-party Android app stores in China.</p>
+<p><img class="alignnone size-large wp-image-1648755" src="https://techcrunch.com/wp-content/uploads/2018/05/ios-v-google-play.png?w=680" alt="" width="680" height="330" /></p>
+<p>China today plays an outsized role, as App Annie has repeatedly reported, in terms of App Store revenue, even without Google Play. In fact, the APAC region accounts for nearly 60 percent of consumer spend &#8211; a trend that began in earnest with the October 2014 release of the iPhone 6 and 6 Plus in China.</p>
+<p><img class="alignnone size-large wp-image-1648758" src="https://techcrunch.com/wp-content/uploads/2018/05/apac-consumer-spend.png?w=680" alt="" width="680" height="355" /></p>
+<p>But when you look back at the App Store trends to date (or, as of July 2010 &#8211; which is as far back as App Annie&#8217;s data goes), it&#8217;s the U.S. that leads by a slim margin. China has quickly caught up but the U.S. is still the top country for all-time downloads, with 40.1 billion to China&#8217;s 39.9 billion; and it has generated $36 billion in consumer spend to China&#8217;s $27.7 billion.</p>
+<p><img class="alignnone size-large wp-image-1648761" src="https://techcrunch.com/wp-content/uploads/2018/05/all-time-downloads.png?w=680" alt="" width="680" height="310" /></p>
+<p>iPhone users are heavy app users, too, the report notes.</p>
+<p>In several markets, users have 100 or more apps installed, including Australia, India, China, Germany, Brazil, Japan, South Korea, Indonesia, and France. The U.S., U.K., and Mexico come close, with 96, 90, and 89 average monthly apps installed in 2017, respectively.</p>
+<p>Of course the numbers of apps used monthly are much smaller, but still range in the high 30&#8217;s to low 40&#8217;s, App Annie claims.</p>
+<p><img class="alignnone size-large wp-image-1648756" src="https://techcrunch.com/wp-content/uploads/2018/05/apps-installed.png?w=680" alt="" width="680" height="331" /></p>
+<p>The report additionally examines the impact of games, which accounted for only 31 percent of downloads in 2017, but generated 75 percent of the revenue. The APAC regions plays a large role here as well, with 3.4 billion game downloads last year, and $19.3 billion in consumer spend.</p>
+<p><img class="alignnone size-large wp-image-1648760" src="https://techcrunch.com/wp-content/uploads/2018/05/games-2017.png?w=680" alt="" width="680" height="314" /></p>
+<p>Subscriptions, meanwhile, are a newer trend, but one that&#8217;s already boosting App Store revenues considerably, accounting for $10.6 billion in consumer spend in 2017. This is driven mainly by media streaming apps like Netflix, Pandora, and Tencent Video, for example, but Tinder makes a notable showing as one of the top five worldwide apps by revenue.</p>
+<p><img class="alignnone size-large wp-image-1648764" src="https://techcrunch.com/wp-content/uploads/2018/05/subscriptions1.png?w=680" alt="" width="680" height="297" /></p>
+<p>Thanks to subscriptions and other trends, App Annie predicts the worldwide iOS App Store revenue will grow 80 percent from 2017 to $75.7 billion by 2022.</p>
+<p><img class="alignnone size-large wp-image-1648765" src="https://techcrunch.com/wp-content/uploads/2018/05/revenue-prediction.png?w=680" alt="" width="680" height="403" /></p>
+<p>And while the App Store today has over 2 million apps, it has seen over 4.5 million apps released on its store to date. Many of these have been removed by <a class="crunchbase-link" href="https://www.crunchbase.com/organization/apple/" target="_blank" data-type="organization" data-entity="apple">Apple <span class="crunchbase-tooltip-indicator"></span></a> or the developers, which is why the number of live apps is so much lower.</p>
+<p><img class="alignnone size-large wp-image-1648763" src="https://techcrunch.com/wp-content/uploads/2018/05/apps-to-date.png?w=680" alt="" width="680" height="313" /></p>
+<p>The full report with the charts included is <a href="https://www.appannie.com/en/insights/market-data/data-behind-10-years-ios-app-store/">here</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/ios-app-store-has-seen-over-170b-downloads-over-130b-in-revenue-since-july-2010/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648732</post-id>	</item>
+		<item>
+		<title>Canon has sold its last film camera</title>
+		<link>https://techcrunch.com/2018/05/31/canon-has-sold-its-last-film-camera/</link>
+		<comments>https://techcrunch.com/2018/05/31/canon-has-sold-its-last-film-camera/#respond</comments>
+		<pubDate>Thu, 31 May 2018 15:29:03 +0000</pubDate>
+		<dc:creator><![CDATA[Brian Heater]]></dc:creator>
+				<category><![CDATA[Hardware]]></category>
+		<category><![CDATA[Canon]]></category>
+		<category><![CDATA[film]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648753</guid>
+		<description><![CDATA[Mark this date on your calendar. It’s the end of yet another tech era. Though, granted, this one’s been been death rattling for nearly a decade now. Canon this week announced with no fanfare that it’s sold its last film camera. The news was spotted by PetaPixel on the camera giant’s Japanese support forum. The [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p class="p1"><span class="s1">Mark this date on your calendar. It’s the end of yet another tech era. Though, granted, this one’s been been death rattling for nearly a decade now. Canon this week announced with no fanfare that it’s sold its last film camera. The news was <a href="https://petapixel.com/2018/05/30/canon-is-now-out-of-the-film-camera-business-after-80-years/">spotted by PetaPixel</a> on the camera giant’s <a href="http://cweb.canon.jp/e-support/products/eos/180530eos1v-end.html">Japanese support forum</a>. </span></p>
+<p class="p1"><span class="s1">The model in question is the EOS-1V, which, incidentally, the company actually stopped making a full eight years ago. Since it has simply been selling out the rest of its stock, which, it seems, has finally depleted. It’s less of a bang than a prolonged whimper, but it’s the end of an era, nonetheless, marking the first time Canon hasn’t offered a film camera since the 30s, when its parent company started offering a device called the &#8220;Kwanon.&#8221;</span></p>
+<p class="p1"><span class="s1">Those who are feeling suddenly nostalgic, you can likely pick one up used fairly easily (though this news might bump up their premium a bit), and I’m sure the inevitable Kickstarter project to revive the technology can’t be too far off, because that’s how these things go now. </span></p>
+<p class="p1"><span class="s1">And, of course, some other brands are still supporting film in one form or other, including, notably, Nikon. As for Canon, the company has promised to continue to offer repair on the EOS-1V until October 31st 2025, though that could end as early as 2020 for some, if parts and inventory run out sooner. </span></p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/canon-has-sold-its-last-film-camera/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648753</post-id>	</item>
+		<item>
+		<title>New York VC Steve Schlafman has a new gig with Primary Venture Partners</title>
+		<link>https://techcrunch.com/2018/05/31/new-york-vc-steve-schlafman-has-a-new-gig-with-primary-venture-partners/</link>
+		<comments>https://techcrunch.com/2018/05/31/new-york-vc-steve-schlafman-has-a-new-gig-with-primary-venture-partners/#respond</comments>
+		<pubDate>Thu, 31 May 2018 14:27:47 +0000</pubDate>
+		<dc:creator><![CDATA[Connie Loizos]]></dc:creator>
+				<category><![CDATA[TC]]></category>
+		<category><![CDATA[Venture Capital]]></category>
+		<category><![CDATA[Coupang]]></category>
+		<category><![CDATA[groups]]></category>
+		<category><![CDATA[jet.com]]></category>
+		<category><![CDATA[primary ventures]]></category>
+		<category><![CDATA[RRE Ventures]]></category>
+		<category><![CDATA[Steve Schlafman]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648474</guid>
+		<description><![CDATA[Steve Schlafman has been an East Coast investor for roughly a decade &#8212; scouring deals for the Kraft Group ahead of joining Lerer Hippeau as an early employee, then spending more than four years as a principal with RRE Ventures before announcing on Twitter, to the surprise of some, that he was leaving the New [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a class="crunchbase-link" href="https://www.crunchbase.com/person/steve-schlafman/" target="_blank" data-type="person" data-entity="steve-schlafman">Steve Schlafman <span class="crunchbase-tooltip-indicator"></span></a> has been an East Coast investor for roughly a decade &#8212; scouring deals for the Kraft Group ahead of joining Lerer Hippeau as an early employee, then spending more than four years as a principal with RRE Ventures before <a href="https://twitter.com/schlaf/status/918815722519834624">announcing on Twitter</a>, to the surprise of some, that he was leaving the New York firm.</p>
+<p>Many guessed that Schlafman, like a <a href="https://techcrunch.com/2018/05/25/former-journo-alexia-bonatsos-takes-the-wraps-off-her-new-venture-fund-dream-machine/">growing number</a> of people right now, was setting off to create his own venture outfit. Today, Schlafman says it was a consideration and that he did a bit of research toward this end, but that as an identical twin, he&#8217;s not really programmed to work on his own. Enter<a href="http://www.primary.vc/"> Primary Venture Partners</a>, a seed-stage firm in New York that was previously known as High Peaks Venture Partners and has backed numerous high-profile startups &#8212; Jet.com and Coupang among them &#8212; even while flying low itself.</p>
+<p>Schlafman had been friends for years with co-founders Ben Sun and Brad Svrluga, co-investing with them in the civic app startup PublicStuff (<a href="http://www.govtech.com/products/Accela-Acquisition-of-PublicStuff-Signifies-Maturation-of-Government-Tech-Market.html">acquired</a> in 2015 by a better-funded peer), and turning to them for advice as he was figuring out his next moves. When they suggested that he join them as a venture partner, he thought the move made perfect sense. &#8220;It feels like buying a stock that&#8217;s on the rise in some ways,&#8221; he tells us.</p>
+<p>More from our conversation yesterday, edited for length:</p>
+<p><strong>TC: Why did you leave RRE when you did?</strong></p>
+<p>SS: It was an incredibly hard decision, but after soul-searching about what I wanted to do long-term, I just felt that seed investing is where my heart is. RRE tends to be a Series A investor, and while I enjoy Series A, my super power is really spotting founders early and helping them along that journey.</p>
+<p><strong>TC: Were you thinking about launching your own fund?</strong></p>
+<p>SS: I was under the assumption at the time that I’d go start a fund as a solo GP, but after doing work [on the idea] for four or five months, I decided I didn’t want to work alone. I’m a collaborative person by nature, and the idea of working on my own for the next 18 to 36 months as a solo GP just wan’t attractive. I was in touch with Brad and Ben and they said, &#8216;What would think of joining forces with us?&#8217; They’d been helping me think through different models, and it evolved that I could bring a lot to Primary.</p>
+<p><strong>TC: You&#8217;ve led deals in some companies that seemed out there at the time. I still remember <a href="https://www.strictlyvc.com/2015/04/24/need-a-breather-this-vc-is-hoping-so/">chatting with you</a> years ago about <a href="https://breather.com/">Breather</a>, the on-demand network of meeting rooms, and thinking it was pretty far out there.</strong></p>
+<p>SS: I tend to like the weird things. I think part of the reason Primary works so well is that Ben has worked with transactional marketplaces, and Brad [knows] business-to business applications and I’ve traversed both worlds. I&#8217;ve also done things like [crime reporting app] <a href="https://itunes.apple.com/us/app/citizen/id1039889567?mt=8">Citizen</a>, [indoor farming startup] <a href="http://boweryfarming.com/">Bowery Farming</a> and <a href="http://joingroups.com/#trust-science">Groups</a> [an opiate treatment center and community]. That&#8217;s just my style, so I think they&#8217;re excited to get my brain to the table and bring a new perspective.</p>
+<p><strong>TC: &#8216;Venture partner&#8217; means different things at different firms. Is this a part-time role?</strong></p>
+<p>SS: We did spend a lot of time talking about this, and there are a few roles that I’m going to play for them. Certainly, I&#8217;ll be being active on the investment team. I&#8217;ll also be helping with the broader firm strategy given the perspective I&#8217;ve gained by working in three investment firms previously.</p>
+<p>But over the last six months, I&#8217;ve also been going through training to become an executive performance coach, which is something I really believe in. Not only have I personally gotten the benefit of coaching, but founders who&#8217;ve worked with coaches will tell you the experience transforms the way they lead. I plan to bring that to Primary, too.</p>
+<p><strong>TC: That&#8217;s interesting. Whose coaching program is it, and how involved is it?</strong></p>
+<p>It&#8217;s 250 hour of classroom [learning] and coaching at <a href="http://www.leadershipthatworks.com/public/home/index.cfm">Leadership that Works</a>, an accredited coach training program that [<a href="https://www.wired.com/2017/02/this-man-makes-founders-cry/">renowned VC-turned-coach</a>] Jerry Colonna and other coaches at <a href="https://www.reboot.io/">Reboot</a> [a coaching firm Colonna co-founded nearly four years ago] have gone through.</p>
+<p>For me, I’m married to a founder, and she’s been a big inspiration for me as an investor and taught me a lot about the daily grind of running a company. [I&#8217;ve learned much more about] not telling a founder how to run their company, but asking questions that ultimately help them make the tough decisions themselves. At the end of the day, I’m showing up for them and meeting them where they are in their process and hopefully helping them get to answers themselves versus being a traditional investor who tries to have all the answers.</p>
+<p><strong>TC: Are you on any boards right now?</strong></p>
+<p>SS: I&#8217;m not. I rolled off all my RRE boards when I left the firm.</p>
+<p><strong>TC: A year from now, will you be a general partner with Primary? I&#8217;m hearing the firm is raising another fund after closing its last fund with $60 million in 2016.</strong></p>
+<p>SS: Part of the appeal of working with Brad and Ben &#8212; and much of why I believe in Primary&#8217;s current trajectory &#8212; is that it&#8217;s building out the only true fund that&#8217;s focused on New York as a seed platform. Right now, I plan to spend half my time with them, and there will be a certain portion of my time spent evaluating alternative paths, in terms of maybe starting a company, or coaching could certainly be one of those paths I decide to take.</p>
+<p>I&#8217;ll be working from Primary&#8217;s office every day like a team member, but I will have a bit of flexibility to explore a variety of avenues. It&#8217;s a fluid role. I imagine I&#8217;ll get entrenched pretty quickly, though.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/new-york-vc-steve-schlafman-has-a-new-gig-with-primary-venture-partners/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648474</post-id>	</item>
+		<item>
+		<title>Alcatel’s $100 Android Go phone hits the U.S. next week</title>
+		<link>https://techcrunch.com/2018/05/31/alcatels-100-android-go-phone-hits-the-u-s-next-week/</link>
+		<comments>https://techcrunch.com/2018/05/31/alcatels-100-android-go-phone-hits-the-u-s-next-week/#comments</comments>
+		<pubDate>Thu, 31 May 2018 14:17:13 +0000</pubDate>
+		<dc:creator><![CDATA[Brian Heater]]></dc:creator>
+				<category><![CDATA[Hardware]]></category>
+		<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[Alcatel]]></category>
+		<category><![CDATA[Android Go]]></category>
+		<category><![CDATA[TCL]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648717</guid>
+		<description><![CDATA[At MWC, ZTE promised that its Tempo Go would be the first device to bring Android Oreo (Go Edition) to the States. But, well, stuff happened, and the company’s had a lot bigger things to deal with in the intervening months. Alcatel, however, is on the case with the 1X.  TCL announced this morning that [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p class="p1"><span class="s1">At MWC, ZTE promised that its <a href="https://techcrunch.com/2018/02/25/zte-will-deliver-the-first-android-oreo-go-edition-handset-for-the-u-s-market-in-march/">Tempo Go</a> would be the first device to bring Android Oreo (Go Edition) to the States. But, well, <a href="https://techcrunch.com/2018/05/16/how-zte-became-the-focal-point-of-us-china-relations/">stuff happened</a>, and the company’s had a lot bigger things to deal with in the intervening months. Alcatel, however, is on the case with the 1X. </span></p>
+<p class="p1"><span class="s1">TCL announced this morning that the budget device will be hitting Amazon some time next week, priced at an extremely affordable $100, unlocked. It will also be arriving at Best Buy and Walmart soon after, no doubt taking advantage of the fact that it’s the only Android Go handset available in the U.S. for the time being.</span></p>
+<p class="p1"><span class="s1">The specs are unsurprisingly uninspiring. There’s a 960 x 480 5.3-inch screen, a MediaTek chip and 1GB of RAM. The good news, however, is that the new, lightweight version of Google’s mobile operating system is built for exactly those hardware restraints, which means you ought to get a much smoother Android experience than you would on a similarly specced handset running the full OS. </span></p>
+<p class="p1"><span class="s1">While the operating system is well positioned to get a foothold in developing countries, Google was quick to point out that it wasn’t limiting Android Go’s availability to those parts of the world. But while a number of manufacturers have signed on, none appeared too eager to launch the handsets in the States — well, aside from ZTE, but we all know how that went. </span></p>
+<p class="p1"><span class="s1">Another Android Go devices is on the way as well, with HMD bringing the Nokia 2.1 to the States in July. </span></p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/alcatels-100-android-go-phone-hits-the-u-s-next-week/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648717</post-id>	</item>
+		<item>
+		<title>Neighborhood Goods raises $5.75M to reinvent the department store</title>
+		<link>https://techcrunch.com/2018/05/31/neighborhood-goods-seed-funding/</link>
+		<comments>https://techcrunch.com/2018/05/31/neighborhood-goods-seed-funding/#respond</comments>
+		<pubDate>Thu, 31 May 2018 14:08:31 +0000</pubDate>
+		<dc:creator><![CDATA[Anthony Ha]]></dc:creator>
+				<category><![CDATA[eCommerce]]></category>
+		<category><![CDATA[Fundings & Exits]]></category>
+		<category><![CDATA[Startups]]></category>
+		<category><![CDATA[forerunner ventures]]></category>
+		<category><![CDATA[Neighborhood Goods]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648686</guid>
+		<description><![CDATA[Neighborhood Goods, a startup rethinking the traditional department store experience, is announcing that it has raised $5.75 million in seed funding. Co-founder and CEO Matt Alexander (who co-founded the company with Mark Masinter) told me via email that while the largely static layout and offerings of a department store provide a degree of &#8220;consistency and [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="https://neighborhoodgoods.com">Neighborhood Goods</a>, a startup rethinking the traditional department store experience, is announcing that it has raised $5.75 million in seed funding.</p>
+<p>Co-founder and CEO Matt Alexander (who co-founded the company with Mark Masinter) told me via email that while the largely static layout and offerings of a department store provide a degree of &#8220;consistency and reliability,&#8221; they&#8217;re also &#8220;dull and unchanging,&#8221; as well as &#8220;fairly transactional with little more to provide.&#8221;</p>
+<p>So instead, <a class="crunchbase-link" href="https://www.crunchbase.com/organization/neighborhood-goods/" target="_blank" data-type="organization" data-entity="neighborhood-goods">Neighborhood Goods <span class="crunchbase-tooltip-indicator"></span></a> will allow around 15 brands to create their own &#8220;activations,&#8221; each highlighting the aesthetic and products that the brands choose. (<a href="https://techcrunch.com/2017/05/24/bulletin-seed-funding/">Bulletin is another startup looking to bring a pop-up approach to traditional retail</a>.) The store will also have a restaurant and bar, and communal spaces that could be used for things like speaking events or art installations.</p>
+<p>&#8220;At Neighborhood Goods, we’re creating something more social and communal around an ever-changing landscape of products,&#8221; Alexander said, later adding, &#8220;Neighborhood Goods ostensibly takes the polish and approachability of the typical department store, but combines it with the dynamism and community of a pop-up store or pop-up marketplace.&#8221;</p>
+<p>He also said technology will play a big role in the experience — particularly with an iOS app that will allow customers to learn more about the brands, text the staff, have products brought to them and make purchases.</p>
+<p>The funding was led by <a class="crunchbase-link" href="https://www.crunchbase.com/organization/forerunner-ventures/" target="_blank" data-type="organization" data-entity="forerunner-ventures">Forerunner Ventures, <span class="crunchbase-tooltip-indicator"></span></a> with participation from Maveron, CAA Ventures, Global Founders Capital, NextGen Venture Partners, Revolution&#8217;s Rise of the Rest Seed Fund, Dollar Shave Club founder Michael Dubin and Retail Connection co-founder Alan P. Shor (who&#8217;s also joining the board of directors).</p>
+<p>“Community and emotional connection are a big part of what drives consumer spending — something Matt and Mark understand wholeheartedly,” said Forerunner&#8217;s Kirsten Green in the funding announcement. “The delicate balance of both experience and discovery is reshaping the retail industry as shoppers crave brands that are unique and worth getting excited over.&#8221;</p>
+<p>Neighborhood Goods plans to open its first location — a 13,000-square-foot store in Plano, Texas — this fall. Asked why he chose Plano, Alexander said:</p>
+<blockquote><p>Specifically, we’re able to tap into an aggressive consumer market, whilst bringing brands closer to exceptional customers. And we’re able to do so without the brands having to invest exorbitant amounts, hiring extensive retail teams, or developing marketing initiatives from the ground-up in new markets &#8230; That’s not to say we won’t look at markets like LA, NY, and SF in future, but, as a launchpad for a new concept, Plano is uniquely good for us today.</p></blockquote>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/neighborhood-goods-seed-funding/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648686</post-id>	</item>
+		<item>
+		<title>The queer dating app Her expands with curated community spaces</title>
+		<link>https://techcrunch.com/2018/05/31/her-app-queer-women-communities-rebrand/</link>
+		<comments>https://techcrunch.com/2018/05/31/her-app-queer-women-communities-rebrand/#respond</comments>
+		<pubDate>Thu, 31 May 2018 14:00:18 +0000</pubDate>
+		<dc:creator><![CDATA[Taylor Hatmaker]]></dc:creator>
+				<category><![CDATA[Social]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[Her]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648418</guid>
+		<description><![CDATA[After carving out a niche as the first dating app by and for queer women, Her is broadening its mission. Today, the app formerly known as Dattch is launching a Communities feature — kind of like a set of mini queer subreddits — to let people connect around interests and identity as a group. &#8220;We spent [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>After carving out a niche as the first dating app by and for queer women, <a href="https://techcrunch.com/tag/her/">Her</a> is broadening its mission. Today, the app<a href="https://readwrite.com/2014/03/04/dattch-lesbian-gay-women-dating-app/"> formerly known as Dattch</a> is launching a Communities feature — kind of like a set of mini queer subreddits — to let people connect around interests and identity as a group.</p>
+<p>&#8220;We spent the past three years bringing people together in one on one conversations and introductions — communities is about taking it beyond the one on one,&#8221; <a class="crunchbase-link" href="https://www.crunchbase.com/organization/dattch/" target="_blank" data-type="organization" data-entity="dattch">Her <span class="crunchbase-tooltip-indicator"></span></a> founder Robyn Exton told TechCrunch.</p>
+<p>&#8220;We started paying attention to the number of queer spaces that are closing,&#8221; Exton said, noting that women&#8217;s centers, lesbian bars, queer bookshops and other queer IRL spaces are closing in record numbers in recent years. &#8220;We actually think they&#8217;re needed more than ever.&#8221;</p>
+<p>Her&#8217;s new Communities feature aims to create a digital version of those collective queer spaces, letting users connect with interest and identity-based groups, with message boards custom built for Her&#8217;s unique user base. Users can post content in Communities or follow another person&#8217;s feed to stay up to date on what&#8217;s going in the Her universe.</p>
+<p><img class="aligncenter wp-image-1648421 size-large" src="https://techcrunch.com/wp-content/uploads/2018/05/her-feed-e1527731616718.png?w=540" alt="" width="540" height="538" /></p>
+<p>A curated starter pack of Communities launches today, though Exton plans to add more over time with the potential for user-generated Communities and pop-ups around specific events. The first set includes a space for queer women of color, one centered around mindfulness and wellbeing and another for news and entertainment, among others.</p>
+<p>The categories are pretty broad for now, but it sounds like Her plans to adapt Communities to whatever its users end up wanting. That flexibility coupled with Exton&#8217;s commitment to maintaining a space that&#8217;s &#8220;so ragingly queer&#8221; set Her apart from dating apps that generally fumble any dating experience that isn&#8217;t explicitly for straight people or gay men.</p>
+<p>Her also plans to push toward internationalization in 2018 to grow its 3 million registered users. The app is already live in 55 countries and its largest non-English speaking markets are France, Germany, Spain, Italy, Brazil, Mexico, Indonesia and the Philippines. The app will host events tailored toward each of those locales in the coming year.</p>
+<p>Just in time for Pride Month, Her is also launching a rebrand aimed at making the app more inclusive and reflective of what Exton calls &#8220;the future of fluidity that we believe in.&#8221;</p>
+<p>&#8220;Our community and our audience has changed hugely, even in the last three years,&#8221; Exton said. &#8220;We needed to reflect that as a brand.&#8221;</p>
+<p><img class="aligncenter wp-image-1648422 size-large" src="https://techcrunch.com/wp-content/uploads/2018/05/her-world-is-yours.png?w=680" alt="" width="680" height="410" /></p>
+<p>According to Exton, there&#8217;s been a massive spike in Her users under the age of 29 describing their gender as non-binary or their sexuality as pansexual — a shift reflective of language and identity evolution in the queer community at large. The language of the rebrand describes a vision in which &#8220;sexuality and gender are found on a spectrum, where labels remain but are not set in stone.&#8221;</p>
+<p>Exton hopes that Communities will create meaningful spaces in which Her users can gather and explore their own identities as they evolve and change. &#8220;So much queerness that happens inside of Her,&#8221; Exton said. &#8220;People describe it as feeling like you&#8217;re coming home.&#8221;</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/her-app-queer-women-communities-rebrand/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648418</post-id>	</item>
+		<item>
+		<title>Orange and Google form new partnership to invest in and buy EMEA startups</title>
+		<link>https://techcrunch.com/2018/05/31/orange-google/</link>
+		<comments>https://techcrunch.com/2018/05/31/orange-google/#respond</comments>
+		<pubDate>Thu, 31 May 2018 13:06:13 +0000</pubDate>
+		<dc:creator><![CDATA[Ingrid Lunden]]></dc:creator>
+				<category><![CDATA[Europe]]></category>
+		<category><![CDATA[TC]]></category>
+		<category><![CDATA[Google]]></category>
+		<category><![CDATA[orange digital ventures]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648642</guid>
+		<description><![CDATA[Google, more recently by way of parent company Alphabet, has been a prolific investor in startups across the globe by way of entities like GV and CapitalG. Today, it announced its newest effort in this area, specifically outside of the US. The search and Android giant is partnering with Orange Digital Ventures, the corporate venture [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://google.com">Google</a>, more recently by way of parent company Alphabet, has been a prolific investor in startups across the globe by way of entities like GV and CapitalG. Today, it announced its newest effort in this area, specifically outside of the US. The search and Android giant is partnering with <a href="http://digitalventures.orange.com/">Orange Digital Ventures</a>, the corporate venture fund of the French carrier <a href="http://orange.com">Orange</a>, on a new effort to find, fund, and potentially acquire startups in the EMEA region, and specifically in the areas of the internet of things, cybersecurity, cloud services, AI, fintech and connectivity solutions.</p>
+<p>The two are not disclosing a specific fund size, nor are they talking about any financial terms in this deal at this point, except to note that the investments could potentially be made at any stage, from seed to growth, depending on the startup in question.</p>
+<p>The two expect the first investments to be announced later this year.</p>
+<p>&#8220;Our goal is to join forces in financing the most promising digital startups,&#8221; said Marc Rennard, the CEO of Orange Digital Ventures (ODV), said in an interview. &#8220;We will then work together to qualify them, and when a common interest is there, we will join forces to invest in them.&#8221;</p>
+<p>To be clear, <a class="crunchbase-link" href="https://www.crunchbase.com/organization/google/" target="_blank" data-type="organization" data-entity="google">Google <span class="crunchbase-tooltip-indicator"></span></a> has confirmed to me that this is not an extension of GV or CapitalG but activity out of its corporate development arm, which also makes investments into companies when they are viewed as strategic to Google and a potential route to an acquisition. (One, slightly outsized, example of one these investments in a third party would be <a href="https://techcrunch.com/2018/01/29/google-htc/">Google&#8217;s $1.1 billion deal</a> to buy a part of HTC.)</p>
+<p>&#8220;We are delighted to support Orange&#8217;s ecosystem of start-ups and innovation and to explore alongside them opportunities for co-investment in Europe, Africa and the Middle East (EMEA),&#8221; said Carlo d&#8217;Asaro Biondo, EMEA President of Google Partnerships, in a statement. &#8220;Orange&#8217;s ecosystem is consistent with Google&#8217;s know-how and our ability to accelerate the growth of start-ups. This partnership is a way to enhance our collective contribution to innovation in this region.&#8221;</p>
+<p>Indeed, in a sense, the deal is mutually beneficial for both sides.</p>
+<p>On the part of Google, the company has strong dealflow and outreach particularly among US startups, in keeping with it being based there, and when it comes to GV or CapitalG either in the US, Europe, or elsewhere, the efforts are not intended primarily to be strategic to Google&#8217;s own interests. But when it comes to connecting with startups in EMEA that might be useful companies for Google to work with and potentially acquire to expand its business, it may not be seeing as many of those as it wants to.</p>
+<p>Rennard said that Orange, on the other hand, gets on average around 1,200 startups pitching it for investment each year, and that&#8217;s before you consider startups that might get introduced through other VCs it works with already like Partech.</p>
+<p>The thinking here is that working with Google will help ODV better filter some of those opportunities to make sure that the most interesting startups with the most potential get spotted and backed, and also to help Orange and Google both get in on the best deals in what appears to be a competitive investing environment at the moment.</p>
+<p>&#8220;Have we missed opportunities? Yes. Can we improve? Yes. Could we have invested in an Amazon or Google before they became what they are now? Yes, and maybe we should have,&#8221; said Rennard. He also admitted that Orange has found it a challenge to get in on some of the more obvious and interesting startups in EMEA.</p>
+<p>&#8220;From time to time, it’s difficult to have a place at the table. When a startup decides to call for investors, they might cover all their needs from others, without any possibility of us entering too,&#8221; he said. &#8220;But with Google plus Orange, I think the company will think twice before rejecting us, so it may help us.&#8221;</p>
+<p>There is another reason why it may serve Google well to do more in Europe. The company has been under a lot of scrutiny for its anticompetitive practices in advertising and in its Android mobile operating system. By investing in startups in Europe (and beyond) it&#8217;s one way for Google to position itself as a team player, supporting smaller tech businesses.</p>
+<p>Orange and Google have been working together for some 10 years already in other aspects of their businesses including <a href="https://www.orange.com/en/Press-Room/press-releases/press-releases-2016/Orange-and-Google-sign-strategic-partnership-to-increase-access-to-mobile-internet-services-across-Africa-and-Middle-East">developing and building out connectivity solutions in Africa</a>, which has also extended into developing <a href="https://www.zdnet.com/article/orange-ties-up-google-deal-launches-40-android-smartphone-with-free-data/">cheap handsets</a> together, and this investment plan is an extension of that as well.</p>
+<p>Orange is no stranger to trying to work closer with tech companies to bring some of their ethos, culture, and rapid customer growth to their business &#8212; which, like many large carriers, continues to bring in huge amounts of cash and strong margins, but is often based on legacy services and therefore runs the risk of shrinking, being curtailed by regulators, or simply becoming less appealing to consumers. Previously, the company also <a href="https://techcrunch.com/2017/04/24/facebook-launches-telco-infrastructure-accelerator-with-orange/">partnered with Facebook</a> to develop an infrastructure accelerator, also focused on emerging markets.</p>
+<p>ODV was <a href="https://techcrunch.com/2015/01/22/frances-orange-launches-digital-ventures-a-23m-fund-for-early-stage-investments/">first established back in 2015</a> as a $23 million fund for early stage investments, a way for Orange to gain a better foothold in Silicon Valley, and has since grown to handling just under $500 million in investments across the world. Included in that, the carrier has also partnered with a number of other third parties, <a href="https://techcrunch.com/2012/03/20/orange-publicis-funds-first-investment-15m-for-ad-personalization-provider-mythings/">such as ad giant Publicis</a>, to invest in companies that could potentially serve them to bring more cutting-edge technology into their businesses.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/orange-google/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648642</post-id>	</item>
+		<item>
+		<title>Ethereum wallet imToken raises $10M Series A from IDG to expand in the U.S., Asia and Africa</title>
+		<link>https://techcrunch.com/2018/05/31/ethereum-wallet-imtoken-raises-10m-series-a-from-idg-to-expand-in-the-u-s-asia-and-africa/</link>
+		<comments>https://techcrunch.com/2018/05/31/ethereum-wallet-imtoken-raises-10m-series-a-from-idg-to-expand-in-the-u-s-asia-and-africa/#respond</comments>
+		<pubDate>Thu, 31 May 2018 13:00:27 +0000</pubDate>
+		<dc:creator><![CDATA[Catherine Shu]]></dc:creator>
+				<category><![CDATA[TC]]></category>
+		<category><![CDATA[blockchain]]></category>
+		<category><![CDATA[China]]></category>
+		<category><![CDATA[cryptocurrency]]></category>
+		<category><![CDATA[digital wallet]]></category>
+		<category><![CDATA[ethereum]]></category>
+		<category><![CDATA[imToken]]></category>
+
+		<guid isPermaLink="false">https://techcrunch.com/?p=1648465</guid>
+		<description><![CDATA[imToken, which claims to be the world’s largest Ethereum wallet, will focus on expanding in Asia and the United States after raising a $10 million Series A from IDG Capital, it announced today. The capital will also be used to add new features, including support for Bitcoin, EOS and other blockchains. imToken is the latest [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="https://token.im/">imToken</a>, which claims to be the world’s largest Ethereum wallet, will focus on expanding in Asia and the United States after raising a $10 million Series A from IDG Capital, it announced today. The capital will also be used to add new features, including support for Bitcoin, EOS and other blockchains.</p>
+<p><a class="crunchbase-link" href="https://www.crunchbase.com/organization/imtoken/" target="_blank" data-type="organization" data-entity="imtoken">imToken <span class="crunchbase-tooltip-indicator"></span></a> is the latest addition to IDG Capital’s cryptocurrency investments, which include Coinbase and Circle. In a press statement, IDG Capital partner Young Guo said “imToken has developed its product into one of the top crypto asset wallets in the world with such a sound reputation. We believe it will become a significant infrastructure for the tokenization manifesto, benefitting both the crypto economy and blockchain technology. We’re excited to back imToken.”</p>
+<p><img class="alignright wp-image-1648513" src="https://techcrunch.com/wp-content/uploads/2018/05/screen-shot-2018-05-31-at-2-18-57-pm.png?w=245" alt="" width="350" height="429" />Founded in 2016 by chief executive officer Ben He and based in Hangzhou, imToken’s core market is currently China. The company supports 30,000 tokens, claims more than 4 million monthly active users and says it handled $35 million in pass-through transactions last year.</p>
+<p>He tells TechCrunch that the company will use its new capital to study local regulations and launch imToken 2.0 international in new markets. It will focus first on Southeast Asia before looking toward other Asian countries, like Korea, Japan and India, where “regulations are maturing quickly and as a result we’re doing our due diligence amid increasing scrutiny from local governments,” He says.</p>
+<p>Then imToken will concentrate on countries in Africa, including Nigeria, where they already have a user base. Its expansion into the U.S. will happen at the same time as the rest of its international roll out.</p>
+<p>In addition to the imToken wallet, the company’s services also include Tokenlon, an in-app decentralized exchange in partnership with Kyber Network and 0x, and DApp store, a marketplace for decentralized mobile apps.</p>
+<p>In its new markets, especially the U.S., imToken will face several established competitors, including digital services MyEtherWallet, Coinbase and Ledger Nano and a host of hardware wallets. He is sanguine about the competition, saying that the goal of all blockchain companies is to move the technology forward and that imToken has built positive relationships with its rivals.</p>
+<p>He adds that imToken’s advantage, however, is “taking a step further than our competitors, as we’re focused on building an ecosystem within imToken for all our users.” The company wants to “move toward a blockchain-agnostic stage,” which means users will be able to store different assets in one imToken wallets. Then it wants to lower the barrier for entry into blockchain tech by making it easier to manage assets across different platforms, including peer-to-peer transactions and merchant payments, with imToken 2.0 International.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://techcrunch.com/2018/05/31/ethereum-wallet-imtoken-raises-10m-series-a-from-idg-to-expand-in-the-u-s-asia-and-africa/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<post-id xmlns="com-wordpress:feed-additions:1">1648465</post-id>	</item>
+	</channel>
+</rss>
