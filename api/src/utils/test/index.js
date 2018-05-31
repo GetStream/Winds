@@ -63,11 +63,11 @@ export async function loadFixture(...fixtures) {
 
 				models[modelName] = models[modelName].map(fix => {
 					let m = Object.assign({}, fix);
-					if (m.id) {
-						m._id = mongoose.Types.ObjectId(m.id);
-					}
-					if (m._id) {
-						m._id = mongoose.Types.ObjectId(m._id);
+					// bit of a hack, but needed for references
+					for (let key of Object.keys(m)) {
+						if (mongoose.Types.ObjectId.isValid(m[key])) {
+							m[key] = mongoose.Types.ObjectId(m[key]);
+						}
 					}
 					return m;
 				});

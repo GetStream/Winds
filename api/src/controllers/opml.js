@@ -32,6 +32,9 @@ exports.get = async (req, res) => {
 	console.log('start', userID);
 
 	let user = await User.find({ userID });
+	if (!user) {
+		return res.sendStatus(404)
+	}
 
 	let header = {
 		dateCreated: moment().toISOString(),
@@ -39,7 +42,7 @@ exports.get = async (req, res) => {
 		title: `Subscriptions in Winds - Powered by ${config.product.author}`,
 	};
 
-	console.log('follows', follows);
+	console.log('header', header);
 
 	let outlines = follows.map(follow => {
 		let feed = follow.rss ? follow.rss : follow.podcast;
@@ -50,6 +53,7 @@ exports.get = async (req, res) => {
 			type: feedType,
 			xmlUrl: feed.feedUrl,
 		};
+		console.log(obj)
 		return obj;
 	});
 	let opml = opmlGenerator(header, outlines);
