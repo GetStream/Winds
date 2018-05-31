@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<opml version="1.0">
+  <head>
+    <title>Sample OPML file</title>
+  </head>
+  <body>
+    <outline title="UserJS.org news" text="UserJS.org news" type="rss" version="RSS" xmlUrl="http://userjs.org/subscribe/news" htmlUrl="http://userjs.org/"/>
+    <outline title="Olli's blog" text="Olli's blog" type="rss" version="RSS" xmlUrl="http://my.opera.com/olli/xml/atom/blog/" htmlUrl="http://my.opera.com/olli/"/>
+    <outline title="Astronomy Picture of the Day" text="Astronomy Picture of the Day" type="rss" version="RSS" fix091="yes" xmlUrl="http://www.jwz.org/cheesegrater/RSS/apod.rss" htmlUrl="http://antwrp.gsfc.nasa.gov/apod/"/>
+  </body>
+</opml>

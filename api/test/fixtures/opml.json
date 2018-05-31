@@ -1,0 +1,20 @@
+{
+  "RSS": [
+      {
+        "_id": "5acfe3928125f655c1004f45",
+          "title"   : "OPML RSS 1",
+          "feedUrl" : "http://rss.cnn.com/rss/cnn_topstories.rss"
+      }
+  ],
+  "Podcast": [
+      {
+          "_id": "5acfd99ec393652e812cd569",
+          "title"   : "OPML Podcast 2",
+          "feedUrl" : "http://layout.fm/rss"
+      }
+  ],
+  "Follow": [
+    {"rss":"5acfe3928125f655c1004f45","user":""},
+    {"podcast":"5acfd99ec393652e812cd569","user":""}
+  ]
+}

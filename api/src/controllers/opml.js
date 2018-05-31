@@ -23,7 +23,8 @@ const client = stream.connect(config.stream.apiKey, config.stream.apiSecret)
 // - test coverage
 
 exports.get = async (req, res) => {
-    let follows, user = await Follow.find({user: req.user.sub}), User.find({req.user.sub})
+  let userID = req.user.sub
+    let follows, user = await Promise.all([Follow.find({user: userID}),  User.find({userID})])
     let header = {
         dateCreated: moment().toISOString(),
         ownerName: user.name,
@@ -51,7 +52,9 @@ exports.get = async (req, res) => {
     res.end(opml)
 }
 
-exports.post = (req, res) => {
+exports.post = async (req, res) => {
+
+  /*
     const upload = Buffer.from(req.file.buffer).toString("utf8")
     const data = Object.assign({}, req.body, { user: req.user.sub }) || {}
 
@@ -189,5 +192,5 @@ exports.post = (req, res) => {
             .catch(err => {
                 res.status(500).send(err.message)
             })
-    })
+    })*/
 }

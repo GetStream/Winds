@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head>
+    <title>Subscriptions in Feedly Cloud</title>
+  </head>
+  <body>
+    <outline text="Stack Overflow" title="Stack Overflow">
+      <outline type="rss"
+        text="Selenium C#" title="Selenium C#"
+        xmlUrl="http://stackoverflow.com/feeds/tag/selenium-webdriver%20c%23"
+        htmlUrl="http://stackoverflow.com/questions/tagged/?tagnames=selenium-webdriver%20c%23&amp;sort=active"/>
+      <outline type="rss"
+        text="SpecFlow" title="SpecFlow"
+        xmlUrl="http://stackoverflow.com/feeds/tag/specflow"
+        htmlUrl="http://stackoverflow.com/questions/tagged/?tagnames=specflow&amp;sort=active"/>
+    </outline>
+  </body>
+</opml>
