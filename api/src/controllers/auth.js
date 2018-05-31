@@ -144,39 +144,30 @@ exports.forgotPassword = async (req, res, _) => {
     }
 };
 
-exports.resetPassword = (req, res) => {
+exports.resetPassword = async (req, res, _) => {
     const data = req.body || {};
-    let opts = {
-        new: true,
-    };
+    const opts = { new: true, };
 
-    User.findOneAndUpdate(
-        { email: data.email.toLowerCase(), recoveryCode: data.passcode },
-        { password: data.password },
-        opts,
-    )
-        .then(user => {
-            if (!user) {
-                return res.sendStatus(404);
-            }
+    try {
+        const user = await User.findOneAndUpdate(
+            { email: data.email.toLowerCase(), recoveryCode: data.passcode },
+            { password: data.password },
+            opts,
+        );
+        if (!user) {
+            return res.sendStatus(404);
+        }
 
-            res.status(200).send({
-                _id: user._id,
-                email: user.email,
-                interests: user.interests,
-                jwt: jwt.sign(
-                    {
-                        email: user.email,
-                        sub: user._id,
-                    },
-                    config.jwt.secret,
-                ),
-                name: user.name,
-                username: user.username,
-            });
-        })
-        .catch(err => {
-            logger.error(err);
-            res.sendStatus(422);
+        res.status(200).send({
+            _id: user._id,
+            email: user.email,
+            interests: user.interests,
+            jwt: jwt.sign( { email: user.email, sub: user._id }, config.jwt.secret),
+            name: user.name,
+            username: user.username,
         });
+    } catch(err) {
+        logger.error(err);
+        res.sendStatus(422);
+    }
 };
