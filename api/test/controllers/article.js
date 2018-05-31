@@ -24,7 +24,7 @@ describe('Article controller', () => {
 	})
 
 	describe('get', () => {
-		it('should match /articles/:articleId', async () => {
+		it('should return the right article via /articles/:articleId', async () => {
 			let response = await withLogin(
 				request(api).get(`/articles/${article.id}`)
 			);
@@ -33,7 +33,7 @@ describe('Article controller', () => {
 	});
 
 	describe('get parsed article', () => {
-		it('should match /articles/:articleId', async () => {
+		it('should return the parsed version of the article', async () => {
 			let response = await withLogin(
 				request(api).get(`/articles/${article.id}?type=parsed`)
 			);
@@ -42,7 +42,12 @@ describe('Article controller', () => {
 	});
 
 	describe('list', () => {
-
+		it('should return the list of articles', async () => {
+			let response = await withLogin(
+				request(api).get('/articles')
+			);
+			expect(response).to.have.status(200);
+		});
 	});
 
 });

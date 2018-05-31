@@ -8,6 +8,6 @@ module.exports = api => {
 	api.route('/rss').post(RSS.post);
 	api.route('/rss/:rssId').put(RSS.put);
 
-	api.route('/rss/:rssId/articles').get(Article.list);
+	api.route('/rss/:rssId/articles').get(wrapAsync(Article.list));
 	api.route('/rss/:rssId/articles/:articleId').get(wrapAsync(Article.get));
 };
