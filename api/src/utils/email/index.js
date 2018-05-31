@@ -23,9 +23,7 @@ const email = data => {
 		const type = data.type.toLowerCase();
 
 		if (data.type === 'welcome') {
-			const msg = ejs.render(
-				fs.readFileSync(__dirname + '/templates/welcome.ejs', 'utf8'),
-			);
+			const msg = ejs.render(fs.readFileSync(__dirname + '/templates/welcome.ejs', 'utf8'));
 
 			const obj = {
 				to: data.email,
@@ -62,10 +60,9 @@ const email = data => {
 				});
 			}
 
-			const msg = ejs.render(
-				fs.readFileSync(__dirname + '/templates/password.ejs', 'utf8'),
-				{ passcode: data.passcode },
-			);
+			const msg = ejs.render(fs.readFileSync(__dirname + '/templates/password.ejs', 'utf8'), {
+				passcode: data.passcode,
+			});
 
 			const obj = {
 				to: data.email,
@@ -102,10 +99,10 @@ const email = data => {
 				});
 			}
 
-			const msg = ejs.render(
-				fs.readFileSync(__dirname + '/templates/followee.ejs', 'utf8'),
-				{ follower: data.follower, followerId: data.followerId },
-			);
+			const msg = ejs.render(fs.readFileSync(__dirname + '/templates/followee.ejs', 'utf8'), {
+				follower: data.follower,
+				followerId: data.followerId,
+			});
 
 			const obj = {
 				to: data.email,

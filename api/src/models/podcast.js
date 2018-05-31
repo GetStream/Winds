@@ -91,7 +91,25 @@ export const PodcastSchema = new Schema(
 			default: '',
 		},
 	},
-	{ collection: 'podcasts' },
+	{
+		collection: 'podcasts',
+		toJSON: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+			},
+		},
+	},
 );
 
 PodcastSchema.plugin(timestamps, {

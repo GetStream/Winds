@@ -1,8 +1,6 @@
 // this should be the first import
 import '../loadenv';
 
-import Queue from 'bull';
-
 import stream from 'getstream';
 import normalize from 'normalize-url';
 import moment from 'moment';
@@ -13,25 +11,24 @@ import Episode from '../models/episode';
 import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
-import search from '../utils/search';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
-import { ParsePodcast } from './parsers';
+import { ParsePodcast } from '../parsers';
 import util from 'util';
+
+import async_tasks from '../async_tasks';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
-const podcastQueue = new Queue('podcast', config.cache.uri);
-const ogQueue = new Queue('og', config.cache.uri);
-
+// TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-
-podcastQueue.process(10, handlePodcast);
+async_tasks.ProcessPodcastQueue(5, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {
 	let promise = _handlePodcast(job);
 	promise.catch(err => {
-		logger.warn(`podcast job ${job} broke with err ${err}`);
+		logger.info(`podcast job ${job} broke with err ${err}`);
+      	logger.error(err);
 	});
 	return promise;
 }
@@ -50,7 +47,7 @@ async function _handlePodcast(job) {
 
 	// mark as done, will be schedule again in 15 min from now
 	// we do this early so a temporary failure doesnt leave things in a broken state
-	let completed = await markDone(podcastID);
+	await markDone(podcastID);
 
 	// parse the episodes
 	let podcastContent;
@@ -67,14 +64,27 @@ async function _handlePodcast(job) {
 		podcastContent.episodes.map(episode => {
 			let normalizedUrl = normalize(episode.url);
 			episode.url = normalizedUrl;
-			return updateEpisode(podcast._id, normalizedUrl, episode);
+			return upsertEpisode(podcast._id, normalizedUrl, episode);
 		}),
 	);
 
 	// Only send updated episodes to Stream
 	let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
-		return updatedEpisode;
+		return updatedEpisode && updatedEpisode.link;
 	});
+
+	await Promise.all(updatedEpisodes.map( episode => {
+		async_tasks.OgQueueAdd(
+			{
+				type: 'episode',
+				url: episode.link,
+			},
+			{
+				removeOnComplete: true,
+				removeOnFail: true,
+			},
+		);
+	}));
 
 	if (updatedEpisodes.length > 0) {
 		let chunkSize = 100;
@@ -92,52 +102,58 @@ async function _handlePodcast(job) {
 			});
 
 			// addActivities to Stream
-			let streamResponse = await podcastFeed.addActivities(streamEpisodes);
-			// update the collection information for follow suggestions
-			let collectionResponse = await sendPodcastToCollections(podcastID);
+			await podcastFeed.addActivities(streamEpisodes);
 		}
+		// update the collection information for follow suggestions
+		await sendPodcastToCollections(podcast);
 	}
 }
 
 // updateEpisode updates 1 episode and sync the data to og scraping
-async function updateEpisode(podcastID, normalizedUrl, episode) {
-	let rawEpisode = await Episode.findOneAndUpdate(
-		{
-			podcast: podcastID,
-			url: normalizedUrl, // do not lowercase this - some podcast URLs are case-sensitive
-		},
-		{
-			description: episode.description,
-			duration: episode.duration,
-			enclosure: episode.enclosure,
-			images: episode.images,
-			link: episode.link,
-			podcast: podcastID,
-			publicationDate: episode.publicationDate,
-			title: episode.title,
-			url: episode.url,
-		},
-		{
-			new: true,
-			rawResult: true,
-			upsert: true,
-		},
-	);
-	let newEpisode = rawEpisode.value;
-	if (rawEpisode.lastErrorObject.updatedExisting) {
-		return;
-	} else if (newEpisode.link) {
-		await ogQueue.add(
+async function upsertEpisode(podcastID, normalizedUrl, episode) {
+	let update = {
+		description: episode.description,
+		duration: episode.duration,
+		enclosure: episode.enclosure,
+		images: episode.images,
+		link: episode.link,
+		podcast: podcastID,
+		publicationDate: episode.publicationDate,
+		title: episode.title,
+		url: episode.url,
+	};
+
+	try {
+		return await Episode.findOneAndUpdate(
 			{
-				type: 'episode',
-				url: newEpisode.link,
+				$and: [
+					{
+						podcast: podcastID,
+						url: normalizedUrl,
+					},
+					{
+						$or: Object.keys(update).map(k => {
+							return {
+								[k]: {
+									$ne: update[k],
+								},
+							};
+						}),
+					},
+				],
 			},
+			update,
 			{
-				removeOnComplete: true,
-				removeOnFail: true,
+				new: true,
+				upsert: true,
 			},
 		);
-		return newEpisode;
+	} catch(err) {
+		if (err.code === 11000){
+			return null;
+		} else {
+			throw error;
+		}
 	}
 }
 

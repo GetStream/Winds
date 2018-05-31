@@ -1,4 +1,4 @@
-import { ParsePodcast } from '../workers/parsers';
+import { ParsePodcast } from '../parsers';
 import franc from 'franc-min';
 
 export default podcastUrl => {

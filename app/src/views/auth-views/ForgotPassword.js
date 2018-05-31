@@ -2,6 +2,8 @@ import { Link, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
 import Img from 'react-image';
 import axios from 'axios';
+import backArrow from '../../images/icons/back-arrow.svg';
+import lock from '../../images/icons/lock.svg';
 import config from '../../config';
 
 class ForgotPassword extends Component {
@@ -68,12 +70,12 @@ class ForgotPassword extends Component {
 				<div className="forgot-password-wrapper">
 					<div className="back">
 						<Link to={`/login`}>
-							<Img src="images/icons/back-arrow.svg" />
+							<Img src={backArrow} />
 							Back
 						</Link>
 					</div>
 					<div className="lock">
-						<Img src="images/icons/lock.svg" />
+						<Img src={lock} />
 					</div>
 					<div className="cta">
 						<p>

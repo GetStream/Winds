@@ -2,6 +2,8 @@ import { Link, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
 import Img from 'react-image';
 import axios from 'axios';
+import backArrow from '../../images/icons/back-arrow.svg';
+import lock from '../../images/icons/lock.svg';
 import config from '../../config';
 
 class ResetPassword extends Component {
@@ -9,22 +11,22 @@ class ResetPassword extends Component {
 		super(props);
 
 		this.state = {
+			code: null,
 			email: null,
-			passphrase: null,
 			password: null,
 			redirect: false,
 			valid: false,
 		};
 
 		this.validateEmail = this.validateEmail.bind(this);
-		this.validatePassphrase = this.validatePassphrase.bind(this);
+		this.validateCode = this.validateCode.bind(this);
 		this.validatePassword = this.validatePassword.bind(this);
 
 		this.requestPasswordReset = this.requestPasswordReset.bind(this);
 	}
 
 	validateForm() {
-		if (this.state.email && this.state.passphrase && this.state.password) {
+		if (this.state.email && this.state.code && this.state.password) {
 			this.setState({ valid: true });
 		} else {
 			this.setState({ valid: false });
@@ -38,14 +40,9 @@ class ResetPassword extends Component {
 		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 		if (reg.test(email)) {
-			this.setState(
-				{
-					email: email,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
+			this.setState({
+				email: email,
+			});
 		} else {
 			this.setState(
 				{
@@ -58,13 +55,13 @@ class ResetPassword extends Component {
 		}
 	}
 
-	validatePassphrase(e) {
-		let passphrase = e.target.value.trim();
+	validateCode(e) {
+		let code = e.target.value.trim();
 
-		if (passphrase.length >= 10) {
+		if (code.length >= 10) {
 			this.setState(
 				{
-					passphrase: passphrase,
+					code,
 				},
 				() => {
 					this.validateForm();
@@ -73,7 +70,7 @@ class ResetPassword extends Component {
 		} else {
 			this.setState(
 				{
-					passphrase: null,
+					code: null,
 				},
 				() => {
 					this.validateForm();
@@ -85,7 +82,7 @@ class ResetPassword extends Component {
 	validatePassword(e) {
 		let password = e.target.value.trim();
 
-		if (password.length >= 8) {
+		if (password.length >= 2) {
 			this.setState(
 				{
 					password: password,
@@ -108,10 +105,11 @@ class ResetPassword extends Component {
 
 	requestPasswordReset(e) {
 		e.preventDefault();
+
 		axios
 			.post(config.api.url + '/auth/reset-password', {
-				email: this.state.email,
-				passcode: this.state.passphrase,
+				email: this.state.email.toLowerCase(),
+				passphrase: this.state.code,
 				password: this.state.password,
 			})
 			.then(() => {
@@ -136,16 +134,16 @@ class ResetPassword extends Component {
 				<div className="reset-password-wrapper">
 					<div className="back">
 						<Link to={'/forgot-password'}>
-							<Img src="images/icons/back-arrow.svg" />
+							<Img src={backArrow} />
 							Back
 						</Link>
 					</div>
 					<div className="lock">
-						<Img src="images/icons/lock.svg" />
+						<Img src={lock} />
 					</div>
 					<div className="cta">
 						<p>
-							Enter the passphrase you received and we'll <br />
+							Enter the code you received and we'll <br />
 							reset your password.
 						</p>
 					</div>
@@ -162,12 +160,12 @@ class ResetPassword extends Component {
 							</label>
 							<br />
 							<label>
-								Passphrase <span className="required">Required</span>
+								Code <span className="required">Required</span>
 								<br />
 								<input
 									type="text"
-									name="passphrase"
-									onChange={this.validatePassphrase}
+									name="code"
+									onChange={this.validateCode}
 								/>
 							</label>
 							<br />
@@ -177,7 +175,6 @@ class ResetPassword extends Component {
 								<input
 									type="password"
 									name="password"
-									placeholder="Password (>= 8 characters)"
 									onChange={this.validatePassword}
 								/>
 							</label>
@@ -186,7 +183,7 @@ class ResetPassword extends Component {
 								className="btn primary"
 								type="submit"
 								name="reset-password"
-								disabled={!this.state.email}
+								disabled={!this.state.valid}
 							>
 								Reset Password
 							</button>

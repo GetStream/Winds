@@ -33,12 +33,13 @@ class PodcastEpisodesView extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
 			// essentially, if we've just switched views from one podcast to another
-			this.props.getPodcast(nextProps.match.params.podcastID);
-			this.getEpisodes(nextProps.match.params.podcastID);
-			getPinnedEpisodes(this.props.dispatch);
-			getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 			this.setState({
 				episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
+			}, () => {
+				this.props.getPodcast(nextProps.match.params.podcastID);
+				this.getEpisodes(nextProps.match.params.podcastID);
+				getPinnedEpisodes(this.props.dispatch);
+				getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 			});
 		}
 	}

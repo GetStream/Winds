@@ -51,15 +51,7 @@ exports.post = (req, res) => {
 	const data = Object.assign({}, req.body, { user: req.user.sub }) || {};
 
 	let type;
-	const types = [
-		'podcast',
-		'episode',
-		'rss',
-		'article',
-		'playlist',
-		'share',
-		'comment',
-	];
+	const types = ['podcast', 'episode', 'rss', 'article', 'playlist', 'share', 'comment'];
 	types.map(key => {
 		if (data.hasOwnProperty(key)) {
 			type = key;

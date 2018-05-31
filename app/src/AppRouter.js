@@ -4,19 +4,27 @@ import AuthedRoute from './AuthedRoute';
 import Dashboard from './views/Dashboard';
 import Header from './components/Header';
 import Player from './components/Player.js';
-import PlaylistView from './views/PlaylistView.js';
 import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
 import { Router, Switch } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
 import analytics from './util/tracking';
 import config from './config';
-import { createHashHistory } from 'history';
+import { createHashHistory, createBrowserHistory } from 'history';
 import fetch from './util/fetch';
 import AdminView from './views/AdminView';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const history = createHashHistory();
+var userAgent = navigator.userAgent.toLowerCase();
+let isElectron = userAgent.indexOf(' electron/') > -1;
+
+let history;
+if (isElectron) {
+	history = createHashHistory();
+} else {
+	history = createBrowserHistory();
+}
 
 history.listen(location => {
 	return analytics.pageview(`http://localhost:${config.port}`, location.pathname);
@@ -46,7 +54,6 @@ class AppRouter extends Component {
 				<div className="app">
 					<AuthedRoute component={Header} redirect={false} showLoader={false} />
 					<AuthedRoute component={Dashboard} exact path="/" />
-					<AuthedRoute component={PlaylistView} path="/playlists/:playlistID" />
 					<Switch>
 						<AuthedRoute
 							component={PodcastsView}
@@ -77,5 +84,9 @@ class AppRouter extends Component {
 		);
 	}
 }
+
+AppRouter.propTypes = {
+	dispatch: PropTypes.func.isRequired,
+};
 
 export default connect()(AppRouter);

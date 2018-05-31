@@ -193,7 +193,7 @@ exports.get = (req, res) => {
 				logger.error(err);
 				res.status(422).send(err.errors);
 			}
-			res.json(results);
+			res.json(result);
 		},
 	);
 };

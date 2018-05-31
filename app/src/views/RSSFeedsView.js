@@ -22,6 +22,7 @@ class RSSFeedsView extends React.Component {
 		};
 		this.toggleNewRSSModal = this.toggleNewRSSModal.bind(this);
 	}
+
 	componentDidMount() {
 		if (this.props.match.params.rssFeedID) {
 			fetch('get', `/rss/${this.props.match.params.rssFeedID}`).then(response => {
@@ -32,6 +33,7 @@ class RSSFeedsView extends React.Component {
 			});
 		}
 	}
+
 	componentWillReceiveProps(nextProps) {
 		if (this.props.match.params.rssFeedID !== nextProps.match.params.rssFeedID) {
 			fetch('get', `/rss/${nextProps.match.params.rssFeedID}`).then(response => {
@@ -42,6 +44,7 @@ class RSSFeedsView extends React.Component {
 			});
 		}
 	}
+
 	toggleNewRSSModal() {
 		this.setState({
 			newRSSModalIsOpen: !this.state.newRSSModalIsOpen,

@@ -85,6 +85,30 @@ exports.list = (req, res) => {
 	}
 };
 
+exports.delete = (req, res) => {
+	// authorize access to the authenticated user model only
+	if (req.params.userId !== req.user.sub) {
+		return res.status(401).send();
+	}
+
+	// check to see if the user exists
+	User.findById(req.params.userId)
+		.then(user => {
+			if (!user) {
+				// corner case
+				return res.sendStatus(404);
+			} else {
+				// remove the user document; 204 No Content confirms success
+				return User.findOneAndRemove({ _id: req.params.userId })
+					.then(user => res.status(204).send());
+			}
+		})
+		.catch(err => {
+			logger.error(err);
+			res.status(500).send(err);
+		});
+};
+
 exports.get = (req, res) => {
 	if (req.params.user == 'undefined') {
 		return res.sendStatus(404);
@@ -144,20 +168,14 @@ exports.put = (req, res) => {
 									RSS.find({ interest }).then(rssFeeds => {
 										return Promise.all(
 											rssFeeds.map(rssFeed => {
-												return followRssFeed(
-													req.params.userId,
-													rssFeed._id,
-												);
+												return followRssFeed(req.params.userId, rssFeed._id);
 											}),
 										);
 									}),
 									Podcast.find({ interest }).then(podcasts => {
 										return Promise.all(
 											podcasts.map(podcast => {
-												return followPodcast(
-													req.params.userId,
-													podcast._id,
-												);
+												return followPodcast(req.params.userId, podcast._id);
 											}),
 										);
 									}),

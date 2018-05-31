@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import interests from '../../static-data/onboarding-topics.js';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL.js';
 
-// convert to 2-stage form - first stage is onboarding, second stage is account details
 class Create extends Component {
 	constructor(props) {
 		super(props);
@@ -241,7 +240,7 @@ class AccountDetailsForm extends React.Component {
 	validatePassword(e) {
 		let password = e.target.value.trim();
 
-		if (password.length >= 8) {
+		if (password.length >= 2) {
 			this.setState(
 				{
 					password: password,

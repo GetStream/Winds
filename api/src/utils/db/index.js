@@ -9,7 +9,7 @@ const connection = mongoose.connect(config.database.uri, {
 	autoIndex: true,
 	reconnectTries: Number.MAX_VALUE,
 	reconnectInterval: 500,
-	poolSize: 25,
+	poolSize: 50,
 	bufferMaxEntries: 0,
 });
 

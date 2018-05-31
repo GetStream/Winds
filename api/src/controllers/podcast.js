@@ -1,4 +1,3 @@
-import Queue from 'bull';
 import async from 'async';
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
@@ -11,11 +10,10 @@ import personalization from '../utils/personalization';
 import logger from '../utils/logger';
 import search from '../utils/search';
 import config from '../config';
-import { ParsePodcast } from '../workers/parsers';
+import { ParsePodcast } from '../parsers';
 import strip from 'strip';
 
-const ogQueue = new Queue('og', config.cache.uri);
-const podcastQueue = new Queue('podcast', config.cache.uri);
+import async_tasks from '../async_tasks';
 
 exports.list = (req, res) => {
 	let query = req.query || {};
@@ -39,8 +37,7 @@ exports.list = (req, res) => {
 				res.json(results);
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
-				res.status(500).send(err);
+				res.status(500).send(err.errors);
 			});
 	} else {
 		Podcast.apiQuery(req.query)
@@ -112,7 +109,6 @@ exports.post = (req, res) => {
 							{
 								categories: 'podcast',
 								description: description,
-								featured: false,
 								feedUrl: feed.url,
 								images: images,
 								lastScraped: new Date(0),
@@ -130,41 +126,33 @@ exports.post = (req, res) => {
 								if (podcast.lastErrorObject.updatedExisting) {
 									cb(null, podcast.value);
 								} else {
-									search({
-										_id: podcast.value._id,
-										categories: 'Podcast',
-										description: podcast.value.title,
-										image: podcast.value.image,
-										public: true,
-										publicationDate: podcast.value.publicationDate,
-										title: podcast.value.title,
-										type: 'podcast',
-									})
-										.then(() => {
-											return podcastQueue.add(
-												{
-													podcast: podcast.value._id,
-													url: podcast.value.feedUrl,
-												},
-												{
-													priority: 1,
-													removeOnComplete: true,
-													removeOnFail: true,
-												},
-											);
-										})
+									return async_tasks
+										.PodcastQueueAdd(
+											{
+												podcast: podcast.value._id,
+												url: podcast.value.feedUrl,
+											},
+											{
+												priority: 1,
+												removeOnComplete: true,
+												removeOnFail: true,
+											},
+										)
 										.then(() => {
 											logger.info(
 												`api is scheduling ${
 													podcast.value.url
 												} for og scraping`,
 											);
-											if (!podcast.value.images.og && podcast.value.link) {
-												ogQueue
-													.add(
+											if (
+												!podcast.value.images.og &&
+                                                podcast.value.link
+											) {
+												async_tasks
+													.OgQueueAdd(
 														{
 															url: podcast.value.url,
-															type: 'podcast'
+															type: 'podcast',
 														},
 														{
 															removeOnComplete: true,

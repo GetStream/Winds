@@ -74,14 +74,7 @@ export const LikeSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'Episode',
 			autopopulate: {
-				select: [
-					'article',
-					'url',
-					'title',
-					'description',
-					'image',
-					'publictionDate',
-				],
+				select: ['article', 'url', 'title', 'description', 'image', 'publictionDate'],
 			},
 		},
 		playlist: {

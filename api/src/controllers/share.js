@@ -118,11 +118,9 @@ exports.put = (req, res) => {
 				// keep as !=, not !==
 				return res.status(401).send();
 			} else {
-				return Share.update({ _id: req.params.shareId }, data, opts).then(
-					newShare => {
-						res.json(newShare);
-					},
-				);
+				return Share.update({ _id: req.params.shareId }, data, opts).then(newShare => {
+					res.json(newShare);
+				});
 			}
 		})
 		.catch(err => {

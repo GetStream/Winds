@@ -175,9 +175,7 @@ exports.delete = (req, res) => {
 		})
 			.then(() => {
 				return Promise.all([
-					client
-						.feed('user_episode', data.user)
-						.unfollow('podcast', query.podcast),
+					client.feed('user_episode', data.user).unfollow('podcast', query.podcast),
 					client.feed('timeline', data.user).unfollow('podcast', query.podcast),
 				]);
 			})
@@ -212,9 +210,7 @@ exports.delete = (req, res) => {
 			user: data.user,
 		})
 			.then(() => {
-				return client
-					.feed('timeline', data.user)
-					.unfollow('user', query.followee);
+				return client.feed('timeline', data.user).unfollow('user', query.followee);
 			})
 			.then(() => {
 				res.status(204).send(); // 204 is no content, so not sending a response body.

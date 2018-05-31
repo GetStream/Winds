@@ -238,8 +238,6 @@ exports.get = (req, res) => {
 				res.status(500).send(err);
 			});
 	} else {
-		res
-			.status(400)
-			.send('Request must include "type" of user, timeline, article or episode');
+		res.status(400).send('Request must include "type" of user, timeline, article or episode');
 	}
 };

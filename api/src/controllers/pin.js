@@ -159,7 +159,7 @@ exports.post = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-	let pinId = req.params.pinId
+	let pinId = req.params.pinId;
 	Pin.findById(pinId)
 		.then(pin => {
 			if (!pin) {

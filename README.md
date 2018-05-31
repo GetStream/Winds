@@ -8,18 +8,13 @@
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
 
-**----------------- \0/ -----------------**
+**What's new: In addition to the desktop apps there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)**
 
-:smirk_cat: :joy_cat: :scream_cat: [Winds is trending on Product Hunt](https://www.producthunt.com/posts/winds-2-0)! Amplify the news and share your thoughts about RSS & Podcasts! :heart_eyes_cat: :cat: :tada:
-
-
-**----------------- \0/ -----------------**
-
-
+**Due to overwhelming success of Wind's launch we could use a bit of help. We're hiring a remote Node fullstack dev to work on this open source project fulltime. Contact tommaso@getstream.io for details. Due to budget limitations the position is a better match for developers outside of the US.**
 
 Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
-**To download Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/) (macOS, Linux, Windows)**
+### **To get started with Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/)**
 
 ![Winds 2.0](https://i.imgur.com/n2eKwPf.gif)
 
@@ -106,16 +101,13 @@ To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/
 Commands:
 
 *   `brew install pkg-config cairo redis mongodb`
-*   `cd winds`
-*   `yarn install`
-*   `cd api`
-*   `yarn install`
-*   `cd src && yarn install`
-*   `cd workers && yarn install`
-*   `cd ../../../`
-*   `cd app && yarn install`
 *   `brew services start mongodb`
 *   `brew services start redis`
+*   `cd winds/api`
+*   `yarn`
+*   `cd ../app`
+*   `yarn`
+
 
 Sign up for both Stream and Algolia, and create the following `.env` file in the `app` directory, replacing the keys where indicated:
 
@@ -153,14 +145,10 @@ git clone git@github.com:GetStream/winds.git
 
 The following instructions are geared towards Mac users who can use `brew` ([Homebrew](https://brew.sh/)) to install most dependencies. Ubuntu users can use `apt`, and Windows users will have to install directly from the dependency's site. Non-debian-based Linux users will probably be able to figure it out on their own :)
 
-*   `cd Winds`
-*   `yarn install`
-*   `cd api`
-*   `yarn install`
-*   `cd src && yarn install`
-*   `cd workers && yarn install`
-*   `cd ../../../`
-*   `cd app && yarn install`
+*   `cd Winds/app`
+*   `yarn`
+*   `cd ../api`
+*   `yarn`
 
 ### Create a dotenv file
 
@@ -200,7 +188,7 @@ brew services start mongodb
 
 At Stream, we use Redis as an in-memory storage for the Winds podcast processing and RSS processing workers. It contains a list of podcasts and RSS feeds, which the workers pick up and process using the `bull` messaging system.
 
-If you're on a Mac, you can install MongoDB through [Homebrew](https://brew.sh/) by running:
+If you're on a Mac, you can install Redis through [Homebrew](https://brew.sh/) by running:
 
 ```
 brew install redis
@@ -324,20 +312,27 @@ pm2 start process_prod.json
 
 ## Debugging RSS & Podcast Issues
 
-Unfortunately there is no unified standard for RSS. To test your preferred feed, go to `api/src/workers` and run:
+Unfortunately there is no unified standard for RSS.
+Go to the `api` directory and run `yarn link` to make these commands available:
 
 ```
-babel-node feed_debug.js --rss https://techcrunch.com/feed/
+winds rss https://techcrunch.com/feed/
 ```
 
-For podcasts run:
+For podcasts:
 
 ```
-babel-node feed_debug.js --podcast https://www.npr.org/rss/podcast.php\?id\=510289
+winds podcast https://www.npr.org/rss/podcast.php\?id\=510289
+```
+
+For Open Graph scraping
+
+```
+winds og http://www.planetary.org/multimedia/planetary-radio/show/2018/0509-amy-mainzer-neowise.html
 ```
 
 Pull requests for improved RSS compatibility are much appreciated.
-Most of the parsing codebase is located in `api/src/workers/parsers.js`.
+Most of the parsing codebase is located in `api/src/parsers/`.
 
 ## Support
 
@@ -371,3 +366,13 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 *   [Meriadec Pillet](https://github.com/meriadec)
 *   [Alex Sinnott](https://github.com/sifex)
 *   [Lawal Sauban](https://github.com/sauban)
+
+## Revive RSS
+
+RSS is an amazing open standard. It is probably the most pleasant way to stay up to date with the sites and podcasts you care about. Our reasons for contributing to Winds are explained in the blogpost [Winds 2.0 It's time to Revive RSS](https://getstream.io/blog/winds-2-0-its-time-to-revive-rss/). In this section we will list other open source and commercial projects that are having an impact on Reviving RSS:
+
+* [Miniflux](https://github.com/miniflux/miniflux)
+* [TwitRSSMe](https://twitrss.me/)
+* [Feedly](https://feedly.com/)
+* [NewsBlur](https://newsblur.com/)
+* [Feedity](https://feedity.com/)

@@ -87,7 +87,21 @@ export const UserSchema = new Schema(
 			default: false,
 		},
 	},
-	{ collection: 'users' },
+	{
+		collection: 'users',
+		toJSON: {
+			transform: function(doc, ret) {
+				delete ret.email;
+				delete ret.password;
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				delete ret.email;
+				delete ret.password;
+			},
+		},
+	},
 );
 
 UserSchema.pre('save', function(next) {

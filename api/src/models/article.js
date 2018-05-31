@@ -3,6 +3,21 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 
+export const EnclosureSchema = new Schema({
+	url: {
+		type: String,
+		trim: true,
+	},
+	type: {
+		type: String,
+		trim: true,
+	},
+	length: {
+		type: String,
+		trim: true,
+	},
+});
+
 export const ArticleSchema = new Schema(
 	{
 		rss: {
@@ -79,6 +94,7 @@ export const ArticleSchema = new Schema(
 			type: Date,
 			default: Date.now,
 		},
+		enclosures: [EnclosureSchema],
 		likes: {
 			type: Number,
 			default: 0,
@@ -89,7 +105,26 @@ export const ArticleSchema = new Schema(
 			valid: true,
 		},
 	},
-	{ collection: 'articles' },
+	{
+		collection: 'articles',
+
+		toJSON: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+			},
+		},
+	},
 );
 
 ArticleSchema.plugin(timestamps, {
@@ -99,6 +134,6 @@ ArticleSchema.plugin(timestamps, {
 ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
-ArticleSchema.index({ rss: 1, url: 1 });
+ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
 
 module.exports = exports = mongoose.model('Article', ArticleSchema);

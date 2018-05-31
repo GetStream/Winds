@@ -1,4 +1,4 @@
-import { ParseFeed } from '../workers/parsers';
+import { ParseFeed } from '../parsers';
 import franc from 'franc-min';
 
 export default feedUrl => {

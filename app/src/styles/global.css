@@ -168,13 +168,16 @@ textarea {
       bottom: 0;
       box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
       display: flex;
-      flex-direction: row-reverse;
       height: 60px;
       left: 0;
-      padding: 1em;
+      padding: 1em 4em 1em 2em;
       position: absolute;
       right: 0;
       z-index: 100002; }
+      .drawer .drawer-container footer .secondary {
+        margin-right: auto; }
+      .drawer .drawer-container footer .primary {
+        margin-left: auto; }
 
 .drawer-click-catcher {
   bottom: 0;
@@ -183,6 +186,13 @@ textarea {
   right: 0;
   top: 0;
   z-index: 100000; }
+
+.delete-account-confirmation-popover .message {
+  font-size: 0.9em;
+  font-weight: lighter; }
+
+.delete-account-confirmation-popover .menu-item {
+  cursor: pointer; }
 
 label {
   color: #aaa;
@@ -1328,7 +1338,10 @@ a.column-header:hover {
 .popover-panel {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05); }
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+  color: inherit;
+  display: block;
+  text-decoration: inherit; }
   .popover-panel .panel-element {
     align-items: center;
     border-bottom: 1px solid #eee;

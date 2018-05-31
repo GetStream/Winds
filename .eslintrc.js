@@ -4,6 +4,7 @@ module.exports = {
 		es6: true,
 		node: true,
 		'shared-node-browser': true,
+		mocha: true
 	},
 	extends: ['eslint:recommended', 'plugin:react/recommended'],
 	parser: 'babel-eslint',
@@ -18,12 +19,11 @@ module.exports = {
 	rules: {
 		indent: ['error', 'tab'],
 		'linebreak-style': ['error', 'unix'],
+		'jsx-quotes': ['error', 'prefer-double'],
 		quotes: ['error', 'single'],
 		semi: ['error', 'always'],
 		'comma-dangle': ['error', 'always-multiline'],
-		'sort-keys': 'error',
 		'no-case-declarations': 'off',
-		// 'sort-imports': 'error',
 		'react/jsx-sort-props': 'error',
 		eqeqeq: 'warn',
 		'quote-props': ['warn', 'consistent-as-needed'],

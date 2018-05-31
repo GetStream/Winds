@@ -201,16 +201,12 @@ exports.put = (req, res) => {
 				res.status(401).send();
 				return;
 			} else {
-				return Playlist.update({ _id: req.params.playlistId }, data, opts).then(
-					() => {
-						// this next bit is from @kenhoff - for some reason, findByIdAndUpdate wasn't autopopulating the `user` field
-						return Playlist.findOne({ _id: req.params.playlistId }).then(
-							playlist => {
-								return res.json(playlist);
-							},
-						);
-					},
-				);
+				return Playlist.update({ _id: req.params.playlistId }, data, opts).then(() => {
+					// this next bit is from @kenhoff - for some reason, findByIdAndUpdate wasn't autopopulating the `user` field
+					return Playlist.findOne({ _id: req.params.playlistId }).then(playlist => {
+						return res.json(playlist);
+					});
+				});
 			}
 		})
 		.catch(err => {

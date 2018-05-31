@@ -1,7 +1,5 @@
 import '../loadenv';
 
-import Queue from 'bull';
-
 import async from 'async';
 import moment from 'moment';
 
@@ -12,20 +10,18 @@ import db from '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 
-const rssQueue = new Queue('rss', config.cache.uri);
-const podcastQueue = new Queue('podcast', config.cache.uri);
+import async_tasks from '../async_tasks';
+
 const publicationTypes = {
-	rss: { schema: RSS, queue: rssQueue },
-	podcast: { schema: Podcast, queue: podcastQueue },
+	rss: { schema: RSS, enqueue: async_tasks.RssQueueAdd },
+	podcast: { schema: Podcast, enqueue: async_tasks.PodcastQueueAdd },
 };
 const conductorInterval = 60;
 const durationInMinutes = 15;
 
 // conductor runs conduct every interval seconds
 const conductor = () => {
-	logger.info(
-		`Starting the conductor... will conduct every ${conductorInterval} seconds`,
-	);
+	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
 
 	function forever() {
 		conduct();
@@ -76,14 +72,12 @@ async function conduct() {
 		logger.info(`marked ${updated.nModified} publications as isParsing`);
 
 		// actually schedule the update
-		logger.info(
-			`conductor found ${publications.length} of type ${publicationType} to scrape`,
-		);
+		logger.info(`conductor found ${publications.length} of type ${publicationType} to scrape`);
 		let promises = [];
 		for (let publication of publications) {
 			let job = { url: publication.feedUrl };
 			job[publicationType] = publication._id;
-			let promise = publicationConfig.queue.add(job, {
+			let promise = publicationConfig.enqueue(job, {
 				removeOnComplete: true,
 				removeOnFail: true,
 			});
@@ -91,8 +85,6 @@ async function conduct() {
 		}
 		let results = await Promise.all(promises);
 
-		logger.info(
-			`Processing complete! Will try again in ${conductorInterval} seconds...`,
-		);
+		logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`);
 	}
 }

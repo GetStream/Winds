@@ -41,14 +41,7 @@ export const PinSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'Episode',
 			autopopulate: {
-				select: [
-					'parent',
-					'url',
-					'title',
-					'description',
-					'images',
-					'publicationDate',
-				],
+				select: ['parent', 'url', 'title', 'description', 'images', 'publicationDate'],
 			},
 		},
 	},
