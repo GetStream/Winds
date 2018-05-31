@@ -54,7 +54,7 @@ async function IsPodcastURL(feedURL) {
 		responseType: 'stream',
 	});
 	let feedStream = response.data;
-	isPodcast(feedStream, feedURL);
+	IsPodcastStream(feedStream, feedURL);
 }
 
 exports.IsPodcastStream = IsPodcastStream;

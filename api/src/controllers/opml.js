@@ -19,6 +19,8 @@ import logger from '../utils/logger';
 import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
+import { IsPodcastURL} from '../parsers/detect-type';
+
 
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -97,9 +99,9 @@ exports.post = async (req, res) => {
 		let promise = followOPMLFeed(feed, userID);
 		promises.push(promise);
 	}
-	await Promise.all(promises);
+	let follows = await Promise.all(promises);
 
-	return res.sendStatus(401);
+	return res.json(follows);
 };
 
 
@@ -108,7 +110,7 @@ exports.post = async (req, res) => {
 async function followOPMLFeed(feed, userID) {
 	let instance, schema, publicationType;
 
-	if (await isPodcastURL(feed.feedUrl)) {
+	if (await IsPodcastURL(feed.feedUrl)) {
 		schema = Podcast;
 		publicationType = 'podcast';
 	} else {
@@ -175,4 +177,6 @@ async function followOPMLFeed(feed, userID) {
 			},
 		},
 	});
+
+	return follow;
 }

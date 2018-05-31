@@ -52,11 +52,11 @@ function authPostRequest(path) {
 }
 
 describe('OPML', () => {
-/*
-	describe('Export', () => {
-		before(async () => {
-			await loadFixture('initialData', 'opml');
-		});
+	before(async () => {
+		await loadFixture('initialData', 'opml');
+	});
+
+	describe.only('Export', () => {
 
 		describe('invalid request', () => {
 			let response;
@@ -84,7 +84,7 @@ describe('OPML', () => {
 				console.log('r', response.body);
 			});
 		});
-	});*/
+	});
 
 	describe('Import', () => {
 		describe('valid request', () => {
@@ -99,8 +99,12 @@ describe('OPML', () => {
 				);
 			});
 
-			it('should return 401', () => {
-				expect(response).to.have.status(401);
+			it('should return 200', () => {
+				expect(response).to.have.status(200);
+				expect(response).to.be.json;
+				expect(response.body.length).to.equal(2)
+				expect(response.body[0].user).to.equal("5b0f306d8e147f10f16aceaf")
+				expect(response.body[1].user).to.equal("5b0f306d8e147f10f16aceaf")
 			});
 		});
 	});
