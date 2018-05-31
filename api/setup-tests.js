@@ -12,7 +12,9 @@ import api from './src/server';
 import logger from './src/utils/logger';
 
 api.use((err, req, res, next) => {
-	logger.error(err);
+	if (err) {
+		logger.error(err);
+	}
 	next(err, req, res);
 });
 
