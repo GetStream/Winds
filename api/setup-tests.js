@@ -9,6 +9,12 @@ import { promisify } from 'util';
 import config from './src/config';
 import db from './src/utils/db';
 import api from './src/server';
+import logger from './src/utils/logger';
+
+api.use((err, req, res, next) => {
+	logger.error(err);
+	next(err, req, res);
+});
 
 chai.use(chaiHttp);
 

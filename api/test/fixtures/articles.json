@@ -1,0 +1,20 @@
+[
+  {
+    "RSS": [
+      {
+        "id": "5ae0c71a0e7cbc4ee14a8c81",
+        "title": "RSS feed #11",
+        "feedUrl": "http://feedproxy.google.com/~r/behance/vorr/~3/gKsDLKs86j8/Bolsters-A-Reciprocal-Digital-Platform-for-All-Age"
+      }
+    ]
+  },
+  {
+    "Article": [
+      {
+        "url": "http://feedproxy.google.com/~r/behance/vorr/~3/gKsDLKs86j8/Bolsters-A-Reciprocal-Digital-Platform-for-All-Age",
+        "title": "First",
+        "rss": "5ae0c71a0e7cbc4ee14a8c81"
+      }
+    ]
+  }
+]
