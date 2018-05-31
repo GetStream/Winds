@@ -1,5 +1,6 @@
 import RSS from '../controllers/rss';
 import Article from '../controllers/article';
+import { wrapAsync } from '../utils/controllers';
 
 module.exports = api => {
 	api.route('/rss').get(RSS.list);
@@ -8,5 +9,5 @@ module.exports = api => {
 	api.route('/rss/:rssId').put(RSS.put);
 
 	api.route('/rss/:rssId/articles').get(Article.list);
-	api.route('/rss/:rssId/articles/:articleId').get(Article.get);
+	api.route('/rss/:rssId/articles/:articleId').get(wrapAsync(Article.get));
 };

@@ -7,6 +7,7 @@
 				"build": "./build.sh",
 				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\"",
 				"test": "NODE_ENV=test node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\""
+				"test_deep": "NODE_ENV=test node --stack_trace_limit=100 -r trace -r clarify node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\""
 		},
 		"bin": {
 				"winds": "src/commands/winds.js"
@@ -42,7 +43,7 @@
 				"body-parser": "^1.18.3",
 				"bull": "^3.4.2",
 				"bull-arena": "^2.4.3",
-				"circular-json": "^0.5.4",
+				"clarify": "^2.1.0",
 				"compression": "^1.7.2",
 				"cors": "^2.8.4",
 				"dotenv": "^5.0.1",
@@ -88,6 +89,7 @@
 				"serve-favicon": "^2.5.0",
 				"stream-analytics": "^2.7.0",
 				"strip": "^3.0.0",
+				"trace": "^3.1.0",
 				"url-regex": "^4.1.1",
 				"uuid": "^3.2.1",
 				"valid-url": "^1.0.9",

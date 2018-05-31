@@ -138,7 +138,7 @@ exports.get = async (req, res) => {
 
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
-		return res.json(parsed);
+		res.json(parsed);
 	} else {
 		res.json(article);
 	}
