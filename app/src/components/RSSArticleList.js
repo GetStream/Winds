@@ -43,17 +43,19 @@ class RSSArticleList extends React.Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
-			console.log("next props did not match");
 			// if navigating between rss feeds
-			this.setState({
-				articleCursor: 1,
-			}, () => {
-				this.getRSSFeed(nextProps.match.params.rssFeedID);
-				this.getFollowState(nextProps.match.params.rssFeedID);
-				this.getRSSArticles(nextProps.match.params.rssFeedID);
-				getPinnedArticles(this.props.dispatch);
-				getFeed(this.props.dispatch, 'article', 0, 20);
-			});
+			this.setState(
+				{
+					articleCursor: 1,
+				},
+				() => {
+					this.getRSSFeed(nextProps.match.params.rssFeedID);
+					this.getFollowState(nextProps.match.params.rssFeedID);
+					this.getRSSArticles(nextProps.match.params.rssFeedID);
+					getPinnedArticles(this.props.dispatch);
+					getFeed(this.props.dispatch, 'article', 0, 20);
+				},
+			);
 		}
 	}
 	getRSSFeed(rssFeedID) {

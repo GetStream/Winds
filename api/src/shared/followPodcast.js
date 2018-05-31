@@ -18,6 +18,9 @@ const followPodcast = (userID, podcastID) => {
 	};
 	return Follow.findOne(obj).then(existingFollow => {
 		if (existingFollow) {
+			// serialize podcast and user ids
+			existingFollow.podcast = existingFollow.podcast._id;
+			existingFollow.user = existingFollow.user._id;
 			return existingFollow;
 		} else {
 			return Promise.all([
