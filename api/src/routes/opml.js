@@ -1,10 +1,10 @@
-import multer from "multer"
+import multer from 'multer';
 
 import OPML from "../controllers/opml"
 import { wrapAsync } from "../utils/controllers"
 
 
-const upload = multer()
+const upload = multer();
 
 module.exports = api => {
     api.route("/opml/download").get(wrapAsync(OPML.get))

@@ -12,7 +12,7 @@ async function sendRssFeedToCollections(rssFeed) {
 
 	let articles = await Article.find({
 		rss: rssFeed.id,
-	}).sort({ publicationDate: -1 }).limit(1000)
+	}).sort({ publicationDate: -1 }).limit(1000);
 
 	await events({
 		meta: {
@@ -30,4 +30,3 @@ async function sendRssFeedToCollections(rssFeed) {
 }
 
 export default sendRssFeedToCollections;
-

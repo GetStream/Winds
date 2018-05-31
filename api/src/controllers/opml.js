@@ -1,21 +1,21 @@
-import events from "../utils/events"
-import async from "async"
-import isUrl from "url-regex"
-import opmlParser from "node-opml-parser"
-import opmlGenerator from "opml-generator"
-import moment from "moment"
-import entities from "entities"
-import normalizeUrl from "normalize-url"
-import stream from "getstream"
-import search from "../utils/search"
+import events from '../utils/events';
+import async from 'async';
+import isUrl from 'url-regex';
+import opmlParser from 'node-opml-parser';
+import opmlGenerator from 'opml-generator';
+import moment from 'moment';
+import entities from 'entities';
+import normalizeUrl from 'normalize-url';
+import stream from 'getstream';
+import search from '../utils/search';
 
-import RSS from "../models/rss"
-import Follow from "../models/follow"
+import RSS from '../models/rss';
+import Follow from '../models/follow';
 
-import config from "../config"
-import logger from "../utils/logger"
+import config from '../config';
+import logger from '../utils/logger';
 
-const client = stream.connect(config.stream.apiKey, config.stream.apiSecret)
+const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 // TODO:
 // - refactor using async

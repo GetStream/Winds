@@ -1,111 +1,111 @@
 // this should be the first import
-import "../loadenv"
+import '../loadenv';
 
-import stream from "getstream"
-import normalize from "normalize-url"
-import moment from "moment"
+import stream from 'getstream';
+import normalize from 'normalize-url';
+import moment from 'moment';
 
-import Podcast from "../models/podcast"
-import Episode from "../models/episode"
+import Podcast from '../models/podcast';
+import Episode from '../models/episode';
 
-import "../utils/db"
-import config from "../config"
-import logger from "../utils/logger"
-import sendPodcastToCollections from "../utils/events/sendPodcastToCollections"
-import { ParsePodcast } from "../parsers"
-import util from "util"
+import '../utils/db';
+import config from '../config';
+import logger from '../utils/logger';
+import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
+import { ParsePodcast } from '../parsers';
+import util from 'util';
 
-import async_tasks from "../async_tasks"
+import async_tasks from '../async_tasks';
 
-const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret)
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 // TODO: move this to separate main.js
-logger.info("Starting to process podcasts....")
-async_tasks.ProcessPodcastQueue(5, handlePodcast)
+logger.info('Starting to process podcasts....');
+async_tasks.ProcessPodcastQueue(5, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {
-    let promise = _handlePodcast(job)
-    promise.catch(err => {
-        logger.info(`podcast job ${job} broke with err ${err}`)
-      	logger.error(err)
-    })
-    return promise
+	let promise = _handlePodcast(job);
+	promise.catch(err => {
+		logger.info(`podcast job ${job} broke with err ${err}`);
+      	logger.error(err);
+	});
+	return promise;
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handlePodcast(job) {
-    logger.info(`Processing ${job.data.url}`)
+	logger.info(`Processing ${job.data.url}`);
 
-    // verify we have the podcast object
-    let podcastID = job.data.podcast
-    let podcast = await Podcast.findOne({ _id: podcastID })
-    if (!podcast) {
-        logger.warn(`Podcast with ID ${job.data.podcast} does not exist`)
-        return
-    }
+	// verify we have the podcast object
+	let podcastID = job.data.podcast;
+	let podcast = await Podcast.findOne({ _id: podcastID });
+	if (!podcast) {
+		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
+		return;
+	}
 
-    // mark as done, will be schedule again in 15 min from now
-    // we do this early so a temporary failure doesnt leave things in a broken state
-    await markDone(podcastID)
+	// mark as done, will be schedule again in 15 min from now
+	// we do this early so a temporary failure doesnt leave things in a broken state
+	await markDone(podcastID);
 
-    // parse the episodes
-    let podcastContent
-    try {
-        podcastContent = await util.promisify(ParsePodcast)(job.data.url)
-    } catch (e) {
-        logger.info(`podcast scraping broke for url ${job.data.url}`)
-        return
-    }
+	// parse the episodes
+	let podcastContent;
+	try {
+		podcastContent = await util.promisify(ParsePodcast)(job.data.url);
+	} catch (e) {
+		logger.info(`podcast scraping broke for url ${job.data.url}`);
+		return;
+	}
 
-    // update the episodes
-    logger.info(`Updating ${podcastContent.episodes.length} episodes`)
-    let allEpisodes = await Promise.all(
-        podcastContent.episodes.map(episode => {
-            let normalizedUrl = normalize(episode.url)
-            episode.url = normalizedUrl
-            return upsertEpisode(podcast._id, normalizedUrl, episode)
-        }),
-    )
+	// update the episodes
+	logger.info(`Updating ${podcastContent.episodes.length} episodes`);
+	let allEpisodes = await Promise.all(
+		podcastContent.episodes.map(episode => {
+			let normalizedUrl = normalize(episode.url);
+			episode.url = normalizedUrl;
+			return upsertEpisode(podcast._id, normalizedUrl, episode);
+		}),
+	);
 
-    // Only send updated episodes to Stream
-    let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
-        return updatedEpisode && updatedEpisode.link
-    })
+	// Only send updated episodes to Stream
+	let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
+		return updatedEpisode && updatedEpisode.link;
+	});
 
 	await Promise.all(updatedEpisodes.map( episode => {
 		async_tasks.OgQueueAdd(
 			{
-				type: "episode",
+				type: 'episode',
 				url: episode.link,
 			},
 			{
 				removeOnComplete: true,
 				removeOnFail: true,
 			},
-		)
-	}))
+		);
+	}));
 
-    if (updatedEpisodes.length > 0) {
-        let chunkSize = 100
-        let podcastFeed = streamClient.feed("podcast", podcastID)
-        for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
-            let chunk = updatedEpisodes.slice(i, i + chunkSize)
-            let streamEpisodes = chunk.map(episode => {
-                return {
-                    actor: episode.podcast,
-                    foreign_id: `episodes:${episode._id}`,
-                    object: episode._id,
-                    time: episode.publicationDate,
-                    verb: "podcast_episode",
-                }
-            })
+	if (updatedEpisodes.length > 0) {
+		let chunkSize = 100;
+		let podcastFeed = streamClient.feed('podcast', podcastID);
+		for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
+			let chunk = updatedEpisodes.slice(i, i + chunkSize);
+			let streamEpisodes = chunk.map(episode => {
+				return {
+					actor: episode.podcast,
+					foreign_id: `episodes:${episode._id}`,
+					object: episode._id,
+					time: episode.publicationDate,
+					verb: 'podcast_episode',
+				};
+			});
 
-            // addActivities to Stream
-            await podcastFeed.addActivities(streamEpisodes)
-        }
+			// addActivities to Stream
+			await podcastFeed.addActivities(streamEpisodes);
+		}
 		// update the collection information for follow suggestions
-		await sendPodcastToCollections(podcast)
+		await sendPodcastToCollections(podcast);
 	}
 }
 
@@ -121,7 +121,7 @@ async function upsertEpisode(podcastID, normalizedUrl, episode) {
 		publicationDate: episode.publicationDate,
 		title: episode.title,
 		url: episode.url,
-    };
+	};
 
 	try {
 		return await Episode.findOneAndUpdate(
@@ -150,25 +150,25 @@ async function upsertEpisode(podcastID, normalizedUrl, episode) {
 		);
 	} catch(err) {
 		if (err.code === 11000){
-			return null
+			return null;
 		} else {
-			throw error
+			throw error;
 		}
 	}
 }
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
-    /*
+	/*
 	Set the last scraped for the given rssID
 	*/
-    let now = moment().toISOString()
-    let updated = await Podcast.update(
-        { _id: podcastID },
-        {
-            lastScraped: now,
-            isParsing: false,
-        },
-    )
-    return updated
+	let now = moment().toISOString();
+	let updated = await Podcast.update(
+		{ _id: podcastID },
+		{
+			lastScraped: now,
+			isParsing: false,
+		},
+	);
+	return updated;
 }
