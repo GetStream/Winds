@@ -1,0 +1,32 @@
+{
+	"User": [
+		{
+			"_id": "5b0f306d8e147f10f16aceaf",
+			"preferences": {
+				"notifications": { "daily": false, "weekly": true, "follows": true }
+			},
+			"bio": "",
+			"url": "",
+			"twitter": "",
+			"background": 1,
+			"recoveryCode": "",
+			"active": true,
+			"admin": false,
+			"interests": [
+				"UI/UX",
+				"Startups & VC",
+				"Programming",
+				"News",
+				"Machine Learning & AI",
+				"Gaming",
+				"VR",
+				"Lifehacks",
+				"Marketing"
+			],
+			"username": "testuser12345",
+			"email": "test+test@test.com",
+			"password": "$2a$10$9UaUjg8V01bWLfx1L6FCl.RWMQoNnxayX3Pl528V4XYwWrV/Uw/VW",
+			"name": "Test User"
+		}
+	]
+}
