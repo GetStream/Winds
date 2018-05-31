@@ -6,7 +6,7 @@
 				"watch": "nodemon start",
 				"build": "./build.sh",
 				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\"",
-				"test": "NODE_ENV=test node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\""
+				"test": "NODE_ENV=test node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\"",
 				"test_deep": "NODE_ENV=test node --stack_trace_limit=100 -r trace -r clarify node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\""
 		},
 		"bin": {
