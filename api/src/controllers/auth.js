@@ -1,6 +1,5 @@
 import md5 from 'md5';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import stream from 'getstream';
 import uuidv4 from 'uuid/v4';
 import validator from 'validator';
@@ -87,50 +86,39 @@ exports.signup = async (req, res, _) => {
     };
 };
 
-exports.login = (req, res) => {
+exports.login = async (req, res, _) => {
     const data = req.body || {};
 
-    if (data.email && data.password) {
-        let email = data.email.toLowerCase();
-        let password = data.password;
+    if (!data.email || !data.password) {
+        return res.sendStatus(401);
+    }
 
-        User.findOne({ email: email })
-            .then(user => {
-                if (!user) {
-                    return res.sendStatus(404);
-                }
-                bcrypt
-                    .compare(password, user.password)
-                    .then(val => {
-                        if (!val) {
-                            return res.sendStatus(403);
-                        }
+    const email = data.email.toLowerCase();
 
-                        res.status(200).send({
-                            _id: user._id,
-                            email: user.email,
-                            interests: user.interests,
-                            jwt: jwt.sign(
-                                {
-                                    email: user.email,
-                                    sub: user._id,
-                                },
-                                config.jwt.secret,
-                            ),
-                            name: user.name,
-                            username: user.username,
-                        });
-                    })
-                    .catch(() => {
-                        res.sendStatus(401);
-                    });
-            })
-            .catch(err => {
-                logger.error(err);
-                res.status(422).send(err.errors);
+    try {
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.sendStatus(404);
+        }
+        try {
+            if (!await user.verifyPassword(data.password)) {
+                return res.sendStatus(403);
+            }
+
+            res.status(200).send({
+                _id: user._id,
+                email: user.email,
+                interests: user.interests,
+                jwt: jwt.sign({ email: user.email, sub: user._id }, config.jwt.secret),
+                name: user.name,
+                username: user.username,
             });
-    } else {
-        res.sendStatus(401);
+        } catch(err) {
+            res.sendStatus(401);
+        }
+    } catch(err) {
+        logger.error(err);
+        res.status(422).send(err.errors);
     }
 };
 
