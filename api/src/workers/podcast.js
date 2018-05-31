@@ -27,7 +27,8 @@ async_tasks.ProcessPodcastQueue(5, handlePodcast)
 async function handlePodcast(job) {
     let promise = _handlePodcast(job)
     promise.catch(err => {
-        logger.warn(`podcast job ${job} broke with err ${err}`)
+        logger.info(`podcast job ${job} broke with err ${err}`)
+      	logger.error(err)
     })
     return promise
 }

@@ -16,7 +16,7 @@ import sendRssFeedToCollections from "../utils/events/sendRssFeedToCollections"
 import { ParseFeed } from "../parsers"
 
 import async_tasks from "../async_tasks"
-import { getStatsDClient } from '../utils/statsd';
+import { getStatsDClient, timeIt } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret)
 
@@ -24,7 +24,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info("Starting the RSS worker")
 
 // TODO: move this to a separate main.js
-async_tasks.ProcessRssQueue(30, handleRSS)
+async_tasks.ProcessRssQueue(100, handleRSS)
 
 const statsd = getStatsDClient()
 
@@ -32,9 +32,8 @@ const statsd = getStatsDClient()
 async function handleRSS(job) {
     let promise = _handleRSS(job)
     promise.catch(err => {
-        logger.warn(`rss job ${job} broke with err ${err}`)
-        console.log(err)
-
+        logger.info(`rss job ${job} broke with err ${err}`)
+        logger.error(err)
     })
     return promise
 }
@@ -45,7 +44,9 @@ async function _handleRSS(job) {
 
     // verify we have the rss object
     let rssID = job.data.rss
-    let rss = await RSS.findOne({ _id: rssID })
+    let rss = await timeIt('winds.handle_rss.get_rss', () => {
+    	return RSS.findOne({ _id: rssID })
+	})
     if (!rss) {
         logger.warn(`RSS with ID ${rssID} does not exist`)
         return
@@ -53,31 +54,39 @@ async function _handleRSS(job) {
 
     // mark as done, will be schedule again in 15 min from now
     // we do this early so a temporary failure doesnt leave things in a broken state
-    await markDone(rssID)
+    await timeIt('winds.handle_rss.ack', () => {
+    	return markDone(rssID)
+    })
     logger.info(`Marked ${rssID} as done`)
 
     // parse the articles
     let rssContent
     try {
-        rssContent = await util.promisify(ParseFeed)(job.data.url)
-    } catch (e) {
-        logger.info(`rss scraping broke for url ${job.data.url}`)
+        rssContent = await timeIt('winds.handle_rss.parsing', () => {
+        	return util.promisify(ParseFeed)(job.data.url)
+        })
+    } catch (err) {
+        logger.warn(err)
         return
     }
 
 	// update the articles
     logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`)
 
-	statsd.increment("winds.handle_rss.articles.parsed", rssContent.articles.length)
+	if (rssContent.articles.length === 0) {
+		return
+	}
 
-    let allArticles = await Promise.all(
-        rssContent.articles.map(article => {
-            let normalizedUrl = normalize(article.url)
-            article.url = normalizedUrl
-			// XXX: this is an easy way to rewrite all articles in case normalize ever changes
-            return upsertArticle(rssID, normalizedUrl, article)
-        }),
-    )
+	statsd.increment("winds.handle_rss.articles.parsed", rssContent.articles.length)
+	statsd.timing("winds.handle_rss.articles.parsed", rssContent.articles.length)
+
+    let allArticles = await timeIt('winds.handle_rss.upsertManyArticles', () => {
+		let articles = rssContent.articles.map(a => {
+			a.url = normalize(a.url)
+			return a
+		})
+    	return upsertManyArticles(rssID, articles)
+    })
 
     // updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
     let updatedArticles = allArticles.filter(updatedArticle => {
@@ -86,19 +95,22 @@ async function _handleRSS(job) {
 
 	statsd.increment("winds.handle_rss.articles.upserted", updatedArticles.length)
 
-	await Promise.all(updatedArticles.map(article => {
-		async_tasks.OgQueueAdd(
-			{
-				type: 'rss',
-				url: article.url,
-			},
-			{
-				removeOnComplete: true,
-				removeOnFail: true,
-			},
-		)
-	}))
+	await timeIt('winds.handle_rss.OgQueueAdd', () => {
+		return Promise.all(updatedArticles.map(article => {
+			async_tasks.OgQueueAdd(
+				{
+					type: 'rss',
+					url: article.url,
+				},
+				{
+					removeOnComplete: true,
+					removeOnFail: true,
+				},
+			)
+		}))
+	})
 
+	let t0 = new Date()
     let rssFeed = streamClient.feed("rss", rssID)
     logger.info(`Syncing ${updatedArticles.length} articles to Stream`)
     if (updatedArticles.length > 0) {
@@ -118,40 +130,66 @@ async function _handleRSS(job) {
         }
 		await sendRssFeedToCollections(rss)
     }
+	statsd.timing("winds.handle_rss.send_to_stream", (new Date() - t0))
     logger.info(`Completed scraping for ${job.data.url}`)
 }
 
+async function upsertManyArticles(rssID, articles) {
+	let articlesData = articles.map(article => {
+		const clone = Object.assign({}, article)
+		delete(clone.images)
+		delete(clone.publicationDate)
+		return clone
+	})
+
+	let existingArticles = await Article.find({$or: articlesData}, { "url": 1 }).read('sp')
+	let existingArticleUrls = existingArticles.map(a => {return a.url})
+
+	statsd.increment("winds.handle_rss.articles.already_in_mongo", existingArticleUrls.length)
+
+	let articlesToUpsert = articlesData.filter(article => {
+		return existingArticleUrls.indexOf(article.url) === -1
+	})
+
+	logger.info(`Feed ${rssID}: got ${articles.length} articles of which ${articlesToUpsert.length} need a sync`)
+
+	return Promise.all(articlesToUpsert.map(article => {
+		return upsertArticle(rssID, article)
+	}))
+}
+
 // updateArticle updates the article in mongodb if it changed and create a new one if it did not exist
-async function upsertArticle(rssID, normalizedUrl, post) {
-	let update = {
+async function upsertArticle(rssID, post) {
+	let search = {
 		commentUrl: post.commentUrl,
 		content: post.content,
 		description: post.description,
-		publicationDate: post.publicationDate,
-		rss: rssID,
 		title: post.title,
-		url: post.url,
-    enclosures: post.enclosures,
 	};
 
-	// in almost all cases images are added by OG scraping, only include images if not empty
-	if (post.images && Object.keys(post.images).length > 0) {
-		update.images = post.images
+	let update = Object.assign({}, search)
+	update.publicationDate = post.publicationDate
+	update.url = post.url
+	update.rss = rssID
+
+	let defaults = {
+		enclosures: post.enclosures || {},
+		images: post.images || {},
 	}
 
 	try {
-		return await Article.findOneAndUpdate(
+		let rawArticle = await Article.findOneAndUpdate(
 			{
 				$and: [
 					{
 						rss: rssID,
-						url: normalizedUrl,
+						url: post.url,
 					},
 					{
-						$or: Object.keys(update).map(k => {
+						$or: Object.keys(search).map(k => {
 							return {
 								[k]: {
-									$ne: update[k],
+									$ne: search[k],
 								},
 							};
 						}),
@@ -162,14 +200,19 @@ async function upsertArticle(rssID, normalizedUrl, post) {
 			{
 				new: true,
 				upsert: true,
+				rawResult: true,
+				setDefaultsOnInsert: defaults,
 			},
 		)
+		if (!rawArticle.lastErrorObject.updatedExisting){
+			return rawArticle.value
+		}
 	} catch(err) {
 		if (err.code === 11000){
 			statsd.increment("winds.handle_rss.articles.ignored")
 			return null
 		} else {
-			throw error;
+			throw err;
 		}
 	}
 }

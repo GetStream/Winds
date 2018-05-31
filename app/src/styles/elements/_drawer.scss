@@ -88,13 +88,19 @@
 			bottom: 0;
 			box-shadow: $box-shadow;
 			display: flex;
-			flex-direction: row-reverse;
+			// flex-direction: row-reverse;
 			height: 60px;
 			left: 0;
-			padding: 1em;
+			padding: 1em 4em 1em 2em;
 			position: absolute;
 			right: 0;
 			z-index: 100002;
+			.secondary {
+				margin-right: auto;
+			}
+			.primary {
+				margin-left: auto;
+			}
 		}
 	}
 }
@@ -106,4 +112,20 @@
 	right: 0;
 	top: 0;
 	z-index: 100000;
+}
+
+.delete-account-confirmation-popover {
+
+		h3 {
+
+		}
+
+		.message {
+			font-size: 0.9em;
+			font-weight: lighter;
+		}
+
+		.menu-item {
+			cursor: pointer;
+		}
 }

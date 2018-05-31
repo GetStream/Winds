@@ -1,4 +1,3 @@
-import "./loadenv"
 import fs from "fs"
 import path from "path"
 import express from "express"
@@ -10,8 +9,11 @@ import limit from "express-rate-limit"
 
 import config from "./config"
 import logger from "./utils/logger"
+import { setupExpressRequestHandler, setupExpressErrorHandler } from "./utils/errors"
 
 const api = express()
+
+setupExpressRequestHandler(api);
 
 api.use(cors())
 api.use(compression())
@@ -35,6 +37,8 @@ api.use(
             "/",
             "/health",
             "/status",
+            "/sentry/log",
+            "/sentry/throw",
             "/auth/signup",
             "/auth/login",
             "/auth/forgot-password",
@@ -54,19 +58,21 @@ api.use((req, res, next) => {
     next()
 })
 
-api.listen(config.server.port, err => {
-    if (err) {
-        logger.error(err)
-        process.exit(1)
-    }
-
-    require("./utils/db")
-
-    fs.readdirSync(path.join(__dirname, "routes")).map(file => {
-        require("./routes/" + file)(api)
-    })
-
-    logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`)
+fs.readdirSync(path.join(__dirname, "routes")).map(file => {
+    require("./routes/" + file)(api)
 })
+
+if (require.main === module) {
+    require("./utils/db")
+    api.listen(config.server.port, err => {
+        if (err) {
+            logger.error(err)
+            process.exit(1)
+        }
+        logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`)
+    })
+}
+
+setupExpressErrorHandler(api);
 
 module.exports = api
