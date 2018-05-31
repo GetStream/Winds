@@ -53,27 +53,31 @@ export async function loadFixture(...fixtures) {
 		},
 	};
 
-	const batch = require(`../../../test/fixtures/${fixture}.json`);
+	for (let fixture of fixtures) {
+		const batch = require(`../../../test/fixtures/${fixture}.json`);
 
-	for (const models of batch) {
-		for (const modelName in models) {
-			const model = mongoose.model(modelName);
-			const filter = filters[modelName] || (x => Promise.resolve(x));
+		for (const models of batch) {
+			for (const modelName in models) {
+				const model = mongoose.model(modelName);
+				const filter = filters[modelName] || (x => Promise.resolve(x));
 
-			models[modelName] = models[modelName].map(fix => {
-				let m = Object.assign({}, fix);
-				if (m.id) {
-					m._id = mongoose.Types.ObjectId(m.id);
-				}
-				if (m._id) {
-					m._id = mongoose.Types.ObjectId(m._id);
-				}
-				return m;
-			});
+				models[modelName] = models[modelName].map(fix => {
+					let m = Object.assign({}, fix);
+					if (m.id) {
+						m._id = mongoose.Types.ObjectId(m.id);
+					}
+					if (m._id) {
+						m._id = mongoose.Types.ObjectId(m._id);
+					}
+					return m;
+				});
 
-			const filteredData = await Promise.all(models[modelName].map(filter));
+				const filteredData = await Promise.all(models[modelName].map(filter));
 
-			await model.collection.insertMany(filteredData);
+				await model.collection.insertMany(filteredData);
+			}
 		}
 	}
+
+
 }
