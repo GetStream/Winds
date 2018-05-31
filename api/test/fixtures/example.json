@@ -1,4 +1,4 @@
-{
+[{
     "User": [
         {
             "email"   : "valid@email.com",
@@ -7,4 +7,4 @@
             "password": "valid_password"
         }
     ]
-}
+}]

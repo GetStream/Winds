@@ -35,7 +35,7 @@ export function getMockClient() {
 
 export async function loadFixture(...fixtures) {
 	const filters = {
-		User: async (user) => {
+		User: async user => {
 			//XXX: cloning loaded json to enable filtering without thinking about module cache
 			user = Object.assign({}, user);
 
@@ -44,20 +44,36 @@ export async function loadFixture(...fixtures) {
 			user.password = hash;
 			return user;
 		},
+		Article: async article => {
+			article = Object.assign({}, article);
+			let rss = await mongoose.model('RSS').findOne({ id: article.rss });
+			// console.dir(rss);
+			// article.rss = rss;
+			return article;
+		},
 	};
 
-	for (let fixture of fixtures) {
-		logger.info(`loaded fixture with name ${fixture}`)
-		const models = require(`../../../test/fixtures/${fixture}.json`);
+	const batch = require(`../../../test/fixtures/${fixture}.json`);
 
-		for (let modelName in models) {
-			let model = mongoose.model(modelName);
-			let filter = filters[modelName] || ((x) => Promise.resolve(x));
-			let filteredData = await Promise.all(models[modelName].map(filter));
-			console.log(filteredData)
+	for (const models of batch) {
+		for (const modelName in models) {
+			const model = mongoose.model(modelName);
+			const filter = filters[modelName] || (x => Promise.resolve(x));
+
+			models[modelName] = models[modelName].map(fix => {
+				let m = Object.assign({}, fix);
+				if (m.id) {
+					m._id = mongoose.Types.ObjectId(m.id);
+				}
+				if (m._id) {
+					m._id = mongoose.Types.ObjectId(m._id);
+				}
+				return m;
+			});
+
+			const filteredData = await Promise.all(models[modelName].map(filter));
 
 			await model.collection.insertMany(filteredData);
 		}
 	}
-
 }

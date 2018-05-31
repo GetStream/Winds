@@ -1,4 +1,4 @@
-{
+[{
     "RSS": [
         {
             "featured": true,
@@ -23,5 +23,4 @@
             "feedUrl" : "http://bing.com"
         }
     ]
-}
-
+}]

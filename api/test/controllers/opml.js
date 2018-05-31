@@ -52,7 +52,7 @@ function authPostRequest(path) {
 }
 
 describe('OPML', () => {
-	/*
+/*
 	describe('Export', () => {
 		before(async () => {
 			await loadFixture('initialData', 'opml');
@@ -84,7 +84,8 @@ describe('OPML', () => {
 				console.log('r', response.body);
 			});
 		});
-	});
+	});*/
+
 	describe('Import', () => {
 		describe('valid request', () => {
 			let response;
@@ -102,7 +103,7 @@ describe('OPML', () => {
 				expect(response).to.have.status(401);
 			});
 		});
-	});*/
+	});
 
 	describe('Feed Detection', () => {
 		describe('Podcast', async () => {
