@@ -29,7 +29,6 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 exports.get = async (req, res) => {
 	let userID = req.user.sub;
 	let follows = await Follow.find({ user: userID });
-	console.log('start', userID);
 
 	let user = await User.find({ userID });
 	if (!user) {
@@ -42,8 +41,6 @@ exports.get = async (req, res) => {
 		title: `Subscriptions in Winds - Powered by ${config.product.author}`,
 	};
 
-	console.log('header', header);
-
 	let outlines = follows.map(follow => {
 		let feed = follow.rss ? follow.rss : follow.podcast;
 		let feedType = follow.rss ? 'rss' : 'podcast';
@@ -53,7 +50,6 @@ exports.get = async (req, res) => {
 			type: feedType,
 			xmlUrl: feed.feedUrl,
 		};
-		console.log(obj)
 		return obj;
 	});
 	let opml = opmlGenerator(header, outlines);

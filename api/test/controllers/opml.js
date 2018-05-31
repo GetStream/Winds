@@ -56,7 +56,7 @@ describe('OPML', () => {
 		await loadFixture('initialData', 'opml');
 	});
 
-	describe.only('Export', () => {
+	describe('Export', () => {
 
 		describe('invalid request', () => {
 			let response;
@@ -81,7 +81,7 @@ describe('OPML', () => {
 
 			it('should return 200', () => {
 				expect(response).to.have.status(200);
-				console.log('r', response.body);
+				// todo: Not sure how to check the file thats returned...
 			});
 		});
 	});
