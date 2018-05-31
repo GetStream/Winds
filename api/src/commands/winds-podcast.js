@@ -11,9 +11,9 @@ import { debugFeed } from './_debug-feed';
 import async_tasks from '../async_tasks';
 
 program
-    .option('-t, --task', 'create a task')
-    .option('-l, --limit <n>', 'The number of articles to parse', 2)
-    .action((feedUrl, cmd) => {
-      debugFeed('podcast', [feedUrl])
-    })
-    .parse(process.argv)
+	.option('-t, --task', 'create a task')
+	.option('-l, --limit <n>', 'The number of articles to parse', 2)
+	.action((feedUrl, cmd) => {
+		debugFeed('podcast', [feedUrl]);
+	})
+	.parse(process.argv);

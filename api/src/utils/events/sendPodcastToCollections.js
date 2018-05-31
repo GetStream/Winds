@@ -1,7 +1,7 @@
-import events from "./index"
-import Podcast from "../../models/podcast"
-import Episode from "../../models/episode"
-import detectPodcastLanguage from "../detectPodcastLanguage"
+import events from './index';
+import Podcast from '../../models/podcast';
+import Episode from '../../models/episode';
+import detectPodcastLanguage from '../detectPodcastLanguage';
 
 async function sendPodcastToCollections(podcast) {
 	if (!podcast.language) {
@@ -10,16 +10,16 @@ async function sendPodcastToCollections(podcast) {
 	}
 	let episodes = await Episode.find({
 		podcast: podcast.id,
-	}).sort({ publicationDate: -1 }).limit(1000)
+	}).sort({ publicationDate: -1 }).limit(1000);
 
-    let eventsData = {
+	let eventsData = {
 		[`podcast:${podcast.id}`]: {
 			articleCount: episodes.length,
 			description: podcast.description,
 			language: podcast.language,
 			mostRecentPublicationDate: episodes[0].publicationDate,
 			title: podcast.title,
-		}}
+		}};
 
 	await events({
 		meta: {
@@ -28,4 +28,4 @@ async function sendPodcastToCollections(podcast) {
 	});
 }
 
-export default sendPodcastToCollections
+export default sendPodcastToCollections;
