@@ -14,6 +14,7 @@ require('babel-register')({
 	],
 });
 
+//XXX: mocking modules before anything else is loaded
 const sinon = require('sinon');
 const mock = require('mock-require');
 
@@ -22,6 +23,7 @@ mock('getstream', {
 		return require('./src/utils/test').getMockClient();
 	}),
 });
-mock('./src/utils/events', sinon.stub().returns(Promise.resolve()));
+mock('./src/utils/events', sinon.spy(sinon.stub().returns(Promise.resolve())));
+mock('./src/utils/email', sinon.spy(sinon.stub().returns(Promise.resolve())));
 
 require('./setup-tests');

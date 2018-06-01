@@ -7,6 +7,7 @@ import auth from '../../src/controllers/auth';
 import Podcast from '../../src/models/podcast';
 import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
+import email from '../../src/utils/email';
 import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
 
 describe('Auth controller', () => {
@@ -98,6 +99,13 @@ describe('Auth controller', () => {
 						expect(timelineFeed.follow.calledWith(contentType.contentFeed, data._id)).to.be.true;
 					}
 				}
+			});
+
+			it('should send welcome email to user', async () => {
+				expect(email.calledWith({
+					type: 'welcome',
+					email: user.email,
+				})).to.be.true;
 			});
 		});
 
@@ -209,7 +217,7 @@ describe('Auth controller', () => {
 		});
 
 		describe('invalid request', () => {
-			it('should return 401 for missing/empty data in request', async () => {
+			it('should return 401 for missing/empty data', async () => {
 				const bodies = [
 					{ password: 'valid_password' },
 					{ email: 'valid@email.com' },
@@ -253,20 +261,37 @@ describe('Auth controller', () => {
 		});
 
 		describe('recovery code endpoint', () => {
-			it('should return 200 for existing user', async () => {
-				const response = await request(api)
-					.post('/auth/forgot-password')
-					.send({ email: 'valid@email.com' });
+			describe('valid request', () => {
+				let response;
+				before(async () => {
+					response = await request(api)
+						.post('/auth/forgot-password')
+						.send({ email: 'valid@email.com' });
+				});
 
-				expect(response).to.have.status(200);
+				it('should return 200 for existing user', () => {
+					expect(response).to.have.status(200);
+				});
+
+				it('should send recovery code email to user', async () => {
+					const user = await User.findOne({ email: 'valid@email.com' });
+
+					expect(email.calledWith({
+						type: 'password',
+						email: user.email,
+						passcode: user.recoveryCode,
+					})).to.be.true;
+				});
 			});
 
-			it('should return 404 for nonexistent user', async () => {
-				const response = await request(api)
-					.post('/auth/forgot-password')
-					.send({ email: 'invalid@email.com' });
+			describe('invalid request', () => {
+				it('should return 404 for nonexistent user', async () => {
+					const response = await request(api)
+						.post('/auth/forgot-password')
+						.send({ email: 'invalid@email.com' });
 
-				expect(response).to.have.status(404);
+					expect(response).to.have.status(404);
+				});
 			});
 		});
 
@@ -277,35 +302,62 @@ describe('Auth controller', () => {
 				user = await User.findOne({ email: 'valid@email.com' });
 			});
 
-			it('should return 200 for existing user', async () => {
-				const response = await request(api)
-					.post('/auth/reset-password')
-					.send({
-						email: 'valid@email.com',
-						passcode: user.recoveryCode,
-						password: 'new-password',
-					});
+			describe('valid request', () => {
+				let response;
 
-				expect(response).to.have.status(200);
+				before(async () => {
+					response = await request(api)
+						.post('/auth/reset-password')
+						.send({
+							email: 'valid@email.com',
+							passcode: user.recoveryCode,
+							password: 'new-password',
+						});
+				});
+
+				it('should return 200 for existing user', () => {
+					expect(response).to.have.status(200);
+				});
+
+				it('should return user info', () => {
+					const keys = ['_id', 'email', 'interests', 'name', 'username'];
+					expect(Object.keys(response.body)).to.include.members(keys);
+
+					for (const key of keys) {
+						//XXX: converting to string to avoid type differences
+						expect(String(response.body[key])).to.be.equal(String(user[key]));
+					}
+				});
+
+				it('should return valid jwt', async () => {
+					expect(response.body.jwt).to.not.be.empty;
+					const decoded = jwt.verify(response.body.jwt, config.jwt.secret);
+					expect(decoded).to.not.be.null;
+					expect(Object.keys(decoded)).to.include.members(['email', 'sub']);
+					expect(decoded.email).to.equal(user.email);
+					expect(decoded.sub).to.equal(String(user._id));
+				});
 			});
 
-			it('should return 404 for nonexistent user', async () => {
-				const response = await request(api)
-					.post('/auth/reset-password')
-					.send({ email: 'invalid@email.com' });
+			describe('invalid request', () => {
+				it('should return 404 for nonexistent user', async () => {
+					const response = await request(api)
+						.post('/auth/reset-password')
+						.send({ email: 'invalid@email.com' });
 
-				expect(response).to.have.status(404);
-			});
+					expect(response).to.have.status(404);
+				});
 
-			it('should return 404 for incorrect passcode', async () => {
-				const response = await request(api)
-					.post('/auth/reset-password')
-					.send({
-						email: 'valid@email.com',
-						passcode: 'incorrect-passcode',
-					});
+				it('should return 404 for incorrect passcode', async () => {
+					const response = await request(api)
+						.post('/auth/reset-password')
+						.send({
+							email: 'valid@email.com',
+							passcode: 'incorrect-passcode',
+						});
 
-				expect(response).to.have.status(404);
+					expect(response).to.have.status(404);
+				});
 			});
 		});
 	});
