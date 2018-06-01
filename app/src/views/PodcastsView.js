@@ -140,6 +140,7 @@ PodcastsView.propTypes = {
 			podcastID: PropTypes.string,
 		}).isRequired,
 	}).isRequired,
+	location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 	podcast: PropTypes.shape({
 		_id: PropTypes.string,
 		description: PropTypes.string,
