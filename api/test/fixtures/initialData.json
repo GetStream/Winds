@@ -31,6 +31,98 @@
 				"name": "Test User"
 			}
 		],
+		"RSS": [
+			{
+				"_id": "5b0ad0baf6f89574a6388879",
+				"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
+				"description": "Dorkly: Comics",
+				"categories": "RSS",
+				"featured": false,
+				"public": true,
+				"valid": true,
+				"likes": 0,
+				"summary": "",
+				"interest": "",
+				"isParsing": true,
+				"language": "eng",
+				"feedUrl": "http://dorkly.com/comics/rss",
+				"lastScraped": "2018-06-01T17:52:10.655Z",
+				"publicationDate": "2018-05-27T15:37:30.011Z",
+				"title": "Dorkly: Comics",
+				"url": "http://dorkly.com/comics",
+				"updatedAt": "2018-06-01T18:07:31.230Z",
+				"createdAt": "2018-05-27T15:37:30.017Z",
+				"__v": 0
+			},
+			{
+				"_id": "5b0ad0baf6f89574a638887d",
+				"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
+				"description": "BILDblog",
+				"categories": "RSS",
+				"featured": false,
+				"public": true,
+				"valid": true,
+				"likes": 0,
+				"summary": "",
+				"interest": "",
+				"isParsing": true,
+				"language": "deu",
+				"feedUrl": "http://feeds.feedburner.com/bildblog",
+				"lastScraped": "2018-06-01T17:51:18.032Z",
+				"publicationDate": "2018-05-27T15:37:30.024Z",
+				"title": "BILDblog",
+				"url": "http://bildblog.de",
+				"updatedAt": "2018-06-01T18:06:31.392Z",
+				"createdAt": "2018-05-27T15:37:30.032Z",
+				"__v": 0
+			}
+		],
+		"Podcast": [
+			{
+				"_id": "5afb7fedfe7430d35996d66e",
+				"feedUrl": "http://mbmbam.libsyn.com/rss",
+				"__v": 0,
+				"categories": "podcast",
+				"createdAt": "2018-05-16T00:48:45.264Z",
+				"description":
+					"Free advice, from three of the world's most qualified experts.",
+				"featured": false,
+				"images": {
+					"favicon": null,
+					"og":
+						"http://static.libsyn.com/p/assets/6/d/7/d/6d7d36d6929db515/MBMBAM_Update.jpg"
+				},
+				"lastScraped": "2018-06-01T21:39:47.827Z",
+				"title": "My Brother, My Brother And Me",
+				"updatedAt": "2018-06-01T21:39:47.827Z",
+				"url": "http://mbmbam.com",
+				"valid": true,
+				"isParsing": false,
+				"language": "eng"
+			},
+			{
+				"_id": "5afb7f68fe7430d35996cc62",
+				"feedUrl": "http://openargs.libsyn.com/",
+				"__v": 0,
+				"categories": "podcast",
+				"createdAt": "2018-05-16T00:46:32.760Z",
+				"description":
+					"Every episode, legal expert Andrew and comic relief Thomas will tackle a popular legal topic and give you all the tools you need to understand the issue and win every argument you have on Facebook, with your Uncle Frank, or wherever someone is wrong on the Internet. It's law.  It's politics.  It's fun.  We don't tell you what to think, we just set up the Opening Arguments.",
+				"featured": false,
+				"images": {
+					"favicon": "http://openargs.com/favicon.ico",
+					"og":
+						"http://static.libsyn.com/p/assets/7/4/2/3/742385e9b736f6aa/Open_Args_Logo.jpg"
+				},
+				"lastScraped": "2018-06-01T21:55:47.788Z",
+				"title": "Opening Arguments",
+				"updatedAt": "2018-06-01T21:55:47.789Z",
+				"url": "http://openargs.com",
+				"valid": true,
+				"language": "eng",
+				"isParsing": false
+			}
+		],
 		"Article": [
 			{
 				"_id": "5b0ad37226dc3db38194e5eb",
@@ -99,27 +191,27 @@
 				"updatedAt": "2018-05-28T19:28:08.323Z"
 			},
 			{
-				"_id": "5b0ad37026dc3db38194e22d",
-				"podcast": "5afb7fedfe7430d35996d66e",
-				"url": "http://mbmbam.libsyn.com/mbmbam-401-max-cooljazz",
+				"_id": "5b0ad37626dc3db38194fa73",
+				"podcast": "5afb7f68fe7430d35996cc62",
+				"url": "http://openargs.com/?p=45",
 				"__v": 0,
-				"createdAt": "2018-05-27T15:49:00.021Z",
+				"createdAt": "2018-05-27T15:49:03.509Z",
 				"description":
-					"We've climbed out of the smoking, anxiety-filled crater of Episode 400 to bring you this, a perfectly normal episode. This one's got a 100 percent guarantee that at no point will Al Roker manifest and dunk on us for our unprofessionalism. OR WILL HE?!? Suggested talking points: S",
-				"duration": "4103",
+					"In Episodes 7 and 8, we discussed a recent decision by a federal court in Missouri dismissing a lawsuit brought by the Satanic Temple challenging certain Missouri laws that arguably restrict abortion rights.  In this episode, we take a step back and look at the right to abortion",
+				"duration": "2650",
 				"enclosure":
-					"http://traffic.libsyn.com/mbmbam/MyBrotherMyBrotherandMe401.mp3?dest-id=18443",
+					"http://dts.podtrac.com/redirect.mp3/http://media.blubrry.com/openargs/traffic.libsyn.com/openargs/09_Episode_9.mp3?dest-id=455562",
 				"images": {
 					"featured": "",
 					"banner": "",
 					"favicon": "",
 					"og":
-						"http://static.libsyn.com/p/assets/2/8/0/8/28083bbdb33b34c3/MBMBAM_Update.jpg"
+						"http://static.libsyn.com/p/assets/7/3/b/5/73b5bfccfd8e95c6/Open_Args_Logo.jpg"
 				},
-				"link": "http://mbmbam.libsyn.com/mbmbam-401-max-cooljazz",
-				"publicationDate": "2018-04-09T16:20:21.000Z",
-				"title": "MBMBaM 401: Max Cooljazz",
-				"updatedAt": "2018-05-28T19:28:08.323Z"
+				"link": "http://openargs.com/?p=45",
+				"publicationDate": "2016-08-31T04:22:28.000Z",
+				"title": "OA9: Abortion, Roe v. Wade, and the Constitution, Part 1",
+				"updatedAt": "2018-05-28T19:28:02.367Z"
 			}
 		]
 	}
