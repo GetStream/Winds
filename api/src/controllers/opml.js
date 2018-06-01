@@ -78,7 +78,7 @@ exports.post = async (req, res) => {
 		feed.valid = true;
 
 		if (isUrl().test(feed.feedUrl)) {
-			feed.feedUrl = normalizeUrl(feed.feedUrl);
+			feed.feedUrl = normalizeUrl(feed.feedUrl).trim();
 		} else {
 			feed.valid = false;
 		}
@@ -148,7 +148,7 @@ async function followOPMLFeed(feed, userID) {
 			title: entities.decodeHTML(feed.title),
 			url: feed.url,
 		};
-		instance = await RSS.create(data);
+		instance = await schema.create(data);
 		/*
     let searchResponse = await search({
         _id: instance._id,
