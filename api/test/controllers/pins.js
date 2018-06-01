@@ -7,6 +7,7 @@ import { loadFixture } from '../../src/utils/test';
 import Pin from '../../src/models/pin';
 import User from '../../src/models/user';
 import Article from '../../src/models/article';
+import Episode from '../../src/models/episode';
 
 function withLogin(r) {
 	const authToken = jwt.sign({
@@ -20,6 +21,7 @@ describe.only('Pin controller', () => {
     let pin;
     let user;
     let article;
+    let episode;
 
 	before(async () => {
 		await loadFixture('initialData', 'pins', 'articles');
@@ -27,6 +29,7 @@ describe.only('Pin controller', () => {
         pin = await Pin.findOne({});
         user = await User.findOne({});
         article = await Article.findOne({});
+        episode = await Episode.findOne({});
 	});
 
     describe('get', () => {
@@ -58,9 +61,18 @@ describe.only('Pin controller', () => {
 	});
 
     describe('post', () => {
-		it('should create a pin', async () => {
+		it('should create an article pin', async () => {
 			const res = await withLogin(
 				request(api).post('/pins').send({ article: article._id, user: user._id })
+			);
+			expect(res).to.have.status(200);
+		});
+	});
+
+    describe('post', () => {
+		it('should create an episode pin', async () => {
+			const res = await withLogin(
+				request(api).post('/pins').send({ episode: episode._id, user: user._id })
 			);
 			expect(res).to.have.status(200);
 		});
