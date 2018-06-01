@@ -1,32 +1,126 @@
-[{
-	"User": [
-		{
-			"_id": "5b0f306d8e147f10f16aceaf",
-			"preferences": {
-				"notifications": { "daily": false, "weekly": true, "follows": true }
+[
+	{
+		"User": [
+			{
+				"_id": "5b0f306d8e147f10f16aceaf",
+				"preferences": {
+					"notifications": { "daily": false, "weekly": true, "follows": true }
+				},
+				"bio": "",
+				"url": "",
+				"twitter": "",
+				"background": 1,
+				"recoveryCode": "",
+				"active": true,
+				"admin": false,
+				"interests": [
+					"UI/UX",
+					"Startups & VC",
+					"Programming",
+					"News",
+					"Machine Learning & AI",
+					"Gaming",
+					"VR",
+					"Lifehacks",
+					"Marketing"
+				],
+				"username": "testuser12345",
+				"email": "test+test@test.com",
+				"password":
+					"$2a$10$9UaUjg8V01bWLfx1L6FCl.RWMQoNnxayX3Pl528V4XYwWrV/Uw/VW",
+				"name": "Test User"
+			}
+		],
+		"Article": [
+			{
+				"_id": "5b0ad37226dc3db38194e5eb",
+				"rss": "5b0ad0baf6f89574a6388879",
+				"url":
+					"http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war",
+				"__v": 0,
+				"commentUrl": null,
+				"content":
+					"<p><img src=\"https://media0dk-a.akamaihd.net/88/15/6c29d61373a1f7056ea81ca96e7b0dec.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/28/70/44ef0712bedd4bb409cdf463f8e5808e.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/66/89/ae36e819b67bae7db3872af89230bc05.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/81/26/2a9963589329a2447a8f312c422f73d8.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/64/44/e7931e4fcae882f335325adb6b915395.jpeg\" alt=\"undefined\" /></p>\n<p><br /><br /></p>\nFollow Justin on <strong><a>Twitter</a></strong> and <strong><a>Facebook</a><br /><br /><br /><br /></strong>",
+				"createdAt": "2018-05-27T15:48:59.230Z",
+				"description": "Follow Justin on Twitter and Facebook",
+				"images": {
+					"featured": "",
+					"banner": "",
+					"favicon": "",
+					"og":
+						"http://1.media.dorkly.cvcdn.com/44/64/fd010b185a4610d2a9914b42af6a4de6.jpeg"
+				},
+				"publicationDate": "2018-05-25T13:00:00.000Z",
+				"title": "What If Deadpool Was In Avengers: Infinity War",
+				"updatedAt": "2018-05-30T06:52:15.685Z",
+				"enclosures": []
 			},
-			"bio": "",
-			"url": "",
-			"twitter": "",
-			"background": 1,
-			"recoveryCode": "",
-			"active": true,
-			"admin": false,
-			"interests": [
-				"UI/UX",
-				"Startups & VC",
-				"Programming",
-				"News",
-				"Machine Learning & AI",
-				"Gaming",
-				"VR",
-				"Lifehacks",
-				"Marketing"
-			],
-			"username": "testuser12345",
-			"email": "test+test@test.com",
-			"password": "$2a$10$9UaUjg8V01bWLfx1L6FCl.RWMQoNnxayX3Pl528V4XYwWrV/Uw/VW",
-			"name": "Test User"
-		}
-	]
-}]
+			{
+				"_id": "5b0ad37226dc3db38194e69a",
+				"rss": "5b0ad0baf6f89574a638887d",
+				"url": "http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk",
+				"__v": 0,
+				"commentUrl": null,
+				"content":
+					"1. „TV Movie“ erfindet Exklusiv-Interview mit „Tatort“-Stars (dwdl.de, Thomas Lückerath) Die aktuelle „TV Movie“ wirbt mit einem „Exklusiv-Interview“ mit den „Tatort“-Kommissaren Jan Josef Liefers und Axel Prahl, doch einiges spricht dafür, dass das Gespräch nie stattgefunden hat: Das „Interview“ besteht aus bekannten Textschnipseln und auch die Agentur der beiden Schauspieler weiß von keinem Gespräch. „DWDL“ […]",
+				"createdAt": "2018-05-27T15:49:00.285Z",
+				"description":
+					"1. „TV Movie“ erfindet Exklusiv-Interview mit „Tatort“-Stars\n(dwdl.de, Thomas Lückerath)\nDie aktuelle „TV Movie“ wirbt mit einem „Exklusiv-Interview“ mit den „Tatort“-Kommissaren Jan Josef Liefers und Axel Prahl, doch einiges spricht dafür, dass das Gespräch nie stattgefunden hat",
+				"images": {},
+				"publicationDate": "2018-05-25T06:54:35.000Z",
+				"title":
+					"Exklusives Fake-Interview, Macht und Deutungshoheit, Heidis Abgründe",
+				"updatedAt": "2018-05-29T19:49:22.315Z",
+				"enclosures": []
+			}
+		],
+		"Episode": [
+			{
+				"_id": "5b0ad37026dc3db38194e286",
+				"podcast": "5afb7fedfe7430d35996d66e",
+				"url": "http://mbmbam.libsyn.com/mbmbam-398-rest-in-reeses-pieces",
+				"__v": 0,
+				"createdAt": "2018-05-27T15:49:00.021Z",
+				"description":
+					"We've got all the big news from the big basketball games that have been going on in the big tournament. Who's gonna take home that sweet trophy? More importantly: Which coach has the best, most powerful name? (Hint: It's our coach. Our coach has the most powerful name.) Suggested",
+				"duration": "3546",
+				"enclosure":
+					"http://traffic.libsyn.com/mbmbam/MyBrotherMyBrotherandMe398.mp3?dest-id=18443",
+				"images": {
+					"featured": "",
+					"banner": "",
+					"favicon": "",
+					"og":
+						"http://static.libsyn.com/p/assets/d/5/f/5/d5f598a244fd67d2/MBMBAM_Update.jpg"
+				},
+				"link": "http://mbmbam.libsyn.com/mbmbam-398-rest-in-reeses-pieces",
+				"publicationDate": "2018-03-19T17:12:49.000Z",
+				"title": "MBMBaM 398: Rest in Reese's Pieces",
+				"updatedAt": "2018-05-28T19:28:08.323Z"
+			},
+			{
+				"_id": "5b0ad37026dc3db38194e22d",
+				"podcast": "5afb7fedfe7430d35996d66e",
+				"url": "http://mbmbam.libsyn.com/mbmbam-401-max-cooljazz",
+				"__v": 0,
+				"createdAt": "2018-05-27T15:49:00.021Z",
+				"description":
+					"We've climbed out of the smoking, anxiety-filled crater of Episode 400 to bring you this, a perfectly normal episode. This one's got a 100 percent guarantee that at no point will Al Roker manifest and dunk on us for our unprofessionalism. OR WILL HE?!? Suggested talking points: S",
+				"duration": "4103",
+				"enclosure":
+					"http://traffic.libsyn.com/mbmbam/MyBrotherMyBrotherandMe401.mp3?dest-id=18443",
+				"images": {
+					"featured": "",
+					"banner": "",
+					"favicon": "",
+					"og":
+						"http://static.libsyn.com/p/assets/2/8/0/8/28083bbdb33b34c3/MBMBAM_Update.jpg"
+				},
+				"link": "http://mbmbam.libsyn.com/mbmbam-401-max-cooljazz",
+				"publicationDate": "2018-04-09T16:20:21.000Z",
+				"title": "MBMBaM 401: Max Cooljazz",
+				"updatedAt": "2018-05-28T19:28:08.323Z"
+			}
+		]
+	}
+]

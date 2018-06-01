@@ -8,7 +8,6 @@ import config from '../../config';
 import { expect, request } from 'chai';
 import api from '../../server';
 
-
 let mockClient = null;
 const mockFeeds = {};
 
@@ -39,8 +38,6 @@ export function getMockClient() {
 	return mockClient;
 }
 
-
-
 export async function loadFixture(...fixtures) {
 	const filters = {
 		User: async user => {
@@ -51,13 +48,6 @@ export async function loadFixture(...fixtures) {
 			const hash = await bcrypt.hash(user.password, salt);
 			user.password = hash;
 			return user;
-		},
-		Article: async article => {
-			article = Object.assign({}, article);
-			let rss = await mongoose.model('RSS').findOne({ id: article.rss });
-			// console.dir(rss);
-			// article.rss = rss;
-			return article;
 		},
 	};
 
@@ -87,6 +77,4 @@ export async function loadFixture(...fixtures) {
 
 		}
 	}
-
-
 }

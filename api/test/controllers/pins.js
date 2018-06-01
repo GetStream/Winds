@@ -19,15 +19,13 @@ function withLogin(r) {
 
 describe.only('Pin controller', () => {
     let pin;
-    let user;
     let article;
     let episode;
 
 	before(async () => {
-		await loadFixture('initialData', 'pins', 'articles');
+		await loadFixture('initialData', 'pins');
 
         pin = await Pin.findOne({});
-        user = await User.findOne({});
         article = await Article.findOne({});
         episode = await Episode.findOne({});
 	});
@@ -63,7 +61,7 @@ describe.only('Pin controller', () => {
     describe('post', () => {
 		it('should create an article pin', async () => {
 			const res = await withLogin(
-				request(api).post('/pins').send({ article: article._id, user: user._id })
+				request(api).post('/pins').send({ article: article._id })
 			);
 			expect(res).to.have.status(200);
 		});
@@ -72,7 +70,7 @@ describe.only('Pin controller', () => {
     describe('post', () => {
 		it('should create an episode pin', async () => {
 			const res = await withLogin(
-				request(api).post('/pins').send({ episode: episode._id, user: user._id })
+				request(api).post('/pins').send({ episode: episode._id })
 			);
 			expect(res).to.have.status(200);
 		});
