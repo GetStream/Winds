@@ -5,6 +5,8 @@ import api from '../../src/server';
 import config from '../../src/config';
 import { loadFixture } from '../../src/utils/test';
 import Pin from '../../src/models/pin';
+import User from '../../src/models/user';
+import Article from '../../src/models/article';
 
 function withLogin(r) {
 	const authToken = jwt.sign({
@@ -15,11 +17,15 @@ function withLogin(r) {
 };
 
 describe.only('Pin controller', () => {
-	let pin;
+    let pin;
+    let user;
+    let article;
 
 	before(async () => {
-		await loadFixture('example');
-        await loadFixture('pins');
+		await loadFixture('pins', 'articles', 'initialData');
+        pin = await Pin.findOne({});
+        user = await User.findOne({});
+        article = await Article.findOne({});
 	});
 
     describe('get', () => {
@@ -40,13 +46,23 @@ describe.only('Pin controller', () => {
 		});
 	});
 
-	describe('list', () => {
+	describe('get', () => {
 		it('should return a limited number of pins', async () => {
 			const res = await withLogin(
 				request(api).get('/pins').query({ limit: 1 })
 			);
 			expect(res).to.have.status(200);
-            expect(res).to.be.an('array');
+            expect(res.body).to.be.an('array');
+		});
+	});
+
+    describe('post', () => {
+		it('should create a pin', async () => {
+			const res = await withLogin(
+				request(api).post('/pins').send({ article: article._id, user: user._id })
+			);
+			expect(res).to.have.status(200);
+            expect(res.body).to.be.an('array');
 		});
 	});
 });
