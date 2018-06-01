@@ -23,7 +23,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info('Starting the RSS worker');
 
 // TODO: move this to a separate main.js
-async_tasks.ProcessRssQueue(100, handleRSS);
+// async_tasks.ProcessRssQueue(100, handleRSS);
 
 const statsd = getStatsDClient();
 
@@ -42,6 +42,15 @@ async function handleRSS(job) {
 	}
 	logger.info(`Completed scraping for ${job.data.url}`);
 }
+
+async function test(url) {
+	let rssContent = await timeIt('winds.handle_rss.parsing', () => {
+		return ParseFeed(url);
+	});
+	console.dir(rssContent);
+}
+
+test("http://anadrark.com/links/index.php?do=rss");
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handleRSS(job) {
