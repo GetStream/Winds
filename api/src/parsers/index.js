@@ -18,6 +18,7 @@ const WindsUserAgent = 'Winds: Open Source RSS & Podcast app: https://getstream.
 const AcceptHeader = 'text/html,application/xhtml+xml,application/xml';
 const statsd = getStatsDClient();
 
+
 // sanitize cleans the html before returning it to the frontend
 var sanitize = function(dirty) {
 	return sanitizeHtml(dirty, {
@@ -28,65 +29,50 @@ var sanitize = function(dirty) {
 	});
 };
 
-function ParseFeed(feedUrl, callback) {
-	let t0 = new Date();
-	let t1 = null;
-	let t2 = null;
-
-	let feedparser = new FeedParser();
-	let feedContents = { articles: [] };
-
-	let req = request(feedUrl, {
-		pool: false,
-		timeout: 6000,
-		gzip: true,
-	}, (error, response, body) => {
-
-		if (error) {
-			return callback(error, feedContents);
-		}
-
-		if (response.statusCode !== 200) {
-			logger.warn(`${feedUrl} returned status code ${response.statusCode}, skipping`);
-			return callback(null, feedContents);
-		}
-
-		statsd.timing('winds.parsers.feed.transfer', (new Date() - t1));
-		t2 = new Date();
-		feedparser.end(body, ()=>{
-			statsd.timing('winds.parsers.feed.write_to_parser_stream', (new Date() - t2));
+function doRequest(url, options) {
+	return new Promise(function (resolve, reject) {
+		let headers = {
+			'User-Agent':WindsUserAgent,
+			'Accept': AcceptHeader,
+		};
+		request(Object.assign(options, {url, headers}), function (error, res, body) {
+			if (!error) {
+				resolve([res, body]);
+			} else {
+				reject(error);
+			}
 		});
 	});
+}
 
-	req.setMaxListeners(50);
-	req.setHeader('User-Agent', WindsUserAgent);
-	req.setHeader('Accept', AcceptHeader);
+async function ParseFeed(feedUrl) {
+	let t0 = new Date();
+	let feedContents = { articles: [] };
+	let response, body;
 
-	req.on('error', err => {
-		callback(err, feedContents);
-	});
+	try {
+		[response, body] = await doRequest(feedUrl, {
+			pool: false,
+			timeout: 6000,
+			gzip: true,
+		});
+	} catch(err) {
+		logger.warn({err});
+		return;
+	}
 
-	req.on('response', res => {
-		if (res.statusCode === 200) {
-			t1 = new Date();
-			statsd.timing('winds.parsers.feed.ttfb', (new Date() - t0));
-		}
-	});
+	if (response.statusCode !== 200) {
+		logger.warn(`${feedUrl} returned status code ${response.statusCode}, skipping`);
+	}
 
-	feedparser.on('error', err => {
-		callback(err, feedContents);
-	});
+	let t1 = new Date();
+	statsd.timing('winds.parsers.feed.transfer', (new Date() - t0));
 
-	feedparser.on('end', () => {
-		if (t2 !== null){
-			statsd.timing('winds.parsers.feed.finished_parsing', (new Date() - t2));
-		}
-		callback(null, feedContents);
-	});
+	let feedParser = new FeedParser();
 
-	feedparser.on('readable', () => {
+	feedParser.on('readable', () => {
 		let postBuffer;
-		while ((postBuffer = feedparser.read())) {
+		while ((postBuffer = feedParser.read())) {
 			let post = Object.assign({}, postBuffer);
 
 			let description = strip(entities.decodeHTML(post.description)).substring(0, 280);
@@ -102,8 +88,6 @@ function ParseFeed(feedUrl, callback) {
 					.toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
-				// For some sites like XKCD the content from RSS is better than Mercury
-				// note that we don't actually get the images, OG scraping is more reliable
 			};
 
 			// HNEWS
@@ -133,6 +117,10 @@ function ParseFeed(feedUrl, callback) {
 			feedContents.image = post.meta.image;
 		}
 	});
+
+	feedParser.stream.write(body);
+	statsd.timing('winds.parsers.feed.finished_parsing', (new Date() - t1));
+	return feedContents;
 }
 
 function ParsePodcast(podcastUrl, callback) {

@@ -59,7 +59,7 @@ exports.setupExpressErrorHandler = (app) => {
 			500;
 		// skip anything not marked as an internal server error
 		if (status < 500) return next(err);
-		logger.error(err);
+		logger.error({err});
 		return next(err);
 	});
 };
