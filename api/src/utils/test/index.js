@@ -24,6 +24,7 @@ function setupMocks() {
 			userId: id,
 			id: group + ':' + id,
 			follow: sinon.spy(sinon.stub().returns(Promise.resolve())),
+			addActivity: sinon.spy(sinon.stub().returns(Promise.resolve())),
 		};
 		mockFeeds[group + ':' + id] = mock;
 		return mock;

@@ -22,7 +22,8 @@ describe.only('Pin controller', () => {
     let article;
 
 	before(async () => {
-		await loadFixture('pins', 'articles', 'initialData');
+		await loadFixture('initialData', 'pins', 'articles');
+
         pin = await Pin.findOne({});
         user = await User.findOne({});
         article = await Article.findOne({});
@@ -62,7 +63,6 @@ describe.only('Pin controller', () => {
 				request(api).post('/pins').send({ article: article._id, user: user._id })
 			);
 			expect(res).to.have.status(200);
-            expect(res.body).to.be.an('array');
 		});
 	});
 });
