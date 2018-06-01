@@ -35,13 +35,10 @@ function wrapMocha(onPrepare, onUnprepare) {
 		const self = this;
 		onPrepare().then(() => {
 			run.call(self, function() {
-				/* istanbul ignore else */
 				if (typeof onUnprepare === 'function') {
 					onUnprepare.apply(this, arguments);
-					done.apply(this, arguments);
-				} else {
-					done.apply(this, arguments);
 				}
+				done.apply(this, arguments);
 			});
 		}).catch(err => {
 			if (err instanceof Error) {
