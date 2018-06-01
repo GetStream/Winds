@@ -105,7 +105,7 @@ async function ParseFeed(feedUrl) {
 			// product hunt comments url
 			if (post.link.indexOf('https://www.producthunt.com') === 0) {
 				let matches = post.description.match(/(https:\/\/www.producthunt.com\/posts\/.*)"/);
-				if (matches.length) {
+				if (matches && matches.length) {
 					parsedArticle.commentUrl = matches[1];
 				}
 			}
@@ -113,7 +113,7 @@ async function ParseFeed(feedUrl) {
 			// nice images for XKCD
 			if (post.link.indexOf('https://xkcd') === 0) {
 				let matches = post.description.match(/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/);
-				if (matches.length) {
+				if (matches && matches.length) {
 					parsedArticle.images = { og: matches[1] };
 				}
 			}
