@@ -11,7 +11,7 @@ import normalize from 'normalize-url';
 import async_tasks from '../async_tasks';
 
 // do stuff
-function debugFeed(feedType, feedUrls) {
+async function debugFeed(feedType, feedUrls) {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info(`Starting the ${feedType} Debugger \\0/`);
 	logger.info(
@@ -24,11 +24,7 @@ function debugFeed(feedType, feedUrls) {
 		target = normalize(target);
 		logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
-		function validate(error, response) {
-			if (error) {
-				console.warn(error);
-				return;
-			}
+		function validate(response) {
 
 			// validate the podcast or RSS feed
 			logger.info('========== Validating Publication ==========');
@@ -147,9 +143,11 @@ function debugFeed(feedType, feedUrls) {
 		}
 
 		if (feedType === 'rss') {
-			ParseFeed(target, validate);
+			let feedContent = await ParseFeed(target);
+			validate(feedContent)
 		} else {
-			ParsePodcast(target, validate);
+			let podcastContent = await ParsePodcast(target);
+			validate(podcastContent)
 		}
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');
 	}
