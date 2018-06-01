@@ -93,6 +93,7 @@
 				"valid-url": "^1.0.9",
 				"validator": "^10.2.0",
 				"winston": "^3.0.0-rc6",
+				"winston-transport": "^4.1.0",
 				"yargs": "^11.0.0",
 				"zlib": "^1.0.5"
 		},
@@ -107,6 +108,7 @@
 				"chai": "^4.1.2",
 				"chai-http": "^4.0.0",
 				"clarify": "^2.1.0",
+				"flatted": "^0.2.2",
 				"mocha": "^5.2.0",
 				"mock-require": "^3.0.2",
 				"prettier": "^1.12.1",
