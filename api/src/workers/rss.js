@@ -10,7 +10,6 @@ import Article from '../models/article';
 import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
-import util from 'util';
 
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
 import { ParseFeed } from '../parsers';
@@ -30,43 +29,45 @@ const statsd = getStatsDClient();
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
 async function handleRSS(job) {
-	let promise = _handleRSS(job);
-	promise.catch(err => {
-		logger.info(`rss job ${job} broke with err ${err}`);
-		logger.error(err);
-	});
-	return promise;
+	logger.info(`Processing ${job.data.url}`);
+	try {
+		await _handleRSS(job);
+	} catch (err) {
+		let tags = {queue: 'rss'};
+		let extra = {
+			JobRSS: job.data.rss,
+			JobURL: job.data.url,
+		};
+		logger.error('RSS job encountered an error', {err, tags, extra});
+	}
+	logger.info(`Completed scraping for ${job.data.url}`);
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handleRSS(job) {
-	logger.info(`Processing ${job.data.url}`);
-
-	// verify we have the rss object
 	let rssID = job.data.rss;
+
+	await timeIt('winds.handle_rss.ack', () => {
+		return markDone(rssID);
+	});
+
 	let rss = await timeIt('winds.handle_rss.get_rss', () => {
 		return RSS.findOne({ _id: rssID });
 	});
+
 	if (!rss) {
 		logger.warn(`RSS with ID ${rssID} does not exist`);
 		return;
 	}
 
-	// mark as done, will be schedule again in 15 min from now
-	// we do this early so a temporary failure doesnt leave things in a broken state
-	await timeIt('winds.handle_rss.ack', () => {
-		return markDone(rssID);
-	});
 	logger.info(`Marked ${rssID} as done`);
 
 	// parse the articles
-	let rssContent;
-	try {
-		rssContent = await timeIt('winds.handle_rss.parsing', () => {
-			return util.promisify(ParseFeed)(job.data.url);
-		});
-	} catch (err) {
-		logger.warn(err);
+	let rssContent = await timeIt('winds.handle_rss.parsing', () => {
+		return ParseFeed(job.data.url);
+	});
+
+	if (!rssContent) {
 		return;
 	}
 
@@ -106,9 +107,9 @@ async function _handleRSS(job) {
 					{
 						removeOnComplete: true,
 						removeOnFail: true,
-					},
+					}
 				);
-			}),
+			})
 		);
 	});
 
@@ -133,7 +134,6 @@ async function _handleRSS(job) {
 		await sendRssFeedToCollections(rss);
 	}
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
-	logger.info(`Completed scraping for ${job.data.url}`);
 }
 
 async function upsertManyArticles(rssID, articles) {
@@ -145,7 +145,7 @@ async function upsertManyArticles(rssID, articles) {
 	});
 
 	let existingArticles = await Article.find({ $or: articlesData }, { url: 1 }).read(
-		'sp',
+		'sp'
 	);
 	let existingArticleUrls = existingArticles.map(a => {
 		return a.url;
@@ -153,7 +153,7 @@ async function upsertManyArticles(rssID, articles) {
 
 	statsd.increment(
 		'winds.handle_rss.articles.already_in_mongo',
-		existingArticleUrls.length,
+		existingArticleUrls.length
 	);
 
 	let articlesToUpsert = articlesData.filter(article => {
@@ -163,13 +163,13 @@ async function upsertManyArticles(rssID, articles) {
 	logger.info(
 		`Feed ${rssID}: got ${articles.length} articles of which ${
 			articlesToUpsert.length
-		} need a sync`,
+		} need a sync`
 	);
 
 	return Promise.all(
 		articlesToUpsert.map(article => {
 			return upsertArticle(rssID, article);
-		}),
+		})
 	);
 }
 
@@ -217,7 +217,7 @@ async function upsertArticle(rssID, post) {
 				upsert: true,
 				rawResult: true,
 				setDefaultsOnInsert: defaults,
-			},
+			}
 		);
 		if (!rawArticle.lastErrorObject.updatedExisting) {
 			return rawArticle.value;
@@ -235,15 +235,14 @@ async function upsertArticle(rssID, post) {
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(rssID) {
 	/*
-	Set the last scraped for the given rssID
-	*/
+  Set the last scraped for the given rssID
+  */
 	let now = moment().toISOString();
-	let updated = await RSS.update(
+	return await RSS.update(
 		{ _id: rssID },
 		{
 			lastScraped: now,
 			isParsing: false,
-		},
+		}
 	);
-	return updated;
 }
