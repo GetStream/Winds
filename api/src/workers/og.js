@@ -121,7 +121,13 @@ async function _handleOg(job) {
 	}
 
 	let images = instance.images || {};
-	images.og = normalize(image.data.ogImage.url);
+
+	try {
+		images.og = normalize(image.data.ogImage.url);
+	} catch (err) {
+		return logger.warn(`Bad OG Image URL ${image.data.ogImage.url}`, {err});
+	}
+
 	await mongoSchema.update(
 		{ _id: instance._id },
 		{ images: images },
