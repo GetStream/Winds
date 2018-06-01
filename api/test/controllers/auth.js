@@ -75,12 +75,8 @@ describe('Auth controller', () => {
 
 			it('should follow featured podcasts and RSS feeds', async () => {
 				const content = [
-					{
-						sourceModel: Podcast,
-						userFeed: 'user_episode',
-						contentFeed: 'podcast',
-					},
-					{ sourceModel: RSS, userFeed: 'user_article', contentFeed: 'rss' },
+					{ sourceModel: Podcast, userFeed: 'user_episode', contentFeed: 'podcast' },
+					{ sourceModel: RSS,     userFeed: 'user_article', contentFeed: 'rss' },
 				];
 				const mockClient = getMockClient();
 
@@ -90,25 +86,16 @@ describe('Auth controller', () => {
 					});
 
 					for (const data of entries) {
-						expect(mockClient.feed.calledWith(contentType.userFeed, user._id))
-							.to.be.true;
-						expect(mockClient.feed.calledWith('timeline', user._id)).to.be
-							.true;
+						expect(mockClient.feed.calledWith(contentType.userFeed, user._id)).to.be.true;
+						expect(mockClient.feed.calledWith('timeline', user._id)).to.be.true;
 
 						const userFeed = getMockFeed(contentType.userFeed, user._id);
 						const timelineFeed = getMockFeed('timeline', user._id);
 						expect(userFeed).to.not.be.null;
 						expect(timelineFeed).to.not.be.null;
 
-						expect(
-							userFeed.follow.calledWith(contentType.contentFeed, data._id),
-						).to.be.true;
-						expect(
-							timelineFeed.follow.calledWith(
-								contentType.contentFeed,
-								data._id,
-							),
-						).to.be.true;
+						expect(userFeed.follow.calledWith(contentType.contentFeed, data._id)).to.be.true;
+						expect(timelineFeed.follow.calledWith(contentType.contentFeed, data._id)).to.be.true;
 					}
 				}
 			});
@@ -117,48 +104,16 @@ describe('Auth controller', () => {
 		describe('invalid request', () => {
 			it('should return 422 for missing/empty data', async () => {
 				const bodies = [
-					{ username: 'valid', name: 'Valid Name', password: 'valid_password' },
-					{
-						email: 'valid@email.com',
-						name: 'Valid Name',
-						password: 'valid_password',
-					},
-					{
-						email: 'valid@email.com',
-						username: 'valid',
-						password: 'valid_password',
-					},
-					{ email: 'valid@email.com', username: 'valid', name: 'Valid Name' },
-					{
-						email: '',
-						username: 'valid',
-						name: 'Valid Name',
-						password: 'valid_password',
-					},
-					{
-						email: 'invalid.email.com',
-						username: '',
-						name: 'Valid Name',
-						password: 'valid_password',
-					},
-					{
-						email: 'invalid.email.com',
-						username: 'valid',
-						name: '',
-						password: 'valid_password',
-					},
-					{
-						email: 'invalid.email.com',
-						username: 'valid',
-						name: 'Valid Name',
-						password: '',
-					},
+					{ email: undefined,           username: 'valid',   name: 'Valid Name', password: 'valid_password' },
+					{ email: 'valid@email.com',   username: undefined, name: 'Valid Name', password: 'valid_password' },
+					{ email: 'valid@email.com',   username: 'valid',   name: undefined,    password: 'valid_password' },
+					{ email: 'valid@email.com',   username: 'valid',   name: 'Valid Name', password: undefined         },
+					{ email: '',                  username: 'valid',   name: 'Valid Name', password: 'valid_password' },
+					{ email: 'invalid.email.com', username: '',        name: 'Valid Name', password: 'valid_password' },
+					{ email: 'invalid.email.com', username: 'valid',   name: '',           password: 'valid_password' },
+					{ email: 'invalid.email.com', username: 'valid',   name: 'Valid Name', password: ''               },
 				];
-				const requests = bodies.map(body =>
-					request(api)
-						.post('/auth/signup')
-						.send(body),
-				);
+				const requests = bodies.map(body => request(api).post('/auth/signup').send(body));
 				for (const response of await Promise.all(requests)) {
 					expect(response).to.have.status(422);
 				}
@@ -166,30 +121,11 @@ describe('Auth controller', () => {
 
 			it('should return 422 for invalid email', async () => {
 				const bodies = [
-					{
-						email: 'invalid.email.com',
-						username: 'valid',
-						name: 'Valid Name',
-						password: 'valid_password',
-					},
-					{
-						email: 'invalid@email',
-						username: 'valid',
-						name: 'Valid Name',
-						password: 'valid_password',
-					},
-					{
-						email: '@invalid.email.com',
-						username: 'valid',
-						name: 'Valid Name',
-						password: 'valid_password',
-					},
+					{ email: 'invalid.email.com',  username: 'valid', name: 'Valid Name', password: 'valid_password', },
+					{ email: 'invalid@email',      username: 'valid', name: 'Valid Name', password: 'valid_password', },
+					{ email: '@invalid.email.com', username: 'valid', name: 'Valid Name', password: 'valid_password', },
 				];
-				const requests = bodies.map(body =>
-					request(api)
-						.post('/auth/signup')
-						.send(body),
-				);
+				const requests = bodies.map(body => request(api).post('/auth/signup').send(body));
 				for (const response of await Promise.all(requests)) {
 					expect(response).to.have.status(422);
 				}
@@ -295,9 +231,7 @@ describe('Auth controller', () => {
 			it('should return 200 for existing user', async () => {
 				const response = await request(api)
 					.post('/auth/forgot-password')
-					.send({
-						email: 'valid@email.com',
-					});
+					.send({ email: 'valid@email.com' });
 
 				expect(response).to.have.status(200);
 			});
@@ -305,9 +239,7 @@ describe('Auth controller', () => {
 			it('should return 404 for nonexistent user', async () => {
 				const response = await request(api)
 					.post('/auth/forgot-password')
-					.send({
-						email: 'invalid@email.com',
-					});
+					.send({ email: 'invalid@email.com' });
 
 				expect(response).to.have.status(404);
 			});
@@ -335,9 +267,7 @@ describe('Auth controller', () => {
 			it('should return 404 for nonexistent user', async () => {
 				const response = await request(api)
 					.post('/auth/reset-password')
-					.send({
-						email: 'invalid@email.com',
-					});
+					.send({ email: 'invalid@email.com' });
 
 				expect(response).to.have.status(404);
 			});

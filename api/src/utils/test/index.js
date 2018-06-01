@@ -35,39 +35,30 @@ export function getMockClient() {
 export async function loadFixture(fixture) {
 	const filters = {
 		User: async user => {
-			//XXX: cloning loaded json to enable filtering without thinking about module cache
-			user = Object.assign({}, user);
-
 			const salt = await bcrypt.genSalt(10);
 			const hash = await bcrypt.hash(user.password, salt);
 			user.password = hash;
 			return user;
-		},
-		Article: async article => {
-			article = Object.assign({}, article);
-			let rss = await mongoose.model('RSS').findOne({ id: article.rss });
-			return article;
-		},
+		}
 	};
 	const batch = require(`../../../test/fixtures/${fixture}.json`);
 
 	for (const models of batch) {
 		for (const modelName in models) {
 			const model = mongoose.model(modelName);
-			const filter = filters[modelName] || (x => Promise.resolve(x));
 
-			models[modelName] = models[modelName].map(fix => {
-				let m = Object.assign({}, fix);
-				if (m.id) {
-					m._id = mongoose.Types.ObjectId(m.id);
-				}
-				if (m._id) {
-					m._id = mongoose.Types.ObjectId(m._id);
+			const fixedModels = models[modelName].map(fix => {
+				//XXX: cloning loaded json to enable filtering without thinking about module cache
+				const m = Object.assign({}, fix);
+				const id = m.id || m._id;
+				if (id) {
+					m._id = mongoose.Types.ObjectId(id);
 				}
 				return m;
 			});
 
-			const filteredData = await Promise.all(models[modelName].map(filter));
+			const filter = filters[modelName] || (x => Promise.resolve(x));
+			const filteredData = await Promise.all(fixedModels.map(filter));
 
 			await model.collection.insertMany(filteredData);
 		}
