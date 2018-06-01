@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "8"
+  - "9"
+  - "10"
+services:
+  - redis
+  - mongodb
+cache: yarn
+install:
+    - "cd api && npm install"
+script:
+    - "cd api && npm test"
