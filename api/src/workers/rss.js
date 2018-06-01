@@ -33,24 +33,15 @@ async function handleRSS(job) {
 	try {
 		await _handleRSS(job);
 	} catch (err) {
-		let tags = {queue: 'rss'};
+		let tags = { queue: 'rss' };
 		let extra = {
 			JobRSS: job.data.rss,
 			JobURL: job.data.url,
 		};
-		logger.error('RSS job encountered an error', {err, tags, extra});
+		logger.error('RSS job encountered an error', { err, tags, extra });
 	}
 	logger.info(`Completed scraping for ${job.data.url}`);
 }
-
-async function test(url) {
-	let rssContent = await timeIt('winds.handle_rss.parsing', () => {
-		return ParseFeed(url);
-	});
-	console.dir(rssContent);
-}
-
-test("http://anadrark.com/links/index.php?do=rss");
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handleRSS(job) {
@@ -116,9 +107,9 @@ async function _handleRSS(job) {
 					{
 						removeOnComplete: true,
 						removeOnFail: true,
-					}
+					},
 				);
-			})
+			}),
 		);
 	});
 
@@ -153,16 +144,14 @@ async function upsertManyArticles(rssID, articles) {
 		return clone;
 	});
 
-	let existingArticles = await Article.find({ $or: searchData }, { url: 1 }).read(
-		'sp'
-	);
+	let existingArticles = await Article.find({ $or: searchData }, { url: 1 }).read('sp');
 	let existingArticleUrls = existingArticles.map(a => {
 		return a.url;
 	});
 
 	statsd.increment(
 		'winds.handle_rss.articles.already_in_mongo',
-		existingArticleUrls.length
+		existingArticleUrls.length,
 	);
 
 	let articlesToUpsert = articles.filter(article => {
@@ -172,13 +161,13 @@ async function upsertManyArticles(rssID, articles) {
 	logger.info(
 		`Feed ${rssID}: got ${articles.length} articles of which ${
 			articlesToUpsert.length
-		} need a sync`
+		} need a sync`,
 	);
 
 	return Promise.all(
 		articlesToUpsert.map(article => {
 			return upsertArticle(rssID, article);
-		})
+		}),
 	);
 }
 
@@ -226,7 +215,7 @@ async function upsertArticle(rssID, post) {
 				upsert: true,
 				rawResult: true,
 				setDefaultsOnInsert: defaults,
-			}
+			},
 		);
 		if (!rawArticle.lastErrorObject.updatedExisting) {
 			return rawArticle.value;
@@ -252,6 +241,6 @@ async function markDone(rssID) {
 		{
 			lastScraped: now,
 			isParsing: false,
-		}
+		},
 	);
 }
