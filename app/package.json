@@ -1,6 +1,6 @@
 {
   "name": "winds",
-  "version": "2.0.282",
+  "version": "2.0.284",
   "description": "https://getstream.io/winds",
   "private": true,
   "author": "Winds Team <winds@getstream.io>",
@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/getstream/winds/issues"
   },
-  "homepage": "https://winds.getstream.io",
+  "homepage": "./",
   "main": "public/electron.js",
   "keywords": [
     "Winds",
