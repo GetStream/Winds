@@ -94,7 +94,7 @@
 				"uuid": "^3.2.1",
 				"valid-url": "^1.0.9",
 				"validator": "^10.2.0",
-				"winston": "^3.0.0-rc3",
+				"winston": "^3.0.0-rc6",
 				"yargs": "^11.0.0",
 				"zlib": "^1.0.5"
 		},
