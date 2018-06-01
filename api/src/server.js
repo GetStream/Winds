@@ -19,7 +19,7 @@ setupExpressRequestHandler(api);
 api.use(cors());
 api.use(compression());
 api.use(bodyParser.urlencoded({ extended: true }));
-api.use(bodyParser.json());
+api.use(bodyParser.json({ limit: '5mb' }));
 
 api.enable('trust proxy');
 api.use(
