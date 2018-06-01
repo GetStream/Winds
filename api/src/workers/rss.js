@@ -38,7 +38,7 @@ async function handleRSS(job) {
 			JobRSS: job.data.rss,
 			JobURL: job.data.url,
 		};
-		logger.error(`rss job ${job} broke`, {err, tags, extra});
+		logger.error(`rss job ${job.data.url} broke`, {err, tags, extra});
 	}
 	logger.info(`Completed scraping for ${job.data.url}`);
 }
