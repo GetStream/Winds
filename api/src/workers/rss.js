@@ -137,14 +137,14 @@ async function _handleRSS(job) {
 }
 
 async function upsertManyArticles(rssID, articles) {
-	let articlesData = articles.map(article => {
+	let searchData = articles.map(article => {
 		const clone = Object.assign({}, article);
 		delete clone.images;
 		delete clone.publicationDate;
 		return clone;
 	});
 
-	let existingArticles = await Article.find({ $or: articlesData }, { url: 1 }).read(
+	let existingArticles = await Article.find({ $or: searchData }, { url: 1 }).read(
 		'sp'
 	);
 	let existingArticleUrls = existingArticles.map(a => {
@@ -156,7 +156,7 @@ async function upsertManyArticles(rssID, articles) {
 		existingArticleUrls.length
 	);
 
-	let articlesToUpsert = articlesData.filter(article => {
+	let articlesToUpsert = articles.filter(article => {
 		return existingArticleUrls.indexOf(article.url) === -1;
 	});
 
@@ -183,13 +183,13 @@ async function upsertArticle(rssID, post) {
 	};
 
 	let update = Object.assign({}, search);
-	update.publicationDate = post.publicationDate;
 	update.url = post.url;
 	update.rss = rssID;
 
 	let defaults = {
 		enclosures: post.enclosures || {},
 		images: post.images || {},
+		publicationDate: post.publicationDate,
 	};
 
 	try {

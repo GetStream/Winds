@@ -5,6 +5,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import redis from 'redis';
 import { promisify } from 'util';
+import { stringify } from 'flatted/cjs';
 
 import config from './src/config';
 import db from './src/utils/db';
@@ -14,6 +15,12 @@ import logger from './src/utils/logger';
 api.use((err, req, res, next) => {
 	if (err) {
 		logger.error(err.stack);
+		if (err.request) {
+			logger.error(`REQUEST = ${stringify(err.request)}`);
+		}
+		if (err.response) {
+			logger.error(`RESPONSE = ${stringify(err.response)}`);
+		}
 	}
 	next(err, req, res);
 });
@@ -28,13 +35,10 @@ function wrapMocha(onPrepare, onUnprepare) {
 		const self = this;
 		onPrepare().then(() => {
 			run.call(self, function() {
-				/* istanbul ignore else */
 				if (typeof onUnprepare === 'function') {
 					onUnprepare.apply(this, arguments);
-					done.apply(this, arguments);
-				} else {
-					done.apply(this, arguments);
 				}
+				done.apply(this, arguments);
 			});
 		}).catch(err => {
 			if (err instanceof Error) {
