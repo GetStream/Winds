@@ -25,12 +25,9 @@ describe('User controller', () => {
     });
 
     describe('valid request', () => {
-      let user;
       let response;
 
       beforeEach(async () => {
-        user = await User.findOne({email: 'test_user@email.com'});
-
         response = await withLogin(
           api,
           request(api).delete(`/users/${user._id}`),
@@ -58,7 +55,6 @@ describe('User controller', () => {
         );
 
         expect(response).to.have.status(403);
-
         expect(await User.findOne({_id: anotherUser._id})).to.not.be.null;
       });
 
@@ -71,7 +67,6 @@ describe('User controller', () => {
           request(api).delete(`/users/${nonExistingId}`),
           authUser
         );
-
         expect(response).to.have.status(403);
       });
 
@@ -79,10 +74,8 @@ describe('User controller', () => {
         let response = await request(api).delete(`/users/${user._id}`);
 
         expect(response).to.have.status(401);
-
         expect(await User.findOne({_id: user._id})).to.not.be.null;
       });
-
     });
 
   });

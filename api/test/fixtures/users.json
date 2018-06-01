@@ -5,11 +5,7 @@
             "name"    : "Test User",
             "username": "testuser",
             "password": "testuser"
-        }
-    ]
-},
-{
-    "User": [
+        },
         {
             "email"   : "another_user@email.com",
             "name"    : "Another User",
