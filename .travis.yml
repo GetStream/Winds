@@ -11,4 +11,4 @@ cache: yarn
 install:
     - "cd api && npm install"
 script:
-    - "cd api && npm test"
+    - "npm test"
