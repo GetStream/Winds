@@ -89,12 +89,12 @@ exports.sentryLog = async (req, res) => {
 	try {
 		Throw();
 	} catch (err) {
-		logger.error(err);
+		logger.error('this is a test error', {err, tags:{'env': 'testing'}, extra:{'additional': 'data', 'is': 'awesome'}});
 	}
 	try {
 		Throw();
 	} catch (err) {
-		logger.error(err);
+		logger.error({err});
 	}
 	logger.error('0');
 	logger.error('1');
