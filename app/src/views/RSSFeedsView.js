@@ -144,7 +144,7 @@ RSSFeedsView.propTypes = {
 		}).isRequired,
 	}).isRequired,
 	rssFeed: PropTypes.shape({
-		_id: PropTypes.string.isRequired,
+		_id: PropTypes.string,
 		description: PropTypes.string,
 		featured: PropTypes.boolean,
 		images: PropTypes.shape({

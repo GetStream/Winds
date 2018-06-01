@@ -20,18 +20,7 @@ class RecentArticlesList extends React.Component {
 
 				<div className="list content">
 					{this.props.articles.map(article => {
-						return (
-							<ArticleListItem
-								key={article._id}
-								pinArticle={() => {
-									this.props.pinArticle(article._id);
-								}}
-								unpinArticle={() => {
-									this.props.unpinArticle(article.pinID, article._id);
-								}}
-								{...article}
-							/>
-						);
+						return <ArticleListItem key={article._id} {...article} />;
 					})}
 				</div>
 			</React.Fragment>
@@ -46,8 +35,6 @@ RecentArticlesList.defaultProps = {
 RecentArticlesList.propTypes = {
 	articles: PropTypes.arrayOf(PropTypes.shape({})),
 	dispatch: PropTypes.func.isRequired,
-	pinArticle: PropTypes.func.isRequired,
-	unpinArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
