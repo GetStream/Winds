@@ -19,7 +19,6 @@ function simpler(info) {
 	return info;
 }
 
-
 let logger = winston.createLogger({
 	format: format(simpler)(),
 	transports: transports,
