@@ -1,40 +1,52 @@
-import { expect, request } from 'chai'
+import { expect, request } from 'chai';
 import jwt from 'jsonwebtoken';
-import config from '../../src/config';
 
 import api from '../../src/server';
-import pins from '../../src/controllers/pin';
+import config from '../../src/config';
+import { loadFixture } from '../../src/utils/test';
 import Pin from '../../src/models/pin';
 
-import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
+function withLogin(r) {
+	const authToken = jwt.sign({
+		email: 'valid@email.com',
+		sub: '5b0f306d8e147f10f16aceaf',
+	}, config.jwt.secret);
+	return r.set('Authorization', `Bearer ${authToken}`)
+};
 
-describe.only('Pins controller', () => {
-    describe('create', () => {
-        describe('valid request', () => {
+describe.only('Pin controller', () => {
+	let pin;
 
-            const token = jwt.sign(
-                {
-                    email: 'test+test@test.com',
-                    sub: '5b0f306d8e147f10f16aceaf',
-                },
-                config.jwt.secret,
-            );
+	before(async () => {
+		await loadFixture('example');
+        await loadFixture('pins');
+	});
 
-            before(async () => {
-                expect(await Pin.find({ article: { $exists: true, } })).to.be.empty;
-                expect(await Pin.find({ episode: { $exists: true, } })).to.be.empty;
+    describe('get', () => {
+		it('should return all pins', async () => {
+			const res = await withLogin(
+				request(api).get(`/pins`)
+			);
+			expect(res).to.have.status(200);
+		});
+	});
 
-                await loadFixture('initialData');
-            });
+	describe('get', () => {
+		it('should return the a single pin via /pins/:pinId', async () => {
+			const res = await withLogin(
+				request(api).get(`/pins/${pin._id}`)
+			);
+			expect(res).to.have.status(200);
+		});
+	});
 
-            it('should create a new article pin', async () => {
-                let res = await request(api).post('/pins').set('Authorization', `Bearer ${token}`).send({
-                    article: '5b0ad37226dc3db38194e5eb',
-                });
-
-                expect(res).to.have.status(200);
-            });
-
-        });
-    });
+	describe('list', () => {
+		it('should return a limited number of pins', async () => {
+			const res = await withLogin(
+				request(api).get('/pins').query({ limit: 1 })
+			);
+			expect(res).to.have.status(200);
+            expect(res).to.be.an('array');
+		});
+	});
 });
