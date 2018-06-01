@@ -16,26 +16,37 @@ const errorHandler = error => {
 	console.log(error);
 };
 
+let isError = function(e){
+	return e && e.stack && e.message;
+};
+
 /**
  * @param {{}} info
  * @param {string} info.level
  * @return {{}}
  */
 const prepareMeta = info => {
-	let extra = Object.assign({}, info);
-	delete extra.message;
-	delete extra.level;
-	delete extra.tags;
-	let msg;
+	let msg = info.message;
+	let extra = Object.assign({}, info.extra || {});
+	let hasError = false;
 
-	if (info instanceof Error) {
-		msg = info;
-		extra.stackError = info.stack;
-	} else {
+	if (isError(info)) {
+		hasError = true;
 		msg = info.message;
+		extra.stackError = info.stack;
+	} else if (isError(info.message)) {
+		hasError = true;
+		msg = info.message.message;
+		extra.stackError = info.message.stack;
+	} else if (isError(info.err)) {
+		hasError = true;
+		extra.stackError = info.err.stack;
+	} else if (info.message && isError(info.message.err)) {
+		hasError = true;
+		extra.stackError = info.message.err.stack;
 	}
 
-	return [msg, {
+	return [hasError, msg, {
 		level: winstonLevelToSentryLevel[info.level],
 		tags: info.tags || {},
 		extra,
@@ -67,10 +78,9 @@ class SentryWinstonTransport extends Transport {
      */
 	async log(info, done) {
 		if (this.silent) return done(null, true);
-		let [msg, meta] = prepareMeta(info);
+		let [hasError, msg, meta] = prepareMeta(info);
 
-		let method = info instanceof Error ? 'captureException': 'captureMessage';
-
+		let method = hasError ? 'captureException': 'captureMessage';
 		try {
 			let eventId = await this.raven[method](msg, meta);
 			done(null, eventId);
