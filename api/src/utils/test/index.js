@@ -83,6 +83,7 @@ export async function loadFixture(...fixtures) {
 
 				await model.collection.insertMany(filteredData);
 			}
+
 		}
 	}
 
