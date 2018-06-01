@@ -76,19 +76,26 @@ async function ParseFeed(feedUrl) {
 			let post = Object.assign({}, postBuffer);
 
 			let description = strip(entities.decodeHTML(post.description)).substring(0, 280);
+			let parsedArticle
 
-			let parsedArticle = {
-				content: sanitize(post.summary),
-				description: description,
-				enclosures: post.enclosures,
-				publicationDate:
-				moment(post.pubdate).toISOString() ||
-				moment()
-					.subtract(feedContents.articles.length, 'minutes') // feedContents.articles only gets pushed to every time we parse an article, so it serves as a reasonable offset.
-					.toISOString(),
-				title: strip(entities.decodeHTML(post.title)),
-				url: normalize(post.link),
-			};
+			try {
+				parsedArticle = {
+					content: sanitize(post.summary),
+					description: description,
+					enclosures: post.enclosures,
+					publicationDate:
+					moment(post.pubdate).toISOString() ||
+					moment()
+						.subtract(feedContents.articles.length, 'minutes') // feedContents.articles only gets pushed to every time we parse an article, so it serves as a reasonable offset.
+						.toISOString(),
+					title: strip(entities.decodeHTML(post.title)),
+					url: normalize(post.link),
+				};
+			}
+			catch (err) {
+				logger.info('skipping article', {err});
+				continue
+			}
 
 			// HNEWS
 			if (post.comments) {
