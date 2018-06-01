@@ -43,14 +43,35 @@ export async function loadFixture(fixture) {
 			user.password = hash;
 			return user;
 		},
+		Article: async (article) => {
+			article = Object.assign({}, article);
+			let rss = await mongoose.model('RSS').findOne({id: article.rss});
+			// console.dir(rss);
+			// article.rss = rss;
+			return article;
+		},
 	};
-	const models = require(`../../../test/fixtures/${fixture}.json`);
+	const batch = require(`../../../test/fixtures/${fixture}.json`);
 
-	for (const modelName in models) {
-		const model = mongoose.model(modelName);
-		const filter = filters[modelName] || ((x) => Promise.resolve(x));
-		const filteredData = await Promise.all(models[modelName].map(filter));
+	for (const models of batch) {
+		for (const modelName in models) {
+			const model = mongoose.model(modelName);
+			const filter = filters[modelName] || ((x) => Promise.resolve(x));
 
-		await model.collection.insertMany(filteredData);
+			models[modelName] = models[modelName].map((fix) => {
+				let m = Object.assign({}, fix)
+				if (m.id) {
+					m._id = mongoose.Types.ObjectId(m.id);
+				}
+				if (m._id) {
+					m._id = mongoose.Types.ObjectId(m._id);
+				}
+				return m;
+			})
+
+			const filteredData = await Promise.all(models[modelName].map(filter));
+
+			await model.collection.insertMany(filteredData);
+		}
 	}
 }

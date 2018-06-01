@@ -2,6 +2,7 @@ import config from '../config';
 import Raven from 'raven';
 import path from 'path';
 import { version } from '../../../app/package.json';
+import logger from '../utils/logger';
 require.resolve('raven');
 
 const executable = path.basename(process.argv[1]);
@@ -40,15 +41,27 @@ function captureError(err, msg) {
 }
 
 exports.setupExpressRequestHandler = (app) => {
-	if (ravenInstance) {
+	if (config.sentry.dsn) {
 		app.use(ravenInstance.requestHandler());
 	}
 };
 
 exports.setupExpressErrorHandler = (app) => {
-	if (ravenInstance) {
+	if (config.sentry.dsn) {
 		app.use(ravenInstance.errorHandler());
 	}
+	app.use(function (err, req, res, next) {
+		var status =
+			err.status ||
+			err.statusCode ||
+			err.status_code ||
+			(err.output && err.output.statusCode) ||
+			500;
+		// skip anything not marked as an internal server error
+		if (status < 500) return next(err);
+		logger.error(err);
+		return next(err);
+	});
 };
 
 exports.Throw = () => {

@@ -2,6 +2,9 @@ import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
+import Cache from './cache';
+import parser from '../utils/parser';
+import logger from '../utils/logger';
 
 export const EnclosureSchema = new Schema({
 	url: {
@@ -136,4 +139,31 @@ ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
 
-module.exports = exports = mongoose.model('Article', ArticleSchema);
+ArticleSchema.methods.getParsedArticle = async function() {
+	let cached = await Cache.findOne({ url: this.url });
+	if (cached) {
+		return cached;
+	}
+
+ 	let parsed = await parser({ url: this.url });
+	let content = parsed.content;
+
+	// XKCD doesn't like Mercury
+	if (this.url.indexOf('https://xkcd') === 0) {
+		content = this.content;
+	}
+
+	cached = await Cache.create({
+		content: content,
+		excerpt: parsed.excerpt || parsed.title,
+		image: parsed.lead_image_url || '',
+		publicationDate: parsed.date_published || this.publicationDate,
+		title: parsed.title,
+		url: this.url,
+		commentUrl: this.commentUrl,
+		enclosures: this.enclosures,
+	});
+	return cached;
+};
+
+module.exports = exports =  mongoose.model('Article', ArticleSchema);

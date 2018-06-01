@@ -1,13 +1,13 @@
 import { expect, request } from 'chai';
 
 import api from '../../src/server';
-import auth from '../../src/controllers/auth';
 import Podcast from '../../src/models/podcast';
 import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
 import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
 
 describe('Auth controller', () => {
+
 	describe('signup', () => {
 		before(() => User.remove().exec());
 		beforeEach(() => User.remove().exec());
@@ -40,7 +40,7 @@ describe('Auth controller', () => {
 				expect(response).to.have.status(200);
 			});
 
-			it('shoud create a User entity', async () => {
+			it('should create a User entity', async () => {
 				expect(user).to.not.be.null;
 				expect(user).to.include({
 					email: 'valid@email.com',

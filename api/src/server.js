@@ -10,6 +10,7 @@ import limit from 'express-rate-limit';
 import config from './config';
 import logger from './utils/logger';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
+import User from './models/user';
 
 const api = express();
 
@@ -46,6 +47,23 @@ api.use(
 		],
 	}),
 );
+
+api.use(async (req, res, next) => {
+	// XXX: req.user is attached by JWT when a valid token is provided with the request
+	// and the route requires authentication
+	if (!req.user) {
+		return next();
+	}
+	try {
+		req.User = await User.findById(req.user.sub).exec();
+		if (req.User === null) {
+			res.status(401);
+		}
+	} catch (err) {
+		next(err);
+	}
+	next();
+});
 
 api.use((err, req, res, next) => {
 	if (err.name === 'UnauthorizedError') {
