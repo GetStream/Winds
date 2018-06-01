@@ -10,6 +10,8 @@ import stream from 'getstream';
 import search from '../utils/search';
 
 import RSS from '../models/rss';
+import Podcast from '../models/podcast';
+
 import Follow from '../models/follow';
 import User from '../models/user';
 import util from 'util';

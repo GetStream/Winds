@@ -58,7 +58,7 @@ async function IsPodcastURL(feedURL) {
 		maxContentLength: maxContentLengthBytes,
 	});
 	let feedStream = response.data;
-	IsPodcastStream(feedStream, feedURL);
+	return await IsPodcastStream(feedStream, feedURL);
 }
 
 exports.IsPodcastStream = IsPodcastStream;

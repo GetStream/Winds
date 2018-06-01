@@ -114,7 +114,9 @@ describe('OPML', () => {
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
 				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
+				expect(response.body[0].follow.rss).to.be.undefined;
 				expect(response.body[1].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
+				expect(response.body[1].follow.podcast).to.be.undefined;
 			});
 		});
 
@@ -167,6 +169,16 @@ describe('OPML', () => {
 			});
 
 			it('giant bomcast should be a podcast', async () => {
+				expect(isPodcast).to.be.true;
+			});
+
+			it('design details should be a podcast', async () => {
+				let p = path.join(__dirname, '..', 'data', 'feed', 'design-details');
+				let feedStream = fs.createReadStream(p);
+				isPodcast = await IsPodcastStream(
+					feedStream,
+					'https://spec.fm/podcasts/design-details',
+				);
 				expect(isPodcast).to.be.true;
 			});
 		});
