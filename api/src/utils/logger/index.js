@@ -21,9 +21,9 @@ const sillyWinstonConsoleFormatter = format((info) => {
 	if (isError(info.message)) {
 		clone.message = `${info.message.message} ${info.message.stack}`;
 	} else if (isError(info.err)) {
-		clone.message = `${info.err.message} ${info.err.stack}`;
+		clone.message = `${info.message} ${info.err.message} ${info.err.stack}`;
 	} else if (info.message && isError(info.message.err)) {
-		clone.message = `${info.message.err.message} ${info.message.err.stack}`;
+		clone.message = `${info.message} ${info.message.err.message} ${info.message.err.stack}`;
 	}
 	return clone;
 });
