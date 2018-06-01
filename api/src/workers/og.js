@@ -40,7 +40,7 @@ async function handleOg(job) {
 			JobURL: job.data.url,
 			JobType: job.data.type,
 		};
-		logger.error(`OG job ${job.data.url} broke`, {err, tags, extra});
+		logger.error('OG job encountered an error', {err, tags, extra});
 	}
 }
 
