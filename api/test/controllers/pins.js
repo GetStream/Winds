@@ -64,6 +64,8 @@ describe.only('Pin controller', () => {
 				request(api).post('/pins').send({ article: article._id })
 			);
 			expect(res).to.have.status(200);
+
+
 		});
 	});
 
@@ -73,6 +75,15 @@ describe.only('Pin controller', () => {
 				request(api).post('/pins').send({ episode: episode._id })
 			);
 			expect(res).to.have.status(200);
+		});
+	});
+
+    describe('delete', () => {
+		it('should delete a pin', async () => {
+			const res = await withLogin(
+				request(api).delete(`/pins/${pin._id}`)
+			);
+			expect(res).to.have.status(404);
 		});
 	});
 });
