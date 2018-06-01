@@ -97,7 +97,7 @@ class Header extends Component {
 				<div className="panel-element user">
 					<div className="avatar">
 						<Avatar height={80} width={80}>
-							{this.props.user.email}
+							{this.props.user._id}
 						</Avatar>
 					</div>
 					<div className="user-info">
@@ -293,7 +293,7 @@ class Header extends Component {
 							tipSize={0.1}
 						>
 							<div onClick={this.toggleProfilePopover}>
-								<Avatar>{this.props.user.email}</Avatar>
+								<Avatar>{this.props.user._id}</Avatar>
 							</div>
 						</Popover>
 						<Popover
@@ -365,8 +365,8 @@ Header.propTypes = {
 	location: PropTypes.shape({ pathname: PropTypes.string.isRequired }).isRequired,
 	showIntroBanner: PropTypes.bool,
 	user: PropTypes.shape({
+		_id: PropTypes.string,
 		admin: PropTypes.bool,
-		email: PropTypes.string,
 		name: PropTypes.string,
 		username: PropTypes.string,
 	}),
