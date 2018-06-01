@@ -20,6 +20,9 @@ import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
 
+const maxContentLengthBytes = 1024 * 1024;
+
+
 // determines if the given feedUrl is a podcast or not
 async function IsPodcastStream(feedStream, feedURL) {
 	let posts = [];
@@ -52,6 +55,7 @@ async function IsPodcastURL(feedURL) {
 		method: 'get',
 		url: feedURL,
 		responseType: 'stream',
+		maxContentLength: maxContentLengthBytes,
 	});
 	let feedStream = response.data;
 	IsPodcastStream(feedStream, feedURL);

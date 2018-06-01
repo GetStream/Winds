@@ -11,7 +11,7 @@
         htmlUrl="https://spec.fm/podcasts/design-details"/>
       <outline type="rss"
         text="Kotaku" title="Kotaku"
-        xmlUrl="https://kotaku.com/rss"
+        xmlUrl="https://kotaku/rss404"
         htmlUrl="https://kotaku.com/"/>
     </outline>
   </body>

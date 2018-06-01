@@ -3,6 +3,11 @@ import bcrypt from 'bcryptjs';
 import StreamClient from 'getstream/src/lib/client';
 import mongoose from 'mongoose';
 import logger from '../logger';
+import jwt from 'jsonwebtoken';
+import config from '../../config';
+import { expect, request } from 'chai';
+import api from '../../server';
+
 
 let mockClient = null;
 const mockFeeds = {};
@@ -32,6 +37,8 @@ export function getMockClient() {
 
 	return mockClient;
 }
+
+
 
 export async function loadFixture(...fixtures) {
 	const filters = {

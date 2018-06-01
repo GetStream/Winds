@@ -96,12 +96,12 @@ exports.post = async (req, res) => {
 	// follow the OPML feeds
 	let promises = [];
 	for (let feed of parsedFeeds) {
-		let promise = followOPMLFeed(feed, userID);
-		promises.push(promise);
+			let promise = followOPMLFeed(feed, userID);
+			promises.push(promise);
 	}
-	let follows = await Promise.all(promises);
+	let statuses = await Promise.all(promises);
 
-	return res.json(follows);
+	return res.json(statuses);
 };
 
 
@@ -109,8 +109,22 @@ exports.post = async (req, res) => {
 // Follow the OPML feed
 async function followOPMLFeed(feed, userID) {
 	let instance, schema, publicationType;
+	let result = {'feedUrl': feed.feedUrl, 'follow': {}}
+	let isPodcast
+	if (!feed.valid) {
+		result.error = `Invalid feedUrl ${feed.feedUrl}`
+		return result
+	}
 
-	if (await IsPodcastURL(feed.feedUrl)) {
+	try {
+		isPodcast = await IsPodcastURL(feed.feedUrl)
+	} catch(e) {
+		// just skip invalid feeds
+		result.error = `Error opening ${feed.feedUrl}`
+		return result
+	}
+
+	if (isPodcast) {
 		schema = Podcast;
 		publicationType = 'podcast';
 	} else {
@@ -160,23 +174,29 @@ async function followOPMLFeed(feed, userID) {
 		});
 	}
 	// always create the follow
+	// TODO: abstract this follow logic
 	let followData = { user: userID };
 	followData[publicationType] = instance._id;
-	let follow = await Follow.create(followData);
+	let response = await Follow.findOneAndUpdate(followData, followData, {rawResult: true, upsert: true, new: true});
+	let follow = response.value
+	let instanceID = response.value._id
 
-	await streamClient.feed('user_article', userID).follow(publicationType, instance._id);
-	await streamClient.feed('timeline', userID).follow(publicationType, instance._id);
+	if (response.lastErrorObject.updatedExisting) {
+		await streamClient.feed('user_article', userID).follow(publicationType, instanceID);
+		await streamClient.feed('timeline', userID).follow(publicationType, instanceID);
+	}
 
 	let eventResponse = await events({
 		meta: {
 			data: {
-				[`${publicationType}:${instance._id}`]: {
+				[`${publicationType}:${instanceID}`]: {
 					description: instance.description,
 					title: instance.title,
 				},
 			},
 		},
 	});
+	result.follow =follow
 
-	return follow;
+	return result;
 }

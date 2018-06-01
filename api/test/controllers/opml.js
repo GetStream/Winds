@@ -5,7 +5,11 @@ import auth from '../../src/controllers/auth';
 import Podcast from '../../src/models/podcast';
 import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
-import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
+import {
+	loadFixture,
+	getMockClient,
+	getMockFeed,
+} from '../../src/utils/test';
 import fs from 'fs';
 import path from 'path';
 import FeedParser from 'feedparser';
@@ -25,7 +29,14 @@ import { IsPodcastStream } from '../../src/parsers/detect-type';
 // detect feed type codebase
 // - various formats
 
-function authGetRequest(getPath) {
+// edge cases
+// - what if a feed URL is somehow broken (check)
+// - what if the feed is too large (more than 5MB, check)
+// - what if you upload a file that's too large (check)
+// - what if the site URL is not valid (check)
+// - what if you already follow a certain feed
+
+function AuthGetRequest(getPath) {
 	const token = jwt.sign(
 		{
 			email: 'test+test@test.com',
@@ -38,7 +49,7 @@ function authGetRequest(getPath) {
 		.set('Authorization', `Bearer ${token}`);
 }
 
-function authPostRequest(path) {
+function AuthPostRequest(path) {
 	const token = jwt.sign(
 		{
 			email: 'test+test@test.com',
@@ -57,7 +68,6 @@ describe('OPML', () => {
 	});
 
 	describe('Export', () => {
-
 		describe('invalid request', () => {
 			let response;
 			let user;
@@ -76,7 +86,7 @@ describe('OPML', () => {
 			let user;
 
 			before(async () => {
-				response = await authGetRequest('/opml/download');
+				response = await AuthGetRequest('/opml/download');
 			});
 
 			it('should return 200', () => {
@@ -92,7 +102,7 @@ describe('OPML', () => {
 			let user;
 
 			before(async () => {
-				response = await authPostRequest('/opml/upload').attach(
+				response = await AuthPostRequest('/opml/upload').attach(
 					'opml',
 					fs.readFileSync(path.join(__dirname, '..', 'data', 'test.xml')),
 					'test.xml',
@@ -102,16 +112,50 @@ describe('OPML', () => {
 			it('should return 200', () => {
 				expect(response).to.have.status(200);
 				expect(response).to.be.json;
-				expect(response.body.length).to.equal(2)
-				expect(response.body[0].user).to.equal("5b0f306d8e147f10f16aceaf")
-				expect(response.body[1].user).to.equal("5b0f306d8e147f10f16aceaf")
+				expect(response.body.length).to.equal(2);
+				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
+				expect(response.body[1].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
 			});
 		});
+
+		describe('invalid request', () => {
+			let response;
+			let user;
+
+			before(async () => {
+				response = await AuthPostRequest('/opml/upload').attach(
+					'opml',
+					fs.readFileSync(path.join(__dirname, '..', 'data', '404.opml')),
+					'404.opml',
+				);
+			});
+
+			it('should return 200', () => {
+				expect(response).to.have.status(200);
+				expect(response).to.be.json;
+				expect(response.body.length).to.equal(2);
+				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
+				expect(response.body[1].error).to.equal('Error opening https://kotaku.com/rss404');
+			});
+
+			it('should return 200', async () => {
+				response = await AuthPostRequest('/opml/upload').attach(
+					'opml',
+					fs.readFileSync(path.join(__dirname, '..', 'data', 'not-a-url.opml')),
+					'not-a-url.opml',
+				);
+				expect(response).to.have.status(200);
+				expect(response).to.be.json;
+				expect(response.body.length).to.equal(2);
+				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
+				expect(response.body[1].error).to.equal('Invalid feedUrl https://kotaku/rss404');
+			});
+		})
 	});
 
 	describe('Feed Detection', () => {
 		describe('Podcast', async () => {
-			let isPodcast
+			let isPodcast;
 
 			before(async () => {
 				let p = path.join(__dirname, '..', 'data', 'feed', 'giant-bomcast');
@@ -128,7 +172,7 @@ describe('OPML', () => {
 		});
 
 		describe('RSS', async () => {
-			let isPodcast
+			let isPodcast;
 
 			before(async () => {
 				let p = path.join(__dirname, '..', 'data', 'feed', 'techcrunch');
