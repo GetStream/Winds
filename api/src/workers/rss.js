@@ -23,7 +23,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info('Starting the RSS worker');
 
 // TODO: move this to a separate main.js
-// async_tasks.ProcessRssQueue(100, handleRSS);
+async_tasks.ProcessRssQueue(100, handleRSS);
 
 const statsd = getStatsDClient();
 
