@@ -43,7 +43,6 @@
 				"body-parser": "^1.18.3",
 				"bull": "^3.4.2",
 				"bull-arena": "^2.4.3",
-				"clarify": "^2.1.0",
 				"compression": "^1.7.2",
 				"cors": "^2.8.4",
 				"dotenv": "^5.0.1",
@@ -89,7 +88,6 @@
 				"serve-favicon": "^2.5.0",
 				"stream-analytics": "^2.7.0",
 				"strip": "^3.0.0",
-				"trace": "^3.1.0",
 				"url-regex": "^4.1.1",
 				"uuid": "^3.2.1",
 				"valid-url": "^1.0.9",
@@ -108,12 +106,13 @@
 				"babel-register": "^6.26.0",
 				"chai": "^4.1.2",
 				"chai-http": "^4.0.0",
+				"clarify": "^2.1.0",
 				"mocha": "^5.2.0",
-				"mocha-prepare": "^0.1.0",
 				"mock-require": "^3.0.2",
 				"prettier": "^1.12.1",
 				"prettierrc": "^0.0.0-5",
 				"redis": "^2.8.0",
-				"sinon": "^5.0.10"
+				"sinon": "^5.0.10",
+				"trace": "^3.1.0"
 		}
 }
