@@ -1,6 +1,7 @@
 [{
     "User": [
         {
+            "_id"     : "5b0f306d8e147f10f16aceaf",
             "email"   : "valid@email.com",
             "name"    : "Valid Name",
             "username": "invalid-username",
