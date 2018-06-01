@@ -6,6 +6,7 @@ import { format } from 'logform';
 
 // https://github.com/guzru/winston-sentry
 const transports = [new winston.transports.Console({ level: 'silly' })];
+const MESSAGE = Symbol.for('message');
 
 if (config.sentry.dsn) {
 	let sentryTransport = createSentryTransport(Raven);
@@ -13,6 +14,8 @@ if (config.sentry.dsn) {
 }
 
 function simpler(info) {
+	const padding = (info.padding && info.padding[info.level]) || '';
+	info[MESSAGE] = `${info.level}:${padding} ${info.message}`;
 	return info;
 }
 
