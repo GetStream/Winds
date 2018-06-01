@@ -88,7 +88,7 @@ exports.list = (req, res) => {
 exports.delete = (req, res) => {
 	// authorize access to the authenticated user model only
 	if (req.params.userId !== req.user.sub) {
-		return res.status(401).send();
+		return res.status(403).send();
 	}
 
 	// check to see if the user exists

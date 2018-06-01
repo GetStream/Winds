@@ -1,0 +1,20 @@
+[{
+    "User": [
+        {
+            "email"   : "test_user@email.com",
+            "name"    : "Test User",
+            "username": "testuser",
+            "password": "testuser"
+        }
+    ]
+},
+{
+    "User": [
+        {
+            "email"   : "another_user@email.com",
+            "name"    : "Another User",
+            "username": "anotheruser",
+            "password": "anotheruser"
+        }
+    ]
+}]
