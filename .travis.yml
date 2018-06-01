@@ -7,7 +7,7 @@ node_js:
 services:
   - redis
   - mongodb
-cache: yarn
+cache: npm
 install:
     - "cd api && npm install"
 script:
