@@ -17,7 +17,7 @@ function withLogin(r) {
 	return r.set('Authorization', `Bearer ${authToken}`)
 };
 
-describe.only('Pin controller', () => {
+describe('Pin controller', () => {
     let pin;
     let article;
     let episode;
