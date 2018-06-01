@@ -93,6 +93,7 @@
 				"valid-url": "^1.0.9",
 				"validator": "^10.2.0",
 				"winston": "^3.0.0-rc6",
+				"winston-transport": "^4.1.0",
 				"yargs": "^11.0.0",
 				"zlib": "^1.0.5"
 		},
