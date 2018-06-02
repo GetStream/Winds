@@ -11,7 +11,6 @@ import personalization from '../utils/personalization';
 import search from '../utils/search';
 import logger from '../utils/logger';
 import moment from 'moment';
-import config from '../config';
 
 import async_tasks from '../async_tasks';
 
@@ -68,41 +67,15 @@ exports.list = (req, res) => {
 	}
 };
 
-exports.get = (req, res) => {
+exports.get = async (req, res) => {
 	if (req.params.rssId === 'undefined') {
 		return res.sendStatus(404);
 	}
-
-	let query = req.query || {};
-	let params = req.params || {};
-
-	if (query.type === 'count') {
-		RSS.count({ _id: params.rssId })
-			.then(count => {
-				if (!count) {
-					return res.sendStatus(404);
-				}
-
-				res.json({ total: count });
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(422).send(err.errors);
-			});
-	} else {
-		RSS.findById(params.rssId)
-			.then(rss => {
-				if (!rss) {
-					return res.sendStatus(404);
-				}
-
-				res.json(rss);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(422).send(err.errors);
-			});
+	let rss = await RSS.findById(req.params.rssId).exec();
+	if (!rss) {
+		return res.sendStatus(404);
 	}
+	res.json(rss);
 };
 
 exports.post = (req, res) => {
