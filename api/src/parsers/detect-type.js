@@ -19,12 +19,10 @@ import logger from '../utils/logger';
 import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
-
-const maxContentLengthBytes = 1024 * 1024;
-
+import {ReadFeedURL} from './index.js'
 
 // determines if the given feedUrl is a podcast or not
-async function IsPodcastStream(feedStream, feedURL) {
+export async function IsPodcastStream(feedStream, feedURL) {
 	let posts = [];
 	var end = new Promise(function(resolve, reject) {
 		feedStream
@@ -50,16 +48,8 @@ async function IsPodcastStream(feedStream, feedURL) {
   return end
 }
 
-async function IsPodcastURL(feedURL) {
-	let response = await axios({
-		method: 'get',
-		url: feedURL,
-		responseType: 'stream',
-		maxContentLength: maxContentLengthBytes,
-	});
-	let feedStream = response.data;
+// IsPodcastURL checks if the given url is a podcast or not
+export async function IsPodcastURL(feedURL) {
+	let feedStream = await ReadFeedURL(feedUrl);
 	return await IsPodcastStream(feedStream, feedURL);
 }
-
-exports.IsPodcastStream = IsPodcastStream;
-exports.IsPodcastURL = IsPodcastURL;
