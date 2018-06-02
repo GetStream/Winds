@@ -12,7 +12,7 @@ import FeedParser from 'feedparser';
 import jwt from 'jsonwebtoken';
 import config from '../../src/config';
 import { IsPodcastStream } from '../../src/parsers/detect-type';
-import { ParseOG } from '../../src/parsers/og';
+import { ParseOG, ParseOGStream } from '../../src/parsers/og';
 
 function getTestPage(name) {
 	let p = path.join(__dirname, '..', 'data', 'og', name);
@@ -26,7 +26,7 @@ describe('OG parsing', () => {
 
 	it('should detect og image from techcrunch', async () => {
 		let tc = getTestPage('techcrunch.html');
-		let result = await ParseOG(tc);
+		let result = await ParseOGStream(tc);
 		let ogImage =
 			'https://techcrunch.com/wp-content/uploads/2018/06/wwdc-2018-logo.jpg?w=585';
 		expect(result).to.equal(ogImage);

@@ -24,7 +24,13 @@ const metaTagRe = /(<meta.*og:image".*>)/gm;
 const urlRe = /content="(.*?)"/gm;
 
 // determines if the given feedUrl is a podcast or not
-export async function ParseOG(pageStream, pageURL) {
+export async function ParseOG(pageURL) {
+  let pageStream = await ReadFeedURL(pageURL)
+  let ogImage = await ParseOGStream(pageStream, pageURL)
+  return ogImage
+}
+
+export async function ParseOGStream(pageStream, pageURL) {
 	let items = [];
 	var end = new Promise(function(resolve, reject) {
 		pageStream
