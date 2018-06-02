@@ -21,18 +21,14 @@ function getTestPage(name) {
 }
 
 describe('OG parsing', () => {
+	let response;
+	let user;
 
-	describe.only('valid request', () => {
-		let response;
-		let user;
-
-		it('should detect og image from techcrunch', async () => {
-			let tc = getTestPage('techcrunch.html');
-      let result = await ParseOG(tc)
-      console.log(result)
-
-
-
-		});
+	it('should detect og image from techcrunch', async () => {
+		let tc = getTestPage('techcrunch.html');
+		let result = await ParseOG(tc);
+		let ogImage =
+			'https://techcrunch.com/wp-content/uploads/2018/06/wwdc-2018-logo.jpg?w=585';
+		expect(result).to.equal(ogImage);
 	});
 });
