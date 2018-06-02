@@ -32,16 +32,18 @@ const prepareMeta = info => {
 
 	if (isError(info)) {
 		hasError = true;
-		msg = info.message;
+		msg = info;
 		extra.stackError = info.stack;
 	} else if (isError(info.message)) {
 		hasError = true;
-		msg = info.message.message;
+		msg = info.message;
 		extra.stackError = info.message.stack;
 	} else if (isError(info.err)) {
+		msg = info.err;
 		hasError = true;
 		extra.stackError = info.err.stack;
 	} else if (info.message && isError(info.message.err)) {
+		msg = info.message.err;
 		hasError = true;
 		extra.stackError = info.message.err.stack;
 	}
