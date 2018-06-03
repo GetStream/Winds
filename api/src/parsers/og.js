@@ -20,8 +20,7 @@ import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
 import { ReadPageURL } from './feed.js';
-const metaTagRe = /(<meta.*og:image".*>)/gm;
-const urlRe = /content="(.*?)"/gm;
+
 import zlib from 'zlib';
 
 const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg'];
@@ -49,6 +48,8 @@ export async function IsValidOGUrl(url) {
 }
 
 export async function ParseOGStream(pageStream, pageURL) {
+	let metaTagRe = /(<meta.*og:image".*>)/gm;
+	let urlRe = /content="(.*?)"/gm;
 
 
 	var end = new Promise(function(resolve, reject) {
