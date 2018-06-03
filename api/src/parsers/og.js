@@ -31,12 +31,20 @@ export async function ParseOG(pageURL) {
 }
 
 export async function ParseOGStream(pageStream, pageURL) {
-	let items = [];
+
+  /*
+  let headers = response.headers;
+	let contentType = headers['content-type'].toLowerCase();
+	if (contentType.indexOf('html') === -1) {
+		logger.warn(`Doesn't look like anything to me... ${contentType} for url ${url}`);
+		return false;
+	}*/
+
 	var end = new Promise(function(resolve, reject) {
 		pageStream
 			.on('error', reject)
 			.on('end', () => {
-				resolve(items);
+				resolve(null);
 			})
 			.on('readable', function() {
 				var stream = this,

@@ -19,7 +19,7 @@ import logger from '../utils/logger';
 import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
-import {ReadFeedURL} from './index.js'
+import {ReadFeedURL} from './feed.js'
 
 // determines if the given feedUrl is a podcast or not
 export async function IsPodcastStream(feedStream, feedURL) {

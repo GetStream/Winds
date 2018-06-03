@@ -13,6 +13,7 @@ import Episode from '../models/episode';
 import '../utils/db';
 
 import logger from '../utils/logger';
+import {ParseOG} from '../parsers/og';
 
 import async_tasks from '../async_tasks';
 import axios from 'axios';
@@ -55,25 +56,7 @@ async function isValidUrl(url) {
 		return false;
 	}
 
-	let response;
-	try {
-		response = await axios({
-			method: 'get',
-			url: url,
-			timeout: requestTimeout,
-			maxContentLength: maxContentLengthBytes,
-		});
-	} catch (err) {
-		logger.warn(`File is probably too large, failed with err ${err} for url ${url}`);
-		return false;
-	}
 
-	let headers = response.headers;
-	let contentType = headers['content-type'].toLowerCase();
-	if (contentType.indexOf('html') === -1) {
-		logger.warn(`Doesn't look like anything to me... ${contentType} for url ${url}`);
-		return false;
-	}
 	return true;
 }
 
@@ -99,33 +82,28 @@ async function _handleOg(job) {
 		);
 	}
 
-	let image;
+	let ogImage;
 	let isValid = await isValidUrl(url);
 	if (!isValid) {
 		return;
 	}
 
 	try {
-		image = await ogs({
-			followAllRedirects: true,
-			maxRedirects: maxRedirects,
-			timeout: requestTimeout,
-			url: url,
-		});
+		ogImage = await ParseOG(url)
 	} catch (err) {
 		return logger.info(`OGS scraping broke for URL ${url}`, {err});
 	}
 
-	if (!image.data.ogImage || !image.data.ogImage.url) {
+	if (!ogImage) {
 		return logger.info(`Didn't find image for ${url}`);
 	}
 
 	let images = instance.images || {};
 
 	try {
-		images.og = normalize(image.data.ogImage.url);
+		images.og = normalize(ogImage);
 	} catch (err) {
-		return logger.warn(`Bad OG Image URL ${image.data.ogImage.url}`, {err});
+		return logger.warn(`Bad OG Image URL ${ogImage}`, {err});
 	}
 
 	await mongoSchema.update(

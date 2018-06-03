@@ -12,7 +12,7 @@ import FeedParser from 'feedparser';
 import jwt from 'jsonwebtoken';
 import config from '../../src/config';
 import { IsPodcastStream } from '../../src/parsers/detect-type';
-import { ReadFeedStream, ParseFeedPosts, ParsePodcastPosts } from '../../src/parsers';
+import { DetectLangFromStream } from '../../src/parsers/detect-language';
 
 function getTestFeed(name) {
 	let p = path.join(__dirname, '..', 'data', 'feed', name);
@@ -20,26 +20,25 @@ function getTestFeed(name) {
 	return feedStream;
 }
 
-describe('Language', () => {
+describe('Language detection', () => {
+	let response;
+	let user;
 
-	describe('Podcast', () => {
-		describe.only('valid request', () => {
-			let response;
-			let user;
-
-			it('should parse GiantBomcast', async () => {
-				let bomcast = getTestFeed('giant-bomcast');
-
-				let posts = await ReadFeedStream(bomcast);
-				let podcastResponse = ParsePodcastPosts(posts);
-
-				expect(podcastResponse.title).to.equal('Giant Bombcast');
-				expect(podcastResponse.link).to.equal('https://www.giantbomb.com/');
-				let e = podcastResponse.episodes[0];
-				expect(e.description.slice(0,20)).to.equal('Back on up to the lo');
-				expect(e.enclosure).to.equal('https://dts.podtrac.com/redirect.mp3/www.giantbomb.com/podcasts/download/2347/Giant_Bombcast_534__Forklift_Academy-05-29-2018-5923302638.mp3');
-				expect(e.link).to.equal('https://www.giantbomb.com/podcasts/giant-bombcast-534-forklift-academy/1600-2347/');
-			});
-		});
+	it('should detect language from techcrunch', async () => {
+		let tc = getTestFeed('techcrunch');
+		let result = await DetectLangFromStream(tc);
+		expect(result).to.equal("eng");
 	});
+
+  it('should detect language from lemonde', async () => {
+    let tc = getTestFeed('lemonde');
+    let result = await DetectLangFromStream(tc);
+    expect(result).to.equal("fra");
+  });
+
+  it('should detect language from habr', async () => {
+    let tc = getTestFeed('habr');
+    let result = await DetectLangFromStream(tc);
+    expect(result).to.equal("rus");
+  });
 });
