@@ -32,20 +32,3 @@ export async function DetectLangFromStream(feedStream) {
 
 	return bestGuessLanguage;
 }
-
-export default feedUrl => {
-	return new Promise((resolve, reject) => {
-		ParseFeed(feedUrl, (err, feedContents) => {
-			if (err) {
-				// sometimes rss feeds throw a 503 when being added and parsed immediately - in that case, just resolve to english
-				return resolve('eng');
-			}
-			// language in the feed metadata is only sometimes there - calculating via franc should be good enough for now
-			let languageSums = {};
-			for (let post of feedContents.articles) {
-			}
-
-			resolve(bestGuessLanguage);
-		});
-	});
-};
