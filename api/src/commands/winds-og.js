@@ -4,9 +4,10 @@ import logger from '../utils/logger';
 import Queue from 'bull';
 import config from '../config';
 const version = '0.0.1';
-import ogs from 'open-graph-scraper';
 import normalize from 'normalize-url';
 import async_tasks from '../async_tasks';
+import {ParseOG} from '../parsers/og';
+
 
 program
 	.version(version)
@@ -16,37 +17,26 @@ program
 
 let ogUrls = program.args;
 
-function main() {
+async function main() {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info('Starting the OG queue Debugger \\0/');
 	for (let ogUrl of ogUrls) {
 		let normalizedUrl = normalize(ogUrl);
 		logger.info(`Looking for og images at ${normalizedUrl} for type ${program.type}`);
 
-		ogs({
-			followAllRedirects: true,
-			maxRedirects: 20,
-			timeout: 3000,
-			url: normalizedUrl,
-		})
-			.then(image => {
-				if (!image.data.ogImage || !image.data.ogImage.url) {
-					logger.info(
-						chalk.red(
-							`OG scraping didn't find an image for ${normalizedUrl}`,
-						),
-					);
-				} else {
-					logger.info(
-						chalk.green(
-							`Image found for ${normalizedUrl}: ${image.data.ogImage.url}`,
-						),
-					);
-				}
-			})
-			.catch(err => {
-				logger.info('failed to parse OG images');
-			});
+		let ogImage = await ParseOG(normalizedUrl);
+
+		if (!ogImage) {
+			logger.info(
+				chalk.red(`OG scraping didn't find an image for ${normalizedUrl}`),
+			);
+		} else {
+			logger.info(
+				chalk.green(
+					`Image found for ${normalizedUrl}: ${ogImage}`,
+				),
+			);
+		}
 
 		if (program.task) {
 			logger.info('creating a task on the bull queue');

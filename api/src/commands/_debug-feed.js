@@ -1,7 +1,7 @@
 import program from 'commander';
 import '../loadenv';
 import '../utils/db';
-import { ParseFeed, ParsePodcast } from '../parsers';
+import { ParseFeed, ParsePodcast } from '../parsers/feed';
 import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
@@ -11,7 +11,7 @@ import normalize from 'normalize-url';
 import async_tasks from '../async_tasks';
 
 // do stuff
-async function debugFeed(feedType, feedUrls) {
+export async function debugFeed(feedType, feedUrls) {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info(`Starting the ${feedType} Debugger \\0/`);
 	logger.info(
@@ -152,5 +152,3 @@ async function debugFeed(feedType, feedUrls) {
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');
 	}
 }
-
-exports.debugFeed = debugFeed;

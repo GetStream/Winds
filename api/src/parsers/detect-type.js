@@ -19,47 +19,25 @@ import logger from '../utils/logger';
 import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
-
-const maxContentLengthBytes = 1024 * 1024;
-
+import {ReadFeedURL} from './feed.js'
 
 // determines if the given feedUrl is a podcast or not
-async function IsPodcastStream(feedStream, feedURL) {
-	let posts = [];
-	var end = new Promise(function(resolve, reject) {
-		feedStream
-			.pipe(new FeedParser())
-			.on('error', reject)
-			.on('end', () => {
-				let isPodcast = posts.slice(0, 10).every(post => {
-					return (
-						post.enclosures.length &&
-						post.enclosures[0].type.indexOf('audio') != -1
-					);
-				});
-				resolve(isPodcast);
-			})
-			.on('readable', function() {
-				var stream = this,
-					item;
-				while ((item = stream.read())) {
-					posts.push(item);
-				}
-			});
-	});
-  return end
+export async function IsPodcastStream(feedStream, feedURL) {
+	let posts = await ReadFeedStream(stream);
+	let isPodcast = false
+	if (posts) {
+		isPodcast = posts.slice(0, 10).every(post => {
+			return (
+				post.enclosures.length &&
+				post.enclosures[0].type.indexOf('audio') != -1
+			);
+		});
+	}
+  return isPodcast
 }
 
-async function IsPodcastURL(feedURL) {
-	let response = await axios({
-		method: 'get',
-		url: feedURL,
-		responseType: 'stream',
-		maxContentLength: maxContentLengthBytes,
-	});
-	let feedStream = response.data;
+// IsPodcastURL checks if the given url is a podcast or not
+export async function IsPodcastURL(feedURL) {
+	let feedStream = await ReadFeedURL(feedUrl);
 	return await IsPodcastStream(feedStream, feedURL);
 }
-
-exports.IsPodcastStream = IsPodcastStream;
-exports.IsPodcastURL = IsPodcastURL;

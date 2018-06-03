@@ -1,0 +1,406 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"  >
+  <channel>
+    <title>Хабр / Лучшие публикации за сутки</title>
+    <link>https://habr.com/posts/top/</link>
+    <description><![CDATA[Лучшие публикации за последние 24 часа]]></description>
+    <language>ru</language>
+    <managingEditor>editor@habr.com</managingEditor>
+    <generator>habr.com</generator>
+    <pubDate>Sun, 03 Jun 2018 00:32:57 GMT</pubDate>
+    <lastBuildDate></lastBuildDate>
+      <image>
+        <link>https://habr.com/</link>
+        <url>https://habr.com/images/logo.png</url>
+        <title>Хабр</title>
+      </image>
+
+              <item>
+      <title><![CDATA[Прибор ночного видения на базе тепловизионного модуля Flir Lepton 3]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413021/</guid>
+      <link>https://habr.com/post/413021/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413021</link>
+      <description><![CDATA[<a href="https://habr.com/post/373449/">Ранее</a> я написал статью о подключении к компьютеру тепловизионной приставки к смартфону Flir One Gen 2. Пришла пора вынуть из этой приставки модуль лептон и подключить к микроконтроллеру напрямую, собрав прибор ночного видения с разрешением 160x120 пикселей.<br> <a href="https://habr.com/post/413021/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413021#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 15:49:27 GMT</pubDate>
+      <dc:creator>da-nie</dc:creator>
+      <category><![CDATA[Электроника для начинающих]]></category><category><![CDATA[Схемотехника]]></category><category><![CDATA[Программирование микроконтроллеров]]></category><category><![CDATA[Гаджеты]]></category><category><![CDATA[DIY или Сделай сам]]></category>
+      <category><![CDATA[Тепловизор]]></category><category><![CDATA[прибор ночного видения]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[Подвал смерти]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413011/</guid>
+      <link>https://habr.com/post/413011/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413011</link>
+      <description><![CDATA[<i>Общим лейтмотивом многих статей на Хабре – является поиск ошибок — неточностей, натяжек, а порой и откровенной глупости в книгах и фильмах. Не являются исключением и мои статьи, в которых я, весь в белом, смеюсь над недотепами авторами. <br>
+<br>
+Поскольку я, ко всему прочему, являюсь литератором, будет честно предоставить право ответного удара: в смысле — дать возможность посмеяться над моим творчеством. Исходя из этого, я решил опубликовать вставную новеллу из цикла «Я у мамы инженер» — благо, по тематике она тесно примыкает к хабротемам. <br>
+<br>
+Пара пояснений: <b>Герой романа – и автор – разные люди.</b> У нас разные позиции по многим вопросам. Я не всегда согласен с товарищем Главным Героем и спорю с ним, через реплики других персонажей. И — упомянутые в романе лица, чьи имена совпадают с реально существующими людьми – не более чем их отражения в другой реальности. Как Цандер в «Прыжке в Ничто» Беляева, если Вы понимаете о чем я. </i><br>
+Итак: <br>
+<br>
+Затухающий костёр освещал только крохотный пятачок пляжа. Сидящий напротив огня кот, как и я, смотрел на огонь, сияя плошками отражающих свет глаз. Было в этой сцене что-то по домашнему уютное. <br>
+<br>
+Я налил себе кофе, и, сев на складной стульчик, похлопал по колену, приглашая Беляша присоединиться. Его пучешарое величество соизволило принять приглашение. Почти невидимая в темноте Никсель полулежала на туристической пенке, но не спала. Конечно, уснешь тут. <br>
+<br>
+— Настало время удивительных историй? — Спросил я. — Раз всё равно не спим.<br>
+Никсель промолчала. Беляш вертелся у меня на коленях, устраиваясь поудобней. <br>
+<br>
+— Ну, раз возражений нет, начну: У меня неподалеку от дома работает офисный центр, у которого под автостоянкой расположен подвал смерти. <br>
+<br>
+— Это как? — тихонько спросила девушка. <br>
+<br>
+— Подвал, в который люди заходят и пропадают. Серьезно. Там у них за 30 лет российской независимости человек тридцать пропало. По человеку в год, таксказать. <br>
+<br>
+Расскажу лучше по порядку: <a href="https://habr.com/post/413011/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413011#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 13:26:04 GMT</pubDate>
+      <dc:creator>Zangasta</dc:creator>
+      <category><![CDATA[Научная фантастика]]></category>
+      <category><![CDATA[дроид]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[«Хорошо забытое старое»: электровелосипеды — от первых моделей к возможностям сегодняшнего дня ]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413023/</guid>
+      <link>https://habr.com/post/413023/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413023</link>
+      <description><![CDATA[Сегодня рынок электровелосипедов по темпам роста <a href="http://www.bike-eu.com/sales-trends/nieuws/2017/9/usa-e-bike-market-doubles-in-units-and-value-10131284">не уступает</a> сегменту своих старших собратьев — электромобилей. Только в 2016 году во всем мире <a href="https://www.statista.com/statistics/255658/worldwide-sales-of-electric-bicycles-by-region/">было продано</a> чуть меньше 35 млн электровелосипедов — 93% пришлось на Азиатско-Тихоокеанский регион. Однако их популярность растет не только в Азии, но и по всему миру — например, в США в прошлом году зафиксировали двукратный рост продаж. Российский рынок, по <a href="https://www.rbc.ru/newspaper/2017/10/26/59edce879a79470e13411b15">мнению</a> экспертов, довольно скромный — в год продается порядка 10 тысяч электровелосипедов — но он тоже активно развивается.<br>
+<br>
+На велосипеды с электрическим приводом уже во всю пересаживаются государственные службы по всему миру: например, полицейские штата Висконсин последовали <a href="http://www.themalaysianinsight.com/s/29857/">примеру</a> своих малазийских коллег и <a href="https://www.officer.com/on-the-street/vehicles-equipment/bicycles-accessories/press-release/20991237/electronic-bikes-bosch-ebikes-systems-increase-your-bike-patrol-effectiveness-with-an-ebike-electric-bicycle">патрулируют</a> город на новом транспорте. <a href="https://techcrunch.com/2018/01/09/jump-will-be-the-first-stationless-e-bike-sharing-startup-to-launch-in-sf/">Появляются</a> городские сервисы для аренды вроде «Велобайка», но уже для электровелосипедов — это сети велопроката, которые можно встретить во многих крупных городах во всем мире. Они позволяют брать электровелосипед в аренду на одной станции и оставлять его в другой части города так, чтобы им мог воспользоваться кто-то другой.<br>
+<br>
+Более того, появляются предложения о том, чтобы <a href="https://www.bicycling.com/racing/uec-electric-bike-circuit">включить</a> электровелосипеды в классификацию Европейского союза велосипедного спорта (UEC) и добавить новые дисциплины к обычным заездам и соревнованиям по горным велогонкам.<br>
+ <br>
+Попробуем немного «отмотать назад» и разобраться в том, как электровелосипед проделал путь от экспериментального изобретения до популярного атрибута жизни в большом городе. Сегодня расскажем:<br>
+<br>
+<ul>
+<li>кто впервые модернизировал классический велосипед;</li>
+<li>почему об электровелосипедах забыли почти на 30 лет;</li>
+<li>и что помогло им вернуться и стать популярным городским транспортом.</li>
+</ul><br>
+<a href="https://habr.com/company/maccentre/blog/413023/"><img src="https://habrastorage.org/webt/ar/kg/in/arkginng-aoobwrf1nneg4yt6pq.png"></a> <a href="https://habr.com/post/413023/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413023#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 16:37:33 GMT</pubDate>
+      <dc:creator>IvanPavlov</dc:creator>
+      <category><![CDATA[История IT]]></category><category><![CDATA[Гиктаймс]]></category><category><![CDATA[Гаджеты]]></category><category><![CDATA[Блог компании МакЦентр]]></category>
+      <category><![CDATA[макцентр]]></category><category><![CDATA[электробайки]]></category><category><![CDATA[электровелосипеды]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[SamsPcbGuide, часть 5: Трассировка сигнальных линий. Искажения в линии и согласование импедансов]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413001/</guid>
+      <link>https://habr.com/post/413001/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413001</link>
+      <description><![CDATA[Продолжаем рассмотрение трассировки печатных плат. Эту статью публикую из своего родного города Северодвинска, с благодарностью своим школьным учителям. Тема, которой она посвящена, базовая, и оттого важно с ней разобраться. Здесь будут рассмотрены отражения в сигнальных линиях и, как всегда, будут даны рекомендации по снижению искажений сигнала, в том числе с помощью различных методик согласования линий. <a href="https://habr.com/post/413001/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413001#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 09:55:58 GMT</pubDate>
+      <dc:creator>iamsam</dc:creator>
+      <category><![CDATA[Электроника для начинающих]]></category><category><![CDATA[Производство и разработка электроники]]></category>
+      <category><![CDATA[samspcbguide]]></category><category><![CDATA[печатные платы]]></category><category><![CDATA[радиотехника и электроника]]></category><category><![CDATA[трассировка]]></category><category><![CDATA[отражения]]></category><category><![CDATA[согласование импедансов]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[Советский HI-FI и его создатели: лазерные видеодиски в СССР]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413027/</guid>
+      <link>https://habr.com/post/413027/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413027</link>
+      <description><![CDATA[Так случилось, что в этом цикле мы касались в основном HI-FI аудио, не затрагивая вопрос видеотехники, а между тем, в Стране Советов были, пускай и несколько запоздалые, но достижения по этой части. Рассматривая советское видео, как сравнительно редкий и в основном перестроечный феномен, под определение HI-FI (т.е. высокая верность воспроизведения) лучше других подходят видеодиски формата Laser Disc и проигрыватели для них.<br>
+<br>
+<img src="https://habrastorage.org/webt/pf/vr/je/pfvrjemtzbyvvubeoq1gczdbiby.jpeg"><br>
+<br>
+К моменту разработки в Союзе описываемая технология доживала свои последние годы за ржавеющим железным занавесом. При этом для подавляющего большинства советских людей, немногим из которых был доступен даже банальный VHS-видеомагнитофон, представлялась истинным технологическим чудом. Под катом об отчаянной и изначально обреченной на провал попытке “догнать и перегнать”.<br> <a href="https://habr.com/post/413027/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413027#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 18:54:46 GMT</pubDate>
+      <dc:creator>Sound_cULT</dc:creator>
+      <category><![CDATA[Старое железо]]></category><category><![CDATA[Научно-популярное]]></category><category><![CDATA[Звук]]></category><category><![CDATA[Видеотехника]]></category><category><![CDATA[Блог компании Pult.ru]]></category>
+      <category><![CDATA[видео]]></category><category><![CDATA[лазер]]></category><category><![CDATA[лазерный проигрыватель]]></category><category><![CDATA[лазерный диск]]></category><category><![CDATA[laser disc]]></category><category><![CDATA[hi-fi]]></category><category><![CDATA[hi-fi video]]></category><category><![CDATA[video player]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[Secure Data Act 2018 – в США планируют запретить бэкдоры в устройствах [опять]]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412991/</guid>
+      <link>https://habr.com/post/412991/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412991</link>
+      <description><![CDATA[В середине мая члены Конгресса США <a href="https://www.theregister.co.uk/2018/05/10/proposed_law_would_stop_feds_from_demanding_backdoors/">представили</a> законопроект, который получил название <a href="https://lofgren.house.gov/sites/lofgren.house.gov/files/Secure%20Data%20Act%202018.pdf">Secure Data Act 2018</a>. Он запретит правительству и государственным структурам требовать от производителей технических устройств встраивать в свои продукты бэкдоры. Принуждения нельзя будет добиться даже через суд.<br>
+<br>
+Подробнее о законопроекте и реакции сообщества расскажем далее.<br>
+<br>
+<a href="https://habr.com/company/1cloud/blog/412991/"><img src="https://habrastorage.org/webt/05/vt/pr/05vtprevna2jo2k-ansv8cerxpc.jpeg"></a> <a href="https://habr.com/post/412991/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412991#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 16:34:27 GMT</pubDate>
+      <dc:creator>1cloud</dc:creator>
+      <category><![CDATA[Информационная безопасность]]></category><category><![CDATA[Блог компании 1cloud.ru]]></category>
+      <category><![CDATA[1cloud]]></category><category><![CDATA[secure data act]]></category><category><![CDATA[бэкдоры]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[Небольшая заметка про wildcard сертификаты Let’s Encrypt]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413017/</guid>
+      <link>https://habr.com/post/413017/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413017</link>
+      <description><![CDATA[Все уже, наверное, в курсе про такую организацию как Let’s Encrypt. С некоторых пор там можно получить и wildcard сертификат. В этой короткой заметке я опишу пару не очень очевидных моментов, с которыми столкнулся.<br> <a href="https://habr.com/post/413017/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413017#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 15:33:06 GMT</pubDate>
+      <dc:creator>isden</dc:creator>
+      <category><![CDATA[Хостинг]]></category><category><![CDATA[Системное администрирование]]></category><category><![CDATA[DevOps]]></category>
+      <category><![CDATA[letsencrypt]]></category><category><![CDATA[docker]]></category><category><![CDATA[geektimes]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[От гудения жирафов до звуков птиц-подражателей — слушаем природу вместе]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412999/</guid>
+      <link>https://habr.com/post/412999/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412999</link>
+      <description><![CDATA[Мы продолжаем серию рассказов об интересных звуках природы на основе подкаста <a href="https://soundcloud.com/worldaccordingtosound">World According to Sound</a> Сэма Харнетта (Sam Harnett) и Криса Хоффа (Chris Hoff). В <a href="https://geektimes.com/company/audiomania/blog/299379/">прошлой части</a> обзора речь шла о необычных звуках, которые могут издавать насекомые, гейзеры и гравитационные волны. В этой части разберём на какие звуки способны жирафы, птицы и люди.<br>
+<br>
+<a href="https://habr.com/company/audiomania/blog/412999/"><img src="https://habrastorage.org/webt/lf/7w/ym/lf7wymmm1umuts8ndkclpjhfn8a.jpeg"></a> <a href="https://habr.com/post/412999/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412999#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 09:42:07 GMT</pubDate>
+      <dc:creator>Audioman</dc:creator>
+      <category><![CDATA[Периферия]]></category><category><![CDATA[Научно-популярное]]></category><category><![CDATA[Звук]]></category><category><![CDATA[Гиктаймс]]></category><category><![CDATA[Блог компании Аудиомания]]></category>
+      <category><![CDATA[аудиомания]]></category><category><![CDATA[звук]]></category><category><![CDATA[удивительное рядом]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[Что делает VMware, и какой будет сетевая архитектура будущего]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412923/</guid>
+      <link>https://habr.com/post/412923/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412923</link>
+      <description><![CDATA[Как <a href="https://www.gartner.com/smarterwithgartner/what-edge-computing-means-for-infrastructure-and-operations-leaders/">отмечают</a> в Gartner, 10% корпоративных данных генерируются за пределами традиционных ЦОД. И ожидается, что эта цифра вырастет до 50% к 2022 году. Тенденция связана с ростом популярности «периферийных вычислений» (<a href="https://en.wikipedia.org/wiki/Edge_computing">edge computing</a>) и интернета вещей.<br>
+<br>
+Компаниям приходится искать новые подходы к организации корпоративных сетей. Одной из таких компаний является разработчик программного обеспечения для виртуализации VMware. В начале мая представители организации <a href="https://globenewswire.com/news-release/2018/05/01/1493914/0/en/VMware-Advances-Networking-for-the-Digital-Era-with-the-Virtual-Cloud-Network.html">обозначили</a> свое видение сетей будущего и представили концепцию Virtual Cloud Network. Её идея в том, чтобы упростить управление программными сетями и повысить защищенность распределенных сервисов.<br>
+<br>
+Подробнее о том, что делает VMware, расскажем далее.<br>
+<br>
+<a href="https://habr.com/company/it-grad/blog/412923/"><img src="https://habrastorage.org/webt/o-/xn/h5/o-xnh5lxgct0knod0-gobgpjyau.jpeg"></a> <a href="https://habr.com/post/412923/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412923#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 13:44:32 GMT</pubDate>
+      <dc:creator>it_man</dc:creator>
+      <category><![CDATA[Системное администрирование]]></category><category><![CDATA[Серверное администрирование]]></category><category><![CDATA[Виртуализация]]></category><category><![CDATA[IT-инфраструктура]]></category><category><![CDATA[Блог компании ИТ-ГРАД]]></category>
+      <category><![CDATA[ит-град]]></category><category><![CDATA[sd-wan]]></category><category><![CDATA[vmware]]></category>
+    </item>
+
+
+
+
+
+
+
+
+
+    <item>
+      <title><![CDATA[[Из песочницы] Странности синтеза при работе с FPGA]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413007/</guid>
+      <link>https://habr.com/post/413007/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413007</link>
+      <description><![CDATA[На сегодняшний день существует два наиболее распространённых языка описания аппаратуры: Verilog/SystemVerilog и VHDL. Сами языки описания аппаратуры являются достаточно универсальными средствами, но всегда ли это так? И от чего может зависеть «не универсальность» языка описания аппаратуры?<br/>
+<br/>
+Идея написания данной статьи возникла при синтезе одного проекта в разных средах разработки, в результате чего были получены отличные друг от друга результаты. Так как исходный модуль является достаточно объёмным, то для демонстрации полученных результатов был написан тестовый модуль меньшего объёма, но синтез которого вызывал те же предупреждения/ошибки. В качестве тестового модуля был использован 4-х битный регистр с асинхронным сбросом, а в качестве сред разработки были выбраны Libero SoC 18.1, Quartus Prime 17.1, Vivado 2017.4.1.<br/>
+ <a href="https://habr.com/post/413007/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413007#habracut">Читать дальше &rarr;</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 12:29:41 GMT</pubDate>
+      <dc:creator>Dmitriy0111</dc:creator>
+      <category><![CDATA[FPGA]]></category>
+      <category>fpga</category><category>verilog</category><category>Vivado</category><category>Quartus</category><category>Libero SoC</category>
+    </item>
+
+
+
+
+
+
+
+    <item>
+      <title><![CDATA[[Из песочницы] Инфраструктура открытых ключей: утилита генерации запросов на квалифицированный сертификат]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412993/</guid>
+      <link>https://habr.com/post/412993/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412993</link>
+      <description><![CDATA[<img src="https://habrastorage.org/webt/oj/xx/7a/ojxx7arqczn6pv4ldcq3zjoqdwm.png" align="left" alt="image"/> Одним из центральных объектом инфраструктуры открытых ключей (Public Key Infrastructure — PKI/ИОК) наряду с ключевой парой является сертификат, который сегодня фактически является аналогом гражданского паспорта. <br/>
+ <a href="https://habr.com/post/412993/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412993#habracut">Читать дальше &rarr;</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 07:35:47 GMT</pubDate>
+      <dc:creator>saipr</dc:creator>
+      <category><![CDATA[Криптография]]></category><category><![CDATA[Информационная безопасность]]></category><category><![CDATA[Open source]]></category><category><![CDATA[IT-стандарты]]></category><category><![CDATA[IT-инфраструктура]]></category>
+      <category>pki</category><category>certificate</category><category>public key</category><category>private key</category><category>pkcs#11</category><category>pkcs#10</category><category>csp</category><category>csr</category><category>request</category><category>certificate authority</category><category>гост 34.10-2012</category><category>tcl/tk</category><category>swig</category>
+    </item>
+
+
+
+
+
+
+
+
+
+    <item>
+      <title><![CDATA[[Перевод] Стремление к прозрачности]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413013/</guid>
+      <link>https://habr.com/post/413013/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413013</link>
+      <description><![CDATA[<blockquote>Самый эффективный способ помочь другим — это помочь им помочь самим себе.<br>
+Джерри Корстенс</blockquote><h4>От переводчика</h4><br>
+Предлагаю вашему вниманию перевод статьи CEO SpecterOps David McGuire <i>«A Push Toward Transparency»</i>. Никакого отношения к данной компании я не имею и никогда не пользовался её продуктами, поэтому статья служит не рекламным целям, а лишь поводом для того, чтобы задуматься, обсудить и использовать или отказаться от использования предлагаемого автором подхода.<br>
+<br>
+Дэвид поднимает вопрос прозрачности в индустрии информационной безопасности, утверждая, что распространение знаний об инструментах и методах работы — это не угроза конкурентному преимуществу, а очень важный шаг для всех участников рынка, который способен значительно повысить общий уровень защищенности информационных инфраструктур. В комментариях хотелось бы увидеть обсуждение этой позиции: насколько она совместима с реальностью, что нам мешает быть прозрачными, и нужно ли переходить от формирования зависимости от консультантов и продуктов к обучению заказчиков самостоятельному противодействию угрозам?<br> <a href="https://habr.com/post/413013/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413013#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 13:51:16 GMT</pubDate>
+      <dc:creator>Michae1</dc:creator>
+      <category><![CDATA[Управление проектами]]></category><category><![CDATA[Информационная безопасность]]></category><category><![CDATA[IT-инфраструктура]]></category>
+      <category>прозрачность</category>
+    </item>
+
+
+
+
+
+
+
+    <item>
+      <title><![CDATA[[Перевод] Неудовольствие обнуляет уровень счастья: почему невозможно постоянно быть счастливым]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412977/</guid>
+      <link>https://habr.com/post/412977/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412977</link>
+      <description><![CDATA[<img src="https://habrastorage.org/getpro/habr/post_images/2dc/55b/601/2dc55b6017b07244b70cca68007c1343.png"><br>
+<br>
+Счастье, в той или иной его форме, вроде бы является общей целью, достичь которой хотел бы каждый из нас. Мы часто ведём себя так, будто можем найти путь к полному удовлетворению – комфорту, насыщению, теплу, какой-то ещё награде – и постоянно быть счастливыми, просто сделав какие-то правильные выборы. Но удовольствие даже от самых приятных ощущений скоротечно, и это приводит к появлению скуки и желанию попробовать что-то новое и удивительное. Я, как нейробиолог, не могу не думать о том, является ли на самом деле мимолётность нашего удовлетворения неизбежной, или же это некая особенность работы мозга, поняв которую, можно будет узнать, как с этим бороться.<br>
+<br>
+Многие повседневные функции работы мозга кажутся настолько естественными, что мы с трудом можем дистанцироваться от них, чтобы посмотреть на них со стороны. Мозг занимается тем, что замечает разные вещи. Очевидно, что основная работа мозга заключается в восприятии; на базе воспринятого он может делать оценки, а на основе их – действовать. Эту работу выполняют нейроны нервной системы. Они находят и представляют входные данные внешнего (и внутреннего) мира, анализируют данные, и реагируют на этот анализ соответствующим действием. Под действием обычно понимается движение: нейроны отправляют сигналы, заставляющие мускулы сокращаться, что позволяет вам выполнять какие-то действия. Входные данные поступают с органов чувств, анализ часто называют ассоциативным, а выход – моторикой. Троица чувства/ассоциативный анализ/моторика – это нейронный аналог восприятия/оценки/действия.<br> <a href="https://habr.com/post/412977/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412977#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 09:00:01 GMT</pubDate>
+      <dc:creator>SLY_G</dc:creator>
+      <category><![CDATA[Научно-популярное]]></category><category><![CDATA[Мозг]]></category>
+      <category>счастье</category><category>несчастье</category><category>потенциалы действия</category><category>ионные каналы</category><category>нейромедиаторы</category>
+    </item>
+
+
+
+      <item>
+      <title><![CDATA[Игра в прятки, или первый ботнет, которому не страшен reboot]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412997/</guid>
+      <link>https://habr.com/post/412997/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412997</link>
+      <description><![CDATA[В конце апреля ИБ-исследователи из Bitdefender LABS <a href="https://labs.bitdefender.com/2018/05/hide-and-seek-iot-botnet-resurfaces-with-new-tricks-persistence/">обнаружили</a> новую версию ботнета Hide and Seek (HNS), о котором стало <a href="https://labs.bitdefender.com/2018/01/new-hide-n-seek-iot-botnet-using-custom-built-peer-to-peer-communication-spotted-in-the-wild/">известно</a> в начале 2018 года. Он использует кастомный P2P-протокол и является первым ботнетом, который «выживает» даже после перезагрузки устройства, на котором закрепился.<br>
+<br>
+Расскажем, как HNS это делает и как защитить от него устройства интернета вещей.<br>
+<br>
+<a href="https://habr.com/company/vasexperts/blog/412997/"><img src="https://habrastorage.org/webt/ec/ev/lg/ecevlg_fda6rqcht3jqyshnztlo.jpeg"></a> <a href="https://habr.com/post/412997/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412997#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 09:36:21 GMT</pubDate>
+      <dc:creator>VASExperts</dc:creator>
+      <category><![CDATA[Информационная безопасность]]></category><category><![CDATA[Блог компании VAS Experts]]></category>
+      <category><![CDATA[vas experts]]></category><category><![CDATA[hns]]></category><category><![CDATA[информационная безопасность]]></category><category><![CDATA[ботнет]]></category>
+    </item>
+
+
+
+
+
+
+
+      <item>
+      <title><![CDATA[Менеджеры зависимостей]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412945/</guid>
+      <link>https://habr.com/post/412945/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412945</link>
+      <description><![CDATA[<img src="https://habrastorage.org/webt/eo/2z/gn/eo2zgnh7wmofkn9u5lkycjb1kus.png"><br>
+<br>
+В этой статье я расскажу, в чем менеджеры зависимостей (package manager) схожи по внутреннему устройству, алгоритму работы, и в чем их принципиальные отличия. Я рассматривал package manager’ы, предназначенные для разработки под iOS/OS X, но содержание статьи с некоторыми допущениями применимо и к другим. <br> <a href="https://habr.com/post/412945/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412945#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 05:09:58 GMT</pubDate>
+      <dc:creator>vani2</dc:creator>
+      <category><![CDATA[Разработка мобильных приложений]]></category><category><![CDATA[Программирование]]></category><category><![CDATA[Блог компании Redmadrobot]]></category>
+      <category><![CDATA[cocoapods]]></category><category><![CDATA[carthage]]></category><category><![CDATA[homebrew]]></category><category><![CDATA[package manager]]></category><category><![CDATA[package management]]></category><category><![CDATA[dependency manager]]></category>
+    </item>
+
+
+
+
+
+
+
+
+
+    <item>
+      <title><![CDATA[[Из песочницы] О терниях и звездах на пути оптимизации процессов разработки]]></title>
+      <guid isPermaLink="true">https://habr.com/post/413025/</guid>
+      <link>https://habr.com/post/413025/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413025</link>
+      <description><![CDATA[<h3>Мечты, мечты</h3><br>
+Холодными осенними вечерами мы с разработчиками приложений 3D визуализации собирались на кухне… пили кофе… и думали о ней… об эталонной организации разработки. <br>
+<br>
+ — У меня знакомые по agile работают: спринты, стори поинты, все дела…<br>
+ — Да нам бы хотя бы ревью…<br>
+<br>
+<a href="https://habrastorage.org/webt/-m/yn/nd/-mynnduvwft5nxmi3bucrybzgta.jpeg"><img src="https://habrastorage.org/webt/-m/yn/nd/-mynnduvwft5nxmi3bucrybzgta.jpeg"><br>
+</a> <a href="https://habr.com/post/413025/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=413025#habracut">Читать дальше →</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 17:39:04 GMT</pubDate>
+      <dc:creator>mimila</dc:creator>
+      <category><![CDATA[Управление разработкой]]></category><category><![CDATA[Управление проектами]]></category><category><![CDATA[Управление персоналом]]></category><category><![CDATA[Развитие стартапа]]></category><category><![CDATA[Agile]]></category>
+      <category>управление персоналом</category><category>управление людьми</category><category>управление проектами</category><category>управление командой</category><category>управление командами разработчиков</category><category>управление проектами и командой</category><category>управление проектом</category><category>развитие бизнеса</category><category>развитие стартапа</category><category>agile</category><category>gitflow</category><category>jira</category><category>визуализация данных</category><category>3D</category><category>визуализация</category>
+    </item>
+
+
+
+
+
+
+
+    <item>
+      <title><![CDATA[[Из песочницы] SAP по-быстрому]]></title>
+      <guid isPermaLink="true">https://habr.com/post/412995/</guid>
+      <link>https://habr.com/post/412995/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412995</link>
+      <description><![CDATA[Внедрение SAP, в обычном мире, считается задачей не самой простой. Различного рода аналитики, по специальной методике обследуют, перелопачивают все предприятие, меняют бизнес процессы, много и еще раз много консультируют, и даже ИТ инфраструктуру рассчитывают специально обученные суперспециалисты. Однако, нам в помощь, существует сервис по автоматизированному развертыванию немецких продуктов в режиме: нажал, подождал, тестируй (или даже работай).<br/>
+<br/>
+<div style="text-align:center;"><img src="https://habrastorage.org/webt/_k/2c/xa/_k2cxaby50-5as3yaimlxqdxzyy.jpeg" alt="image" /></div> <a href="https://habr.com/post/412995/?utm_source=habrahabr&amp;utm_medium=rss&amp;utm_campaign=412995#habracut">Читать дальше &rarr;</a>]]></description>
+
+      <pubDate>Sat, 02 Jun 2018 08:20:35 GMT</pubDate>
+      <dc:creator>nasos</dc:creator>
+      <category><![CDATA[Системное администрирование]]></category><category><![CDATA[Облачные сервисы]]></category><category><![CDATA[Microsoft Azure]]></category><category><![CDATA[ERP-системы]]></category>
+      <category>SAP</category><category>Azure</category><category>template</category><category>быстро</category>
+    </item>
+
+
+
+
+
+
+
+
+
+  </channel>
+</rss>

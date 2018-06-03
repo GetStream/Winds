@@ -12,7 +12,7 @@ import config from '../config';
 import logger from '../utils/logger';
 
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
-import { ParseFeed } from '../parsers';
+import { ParseFeed } from '../parsers/feed';
 
 import async_tasks from '../async_tasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
@@ -63,8 +63,8 @@ async function _handleRSS(job) {
 	logger.info(`Marked ${rssID} as done`);
 
 	// parse the articles
-	let rssContent = await timeIt('winds.handle_rss.parsing', () => {
-		return ParseFeed(job.data.url);
+	let rssContent = await timeIt('winds.handle_rss.parsing', async () => {
+		return await ParseFeed(job.data.url);
 	});
 
 	if (!rssContent) {
