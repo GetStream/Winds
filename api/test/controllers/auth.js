@@ -4,16 +4,18 @@ import jwt from 'jsonwebtoken';
 
 import api from '../../src/server';
 import config from '../../src/config';
-import auth from '../../src/controllers/auth';
 import Podcast from '../../src/models/podcast';
 import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
 import email from '../../src/utils/email';
 import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
+import {reset} from '../utils';
 
 describe('Auth controller', () => {
 	describe('signup', () => {
-		before(() => User.remove().exec());
+		before(async() => {
+			await reset();
+		});
 		beforeEach(() => User.remove().exec());
 
 		describe('valid request', () => {
