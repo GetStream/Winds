@@ -6,6 +6,7 @@ import { loadFixture } from '../../src/utils/test';
 import Pin from '../../src/models/pin';
 import Article from '../../src/models/article';
 import Episode from '../../src/models/episode';
+import {reset} from '../utils';
 
 
 describe('Pin controller', () => {
@@ -14,6 +15,7 @@ describe('Pin controller', () => {
 	let episode;
 
 	before(async () => {
+		reset();
 		await loadFixture('initialData', 'pins');
 
 		pin = await Pin.findOne({});

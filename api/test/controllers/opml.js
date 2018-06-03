@@ -1,21 +1,13 @@
 import { expect, request } from 'chai';
 
 import api from '../../src/server';
-import auth from '../../src/controllers/auth';
-import Podcast from '../../src/models/podcast';
-import RSS from '../../src/models/rss';
-import User from '../../src/models/user';
-import {
-	loadFixture,
-	getMockClient,
-	getMockFeed,
-} from '../../src/utils/test';
+import { loadFixture } from '../../src/utils/test';
 import fs from 'fs';
 import path from 'path';
-import FeedParser from 'feedparser';
 import jwt from 'jsonwebtoken';
 import config from '../../src/config';
 import { IsPodcastStream } from '../../src/parsers/detect-type';
+import { reset } from '../utils';
 
 // load fixture with follows and feeds
 // setup a users
@@ -63,14 +55,15 @@ function AuthPostRequest(path) {
 }
 
 describe('OPML', () => {
+
 	before(async () => {
-		await loadFixture('initialData', 'opml');
+		await reset();
+		await loadFixture('initialData', 'opml', 'featured');
 	});
 
 	describe('Export', () => {
 		describe('invalid request', () => {
 			let response;
-			let user;
 
 			before(async () => {
 				response = await request(api).get('/opml/download');
@@ -83,7 +76,6 @@ describe('OPML', () => {
 
 		describe('valid request', () => {
 			let response;
-			let user;
 
 			before(async () => {
 				response = await AuthGetRequest('/opml/download');
@@ -91,7 +83,6 @@ describe('OPML', () => {
 
 			it('should return 200', () => {
 				expect(response).to.have.status(200);
-				// todo: Not sure how to check the file thats returned...
 			});
 		});
 	});
@@ -100,7 +91,6 @@ describe('OPML', () => {
 
 		describe('valid request', () => {
 			let response;
-			let user;
 
 			before(async () => {
 				response = await AuthPostRequest('/opml/upload').attach(
@@ -123,7 +113,6 @@ describe('OPML', () => {
 
 		describe('invalid request', () => {
 			let response;
-			let user;
 
 			before(async () => {
 				response = await AuthPostRequest('/opml/upload').attach(
