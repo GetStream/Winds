@@ -49,7 +49,7 @@ export function ParsePodcastPosts(posts) {
 	let podcastContent = { episodes: [] };
 	let i = 0;
 
-	for (let post of posts.slice(0, 2)) {
+	for (let post of posts.slice(0, 1000)) {
 		i++;
 		let url = post.link;
 		if (!url) {
@@ -129,7 +129,7 @@ export function ParseFeedPosts(posts) {
 	let feedContents = { articles: [] };
 	let i = 0;
 
-	for (let post of posts) {
+	for (let post of posts.slice(0, 1000)) {
 		i++;
 
 		let article;

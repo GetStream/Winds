@@ -24,6 +24,12 @@ describe('OG parsing', () => {
 	let response;
 	let user;
 
+	// // TODO:
+	// - no meta
+	// - invalid meta
+	// - different charset
+	// - gzip
+
 	it('should detect og image from techcrunch', async () => {
 		let tc = getTestPage('techcrunch.html');
 		let result = await ParseOGStream(tc);

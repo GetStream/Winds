@@ -1,12 +1,14 @@
 import { ReadFeedStream, ReadFeedURL } from '../parsers/feed';
 import franc from 'franc-min';
 
+// DetectLanguage returns the language for the given feed url
 export async function DetectLanguage(feedURL) {
 	let feedStream = await ReadFeedURL(feedURL);
-	let posts = await ReadFeedStream(feedStream);
-	console.log(posts.slice(0, 1));
+	let language = await DetectLangFromStream(feedStream)
+	return language
 }
 
+// DetectLangFromStream returns the language for the given feed stream
 export async function DetectLangFromStream(feedStream) {
 	let posts = await ReadFeedStream(feedStream);
 	let meta = posts[0].meta;
