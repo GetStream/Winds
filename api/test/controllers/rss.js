@@ -25,6 +25,15 @@ describe('RSS controller', () => {
 		});
 	});
 
+	describe('get RSS list', () => {
+		it('should return the right rss feed from /rss', async () => {
+			const response = await withLogin(
+				request(api).get('/rss')
+			);
+			expect(response).to.have.status(200);
+			expect(response.body).to.be.a('Array');
+		});
+	});
 
 	describe('add RSS feed - HN', () => {
 		let rss;
