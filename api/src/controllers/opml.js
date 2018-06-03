@@ -1,5 +1,4 @@
 import events from '../utils/events';
-import async from 'async';
 import isUrl from 'url-regex';
 import opmlParser from 'node-opml-parser';
 import opmlGenerator from 'opml-generator';
@@ -7,7 +6,6 @@ import moment from 'moment';
 import entities from 'entities';
 import normalizeUrl from 'normalize-url';
 import stream from 'getstream';
-import search from '../utils/search';
 
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
@@ -17,10 +15,7 @@ import User from '../models/user';
 import util from 'util';
 
 import config from '../config';
-import logger from '../utils/logger';
 import async_tasks from '../async_tasks';
-import axios from 'axios';
-import FeedParser from 'feedparser';
 import { IsPodcastURL} from '../parsers/detect-type';
 
 

@@ -24,4 +24,46 @@ describe('RSS controller', () => {
 			expect(response.body._id).to.eq(`${rss._id}`);
 		});
 	});
+
+
+	describe('add RSS feed - HN', () => {
+		let rss;
+
+		it('should create 1 feed from HN URL', async () => {
+			const response = await withLogin(
+				request(api)
+					.post('/rss')
+					.send({'feedUrl': 'https://news.ycombinator.com'})
+			);
+			expect(response).to.have.status(201);
+			expect(response.body).to.have.length(1);
+			expect(response.body[0].url).to.eq('https://news.ycombinator.com');
+			rss = await RSS.find({url:'https://news.ycombinator.com'});
+		});
+
+		it('2nd time should not create or update anything', async () => {
+			const response = await withLogin(
+				request(api)
+					.post('/rss')
+					.send({'feedUrl': 'https://news.ycombinator.com'})
+			);
+			expect(response).to.have.status(201);
+			expect(response.body).to.have.length(0);
+
+			let rss2 = await RSS.find({url:'https://news.ycombinator.com'});
+			expect(rss2.updatedAt).to.eq(rss.updatedAt);
+		});
+
+		it('creates 2 RSS feeds for Tech Crunch', async() => {
+			const response = await withLogin(
+				request(api)
+					.post('/rss')
+					.send({'feedUrl': 'https://techcrunch.com'})
+			);
+			expect(response).to.have.status(201);
+			expect(response.body).to.have.length(2);
+			let tcRSS = await RSS.find({url:'https://techcrunch.com'});
+			expect(tcRSS).to.have.length(2);
+		});
+	});
 });
