@@ -25,10 +25,14 @@ describe('OG parsing', () => {
 	let user;
 
 	// // TODO:
-	// - no meta
-	// - invalid meta
 	// - different charset
 	// - gzip
+
+	it('should not detect og image from google', async () => {
+		let tc = getTestPage('google.html');
+		let result = await ParseOGStream(tc);
+		expect(result).to.equal(null);
+	});
 
 	it('should detect og image from techcrunch', async () => {
 		let tc = getTestPage('techcrunch.html');
@@ -37,4 +41,13 @@ describe('OG parsing', () => {
 			'https://techcrunch.com/wp-content/uploads/2018/06/wwdc-2018-logo.jpg?w=585';
 		expect(result).to.equal(ogImage);
 	});
+
+	it('should not detect og image from broken techcrunch', async () => {
+		let tc = getTestPage('techcrunch_broken.html');
+		let result = await ParseOGStream(tc);
+		expect(result).to.equal(null);
+	});
+
+
+
 });

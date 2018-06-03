@@ -23,29 +23,17 @@ import {ReadFeedURL} from './feed.js'
 
 // determines if the given feedUrl is a podcast or not
 export async function IsPodcastStream(feedStream, feedURL) {
-	let posts = [];
-	var end = new Promise(function(resolve, reject) {
-		feedStream
-			.pipe(new FeedParser())
-			.on('error', reject)
-			.on('end', () => {
-				let isPodcast = posts.slice(0, 10).every(post => {
-					return (
-						post.enclosures.length &&
-						post.enclosures[0].type.indexOf('audio') != -1
-					);
-				});
-				resolve(isPodcast);
-			})
-			.on('readable', function() {
-				var stream = this,
-					item;
-				while ((item = stream.read())) {
-					posts.push(item);
-				}
-			});
-	});
-  return end
+	let posts = await ReadFeedStream(stream);
+	let isPodcast = false
+	if (posts) {
+		isPodcast = posts.slice(0, 10).every(post => {
+			return (
+				post.enclosures.length &&
+				post.enclosures[0].type.indexOf('audio') != -1
+			);
+		});
+	}
+  return isPodcast
 }
 
 // IsPodcastURL checks if the given url is a podcast or not

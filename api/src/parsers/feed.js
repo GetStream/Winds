@@ -13,6 +13,7 @@ import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 import { getStatsDClient } from '../utils/statsd';
 import axios from 'axios'
+import zlib from 'zlib'
 
 const WindsUserAgent =
 	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
@@ -70,7 +71,6 @@ export function ParsePodcastPosts(posts) {
 			title: strip(post.title),
 			url: normalize(url),
 		});
-		console.log(episode)
 		podcastContent.episodes.push(episode);
 	}
 
@@ -88,7 +88,8 @@ export function ParsePodcastPosts(posts) {
 export async function ReadFeedURL(feedURL) {
 	let headers = {
 		'User-Agent': WindsUserAgent,
-		Accept: AcceptHeader,
+		'Accept': AcceptHeader,
+		'Accept-Encoding': 'gzip'
 	};
 	let response = await axios({
 		method: 'get',
@@ -100,6 +101,7 @@ export async function ReadFeedURL(feedURL) {
 		maxRedirects: 20,
 	});
 	let feedStream = response.data;
+	feedStream.pipe(zlib.createGunzip())
 	return feedStream;
 }
 

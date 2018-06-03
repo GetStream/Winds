@@ -19,20 +19,21 @@ import logger from '../utils/logger';
 import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
-import {ReadFeedURL} from './feed.js'
+import { ReadFeedURL } from './feed.js';
 const metaTagRe = /(<meta.*og:image".*>)/gm;
 const urlRe = /content="(.*?)"/gm;
+import zlib from 'zlib';
 
 // determines if the given feedUrl is a podcast or not
 export async function ParseOG(pageURL) {
-  let pageStream = await ReadFeedURL(pageURL)
-  let ogImage = await ParseOGStream(pageStream, pageURL)
-  return ogImage
+	let pageStream = await ReadFeedURL(pageURL);
+  pageStream.pipe(zlib.createGunzip())
+	let ogImage = await ParseOGStream(pageStream, pageURL);
+	return ogImage;
 }
 
 export async function ParseOGStream(pageStream, pageURL) {
-
-  /*
+	/*
   let headers = response.headers;
 	let contentType = headers['content-type'].toLowerCase();
 	if (contentType.indexOf('html') === -1) {
@@ -50,25 +51,20 @@ export async function ParseOGStream(pageStream, pageURL) {
 				var stream = this,
 					item;
 				while ((item = stream.read())) {
-          let html = item.toString('utf8')
-          if (html.indexOf('og:image') != -1){
-            let m;
+					let html = item.toString('utf8');
+					if (html.indexOf('og:image') != -1) {
+						let matches = metaTagRe.exec(html);
 
-            while ((m = metaTagRe.exec(html)) !== null) {
-            	// This is necessary to avoid infinite loops with zero-width matches
-            	if (m.index === metaTagRe.lastIndex) {
-            		regex.lastIndex++;
-            	}
-
-            	// The result can be accessed through the `m`-variable.
-            	let meta = m[0]
-              let url = urlRe.exec(meta)[1]
-              return resolve(url)
-            }
-
-          }
+						if (matches) {
+							let meta = matches[1];
+							let urlMatches = urlRe.exec(meta);
+							if (urlMatches) {
+								return resolve(urlMatches[1]);
+							}
+						}
+					}
 				}
 			});
 	});
-  return end
+	return end;
 }
