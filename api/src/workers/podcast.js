@@ -12,7 +12,7 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
-import { ParsePodcast } from '../parsers';
+import { ParsePodcast } from '../parsers/feed';
 import util from 'util';
 
 import async_tasks from '../async_tasks';
@@ -54,7 +54,7 @@ async function _handlePodcast(job) {
 	// parse the episodes
 	let podcastContent;
 	try {
-		podcastContent = await util.promisify(ParsePodcast)(job.data.url);
+		podcastContent = await ParsePodcast(job.data.url);
 	} catch (e) {
 		logger.info(`podcast scraping broke for url ${job.data.url}`);
 		return;

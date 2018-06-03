@@ -23,7 +23,10 @@ class PodcastsView extends React.Component {
 	}
 	componentDidMount() {
 		// fetch new podcast
-		if (this.props.match.params.podcastID) {
+		if (
+			this.props.match.params.podcastID &&
+			this.props.match.params.podcastID !== 'recent'
+		) {
 			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(
 				response => {
 					this.props.dispatch({
@@ -108,7 +111,8 @@ class PodcastsView extends React.Component {
 		return (
 			<div
 				className={`podcasts-view ${
-					new URLSearchParams(this.props.location.search).get('featured') === 'true'
+					new URLSearchParams(this.props.location.search).get('featured') ===
+					'true'
 						? 'featured'
 						: ''
 				}`}
@@ -136,6 +140,7 @@ PodcastsView.propTypes = {
 			podcastID: PropTypes.string,
 		}).isRequired,
 	}).isRequired,
+	location: PropTypes.shape({ search: PropTypes.string }).isRequired,
 	podcast: PropTypes.shape({
 		_id: PropTypes.string,
 		description: PropTypes.string,

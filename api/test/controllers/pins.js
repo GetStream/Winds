@@ -1,40 +1,80 @@
-import { expect, request } from 'chai'
-import jwt from 'jsonwebtoken';
-import config from '../../src/config';
+import { expect, request } from 'chai';
+import { withLogin } from '../utils.js';
 
 import api from '../../src/server';
-import pins from '../../src/controllers/pin';
+import { loadFixture } from '../../src/utils/test';
 import Pin from '../../src/models/pin';
+import Article from '../../src/models/article';
+import Episode from '../../src/models/episode';
 
-import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
 
-describe.only('Pins controller', () => {
-    describe('create', () => {
-        describe('valid request', () => {
+describe('Pin controller', () => {
+	let pin;
+	let article;
+	let episode;
 
-            const token = jwt.sign(
-                {
-                    email: 'test+test@test.com',
-                    sub: '5b0f306d8e147f10f16aceaf',
-                },
-                config.jwt.secret,
-            );
+	before(async () => {
+		await loadFixture('initialData', 'pins');
 
-            before(async () => {
-                expect(await Pin.find({ article: { $exists: true, } })).to.be.empty;
-                expect(await Pin.find({ episode: { $exists: true, } })).to.be.empty;
+		pin = await Pin.findOne({});
+		article = await Article.findOne({});
+		episode = await Episode.findOne({});
+	});
 
-                await loadFixture('initialData');
-            });
+	describe('get', () => {
+		it('should return all pins', async () => {
+			const res = await withLogin(
+				request(api).get('/pins')
+			);
+			expect(res).to.have.status(200);
+		});
+	});
 
-            it('should create a new article pin', async () => {
-                let res = await request(api).post('/pins').set('Authorization', `Bearer ${token}`).send({
-                    article: '5b0ad37226dc3db38194e5eb',
-                });
+	describe('get', () => {
+		it('should return the a single pin via /pins/:pinId', async () => {
+			const res = await withLogin(
+				request(api).get(`/pins/${pin._id}`)
+			);
+			expect(res).to.have.status(200);
+		});
+	});
 
-                expect(res).to.have.status(200);
-            });
+	describe('get', () => {
+		it('should return a limited number of pins', async () => {
+			const res = await withLogin(
+				request(api).get('/pins').query({ limit: 1 })
+			);
+			expect(res).to.have.status(200);
+			expect(res.body).to.be.an('array');
+		});
+	});
 
-        });
-    });
+	describe('post', () => {
+		it('should create an article pin', async () => {
+			const res = await withLogin(
+				request(api).post('/pins').send({ article: article._id })
+			);
+			expect(res).to.have.status(200);
+
+
+		});
+	});
+
+	describe('post', () => {
+		it('should create an episode pin', async () => {
+			const res = await withLogin(
+				request(api).post('/pins').send({ episode: episode._id })
+			);
+			expect(res).to.have.status(200);
+		});
+	});
+
+	describe('delete', () => {
+		it('should delete a pin', async () => {
+			const res = await withLogin(
+				request(api).delete(`/pins/${pin._id}`)
+			);
+			expect(res).to.have.status(404);
+		});
+	});
 });

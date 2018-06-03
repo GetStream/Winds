@@ -1,7 +1,7 @@
 import program from 'commander';
 import '../loadenv';
 import '../utils/db';
-import { ParseFeed, ParsePodcast } from '../parsers';
+import { ParseFeed, ParsePodcast } from '../parsers/feed';
 import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
@@ -144,9 +144,11 @@ export async function debugFeed(feedType, feedUrls) {
 
 		let content
 		if (feedType === 'rss') {
-			content = await ParseFeed(target);
+			let feedContent = await ParseFeed(target);
+			validate(feedContent)
 		} else {
-			content = await ParsePodcast(target);
+			let podcastContent = await ParsePodcast(target);
+			validate(podcastContent)
 		}
 		validate(content)
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');

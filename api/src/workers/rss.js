@@ -12,7 +12,7 @@ import config from '../config';
 import logger from '../utils/logger';
 
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
-import { ParseFeed } from '../parsers';
+import { ParseFeed } from '../parsers/feed';
 
 import async_tasks from '../async_tasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
@@ -23,7 +23,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info('Starting the RSS worker');
 
 // TODO: move this to a separate main.js
-// async_tasks.ProcessRssQueue(100, handleRSS);
+async_tasks.ProcessRssQueue(100, handleRSS);
 
 const statsd = getStatsDClient();
 
@@ -33,20 +33,14 @@ async function handleRSS(job) {
 	try {
 		await _handleRSS(job);
 	} catch (err) {
-		let tags = {queue: 'rss'};
+		let tags = { queue: 'rss' };
 		let extra = {
 			JobRSS: job.data.rss,
 			JobURL: job.data.url,
 		};
-		logger.error('RSS job encountered an error', {err, tags, extra});
+		logger.error('RSS job encountered an error', { err, tags, extra });
 	}
 	logger.info(`Completed scraping for ${job.data.url}`);
-}
-
-async function test(url) {
-	let rssContent = await timeIt('winds.handle_rss.parsing', async () => {
-		return await ParseFeed(url);
-	});
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
@@ -113,9 +107,9 @@ async function _handleRSS(job) {
 					{
 						removeOnComplete: true,
 						removeOnFail: true,
-					}
+					},
 				);
-			})
+			}),
 		);
 	});
 
@@ -150,16 +144,14 @@ async function upsertManyArticles(rssID, articles) {
 		return clone;
 	});
 
-	let existingArticles = await Article.find({ $or: searchData }, { url: 1 }).read(
-		'sp'
-	);
+	let existingArticles = await Article.find({ $or: searchData }, { url: 1 }).read('sp');
 	let existingArticleUrls = existingArticles.map(a => {
 		return a.url;
 	});
 
 	statsd.increment(
 		'winds.handle_rss.articles.already_in_mongo',
-		existingArticleUrls.length
+		existingArticleUrls.length,
 	);
 
 	let articlesToUpsert = articles.filter(article => {
@@ -169,13 +161,13 @@ async function upsertManyArticles(rssID, articles) {
 	logger.info(
 		`Feed ${rssID}: got ${articles.length} articles of which ${
 			articlesToUpsert.length
-		} need a sync`
+		} need a sync`,
 	);
 
 	return Promise.all(
 		articlesToUpsert.map(article => {
 			return upsertArticle(rssID, article);
-		})
+		}),
 	);
 }
 
@@ -223,7 +215,7 @@ async function upsertArticle(rssID, post) {
 				upsert: true,
 				rawResult: true,
 				setDefaultsOnInsert: defaults,
-			}
+			},
 		);
 		if (!rawArticle.lastErrorObject.updatedExisting) {
 			return rawArticle.value;
@@ -249,6 +241,6 @@ async function markDone(rssID) {
 		{
 			lastScraped: now,
 			isParsing: false,
-		}
+		},
 	);
 }

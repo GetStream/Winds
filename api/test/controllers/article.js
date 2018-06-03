@@ -1,18 +1,8 @@
 import { expect, request } from 'chai';
-import jwt from 'jsonwebtoken';
-
 import api from '../../src/server';
-import config from '../../src/config';
 import { loadFixture } from '../../src/utils/test';
 import Article from '../../src/models/article';
-
-function withLogin(r) {
-	const authToken = jwt.sign({
-		email: 'valid@email.com',
-		sub: '5b0f306d8e147f10f16aceaf',
-	}, config.jwt.secret);
-	return r.set('Authorization', `Bearer ${authToken}`)
-};
+import { withLogin } from '../utils.js';
 
 describe('Article controller', () => {
 	let article
