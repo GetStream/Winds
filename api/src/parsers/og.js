@@ -1,17 +1,33 @@
-import { ReadFeedURL } from './feed.js';
-const metaTagRe = /(<meta.*og:image".*>)/gm;
-const urlRe = /content="(.*?)"/gm;
-import zlib from 'zlib';
+import logger from '../utils/logger';
+import { ReadPageURL } from './feed.js';
+
+const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg'];
 
 // determines if the given feedUrl is a podcast or not
 export async function ParseOG(pageURL) {
-	let pageStream = await ReadFeedURL(pageURL);
-	pageStream.pipe(zlib.createGunzip());
+	let pageStream = await ReadPageURL(pageURL);
 	let ogImage = await ParseOGStream(pageStream, pageURL);
 	return ogImage;
 }
 
+export async function IsValidOGUrl(url) {
+	let invalid = invalidExtensions.some(extension=> {
+		if( url.endsWith(`.${extension}`)) {
+			return extension;
+		}
+	});
+	if (invalid) {
+		logger.warn(`Invalid file extension for url ${url}`);
+		return false;
+	}
+
+	return true;
+}
+
 export async function ParseOGStream(pageStream, pageURL) {
+	let metaTagRe = /(<meta.*og:image".*>)/gm;
+	let urlRe = /content="(.*?)"/gm;
+
 	var end = new Promise(function(resolve, reject) {
 		pageStream
 			.on('error', reject)

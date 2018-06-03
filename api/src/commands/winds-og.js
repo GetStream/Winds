@@ -4,7 +4,7 @@ import logger from '../utils/logger';
 const version = '0.0.1';
 import normalize from 'normalize-url';
 import asyncTasks from '../asyncTasks';
-import {ParseOG} from '../parsers/og';
+import {ParseOG, IsValidOGUrl} from '../parsers/og';
 
 
 program
@@ -19,6 +19,13 @@ async function main() {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info('Starting the OG queue Debugger \\0/');
 	for (let ogUrl of ogUrls) {
+
+		let isValid = await IsValidOGUrl(ogUrl);
+		if (!isValid) {
+			logger.warn(`invalid URL ${ogUrl}`)
+			return;
+		}
+
 		let normalizedUrl = normalize(ogUrl);
 		logger.info(`Looking for og images at ${normalizedUrl} for type ${program.type}`);
 
@@ -54,7 +61,7 @@ async function main() {
 					logger.info('task sent to bull, time to run pm2 log og');
 				})
 				.catch(err => {
-					logger.error('Failed to schedule task on og queue');
+					logger.error('Failed to schedule task on og queue', {err});
 				});
 		}
 	}

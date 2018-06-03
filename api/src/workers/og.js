@@ -12,7 +12,7 @@ import Episode from '../models/episode';
 import '../utils/db';
 
 import logger from '../utils/logger';
-import {ParseOG} from '../parsers/og';
+import {ParseOG, IsValidOGUrl} from '../parsers/og';
 
 import asyncTasks from '../asyncTasks';
 
@@ -20,7 +20,6 @@ const schemaMap = {
 	episode: Episode,
 	podcast: Podcast,
 };
-const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg'];
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker');
@@ -38,21 +37,6 @@ async function handleOg(job) {
 		};
 		logger.error('OG job encountered an error', {err, tags, extra});
 	}
-}
-
-async function isValidUrl(url) {
-	let invalid = invalidExtensions.some(extension=> {
-		if( url.endsWith(`.${extension}`)) {
-			return extension;
-		}
-	});
-	if (invalid) {
-		logger.warn(`Invalid file extension for url ${url}`);
-		return false;
-	}
-
-
-	return true;
 }
 
 // Run the OG scraping job
@@ -78,7 +62,7 @@ async function _handleOg(job) {
 	}
 
 	let ogImage;
-	let isValid = await isValidUrl(url);
+	let isValid = await IsValidOGUrl(url);
 	if (!isValid) {
 		return;
 	}

@@ -83,9 +83,7 @@ export function ParsePodcastPosts(posts) {
 	return podcastContent;
 }
 
-
-// Read the given feed URL and return a Stream
-export async function ReadFeedURL(feedURL) {
+export async function ReadURL(url) {
 	let headers = {
 		'User-Agent': WindsUserAgent,
 		'Accept': AcceptHeader,
@@ -93,25 +91,46 @@ export async function ReadFeedURL(feedURL) {
 	};
 	let response = await axios({
 		method: 'get',
-		url: feedURL,
+		url: url,
 		responseType: 'stream',
 		maxContentLength: maxContentLengthBytes,
 		timeout: 6000,
 		headers: headers,
 		maxRedirects: 20,
 	});
-	let feedStream = response.data;
-	switch (response.headers['content-encoding']) {
+	let encoding = response.headers['content-encoding']
+	switch (encoding) {
 	case 'gzip':
-		feedStream.pipe(zlib.createGunzip());
+		response.data.pipe(zlib.createGunzip());
 		break;
 	case 'deflate':
-		feedStream.pipe(zlib.createGunzip());
+		response.data.pipe(zlib.createGunzip());
 		break;
 	default:
 		break;
 	}
-	return feedStream;
+	return response
+}
+
+// Read the given feed URL and return a Stream
+export async function ReadPageURL(url) {
+	let response = await ReadURL(url)
+
+	let headers = response.headers;
+	let contentType = headers['content-type'].toLowerCase();
+	if (contentType.indexOf('html') === -1) {
+		logger.warn(`Doesn't look like anything to me... ${contentType} for url ${url}`);
+		return false;
+	}
+
+	return response.data;
+}
+
+// Read the given feed URL and return a Stream
+export async function ReadFeedURL(feedURL) {
+	let response = await ReadURL(feedURL)
+
+	return response.data;
 }
 
 // Turn the feed Stream into a list of posts

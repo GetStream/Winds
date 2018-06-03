@@ -1,7 +1,7 @@
 import events from './index';
 import RSS from '../../models/rss';
 import Article from '../../models/article';
-import DetectLanguage from '../../parsers/detect-language';
+import {DetectLanguage} from '../../parsers/detect-language';
 
 
 async function sendRssFeedToCollections(rssFeed) {

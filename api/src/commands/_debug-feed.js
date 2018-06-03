@@ -20,10 +20,9 @@ export async function debugFeed(feedType, feedUrls) {
 	logger.info(`Handling ${feedUrls.length} urls`);
 
 	for (let target of feedUrls) {
-		target = normalize(target);
 		logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
-		function validate(response) {
+		async function validate(response) {
 
 			// validate the podcast or RSS feed
 			logger.info('========== Validating Publication ==========');
@@ -79,8 +78,12 @@ export async function debugFeed(feedType, feedUrls) {
 
 			let schema = feedType === 'rss' ? RSS : Podcast;
 			let lookup = { feedUrl: target };
+			console.log(feedType, lookup)
 			if (program.task) {
 				logger.info('trying to create a task on the bull queue');
+				let instance = await schema.findOne(lookup)
+				console.log(instance)
+
 				schema
 					.findOne(lookup)
 					.catch(err => {

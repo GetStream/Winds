@@ -18,5 +18,6 @@ export async function IsPodcastStream(feedStream) {
 // IsPodcastURL checks if the given url is a podcast or not
 export async function IsPodcastURL(feedURL) {
 	let feedStream = await ReadFeedURL(feedURL);
-	return await IsPodcastStream(feedStream);
+	let isPodcast = await IsPodcastStream(feedStream);
+	return isPodcast
 }
