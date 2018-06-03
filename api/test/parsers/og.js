@@ -42,6 +42,14 @@ describe('OG parsing', () => {
 		expect(result).to.equal(ogImage);
 	});
 
+	it('should detect og image from techcrunch part 2', async () => {
+		let tc = getTestPage('techcrunch_instagram.html');
+		let result = await ParseOGStream(tc);
+		let ogImage =
+			'https://techcrunch.com/wp-content/uploads/2018/06/wwdc-2018-logo.jpg?w=585';
+		expect(result).to.equal(ogImage);
+	});
+
 	it('should not detect og image from broken techcrunch', async () => {
 		let tc = getTestPage('techcrunch_broken.html');
 		let result = await ParseOGStream(tc);

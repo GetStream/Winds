@@ -21,7 +21,6 @@ export async function debugFeed(feedType, feedUrls) {
 	logger.info(`Handling ${feedUrls.length} urls`);
 
 	for (let target of feedUrls) {
-		target = normalize(target);
 		logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
 		async function validate(response) {

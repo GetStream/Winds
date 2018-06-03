@@ -27,7 +27,6 @@ import zlib from 'zlib';
 // determines if the given feedUrl is a podcast or not
 export async function ParseOG(pageURL) {
 	let pageStream = await ReadFeedURL(pageURL);
-  pageStream.pipe(zlib.createGunzip())
 	let ogImage = await ParseOGStream(pageStream, pageURL);
 	return ogImage;
 }
