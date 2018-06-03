@@ -29,7 +29,7 @@ const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg'];
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker');
-async_tasks.ProcessOgQueue(10, handleOg);
+async_tasks.ProcessOgQueue(30, handleOg);
 
 async function handleOg(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);

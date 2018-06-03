@@ -150,7 +150,6 @@ export async function debugFeed(feedType, feedUrls) {
 			let podcastContent = await ParsePodcast(target);
 			validate(podcastContent)
 		}
-		validate(content)
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');
 	}
 }
