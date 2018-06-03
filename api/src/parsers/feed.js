@@ -128,7 +128,7 @@ export async function ReadPageURL(url) {
 
 // Read the given feed URL and return a Stream
 export async function ReadFeedURL(feedURL) {
-	let response = ReadURL(feedURL)
+	let response = await ReadURL(feedURL)
 
 	return response.data;
 }

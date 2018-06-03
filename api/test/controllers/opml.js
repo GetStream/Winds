@@ -122,7 +122,7 @@ describe('OPML', () => {
 				);
 			});
 
-			it.only('should return 200', () => {
+			it('should return 200', () => {
 				expect(response).to.have.status(200);
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
