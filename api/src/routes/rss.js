@@ -3,7 +3,7 @@ import Article from '../controllers/article';
 import { wrapAsync } from '../utils/controllers';
 
 module.exports = api => {
-	api.route('/rss').get(RSS.list);
+	api.route('/rss').get(wrapAsync(RSS.list));
 	api.route('/rss/:rssId').get(wrapAsync(RSS.get));
 	api.route('/rss').post(wrapAsync(RSS.post));
 	api.route('/rss/:rssId').put(wrapAsync(RSS.put));
