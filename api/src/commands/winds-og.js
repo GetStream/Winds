@@ -1,11 +1,9 @@
 import program from 'commander';
 import chalk from 'chalk';
 import logger from '../utils/logger';
-import Queue from 'bull';
-import config from '../config';
 const version = '0.0.1';
 import normalize from 'normalize-url';
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 import {ParseOG} from '../parsers/og';
 
 
@@ -40,7 +38,7 @@ async function main() {
 
 		if (program.task) {
 			logger.info('creating a task on the bull queue');
-			async_tasks
+			asyncTasks
 				.OgQueueAdd(
 					{
 						url: normalizedUrl,

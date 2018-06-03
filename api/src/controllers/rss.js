@@ -11,7 +11,7 @@ import personalization from '../utils/personalization';
 import logger from '../utils/logger';
 import moment from 'moment';
 import search from '../utils/search';
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 exports.list = (req, res) => {
 	const query = req.query || {};
@@ -127,7 +127,7 @@ exports.post = async (req, res) => {
 	});
 
 	insertedFeeds.map(async f => {
-		await async_tasks.RssQueueAdd(
+		await asyncTasks.RssQueueAdd(
 			{
 				rss: f._id,
 				url: f.feedUrl,
