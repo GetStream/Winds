@@ -142,7 +142,6 @@ export async function debugFeed(feedType, feedUrls) {
 			}
 		}
 
-		let content
 		if (feedType === 'rss') {
 			let feedContent = await ParseFeed(target);
 			validate(feedContent)
