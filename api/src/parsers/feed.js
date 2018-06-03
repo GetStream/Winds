@@ -12,8 +12,8 @@ import Episode from '../models/episode';
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 import { getStatsDClient } from '../utils/statsd';
-import axios from 'axios'
-import zlib from 'zlib'
+import axios from 'axios';
+import zlib from 'zlib';
 
 const WindsUserAgent =
 	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
@@ -28,7 +28,7 @@ export async function ParsePodcast(podcastUrl) {
 	let t0 = new Date();
 	let stream = await ReadFeedURL(podcastUrl);
 	let posts = await ReadFeedStream(stream);
-	let podcastResponse = ParsePodcastPosts(posts)
+	let podcastResponse = ParsePodcastPosts(posts);
 	statsd.timing('winds.parsers.podcast.finished_parsing', new Date() - t0);
 	return podcastResponse;
 }
@@ -56,7 +56,7 @@ export function ParsePodcastPosts(posts) {
 		if (!url) {
 			url = post.enclosures ? post.enclosures[0].url : post.guid;
 		}
-		let image = post.image && post.image.url
+		let image = post.image && post.image.url;
 		let episode = new Episode({
 			description: strip(post.description).substring(0, 280),
 			duration: post.duration,
@@ -89,7 +89,7 @@ export async function ReadFeedURL(feedURL) {
 	let headers = {
 		'User-Agent': WindsUserAgent,
 		'Accept': AcceptHeader,
-		'Accept-Encoding': 'gzip'
+		'Accept-Encoding': 'gzip,deflate',
 	};
 	let response = await axios({
 		method: 'get',
@@ -101,7 +101,16 @@ export async function ReadFeedURL(feedURL) {
 		maxRedirects: 20,
 	});
 	let feedStream = response.data;
-	feedStream.pipe(zlib.createGunzip())
+	switch (response.headers['content-encoding']) {
+	case 'gzip':
+		feedStream.pipe(zlib.createGunzip());
+		break;
+	case 'deflate':
+		feedStream.pipe(zlib.createGunzip());
+		break;
+	default:
+		break;
+	}
 	return feedStream;
 }
 
