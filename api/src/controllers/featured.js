@@ -1,60 +1,22 @@
-import async from 'async';
-
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
-exports.list = (req, res) => {
-	async.parallel(
-		[
-			cb => {
-				RSS.find({ featured: true })
-					.lean()
-					.then(rss => {
-						let arr = [];
+exports.list = async (req, res) => {
+	let results = [];
 
-						rss.map(feed => {
-							feed.type = 'rss';
+	let rss = await RSS.find({ featured: true }).lean();
+	rss.map(feed => {
+		feed.type = 'rss';
+		results.push(feed);
+	});
 
-							arr.push(feed);
-						});
+	let podcasts = await Podcast.find({ featured: true }).lean();
+	podcasts.map(podcast => {
+		podcast.type = 'podcast';
+		results.push(podcast);
+	});
 
-						cb(null, arr);
-					})
-					.catch(err => {
-						cb(err);
-					});
-			},
-			cb => {
-				Podcast.find({ featured: true })
-					.lean()
-					.then(podcasts => {
-						let arr = [];
-
-						podcasts.map(podcast => {
-							podcast.type = 'podcast';
-
-							arr.push(podcast);
-						});
-
-						cb(null, arr);
-					})
-					.catch(err => {
-						cb(err);
-					});
-			},
-		],
-		(err, results) => {
-			if (err) {
-				return res.status(404).send(err);
-			}
-
-			let shuffled = []
-				.concat(results[0], results[1])
-				.map(a => [Math.random(), a])
-				.sort((a, b) => a[0] - b[0])
-				.map(a => a[1]);
-
-			res.json(shuffled);
-		},
-	);
+	let shuffled;
+	shuffled = results.map((a) => [Math.random(), a]).sort((a, b) => a[0] - b[0]).map((a) => a[1]);
+	res.json(shuffled);
 };

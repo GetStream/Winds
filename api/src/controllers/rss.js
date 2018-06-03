@@ -1,69 +1,27 @@
-import async from 'async';
 import rssFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
 import validUrl from 'valid-url';
 
-import User from '../models/user';
 import RSS from '../models/rss';
 
 import personalization from '../utils/personalization';
-import logger from '../utils/logger';
 import moment from 'moment';
 import search from '../utils/search';
 import asyncTasks from '../asyncTasks';
 
-exports.list = (req, res) => {
+exports.list = async (req, res) => {
 	const query = req.query || {};
+	let feeds = [];
 
 	if (query.type === 'recommended') {
-		personalization({ endpoint: '/winds_rss_recommendations', userId: req.user.sub })
-			.then(data => {
-				async.mapLimit(
-					data,
-					data.length,
-					(rss, cb) => {
-						RSS.findOne({ _id: rss })
-							.then(enriched => {
-								if (!enriched) {
-									return cb(null);
-								}
-								cb(null, enriched);
-							})
-							.catch(err => {
-								cb(err);
-							});
-					},
-					(err, results) => {
-						if (err) {
-							logger.error(err);
-							return res.sendStatus(422).send(err);
-						}
-
-						res.json(
-							[].concat(
-								...results.filter(val => {
-									return val;
-								}),
-							),
-						);
-					},
-				);
-			})
-			.catch(err => {
-				logger.error(err.message);
-				res.json([]);
-			});
+		let recommendedRssIds = await personalization({ endpoint: '/winds_rss_recommendations', userId: req.user.sub })
+		feeds = await RSS.find({_id: {$in: recommendedRssIds}});
 	} else {
-		RSS.apiQuery(req.query)
-			.then(rss => {
-				res.json(rss);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(422).send(err.errors);
-			});
+		feeds = await RSS.apiQuery(req.query);
 	}
+
+	res.json(feeds);
 };
 
 exports.get = async (req, res) => {
@@ -144,33 +102,22 @@ exports.post = async (req, res) => {
 	res.json(insertedFeeds);
 };
 
-exports.put = (req, res) => {
-	User.findById(req.user.sub)
-		.then(user => {
-			if (!user.admin) {
-				return res.status(401).send();
-			} else {
-				const data = req.body || {};
-				let opts = {
-					new: true,
-				};
-
-				RSS.findByIdAndUpdate(
-					{
-						_id: req.params.rssId,
-					},
-					data,
-					opts,
-				).then(rss => {
-					if (!rss) {
-						return res.sendStatus(404);
-					}
-					res.json(rss);
-				});
-			}
-		})
-		.catch(err => {
-			logger.error(err);
-			res.status(422).send(err.errors);
-		});
+exports.put = async (req, res) => {
+	if (!req.User.admin) {
+		return res.status(403).send();
+	}
+	if (!req.params.rssId) {
+		return res.status(401).send();
+	}
+	let rss = await RSS.findByIdAndUpdate(
+		{
+			_id: req.params.rssId,
+		},
+		req.body,
+		{new: true},
+	);
+	if (!rss) {
+		return res.sendStatus(404);
+	}
+	res.json(rss);
 };
