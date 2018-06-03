@@ -44,13 +44,10 @@ async function handleRSS(job) {
 }
 
 async function test(url) {
-	let rssContent = await timeIt('winds.handle_rss.parsing', () => {
-		return ParseFeed(url);
+	let rssContent = await timeIt('winds.handle_rss.parsing', async () => {
+		return await ParseFeed(url);
 	});
-	console.dir(rssContent);
 }
-
-test("http://anadrark.com/links/index.php?do=rss");
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handleRSS(job) {
