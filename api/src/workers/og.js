@@ -1,7 +1,6 @@
 import '../loadenv';
 
 import normalize from 'normalize-url';
-import ogs from 'open-graph-scraper';
 
 // rss import model is needed because Article refs it
 import RSS from '../models/rss' // eslint-disable-line
@@ -15,8 +14,7 @@ import '../utils/db';
 import logger from '../utils/logger';
 import {ParseOG, IsValidOGUrl} from '../parsers/og';
 
-import async_tasks from '../async_tasks';
-import axios from 'axios';
+import asyncTasks from '../asyncTasks';
 
 const schemaMap = {
 	episode: Episode,
@@ -25,7 +23,7 @@ const schemaMap = {
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker');
-async_tasks.ProcessOgQueue(30, handleOg);
+asyncTasks.ProcessOgQueue(30, handleOg);
 
 async function handleOg(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);
@@ -40,8 +38,6 @@ async function handleOg(job) {
 		logger.error('OG job encountered an error', {err, tags, extra});
 	}
 }
-
-
 
 // Run the OG scraping job
 async function _handleOg(job) {

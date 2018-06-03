@@ -1,11 +1,7 @@
 import '../loadenv';
 
 import program from 'commander';
-import chalk from 'chalk';
 import logger from '../utils/logger';
-import config from '../config';
-import ogs from 'open-graph-scraper';
-import normalize from 'normalize-url';
 import fs from 'fs';
 import async from 'async';
 import rssFinder from 'rss-finder';
@@ -20,13 +16,8 @@ import '../utils/db';
 import entities from 'entities';
 import path from 'path';
 
-import validUrl from 'valid-url';
-
-import User from '../models/user';
-
-import personalization from '../utils/personalization';
 import search from '../utils/search';
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 const version = '0.0.1';
 
@@ -123,7 +114,7 @@ function main() {
 											type: 'rss',
 										})
 											.then(() => {
-												return async_tasks.RssQueueAdd(
+												return asyncTasks.RssQueueAdd(
 													{
 														rss: rss.value._id,
 														url: rss.value.feedUrl,
@@ -239,7 +230,7 @@ function main() {
 												type: 'podcast',
 											})
 												.then(() => {
-													return async_tasks.PodcastQueueAdd(
+													return asyncTasks.PodcastQueueAdd(
 														{
 															podcast: podcast.value._id,
 															url: podcast.value.feedUrl,
@@ -258,7 +249,7 @@ function main() {
 														} for og scraping`,
 													);
 													if (!podcast.value.images.og) {
-														async_tasks
+														asyncTasks
 															.OgQueueAdd(
 																{
 																	url:

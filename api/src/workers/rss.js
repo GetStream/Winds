@@ -14,7 +14,7 @@ import logger from '../utils/logger';
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
 import { ParseFeed } from '../parsers/feed';
 
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -23,7 +23,7 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info('Starting the RSS worker');
 
 // TODO: move this to a separate main.js
-async_tasks.ProcessRssQueue(100, handleRSS);
+asyncTasks.ProcessRssQueue(100, handleRSS);
 
 const statsd = getStatsDClient();
 
@@ -99,7 +99,7 @@ async function _handleRSS(job) {
 	await timeIt('winds.handle_rss.OgQueueAdd', () => {
 		return Promise.all(
 			updatedArticles.map(article => {
-				async_tasks.OgQueueAdd(
+				asyncTasks.OgQueueAdd(
 					{
 						type: 'rss',
 						url: article.url,

@@ -6,9 +6,8 @@ import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
-import config from '../config';
 import normalize from 'normalize-url';
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 // do stuff
 export async function debugFeed(feedType, feedUrls) {
@@ -99,7 +98,7 @@ export async function debugFeed(feedType, feedUrls) {
 						}
 
 						if (feedType == 'rss') {
-							queuePromise = async_tasks.RssQueueAdd(
+							queuePromise = asyncTasks.RssQueueAdd(
 								{
 									rss: instance._id,
 									url: instance.feedUrl,
@@ -111,7 +110,7 @@ export async function debugFeed(feedType, feedUrls) {
 								},
 							);
 						} else {
-							queuePromise = async_tasks.PodcastQueueAdd(
+							queuePromise = asyncTasks.PodcastQueueAdd(
 								{
 									podcast: instance._id,
 									url: instance.feedUrl,

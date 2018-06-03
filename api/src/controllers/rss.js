@@ -8,11 +8,10 @@ import User from '../models/user';
 import RSS from '../models/rss';
 
 import personalization from '../utils/personalization';
-import search from '../utils/search';
 import logger from '../utils/logger';
 import moment from 'moment';
-
-import async_tasks from '../async_tasks';
+import search from '../utils/search';
+import asyncTasks from '../asyncTasks';
 
 exports.list = (req, res) => {
 	const query = req.query || {};
@@ -78,100 +77,71 @@ exports.get = async (req, res) => {
 	res.json(rss);
 };
 
-exports.post = (req, res) => {
+exports.post = async (req, res) => {
 	const data = req.body || {};
 
 	if (!data.feedUrl || !validUrl.isUri(normalizeUrl(data.feedUrl))) {
 		return res.status(400).send('Please provide a valid RSS URL.');
 	}
 
-	rssFinder(normalizeUrl(data.feedUrl))
-		.then(feeds => {
-			if (!feeds.feedUrls.length) {
-				return res.status(404).send('We couldn\'t find any feeds for that RSS feed URL :(');
-			}
+	let foundRSS = await rssFinder(normalizeUrl(data.feedUrl));
 
-			async.mapLimit(
-				feeds.feedUrls,
-				feeds.feedUrls.length,
-				(feed, cb) => {
-					let feedTitle = feed.title;
+	if (!foundRSS.feedUrls.length) {
+		return res.status(404).send('We couldn\'t find any feeds for that RSS feed URL :(');
+	}
 
-					if (feedTitle.toLowerCase() === 'rss') {
-						feedTitle = feeds.site.title;
-					}
+	let insertedFeeds = [];
 
-					RSS.findOneAndUpdate(
-						{ feedUrl: feed.url },
-						{
-							categories: 'RSS',
-							description: entities.decodeHTML(feed.title),
-							feedUrl: feed.url,
-							images: {
-								favicon: feeds.site.favicon,
-							},
-							lastScraped: moment().format(),
-							title: entities.decodeHTML(feedTitle),
-							url: feeds.site.url,
-							valid: true,
-						},
-						{
-							new: true,
-							rawResult: true,
-							upsert: true,
-						},
-					)
-						.then(rss => {
-							if (rss.lastErrorObject.updatedExisting) {
-								cb(null, rss.value);
-							} else {
-								search({
-									_id: rss.value._id,
-									categories: 'RSS',
-									description: rss.value.title,
-									image: rss.value.favicon,
-									public: true,
-									publicationDate: rss.value.publicationDate,
-									title: rss.value.title,
-									type: 'rss',
-								})
-									.then(() => {
-										return async_tasks.RssQueueAdd(
-											{
-												rss: rss.value._id,
-												url: rss.value.feedUrl,
-											},
-											{
-												priority: 1,
-												removeOnComplete: true,
-												removeOnFail: true,
-											},
-										);
-									})
-									.then(() => {
-										cb(null, rss.value);
-									})
-									.catch(err => {
-										cb(err);
-									});
-							}
-						})
-						.catch(err => {
-							cb(err);
-						});
+	for (var feed of foundRSS.feedUrls) {
+		let feedTitle = feed.title;
+		if (feedTitle.toLowerCase() === 'rss') {
+			feedTitle = foundRSS.site.title;
+		}
+		let rss = await RSS.findOneAndUpdate(
+			{feedUrl: feed.url},
+			{
+				categories: 'RSS',
+				description: entities.decodeHTML(feed.title),
+				feedUrl: feed.url,
+				images: {
+					favicon: foundRSS.site.favicon,
 				},
-				(err, results) => {
-					if (err) {
-						return;
-					}
+				lastScraped: moment().format(),
+				title: entities.decodeHTML(feedTitle),
+				url: foundRSS.site.url,
+				valid: true,
+			},
+			{
+				new: true,
+				rawResult: true,
+				upsert: true,
+			},
+		);
+		if (rss.lastErrorObject.upserted) {
+			insertedFeeds.push(rss.value);
+		}
+	}
 
-					res.json(results);
-				},
-			);
-		})
-		.catch(() => {
-			res.sendStatus(500);
-		});
+	insertedFeeds.map(async f => {
+		await search(f.searchDocument());
+	});
+
+	insertedFeeds.map(async f => {
+		await asyncTasks.RssQueueAdd(
+			{
+				rss: f._id,
+				url: f.feedUrl,
+			},
+			{
+				priority: 1,
+				removeOnComplete: true,
+				removeOnFail: true,
+			},
+		);
+	});
+
+	res.status(201);
+	res.json(insertedFeeds);
 };
 
 exports.put = (req, res) => {

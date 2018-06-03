@@ -1,29 +1,19 @@
 import algolia from 'algoliasearch';
-
-import logger from '../logger';
 import config from '../../config';
+import util from 'util';
+import logger from '../../utils/logger';
 
-const search = data => {
-	if (!data.type) {
-		return new Promise(reject => {
-			const err = 'Missing data.type key and value.';
-			logger.error(new Error(err));
-			reject(err);
-		});
-	}
-
+if (config.algolia.appId && config.algolia.writeKey && config.algolia.index) {
 	const client = algolia(config.algolia.appId, config.algolia.writeKey);
 	const index = client.initIndex(config.algolia.index);
-
-	return new Promise((resolve, reject) => {
-		index.addObject(data, (err, res) => {
-			if (err) {
-				logger.error(err);
-				reject(err);
-			}
-			resolve(res);
-		});
-	});
-};
-
-export default search;
+	module.exports = async data => {
+		if (!data.type) {
+			throw new Error('Missing data.type key and value.');
+		}
+		await util.promisify(index.addObject)(data);
+	};
+} else {
+	module.exports = async () => {
+		logger.info('Faking search indexing');
+	};
+}

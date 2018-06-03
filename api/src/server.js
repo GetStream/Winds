@@ -84,7 +84,7 @@ if (require.main === module) {
 	require('./utils/db');
 	api.listen(config.server.port, err => {
 		if (err) {
-			logger.error(err);
+			logger.error({err});
 			process.exit(1);
 		}
 		logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`);

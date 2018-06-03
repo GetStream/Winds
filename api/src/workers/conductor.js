@@ -10,11 +10,11 @@ import db from '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 const publicationTypes = {
-	rss: { schema: RSS, enqueue: async_tasks.RssQueueAdd },
-	podcast: { schema: Podcast, enqueue: async_tasks.PodcastQueueAdd },
+	rss: { schema: RSS, enqueue: asyncTasks.RssQueueAdd },
+	podcast: { schema: Podcast, enqueue: asyncTasks.PodcastQueueAdd },
 };
 const conductorInterval = 60;
 const durationInMinutes = 15;
