@@ -26,7 +26,7 @@ let sentryOptions = {
 	patchGlobal: config.env === 'production',
 	environment: config.env,
 	tags: { script: executable },
-	dataCallback: sendSourceMaps,
+	// dataCallback: sendSourceMaps,
 	release: `v${version}`,
 };
 
