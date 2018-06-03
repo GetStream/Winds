@@ -5,7 +5,7 @@ import Article from '../../src/models/article';
 import { withLogin } from '../utils.js';
 
 describe('Article controller', () => {
-	let article
+	let article;
 
 	before(async () => {
 		await loadFixture('example');
@@ -13,7 +13,7 @@ describe('Article controller', () => {
 		article = await Article.findOne({});
 		expect(article).to.not.be.null;
 		expect(article.rss).to.not.be.null;
-	})
+	});
 
 	describe('get', () => {
 		it('should return the right article via /articles/:articleId', async () => {

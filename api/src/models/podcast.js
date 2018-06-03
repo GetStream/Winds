@@ -112,10 +112,13 @@ export const PodcastSchema = new Schema(
 	},
 );
 
+PodcastSchema.index({featured: 1}, {partialFilterExpression: {featured: true}});
+
 PodcastSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },
 });
+
 PodcastSchema.plugin(mongooseStringQuery);
 
 module.exports = exports = mongoose.model('Podcast', PodcastSchema);

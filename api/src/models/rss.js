@@ -118,6 +118,8 @@ RSSSchema.methods.searchDocument = async function() {
 	};
 };
 
+RSSSchema.index({featured: 1}, {partialFilterExpression: {featured: true}});
+
 RSSSchema.plugin(mongooseStringQuery);
 
 module.exports = exports = mongoose.model('RSS', RSSSchema);
