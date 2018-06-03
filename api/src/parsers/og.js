@@ -19,26 +19,37 @@ import logger from '../utils/logger';
 import async_tasks from '../async_tasks';
 import axios from 'axios';
 import FeedParser from 'feedparser';
-import { ReadFeedURL } from './feed.js';
+import { ReadPageURL } from './feed.js';
 const metaTagRe = /(<meta.*og:image".*>)/gm;
 const urlRe = /content="(.*?)"/gm;
 import zlib from 'zlib';
 
+const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg'];
+
+
 // determines if the given feedUrl is a podcast or not
 export async function ParseOG(pageURL) {
-	let pageStream = await ReadFeedURL(pageURL);
+	let pageStream = await ReadPageURL(pageURL);
 	let ogImage = await ParseOGStream(pageStream, pageURL);
 	return ogImage;
 }
 
-export async function ParseOGStream(pageStream, pageURL) {
-	/*
-  let headers = response.headers;
-	let contentType = headers['content-type'].toLowerCase();
-	if (contentType.indexOf('html') === -1) {
-		logger.warn(`Doesn't look like anything to me... ${contentType} for url ${url}`);
+export async function IsValidOGUrl(url) {
+	let invalid = invalidExtensions.some(extension=> {
+		if( url.endsWith(`.${extension}`)) {
+			return extension;
+		}
+	});
+	if (invalid) {
+		logger.warn(`Invalid file extension for url ${url}`);
 		return false;
-	}*/
+	}
+
+	return true;
+}
+
+export async function ParseOGStream(pageStream, pageURL) {
+
 
 	var end = new Promise(function(resolve, reject) {
 		pageStream

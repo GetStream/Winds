@@ -6,7 +6,7 @@ import config from '../config';
 const version = '0.0.1';
 import normalize from 'normalize-url';
 import async_tasks from '../async_tasks';
-import {ParseOG} from '../parsers/og';
+import {ParseOG, IsValidOGUrl} from '../parsers/og';
 
 
 program
@@ -21,6 +21,13 @@ async function main() {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info('Starting the OG queue Debugger \\0/');
 	for (let ogUrl of ogUrls) {
+
+		let isValid = await IsValidOGUrl(ogUrl);
+		if (!isValid) {
+			logger.warn(`invalid URL ${ogUrl}`)
+			return;
+		}
+
 		let normalizedUrl = normalize(ogUrl);
 		logger.info(`Looking for og images at ${normalizedUrl} for type ${program.type}`);
 
