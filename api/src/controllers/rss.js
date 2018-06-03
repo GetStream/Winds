@@ -144,33 +144,22 @@ exports.post = async (req, res) => {
 	res.json(insertedFeeds);
 };
 
-exports.put = (req, res) => {
-	User.findById(req.user.sub)
-		.then(user => {
-			if (!user.admin) {
-				return res.status(401).send();
-			} else {
-				const data = req.body || {};
-				let opts = {
-					new: true,
-				};
-
-				RSS.findByIdAndUpdate(
-					{
-						_id: req.params.rssId,
-					},
-					data,
-					opts,
-				).then(rss => {
-					if (!rss) {
-						return res.sendStatus(404);
-					}
-					res.json(rss);
-				});
-			}
-		})
-		.catch(err => {
-			logger.error(err);
-			res.status(422).send(err.errors);
-		});
+exports.put = async (req, res) => {
+	if (!req.User.admin) {
+		return res.status(403).send();
+	}
+	if (!req.params.rssId) {
+		return res.status(401).send();
+	}
+	let rss = await RSS.findByIdAndUpdate(
+		{
+			_id: req.params.rssId,
+		},
+		req.body,
+		{new: true},
+	);
+	if (!rss) {
+		return res.sendStatus(404);
+	}
+	res.json(rss);
 };
