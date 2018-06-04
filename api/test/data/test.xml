@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head>
+    <title>Subscriptions</title>
+  </head>
+  <body>
+    <outline text="Stack Overflow" title="Stack Overflow">
+      <outline type="rss"
+        text="Design Details" title="Design Details"
+        xmlUrl="https://rss.simplecast.com/podcasts/1034/rss"
+        htmlUrl="https://spec.fm/podcasts/design-details"/>
+      <outline type="rss"
+        text="Kotaku" title="Kotaku"
+        xmlUrl="https://kotaku.com/rss"
+        htmlUrl="https://kotaku.com/"/>
+    </outline>
+  </body>
+</opml>

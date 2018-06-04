@@ -1,0 +1,13 @@
+dist: xenial
+language: node_js
+node_js:
+  - "9"
+  - "10"
+services:
+  - redis
+  - mongodb
+cache: npm
+install:
+    - "cd api && npm install"
+script:
+    - "npm test"

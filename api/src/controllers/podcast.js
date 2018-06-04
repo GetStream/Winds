@@ -8,12 +8,10 @@ import User from '../models/user';
 
 import personalization from '../utils/personalization';
 import logger from '../utils/logger';
-import search from '../utils/search';
-import config from '../config';
-import { ParsePodcast } from '../parsers';
+import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 exports.list = (req, res) => {
 	let query = req.query || {};
@@ -126,7 +124,7 @@ exports.post = (req, res) => {
 								if (podcast.lastErrorObject.updatedExisting) {
 									cb(null, podcast.value);
 								} else {
-									return async_tasks
+									return asyncTasks
 										.PodcastQueueAdd(
 											{
 												podcast: podcast.value._id,
@@ -148,7 +146,7 @@ exports.post = (req, res) => {
 												!podcast.value.images.og &&
                                                 podcast.value.link
 											) {
-												async_tasks
+												asyncTasks
 													.OgQueueAdd(
 														{
 															url: podcast.value.url,

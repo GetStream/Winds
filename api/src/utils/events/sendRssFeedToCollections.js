@@ -1,12 +1,12 @@
 import events from './index';
 import RSS from '../../models/rss';
 import Article from '../../models/article';
-import detectFeedLanguage from '../detectFeedLanguage';
+import {DetectLanguage} from '../../parsers/detect-language';
 
 
 async function sendRssFeedToCollections(rssFeed) {
 	if (!rssFeed.language) {
-		rssFeed.language = await detectFeedLanguage(rssFeed.feedUrl);
+		rssFeed.language = await DetectLanguage(rssFeed.feedUrl);
 		await RSS.findByIdAndUpdate(rssFeed.id, { language: rssFeed.language }, { new: true });
 	}
 

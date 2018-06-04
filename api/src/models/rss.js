@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
+import {ArticleSchema} from "./article";
 
 export const RSSSchema = new Schema(
 	{
@@ -103,6 +104,22 @@ RSSSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },
 });
+
+RSSSchema.methods.searchDocument = async function() {
+	return {
+		_id: this._id,
+		categories: 'RSS',
+		description: this.title,
+		image: this.favicon,
+		public: true,
+		publicationDate: this.publicationDate,
+		title: this.title,
+		type: 'rss',
+	};
+};
+
+RSSSchema.index({featured: 1}, {partialFilterExpression: {featured: true}});
+
 RSSSchema.plugin(mongooseStringQuery);
 
 module.exports = exports = mongoose.model('RSS', RSSSchema);

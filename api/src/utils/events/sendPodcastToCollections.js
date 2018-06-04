@@ -1,11 +1,11 @@
 import events from './index';
 import Podcast from '../../models/podcast';
 import Episode from '../../models/episode';
-import detectPodcastLanguage from '../detectPodcastLanguage';
+import DetectLanguage from '../../parsers/detect-language';
 
 async function sendPodcastToCollections(podcast) {
 	if (!podcast.language) {
-		podcast.language = await detectPodcastLanguage(podcast.feedUrl);
+		podcast.language = await DetectLanguage(podcast.feedUrl);
 		await Podcast.findByIdAndUpdate(podcast.id, { language: podcast.language }, { new: true });
 	}
 	let episodes = await Episode.find({

@@ -1,17 +1,14 @@
 import '../loadenv';
 import '../utils/db';
-import { ParseFeed, ParsePodcast } from '../parsers';
 import program from 'commander';
-import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import Article from '../models/article';
 import Episode from '../models/episode';
 
 import RSS from '../models/rss';
-import config from '../config';
 
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 const version = '0.1.1';
 
@@ -42,7 +39,7 @@ async function main() {
 			let promises = [];
 			for (const instance of chunk) {
 				if (!instance.images || !instance.images.og) {
-					let promise = async_tasks.OgQueueAdd(
+					let promise = asyncTasks.OgQueueAdd(
 						{
 							type: contentType,
 							url: instance[field],

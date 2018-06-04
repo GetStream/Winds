@@ -12,32 +12,33 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
-import { ParsePodcast } from '../parsers';
-import util from 'util';
+import { ParsePodcast } from '../parsers/feed';
 
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-async_tasks.ProcessPodcastQueue(5, handlePodcast);
+asyncTasks.ProcessPodcastQueue(15, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {
-	let promise = _handlePodcast(job);
-	promise.catch(err => {
-		logger.info(`podcast job ${job} broke with err ${err}`);
-      	logger.error(err);
-	});
-	return promise;
+	logger.info(`Processing ${job.data.url}`);
+	try {
+		await _handlePodcast(job);
+	} catch (err) {
+		let tags = {queue: 'rss'};
+		let extra = {
+			JobPodcast: job.data.podcast,
+			JobURL: job.data.url,
+		};
+		logger.error('Podcast job encountered an error', {err, tags, extra});
+	}
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handlePodcast(job) {
-	logger.info(`Processing ${job.data.url}`);
-
-	// verify we have the podcast object
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
@@ -52,7 +53,7 @@ async function _handlePodcast(job) {
 	// parse the episodes
 	let podcastContent;
 	try {
-		podcastContent = await util.promisify(ParsePodcast)(job.data.url);
+		podcastContent = await ParsePodcast(job.data.url);
 	} catch (e) {
 		logger.info(`podcast scraping broke for url ${job.data.url}`);
 		return;
@@ -74,7 +75,7 @@ async function _handlePodcast(job) {
 	});
 
 	await Promise.all(updatedEpisodes.map( episode => {
-		async_tasks.OgQueueAdd(
+		asyncTasks.OgQueueAdd(
 			{
 				type: 'episode',
 				url: episode.link,
@@ -152,7 +153,7 @@ async function upsertEpisode(podcastID, normalizedUrl, episode) {
 		if (err.code === 11000){
 			return null;
 		} else {
-			throw error;
+			throw err;
 		}
 	}
 }

@@ -10,12 +10,11 @@ import Article from '../models/article';
 import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
-import util from 'util';
 
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
-import { ParseFeed } from '../parsers';
+import { ParseFeed } from '../parsers/feed';
 
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -24,49 +23,51 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 logger.info('Starting the RSS worker');
 
 // TODO: move this to a separate main.js
-async_tasks.ProcessRssQueue(100, handleRSS);
+asyncTasks.ProcessRssQueue(100, handleRSS);
 
 const statsd = getStatsDClient();
 
 // the top level handleRSS just intercepts error handling before it goes to Bull
 async function handleRSS(job) {
-	let promise = _handleRSS(job);
-	promise.catch(err => {
-		logger.info(`rss job ${job} broke with err ${err}`);
-		logger.error(err);
-	});
-	return promise;
+	logger.info(`Processing ${job.data.url}`);
+	try {
+		await _handleRSS(job);
+	} catch (err) {
+		let tags = { queue: 'rss' };
+		let extra = {
+			JobRSS: job.data.rss,
+			JobURL: job.data.url,
+		};
+		logger.error('RSS job encountered an error', { err, tags, extra });
+	}
+	logger.info(`Completed scraping for ${job.data.url}`);
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
 async function _handleRSS(job) {
-	logger.info(`Processing ${job.data.url}`);
-
-	// verify we have the rss object
 	let rssID = job.data.rss;
+
+	await timeIt('winds.handle_rss.ack', () => {
+		return markDone(rssID);
+	});
+
 	let rss = await timeIt('winds.handle_rss.get_rss', () => {
 		return RSS.findOne({ _id: rssID });
 	});
+
 	if (!rss) {
 		logger.warn(`RSS with ID ${rssID} does not exist`);
 		return;
 	}
 
-	// mark as done, will be schedule again in 15 min from now
-	// we do this early so a temporary failure doesnt leave things in a broken state
-	await timeIt('winds.handle_rss.ack', () => {
-		return markDone(rssID);
-	});
 	logger.info(`Marked ${rssID} as done`);
 
 	// parse the articles
-	let rssContent;
-	try {
-		rssContent = await timeIt('winds.handle_rss.parsing', () => {
-			return util.promisify(ParseFeed)(job.data.url);
-		});
-	} catch (err) {
-		logger.warn(err);
+	let rssContent = await timeIt('winds.handle_rss.parsing', async () => {
+		return await ParseFeed(job.data.url);
+	});
+
+	if (!rssContent) {
 		return;
 	}
 
@@ -98,7 +99,7 @@ async function _handleRSS(job) {
 	await timeIt('winds.handle_rss.OgQueueAdd', () => {
 		return Promise.all(
 			updatedArticles.map(article => {
-				async_tasks.OgQueueAdd(
+				asyncTasks.OgQueueAdd(
 					{
 						type: 'rss',
 						url: article.url,
@@ -133,20 +134,17 @@ async function _handleRSS(job) {
 		await sendRssFeedToCollections(rss);
 	}
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
-	logger.info(`Completed scraping for ${job.data.url}`);
 }
 
 async function upsertManyArticles(rssID, articles) {
-	let articlesData = articles.map(article => {
+	let searchData = articles.map(article => {
 		const clone = Object.assign({}, article);
 		delete clone.images;
 		delete clone.publicationDate;
 		return clone;
 	});
 
-	let existingArticles = await Article.find({ $or: articlesData }, { url: 1 }).read(
-		'sp',
-	);
+	let existingArticles = await Article.find({ $or: searchData }, { url: 1 }).read('sp');
 	let existingArticleUrls = existingArticles.map(a => {
 		return a.url;
 	});
@@ -156,7 +154,7 @@ async function upsertManyArticles(rssID, articles) {
 		existingArticleUrls.length,
 	);
 
-	let articlesToUpsert = articlesData.filter(article => {
+	let articlesToUpsert = articles.filter(article => {
 		return existingArticleUrls.indexOf(article.url) === -1;
 	});
 
@@ -183,13 +181,13 @@ async function upsertArticle(rssID, post) {
 	};
 
 	let update = Object.assign({}, search);
-	update.publicationDate = post.publicationDate;
 	update.url = post.url;
 	update.rss = rssID;
 
 	let defaults = {
 		enclosures: post.enclosures || {},
 		images: post.images || {},
+		publicationDate: post.publicationDate,
 	};
 
 	try {
@@ -235,15 +233,14 @@ async function upsertArticle(rssID, post) {
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(rssID) {
 	/*
-	Set the last scraped for the given rssID
-	*/
+  Set the last scraped for the given rssID
+  */
 	let now = moment().toISOString();
-	let updated = await RSS.update(
+	return await RSS.update(
 		{ _id: rssID },
 		{
 			lastScraped: now,
 			isParsing: false,
 		},
 	);
-	return updated;
 }

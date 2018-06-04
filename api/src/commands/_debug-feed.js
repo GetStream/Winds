@@ -1,17 +1,16 @@
 import program from 'commander';
 import '../loadenv';
 import '../utils/db';
-import { ParseFeed, ParsePodcast } from '../parsers';
+import { ParseFeed, ParsePodcast } from '../parsers/feed';
 import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
-import config from '../config';
 import normalize from 'normalize-url';
-import async_tasks from '../async_tasks';
+import asyncTasks from '../asyncTasks';
 
 // do stuff
-function debugFeed(feedType, feedUrls) {
+export async function debugFeed(feedType, feedUrls) {
 	// This is a small helper tool to quickly help debug issues with podcasts or RSS feeds
 	logger.info(`Starting the ${feedType} Debugger \\0/`);
 	logger.info(
@@ -21,14 +20,9 @@ function debugFeed(feedType, feedUrls) {
 	logger.info(`Handling ${feedUrls.length} urls`);
 
 	for (let target of feedUrls) {
-		target = normalize(target);
 		logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
-		function validate(error, response) {
-			if (error) {
-				console.warn(error);
-				return;
-			}
+		async function validate(response) {
 
 			// validate the podcast or RSS feed
 			logger.info('========== Validating Publication ==========');
@@ -84,8 +78,12 @@ function debugFeed(feedType, feedUrls) {
 
 			let schema = feedType === 'rss' ? RSS : Podcast;
 			let lookup = { feedUrl: target };
+			console.log(feedType, lookup)
 			if (program.task) {
 				logger.info('trying to create a task on the bull queue');
+				let instance = await schema.findOne(lookup)
+				console.log(instance)
+
 				schema
 					.findOne(lookup)
 					.catch(err => {
@@ -100,7 +98,7 @@ function debugFeed(feedType, feedUrls) {
 						}
 
 						if (feedType == 'rss') {
-							queuePromise = async_tasks.RssQueueAdd(
+							queuePromise = asyncTasks.RssQueueAdd(
 								{
 									rss: instance._id,
 									url: instance.feedUrl,
@@ -112,7 +110,7 @@ function debugFeed(feedType, feedUrls) {
 								},
 							);
 						} else {
-							queuePromise = async_tasks.PodcastQueueAdd(
+							queuePromise = asyncTasks.PodcastQueueAdd(
 								{
 									podcast: instance._id,
 									url: instance.feedUrl,
@@ -147,12 +145,12 @@ function debugFeed(feedType, feedUrls) {
 		}
 
 		if (feedType === 'rss') {
-			ParseFeed(target, validate);
+			let feedContent = await ParseFeed(target);
+			validate(feedContent)
 		} else {
-			ParsePodcast(target, validate);
+			let podcastContent = await ParsePodcast(target);
+			validate(podcastContent)
 		}
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');
 	}
 }
-
-exports.debugFeed = debugFeed;
