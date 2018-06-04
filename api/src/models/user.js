@@ -91,13 +91,11 @@ export const UserSchema = new Schema(
 		collection: 'users',
 		toJSON: {
 			transform: function(doc, ret) {
-				delete ret.email;
 				delete ret.password;
 			},
 		},
 		toObject: {
 			transform: function(doc, ret) {
-				delete ret.email;
 				delete ret.password;
 			},
 		},
