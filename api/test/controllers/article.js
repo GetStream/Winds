@@ -27,7 +27,7 @@ describe('Article controller', () => {
 	describe('get parsed article', () => {
 		it('should return the parsed version of the article', async () => {
 			const response = await withLogin(
-				request(api).get(`/articles/${article.id}?type=parsed`)
+				request(api).get(`/articles/${article.id}`).query({ type: 'parsed' })
 			);
 			expect(response).to.have.status(200);
 		});
