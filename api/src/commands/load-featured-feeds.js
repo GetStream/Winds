@@ -103,16 +103,7 @@ function main() {
 									if (rss.lastErrorObject.updatedExisting) {
 										cb(null, rss.value);
 									} else {
-										search({
-											_id: rss.value._id,
-											categories: 'RSS',
-											description: rss.value.title,
-											image: rss.value.favicon,
-											public: true,
-											publicationDate: rss.value.publicationDate,
-											title: rss.value.title,
-											type: 'rss',
-										})
+										search(rss.value.searchDocument())
 											.then(() => {
 												return asyncTasks.RssQueueAdd(
 													{
@@ -218,17 +209,7 @@ function main() {
 										if (podcast.lastErrorObject.updatedExisting) {
 											cb(null, podcast.value);
 										} else {
-											search({
-												_id: podcast.value._id,
-												categories: 'Podcast',
-												description: podcast.value.title,
-												image: podcast.value.image,
-												public: true,
-												publicationDate:
-													podcast.value.publicationDate,
-												title: podcast.value.title,
-												type: 'podcast',
-											})
+											search(podcast.value.searchDocument())
 												.then(() => {
 													return asyncTasks.PodcastQueueAdd(
 														{
