@@ -1,3 +1,6 @@
+import '../loadenv';
+import '../utils/db';
+
 import program from 'commander';
 import chalk from 'chalk';
 import logger from '../utils/logger';
