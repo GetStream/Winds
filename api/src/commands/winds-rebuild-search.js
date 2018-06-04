@@ -17,8 +17,9 @@ async function loadModel(Model) {
 	const batchSize = 200;
 	let indexed = 0;
 	let accumulatedDocs = [];
-	await Model.find().cursor().eachAsync(async (d) => {
-		accumulatedDocs.push(d);
+	// XXX: enter Mongoose genius: { timeout: true } means disabling cursor timeouts
+	await Model.find({}, {}, { timeout: true }).cursor().eachAsync(async (d) => {
+		accumulatedDocs.push(d.searchDocument());
 		if (accumulatedDocs.length >= batchSize) {
 			await indexMany(accumulatedDocs);
 			indexed += accumulatedDocs.length;
