@@ -1,7 +1,4 @@
 #!/usr/bin/env ./node_modules/.bin/babel-node
-
-import '../loadenv';
-import '../utils/db';
 import program from 'commander';
 import logger from '../utils/logger';
 
@@ -12,6 +9,8 @@ program
 	.command('og <urls>', 'Debug OG')
 	.command('rss', 'Debug RSS feeds')
 	.command('podcast', 'Debug Podcasts')
+	.command('rebuild-search', 'Rebuild search')
+	.command('truncate-rss-feed <id>', 'Truncate articles for one RSS feed')
 	.parse(process.argv);
 
 function main() {

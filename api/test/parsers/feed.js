@@ -1,17 +1,7 @@
-import { expect, request } from 'chai';
-
-import api from '../../src/server';
-import auth from '../../src/controllers/auth';
-import Podcast from '../../src/models/podcast';
-import RSS from '../../src/models/rss';
-import User from '../../src/models/user';
-import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
+import { expect } from 'chai';
 import fs from 'fs';
 import path from 'path';
-import FeedParser from 'feedparser';
-import jwt from 'jsonwebtoken';
-import config from '../../src/config';
-import { IsPodcastStream } from '../../src/parsers/detect-type';
+
 import {
 	ReadFeedStream,
 	ParseFeedPosts,
@@ -25,10 +15,7 @@ function getTestFeed(name) {
 }
 
 describe('Parsing', () => {
-	describe('Feed', () => {
-		let response;
-		let user;
-
+	describe('RSS', () => {
 		it('should parse TechCrunch', async () => {
 			let tc = getTestFeed('techcrunch');
 
@@ -40,10 +27,8 @@ describe('Parsing', () => {
 			expect(feedResponse.link).to.equal('https://techcrunch.com/');
 		});
 	});
-	describe('Podcast', () => {
-		let response;
-		let user;
 
+	describe('Podcast', () => {
 		it('should parse GiantBomcast', async () => {
 			let bomcast = getTestFeed('giant-bomcast');
 
