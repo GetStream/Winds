@@ -1,51 +1,30 @@
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import validUrl from 'valid-url';
-
 import Podcast from '../models/podcast';
-import User from '../models/user';
-
 import personalization from '../utils/personalization';
-import logger from '../utils/logger';
 import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
 import asyncTasks from '../asyncTasks';
 
-exports.list = (req, res) => {
-	let query = req.query || {};
 
+exports.list = async (req, res) => {
+	let query = req.query || {};
+	let podcasts = [];
 	if (query.type === 'recommended') {
-		personalization({
+		let podcastIDs = await personalization({
 			endpoint: '/winds_podcast_recommendations',
 			userId: req.user.sub,
-		})
-			.then(podcastIDs => {
-				return Promise.all(
-					podcastIDs.map(podcastID => {
-						return Podcast.findOne({ _id: podcastID });
-					}),
-				);
-			})
-			.then(results => {
-				results = results.filter(podcast => {
-					return podcast;
-				});
-				res.json(results);
-			})
-			.catch(err => {
-				res.status(500).send(err.errors);
-			});
+		});
+		podcasts = await Podcast.find({ _id: {$in: podcastIDs} }).exec();
+		podcasts = podcasts.filter(podcast => {
+			return podcast;
+		});
 	} else {
-		Podcast.apiQuery(req.query)
-			.then(podcasts => {
-				res.json(podcasts);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(422).send(err.errors);
-			});
+		podcasts = await Podcast.apiQuery(req.query);
 	}
+	res.json(podcasts);
 };
 
 exports.get = async (req, res) => {
@@ -150,32 +129,20 @@ exports.post = async (req, res) => {
 	res.json(insertedPodcasts);
 };
 
-exports.put = (req, res) => {
-	User.findById(req.user.sub)
-		.then(user => {
-			if (!user.admin) {
-				return res.send(401).send();
-			} else {
-				const data = req.body || {};
-				let opts = {
-					new: true,
-				};
-
-				return Podcast.findByIdAndUpdate(
-					{ _id: req.params.podcastId },
-					data,
-					opts,
-				).then(podcast => {
-					if (!podcast) {
-						return res.sendStatus(404);
-					}
-
-					res.json(podcast);
-				});
-			}
-		})
-		.catch(err => {
-			logger.error(err);
-			res.status(422).send(err.errors);
-		});
+exports.put = async (req, res) => {
+	if (!req.User.admin) {
+		return res.status(403).send();
+	}
+	if (!req.params.podcastId) {
+		return res.status(401).send();
+	}
+	let podcast = await Podcast.findByIdAndUpdate(
+		{ _id: req.params.podcastId },
+		req.body,
+		{new: true},
+	);
+	if (!podcast) {
+		return res.sendStatus(404);
+	}
+	res.json(podcast);
 };

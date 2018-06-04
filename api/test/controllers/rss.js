@@ -4,6 +4,8 @@ import api from '../../src/server';
 import { loadFixture } from '../../src/utils/test';
 import RSS from '../../src/models/rss';
 import {reset} from '../utils';
+import config from '../../src/config';
+import nock from 'nock';
 
 describe('RSS controller', () => {
 	let rss;
@@ -26,12 +28,32 @@ describe('RSS controller', () => {
 	});
 
 	describe('get RSS list', () => {
+		after(function () {
+			nock.cleanAll();
+		});
+
 		it('should return the right rss feed from /rss', async () => {
 			const response = await withLogin(
 				request(api).get('/rss')
 			);
 			expect(response).to.have.status(200);
 			expect(response.body).to.be.a('Array');
+		});
+
+		it('should return the right rss feed from /podcasts?type=recommended', async () => {
+			nock(config.stream.baseUrl)
+				.get(/winds_rss_recommendations/)
+				.reply(200, { results: [
+					{foreign_id:`rss:${rss.id}`}, {foreign_id:'rss:5ae0c71a0e7cbc4ee14a7c81'}] });
+
+			const response = await withLogin(
+				request(api).get('/rss').query({
+					type: 'recommended',
+				})
+			);
+			expect(response).to.have.status(200);
+			expect(response.body.length).to.be.at.least(1);
+			expect(response.body[0].url).to.eq(rss.url);
 		});
 	});
 
@@ -42,7 +64,7 @@ describe('RSS controller', () => {
 			const response = await withLogin(
 				request(api)
 					.post('/rss')
-					.send({'feedUrl': 'https://news.ycombinator.com'})
+					.send({feedUrl: 'https://news.ycombinator.com'})
 			);
 			expect(response).to.have.status(201);
 			expect(response.body).to.have.length(1);
@@ -54,7 +76,7 @@ describe('RSS controller', () => {
 			const response = await withLogin(
 				request(api)
 					.post('/rss')
-					.send({'feedUrl': 'https://news.ycombinator.com'})
+					.send({feedUrl: 'https://news.ycombinator.com'})
 			);
 			expect(response).to.have.status(201);
 			expect(response.body).to.have.length(0);
@@ -67,7 +89,7 @@ describe('RSS controller', () => {
 			const response = await withLogin(
 				request(api)
 					.post('/rss')
-					.send({'feedUrl': 'https://techcrunch.com'})
+					.send({feedUrl: 'https://techcrunch.com'})
 			);
 			expect(response).to.have.status(201);
 			expect(response.body).to.have.length(2);
