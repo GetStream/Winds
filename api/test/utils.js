@@ -3,12 +3,15 @@ import jwt from 'jsonwebtoken';
 import redis from 'redis';
 import db from '../src/utils/db';
 
-function withLogin(r) {
-	const authToken = jwt.sign({
-		email: 'valid@email.com',
-		sub: '5b0f306d8e147f10f16aceaf',
-	}, config.jwt.secret);
-	return r.set('Authorization', `Bearer ${authToken}`);
+function withLogin(req, user) {
+  if (!user) {
+    user = {
+      email: 'valid@email.com',
+      sub: '5b0f306d8e147f10f16aceaf',
+    };
+  }
+	const authToken = jwt.sign(user, config.jwt.secret);
+	return req.set('Authorization', `Bearer ${authToken}`);
 }
 
 exports.withLogin = withLogin;

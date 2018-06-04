@@ -12,7 +12,7 @@ describe('Server', () => {
 
     before(async () => {
       await loadFixture('user');
-      user = await User.findOne({email: 'test_user@email.com'});
+      user = await User.findOne({email: 'logged_in_user@email.com'});
       expect(user).to.not.be.null;
     });
 
@@ -23,7 +23,7 @@ describe('Server', () => {
     describe('authenticated endpoints', () => {
 
       it('should return 200 for requests to endpoints that don\'t require an authenticated user', async () => {
-        let response = await request(api).get('/health');
+        let response = await request(api).get('/');
         expect(response).to.have.status(200);
       });
 

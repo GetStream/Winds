@@ -8,11 +8,6 @@ import { withLogin } from '../utils';
 describe('Article controller', () => {
 	let article;
 
-  let authUser = {
-    email: 'valid@email.com',
-    password: 'valid_password'
-  };
-
 	before(async () => {
 		await loadFixture('example');
 		await loadFixture('articles');
@@ -23,33 +18,21 @@ describe('Article controller', () => {
 
 	describe('get', () => {
 		it('should return the right article via /articles/:articleId', async () => {
-			let response = await withLogin(
-				api,
-				request(api).get(`/articles/${article.id}`),
-				authUser
-			);
+			let response = await withLogin(request(api).get(`/articles/${article.id}`));
 			expect(response).to.have.status(200);
 		});
 	});
 
 	describe('get parsed article', () => {
 		it('should return the parsed version of the article', async () => {
-			let response = await withLogin(
-				api,
-				request(api).get(`/articles/${article.id}?type=parsed`),
-				authUser
-			);
+			let response = await withLogin(request(api).get(`/articles/${article.id}?type=parsed`));
 			expect(response).to.have.status(200);
 		});
 	});
 
 	describe('list', () => {
 		it('should return the list of articles', async () => {
-			let response = await withLogin(
-				api,
-				request(api).get('/articles'),
-				authUser
-			);
+			let response = await withLogin(request(api).get('/articles'));
 			expect(response).to.have.status(200);
 		});
 	});
