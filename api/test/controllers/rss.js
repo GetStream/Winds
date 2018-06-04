@@ -1,16 +1,15 @@
 import { expect, request } from 'chai';
-import { withLogin } from '../utils.js';
+
 import api from '../../src/server';
-import { loadFixture } from '../../src/utils/test';
 import RSS from '../../src/models/rss';
-import {reset} from '../utils';
+import { loadFixture, withLogin, dropDBs } from '../utils';
 
 describe('RSS controller', () => {
 	let rss;
 
 	before(async () => {
-		await reset();
-		await loadFixture('example', 'articles');
+		await dropDBs();
+		await loadFixture('initial-data', 'articles');
 		rss = await RSS.findOne({});
 		expect(rss).to.not.be.null;
 	});
