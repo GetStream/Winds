@@ -10,6 +10,7 @@ program
 	.command('rss', 'Debug RSS feeds')
 	.command('podcast', 'Debug Podcasts')
 	.command('rebuild-search', 'Rebuild search')
+	.command('truncate-rss-feed <id>', 'Truncate articles for one RSS feed')
 	.parse(process.argv);
 
 function main() {
