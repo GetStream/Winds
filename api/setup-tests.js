@@ -4,7 +4,6 @@ import Mocha from 'mocha';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import redis from 'redis';
-import { promisify } from 'util';
 import { stringify } from 'flatted/cjs';
 
 import config from './src/config';
