@@ -11,7 +11,7 @@ import personalization from '../utils/personalization';
 import followRssFeed from '../shared/followRssFeed';
 import followPodcast from '../shared/followPodcast';
 
-exports.list = (req, res) => {
+exports.list = async (req, res) => {
 	const params = req.params || {};
 	const query = req.query || {};
 
@@ -23,40 +23,40 @@ exports.list = (req, res) => {
 			endpoint: '/winds_user_recommendations',
 			userId: req.user.sub,
 		})
-			.then(users => {
-				if (!users.length) {
-					res.status(200).json([]);
-					return;
-				}
-				async.filter(
-					users,
-					(user, cb) => {
-						User.findOne({ _id: user, active: true })
-							.then(user => {
-								if (user) {
-									cb(null, true);
-								} else {
-									cb(null);
-								}
-							})
-							.catch(err => {
-								cb(err);
-							});
-					},
-					(err, results) => {
-						async.map(
-							results,
-							(user, cb) => {
-								User.findOne({ _id: user, active: true })
-									.select(
-										'name username email interests background url bio twitter',
-									)
-									.then(enriched => {
-										cb(null, enriched);
-									})
-									.catch(err => {
-										cb(err);
-									});
+		.then(users => {
+			if (!users.length) {
+				res.status(200).json([]);
+				return;
+			}
+			async.filter(
+				users,
+				(user, cb) => {
+					User.findOne({ _id: user, active: true })
+						.then(user => {
+							if (user) {
+								cb(null, true);
+							} else {
+								cb(null);
+							}
+						})
+						.catch(err => {
+							cb(err);
+						});
+				},
+				(err, results) => {
+					async.map(
+						results,
+						(user, cb) => {
+							User.findOne({ _id: user, active: true })
+								.select(
+									'name username email interests background url bio twitter',
+								)
+								.then(enriched => {
+									cb(null, enriched);
+								})
+								.catch(err => {
+									cb(err);
+								});
 							},
 							(err, results) => {
 								if (err) {
@@ -66,13 +66,13 @@ exports.list = (req, res) => {
 									res.json(results);
 								}
 							},
-						);
-					},
-				);
-			})
-			.catch(err => {
-				res.status(503).send(err.response.data);
-			});
+					);
+				},
+			);
+		})
+		.catch(err => {
+			res.status(503).send(err.response.data);
+		});
 	} else {
 		User.apiQuery(req.query)
 			.select('name email username bio url twitter background admin')
@@ -87,53 +87,16 @@ exports.list = (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-	// authorize access to the authenticated user model only
+	// Only permit access to the authenticated user's own model
 	if (req.params.userId !== req.user.sub) {
-		return res.status(403).send();
+		return res.sendStatus(403);
 	}
-
-	// check to see if the user exists
-	let user;
-	try {
-		user = await User.findById(req.params.userId);
-	} catch(error) {
-		logger.error(err);
-		res.status(500).send(err);
-		return;
-	}
-
-	if (!user) {
-		res.sendStatus(404);
-		return;
-	}
-
-	// remove the user document; 204 No Content confirms success
-	try {
-		await User.findOneAndRemove({ _id: req.params.userId });
-	} catch(error) {
-		logger.error(err);
-		res.status(500).send(err);
-		return;
-	}
-
-	res.status(204).send();
+	await req.User.remove();
+	res.sendStatus(204);
 };
 
 exports.get = async (req, res) => {
-	if (req.params.user == 'undefined') {
-		res.sendStatus(404);
-		return;
-	}
-
-	let user;
-	try {
-		user = await User.findById(req.params.userId);
-	} catch(error) {
-		logger.error(err);
-		res.sendStatus(500);
-		return;
-	}
-
+	const user = await User.findById(req.params.userId);
 	if (!user) {
 		res.status(404).send('User not found');
 		return;
@@ -150,7 +113,7 @@ exports.get = async (req, res) => {
 };
 
 exports.put = async (req, res) => {
-
+	// Only permit access to the authenticated user's own model
 	if (req.params.userId !== req.user.sub) {
 		res.status(403).send();
 		return;
@@ -168,41 +131,28 @@ exports.put = async (req, res) => {
 		return;
 	}
 
-	let user;
-	try {
-		user = await User.findById(req.params.userId);
-	} catch(error) {
-		logger.error(err);
-		res.status(500).send(err);
-		return;
-	}
+	let user = await User.findById(req.params.userId);
 
 	if (!user) {
 		res.sendStatus(404);
 		return;
 	}
 
-	try {
-		if (data.username) {
-			// check for existing username
-			let userByUsername = await User.findOne({username: data.username});
-			if (userByUsername && userByUsername.id != user.id) {
-				res.status(409).send('User with this username already exists');
-				return;
-			}
+	if (data.username) {
+		// check for existing username
+		let userByUsername = await User.findOne({username: data.username});
+		if (userByUsername && userByUsername.id != user.id) {
+			res.status(409).send('User with this username already exists');
+			return;
 		}
-		if (data.email) {
-			// check for existing email
-			let userByEmail = await User.findOne({email: data.email});
-			if (userByEmail && userByEmail.email != user.email) {
-				res.status(409).send('User with this email already exists');
-				return;
-			}
+	}
+	if (data.email) {
+		// check for existing email
+		let userByEmail = await User.findOne({email: data.email});
+		if (userByEmail && userByEmail.email != user.email) {
+			res.status(409).send('User with this email already exists');
+			return;
 		}
-	} catch(error) {
-		logger.error(err);
-		res.status(500).send(err);
-		return;
 	}
 
 	if (data.interests) {

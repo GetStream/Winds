@@ -3,6 +3,11 @@ import bcrypt from 'mongoose-bcrypt';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 
+import FollowSchema from './follow';
+import LikeSchema from './like';
+import PinSchema from './pin';
+import PlaylistSchema from './playlist';
+
 import logger from '../utils/logger';
 import email from '../utils/email';
 
@@ -137,6 +142,21 @@ UserSchema.pre('findOneAndUpdate', function(next) {
 			logger.error(err);
 			next();
 		});
+});
+
+UserSchema.post('remove', function(user) {
+	[
+		PinSchema.remove({user}),
+		PlaylistSchema.remove({user}),
+		FollowSchema.remove({user}),
+		LikeSchema.remove({user})
+	].forEach(async (removal) => {
+		try {
+			await removal;
+		} catch(error) {
+			logger.error({err});
+		}
+	});
 });
 
 UserSchema.plugin(bcrypt);
