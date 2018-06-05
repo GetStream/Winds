@@ -1,22 +1,17 @@
 import { expect, request } from 'chai';
 import jwt from 'jsonwebtoken';
 
-
 import api from '../../src/server';
 import config from '../../src/config';
 import Podcast from '../../src/models/podcast';
 import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
 import email from '../../src/utils/email';
-import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
-import {reset} from '../utils';
+import { loadFixture, getMockClient, getMockFeed, dropDBs } from '../utils';
 
 describe('Auth controller', () => {
 	describe('signup', () => {
-		before(async() => {
-			await reset();
-		});
-		beforeEach(() => User.remove().exec());
+		before(dropDBs);
 
 		describe('valid request', () => {
 			let response;
@@ -156,7 +151,7 @@ describe('Auth controller', () => {
 			});
 
 			it('should return 409 for existing user', async () => {
-				await loadFixture('example');
+				await loadFixture('initial-data');
 
 				const response = await request(api)
 					.post('/auth/signup')
@@ -176,8 +171,8 @@ describe('Auth controller', () => {
 		let user;
 
 		before(async () => {
-			await User.remove().exec();
-			await loadFixture('example');
+			await dropDBs();
+			await loadFixture('initial-data');
 			user = await User.findOne({ email: 'valid@email.com' });
 			expect(user).to.not.be.null;
 			expect(await user.verifyPassword('valid_password')).to.be.true;
@@ -259,8 +254,8 @@ describe('Auth controller', () => {
 
 	describe('password recovery', () => {
 		before(async () => {
-			await User.remove().exec();
-			await loadFixture('example');
+			await dropDBs();
+			await loadFixture('initial-data');
 		});
 
 		describe('recovery code endpoint', () => {

@@ -1,18 +1,17 @@
-import { expect, request } from 'chai';
-import { withLogin } from '../utils.js';
-import api from '../../src/server';
-import { loadFixture } from '../../src/utils/test';
-import Podcast from '../../src/models/podcast';
-import {reset} from '../utils';
 import nock from 'nock';
+import { expect, request } from 'chai';
+
+import api from '../../src/server';
+import Podcast from '../../src/models/podcast';
 import config from '../../src/config';
+import { loadFixture, dropDBs, withLogin } from '../utils.js';
 
 describe('Podcast controller', () => {
 	let podcast;
 
 	before(async () => {
-		await reset();
-		await loadFixture('initialData');
+		await dropDBs();
+		await loadFixture('initial-data');
 		podcast = await Podcast.findOne({});
 		expect(podcast).to.not.be.null;
 	});

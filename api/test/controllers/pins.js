@@ -1,12 +1,10 @@
 import { expect, request } from 'chai';
-import { withLogin } from '../utils.js';
 
 import api from '../../src/server';
-import { loadFixture } from '../../src/utils/test';
 import Pin from '../../src/models/pin';
 import Article from '../../src/models/article';
 import Episode from '../../src/models/episode';
-import {reset} from '../utils';
+import { loadFixture, withLogin, dropDBs } from '../utils';
 
 
 describe('Pin controller', () => {
@@ -15,8 +13,8 @@ describe('Pin controller', () => {
 	let episode;
 
 	before(async () => {
-		reset();
-		await loadFixture('initialData', 'pins');
+		await dropDBs();
+		await loadFixture('initial-data', 'pins');
 
 		pin = await Pin.findOne({});
 		article = await Article.findOne({});
@@ -57,8 +55,6 @@ describe('Pin controller', () => {
 				request(api).post('/pins').send({ article: article._id })
 			);
 			expect(res).to.have.status(200);
-
-
 		});
 	});
 

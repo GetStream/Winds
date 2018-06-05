@@ -1,18 +1,17 @@
-import { expect, request } from 'chai';
-import api from '../../src/server';
-import { loadFixture } from '../../src/utils/test';
-import Episode from '../../src/models/episode';
-import { withLogin } from '../utils.js';
 import nock from 'nock';
+import { expect, request } from 'chai';
+
+import api from '../../src/server';
+import Episode from '../../src/models/episode';
 import config from '../../src/config';
-import {reset} from '../utils';
+import { withLogin, dropDBs, loadFixture } from '../utils';
 
 describe('Episode controller', () => {
 	let episode;
 
 	before(async () => {
-		await reset();
-		await loadFixture('initialData');
+		await dropDBs();
+		await loadFixture('initial-data');
 		episode = await Episode.findOne({});
 		expect(episode).to.not.be.null;
 		expect(episode.rss).to.not.be.null;
@@ -49,7 +48,6 @@ describe('Episode controller', () => {
 				.reply(200, { results: [
 					{foreign_id:`episode:${episode.id}`}, {foreign_id:'episode:5ae0c71a0e7cbc4ee14a7c81'}] });
 
-
 			const response = await withLogin(
 				request(api).get('/episodes').query({
 					type: 'recommended',
@@ -59,6 +57,5 @@ describe('Episode controller', () => {
 			expect(response.body.length).to.be.at.least(1);
 			expect(response.body[0].url).to.eq(episode.url);
 		});
-
 	});
 });
