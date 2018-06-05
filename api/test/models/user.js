@@ -7,7 +7,7 @@ import PinSchema from '../../src/models/pin';
 import PlaylistSchema from '../../src/models/playlist';
 import PodcastSchema from '../../src/models/podcast';
 import EpisodeSchema from '../../src/models/episode';
-import { loadFixture } from '../../src/utils/test';
+import { loadFixture } from '../utils';
 
 describe('User model', () => {
 	let user;

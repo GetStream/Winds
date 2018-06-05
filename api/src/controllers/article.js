@@ -1,6 +1,4 @@
 import Article from '../models/article';
-import logger from '../utils/logger';
-import events from '../utils/events';
 import personalization from '../utils/personalization';
 
 exports.list = async (req, res) => {
@@ -28,17 +26,11 @@ exports.get = async (req, res) => {
 		return res.sendStatus(404);
 	}
 
-	events({
-		email: req.User.email.toLowerCase(),
-		engagement: {
-			content: {
-				foreign_id: `articles:${article._id}`,
-			},
-			label: 'parse',
+	req.analytics.trackEngagement({
+		content: {
+			foreign_id: `articles:${article._id}`,
 		},
-		user: req.User._id,
-	}).catch((err) => {
-		logger.error(err);
+		label: 'parse',
 	});
 
 	if (req.query && req.query.type === 'parsed') {

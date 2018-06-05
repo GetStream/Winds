@@ -2,8 +2,7 @@ import { expect, request } from 'chai';
 
 import api from '../../src/server';
 import User from '../../src/models/user';
-import { loadFixture, getMockClient, getMockFeed } from '../../src/utils/test';
-import { withLogin } from '../utils';
+import { withLogin, loadFixture, getMockClient, getMockFeed } from '../utils';
 
 describe('User controller', () => {
 	let authUser = {

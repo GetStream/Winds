@@ -1,13 +1,12 @@
 import { expect, request } from 'chai';
-
-import api from '../../src/server';
-import { loadFixture } from '../../src/utils/test';
+import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
-import jwt from 'jsonwebtoken';
+
+import api from '../../src/server';
 import config from '../../src/config';
 import { IsPodcastStream } from '../../src/parsers/detect-type';
-import { reset } from '../utils';
+import { withLogin, loadFixture, dropDBs } from '../utils';
 
 // load fixture with follows and feeds
 // setup a users
@@ -29,36 +28,17 @@ import { reset } from '../utils';
 // - what if you already follow a certain feed
 
 function AuthGetRequest(getPath) {
-	const token = jwt.sign(
-		{
-			email: 'test+test@test.com',
-			sub: '5b0f306d8e147f10f16aceaf',
-		},
-		config.jwt.secret,
-	);
-	return request(api)
-		.get(getPath)
-		.set('Authorization', `Bearer ${token}`);
+    return withLogin(request(api).get(getPath));
 }
 
 function AuthPostRequest(path) {
-	const token = jwt.sign(
-		{
-			email: 'test+test@test.com',
-			sub: '5b0f306d8e147f10f16aceaf',
-		},
-		config.jwt.secret,
-	);
-	return request(api)
-		.post(path)
-		.set('Authorization', `Bearer ${token}`);
+    return withLogin(request(api).post(path));
 }
 
 describe('OPML', () => {
-
 	before(async () => {
-		await reset();
-		await loadFixture('initialData', 'opml', 'featured');
+		await dropDBs();
+		await loadFixture('initial-data', 'opml', 'featured');
 	});
 
 	describe('Export', () => {
@@ -88,7 +68,6 @@ describe('OPML', () => {
 	});
 
 	describe('Import', () => {
-
 		describe('valid request', () => {
 			let response;
 

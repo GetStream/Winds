@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import Popover from 'react-popover';
 import AddRSSModal from './AddRSSModal';
 import AddPodcastModal from './AddPodcastModal';
+import AddOPMLModal from './AddOPMLModal';
 
 class Header extends Component {
 	constructor(props) {
@@ -35,6 +36,7 @@ class Header extends Component {
 		this.toggleNewRSSModal = this.toggleNewRSSModal.bind(this);
 		this.toggleNewPodcastModal = this.toggleNewPodcastModal.bind(this);
 		this.closeDrawer = this.closeDrawer.bind(this);
+		this.toggleOPMLModal = this.toggleOPMLModal.bind(this);
 	}
 
 	toggleGithubPopover(e) {
@@ -62,6 +64,13 @@ class Header extends Component {
 		this.setState({
 			newContentPopoverIsOpen: false,
 			newPodcastModalIsOpen: !this.state.newPodcastModalIsOpen,
+		});
+	}
+
+	toggleOPMLModal() {
+		this.setState({
+			newContentPopoverIsOpen: false,
+			addOPMLModalIsOpen: !this.state.addOPMLModalIsOpen,
 		});
 	}
 
@@ -145,6 +154,10 @@ class Header extends Component {
 				<div className="panel-element" onClick={this.toggleNewRSSModal}>
 					<i className="fas fa-rss" />
 					<span>New RSS</span>
+				</div>
+				<div className="panel-element" onClick={this.toggleOPMLModal}>
+					<i className="far fa-file-alt" />
+					<span>Add OMPL</span>
 				</div>
 			</div>
 		);
@@ -335,6 +348,12 @@ class Header extends Component {
 					isOpen={this.state.newPodcastModalIsOpen}
 					toggleModal={this.toggleNewPodcastModal}
 				/>
+				<AddOPMLModal
+					done={this.toggleOPMLModal}
+					isOpen={this.state.addOPMLModalIsOpen}
+					toggleModal={this.toggleOPMLModal}
+				/>
+
 				<UserProfileSettingsDrawer
 					closeDrawer={this.closeDrawer}
 					isOpen={this.state.editProfileDrawerIsOpen}

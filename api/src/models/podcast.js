@@ -121,4 +121,18 @@ PodcastSchema.plugin(timestamps, {
 
 PodcastSchema.plugin(mongooseStringQuery);
 
+PodcastSchema.methods.searchDocument = function() {
+	return {
+		_id: this._id,
+		objectID: this._id,
+		categories: 'Podcast',
+		description: this.title,
+		image: this.favicon,
+		public: true,
+		publicationDate: this.publicationDate,
+		title: this.title,
+		type: 'podcast',
+	};
+};
+
 module.exports = exports = mongoose.model('Podcast', PodcastSchema);
