@@ -66,5 +66,5 @@ wrapMocha(async () => {
 	});
 }, failures => {
 	//XXX: don't care about open connections
-	setTimeout(() => process.exit(failures ? 1 : 0), 3000);
+	setTimeout(() => process.exit(failures ? 1 : 0), 1500);
 });
