@@ -18,9 +18,6 @@ exports.list = async (req, res) => {
 			userId: req.user.sub,
 		});
 		podcasts = await Podcast.find({ _id: {$in: podcastIDs} }).exec();
-		podcasts = podcasts.filter(podcast => {
-			return podcast;
-		});
 	} else {
 		podcasts = await Podcast.apiQuery(req.query);
 	}

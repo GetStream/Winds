@@ -1,4 +1,3 @@
-import events from '../utils/events';
 import isUrl from 'url-regex';
 import opmlParser from 'node-opml-parser';
 import opmlGenerator from 'opml-generator';
@@ -19,6 +18,7 @@ import asyncTasks from '../asyncTasks';
 import { IsPodcastURL} from '../parsers/detect-type';
 import search from '../utils/search';
 
+import {TrackMetadata} from '../utils/events/analytics';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -171,17 +171,11 @@ async function followOPMLFeed(feed, userID) {
 		await streamClient.feed('timeline', userID).follow(publicationType, instanceID);
 	}
 
-	await events({
-		meta: {
-			data: {
-				[`${publicationType}:${instanceID}`]: {
-					description: instance.description,
-					title: instance.title,
-				},
-			},
-		},
+	await TrackMetadata(`${publicationType}:${instanceID}`, {
+		description: instance.description,
+		title: instance.title,
 	});
-	result.follow =follow;
 
+	result.follow = follow;
 	return result;
 }
