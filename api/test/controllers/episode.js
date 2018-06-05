@@ -5,7 +5,7 @@ import Episode from '../../src/models/episode';
 import { withLogin } from '../utils.js';
 import nock from 'nock';
 import config from '../../src/config';
-import {reset} from "../utils";
+import {reset} from '../utils';
 
 describe('Episode controller', () => {
 	let episode;
