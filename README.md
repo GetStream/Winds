@@ -1,6 +1,6 @@
 # Winds 2.0 - A Beautiful Open Source RSS & Podcast App
 
-[![Slack Community](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](https://communityinviter.com/apps/winds-community-hq/winds-2-0)
+[![Slack Community](https://img.shields.io/badge/Slack%20Community-100%25-green.svg)](https://communityinviter.com/apps/winds-community-hq/winds-2-0)
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](https://shields.io/)
 [![Platform](https://img.shields.io/badge/Platform-Electron-green.svg)](httpds://shields.io/)
 [![Awesome Badge](https://img.shields.io/badge/Awesomeness-Very%20High-green.svg)](https://shields.io/)
