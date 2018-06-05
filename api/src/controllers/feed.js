@@ -39,9 +39,9 @@ async function getUserFeed(req, res) {
 async function getTimelineFeed(req, res) {
 	const params = req.params || {};
 	const query = req.query || {};
-	const  shares = [];
-	const  episodes = [];
-	const  articles = [];
+	const shares = [];
+	const episodes = [];
+	const articles = [];
 
 	try {
 		const activities = await client.feed('timeline', params.userId).get({ limit: 10 });
@@ -99,9 +99,15 @@ async function getContentFeed(req, res, type, model) {
 
 	try {
 		const response = await client.feed(`user_${type}`, params.userId).get({ limit, offset })
-		const enriched = await Promise.all(response.results.map(activity => {
-		    return model.findById(activity.foreign_id.split(':')[1]);
-		}));
+		let enriched;
+		try {
+			enriched = await Promise.all(response.results.map(activity => {
+				return model.findById(activity.foreign_id.split(':')[1]);
+			}));
+		} catch(err) {
+			logger.error({err});
+			return res.status(422).send(err.errors);
+		}
 
 		res.json(enriched);
 	} catch(err) {
@@ -113,6 +119,10 @@ async function getContentFeed(req, res, type, model) {
 exports.get = (req, res, _) => {
 	const params = req.params || {};
 	const query = req.query || {};
+
+	if (req.User.id != params.userId) {
+		return res.status(404).send('Invalid user id');
+	}
 
 	switch (query.type) {
 		case 'user':

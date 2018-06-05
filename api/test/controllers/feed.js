@@ -37,12 +37,12 @@ describe('Feed controller', () => {
 			);
 			expect(response).to.have.status(400);
 		});
-		it('should return 422 if user id is invalid', async () => {
+		it('should return 404 if user id is invalid', async () => {
 			for (const type of ['user', 'timeline', 'article', 'episode']) {
 				const response = await withLogin(
 					request(api).get('/users/<bogus-id>/feeds/').query({ type })
 				);
-				expect(response).to.have.status(422);
+				expect(response).to.have.status(404);
 			}
 		});
 	});
