@@ -40,6 +40,7 @@ async function handleOg(job) {
 async function _handleOg(job) {
 	const url = job.data.url;
 	const jobType = job.data.type;
+	const update = job.data.update;
 
 	// Lookup the right type of schema: article, episode or podcast
 	let mongoSchema = schemaMap[jobType];
@@ -54,7 +55,7 @@ async function _handleOg(job) {
 
 	if (!instance) {
 		return logger.warn(`instance not found for type ${jobType} with lookup ${field}: ${url}`);
-	} else if (instance.images.og && !job.data.update) {
+	} else if (instance.images.og && !update) {
 		return logger.info(
 			`instance already has an image ${
 				instance.images.og

@@ -10,19 +10,14 @@ import RSS from '../models/rss';
 
 import asyncTasks from '../asyncTasks';
 
-const version = '0.1.1';
-
 program
-	.version(version)
-	.option('--rss <value>', 'Parse a specific RSS feed')
-	.option('--podcast <value>', 'Parse a specific podcast')
-	.option('-l, --limit <n>', 'The number of articles to parse', 2)
-	.option('--task', 'Create a task on bull or not')
+	.option('--all', 'Rescrape articles for which we already have an og image')
 	.parse(process.argv);
 
 async function main() {
 	let schemas = { article: Article, rss: RSS, episode: Episode, podcast: Podcast };
 	let fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
+	logger.info(`program.all is set to ${program.all}`)
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
 		let instances = await schema.find({});
@@ -36,11 +31,13 @@ async function main() {
 			let chunk = instances.slice(i, i + chunkSize);
 			let promises = [];
 			for (const instance of chunk) {
-				if (!instance.images || !instance.images.og) {
+				let missingImage = !instance.images || !instance.images.og
+				if (missingImage || program.all) {
 					let promise = asyncTasks.OgQueueAdd(
 						{
 							type: contentType,
 							url: instance[field],
+							update: true,
 						},
 						{
 							removeOnComplete: true,
