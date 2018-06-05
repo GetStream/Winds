@@ -62,7 +62,7 @@ exports.get = (req, res) => {
 			],
 			(err, results) => {
 				if (err) {
-					logger.error(err);
+					logger.error({err});
 					return res.status(422).send(err.errors);
 				}
 
@@ -161,7 +161,7 @@ exports.get = (req, res) => {
 					},
 					err => {
 						if (err) {
-							logger.error(err);
+							logger.error({err});
 							return res.status(422).send(err.errors);
 						}
 
@@ -193,7 +193,7 @@ exports.get = (req, res) => {
 				);
 			})
 			.catch(err => {
-				logger.error(err);
+				logger.error({err});
 				res.status(500).send(err);
 			});
 	} else if (query.type === 'article') {
@@ -213,7 +213,7 @@ exports.get = (req, res) => {
 				res.json(enriched);
 			})
 			.catch(err => {
-				logger.error(err);
+				logger.error({err});
 				res.status(500).send(err);
 			});
 	} else if (query.type === 'episode') {
