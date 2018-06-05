@@ -26,6 +26,8 @@ class RSSArticleList extends React.Component {
 		this.getRSSArticles = this.getRSSArticles.bind(this);
 		this.getFollowState = this.getFollowState.bind(this);
 		this.toggleMenu = this.toggleMenu.bind(this);
+
+		this.contentsEl = React.createRef();
 	}
 
 	toggleMenu() {
@@ -56,6 +58,14 @@ class RSSArticleList extends React.Component {
 					getFeed(this.props.dispatch, 'article', 0, 20);
 				},
 			);
+		}
+
+		// scroll down to last saved position, then delete from localStorage
+		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
+		if (this.contentsEl.current && localStorage['rss-article-list-scroll-position']) {
+			this.contentsEl.current.scrollTop =
+				localStorage['rss-article-list-scroll-position'];
+			delete localStorage['rss-article-list-scroll-position'];
 		}
 	}
 	getRSSFeed(rssFeedID) {
@@ -217,7 +227,17 @@ class RSSArticleList extends React.Component {
 				rightContents = (
 					<React.Fragment>
 						{sortedArticles.map(article => {
-							return <ArticleListItem key={article._id} {...article} />;
+							return (
+								<ArticleListItem
+									key={article._id}
+									onNavigation={() => {
+										localStorage[
+											'rss-article-list-scroll-position'
+										] = this.contentsEl.current.scrollTop;
+									}}
+									{...article}
+								/>
+							);
 						})}
 
 						{this.state.reachedEndOfFeed ? (
@@ -283,7 +303,9 @@ class RSSArticleList extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="list content">{rightContents}</div>
+					<div className="list content" ref={this.contentsEl}>
+						{rightContents}
+					</div>
 				</React.Fragment>
 			);
 		}

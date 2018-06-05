@@ -12,6 +12,9 @@ class ArticleListItem extends React.Component {
 			<div
 				className="list-item"
 				onClick={() => {
+					if (this.props.onNavigation) {
+						this.props.onNavigation();
+					}
 					this.props.history.push(
 						`/rss/${this.props.rss._id}/articles/${this.props._id}`,
 					);
@@ -93,6 +96,7 @@ ArticleListItem.propTypes = {
 	images: PropTypes.shape({
 		og: PropTypes.string,
 	}),
+	onNavigation: PropTypes.func,
 	pinID: PropTypes.string,
 	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
