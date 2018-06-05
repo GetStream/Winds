@@ -16,10 +16,21 @@ class AllArticles extends React.Component {
 			cursor: 0,
 			reachedEndOfFeed: false,
 		};
+
+		this.contentsEl = React.createRef();
 	}
 	componentDidMount() {
 		this.getArticleFeed();
 		getPinnedArticles(this.props.dispatch);
+	}
+	componentWillReceiveProps() {
+		// scroll down to last saved position, then delete from localStorage
+		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
+		if (this.contentsEl.current && localStorage['all-article-list-scroll-position']) {
+			this.contentsEl.current.scrollTop =
+				localStorage['all-article-list-scroll-position'];
+			delete localStorage['all-article-list-scroll-position'];
+		}
 	}
 	getArticleFeed() {
 		getFeed(this.props.dispatch, 'article', this.state.cursor, 10);
@@ -31,16 +42,15 @@ class AllArticles extends React.Component {
 					<h1>All Articles</h1>
 				</div>
 
-				<div className="list content">
+				<div className="list content" ref={this.contentsEl}>
 					{this.props.articles.map(article => {
 						return (
 							<ArticleListItem
 								key={article._id}
-								pinArticle={() => {
-									this.props.pinArticle(article._id);
-								}}
-								unpinArticle={() => {
-									this.props.unpinArticle(article.pinID, article._id);
+								onNavigation={() => {
+									localStorage[
+										'all-article-list-scroll-position'
+									] = this.contentsEl.current.scrollTop;
 								}}
 								{...article}
 							/>
@@ -48,10 +58,10 @@ class AllArticles extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{'That\'s it! No more articles here.'}</p>
+							<p>{"That's it! No more articles here."}</p>
 							<p>
 								{
-									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 								}
 							</p>
 						</div>
@@ -87,8 +97,6 @@ AllArticles.defaultProps = {
 AllArticles.propTypes = {
 	articles: PropTypes.arrayOf(PropTypes.shape({})),
 	dispatch: PropTypes.func.isRequired,
-	pinArticle: PropTypes.func,
-	unpinArticle: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => {
