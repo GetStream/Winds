@@ -11,233 +11,118 @@ import logger from '../utils/logger';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
-exports.get = (req, res) => {
+async function getUserFeed(req, res) {
 	const params = req.params || {};
 	const query = req.query || {};
 
-	const q = { user: params.userId };
+	try {
+		const shares = await Share.find({
+			user: params.userId,
+			flags: { $lte: 5 }
+		}).sort({ createdAt: 'desc' });
 
-	if (query.type === 'user') {
-		async.parallel(
-			[
-				cb => {
-					Share.find(Object.assign({}, q, { flags: { $lte: 5 } }))
-						.sort({ createdAt: 'desc' })
-						.then(shares => {
-							async.mapLimit(
-								shares,
-								shares.length,
-								(share, cb) => {
-									Like.findOne({
-										share: share._id,
-										user: params.userId,
-									})
-										.lean()
-										.then(like => {
-											share = share.toObject();
-											if (like) {
-												share.liked = true;
-											} else {
-												share.liked = false;
-											}
-											share.type = 'share';
-											cb(null, share);
-										})
-										.catch(err => {
-											cb(err);
-										});
-								},
-								(err, results) => {
-									if (err) {
-										return cb(err);
-									}
-									cb(null, results);
-								},
-							);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-			],
-			(err, results) => {
-				if (err) {
-					logger.error({err});
-					return res.status(422).send(err.errors);
-				}
+		const enriched = await Promise.all(shares.map(async share => {
+			const like = await Like.findOne({
+				share: share._id,
+				user: params.userId,
+			}).lean();
+			return Object.assign(share.toObject(), { liked: !!like, type: 'share' });
+		}));
 
-				res.json(
-					[].concat(
-						...results[0].filter(val => {
-							return val;
-						}),
-					),
-				);
-			},
-		);
-	} else if (query.type === 'timeline') {
-		let shares = [];
-		let episodes = [];
-		let articles = [];
-
-		client
-			.feed('timeline', params.userId)
-			.get({ limit: 10 })
-			.then(activities => {
-				async.mapLimit(
-					activities.results,
-					activities.results.length,
-					(activity, cb) => {
-						let id = activity.foreign_id.split(':')[1];
-						let collection = activity.foreign_id.split(':')[0];
-
-						if (collection === 'shares') {
-							Share.findById(id)
-								.then(share => {
-									if (!share) {
-										return cb(null);
-									}
-
-									share = share.toObject();
-									share.type = 'share';
-
-									Like.findOne({
-										share: share._id,
-										user: params.userId,
-									})
-										.lean()
-										.then(like => {
-											if (like) {
-												share.liked = true;
-											} else {
-												share.liked = false;
-											}
-
-											shares.push(share);
-											cb(null);
-										})
-										.catch(err => {
-											cb(err);
-										});
-								})
-								.catch(err => {
-									cb(err);
-								});
-						} else if (collection === 'articles') {
-							Article.findById(id)
-								.then(article => {
-									if (!article) {
-										return cb(null);
-									}
-
-									article = article.toObject();
-									article.type = 'article';
-
-									articles.push(article);
-									cb(null);
-								})
-								.catch(err => {
-									cb(err);
-								});
-						} else if (collection === 'episodes') {
-							Episode.findById(id)
-								.then(episode => {
-									if (!episode) {
-										return cb(null);
-									}
-
-									episode = episode.toObject();
-									episode.type = 'episode';
-
-									episodes.push(episode);
-									cb(null);
-								})
-								.catch(err => {
-									cb(err);
-								});
-						} else {
-							cb(null);
-						}
-					},
-					err => {
-						if (err) {
-							logger.error({err});
-							return res.status(422).send(err.errors);
-						}
-
-						const timeline = [
-							[].concat(
-								...shares.filter(val => {
-									return val;
-								}),
-							),
-							[].concat(
-								...articles.filter(val => {
-									return val;
-								}),
-							),
-							[].concat(
-								...episodes.filter(val => {
-									return val;
-								}),
-							),
-						];
-
-						const merged = [].concat(timeline[0], timeline[1], timeline[2]);
-						const sorted = merged.sort((a, b) => {
-							return b.createdAt - a.createdAt;
-						});
-
-						res.json(sorted);
-					},
-				);
-			})
-			.catch(err => {
-				logger.error({err});
-				res.status(500).send(err);
-			});
-	} else if (query.type === 'article') {
-		let limit = query.per_page || 10;
-		let offset = query.page * limit || 0;
-		client
-			.feed('user_article', params.userId)
-			.get({ limit, offset })
-			.then(response => {
-				return Promise.all(
-					response.results.map(activity => {
-						return Article.findById(activity.foreign_id.split(':')[1]);
-					}),
-				);
-			})
-			.then(enriched => {
-				res.json(enriched);
-			})
-			.catch(err => {
-				logger.error({err});
-				res.status(500).send(err);
-			});
-	} else if (query.type === 'episode') {
-		let limit = query.per_page || 10;
-		let offset = query.page * limit || 0;
-
-		client
-			.feed('user_episode', params.userId)
-			.get({ limit, offset })
-			.then(response => {
-				return Promise.all(
-					response.results.map(activity => {
-						return Episode.findById(activity.foreign_id.split(':')[1]);
-					}),
-				);
-			})
-			.then(enrichedEpisodes => {
-				res.json(enrichedEpisodes);
-			})
-			.catch(err => {
-				logger.error({err});
-				res.status(500).send(err);
-			});
-	} else {
-		res.status(400).send('Request must include "type" of user, timeline, article or episode');
+		res.json(enriched);
+	} catch (err) {
+		logger.error({err});
+		res.status(422).send(err.errors);
 	}
+}
+
+async function getTimelineFeed(req, res) {
+	const params = req.params || {};
+	const query = req.query || {};
+	const  shares = [];
+	const  episodes = [];
+	const  articles = [];
+
+	try {
+		const activities = await client.feed('timeline', params.userId).get({ limit: 10 });
+
+		try {
+			for (const activity of activities.results) {
+				const id = activity.foreign_id.split(':')[1];
+				const collection = activity.foreign_id.split(':')[0];
+
+				if (collection === 'shares') {
+					const share = await Share.findById(id);
+					if (!share)
+						continue;
+
+					const like = await Like.findOne({
+						share: share._id,
+						user: params.userId,
+					}).lean();
+					shares.push(Object.assign(share.toObject(), { liked: !!like, type: 'share' }));
+				} else if (collection === 'articles') {
+					const article = await Article.findById(id);
+					if (!article)
+						continue;
+
+					articles.push(Object.assign(article.toObject(), { type: 'article' }));
+				} else if (collection === 'episodes') {
+					const episode = await Article.findById(id);
+					if (!episode)
+						continue;
+
+					episodes.push(Object.assign(episode.toObject(), { type: 'article' }));
+				}
+			}
+		} catch (err) {
+			logger.error({err});
+			return res.status(422).send(err.errors);
+		}
+
+		const timeline = shares.concat(articles).concat(episodes).sort((a, b) => {
+			return b.createdAt - a.createdAt;
+		});
+
+		res.json(timeline);
+	} catch (err) {
+		logger.error({err});
+		res.status(500).send(err);
+	}
+}
+
+async function getContentFeed(req, res, type, model) {
+	const params = req.params || {};
+	const query = req.query || {};
+	const limit = query.per_page || 10;
+	const offset = query.page * limit || 0;
+
+	try {
+		const response = await client.feed(`user_${type}`, params.userId).get({ limit, offset })
+		const enriched = await Promise.all(response.results.map(activity => {
+		    return model.findById(activity.foreign_id.split(':')[1]);
+		}));
+
+		res.json(enriched);
+	} catch(err) {
+		logger.error({err});
+		res.status(500).send(err);
+	}
+}
+
+exports.get = (req, res, _) => {
+	const params = req.params || {};
+	const query = req.query || {};
+
+	switch (query.type) {
+		case 'user':
+			return getUserFeed(req, res);
+		case 'timeline':
+			return getTimelineFeed(req, res);
+		case 'article':
+			return getContentFeed(req, res, 'article', Article)
+		case 'episode':
+			return getContentFeed(req, res, 'episode', Episode)
+	}
+	res.status(400).send('Request must include "type" of user, timeline, article or episode');
 };
