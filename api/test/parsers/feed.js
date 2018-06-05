@@ -4,7 +4,7 @@ import { getTestFeed } from '../utils';
 import { ReadFeedStream, ParseFeedPosts, ParsePodcastPosts } from '../../src/parsers/feed';
 
 describe('Parsing', () => {
-	describe('Feed', () => {
+	describe('RSS', () => {
 		it('should parse TechCrunch', async () => {
 			const tc = getTestFeed('techcrunch');
 

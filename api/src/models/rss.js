@@ -105,9 +105,10 @@ RSSSchema.plugin(timestamps, {
 	updatedAt: { index: true },
 });
 
-RSSSchema.methods.searchDocument = async function() {
+RSSSchema.methods.searchDocument = function() {
 	return {
 		_id: this._id,
+		objectID: this._id,
 		categories: 'RSS',
 		description: this.title,
 		image: this.favicon,

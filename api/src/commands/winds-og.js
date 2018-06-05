@@ -1,3 +1,6 @@
+import '../loadenv';
+import '../utils/db';
+
 import program from 'commander';
 import chalk from 'chalk';
 import logger from '../utils/logger';
@@ -67,4 +70,10 @@ async function main() {
 	}
 }
 
-main();
+main().then(() => {
+	console.info('done');
+	process.exit(0);
+}).catch(err => {
+	console.info(`failed with err ${err}`);
+	process.exit(1);
+});

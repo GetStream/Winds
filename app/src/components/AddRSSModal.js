@@ -50,7 +50,7 @@ class AddRSSModal extends React.Component {
 			baseURL: config.api.url,
 			data: fd,
 			headers: {
-				'Authorization': `Bearer ${localStorage['jwt']}`,
+				Authorization: `Bearer ${localStorage['jwt']}`,
 				'Content-Type': 'multipart/form-data',
 			},
 			method: 'POST',
@@ -98,7 +98,7 @@ class AddRSSModal extends React.Component {
 			baseURL: config.api.url,
 			data: { feedUrl: this.state.rssInputValue },
 			headers: {
-				'Authorization': `Bearer ${localStorage['jwt']}`,
+				Authorization: `Bearer ${localStorage['jwt']}`,
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
@@ -242,47 +242,6 @@ class AddRSSModal extends React.Component {
 						Enter a valid RSS feed url and we will add it to Winds.
 					</div>
 					<div className="error-message">{this.state.errorMessage}</div>
-					<div className="expander-section">
-						<div
-							className="expander-button"
-							onClick={() => {
-								this.setState({
-									opmlSectionExpanded: !this.state.opmlSectionExpanded,
-								});
-							}}
-						>
-							<span>Import OPML</span>
-							<i
-								className={`fas fa-chevron-${
-									this.state.opmlSectionExpanded ? 'up' : 'down'
-								}`}
-							/>
-							<div className="expander-bar" />
-						</div>
-						{this.state.opmlSectionExpanded ? (
-							<div className="expander-content">
-								<div className="input-box">
-									<Dropzone
-										className="dropzone"
-										onDrop={acceptedFiles => {
-											this.setState({
-												file: acceptedFiles[0],
-											});
-										}}
-									>
-										{dropzoneContents}
-									</Dropzone>
-								</div>
-								<div className="info">
-									Upload a valid RSS OPML file and we will add it to
-									Winds.
-								</div>
-								<div className="error-message">
-									{this.state.errorMessage}
-								</div>
-							</div>
-						) : null}
-					</div>
 					<div className="buttons">
 						{this.state.opmlSectionExpanded ? (
 							<button

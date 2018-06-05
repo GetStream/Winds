@@ -2,7 +2,6 @@ import strip from 'strip';
 import sanitizeHtml from 'sanitize-html';
 import entities from 'entities';
 import moment from 'moment';
-import request from 'request';
 import normalize from 'normalize-url';
 import FeedParser from 'feedparser';
 
@@ -23,12 +22,12 @@ const statsd = getStatsDClient();
 const maxContentLengthBytes = 1024 * 1024 * 5;
 
 
-export async function ParsePodcast(podcastUrl) {
+export async function ParsePodcast(podcastUrl, limit=1000) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
 	let t0 = new Date();
 	let stream = await ReadFeedURL(podcastUrl);
 	let posts = await ReadFeedStream(stream);
-	let podcastResponse = ParsePodcastPosts(posts);
+	let podcastResponse = ParsePodcastPosts(posts, limit);
 	statsd.timing('winds.parsers.podcast.finished_parsing', new Date() - t0);
 	return podcastResponse;
 }
@@ -46,21 +45,21 @@ export async function ParseFeed(feedURL) {
 }
 
 // Parse the posts and add our custom logic
-export function ParsePodcastPosts(posts) {
+export function ParsePodcastPosts(posts, limit=1000) {
 	let podcastContent = { episodes: [] };
 	let i = 0;
 
-	for (let post of posts.slice(0, 1000)) {
+	for (let post of posts.slice(0, limit)) {
 		i++;
 		let url = post.link;
 		if (!url) {
-			url = post.enclosures ? post.enclosures[0].url : post.guid;
+			url = post.enclosures && post.enclosures[0] ? post.enclosures[0].url : post.guid;
 		}
 		let image = post.image && post.image.url;
 		let episode = new Episode({
 			description: strip(post.description).substring(0, 280),
 			duration: post.duration,
-			enclosure: post.enclosures && post.enclosures[0].url,
+			enclosure: post.enclosures && post.enclosures[0] && post.enclosures[0].url,
 			images: { og: image },
 			link: post.link,
 			publicationDate:
@@ -77,7 +76,7 @@ export function ParsePodcastPosts(posts) {
 	if (posts) {
 		podcastContent.title = posts[0].meta.title;
 		podcastContent.link = posts[0].meta.link;
-		podcastContent.image = posts[0].meta.image;
+		podcastContent.image = posts[0].meta.image && posts[0].meta.image.url;
 		podcastContent.description = posts[0].meta.description;
 	}
 	return podcastContent;
@@ -109,7 +108,7 @@ export async function ReadURL(url) {
 	default:
 		break;
 	}
-	return response
+	return response;
 }
 
 // Read the given feed URL and return a Stream
