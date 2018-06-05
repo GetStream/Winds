@@ -16,6 +16,19 @@ import logger from '../src/utils/logger';
 let mockClient = null;
 const mockFeeds = {};
 
+export function createMockFeed(group, id) {
+	const mock = {
+		slug: group,
+		userId: id,
+		id: group + ':' + id,
+	};
+    for (const method of ['follow', 'addActivity', 'get']) {
+        mock[method] = sinon.spy(sinon.stub().returns(Promise.resolve()));
+    }
+	mockFeeds[group + ':' + id] = mock;
+	return mock;
+}
+
 export function getMockFeed(group, id) {
 	return mockFeeds[group + ':' + id];
 }
@@ -23,15 +36,7 @@ export function getMockFeed(group, id) {
 function setupMocks() {
 	mockClient = sinon.createStubInstance(StreamClient);
 	mockClient.feed.callsFake((group, id) => {
-		const mock = mockFeeds[group + ':' + id] || {
-			slug: group,
-			userId: id,
-			id: group + ':' + id,
-			follow: sinon.spy(sinon.stub().returns(Promise.resolve())),
-			addActivity: sinon.spy(sinon.stub().returns(Promise.resolve())),
-		};
-		mockFeeds[group + ':' + id] = mock;
-		return mock;
+		return mockFeeds[group + ':' + id] || createMockFeed(group, id);
 	});
 }
 

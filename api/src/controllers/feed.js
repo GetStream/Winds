@@ -234,7 +234,7 @@ exports.get = (req, res) => {
 				res.json(enrichedEpisodes);
 			})
 			.catch(err => {
-				logger.error(err);
+				logger.error({err});
 				res.status(500).send(err);
 			});
 	} else {
