@@ -7,11 +7,11 @@ exports.list = async (req, res) => {
 	const query = req.query || {};
 	let episodes = [];
 	if (query.type === 'recommended') {
-		let episodeIds = personalization({
+		let episodeIds = await personalization({
 			userId: req.user.sub,
 			endpoint: '/winds_episode_recommendations',
 		});
-		episodes = await Episode.find({id: {$in: episodeIds}, valid: true}).find().exec();
+		episodes = await Episode.find({_id: {$in: episodeIds}}).find().exec();
 	} else {
 		episodes = await Episode.apiQuery(req.query);
 	}

@@ -3,6 +3,8 @@ import api from '../../src/server';
 import { loadFixture } from '../../src/utils/test';
 import Article from '../../src/models/article';
 import { withLogin } from '../utils.js';
+import nock from 'nock';
+import config from '../../src/config';
 
 describe('Article controller', () => {
 	let article;
@@ -41,4 +43,26 @@ describe('Article controller', () => {
 			expect(response).to.have.status(200);
 		});
 	});
+
+	describe('list from personalization', () => {
+		after(function () {
+			nock.cleanAll();
+		});
+
+		it('should return the list of articles', async () => {
+			nock(config.stream.baseUrl)
+				.get(/winds_article_recommendations/)
+				.reply(200, { results: [{foreign_id:`article:${article.id}`}] });
+
+			const response = await withLogin(
+				request(api).get('/articles').query({
+					type: 'recommended',
+				})
+			);
+			expect(response).to.have.status(200);
+			expect(response.body.length).to.be.at.least(1);
+			expect(response.body[0].url).to.eq(article.url);
+		});
+	});
+
 });
