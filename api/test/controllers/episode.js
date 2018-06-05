@@ -5,11 +5,13 @@ import Episode from '../../src/models/episode';
 import { withLogin } from '../utils.js';
 import nock from 'nock';
 import config from '../../src/config';
+import {reset} from "../utils";
 
 describe('Episode controller', () => {
 	let episode;
 
 	before(async () => {
+		await reset();
 		await loadFixture('initialData');
 		episode = await Episode.findOne({});
 		expect(episode).to.not.be.null;
