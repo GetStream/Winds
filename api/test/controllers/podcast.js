@@ -60,7 +60,7 @@ describe('Podcast controller', () => {
 	describe('add Podcast', () => {
 		let podcast;
 
-		it('should create podcast from thetwentyminutevc.libsyn.com/rss', async () => {
+		it.only('should create podcast from thetwentyminutevc.libsyn.com/rss', async () => {
 			const response = await withLogin(
 				request(api)
 					.post('/podcasts')

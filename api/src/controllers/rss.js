@@ -57,12 +57,13 @@ exports.post = async (req, res) => {
 		if (feedTitle.toLowerCase() === 'rss') {
 			feedTitle = foundRSS.site.title;
 		}
+		let feedUrl = normalizeUrl(feed.url)
 		let rss = await RSS.findOneAndUpdate(
-			{feedUrl: feed.url},
+			{feedUrl: feedUrl},
 			{
 				categories: 'RSS',
 				description: entities.decodeHTML(feed.title),
-				feedUrl: feed.url,
+				feedUrl: feedUrl,
 				images: {
 					favicon: foundRSS.site.favicon,
 				},
@@ -82,12 +83,9 @@ exports.post = async (req, res) => {
 		}
 	}
 
-	insertedFeeds.map(async f => {
-		await search(f.searchDocument());
-	});
-
 	let promises = []
 	insertedFeeds.map(f => {
+		promises.push(search(f.searchDocument()))
 		let rssScrapingPromise = asyncTasks.RssQueueAdd(
 			{
 				rss: f._id,
