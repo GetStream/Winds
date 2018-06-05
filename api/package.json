@@ -6,11 +6,16 @@
 				"watch": "nodemon start",
 				"build": "./build.sh",
 				"prettier": "prettier --config .prettierrc --write \"src/**/*.js\"",
-				"test": "NODE_ENV=test node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\"",
+				"test": "NODE_ENV=test node_modules/nyc/bin/nyc.js node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\"",
+				"coverage": "NODE_ENV=test node_modules/nyc/bin/nyc.js report --reporter=text-lcov > coverage.lcov && node_modules/codecov/bin/codecov",
 				"test_deep": "NODE_ENV=test node --stack_trace_limit=100 -r trace -r clarify node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\""
 		},
 		"bin": {
 				"winds": "src/commands/winds.js"
+		},
+		"nyc": {
+				"sourceMap": false,
+				"instrument": false
 		},
 		"author": [
 				{
@@ -98,6 +103,7 @@
 		"devDependencies": {
 				"babel-cli": "^6.26.0",
 				"babel-core": "^6.26.3",
+				"babel-plugin-istanbul": "^4.1.6",
 				"babel-plugin-shebang": "^0.0.0",
 				"babel-plugin-transform-async-generator-functions": "^6.24.1",
 				"babel-polyfill": "^6.26.0",
@@ -106,10 +112,12 @@
 				"chai": "^4.1.2",
 				"chai-http": "^4.0.0",
 				"clarify": "^2.1.0",
+				"codecov": "^3.0.2",
 				"flatted": "^0.2.2",
 				"mocha": "^5.2.0",
 				"mock-require": "^3.0.2",
 				"nock": "^9.3.0",
+				"nyc": "^12.0.2",
 				"prettier": "^1.13.4",
 				"prettierrc": "^0.0.0-5",
 				"redis": "^2.8.0",
