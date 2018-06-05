@@ -21,21 +21,19 @@ program
 	.parse(process.argv);
 
 async function main() {
-	// Note the weird rss-> Article mapping
-	let schemas = { rss: Article, episode: Episode, podcast: Podcast };
-	let fieldMap = { rss: 'url', episode: 'link', podcast: 'url' };
+	let schemas = { article: Article, rss: RSS, episode: Episode, podcast: Podcast };
+	let fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
 		let instances = await schema.find({});
 		let field = fieldMap[contentType];
 		logger.info(
-			`found ${instances.length} for ${contentType} with url field ${field}`,
+			`Found ${instances.length} for ${contentType} with url field ${field}`,
 		);
 		let chunkSize = 1000;
 
 		for (let i = 0, j = instances.length; i < j; i += chunkSize) {
 			let chunk = instances.slice(i, i + chunkSize);
-			logger.info(`handling chunk of size ${chunk.length}`);
 			let promises = [];
 			for (const instance of chunk) {
 				if (!instance.images || !instance.images.og) {
@@ -52,11 +50,10 @@ async function main() {
 					promises.push(promise);
 				}
 			}
-			logger.info(`scheduled ${promises.length} for og scraping, waiting now`);
 			let results = await Promise.all(promises);
 		}
 
-		logger.info(`completed for type ${contentType} with field ${field}`);
+		logger.info(`Completed for type ${contentType} with field ${field}`);
 	}
 }
 

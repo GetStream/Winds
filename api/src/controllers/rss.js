@@ -86,8 +86,9 @@ exports.post = async (req, res) => {
 		await search(f.searchDocument());
 	});
 
-	insertedFeeds.map(async f => {
-		await asyncTasks.RssQueueAdd(
+	let promises = []
+	insertedFeeds.map(f => {
+		let rssScrapingPromise = asyncTasks.RssQueueAdd(
 			{
 				rss: f._id,
 				url: f.feedUrl,
@@ -97,8 +98,23 @@ exports.post = async (req, res) => {
 				removeOnComplete: true,
 				removeOnFail: true,
 			},
-		);
+		)
+		promises.push(rssScrapingPromise)
+		if (!f.images.og && f.url) {
+			let ogPromise = asyncTasks.OgQueueAdd(
+				{
+					url: f.url,
+					type: 'rss',
+				},
+				{
+					removeOnComplete: true,
+					removeOnFail: true,
+				},
+			);
+			promises.push(ogPromise)
+		}
 	});
+	await Promise.all(promises)
 
 	res.status(201);
 	res.json(insertedFeeds);

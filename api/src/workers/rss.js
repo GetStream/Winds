@@ -101,7 +101,7 @@ async function _handleRSS(job) {
 			updatedArticles.map(article => {
 				asyncTasks.OgQueueAdd(
 					{
-						type: 'rss',
+						type: 'article',
 						url: article.url,
 					},
 					{
