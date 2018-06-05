@@ -292,6 +292,44 @@ pm2 logs
 cd app && yarn start
 ```
 
+### Running tests
+
+Winds API server uses:
+
+* [Mocha](https://mochajs.org) as testing framework
+* [Chai](https://chaijs.org) as assertion library
+* [Sinon](https://sinonjs.org) as mocking library
+* [nock](https://github.com/node-nock/nock) as HTTP mocking library
+* [mock-require](https://github.com/boblauer/mock-require) as module mocking library
+
+Tests are located in [`api/test` folder](https://github.com/GetStream/Winds/tree/master/api/test).
+
+File structure is intentionally mirroring files in `api/src` to simplify matching tests to tested code.
+
+To run tests:
+
+```
+cd api && yarn run test
+```
+
+To run tests with extended stack traces (useful when debugging async issues):
+
+```
+cd api && yarn run test_deep
+```
+
+#### Adding new tests
+
+Add your code to a file in `api/test` folder (preferably mirroring existing file from `api/src` folder).
+
+Refer to [Mocha documentation](https://mochajs.org/#getting-started) for examples of using BDD-like DSL for writing tests.
+
+Modules are mocked in [`api/test-entry.js`](https://github.com/GetStream/Winds/blob/master/api/test-entry.js#L21L27) as mocks have to be installed before any modules are loaded.
+
+Fixtures are loaded via [`loadFixture`](https://github.com/GetStream/Winds/blob/master/api/test/utils.js#L59L101) function from [`api/test/fixtures` folder](https://github.com/GetStream/Winds/tree/master/api/test/fixtures)
+
+Various utility functions are provided in [`api/test/util.js`](https://github.com/GetStream/Winds/blob/master/api/test/utils.js) (See other tests for expamles of usage).
+
 ### Building a Production Version
 
 Build a production version of Winds by running:
