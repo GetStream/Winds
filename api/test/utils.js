@@ -77,7 +77,8 @@ export async function loadFixture(...fixtures) {
 					//XXX: convert things that look like ObjectID to actual ObjectID
 					//     instances to enable mongo references
 					for (const key in data) {
-						if (mongoose.Types.ObjectId.isValid(data[key])) {
+						//XXX: reject number attributes (see bug: https://jira.mongodb.org/browse/NODE-1146)
+						if (typeof data[key] !== 'number' && mongoose.Types.ObjectId.isValid(data[key])) {
 							data[key] = mongoose.Types.ObjectId(data[key]);
 						}
 					}
