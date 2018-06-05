@@ -1,18 +1,13 @@
-import async from 'async';
 import stream from 'getstream';
-
 import Pin from '../models/pin';
-
 import config from '../config';
-import logger from '../utils/logger';
-import events from '../utils/events';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
 
-	if (query.type == 'episode' || query.type == 'article') {
+	if (query.type === 'episode' || query.type === 'article') {
 		let obj = {};
 		obj[query.type] = { $exists: true };
 
@@ -47,7 +42,7 @@ exports.post = async (req, res) => {
 	} else if (data.hasOwnProperty('episode')) {
 		type = 'episode';
 	} else {
-		return res.status(422).send(err);
+		return res.status(422);
 	}
 
 	let obj = {
@@ -57,13 +52,12 @@ exports.post = async (req, res) => {
 	obj[type] = { $exists: true };
 	obj[type] = data[type];
 
-  	pin = await Pin.findOne(obj);
+	pin = await Pin.findOne(obj);
 
 	if (pin) {
 		return res.sendStatus(409);
 	} else {
 		pin = await Pin.create(data);
-
 		await client
 			.feed('user', pin.user)
 			.addActivity({
@@ -73,7 +67,6 @@ exports.post = async (req, res) => {
 				foreign_id: `pins:${pin._id}`,
 				time: pin.createdAt,
 			});
-
 		res.json(pin);
 	}
 };

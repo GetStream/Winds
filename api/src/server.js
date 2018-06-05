@@ -11,6 +11,7 @@ import config from './config';
 import logger from './utils/logger';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
 import User from './models/user';
+import { AnalyticsMiddleware } from './utils/events/analytics';
 
 const api = express();
 
@@ -64,6 +65,8 @@ api.use(async (req, res, next) => {
 	}
 	next();
 });
+
+api.use(AnalyticsMiddleware);
 
 api.use((err, req, res, next) => {
 	if (err.name === 'UnauthorizedError') {

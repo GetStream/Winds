@@ -1,4 +1,4 @@
-import {ReadFeedURL, ReadFeedStream} from './feed.js'
+import {ReadFeedURL, ReadFeedStream} from './feed.js';
 
 // determines if the given feedStream is a podcast or not
 export async function IsPodcastStream(feedStream) {
@@ -19,5 +19,5 @@ export async function IsPodcastStream(feedStream) {
 export async function IsPodcastURL(feedURL) {
 	let feedStream = await ReadFeedURL(feedURL);
 	let isPodcast = await IsPodcastStream(feedStream);
-	return isPodcast
+	return isPodcast;
 }

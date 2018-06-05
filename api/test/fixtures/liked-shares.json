@@ -1,0 +1,85 @@
+[{
+    "RSS": [
+        {
+            "_id"     : "5b0ad37626dc3db38194fa84",
+            "featured": true,
+            "title"   : "RSS feed #1",
+            "feedUrl" : "http://google.com"
+        },
+        {
+            "_id"     : "5b0ad37626dc3db38194fa85",
+            "featured": true,
+            "title"   : "RSS feed #2",
+            "feedUrl" : "http://bing.com"
+        }
+    ],
+    "Podcast": [
+        {
+            "_id"     : "5b0ad37626dc3db38194fa86",
+            "featured": true,
+            "title"   : "Podcast #1",
+            "feedUrl" : "http://google.com"
+        },
+        {
+            "_id"     : "5b0ad37626dc3db38194fa87",
+            "featured": true,
+            "title"   : "Podcast #2",
+            "feedUrl" : "http://bing.com"
+        }
+    ]
+}, {
+    "Article": [
+        {
+            "_id"  : "5b0ad37626dc3db38194fa85",
+            "rss"  : "5b0ad37626dc3db38194fa84",
+            "title": "RSS feed article #1",
+            "url"  : "http://google.com/1"
+        },
+        {
+            "_id"  : "5b0ad37626dc3db38194fa90",
+            "rss"  : "5b0ad37626dc3db38194fa84",
+            "title": "RSS feed article #2",
+            "url"  : "http://google.com/2"
+        }
+    ],
+    "Episode": [
+        {
+            "_id"  : "5b0ad37626dc3db38194fa87",
+            "podcast": "5b0ad37626dc3db38194fa86",
+            "title"  : "Podcast episode #1",
+            "url"    : "http://google.com"
+        }
+    ]
+}, {
+    "Share": [
+        {
+            "_id"    : "5b0ad37626dc3db38194fa88",
+            "user"   : "5b0f306d8e147f10f16aceaf",
+            "article": "5b0ad37626dc3db38194fa85",
+            "flags"  : 0
+        },
+        {
+            "_id"    : "5b0ad37626dc3db38194fa89",
+            "user"   : "5b0f306d8e147f10f16aceaf",
+            "episode": "5b0ad37626dc3db38194fa87",
+            "flags"  : 0
+        },
+        {
+            "_id"    : "5b0ad37626dc3db38194fa91",
+            "user"   : "5b0f306d8e147f10f16aceaf",
+            "article": "5b0ad37626dc3db38194fa90",
+            "flags"  : 0
+        }
+    ]
+}, {
+    "Like": [
+        {
+            "user" : "5b0f306d8e147f10f16aceaf",
+            "share": "5b0ad37626dc3db38194fa88"
+        },
+        {
+            "user" : "5b0f306d8e147f10f16aceaf",
+            "share": "5b0ad37626dc3db38194fa89"
+        }
+    ]
+}]

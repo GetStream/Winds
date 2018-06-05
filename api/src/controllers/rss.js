@@ -15,7 +15,9 @@ exports.list = async (req, res) => {
 	let feeds = [];
 
 	if (query.type === 'recommended') {
-		let recommendedRssIds = await personalization({ endpoint: '/winds_rss_recommendations', userId: req.user.sub })
+		let recommendedRssIds = await personalization({
+			endpoint: '/winds_rss_recommendations', userId: req.user.sub,
+		});
 		feeds = await RSS.find({_id: {$in: recommendedRssIds}});
 	} else {
 		feeds = await RSS.apiQuery(req.query);

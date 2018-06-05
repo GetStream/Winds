@@ -24,16 +24,15 @@
 					"Lifehacks",
 					"Marketing"
 				],
-				"username": "testuser12345",
-				"email": "test+test@test.com",
-				"password":
-					"$2a$10$9UaUjg8V01bWLfx1L6FCl.RWMQoNnxayX3Pl528V4XYwWrV/Uw/VW",
-				"name": "Test User"
+				"email": "valid@email.com",
+				"name": "Valid Name",
+				"username": "valid",
+				"password": "valid_password"
 			}
 		],
 		"RSS": [
 			{
-				"_id": "5b0ad0baf6f89574a6388879",
+				"_id": "5b0ad0baf6f89574a638887a",
 				"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
 				"description": "Dorkly: Comics",
 				"categories": "RSS",
@@ -55,7 +54,7 @@
 				"__v": 0
 			},
 			{
-				"_id": "5b0ad0baf6f89574a638887d",
+				"_id": "5b0ad0baf6f89574a638887e",
 				"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
 				"description": "BILDblog",
 				"categories": "RSS",
@@ -125,8 +124,8 @@
 		],
 		"Article": [
 			{
-				"_id": "5b0ad37226dc3db38194e5eb",
-				"rss": "5b0ad0baf6f89574a6388879",
+				"_id": "5b0ad37226dc3db38194e5ec",
+				"rss": "5b0ad0baf6f89574a638887a",
 				"url":
 					"http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war",
 				"__v": 0,
@@ -148,8 +147,8 @@
 				"enclosures": []
 			},
 			{
-				"_id": "5b0ad37226dc3db38194e69a",
-				"rss": "5b0ad0baf6f89574a638887d",
+				"_id": "5b0ad37226dc3db38194e69b",
+				"rss": "5b0ad0baf6f89574a638887e",
 				"url": "http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk",
 				"__v": 0,
 				"commentUrl": null,

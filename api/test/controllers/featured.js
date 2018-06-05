@@ -1,14 +1,13 @@
 import { expect, request } from 'chai';
+
 import { withLogin } from '../utils.js';
 import api from '../../src/server';
-import { loadFixture } from '../../src/utils/test';
-import {reset} from '../utils';
+import { dropDBs, loadFixture } from '../utils';
 
 describe('Features list', () => {
-
 	before(async () => {
-		await reset();
-		await loadFixture('example', 'featured');
+		await dropDBs();
+		await loadFixture('initial-data', 'featured');
 	});
 
 	describe('read list', () => {
@@ -22,5 +21,4 @@ describe('Features list', () => {
 			expect(types).to.include('rss', 'podcast');
 		});
 	});
-
 });

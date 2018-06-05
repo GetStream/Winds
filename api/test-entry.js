@@ -20,7 +20,7 @@ const mock = require('mock-require');
 
 mock('getstream', {
 	connect: sinon.stub().callsFake(() => {
-		return require('./src/utils/test').getMockClient();
+		return require('./test/utils').getMockClient();
 	}),
 });
 mock('./src/utils/events', sinon.spy(sinon.stub().returns(Promise.resolve())));

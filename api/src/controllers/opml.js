@@ -1,4 +1,3 @@
-import events from '../utils/events';
 import isUrl from 'url-regex';
 import opmlParser from 'node-opml-parser';
 import opmlGenerator from 'opml-generator';
@@ -17,8 +16,9 @@ import util from 'util';
 import config from '../config';
 import asyncTasks from '../asyncTasks';
 import { IsPodcastURL} from '../parsers/detect-type';
+import search from '../utils/search';
 
-
+import {TrackMetadata} from '../utils/events/analytics';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -29,7 +29,7 @@ exports.get = async (req, res) => {
 
 	let user = await User.find({ userID });
 	if (!user) {
-		return res.sendStatus(404)
+		return res.sendStatus(404);
 	}
 
 	let header = {
@@ -63,11 +63,10 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
 	const userID = req.user.sub;
 	const upload = Buffer.from(req.file.buffer).toString('utf8');
-	const data = Object.assign({}, req.body, { user: req.user.sub }) || {};
-
 	if (!upload) {
 		return res.sendStatus(422);
 	}
+
 	let feeds = await util.promisify(opmlParser)(upload);
 	let parsedFeeds = feeds.map(feed => {
 		feed.valid = true;
@@ -93,32 +92,30 @@ exports.post = async (req, res) => {
 	// follow the OPML feeds
 	let promises = [];
 	for (let feed of parsedFeeds) {
-			let promise = followOPMLFeed(feed, userID);
-			promises.push(promise);
+		let promise = followOPMLFeed(feed, userID);
+		promises.push(promise);
 	}
 	let statuses = await Promise.all(promises);
 
 	return res.json(statuses);
 };
 
-
-
 // Follow the OPML feed
 async function followOPMLFeed(feed, userID) {
 	let instance, schema, publicationType;
-	let result = {'feedUrl': feed.feedUrl, 'follow': {}}
-	let isPodcast
+	let result = {feedUrl: feed.feedUrl, follow: {}};
+	let isPodcast;
 	if (!feed.valid) {
-		result.error = `Invalid feedUrl ${feed.feedUrl}`
-		return result
+		result.error = `Invalid feedUrl ${feed.feedUrl}`;
+		return result;
 	}
 
 	try {
-		isPodcast = await IsPodcastURL(feed.feedUrl)
+		isPodcast = await IsPodcastURL(feed.feedUrl);
 	} catch(e) {
 		// just skip invalid feeds
-		result.error = `Error opening ${feed.feedUrl}`
-		return result
+		result.error = `Error opening ${feed.feedUrl}`;
+		return result;
 	}
 
 	if (isPodcast) {
@@ -144,17 +141,6 @@ async function followOPMLFeed(feed, userID) {
 			url: feed.url,
 		};
 		instance = await schema.create(data);
-		/*
-    let searchResponse = await search({
-        _id: instance._id,
-        categories: publicationType,
-        description: instance.title,
-        image: instance.favicon,
-        public: true,
-        publicationDate: instance.publicationDate,
-        title: instance.title,
-        type: publicationType,
-    })*/
 
 		// Scrape with high priority
 		let queueData = { url: instance.feedUrl };
@@ -169,31 +155,27 @@ async function followOPMLFeed(feed, userID) {
 			removeOnComplete: true,
 			removeOnFail: true,
 		});
+
+		await search(instance.searchDocument());
 	}
 	// always create the follow
 	// TODO: abstract this follow logic
 	let followData = { user: userID };
 	followData[publicationType] = instance._id;
 	let response = await Follow.findOneAndUpdate(followData, followData, {rawResult: true, upsert: true, new: true});
-	let follow = response.value
-	let instanceID = response.value._id
+	let follow = response.value;
+	let instanceID = response.value._id;
 
 	if (response.lastErrorObject.updatedExisting) {
 		await streamClient.feed('user_article', userID).follow(publicationType, instanceID);
 		await streamClient.feed('timeline', userID).follow(publicationType, instanceID);
 	}
 
-	let eventResponse = await events({
-		meta: {
-			data: {
-				[`${publicationType}:${instanceID}`]: {
-					description: instance.description,
-					title: instance.title,
-				},
-			},
-		},
+	await TrackMetadata(`${publicationType}:${instanceID}`, {
+		description: instance.description,
+		title: instance.title,
 	});
-	result.follow =follow
 
+	result.follow = follow;
 	return result;
 }
