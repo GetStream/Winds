@@ -16,6 +16,8 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+# Coverage report for codecov
+coverage.lcov
 
 .pyc
 __pycache__/
