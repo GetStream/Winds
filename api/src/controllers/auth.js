@@ -44,46 +44,34 @@ exports.signup = async (req, res, _) => {
         return res.status(422).send('Usernames must be alphanumeric.');
     }
 
-    try {
-        const exists = await User.findOne({
-            $or: [{ email: data.email.toLowerCase() }, { username: data.username }],
-        });
+      const exists = await User.findOne({
+          $or: [{ email: data.email.toLowerCase() }, { username: data.username }],
+      });
 
-        if (exists) {
-            res.status(409).send('A user already exists with that username or email.');
-            return;
-        }
+      if (exists) {
+          res.status(409).send('A user already exists with that username or email.');
+          return;
+      }
 
-        const user = await User.create(data);
+      const user = await User.create(data);
 
-        await client.feed('timeline', user._id).follow('user', user._id);
-        if (process.env.NODE_ENV === 'production') {
-            const obj = { meta: { data: {} } };
+      await client.feed('timeline', user._id).follow('user', user._id);
+      if (process.env.NODE_ENV === 'production') {
+          const obj = { meta: { data: {} } };
 
-            obj.meta.data[`user:${user._id}`] = {
-                email: user.email,
-            };
+          obj.meta.data[`user:${user._id}`] = {
+              email: user.email,
+          };
 
-            await events(obj);
-        }
-        await followInterest(user._id, { featured: true });
-        // follow all podcasts and rss feeds specified in "interests" payload
-        await Promise.all(data.interests.map(interest => {
-            return followInterest(user._id, { interest });
-        }));
+          await events(obj);
+      }
+      await followInterest(user._id, { featured: true });
+      // follow all podcasts and rss feeds specified in "interests" payload
+      await Promise.all(data.interests.map(interest => {
+          return followInterest(user._id, { interest });
+      }));
 
-        res.json({
-            _id: user._id,
-            email: user.email,
-            interests: user.interests,
-            jwt: jwt.sign({ email: user.email, sub: user._id }, config.jwt.secret),
-            name: user.name,
-            username: user.username,
-        });
-    } catch(err) {
-        logger.error(err);
-        res.status(500).send(err);
-    };
+      res.json(user.serializeMe());
 };
 
 exports.login = async (req, res, _) => {
@@ -105,14 +93,8 @@ exports.login = async (req, res, _) => {
                 return res.sendStatus(403);
             }
 
-            res.status(200).send({
-                _id: user._id,
-                email: user.email,
-                interests: user.interests,
-                jwt: jwt.sign({ email: user.email, sub: user._id }, config.jwt.secret),
-                name: user.name,
-                username: user.username,
-            });
+
+            res.status(200).send(user.serializeMe());
         } catch(err) {
             res.sendStatus(401);
         }
@@ -158,14 +140,7 @@ exports.resetPassword = async (req, res, _) => {
             return res.sendStatus(404);
         }
 
-        res.status(200).send({
-            _id: user._id,
-            email: user.email,
-            interests: user.interests,
-            jwt: jwt.sign( { email: user.email, sub: user._id }, config.jwt.secret),
-            name: user.name,
-            username: user.username,
-        });
+        res.status(200).send(user.serializeMe());
     } catch(err) {
         logger.error(err);
         res.sendStatus(422);

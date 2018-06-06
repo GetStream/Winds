@@ -5,6 +5,13 @@ import mongooseStringQuery from 'mongoose-string-query';
 
 import logger from '../utils/logger';
 import email from '../utils/email';
+import jwt from 'jsonwebtoken';
+import config from '../config';
+import stream from 'getstream';
+
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+
+
 
 export const UserSchema = new Schema(
 	{
@@ -149,5 +156,23 @@ UserSchema.plugin(timestamps, {
 UserSchema.plugin(mongooseStringQuery);
 
 UserSchema.index({ email: 1, username: 1 });
+
+UserSchema.methods.serializeMe = function serializeMe () {
+	let user = this
+	let serialized
+	//let timelineFeed = streamClient.feed('timeline', user._id)
+
+	serialized = {
+			_id: user._id,
+			email: user.email,
+			interests: user.interests,
+			jwt: jwt.sign( { email: user.email, sub: user._id }, config.jwt.secret),
+			name: user.name,
+			username: user.username,
+			streamTokens: {
+			},
+		}
+	return serialized
+};
 
 module.exports = exports = mongoose.model('User', UserSchema);

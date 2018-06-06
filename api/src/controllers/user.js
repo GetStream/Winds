@@ -122,7 +122,11 @@ exports.get = (req, res) => {
 				user.password = undefined;
 				user.recoveryCode = undefined;
 
-				res.json(user);
+				let serialized = user
+				if (user._id === req.user.sub) {
+					serialized = user.serializeMe()
+				}
+				res.json(serialized);
 			}
 		})
 		.catch(err => {
