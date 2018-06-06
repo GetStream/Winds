@@ -11,7 +11,7 @@ import personalization from '../utils/personalization';
 import followRssFeed from '../shared/followRssFeed';
 import followPodcast from '../shared/followPodcast';
 
-exports.list = (req, res) => {
+exports.list = async (req, res) => {
 	const params = req.params || {};
 	const query = req.query || {};
 
@@ -23,55 +23,56 @@ exports.list = (req, res) => {
 			endpoint: '/winds_user_recommendations',
 			userId: req.user.sub,
 		})
-			.then(users => {
-				if (!users.length) {
-					return res.status(200).json([]);
-				}
-				async.filter(
-					users,
-					(user, cb) => {
-						User.findOne({ _id: user, active: true })
-							.then(user => {
-								if (user) {
-									cb(null, true);
-								} else {
-									cb(null);
-								}
-							})
-							.catch(err => {
-								cb(err);
-							});
-					},
-					(err, results) => {
-						async.map(
-							results,
-							(user, cb) => {
-								User.findOne({ _id: user, active: true })
-									.select(
-										'name username email interests background url bio twitter',
-									)
-									.then(enriched => {
-										cb(null, enriched);
-									})
-									.catch(err => {
-										cb(err);
-									});
+		.then(users => {
+			if (!users.length) {
+				res.status(200).json([]);
+				return;
+			}
+			async.filter(
+				users,
+				(user, cb) => {
+					User.findOne({ _id: user, active: true })
+						.then(user => {
+							if (user) {
+								cb(null, true);
+							} else {
+								cb(null);
+							}
+						})
+						.catch(err => {
+							cb(err);
+						});
+				},
+				(err, results) => {
+					async.map(
+						results,
+						(user, cb) => {
+							User.findOne({ _id: user, active: true })
+								.select(
+									'name username email interests background url bio twitter',
+								)
+								.then(enriched => {
+									cb(null, enriched);
+								})
+								.catch(err => {
+									cb(err);
+								});
 							},
 							(err, results) => {
 								if (err) {
 									logger.error(err);
-									return res.status(422).send(err);
+									return res.status(422).send(err.errors);
 								} else {
 									res.json(results);
 								}
 							},
-						);
-					},
-				);
-			})
-			.catch(err => {
-				res.status(503).send(err.response.data);
-			});
+					);
+				},
+			);
+		})
+		.catch(err => {
+			res.status(503).send(err.response.data);
+		});
 	} else {
 		User.apiQuery(req.query)
 			.select('name email username bio url twitter background admin')
@@ -85,124 +86,92 @@ exports.list = (req, res) => {
 	}
 };
 
-exports.delete = (req, res) => {
-	// authorize access to the authenticated user model only
+exports.delete = async (req, res) => {
+	// Only permit access to the authenticated user's own model
 	if (req.params.userId !== req.user.sub) {
-		return res.status(401).send();
+		return res.sendStatus(403);
 	}
-
-	// check to see if the user exists
-	User.findById(req.params.userId)
-		.then(user => {
-			if (!user) {
-				// corner case
-				return res.sendStatus(404);
-			} else {
-				// remove the user document; 204 No Content confirms success
-				return User.findOneAndRemove({ _id: req.params.userId })
-					.then(user => res.status(204).send());
-			}
-		})
-		.catch(err => {
-			logger.error(err);
-			res.status(500).send(err);
-		});
+	await req.User.remove();
+	res.sendStatus(204);
 };
 
-exports.get = (req, res) => {
-	if (req.params.user == 'undefined') {
-		return res.sendStatus(404);
+exports.get = async (req, res) => {
+	const user = await User.findById(req.params.userId);
+	if (!user) {
+		res.status(404).send('User not found');
+		return;
 	}
 
-	User.findById(req.params.userId)
-		.then(user => {
-			if (!user) {
-				res.status(404).send('User not found');
-			} else {
-				user.password = undefined;
-				user.recoveryCode = undefined;
+	user.password = undefined;
+	user.recoveryCode = undefined;
 
-				res.json(user);
-			}
-		})
-		.catch(err => {
-			logger.error(err);
-			res.status(422).send(err.errors);
-		});
+	if (req.params.userId !== req.user.sub) {
+		user.email = undefined;
+	}
+
+	res.json(user);
 };
 
-exports.put = (req, res) => {
+exports.put = async (req, res) => {
+	// Only permit access to the authenticated user's own model
 	if (req.params.userId !== req.user.sub) {
-		return res.status(401).send();
+		res.status(403).send();
+		return;
 	}
 
 	const data = req.body || {};
 
 	if (data.email && !validator.isEmail(data.email)) {
-		return res.status(422).send('Invalid email address.');
+		res.status(422).send('Invalid email address.');
+		return;
 	}
 
 	if (data.username && !validator.isAlphanumeric(data.username)) {
-		return res.status(422).send('Usernames must be alphanumeric.');
+		res.status(422).send('Usernames must be alphanumeric.');
+		return;
 	}
 
-	// TODO: go back in and clean this up (@kenhoff)
-	// first, check to see if the user exists.
-	User.findById(req.params.userId)
-		.then(user => {
-			if (!user) {
-				return res.sendStatus(404);
-			} else {
-				// (this gets a little wonky, just because we have to verify the user exists before trying to set all the follow relationship stuff, and we also want to only do the following if they pass in interests as part of the PUT request)
-				// if you know of a better way to make this one work, feel free to refactor!
-				return new Promise(resolve => {
-					if (data.interests) {
-						// then, if interests are provided as part of the PUT request - if so, go through and follow all the rss feeds / podcasts listed under each one of the interests
-						// (in the future, can do a quick diff to see if some of the interests are previous interests, or if the rss feeds / podcasts have already been followed - but for now, just refollow all the "interest" rss feeds / podcasts if the "interests" key is provided)
+	let user = await User.findById(req.params.userId);
 
-						// for each "interest" provided:
-						return Promise.all([
-							data.interests.map(interest => {
-								// find all rss feeds and podcasts for that interest, and follow them
-								return Promise.all([
-									RSS.find({ interest }).then(rssFeeds => {
-										return Promise.all(
-											rssFeeds.map(rssFeed => {
-												return followRssFeed(req.params.userId, rssFeed._id);
-											}),
-										);
-									}),
-									Podcast.find({ interest }).then(podcasts => {
-										return Promise.all(
-											podcasts.map(podcast => {
-												return followPodcast(req.params.userId, podcast._id);
-											}),
-										);
-									}),
-								]);
-							}),
-						]).then(() => {
-							resolve();
-						});
-					} else {
-						resolve();
-					}
-				}).then(() => {
-					// update the user
-					User.findByIdAndUpdate({ _id: req.params.userId }, data, {
-						new: true,
-					}).then(user => {
-						// send back the user
-						user.password = undefined;
-						user.recoveryCode = undefined;
+	if (!user) {
+		res.sendStatus(404);
+		return;
+	}
 
-						return res.json(user);
-					});
-				});
-			}
-		})
-		.catch(err => {
-			logger.error(err);
-			res.status(500).send(err);
+	if (data.username) {
+		// check for existing username
+		let userByUsername = await User.findOne({username: data.username});
+		if (userByUsername && userByUsername.id != user.id) {
+			res.status(409).send('User with this username already exists');
+			return;
+		}
+	}
+	if (data.email) {
+		// check for existing email
+		let userByEmail = await User.findOne({email: data.email});
+		if (userByEmail && userByEmail.email != user.email) {
+			res.status(409).send('User with this email already exists');
+			return;
+		}
+	}
+
+	if (data.interests) {
+		await data.interests.map(interest => {
+			// find all rss feeds and podcasts for that interest, and follow them
+			RSS.find({ interest }).map(rssFeed => followRssFeed(req.params.userId, rssFeed._id));
+			Podcast.find({ interest }).map(podcast => followPodcast(req.params.userId, podcast._id));
 		});
+	}
+
+	// update the user
+	user = await User.findByIdAndUpdate(
+		{ _id: req.params.userId },
+		data,
+		{new: true}
+	);
+
+	// send back the user
+	user.password = undefined;
+	user.recoveryCode = undefined;
+	res.status(201).json(user);
 };
