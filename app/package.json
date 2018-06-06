@@ -1,7 +1,7 @@
 {
-  "name": "winds",
-  "version": "2.0.290",
-  "description": "https://getstream.io/winds",
+  "name": "Winds - Podcasts & RSS",
+  "version": "2.0.291",
+  "description": "Winds is a beatiful open source RSS Reader and Podcast app. Wind 2.0 was created using React/Redux/Node.\nFor more information, visit https://getstream.io/winds/.\nTo contribute or run your own version head over to Github: https://github.com/getstream/winds",
   "private": true,
   "author": "Winds Team <winds@getstream.io>",
   "license": "MIT",
