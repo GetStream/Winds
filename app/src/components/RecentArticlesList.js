@@ -7,9 +7,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class RecentArticlesList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.contentsEl = React.createRef();
+	}
 	componentDidMount() {
 		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
+	}
+	componentWillReceiveProps() {
+		// scroll down to last saved position, then delete from localStorage
+		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
+		if (this.contentsEl.current && localStorage['recent-article-list-scroll-position']) {
+			this.contentsEl.current.scrollTop =
+				localStorage['recent-article-list-scroll-position'];
+			delete localStorage['recent-article-list-scroll-position'];
+		}
 	}
 	render() {
 		return (
@@ -18,9 +31,19 @@ class RecentArticlesList extends React.Component {
 					<h1>Recent Articles</h1>
 				</div>
 
-				<div className="list content">
+				<div className="list content" ref={this.contentsEl}>
 					{this.props.articles.map(article => {
-						return <ArticleListItem key={article._id} {...article} />;
+						return (
+							<ArticleListItem
+								key={article._id}
+								onNavigation={() => {
+									localStorage[
+										'recent-article-list-scroll-position'
+									] = this.contentsEl.current.scrollTop;
+								}}
+								{...article}
+							/>
+						);
 					})}
 				</div>
 			</React.Fragment>

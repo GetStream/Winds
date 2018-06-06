@@ -25,7 +25,7 @@ export async function IsValidOGUrl(url) {
 }
 
 export async function ParseOGStream(pageStream, pageURL) {
-	let metaTagRe = /(<meta.*og:image".*>)/gm;
+	let metaTagRe = /(<meta[^>]*?og:image[^>]*?>)/gm;
 	let urlRe = /content="(.*?)"/gm;
 
 	var end = new Promise(function(resolve, reject) {

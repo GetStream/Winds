@@ -16,10 +16,7 @@ import {ParseOG, IsValidOGUrl} from '../parsers/og';
 
 import asyncTasks from '../asyncTasks';
 
-const schemaMap = {
-	episode: Episode,
-	podcast: Podcast,
-};
+const schemaMap = { article: Article, rss: RSS, episode: Episode, podcast: Podcast };
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker');
@@ -43,17 +40,22 @@ async function handleOg(job) {
 async function _handleOg(job) {
 	const url = job.data.url;
 	const jobType = job.data.type;
+	const update = job.data.update;
 
 	// Lookup the right type of schema: article, episode or podcast
-	let mongoSchema = schemaMap[jobType] || Article;
-	let field = job.data.type === 'episode' ? 'link' : 'url';
+	let mongoSchema = schemaMap[jobType];
+	if (!mongoSchema) {
+		logger.error(`couldnt find schema for jobtype ${jobType}`)
+		return
+	}
+	let field = jobType === 'episode' ? 'link' : 'url';
 
 	// if the instance hasn't been created yet, or it already has an OG image, ignore
 	let instance = await mongoSchema.findOne({ [field]: url });
 
 	if (!instance) {
 		return logger.warn(`instance not found for type ${jobType} with lookup ${field}: ${url}`);
-	} else if (instance.images.og && !job.data.update) {
+	} else if (instance.images.og && !update) {
 		return logger.info(
 			`instance already has an image ${
 				instance.images.og

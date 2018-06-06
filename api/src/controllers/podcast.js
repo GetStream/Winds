@@ -49,29 +49,32 @@ exports.post = async (req, res) => {
 
 	let insertedPodcasts = [];
 
-	for (var feed of foundPodcasts.feedUrls) {
-		let podcastContents = await ParsePodcast(feed.url, 1);
+	// insert at most 10 podcasts from the site
+	for (var feed of foundPodcasts.feedUrls.slice(0, 10)) {
+		let podcastContent = await ParsePodcast(feed.url, 1);
 		let title, url, images, description;
-		if (podcastContents) {
-			title = strip(podcastContents.title) || strip(feed.title);
-			url = podcastContents.link || foundPodcasts.site.url;
+		if (podcastContent) {
+			title = strip(podcastContent.title) || strip(feed.title);
+			url = podcastContent.link || foundPodcasts.site.url;
 			images = {
 				favicon: foundPodcasts.site.favicon,
-				og: podcastContents.image,
+				og: podcastContent.image,
 			};
-			description = podcastContents.description;
+			description = podcastContent.description;
 		} else {
 			title = strip(feed.title);
 			url = foundPodcasts.site.url;
 			images = { favicon: foundPodcasts.site.favicon };
 			description = '';
 		}
+		// normalize the feed url to prevent duplicates
+		let feedUrl = normalizeUrl(feed.url)
 		let rss = await Podcast.findOneAndUpdate(
-			{ feedUrl: feed.url },
+			{ feedUrl: feedUrl },
 			{
 				categories: 'podcast',
 				description: description,
-				feedUrl: feed.url,
+				feedUrl: feedUrl,
 				images: images,
 				lastScraped: new Date(0),
 				title: title,
@@ -89,8 +92,10 @@ exports.post = async (req, res) => {
 		}
 	}
 
-	insertedPodcasts.map(async p => {
-		await asyncTasks.PodcastQueueAdd(
+	let promises = []
+	insertedPodcasts.map( p => {
+		// schedule scraping in bull
+		let scrapingPromise = asyncTasks.PodcastQueueAdd(
 			{
 				podcast: p._id,
 				url: p.feedUrl,
@@ -99,13 +104,12 @@ exports.post = async (req, res) => {
 				priority: 1,
 				removeOnComplete: true,
 				removeOnFail: true,
-			},
-		);
-	});
-
-	insertedPodcasts.map(async p => {
+			}
+		)
+		promises.push(scrapingPromise)
+		// add og images
 		if (!p.images.og && p.link) {
-			await asyncTasks.OgQueueAdd(
+			promises.push( asyncTasks.OgQueueAdd(
 				{
 					url: p.url,
 					type: 'podcast',
@@ -114,13 +118,13 @@ exports.post = async (req, res) => {
 					removeOnComplete: true,
 					removeOnFail: true,
 				},
-			);
+			))
 		}
+		// schedule search index
+		promises.push(search(p.searchDocument()))
 	});
 
-	insertedPodcasts.map(async f => {
-		await search(f.searchDocument());
-	});
+	await Promise.all(promises)
 
 	res.status(201);
 	res.json(insertedPodcasts);
