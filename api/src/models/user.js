@@ -157,7 +157,7 @@ UserSchema.plugin(mongooseStringQuery);
 
 UserSchema.index({ email: 1, username: 1 });
 
-UserSchema.methods.serializeMe = function serializeMe () {
+UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedUser () {
 	let user = this
 	let serialized
 	//let timelineFeed = streamClient.feed('timeline', user._id)

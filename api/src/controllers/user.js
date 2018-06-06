@@ -124,7 +124,7 @@ exports.get = (req, res) => {
 
 				let serialized = user
 				if (user._id === req.user.sub) {
-					serialized = user.serializeMe()
+					serialized = user.serializeAuthenticatedUser()
 				}
 				res.json(serialized);
 			}

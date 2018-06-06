@@ -71,7 +71,7 @@ exports.signup = async (req, res, _) => {
           return followInterest(user._id, { interest });
       }));
 
-      res.json(user.serializeMe());
+      res.json(user.serializeAuthenticatedUser());
 };
 
 exports.login = async (req, res, _) => {
@@ -94,7 +94,7 @@ exports.login = async (req, res, _) => {
             }
 
 
-            res.status(200).send(user.serializeMe());
+            res.status(200).send(user.serializeAuthenticatedUser());
         } catch(err) {
             res.sendStatus(401);
         }
@@ -140,7 +140,7 @@ exports.resetPassword = async (req, res, _) => {
             return res.sendStatus(404);
         }
 
-        res.status(200).send(user.serializeMe());
+        res.status(200).send(user.serializeAuthenticatedUser());
     } catch(err) {
         logger.error(err);
         res.sendStatus(422);
