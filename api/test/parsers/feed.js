@@ -15,6 +15,21 @@ describe('Parsing', () => {
 			expect(feedResponse.title).to.equal('TechCrunch');
 			expect(feedResponse.link).to.equal('https://techcrunch.com/');
 		});
+		it('should parse /r/programming', async () => {
+			const posts = await ReadFeedStream(getTestFeed('reddit_programming'));
+			const feedResponse = ParseFeedPosts(posts);
+
+			expect(feedResponse.articles.length).to.equal(25);
+			expect(feedResponse.title).to.equal('/r/programming');
+			expect(feedResponse.link).to.equal('https://www.reddit.com/r/programming/');
+			expect(feedResponse.description).to.equal('Computer Programming');
+
+			const a = feedResponse.articles[0];
+			expect(a.title.slice(0, 20)).to.equal('GitHub was also talk');
+			expect(a.url).to.equal(
+				'https://reddit.com/r/programming/comments/8oryk9/github_was_also_talking_to_google_about_a_deal',
+			);
+		});
 	});
 
 	describe('Podcast', () => {
