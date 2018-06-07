@@ -14,6 +14,8 @@ import config from '../config';
 
 import followRssFeed from '../shared/followRssFeed';
 import followPodcast from '../shared/followPodcast';
+import {SendPasswordResetEmail, SendWelcomeEmail} from '../../src/utils/email/send';
+
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -65,17 +67,9 @@ exports.signup = async (req, res, _) => {
 	}
 
 	const user = await User.create(data);
+	let sent = await SendWelcomeEmail({email: user.email})
 
 	await client.feed('timeline', user._id).follow('user', user._id);
-	if (process.env.NODE_ENV === 'production') {
-		const obj = { meta: { data: {} } };
-
-		obj.meta.data[`user:${user._id}`] = {
-			email: user.email,
-		};
-
-		await events(obj);
-	}
 	await followInterest(user._id, { featured: true });
 	// follow all podcasts and rss feeds specified in "interests" payload
 	await Promise.all(
@@ -111,40 +105,32 @@ exports.forgotPassword = async (req, res, _) => {
 	const opts = { new: true };
 	const passcode = uuidv4();
 
-	try {
-		const user = await User.findOneAndUpdate(
-			{ email: data.email.toLowerCase() },
-			{ recoveryCode: passcode },
-			opts,
-		);
-		if (!user) {
-			return res.sendStatus(404);
-		}
-
-		res.sendStatus(200);
-	} catch (err) {
-		logger.error(err);
-		res.sendStatus(500);
+	const user = await User.findOneAndUpdate(
+		{ email: data.email.toLowerCase() },
+		{ recoveryCode: passcode },
+		opts,
+	);
+	if (!user) {
+		return res.sendStatus(404);
 	}
+
+	let sent = await SendPasswordResetEmail({email: user.email, passcode: user.passcode})
+
+	res.sendStatus(200);
 };
 
 exports.resetPassword = async (req, res, _) => {
 	const data = req.body || {};
 	const opts = { new: true };
 
-	try {
-		const user = await User.findOneAndUpdate(
-			{ email: data.email.toLowerCase(), recoveryCode: data.passcode },
-			{ password: data.password },
-			opts,
-		);
-		if (!user) {
-			return res.sendStatus(404);
-		}
-
-		res.status(200).send(user.serializeAuthenticatedUser());
-	} catch (err) {
-		logger.error(err);
-		res.sendStatus(422);
+	const user = await User.findOneAndUpdate(
+		{ email: data.email.toLowerCase(), recoveryCode: data.passcode },
+		{ password: data.password },
+		opts,
+	);
+	if (!user) {
+		return res.sendStatus(404);
 	}
+
+	res.status(200).send(user.serializeAuthenticatedUser());
 };

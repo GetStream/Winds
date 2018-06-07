@@ -6,7 +6,7 @@ import config from '../../src/config';
 import Podcast from '../../src/models/podcast';
 import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
-import email from '../../src/utils/email';
+import {DummyEmailTransport} from '../../src/utils/email/send';
 import { loadFixture, getMockClient, getMockFeed, dropDBs } from '../utils';
 
 describe('Auth controller', () => {
@@ -100,10 +100,8 @@ describe('Auth controller', () => {
 			});
 
 			it('should send welcome email to user', async () => {
-				expect(email.calledWith({
-					type: 'welcome',
-					email: user.email,
-				})).to.be.true;
+				let email = DummyEmailTransport.emails[0]
+				expect(email.subject).to.equal('Welcome to Winds!')
 			});
 		});
 
@@ -275,11 +273,8 @@ describe('Auth controller', () => {
 				it('should send recovery code email to user', async () => {
 					const user = await User.findOne({ email: 'valid@email.com' });
 
-					expect(email.calledWith({
-						type: 'password',
-						email: user.email,
-						passcode: user.recoveryCode,
-					})).to.be.true;
+					let email = DummyEmailTransport.emails[0]
+					expect(email.subject).to.equal('Forgot Password')
 				});
 			});
 

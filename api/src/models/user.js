@@ -9,7 +9,6 @@ import PinSchema from './pin';
 import PlaylistSchema from './playlist';
 
 import logger from '../utils/logger';
-import email from '../utils/email';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import stream from 'getstream';
@@ -113,43 +112,6 @@ export const UserSchema = new Schema(
 		},
 	},
 );
-
-UserSchema.pre('save', function(next) {
-	if (!this.isNew) {
-		next();
-	}
-
-	email({
-		email: this.email,
-		type: 'welcome',
-	})
-		.then(() => {
-			next();
-		})
-		.catch(err => {
-			logger.error(err);
-			next();
-		});
-});
-
-UserSchema.pre('findOneAndUpdate', function(next) {
-	if (!this._update.recoveryCode) {
-		return next();
-	}
-
-	email({
-		email: this._conditions.email,
-		passcode: this._update.recoveryCode,
-		type: 'password',
-	})
-		.then(() => {
-			next();
-		})
-		.catch(err => {
-			logger.error(err);
-			next();
-		});
-});
 
 UserSchema.post('remove', function(user) {
 	[

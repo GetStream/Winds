@@ -5,7 +5,6 @@ import Follow from '../models/follow';
 import User from '../models/user';
 
 import config from '../config';
-import email from '../utils/email';
 import logger from '../utils/logger';
 import followRssFeed from '../shared/followRssFeed';
 import followPodcast from '../shared/followPodcast';
