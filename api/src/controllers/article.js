@@ -25,14 +25,7 @@ exports.get = async (req, res) => {
 	if (!article) {
 		return res.sendStatus(404);
 	}
-
-	req.analytics.trackEngagement({
-		content: {
-			foreign_id: `articles:${article._id}`,
-		},
-		label: 'parse',
-	});
-
+	
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
 		res.json(parsed);
