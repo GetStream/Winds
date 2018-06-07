@@ -3,8 +3,8 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
-import parser from '../utils/parser';
 import logger from '../utils/logger';
+import {ParseArticle} from '../parsers/article';
 
 export const EnclosureSchema = new Schema({
 	url: {
@@ -145,7 +145,7 @@ ArticleSchema.methods.getParsedArticle = async function() {
 		return cached;
 	}
 
- 	let parsed = await parser({ url: this.url });
+ 	let parsed = await ParseArticle(this.url);
 	let content = parsed.content;
 
 	// XKCD doesn't like Mercury
