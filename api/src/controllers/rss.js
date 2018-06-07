@@ -51,8 +51,9 @@ exports.post = async (req, res) => {
 	}
 
 	let insertedFeeds = [];
+	let feeds = [];
 
-	for (var feed of foundRSS.feedUrls) {
+	for (let feed of foundRSS.feedUrls.slice(0,10)) {
 		let feedTitle = feed.title;
 		if (feedTitle.toLowerCase() === 'rss') {
 			feedTitle = foundRSS.site.title;
@@ -62,7 +63,7 @@ exports.post = async (req, res) => {
 		rss = await RSS.findOne({feedUrl: feedUrl})
 		// don't update featured RSS feeds since that ends up removing images etc
 		if (!rss || (rss && !rss.featured)) {
-			rss = await RSS.findOneAndUpdate(
+			let response = await RSS.findOneAndUpdate(
 				{feedUrl: feedUrl},
 				{
 					categories: 'RSS',
@@ -82,11 +83,13 @@ exports.post = async (req, res) => {
 					upsert: true,
 				},
 			);
-			if (rss.lastErrorObject.upserted) {
-				insertedFeeds.push(rss.value);
+
+			rss = response.value
+			if (response.lastErrorObject.upserted) {
+				insertedFeeds.push(rss);
 			}
 		}
-
+		feeds.push(rss)
 	}
 
 	let promises = []
@@ -121,7 +124,7 @@ exports.post = async (req, res) => {
 	await Promise.all(promises)
 
 	res.status(201);
-	res.json(insertedFeeds);
+	res.json(feeds);
 };
 
 exports.put = async (req, res) => {

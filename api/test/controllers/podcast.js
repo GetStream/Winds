@@ -79,7 +79,7 @@ describe('Podcast controller', () => {
 					.send({feedUrl: 'http://thetwentyminutevc.libsyn.com/rss'})
 			);
 			expect(response).to.have.status(201);
-			expect(response.body).to.have.length(0);
+			expect(response.body).to.have.length(1);
 
 			let podcast2 = await Podcast.find({url:'http://thetwentyminutevc.com'});
 			expect(podcast2.updatedAt).to.eq(podcast.updatedAt);

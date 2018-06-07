@@ -89,16 +89,17 @@ describe('RSS controller', () => {
 			rss = await RSS.find({url:'https://news.ycombinator.com'});
 		});
 
-		it('2nd time should not create or update anything', async () => {
+		it('2nd time shoudl still return a response', async () => {
 			const response = await withLogin(
 				request(api)
 					.post('/rss')
 					.send({feedUrl: 'https://news.ycombinator.com'})
 			);
 			expect(response).to.have.status(201);
-			expect(response.body).to.have.length(0);
+			expect(response.body).to.have.length(1);
 
 			let rss2 = await RSS.find({url:'https://news.ycombinator.com'});
+			// but not be updated
 			expect(rss2.updatedAt).to.eq(rss.updatedAt);
 		});
 

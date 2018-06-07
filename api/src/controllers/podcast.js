@@ -48,6 +48,7 @@ exports.post = async (req, res) => {
 	}
 
 	let insertedPodcasts = [];
+	let podcasts = [];
 
 	// insert at most 10 podcasts from the site
 	for (var feed of foundPodcasts.feedUrls.slice(0, 10)) {
@@ -72,7 +73,7 @@ exports.post = async (req, res) => {
 		let podcast
 		podcast = await Podcast.findOne({ feedUrl: feedUrl })
 		if (!podcast || (podcast && !podcast.featured)) {
-			podcast = await Podcast.findOneAndUpdate(
+			let response = await Podcast.findOneAndUpdate(
 				{ feedUrl: feedUrl },
 				{
 					categories: 'podcast',
@@ -90,10 +91,12 @@ exports.post = async (req, res) => {
 					upsert: true,
 				},
 			);
-			if (podcast.lastErrorObject.upserted) {
-				insertedPodcasts.push(podcast.value);
+			podcast = response.value
+			if (response.lastErrorObject.upserted) {
+				insertedPodcasts.push(podcast);
 			}
 		}
+		podcasts.push(podcast)
 
 	}
 
@@ -132,7 +135,7 @@ exports.post = async (req, res) => {
 	await Promise.all(promises)
 
 	res.status(201);
-	res.json(insertedPodcasts);
+	res.json(podcasts);
 };
 
 exports.put = async (req, res) => {
