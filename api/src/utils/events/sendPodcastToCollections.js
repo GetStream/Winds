@@ -1,7 +1,7 @@
 import events from './index';
 import Podcast from '../../models/podcast';
 import Episode from '../../models/episode';
-import DetectLanguage from '../../parsers/detect-language';
+import {DetectLanguage} from '../../parsers/detect-language';
 
 async function sendPodcastToCollections(podcast) {
 	if (!podcast.language) {
