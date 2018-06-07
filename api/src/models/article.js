@@ -145,7 +145,8 @@ ArticleSchema.methods.getParsedArticle = async function() {
 		return cached;
 	}
 
- 	let parsed = await ParseArticle(this.url);
+ 	let response = await ParseArticle(this.url);
+	let parsed = response.data;
 	let content = parsed.content;
 
 	// XKCD doesn't like Mercury
