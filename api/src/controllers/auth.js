@@ -14,7 +14,7 @@ import config from '../config';
 
 import followRssFeed from '../shared/followRssFeed';
 import followPodcast from '../shared/followPodcast';
-import {SendPasswordResetEmail, SendWelcomeEmail} from '../../src/utils/email/send';
+import {SendPasswordResetEmail, SendWelcomeEmail} from '../utils/email/send';
 
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
