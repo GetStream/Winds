@@ -73,7 +73,7 @@ export function ParsePodcastPosts(posts, limit=1000) {
 		podcastContent.episodes.push(episode);
 	}
 
-	if (posts) {
+	if (posts.length) {
 		podcastContent.title = posts[0].meta.title;
 		podcastContent.link = posts[0].meta.link;
 		podcastContent.image = posts[0].meta.image && posts[0].meta.image.url;
@@ -211,7 +211,7 @@ export function ParseFeedPosts(posts) {
 		}
 		feedContents.articles.push(article);
 	}
-	if (posts) {
+	if (posts.length) {
 		let meta = posts[0].meta
 		feedContents.title = meta.title;
 		feedContents.link = meta.link;
