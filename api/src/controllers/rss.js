@@ -59,6 +59,9 @@ exports.post = async (req, res) => {
 			feedTitle = foundRSS.site.title;
 		}
 		let feedUrl = normalizeUrl(feed.url)
+		if (!validUrl.isWebUri(feedUrl)) {
+			continue
+		}
 		let rss
 		rss = await RSS.findOne({feedUrl: feedUrl})
 		// don't update featured RSS feeds since that ends up removing images etc

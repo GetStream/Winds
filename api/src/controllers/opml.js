@@ -17,6 +17,8 @@ import config from '../config';
 import asyncTasks from '../asyncTasks';
 import { IsPodcastURL} from '../parsers/detect-type';
 import search from '../utils/search';
+import validUrl from 'valid-url';
+
 
 import {TrackMetadata} from '../utils/events/analytics';
 
@@ -127,6 +129,10 @@ async function followOPMLFeed(feed, userID) {
 	}
 
 	let feedUrl = normalizeUrl(feed.feedUrl)
+	if (!validUrl.isWebUri(feedUrl)) {
+		result.error = `Invalid URL for OPML import ${feedUrl}`;
+		return result
+	}
 	instance = await schema.findOne({ feedUrl: feedUrl });
 	// create the feed if it doesn't exist
 	if (!instance) {

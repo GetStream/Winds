@@ -70,6 +70,9 @@ exports.post = async (req, res) => {
 		}
 		// normalize the feed url to prevent duplicates
 		let feedUrl = normalizeUrl(feed.url)
+		if (!validUrl.isWebUri(feedUrl)) {
+			continue
+		}
 		let podcast
 		podcast = await Podcast.findOne({ feedUrl: feedUrl })
 		if (!podcast || (podcast && !podcast.featured)) {
