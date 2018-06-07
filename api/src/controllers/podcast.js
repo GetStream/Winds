@@ -69,27 +69,32 @@ exports.post = async (req, res) => {
 		}
 		// normalize the feed url to prevent duplicates
 		let feedUrl = normalizeUrl(feed.url)
-		let rss = await Podcast.findOneAndUpdate(
-			{ feedUrl: feedUrl },
-			{
-				categories: 'podcast',
-				description: description,
-				feedUrl: feedUrl,
-				images: images,
-				lastScraped: new Date(0),
-				title: title,
-				url: normalizeUrl(url),
-				valid: true,
-			},
-			{
-				new: true,
-				rawResult: true,
-				upsert: true,
-			},
-		);
-		if (rss.lastErrorObject.upserted) {
-			insertedPodcasts.push(rss.value);
+		let podcast
+		podcast = await Podcast.findOne({ feedUrl: feedUrl })
+		if (!podcast || (podcast && !podcast.featured)) {
+			podcast = await Podcast.findOneAndUpdate(
+				{ feedUrl: feedUrl },
+				{
+					categories: 'podcast',
+					description: description,
+					feedUrl: feedUrl,
+					images: images,
+					lastScraped: new Date(0),
+					title: title,
+					url: normalizeUrl(url),
+					valid: true,
+				},
+				{
+					new: true,
+					rawResult: true,
+					upsert: true,
+				},
+			);
+			if (podcast.lastErrorObject.upserted) {
+				insertedPodcasts.push(podcast.value);
+			}
 		}
+
 	}
 
 	let promises = []

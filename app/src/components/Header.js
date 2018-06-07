@@ -105,9 +105,11 @@ class Header extends Component {
 			<div className="popover-panel profile-popover">
 				<div className="panel-element user">
 					<div className="avatar">
-						<Avatar height={80} width={80}>
-							{this.props.user._id}
-						</Avatar>
+						<a href="https://gravatar.com">
+							<Avatar height={80} width={80}>
+								{this.props.user._id}
+							</Avatar>
+						</a>
 					</div>
 					<div className="user-info">
 						<span className="name">{this.props.user.name}</span>

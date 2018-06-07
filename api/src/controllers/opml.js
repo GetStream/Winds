@@ -126,14 +126,15 @@ async function followOPMLFeed(feed, userID) {
 		publicationType = 'rss';
 	}
 
-	instance = await schema.findOne({ feedUrl: feed.feedUrl });
+	let feedUrl = normalizeUrl(feed.feedUrl)
+	instance = await schema.findOne({ feedUrl: feedUrl });
 	// create the feed if it doesn't exist
 	if (!instance) {
 		let data = {
 			categories: publicationType,
 			description: entities.decodeHTML(feed.title),
 			favicon: feed.favicon,
-			feedUrl: feed.feedUrl,
+			feedUrl: feedUrl,
 			lastScraped: moment().subtract(12, 'hours'),
 			public: true,
 			publicationDate: moment().toISOString(),
@@ -143,7 +144,7 @@ async function followOPMLFeed(feed, userID) {
 		instance = await schema.create(data);
 
 		// Scrape with high priority
-		let queueData = { url: instance.feedUrl };
+		let queueData = { url: feedUrl };
 		queueData[publicationType] = instance._id;
 		let queue =
 			publicationType == 'rss'

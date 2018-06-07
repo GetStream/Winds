@@ -96,20 +96,29 @@ exports.delete = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	const user = await User.findById(req.params.userId);
-	if (!user) {
-		res.status(404).send('User not found');
-		return;
+	if (req.params.user == 'undefined') {
+		return res.sendStatus(404);
 	}
 
-	user.password = undefined;
-	user.recoveryCode = undefined;
+	User.findById(req.params.userId)
+		.then(user => {
+			if (!user) {
+				res.status(404).send('User not found');
+			} else {
+				user.password = undefined;
+				user.recoveryCode = undefined;
 
-	if (req.params.userId !== req.user.sub) {
-		user.email = undefined;
-	}
-
-	res.json(user);
+				let serialized = user
+				if (user._id === req.user.sub) {
+					serialized = user.serializeAuthenticatedUser()
+				}
+				res.json(serialized);
+			}
+		})
+		.catch(err => {
+			logger.error(err);
+			res.status(422).send(err.errors);
+		});
 };
 
 exports.put = async (req, res) => {

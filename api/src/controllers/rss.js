@@ -58,29 +58,35 @@ exports.post = async (req, res) => {
 			feedTitle = foundRSS.site.title;
 		}
 		let feedUrl = normalizeUrl(feed.url)
-		let rss = await RSS.findOneAndUpdate(
-			{feedUrl: feedUrl},
-			{
-				categories: 'RSS',
-				description: entities.decodeHTML(feed.title),
-				feedUrl: feedUrl,
-				images: {
-					favicon: foundRSS.site.favicon,
+		let rss
+		rss = await RSS.findOne({feedUrl: feedUrl})
+		// don't update featured RSS feeds since that ends up removing images etc
+		if (!rss || (rss && !rss.featured)) {
+			rss = await RSS.findOneAndUpdate(
+				{feedUrl: feedUrl},
+				{
+					categories: 'RSS',
+					description: entities.decodeHTML(feed.title),
+					feedUrl: feedUrl,
+					images: {
+						favicon: foundRSS.site.favicon,
+					},
+					lastScraped: moment().format(),
+					title: entities.decodeHTML(feedTitle),
+					url: foundRSS.site.url,
+					valid: true,
 				},
-				lastScraped: moment().format(),
-				title: entities.decodeHTML(feedTitle),
-				url: foundRSS.site.url,
-				valid: true,
-			},
-			{
-				new: true,
-				rawResult: true,
-				upsert: true,
-			},
-		);
-		if (rss.lastErrorObject.upserted) {
-			insertedFeeds.push(rss.value);
+				{
+					new: true,
+					rawResult: true,
+					upsert: true,
+				},
+			);
+			if (rss.lastErrorObject.upserted) {
+				insertedFeeds.push(rss.value);
+			}
 		}
+
 	}
 
 	let promises = []
