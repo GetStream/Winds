@@ -151,6 +151,7 @@ describe('Auth controller', () => {
 			});
 
 			it('should return 409 for existing user', async () => {
+				await dropDBs()
 				await loadFixture('initial-data');
 
 				const response = await request(api)
