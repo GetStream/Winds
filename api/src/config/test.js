@@ -5,5 +5,20 @@ module.exports = {
 	cache: {
 		uri: 'redis://localhost:6379?db=10',
 	},
+	email: {
+		sender: {
+			default: {
+				name: process.env.EMAIL_SENDER_DEFAULT_NAME,
+				email: process.env.EMAIL_SENDER_DEFAULT_EMAIL,
+			},
+			support: {
+				name: process.env.EMAIL_SENDER_SUPPORT_NAME,
+				email: process.env.EMAIL_SENDER_SUPPORT_EMAIL,
+			},
+		},
+		sendgrid: {
+			secret: process.env.EMAIL_SENDGRID_SECRET,
+		},
+	},
 	analyticsDisabled: true,
 };
