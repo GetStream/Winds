@@ -217,9 +217,12 @@ export function ParseFeedPosts(posts) {
 		feedContents.link = meta.link;
 		feedContents.image = meta.image;
 		feedContents.description = meta.description;
-		if (meta.link.indexOf("reddit.com") != -1) {
-			feedContents.title = `/r/${feedContents.title}`
+		if (meta.link) {
+			if (meta.link.indexOf("reddit.com") != -1) {
+				feedContents.title = `/r/${feedContents.title}`
+			}
 		}
+
 	}
 	return feedContents;
 }
