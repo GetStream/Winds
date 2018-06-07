@@ -100,12 +100,12 @@ export async function loadFixture(...fixtures) {
 	}
 }
 
-export function withLogin(r) {
-	const authToken = jwt.sign({
+export function withLogin(req, user={
 		email: 'valid@email.com',
 		sub: '5b0f306d8e147f10f16aceaf',
-	}, config.jwt.secret);
-	return r.set('Authorization', `Bearer ${authToken}`);
+	}) {
+	const authToken = jwt.sign(user, config.jwt.secret);
+	return req.set('Authorization', `Bearer ${authToken}`);
 }
 
 export async function dropDBs() {

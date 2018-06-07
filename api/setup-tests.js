@@ -55,6 +55,10 @@ wrapMocha(async () => {
 		throw new Error('Missing MongoDB connection string. Check config');
 	if (!config.cache.uri)
 		throw new Error('Missing Redis connection string. Check config');
+	if (!config.database.uri.includes('localhost') && !config.database.uri.includes('127.0.0.1'))
+		throw new Error('MongoDB connection string contains non-local address. For safety reasons test suite can only connect to local databases. Check config');
+	if (!config.cache.uri.includes('localhost') && !config.cache.uri.includes('127.0.0.1'))
+		throw new Error('Redis connection string contains non-local address. For safety reasons test suite can only connect to local databases. Check config');
 
 	//XXX: drop all data before running tests
 	await dropDBs();
