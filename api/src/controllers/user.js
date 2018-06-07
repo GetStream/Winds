@@ -156,11 +156,14 @@ exports.put = async (req, res) => {
 	}
 
 	if (data.interests) {
-		await data.interests.map(interest => {
+		const promises = data.interests.flatMap(async (interest) => {
 			// find all rss feeds and podcasts for that interest, and follow them
-			RSS.find({ interest }).map(rssFeed => followRssFeed(req.params.userId, rssFeed._id));
-			Podcast.find({ interest }).map(podcast => followPodcast(req.params.userId, podcast._id));
+			return [
+				RSS.find({interest}).then(rssFeeds => rssFeeds.map(rssFeed => followRssFeed(req.params.userId, rssFeed._id))),
+				Podcast.find({interest}).then(podcasts => podcasts.map(podcast => followPodcast(req.params.userId, podcast._id)))
+			];
 		});
+		await Promise.all(promises);
 	}
 
 	// update the user

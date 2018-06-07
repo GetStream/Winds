@@ -15,24 +15,27 @@ describe('User model', () => {
 	before(async () => {
 		await loadFixture('user_model');
 		user = await User.findOne();
-		[PinSchema, FollowSchema, LikeSchema, PlaylistSchema].forEach(async (schema) => {
+		const promises = [PinSchema, FollowSchema, LikeSchema, PlaylistSchema].map(async (schema) => {
 			expect(await schema.find({user})).to.be.an('array').that.is.not.empty;
-		})
+		});
+		await Promise.all(promises);
 	});
 
 	after(async () => {
-		[User, FollowSchema, LikeSchema, PinSchema, PlaylistSchema, PodcastSchema, EpisodeSchema].forEach(async (model) => {
+		const promises = [User, FollowSchema, LikeSchema, PinSchema, PlaylistSchema, PodcastSchema, EpisodeSchema].map(async (model) => {
 			await model.remove();
-		})
+		});
+		await Promise.all(promises);
 	});
 
 	describe('remove document', () => {
 
 		it('should remove the User and all Pins, Playlists, Follows and Likes with a foreign key to the User', async () => {
 			await user.remove();
-			[PinSchema, FollowSchema, LikeSchema, PlaylistSchema].forEach(async (schema) => {
-				expect(await schema.findOne({user})).to.be.null;
+			const promises = [PinSchema, FollowSchema, LikeSchema, PlaylistSchema].map(async (schema) => {
+				expect(await schema.findOne({user}), schema.modelName).to.be.null;
 			});
+			await Promise.all(promises);
 		});
 
 
