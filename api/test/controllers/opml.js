@@ -129,7 +129,7 @@ describe('OPML', () => {
 			let isPodcast;
 
 			before(async () => {
-				let p = path.join(__dirname, '..', 'data', 'feed', 'giant-bomcast');
+				let p = path.join(__dirname, '..', 'data', 'podcast-feed', 'giant-bombcast');
 				let feedStream = fs.createReadStream(p);
 				isPodcast = await IsPodcastStream(
 					feedStream,
@@ -142,7 +142,7 @@ describe('OPML', () => {
 			});
 
 			it('design details should be a podcast', async () => {
-				let p = path.join(__dirname, '..', 'data', 'feed', 'design-details');
+				let p = path.join(__dirname, '..', 'data', 'podcast-feed', 'design-details');
 				let feedStream = fs.createReadStream(p);
 				isPodcast = await IsPodcastStream(
 					feedStream,
