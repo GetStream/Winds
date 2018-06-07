@@ -165,14 +165,14 @@ async function followOPMLFeed(feed, userID) {
 	followData[publicationType] = instance._id;
 	let response = await Follow.findOneAndUpdate(followData, followData, {rawResult: true, upsert: true, new: true});
 	let follow = response.value;
-	let instanceID = response.value._id;
+	let publicationID = instance._id;
 
 	if (response.lastErrorObject.updatedExisting) {
-		await streamClient.feed('user_article', userID).follow(publicationType, instanceID);
-		await streamClient.feed('timeline', userID).follow(publicationType, instanceID);
+		await streamClient.feed('user_article', userID).follow(publicationType, publicationID);
+		await streamClient.feed('timeline', userID).follow(publicationType, publicationID);
 	}
 
-	await TrackMetadata(`${publicationType}:${instanceID}`, {
+	await TrackMetadata(`${publicationType}:${publicationID}`, {
 		description: instance.description,
 		title: instance.title,
 	});
