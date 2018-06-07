@@ -1,0 +1,21 @@
+[{
+    "Playlist": [
+        {
+            "user": "5b0f306d8e147f10f16aceaf",
+            "name": "Cool playlist",
+            "episodes": [
+                "5b0ad37026dc3db38194e286",
+                "5b0ad37626dc3db38194fa73"
+            ]
+        }
+    ],
+    "User": [
+        {
+            "_id"     : "4342306d8e147f10f16aceaf",
+            "email"   : "logged_in_user@email.com",
+            "name"    : "Valid Name",
+            "username": "validusername",
+            "password": "valid_password"
+        }
+    ]
+}]

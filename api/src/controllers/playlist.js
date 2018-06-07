@@ -36,7 +36,7 @@ exports.list = (req, res) => {
 					},
 					(err, results) => {
 						if (err) {
-							logger.error(err);
+							logger.error({err});
 							return res.status(422).send(err.errors);
 						}
 						res.json(results);
@@ -44,7 +44,7 @@ exports.list = (req, res) => {
 				);
 			})
 			.catch(err => {
-				logger.error(err);
+				logger.error({err});
 				res.status(422).send(err.errors);
 			});
 	} else if (query.type === 'featured') {
@@ -60,7 +60,7 @@ exports.list = (req, res) => {
 				}
 			})
 			.catch(err => {
-				logger.error(err);
+				logger.error({err});
 				res.status(422).send(err.errors);
 			});
 	} else {
@@ -104,7 +104,7 @@ exports.list = (req, res) => {
 					},
 					err => {
 						if (err) {
-							logger.error(err);
+							logger.error({err});
 							res.status(422).send(err.errors);
 						}
 
@@ -113,7 +113,7 @@ exports.list = (req, res) => {
 				);
 			})
 			.catch(err => {
-				logger.error(err);
+				logger.error({err});
 				res.status(422).send(err.errors);
 			});
 	}
@@ -128,6 +128,9 @@ exports.get = (req, res) => {
 		.then(playlist => {
 			if (!playlist) {
 				return res.sendStatus(404);
+			}
+            if (playlist.user._id != req.User.id) {
+				return res.sendStatus(403);
 			}
 
 			Like.findOne({ playlist: playlist._id, user: req.user.sub })
@@ -148,7 +151,7 @@ exports.get = (req, res) => {
 				});
 		})
 		.catch(err => {
-			logger.error(err);
+			logger.error({err});
 			res.status(422).send(err.errors);
 		});
 };
@@ -181,7 +184,7 @@ exports.post = (req, res) => {
 			res.json(playlist);
 		})
 		.catch(err => {
-			logger.error(err);
+			logger.error({err});
 			res.status(500).send(err);
 		});
 };
@@ -210,7 +213,7 @@ exports.put = (req, res) => {
 			}
 		})
 		.catch(err => {
-			logger.error(err);
+			logger.error({err});
 			res.status(422).send(err.errors);
 		});
 };
@@ -219,20 +222,17 @@ exports.delete = (req, res) => {
 	Playlist.findById(req.params.playlistId)
 		.then(playlist => {
 			if (!playlist) {
-				res.status(404).send();
-				return;
-			} else if (playlist.user._id != req.user.sub) {
-				// @kenhoff - needs to be ==, not ===
-				res.status(401).send();
-				return;
-			} else {
-				return Playlist.remove({ _id: req.params.playlistId }).then(() => {
-					return res.status(204).send();
-				});
+				return res.sendStatus(404);
 			}
+            if (playlist.user._id != req.User.id) {
+				return res.sendStatus(403);
+			}
+            return Playlist.remove({ _id: req.params.playlistId }).then(() => {
+				return res.sendStatus(204);
+            });
 		})
 		.catch(err => {
-			logger.error(err);
+			logger.error({err});
 			res.status(422).send(err.errors);
 		});
 };
