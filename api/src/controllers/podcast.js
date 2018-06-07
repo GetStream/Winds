@@ -7,6 +7,7 @@ import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
 import asyncTasks from '../asyncTasks';
+import mongoose from 'mongoose';
 
 
 exports.list = async (req, res) => {
@@ -25,10 +26,11 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	if (req.params.podcastId === 'undefined') {
+	let podcastID = req.params.podcastId
+	if (!mongoose.Types.ObjectId.isValid(podcastID)) {
 		return res.sendStatus(404);
 	}
-	let podcast = await Podcast.findById(req.params.podcastId).exec();
+	let podcast = await Podcast.findById(podcastID).exec();
 	if (!podcast) {
 		return res.sendStatus(404);
 	}
