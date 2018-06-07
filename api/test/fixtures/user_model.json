@@ -1,0 +1,88 @@
+[
+  {
+    "User": [
+        {
+            "_id"     : "4342306d8e147eeef16aceaf",
+            "email"   : "user_model_test@email.com",
+            "name"    : "Valid Name",
+            "username": "validusername",
+            "password": "valid_password"
+        }
+    ],
+    "Podcast": [
+        {
+            "_id": "bbbb7fedfe7430d35996d66e",
+            "feedUrl": "http://mbmbam.libsyn.com/rss",
+            "__v": 0,
+            "categories": "podcast",
+            "createdAt": "2018-05-16T00:48:45.264Z",
+            "description":
+                "Free advice, from three of the world's most qualified experts.",
+            "featured": false,
+            "images": {
+                "favicon": null,
+                "og":
+                    "http://static.libsyn.com/p/assets/6/d/7/d/6d7d36d6929db515/MBMBAM_Update.jpg"
+            },
+            "lastScraped": "2018-06-01T21:39:47.827Z",
+            "title": "My Brother, My Brother And Me",
+            "updatedAt": "2018-06-01T21:39:47.827Z",
+            "url": "http://mbmbam.com",
+            "valid": true,
+            "isParsing": false,
+            "language": "eng"
+        }
+    ],
+    "Episode": [
+        {
+            "_id": "aaaad37026dc3db38194e286",
+            "podcast": "bbbb7fedfe7430d35996d66e",
+            "url": "http://openargs.com/?p=45",
+            "__v": 0,
+            "createdAt": "2018-05-27T15:49:03.509Z",
+            "description": "....",
+            "duration": "2650",
+            "enclosure":
+                "http://dts.podtrac.com/redirect.mp3/http://media.blubrry.com/openargs/traffic.libsyn.com/openargs/09_Episode_9.mp3?dest-id=455562",
+            "images": {
+                "featured": "",
+                "banner": "",
+                "favicon": "",
+                "og":
+                    "http://static.libsyn.com/p/assets/7/3/b/5/73b5bfccfd8e95c6/Open_Args_Logo.jpg"
+            },
+            "link": "http://openargs.com/?p=45",
+            "publicationDate": "2016-08-31T04:22:28.000Z",
+            "title": "OA9: Abortion, Roe v. Wade, and the Constitution, Part 1",
+            "updatedAt": "2018-05-28T19:28:02.367Z"
+        }
+    ],
+    "Pin": [
+        {
+            "episode": "aaaad37026dc3db38194e286",
+            "user": "4342306d8e147eeef16aceaf",
+            "updatedAt": "2018-05-29T00:09:40.956Z",
+            "createdAt": "2018-05-29T00:09:40.956Z"
+        }
+    ],
+    "Follow": [
+        {
+            "user": "4342306d8e147eeef16aceaf",
+            "podcast":"bbbb7fedfe7430d35996d66e"
+        }
+    ],
+    "Like": [
+        {
+            "user": "4342306d8e147eeef16aceaf",
+            "episode": "aaaad37026dc3db38194e286"
+        }
+    ],
+    "Playlist": [
+        {
+            "user": "4342306d8e147eeef16aceaf",
+            "name": "test playlist",
+            "episodes": ["aaaad37026dc3db38194e286"]
+        }
+    ]
+  }
+]

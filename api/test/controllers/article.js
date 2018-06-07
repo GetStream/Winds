@@ -19,9 +19,7 @@ describe('Article controller', () => {
 
 	describe('get', () => {
 		it('should return the right article via /articles/:articleId', async () => {
-			const response = await withLogin(
-				request(api).get(`/articles/${article.id}`)
-			);
+			let response = await withLogin(request(api).get(`/articles/${article.id}`));
 			expect(response).to.have.status(200);
 		});
 	});
@@ -37,9 +35,7 @@ describe('Article controller', () => {
 
 	describe('list', () => {
 		it('should return the list of articles', async () => {
-			const response = await withLogin(
-				request(api).get('/articles')
-			);
+			let response = await withLogin(request(api).get('/articles'));
 			expect(response).to.have.status(200);
 		});
 	});

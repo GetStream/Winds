@@ -1,0 +1,17 @@
+[{
+    "User": [
+        {
+            "_id"     : "4342306d8e147f10f16aceaf",
+            "email"   : "logged_in_user@email.com",
+            "name"    : "Valid Name",
+            "username": "validusername",
+            "password": "valid_password"
+        },
+        {
+            "email"   : "another_user@email.com",
+            "name"    : "Another User",
+            "username": "anotheruser",
+            "password": "anotheruser"
+        }
+    ]
+}]
