@@ -7,8 +7,6 @@ import config from '../../config';
 
 export var DummyEmailTransport = { emails: [] };
 
-console.log('config', config.email.sender.default);
-
 export async function SendWelcomeEmail(data) {
 	const msg = ejs.render(fs.readFileSync(__dirname + '/templates/welcome.ejs', 'utf8'));
 
