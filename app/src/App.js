@@ -46,16 +46,27 @@ if (isElectron) {
 	);
 }
 
+const crawlUpDomForAnchorTag = (node, e) => {
+	if (!node) {
+		// if we've reached the top of the DOM
+		return;
+	} else if (node.nodeName === 'A') {
+		const href = node.getAttribute('href');
+		if (href && !href.includes('#/')) {
+			e.preventDefault();
+			window.ipcRenderer.send('open-external-window', href);
+		} else {
+			return;
+		}
+	} else {
+		return crawlUpDomForAnchorTag(node.parentNode, e); // need to pass the click event down through the recursive calls so we can preventDefault if needed
+	}
+};
+
 if (isElectron) {
 	// Electron-specific code
 	document.body.addEventListener('click', e => {
-		if (e.target.nodeName === 'A') {
-			const href = e.target.getAttribute('href');
-			if (!href.includes('#/')) {
-				e.preventDefault();
-				window.ipcRenderer.send('open-external-window', href);
-			}
-		}
+		crawlUpDomForAnchorTag(e.target, e);
 	});
 }
 

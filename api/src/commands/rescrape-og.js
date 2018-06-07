@@ -20,15 +20,18 @@ async function main() {
 	logger.info(`program.all is set to ${program.all}`)
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
-		let instances = await schema.find({});
-		let field = fieldMap[contentType];
-		logger.info(
-			`Found ${instances.length} for ${contentType} with url field ${field}`,
-		);
+		let total = await schema.count({})
+		let completed = 0
 		let chunkSize = 1000;
 
-		for (let i = 0, j = instances.length; i < j; i += chunkSize) {
-			let chunk = instances.slice(i, i + chunkSize);
+		let field = fieldMap[contentType];
+		logger.info(
+			`Found ${total} for ${contentType} with url field ${field}`,
+		);
+
+		for (let i = 0, j = total; i < j; i += chunkSize) {
+			let chunk = await schema.find({}).skip(i).limit(chunkSize).lean();
+			completed += chunkSize
 			let promises = [];
 			for (const instance of chunk) {
 				let missingImage = !instance.images || !instance.images.og
