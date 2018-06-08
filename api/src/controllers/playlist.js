@@ -219,15 +219,14 @@ exports.delete = (req, res) => {
 	Playlist.findById(req.params.playlistId)
 		.then(playlist => {
 			if (!playlist) {
-				res.status(404).send();
+				res.sendStatus(404);
 				return;
 			} else if (playlist.user._id != req.user.sub) {
-				// @kenhoff - needs to be ==, not ===
-				res.status(401).send();
+				res.sendStatus(401);
 				return;
 			} else {
 				return Playlist.remove({ _id: req.params.playlistId }).then(() => {
-					return res.status(204).send();
+					return res.sendStatus(204);
 				});
 			}
 		})

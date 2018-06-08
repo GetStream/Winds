@@ -26,13 +26,13 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	let podcastID = req.params.podcastId
+	let podcastID = req.params.podcastId;
 	if (!mongoose.Types.ObjectId.isValid(podcastID)) {
-		return res.sendStatus(404);
+		return res.status(422).json({ error: `Podcast ID ${podcastID} is invalid.`});
 	}
 	let podcast = await Podcast.findById(podcastID).exec();
 	if (!podcast) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: `Can't find podcast with id ${podcastID}.` });
 	}
 	res.json(podcast);
 };
@@ -41,21 +41,21 @@ exports.post = async (req, res) => {
 	const data = Object.assign(req.body, { user: req.user.sub }) || {};
 
 	if (!data.feedUrl || !validUrl.isUri(normalizeUrl(data.feedUrl))) {
-		return res.status(400).send('Please provide a valid podcast URL.');
+		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
 	}
 
 	let foundPodcasts = await podcastFinder(normalizeUrl(data.feedUrl));
 	if (!foundPodcasts.feedUrls.length) {
-		return res.status(404);
+		return res.status(404).json({ error: `Can't find any podcasts.` });
 	}
 
 	let insertedPodcasts = [];
 	let podcasts = [];
 
-	// insert at most 10 podcasts from the site
-	for (var feed of foundPodcasts.feedUrls.slice(0, 10)) {
+	for (let feed of foundPodcasts.feedUrls.slice(0, 10)) {
 		let podcastContent = await ParsePodcast(feed.url, 1);
 		let title, url, images, description;
+
 		if (podcastContent) {
 			title = strip(podcastContent.title) || strip(feed.title);
 			url = podcastContent.link || foundPodcasts.site.url;
@@ -70,13 +70,16 @@ exports.post = async (req, res) => {
 			images = { favicon: foundPodcasts.site.favicon };
 			description = '';
 		}
+
 		// normalize the feed url to prevent duplicates
 		let feedUrl = normalizeUrl(feed.url)
 		if (!validUrl.isWebUri(feedUrl)) {
 			continue
 		}
-		let podcast
-		podcast = await Podcast.findOne({ feedUrl: feedUrl })
+
+		let podcast;
+		podcast = await Podcast.findOne({ feedUrl: feedUrl });
+
 		if (!podcast || (podcast && !podcast.featured)) {
 			let response = await Podcast.findOneAndUpdate(
 				{ feedUrl: feedUrl },
@@ -96,12 +99,15 @@ exports.post = async (req, res) => {
 					upsert: true,
 				},
 			);
-			podcast = response.value
+
+			podcast = response.value;
+
 			if (response.lastErrorObject.upserted) {
 				insertedPodcasts.push(podcast);
 			}
 		}
-		podcasts.push(podcast)
+
+		podcasts.push(podcast);
 
 	}
 
@@ -118,8 +124,10 @@ exports.post = async (req, res) => {
 				removeOnComplete: true,
 				removeOnFail: true,
 			}
-		)
-		promises.push(scrapingPromise)
+		);
+
+		promises.push(scrapingPromise);
+
 		// add og images
 		if (!p.images.og && p.link) {
 			promises.push( asyncTasks.OgQueueAdd(
@@ -133,30 +141,34 @@ exports.post = async (req, res) => {
 				},
 			))
 		}
+
 		// schedule search index
 		promises.push(search(p.searchDocument()))
 	});
 
-	await Promise.all(promises)
+	await Promise.all(promises);
 
-	res.status(201);
-	res.json(podcasts);
+	res.status(200).json(podcasts);
 };
 
 exports.put = async (req, res) => {
 	if (!req.User.admin) {
 		return res.status(403).send();
 	}
+
 	if (!req.params.podcastId) {
 		return res.status(401).send();
 	}
+
 	let podcast = await Podcast.findByIdAndUpdate(
 		{ _id: req.params.podcastId },
 		req.body,
 		{new: true},
 	);
+
 	if (!podcast) {
 		return res.sendStatus(404);
 	}
+
 	res.json(podcast);
 };

@@ -5,27 +5,31 @@ import personalization from '../utils/personalization';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
+
 	let episodes = [];
+
 	if (query.type === 'recommended') {
 		let episodeIds = await personalization({
 			userId: req.user.sub,
 			endpoint: '/winds_episode_recommendations',
 		});
-		episodes = await Episode.find({_id: {$in: episodeIds}}).find().exec();
+
+		episodes = await Episode.find({ _id: { $in: episodeIds }}).find().exec();
 	} else {
 		episodes = await Episode.apiQuery(req.query);
 	}
-	return res.json(episodes);
+
+	res.json(episodes);
 };
 
 exports.get = async (req, res) => {
 	if (req.params.episodeId === 'undefined') {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'An Episode ID is required.' });
 	}
 
 	let episode = await Episode.findById(req.params.episodeId);
 	if (!episode) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'Episode could not be found.' });
 	}
 
 	req.analytics.trackImpression({

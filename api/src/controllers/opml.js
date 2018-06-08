@@ -19,19 +19,17 @@ import { IsPodcastURL} from '../parsers/detect-type';
 import search from '../utils/search';
 import validUrl from 'valid-url';
 
-
-import {TrackMetadata} from '../utils/events/analytics';
+import { TrackMetadata } from '../utils/events/analytics';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
-// opml export
 exports.get = async (req, res) => {
 	let userID = req.user.sub;
 	let follows = await Follow.find({ user: userID });
 
 	let user = await User.find({ userID });
 	if (!user) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'User does not exist.' });
 	}
 
 	let header = {
@@ -51,6 +49,7 @@ exports.get = async (req, res) => {
 		};
 		return obj;
 	});
+
 	let opml = opmlGenerator(header, outlines);
 
 	res.set({
@@ -61,15 +60,16 @@ exports.get = async (req, res) => {
 	res.end(opml);
 };
 
-// handle an OPML import
 exports.post = async (req, res) => {
 	const userID = req.user.sub;
 	const upload = Buffer.from(req.file.buffer).toString('utf8');
+
 	if (!upload) {
-		return res.sendStatus(422);
+		return res.status(422).json({ 'Invalid OPML upload.' });
 	}
 
 	let feeds = await util.promisify(opmlParser)(upload);
+
 	let parsedFeeds = feeds.map(feed => {
 		feed.valid = true;
 
@@ -91,22 +91,27 @@ exports.post = async (req, res) => {
 		return feed;
 	});
 
-	// follow the OPML feeds
 	let promises = [];
 	for (let feed of parsedFeeds) {
 		let promise = followOPMLFeed(feed, userID);
 		promises.push(promise);
 	}
-	let statuses = await Promise.all(promises);
 
-	return res.json(statuses);
+	let results = await Promise.all(promises);
+
+	return res.json(results);
 };
 
-// Follow the OPML feed
 async function followOPMLFeed(feed, userID) {
-	let instance, schema, publicationType;
-	let result = {feedUrl: feed.feedUrl, follow: {}};
+	let schema;
+	let publicationType;
 	let isPodcast;
+
+	let result = {
+		feedUrl: feed.feedUrl,
+		follow: {}
+	};
+
 	if (!feed.valid) {
 		result.error = `Invalid feedUrl ${feed.feedUrl}`;
 		return result;
@@ -115,7 +120,6 @@ async function followOPMLFeed(feed, userID) {
 	try {
 		isPodcast = await IsPodcastURL(feed.feedUrl);
 	} catch(e) {
-		// just skip invalid feeds
 		result.error = `Error opening ${feed.feedUrl}`;
 		return result;
 	}
@@ -133,8 +137,9 @@ async function followOPMLFeed(feed, userID) {
 		result.error = `Invalid URL for OPML import ${feedUrl}`;
 		return result
 	}
-	instance = await schema.findOne({ feedUrl: feedUrl });
-	// create the feed if it doesn't exist
+
+	let instance = await schema.findOne({ feedUrl: feedUrl });
+
 	if (!instance) {
 		let data = {
 			categories: publicationType,
@@ -147,11 +152,12 @@ async function followOPMLFeed(feed, userID) {
 			title: entities.decodeHTML(feed.title),
 			url: feed.url,
 		};
+
 		instance = await schema.create(data);
 
-		// Scrape with high priority
 		let queueData = { url: feedUrl };
 		queueData[publicationType] = instance._id;
+
 		let queue =
 			publicationType == 'rss'
 				? asyncTasks.RssQueueAdd
@@ -165,10 +171,11 @@ async function followOPMLFeed(feed, userID) {
 
 		await search(instance.searchDocument());
 	}
-	// always create the follow
-	// TODO: abstract this follow logic
+
 	let followData = { user: userID };
+
 	followData[publicationType] = instance._id;
+
 	let response = await Follow.findOneAndUpdate(followData, followData, {rawResult: true, upsert: true, new: true});
 	let follow = response.value;
 	let publicationID = instance._id;
@@ -184,5 +191,6 @@ async function followOPMLFeed(feed, userID) {
 	});
 
 	result.follow = follow;
+
 	return result;
 }
