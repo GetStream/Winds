@@ -65,7 +65,7 @@ exports.post = async (req, res) => {
 	const upload = Buffer.from(req.file.buffer).toString('utf8');
 
 	if (!upload) {
-		return res.status(422).json({ 'Invalid OPML upload.' });
+		return res.status(422).json({ error: 'Invalid OPML upload.' });
 	}
 
 	let feeds = await util.promisify(opmlParser)(upload);
