@@ -15,8 +15,9 @@ exports.list = async (req, res, _) => {
 
 exports.get = async (req, res, _) => {
 	const listen = await Listen.findOne({ _id: req.params.listenId, user: req.User.id });
+
 	if (!listen) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'Listen does not exist.' });
 	}
 
 	res.json(listen);
@@ -30,15 +31,18 @@ exports.post = async (req, res, _) => {
 		{ $set: data },
 		{ new: true, upsert: true },
 	);
+
 	res.json(listen);
 };
 
 exports.delete = async (req, res, _) => {
 	const listen = await Listen.findOne({ _id: req.params.listenId, user: req.User.id });
+
 	if (!listen) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'Listen does not exist.' });
 	}
 
 	await Listen.remove({ _id: req.params.listenId });
+
 	res.status(204).send();
 };
