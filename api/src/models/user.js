@@ -9,7 +9,6 @@ import PinSchema from './pin';
 import PlaylistSchema from './playlist';
 
 import logger from '../utils/logger';
-import email from '../utils/email';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import stream from 'getstream';
@@ -114,56 +113,13 @@ export const UserSchema = new Schema(
 	},
 );
 
-UserSchema.pre('save', function(next) {
-	if (!this.isNew) {
-		next();
-	}
-
-	email({
-		email: this.email,
-		type: 'welcome',
-	})
-		.then(() => {
-			next();
-		})
-		.catch(err => {
-			logger.error(err);
-			next();
-		});
-});
-
-UserSchema.pre('findOneAndUpdate', function(next) {
-	if (!this._update.recoveryCode) {
-		return next();
-	}
-
-	email({
-		email: this._conditions.email,
-		passcode: this._update.recoveryCode,
-		type: 'password',
-	})
-		.then(() => {
-			next();
-		})
-		.catch(err => {
-			logger.error(err);
-			next();
-		});
-});
-
-UserSchema.post('remove', function(user) {
-	[
+UserSchema.post('remove', async function(user) {
+	return await Promise.all([
 		PinSchema.remove({user}),
 		PlaylistSchema.remove({user}),
 		FollowSchema.remove({user}),
-		LikeSchema.remove({user})
-	].forEach(async (removal) => {
-		try {
-			await removal;
-		} catch(error) {
-			logger.error({err});
-		}
-	});
+		LikeSchema.remove({user}),
+	]);
 });
 
 UserSchema.plugin(bcrypt);
@@ -176,21 +132,20 @@ UserSchema.plugin(mongooseStringQuery);
 UserSchema.index({ email: 1, username: 1 });
 
 UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedUser () {
-	let user = this
-	let serialized
-	//let timelineFeed = streamClient.feed('timeline', user._id)
+	let user = this;
+	let serialized;
 
 	serialized = {
-			_id: user._id,
-			email: user.email,
-			interests: user.interests,
-			jwt: jwt.sign( { email: user.email, sub: user._id }, config.jwt.secret),
-			name: user.name,
-			username: user.username,
-			streamTokens: {
-			},
-		}
-	return serialized
+		_id: user._id,
+		email: user.email,
+		interests: user.interests,
+		jwt: jwt.sign( { email: user.email, sub: user._id }, config.jwt.secret),
+		name: user.name,
+		username: user.username,
+		streamTokens: {
+		},
+	};
+	return serialized;
 };
 
 module.exports = exports = mongoose.model('User', UserSchema);

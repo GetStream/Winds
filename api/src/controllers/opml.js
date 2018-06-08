@@ -17,6 +17,8 @@ import config from '../config';
 import asyncTasks from '../asyncTasks';
 import { IsPodcastURL} from '../parsers/detect-type';
 import search from '../utils/search';
+import validUrl from 'valid-url';
+
 
 import {TrackMetadata} from '../utils/events/analytics';
 
@@ -127,6 +129,10 @@ async function followOPMLFeed(feed, userID) {
 	}
 
 	let feedUrl = normalizeUrl(feed.feedUrl)
+	if (!validUrl.isWebUri(feedUrl)) {
+		result.error = `Invalid URL for OPML import ${feedUrl}`;
+		return result
+	}
 	instance = await schema.findOne({ feedUrl: feedUrl });
 	// create the feed if it doesn't exist
 	if (!instance) {
@@ -165,14 +171,14 @@ async function followOPMLFeed(feed, userID) {
 	followData[publicationType] = instance._id;
 	let response = await Follow.findOneAndUpdate(followData, followData, {rawResult: true, upsert: true, new: true});
 	let follow = response.value;
-	let instanceID = response.value._id;
+	let publicationID = instance._id;
 
 	if (response.lastErrorObject.updatedExisting) {
-		await streamClient.feed('user_article', userID).follow(publicationType, instanceID);
-		await streamClient.feed('timeline', userID).follow(publicationType, instanceID);
+		await streamClient.feed('user_article', userID).follow(publicationType, publicationID);
+		await streamClient.feed('timeline', userID).follow(publicationType, publicationID);
 	}
 
-	await TrackMetadata(`${publicationType}:${instanceID}`, {
+	await TrackMetadata(`${publicationType}:${publicationID}`, {
 		description: instance.description,
 		title: instance.title,
 	});

@@ -56,6 +56,24 @@ describe('RSS controller', () => {
 		});
 	});
 
+	describe('add road to VR', () => {
+		let rss;
+
+		it('should create 3 feed from Road to VR', async () => {
+			const response = await withLogin(
+				request(api)
+					.post('/rss')
+					.send({feedUrl: 'https://www.roadtovr.com/'})
+			);
+			expect(response).to.have.status(201);
+			expect(response.body).to.have.length(3);
+			expect(response.body[0].url).to.eq('https://www.roadtovr.com');
+			rss = await RSS.find({url:'https://www.roadtovr.com'});
+		});
+	});
+
+
+
 	describe('add RSS feed - HN', () => {
 		let rss;
 
@@ -71,16 +89,17 @@ describe('RSS controller', () => {
 			rss = await RSS.find({url:'https://news.ycombinator.com'});
 		});
 
-		it('2nd time should not create or update anything', async () => {
+		it('2nd time shoudl still return a response', async () => {
 			const response = await withLogin(
 				request(api)
 					.post('/rss')
 					.send({feedUrl: 'https://news.ycombinator.com'})
 			);
 			expect(response).to.have.status(201);
-			expect(response.body).to.have.length(0);
+			expect(response.body).to.have.length(1);
 
 			let rss2 = await RSS.find({url:'https://news.ycombinator.com'});
+			// but not be updated
 			expect(rss2.updatedAt).to.eq(rss.updatedAt);
 		});
 

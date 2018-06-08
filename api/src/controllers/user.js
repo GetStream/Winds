@@ -12,78 +12,18 @@ import followRssFeed from '../shared/followRssFeed';
 import followPodcast from '../shared/followPodcast';
 
 exports.list = async (req, res) => {
-	const params = req.params || {};
 	const query = req.query || {};
-
-	const page = parseInt(query.page, 10) || 0;
-	const perPage = parseInt(query.per_page, 10) || 10;
+	let users = [];
 
 	if (query.type === 'recommended') {
-		personalization({
-			endpoint: '/winds_user_recommendations',
-			userId: req.user.sub,
-		})
-		.then(users => {
-			if (!users.length) {
-				res.status(200).json([]);
-				return;
-			}
-			async.filter(
-				users,
-				(user, cb) => {
-					User.findOne({ _id: user, active: true })
-						.then(user => {
-							if (user) {
-								cb(null, true);
-							} else {
-								cb(null);
-							}
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(err, results) => {
-					async.map(
-						results,
-						(user, cb) => {
-							User.findOne({ _id: user, active: true })
-								.select(
-									'name username email interests background url bio twitter',
-								)
-								.then(enriched => {
-									cb(null, enriched);
-								})
-								.catch(err => {
-									cb(err);
-								});
-							},
-							(err, results) => {
-								if (err) {
-									logger.error(err);
-									return res.status(422).send(err.errors);
-								} else {
-									res.json(results);
-								}
-							},
-					);
-				},
-			);
-		})
-		.catch(err => {
-			res.status(503).send(err.response.data);
+		let recommendedUserIds = await personalization({
+			endpoint: '/winds_user_recommendations', userId: req.user.sub,
 		});
+		users = await User.find({_id: {$in: recommendedUserIds}});
 	} else {
-		User.apiQuery(req.query)
-			.select('name email username bio url twitter background admin')
-			.then(users => {
-				res.json(users);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(422).send(err.errors);
-			});
+		users = await User.apiQuery(req.query).select('name email username bio url twitter background admin');
 	}
+	res.json(users);
 };
 
 exports.delete = async (req, res) => {
@@ -108,9 +48,9 @@ exports.get = async (req, res) => {
 				user.password = undefined;
 				user.recoveryCode = undefined;
 
-				let serialized = user
+				let serialized = user;
 				if (user._id === req.user.sub) {
-					serialized = user.serializeAuthenticatedUser()
+					serialized = user.serializeAuthenticatedUser();
 				}
 				res.json(serialized);
 			}
@@ -169,7 +109,7 @@ exports.put = async (req, res) => {
 			// find all rss feeds and podcasts for that interest, and follow them
 			return [
 				RSS.find({interest}).then(rssFeeds => rssFeeds.map(rssFeed => followRssFeed(req.params.userId, rssFeed._id))),
-				Podcast.find({interest}).then(podcasts => podcasts.map(podcast => followPodcast(req.params.userId, podcast._id)))
+				Podcast.find({interest}).then(podcasts => podcasts.map(podcast => followPodcast(req.params.userId, podcast._id))),
 			];
 		});
 		await Promise.all(promises);

@@ -7,6 +7,7 @@ import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
 import asyncTasks from '../asyncTasks';
+import mongoose from 'mongoose';
 
 
 exports.list = async (req, res) => {
@@ -25,10 +26,11 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	if (req.params.podcastId === 'undefined') {
+	let podcastID = req.params.podcastId
+	if (!mongoose.Types.ObjectId.isValid(podcastID)) {
 		return res.sendStatus(404);
 	}
-	let podcast = await Podcast.findById(req.params.podcastId).exec();
+	let podcast = await Podcast.findById(podcastID).exec();
 	if (!podcast) {
 		return res.sendStatus(404);
 	}
@@ -48,6 +50,7 @@ exports.post = async (req, res) => {
 	}
 
 	let insertedPodcasts = [];
+	let podcasts = [];
 
 	// insert at most 10 podcasts from the site
 	for (var feed of foundPodcasts.feedUrls.slice(0, 10)) {
@@ -69,10 +72,13 @@ exports.post = async (req, res) => {
 		}
 		// normalize the feed url to prevent duplicates
 		let feedUrl = normalizeUrl(feed.url)
+		if (!validUrl.isWebUri(feedUrl)) {
+			continue
+		}
 		let podcast
 		podcast = await Podcast.findOne({ feedUrl: feedUrl })
 		if (!podcast || (podcast && !podcast.featured)) {
-			podcast = await Podcast.findOneAndUpdate(
+			let response = await Podcast.findOneAndUpdate(
 				{ feedUrl: feedUrl },
 				{
 					categories: 'podcast',
@@ -90,10 +96,12 @@ exports.post = async (req, res) => {
 					upsert: true,
 				},
 			);
-			if (podcast.lastErrorObject.upserted) {
-				insertedPodcasts.push(podcast.value);
+			podcast = response.value
+			if (response.lastErrorObject.upserted) {
+				insertedPodcasts.push(podcast);
 			}
 		}
+		podcasts.push(podcast)
 
 	}
 
@@ -132,7 +140,7 @@ exports.post = async (req, res) => {
 	await Promise.all(promises)
 
 	res.status(201);
-	res.json(insertedPodcasts);
+	res.json(podcasts);
 };
 
 exports.put = async (req, res) => {

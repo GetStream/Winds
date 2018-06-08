@@ -367,6 +367,18 @@ For Open Graph scraping
 winds og http://www.planetary.org/multimedia/planetary-radio/show/2018/0509-amy-mainzer-neowise.html
 ```
 
+RSS Discovery
+
+```
+winds discover mashable.com
+```
+
+Article parsing (using mercury)
+
+```
+winds article https://alexiskold.net/2018/04/12/meet-12-startups-from-techstars-nyc-winter-2018-program/
+```
+
 Pull requests for improved RSS compatibility are much appreciated.
 Most of the parsing codebase is located in `api/src/parsers/`.
 

@@ -92,7 +92,7 @@ export async function loadFixture(...fixtures) {
 				//     also avoids compiling model modules twice as mocked module loader
 				//     with babel forces recompilation of transpiled source code which
 				//     causes double-registration of mongoose models
-				const cachedModule = require.cache[require.resolve(modulePath)]
+				const cachedModule = require.cache[require.resolve(modulePath)];
 				const model = cachedModule ? cachedModule.exports : require(modulePath);
 				await model.collection.insertMany(filteredData);
 			}
@@ -101,9 +101,9 @@ export async function loadFixture(...fixtures) {
 }
 
 export function withLogin(req, user={
-		email: 'valid@email.com',
-		sub: '5b0f306d8e147f10f16aceaf',
-	}) {
+	email: 'valid@email.com',
+	sub: '5b0f306d8e147f10f16aceaf',
+}) {
 	const authToken = jwt.sign(user, config.jwt.secret);
 	return req.set('Authorization', `Bearer ${authToken}`);
 }
@@ -113,4 +113,4 @@ export async function dropDBs() {
 	const mongo = await db;
 	await mongo.connection.dropDatabase();
 	await redisClient.send_command('FLUSHDB');
-};
+}
