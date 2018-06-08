@@ -13,6 +13,7 @@ import mongoose from 'mongoose';
 exports.list = async (req, res) => {
 	let query = req.query || {};
 	let podcasts = [];
+
 	if (query.type === 'recommended') {
 		let podcastIDs = await personalization({
 			endpoint: '/winds_podcast_recommendations',
@@ -22,18 +23,22 @@ exports.list = async (req, res) => {
 	} else {
 		podcasts = await Podcast.apiQuery(req.query);
 	}
+
 	res.json(podcasts);
 };
 
 exports.get = async (req, res) => {
 	let podcastID = req.params.podcastId;
+
 	if (!mongoose.Types.ObjectId.isValid(podcastID)) {
 		return res.status(422).json({ error: `Podcast ID ${podcastID} is invalid.`});
 	}
+
 	let podcast = await Podcast.findById(podcastID).exec();
 	if (!podcast) {
 		return res.status(404).json({ error: `Can't find podcast with id ${podcastID}.` });
 	}
+
 	res.json(podcast);
 };
 
@@ -71,7 +76,6 @@ exports.post = async (req, res) => {
 			description = '';
 		}
 
-		// normalize the feed url to prevent duplicates
 		let feedUrl = normalizeUrl(feed.url)
 		if (!validUrl.isWebUri(feedUrl)) {
 			continue
@@ -113,7 +117,6 @@ exports.post = async (req, res) => {
 
 	let promises = []
 	insertedPodcasts.map( p => {
-		// schedule scraping in bull
 		let scrapingPromise = asyncTasks.PodcastQueueAdd(
 			{
 				podcast: p._id,
@@ -128,7 +131,6 @@ exports.post = async (req, res) => {
 
 		promises.push(scrapingPromise);
 
-		// add og images
 		if (!p.images.og && p.link) {
 			promises.push( asyncTasks.OgQueueAdd(
 				{
@@ -157,7 +159,7 @@ exports.put = async (req, res) => {
 	}
 
 	if (!req.params.podcastId) {
-		return res.status(401).send();
+		return res.status(401).json({ error: 'Missing required Podcast ID.' });
 	}
 
 	let podcast = await Podcast.findByIdAndUpdate(
@@ -167,7 +169,7 @@ exports.put = async (req, res) => {
 	);
 
 	if (!podcast) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'Podcast could not be found.' });
 	}
 
 	res.json(podcast);
