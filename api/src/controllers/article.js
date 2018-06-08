@@ -17,15 +17,17 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	if (req.params.articleId === 'undefined') {
+	let articleID = req.params.articleId
+
+	if (!mongoose.Types.ObjectId.isValid(articleID)) {
 		return res.sendStatus(404);
 	}
 
-	let article = await Article.findById(req.params.articleId);
+	let article = await Article.findById(articleID);
 	if (!article) {
 		return res.sendStatus(404);
 	}
-	
+
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
 		res.json(parsed);
