@@ -1,5 +1,3 @@
-import md5 from 'md5';
-import jwt from 'jsonwebtoken';
 import stream from 'getstream';
 import uuidv4 from 'uuid/v4';
 import validator from 'validator';
@@ -8,8 +6,6 @@ import User from '../models/user';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 
-import logger from '../utils/logger';
-import events from '../utils/events';
 import config from '../config';
 
 import followRssFeed from '../shared/followRssFeed';
@@ -105,17 +101,19 @@ exports.forgotPassword = async (req, res, _) => {
 	const opts = { new: true };
 	const passcode = uuidv4();
 
+	let email = data.email.toLowerCase();
+
 	const user = await User.findOneAndUpdate(
-		{ email: data.email.toLowerCase() },
+		{ email: email },
 		{ recoveryCode: passcode },
 		opts,
 	);
+
 	if (!user) {
 		return res.sendStatus(404);
 	}
 
-	await SendPasswordResetEmail({email: user.email, passcode: user.passcode})
-
+	await SendPasswordResetEmail({email: user.email, passcode: user.passcode});
 	res.sendStatus(200);
 };
 
