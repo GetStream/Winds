@@ -7,9 +7,7 @@ import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import Img from 'react-image';
 import axios from 'axios';
-// import fetch from '../util/fetch';
 import saveIcon from '../images/icons/save.svg';
-// import rssIcon from '../images/icons/rss.svg';
 import { withRouter } from 'react-router-dom';
 
 class AddOPMLModal extends React.Component {
@@ -117,6 +115,8 @@ class AddOPMLModal extends React.Component {
 				</div>
 			);
 		}
+
+		/*eslint-disable */
 		let buttonText;
 		if (this.state.submitting) {
 			buttonText = 'Submitting...';
@@ -125,6 +125,7 @@ class AddOPMLModal extends React.Component {
 		} else {
 			buttonText = 'Submit';
 		}
+		/*eslint-enable */
 
 		let currentView = (
 			<form onSubmit={this.handleStageOneFormSubmit}>
