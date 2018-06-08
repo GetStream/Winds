@@ -113,7 +113,7 @@ exports.forgotPassword = async (req, res, _) => {
 		return res.sendStatus(404);
 	}
 
-	await SendPasswordResetEmail({email: user.email, passcode: user.passcode});
+	await SendPasswordResetEmail({email: user.email, passcode: user.recoveryCode});
 	res.sendStatus(200);
 };
 
