@@ -111,7 +111,7 @@ exports.forgotPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.statis(404).json({ error: 'User could not be found.' });
+		return res.status(404).json({ error: 'User could not be found.' });
 	}
 
 	await SendPasswordResetEmail({email: user.email, passcode: user.recoveryCode});
