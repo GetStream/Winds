@@ -17,8 +17,36 @@ describe('Playlist controller', () => {
         user = await User.findOne();
         playlist = await Playlist.findOne();
     });
+
     describe('listing all entries', () => {
-        // api.route('/playlists').get(Playlist.list);
+        it('should return 200 for valid request', async () => {
+            const response = await withLogin(request(api).get('/playlists'));
+
+            expect(response).to.have.status(200);
+        });
+
+        it('should filter results if query is provided', async () => {
+            const fileters = [
+                { episode: '5b0ad37026dc3db38194e286' },
+                { type: 'recommended' },
+                { type: 'featured' },
+            ];
+            const response = await withLogin(request(api).get('/playlists').query());
+
+            expect(response).to.have.status(200);
+        });
+
+        it('should return 403 when retrieving entries created by other users', async () => {
+            const response = await withLogin(request(api).get('/playlists').query({ user: otherUserId }));
+
+            expect(response).to.have.status(403);
+        });
+
+        it('should return 422 for invalid request', async () => {
+            const response = await withLogin(request(api).get('/playlists').query({ episode: { $gte: '' } }));
+
+            expect(response).to.have.status(422);
+        });
     });
 
     describe('retrieving entry by id', () => {
