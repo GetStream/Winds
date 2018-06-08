@@ -99,6 +99,8 @@ export const PodcastSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 		toObject: {
@@ -107,12 +109,14 @@ export const PodcastSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 	},
 );
 
-PodcastSchema.index({featured: 1}, {partialFilterExpression: {featured: true}});
+PodcastSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });
 
 PodcastSchema.plugin(timestamps, {
 	createdAt: { index: true },

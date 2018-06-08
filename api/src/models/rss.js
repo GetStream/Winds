@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
-import {ArticleSchema} from "./article";
+import { ArticleSchema } from './article';
 
 export const RSSSchema = new Schema(
 	{
@@ -97,7 +97,29 @@ export const RSSSchema = new Schema(
 			default: '',
 		},
 	},
-	{ collection: 'rss' },
+	{
+		collection: 'rss',
+		toJSON: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+	},
 );
 
 RSSSchema.plugin(timestamps, {
@@ -119,7 +141,7 @@ RSSSchema.methods.searchDocument = function() {
 	};
 };
 
-RSSSchema.index({featured: 1}, {partialFilterExpression: {featured: true}});
+RSSSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });
 
 RSSSchema.plugin(mongooseStringQuery);
 
