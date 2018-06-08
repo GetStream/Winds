@@ -22,12 +22,12 @@ exports.get = async (req, res) => {
 	let articleID = req.params.articleId
 
 	if (!mongoose.Types.ObjectId.isValid(articleID)) {
-		return res.sendStatus(404);
+		return res.status(400).json({error: `Article ID ${articleID} is invalid`});
 	}
 
 	let article = await Article.findById(articleID);
 	if (!article) {
-		return res.sendStatus(404);
+		return res.status(404).json({error: `Can't find article with id ${articleID}`});
 	}
 
 	if (req.query && req.query.type === 'parsed') {
