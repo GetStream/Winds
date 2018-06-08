@@ -79,6 +79,14 @@ export const RSSSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		followerCount: {
+			type: Number,
+			default: 0,
+		},
+		postCount: {
+			type: Number,
+			default: 0,
+		},
 		summary: {
 			type: String,
 			default: '',

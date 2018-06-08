@@ -89,6 +89,14 @@ async function _handleRSS(job) {
 		return upsertManyArticles(rssID, articles);
 	});
 
+	// update the count
+	await RSS.update(
+		{ _id: rssID },
+		{
+			postCount: await Article.count({rss: rssID}),
+		}
+	);
+
 	// updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
 	let updatedArticles = allArticles.filter(updatedArticle => {
 		return updatedArticle;

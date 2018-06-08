@@ -5,11 +5,10 @@ import validator from 'validator';
 import User from '../models/user';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
+import Follow from '../models/follow';
 
 import config from '../config';
 
-import followRssFeed from '../shared/followRssFeed';
-import followPodcast from '../shared/followPodcast';
 import {SendPasswordResetEmail, SendWelcomeEmail} from '../utils/email/send';
 
 
@@ -19,14 +18,14 @@ async function followInterest(userId, interest) {
 	const interestRssFeeds = await RSS.find(interest);
 	await Promise.all(
 		interestRssFeeds.map(interestRssFeed => {
-			return followRssFeed(userId, interestRssFeed._id);
+			return Follow.getOrCreate('rss', userId, interestRssFeed._id);
 		}),
 	);
 
 	const interestPodcasts = await Podcast.find(interest);
 	await Promise.all(
 		interestPodcasts.map(interestPodcast => {
-			return followPodcast(userId, interestPodcast._id);
+			return Follow.getOrCreate('podcast', userId, interestPodcast._id);
 		}),
 	);
 }

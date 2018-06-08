@@ -69,6 +69,14 @@ async function _handlePodcast(job) {
 		}),
 	);
 
+	// update the count
+	await Podcast.update(
+		{ _id: podcastID },
+		{
+			postCount: await Episode.count({podcast: podcastID}),
+		}
+	);
+
 	// Only send updated episodes to Stream
 	let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
 		return updatedEpisode && updatedEpisode.link;

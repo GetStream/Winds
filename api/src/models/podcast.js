@@ -90,6 +90,14 @@ export const PodcastSchema = new Schema(
 			type: String,
 			default: '',
 		},
+		followerCount: {
+			type: Number,
+			default: 0,
+		},
+		postCount: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		collection: 'podcasts',

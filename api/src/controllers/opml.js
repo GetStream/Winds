@@ -166,17 +166,8 @@ async function followOPMLFeed(feed, userID) {
 		await search(instance.searchDocument());
 	}
 	// always create the follow
-	// TODO: abstract this follow logic
-	let followData = { user: userID };
-	followData[publicationType] = instance._id;
-	let response = await Follow.findOneAndUpdate(followData, followData, {rawResult: true, upsert: true, new: true});
-	let follow = response.value;
-	let publicationID = instance._id;
-
-	if (response.lastErrorObject.updatedExisting) {
-		await streamClient.feed('user_article', userID).follow(publicationType, publicationID);
-		await streamClient.feed('timeline', userID).follow(publicationType, publicationID);
-	}
+	let publicationID = instance._id
+	let follow = await Follow.getOrCreate(publicationType, userID, publicationID)
 
 	await TrackMetadata(`${publicationType}:${publicationID}`, {
 		description: instance.description,
