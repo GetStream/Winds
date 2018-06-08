@@ -35,8 +35,7 @@ export async function SendPasswordResetEmail(data) {
 		subject: 'Forgot Password',
 		html: msg,
 	};
-	let res = await SendEmail(obj);
-	return res;
+	return await SendEmail(obj);
 }
 
 export async function SendEmail(obj) {

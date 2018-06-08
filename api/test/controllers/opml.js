@@ -1,10 +1,8 @@
 import { expect, request } from 'chai';
-import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
 
 import api from '../../src/server';
-import config from '../../src/config';
 import { IsPodcastStream } from '../../src/parsers/detect-type';
 import { withLogin, loadFixture, dropDBs } from '../utils';
 
@@ -28,11 +26,11 @@ import { withLogin, loadFixture, dropDBs } from '../utils';
 // - what if you already follow a certain feed
 
 function AuthGetRequest(getPath) {
-    return withLogin(request(api).get(getPath));
+	return withLogin(request(api).get(getPath));
 }
 
 function AuthPostRequest(path) {
-    return withLogin(request(api).post(path));
+	return withLogin(request(api).post(path));
 }
 
 describe('OPML', () => {
@@ -121,7 +119,7 @@ describe('OPML', () => {
 				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
 				expect(response.body[1].error).to.equal('Invalid feedUrl https://kotaku/rss404');
 			});
-		})
+		});
 	});
 
 	describe('Feed Detection', () => {
