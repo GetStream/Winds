@@ -1,5 +1,7 @@
 import Article from '../models/article';
 import personalization from '../utils/personalization';
+import mongoose from 'mongoose';
+
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
