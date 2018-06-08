@@ -66,7 +66,7 @@ describe('Podcast controller', () => {
 					.post('/podcasts')
 					.send({feedUrl: 'http://thetwentyminutevc.libsyn.com/rss'})
 			);
-			expect(response).to.have.status(201);
+			expect(response).to.have.status(200);
 			expect(response.body).to.have.length(1);
 			expect(response.body[0].url).to.eq('http://thetwentyminutevc.com');
 			podcast = await Podcast.find({url:'http://thetwentyminutevc.com'});
@@ -78,9 +78,8 @@ describe('Podcast controller', () => {
 					.post('/podcasts')
 					.send({feedUrl: 'http://thetwentyminutevc.libsyn.com/rss'})
 			);
-			expect(response).to.have.status(201);
+			expect(response).to.have.status(200);
 			expect(response.body).to.have.length(1);
-
 			let podcast2 = await Podcast.find({url:'http://thetwentyminutevc.com'});
 			expect(podcast2.updatedAt).to.eq(podcast.updatedAt);
 		});

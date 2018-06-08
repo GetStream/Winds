@@ -25,7 +25,7 @@ exports.get = async (req, res) => {
 	let pin = await Pin.findById(req.params.pinId);
 
 	if (!pin) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'Pin does not exist.' });
 	}
 
 	res.json(pin);
@@ -55,9 +55,10 @@ exports.post = async (req, res) => {
 	pin = await Pin.findOne(obj);
 
 	if (pin) {
-		return res.sendStatus(409);
+		return res.status(409).json({ error: 'A pin with the matching criteria already exists.'});
 	} else {
 		pin = await Pin.create(data);
+
 		await client
 			.feed('user', pin.user)
 			.addActivity({
@@ -67,6 +68,7 @@ exports.post = async (req, res) => {
 				foreign_id: `pins:${pin._id}`,
 				time: pin.createdAt,
 			});
+
 		res.json(pin);
 	}
 };
@@ -75,7 +77,7 @@ exports.delete = async (req, res) => {
 	let exists = await Pin.findOne({ _id: req.params.pinId, user: req.user.sub });
 
 	if (!exists) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'Pin does not exist.' });
 	}
 
 	await Pin.remove({ _id: req.params.pinId });
