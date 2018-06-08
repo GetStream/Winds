@@ -98,40 +98,62 @@ FollowSchema.plugin(timestamps, {
 FollowSchema.plugin(mongooseStringQuery);
 FollowSchema.plugin(autopopulate);
 
-FollowSchema.statics.getOrCreate = async function getOrCreate(
-	followType,
-	userID,
-	publicationID,
-) {
-	if (followType != 'rss' && followType != 'podcast') {
-		throw new Error(`invalid follow type ${followType}`);
+FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
+
+	// validate
+	for (let f of follows ) {
+		if (f.type != 'rss' && f.type != 'podcast') {
+			throw new Error(`invalid follow type ${f.type}`);
+		}
 	}
-	// see if we already have the follow relationship
-	let query = { user: userID };
-	query[followType] = publicationID;
-	let instance = await this.findOne(query).lean();
-	if (!instance) {
-		instance = await this.create(query);
-		let feedGroup = (followType == 'rss') ? 'user_article' : 'user_episode'
+	// batch create the follow relationships
+	let followInstances = []
+	for (let f of follows ) {
+		let query = { user: f.userID };
+		query[f.type] = f.publicationID;
+		let instance = await this.findOne(query).lean();
+		if (!instance) {
+			instance = await this.create(query);
+		}
+		followInstances.push(instance)
+	}
+
+	// sync to stream in a batch
+	let feedRelations = []
+	for (let f of follows ) {
+		let feedGroup = (f.type == 'rss') ? 'user_article' : 'user_episode'
 		// sync to stream
-		await Promise.all([
-			streamClient.feed(feedGroup, userID).follow(followType, publicationID),
-			streamClient.feed('timeline', userID).follow(followType, publicationID),
-		]);
+		feedRelations.push({'source': `timeline:${f.userID}`, 'target': `${f.type}:${f.publicationID}`})
+		feedRelations.push({'source': `${feedGroup}:${f.userID}`, 'target': `${f.type}:${f.publicationID}`})
+	}
+	let response = await streamClient.followMany(feedRelations)
+
+	// update the counts
+	for (let f of follows ) {
 		// update the follow count
 		let countQuery = {}
-		countQuery[followType] = publicationID
+		countQuery[f.type] = f.publicationID
 		let followerCount = await this.count(countQuery)
-		let schema = (followType == 'rss') ? RSS : Podcast
+		let schema = (f.type == 'rss') ? RSS : Podcast
 		// update the count
 		await schema.update(
-			{ _id: publicationID },
+			{ _id: f.publicationID },
 			{
 				followerCount: followerCount,
 			}
 		);
 	}
-	return instance;
+
+	return followInstances;
+};
+
+FollowSchema.statics.getOrCreate = async function getOrCreate(
+	followType,
+	userID,
+	publicationID,
+) {
+	let instances = await this.getOrCreateMany([{type: followType, userID: userID, publicationID: publicationID}])
+	return instances[0];
 };
 
 module.exports = exports = mongoose.model('Follow', FollowSchema);

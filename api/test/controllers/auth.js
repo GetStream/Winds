@@ -85,16 +85,12 @@ describe('Auth controller', () => {
 					});
 
 					for (const data of entries) {
-						expect(mockClient.feed.calledWith(contentType.userFeed, user._id)).to.be.true;
-						expect(mockClient.feed.calledWith('timeline', user._id)).to.be.true;
-
-						const userFeed = getMockFeed(contentType.userFeed, user._id);
-						const timelineFeed = getMockFeed('timeline', user._id);
-						expect(userFeed).to.not.be.null;
-						expect(timelineFeed).to.not.be.null;
-
-						expect(userFeed.follow.calledWith(contentType.contentFeed, data._id)).to.be.true;
-						expect(timelineFeed.follow.calledWith(contentType.contentFeed, data._id)).to.be.true;
+						let type = (data.constructor.modelName == "RSS") ? 'rss' : 'podcast'
+						let correct = [ { source: `timeline:${user._id}`,
+					    target: `${type}:${data._id}` },
+					  { source: `${contentType.userFeed}:${user._id}`,
+					    target: `${type}:${data._id}` }]
+						expect(mockClient.followMany.calledWith(correct)).to.be.true;
 					}
 				}
 			});
