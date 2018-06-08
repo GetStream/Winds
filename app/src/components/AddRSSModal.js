@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import exitIcon from '../images/buttons/exit.svg';
-import Dropzone from 'react-dropzone';
 import config from '../config';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -196,7 +195,7 @@ class AddRSSModal extends React.Component {
 	}
 
 	render() {
-		let dropzoneContents;
+		let dropzoneContents; // eslint-disable-line
 
 		if (this.state.file) {
 			dropzoneContents = <div>{this.state.file.name}</div>;
