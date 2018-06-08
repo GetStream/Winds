@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>The Django weblog</title><link>https://www.djangoproject.com/weblog/</link><description>Latest news about Django, the Python Web framework.</description><atom:link href="https://www.djangoproject.com/rss/weblog/" rel="self"></atom:link><language>en-us</language><lastBuildDate>Fri, 01 Jun 2018 10:32:48 -0500</lastBuildDate><item><title>Django bugfix release: 2.0.6</title><link>https://www.djangoproject.com/weblog/2018/jun/01/bugfix-release/</link><description>&lt;p&gt;Today we've issued the &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/2.0.6/"&gt;2.0.6&lt;/a&gt; bugfix release.&lt;/p&gt;
+&lt;p&gt;The release package and checksums are available from &lt;a class="reference external" href="/download/"&gt;our downloads page&lt;/a&gt;, as well as from the Python Package Index. The PGP key ID used for this release is Carlton Gibson: E17DF5C82B4F9D00.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carlton Gibson</dc:creator><pubDate>Fri, 01 Jun 2018 10:32:48 -0500</pubDate><guid>https://www.djangoproject.com/weblog/2018/jun/01/bugfix-release/</guid></item><item><title>Django 2.1 alpha 1 released</title><link>https://www.djangoproject.com/weblog/2018/may/17/django-21-alpha-1/</link><description>&lt;p&gt;Django 2.1 alpha 1 is now available. It represents the first stage in the 2.1 release cycle and is an opportunity for you to try out the changes coming in Django 2.1.&lt;/p&gt;
+&lt;p&gt;Django 2.1 has a smorgasbord of new features which you can read about in
+&lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/releases/2.1/"&gt;the in-development 2.1 release notes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This alpha milestone marks the feature freeze. The &lt;a class="reference external" href="https://code.djangoproject.com/wiki/Version2.1Roadmap#schedule"&gt;current
+release schedule&lt;/a&gt; calls for a beta release in about a month and a release
+candidate about a month from then. We'll only be able to keep this schedule
+if we get early and often testing from the community. Updates on the release
+schedule are available &lt;a class="reference external" href="https://groups.google.com/d/topic/django-developers/IEWIfNyXdV4/discussion"&gt;on the django-developers mailing list&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As with all alpha and beta packages, this is &lt;strong&gt;not&lt;/strong&gt; for production use. But
+if you'd like to take some of the new features for a spin, or to help find and
+fix bugs (which should be reported to &lt;a class="reference external" href="https://code.djangoproject.com/newticket"&gt;the issue tracker&lt;/a&gt;), you can grab a
+copy of the alpha package from &lt;a class="reference external" href="/download/"&gt;our downloads page&lt;/a&gt; or on PyPI.&lt;/p&gt;
+&lt;p&gt;The PGP key ID used for this release is Tim Graham: 1E8ABDC773EDE252.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Graham</dc:creator><pubDate>Thu, 17 May 2018 20:11:36 -0500</pubDate><guid>https://www.djangoproject.com/weblog/2018/may/17/django-21-alpha-1/</guid></item><item><title>DjangoCon Europe 2019 - where will it be?</title><link>https://www.djangoproject.com/weblog/2018/may/10/djangocon-europe-2019-where-will-it-be/</link><description>&lt;p&gt;Each year, a new volunteer team in the European Django community plans, organises and hosts a DjangoCon Europe.&lt;/p&gt;
+&lt;p&gt;Hosting a DjangoCon is an ambitious undertaking. It's hard work, but each year it has been successfully run by a team of community volunteers, not all of whom have had previous experience - more important is enthusiasm, organisational skills, the ability to plan and manage budgets, time and people - and plenty of time to invest in the project.&lt;/p&gt;
+&lt;p&gt;You'll find plenty of support on offer from previous DjangoCon organisers, so you won't be on your own.&lt;/p&gt;
+&lt;div class="section" id="s-how-to-apply"&gt;
+&lt;h3&gt;How to apply&lt;/h3&gt;
+&lt;p&gt;If you're interested, we'd love to hear from you.&lt;/p&gt;
+&lt;div class="section" id="s-if-you-re-ready-to-submit-a-proposal"&gt;
+&lt;h4&gt;If you're ready to submit a proposal&lt;/h4&gt;
+&lt;p&gt;If you're ready to submit a proposal, please do so. The more detailed  and complete your proposal, the better. Things you should consider, and that we'd like to know about, are:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;dates&lt;/li&gt;
+&lt;li&gt;numbers of attendees&lt;/li&gt;
+&lt;li&gt;venue(s)&lt;/li&gt;
+&lt;li&gt;accommodation&lt;/li&gt;
+&lt;li&gt;transport links&lt;/li&gt;
+&lt;li&gt;budgets and ticket prices&lt;/li&gt;
+&lt;li&gt;committee members&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We'd like to see (if you have these already):&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;timelines&lt;/li&gt;
+&lt;li&gt;pictures&lt;/li&gt;
+&lt;li&gt;prices&lt;/li&gt;
+&lt;li&gt;draft agreements with providers&lt;/li&gt;
+&lt;li&gt;alternatives you have considered&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;They will all help show that your plans are serious and thorough, and that you have the organisational capacity to make it a success.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.djangoproject.com/foundation/conferences/"&gt;Find out and tell us more&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-if-you-re-thinking-about-it"&gt;
+&lt;h4&gt;If you're thinking about it&lt;/h4&gt;
+&lt;p&gt;If you're still considering the feasibility, don't hesitate to get in touch with us to discuss your ideas. We can help in numerous ways, including by putting you in touch with others who'd like to be involved.&lt;/p&gt;
+&lt;p&gt;Just &lt;a class="reference external" href="https://www.djangoproject.com/contact/foundation/"&gt;drop us a line&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Daniele Procida</dc:creator><pubDate>Thu, 10 May 2018 09:52:46 -0500</pubDate><guid>https://www.djangoproject.com/weblog/2018/may/10/djangocon-europe-2019-where-will-it-be/</guid></item><item><title>DjangoCon US 2018 Update: CFP Open, Financial Aid App Open, and Tickets On Sale!</title><link>https://www.djangoproject.com/weblog/2018/may/09/djangocon-us-2018-update/</link><description>&lt;p&gt;In case you missed the news, &lt;a class="reference external" href="https://2018.djangocon.us/sponsors/information/"&gt;DjangoCon US 2018&lt;/a&gt; will take place in
+sunny San Diego, California, from October 14-19, 2018! We’re pleased to
+announce the following items.&lt;/p&gt;
+&lt;div class="section" id="s-early-bird-tickets-on-sale"&gt;
+&lt;h3&gt;Early Bird Tickets On Sale&lt;/h3&gt;
+&lt;p&gt;Early bird tickets are &lt;a class="reference external" href="https://ti.to/defna/djangocon-us-2018"&gt;on sale now&lt;/a&gt;! You can also pre-register for
+tutorials and register for (free!) sprints. If you need to buy several
+tickets and assign them to your employees later, check out the Corporate
+Concierge Service. Early bird tickets are gone when they’re gone, so
+don’t wait to get yours.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-call-for-proposals-cfp"&gt;
+&lt;h3&gt;Call for Proposals (CFP)&lt;/h3&gt;
+&lt;p&gt;Our &lt;a class="reference external" href="https://www.papercall.io/djangocon-us-2018"&gt;CFP&lt;/a&gt; for talks and tutorials is now open! The deadline for
+submissions is June 3, 2018. We’re looking for speakers of all
+experience levels and backgrounds. Talk and tutorial presenters also
+receive free admission to DjangoCon US.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-financial-aid-application"&gt;
+&lt;h3&gt;Financial Aid Application&lt;/h3&gt;
+&lt;p&gt;Grants to assist with travel and lodging expenses are available as well.
+Our &lt;a class="reference external" href="https://goo.gl/forms/0rgo8yT72CFMuGCx1"&gt;Financial Aid application&lt;/a&gt; is also now open. The deadline is June
+3, 2018.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-you-can-still-sponsor"&gt;
+&lt;h3&gt;You can still sponsor!&lt;/h3&gt;
+&lt;p&gt;We have some great sponsorship opportunities available and plenty of
+room for your organization. Take a look at our &lt;a class="reference external" href="https://2018.djangocon.us/sponsors/information/"&gt;sponsorship
+opportunities&lt;/a&gt; or email us at &lt;a class="reference external" href="mailto:sponsors&amp;#64;djangocon.us"&gt;sponsors&amp;#64;djangocon.us&lt;/a&gt; so we can craft a
+special package for you.&lt;/p&gt;
+&lt;p&gt;See you in San Diego!&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Lacey Williams Henschel, Rebecca Kindschi, and Jeff Triplett</dc:creator><pubDate>Wed, 09 May 2018 09:00:00 -0500</pubDate><guid>https://www.djangoproject.com/weblog/2018/may/09/djangocon-us-2018-update/</guid></item><item><title>Django bugfix releases: 2.0.5 and 1.11.13</title><link>https://www.djangoproject.com/weblog/2018/may/01/bugfix-releases/</link><description>&lt;p&gt;Today we've issued the &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/2.0.5/"&gt;2.0.5&lt;/a&gt; and &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/1.11.13/"&gt;1.11.13&lt;/a&gt;  bugfix releases.&lt;/p&gt;
+&lt;p&gt;The release package and checksums are available from &lt;a class="reference external" href="/download/"&gt;our downloads page&lt;/a&gt;, as well as from the Python Package Index. The PGP key ID used for this release is Tim Graham: 1E8ABDC773EDE252.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Graham</dc:creator><pubDate>Tue, 01 May 2018 21:05:15 -0500</pubDate><guid>https://www.djangoproject.com/weblog/2018/may/01/bugfix-releases/</guid></item><item><title>Django bugfix releases: 2.0.4 and 1.11.12</title><link>https://www.djangoproject.com/weblog/2018/apr/02/bugfix-releases/</link><description>&lt;p&gt;Today we've issued the &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/2.0.4/"&gt;2.0.4&lt;/a&gt; and &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/1.11.12/"&gt;1.11.12&lt;/a&gt;  bugfix releases.&lt;/p&gt;
+&lt;p&gt;The release package and checksums are available from &lt;a class="reference external" href="/download/"&gt;our downloads page&lt;/a&gt;, as well as from the Python Package Index. The PGP key ID used for this release is Tim Graham: 1E8ABDC773EDE252.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Graham</dc:creator><pubDate>Mon, 02 Apr 2018 22:09:33 -0500</pubDate><guid>https://www.djangoproject.com/weblog/2018/apr/02/bugfix-releases/</guid></item><item><title>Django security releases issued: 2.0.3, 1.11.11, and 1.8.19</title><link>https://www.djangoproject.com/weblog/2018/mar/06/security-releases/</link><description>&lt;p&gt;In accordance with &lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/internals/security/"&gt;our security release policy&lt;/a&gt;, the Django team is issuing &lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/releases/1.8.19/"&gt;Django 1.8.19&lt;/a&gt;, &lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/releases/1.11.11/"&gt;Django 1.11.11&lt;/a&gt; and &lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/releases/2.0.3/"&gt;Django 2.0.3&lt;/a&gt;. These release addresses the security issues detailed below. We encourage all users of Django to upgrade as soon as possible.&lt;/p&gt;
+&lt;div class="section" id="s-cve-2018-7536-denial-of-service-possibility-in-urlize-and-urlizetrunc-template-filters"&gt;
+&lt;h3&gt;CVE-2018-7536: Denial-of-service possibility in &lt;tt class="docutils literal"&gt;urlize&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;urlizetrunc&lt;/tt&gt; template filters&lt;/h3&gt;
+&lt;p&gt;The &lt;tt class="docutils literal"&gt;django.utils.html.urlize()&lt;/tt&gt; function was extremely slow to evaluate
+certain inputs due to catastrophic backtracking vulnerabilities in two
+regular expressions (one regular expression for Django 1.8). The &lt;tt class="docutils literal"&gt;urlize()&lt;/tt&gt;
+function is used to implement the &lt;tt class="docutils literal"&gt;urlize&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;urlizetrunc&lt;/tt&gt; template
+filters, which were thus vulnerable.&lt;/p&gt;
+&lt;p&gt;Thanks James Davis for reporting this issue.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-cve-2018-7537-denial-of-service-possibility-in-truncatechars-html-and-truncatewords-html-template-filters"&gt;
+&lt;h3&gt;CVE-2018-7537: Denial-of-service possibility in &lt;tt class="docutils literal"&gt;truncatechars_html&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;truncatewords_html&lt;/tt&gt; template filters&lt;/h3&gt;
+&lt;p&gt;If &lt;tt class="docutils literal"&gt;django.utils.text.Truncator&lt;/tt&gt;'s &lt;tt class="docutils literal"&gt;chars()&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;words()&lt;/tt&gt; methods
+were passed the &lt;tt class="docutils literal"&gt;html=True&lt;/tt&gt; argument, they were extremely slow to evaluate
+certain inputs due to a catastrophic backtracking vulnerability in a regular
+expression. The &lt;tt class="docutils literal"&gt;chars()&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;words()&lt;/tt&gt; methods are used to
+implement the &lt;tt class="docutils literal"&gt;truncatechars_html&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;truncatewords_html&lt;/tt&gt; template
+filters, which were thus vulnerable.&lt;/p&gt;
+&lt;p&gt;Thanks James Davis for reporting this issue.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-affected-supported-versions"&gt;
+&lt;h3&gt;Affected supported versions&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Django master branch&lt;/li&gt;
+&lt;li&gt;Django 2.0&lt;/li&gt;
+&lt;li&gt;Django 1.11&lt;/li&gt;
+&lt;li&gt;Django 1.8&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Per our &lt;a class="reference external" href="https://www.djangoproject.com/download/#supported-versions"&gt;supported versions policy&lt;/a&gt;, Django 1.10, 1.9, and Django 1.7 and older are no longer supported.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-resolution"&gt;
+&lt;h3&gt;Resolution&lt;/h3&gt;
+&lt;p&gt;Patches to resolve the issue have been applied to Django's master branch and
+the 2.0, 1.11, and 1.8 release branches. The patches may be obtained from the following changesets:&lt;/p&gt;
+&lt;p&gt;On the development master branch:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/8618271caa0b09daba39ff3b46567d33ae1e1d3a"&gt;urlize&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/97b7dd59bb8d6163239061e2022153c3415d146d"&gt;truncate&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;On the 2.0 release branch:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/e157315da3ae7005fa0683ffc9751dbeca7306c8"&gt;urlize&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/94c5da1d17a6b0d378866c66b605102c19f7988c"&gt;truncate&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;On the 1.11 release branch:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/abf89d729f210c692a50e0ad3f75fb6bec6fae16"&gt;urlize&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/a91436360b79a6ff995c3e5018bcc666dfaf1539"&gt;truncate&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;On the 1.8 release branch:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/1ca63a66ef3163149ad822701273e8a1844192c2"&gt;urlize&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/django/django/commit/d17974a287a6ea2e361daff88fcc004cbd6835fa"&gt;truncate&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The following releases have been issued:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Django 1.8.19 (&lt;a class="reference external" href="https://www.djangoproject.com/m/releases/1.8/Django-1.8.19.tar.gz"&gt;download Django 1.8.19&lt;/a&gt; | &lt;a class="reference external" href="https://www.djangoproject.com/m/pgp/Django-1.8.19.checksum.txt"&gt;1.8.19 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Django 1.11.11 (&lt;a class="reference external" href="https://www.djangoproject.com/m/releases/1.11/Django-1.11.11.tar.gz"&gt;download Django 1.11.11&lt;/a&gt; | &lt;a class="reference external" href="https://www.djangoproject.com/m/pgp/Django-1.11.11.checksum.txt"&gt;1.11.11 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Django 2.0.3 (&lt;a class="reference external" href="https://www.djangoproject.com/m/releases/2.0/Django-2.0.3.tar.gz"&gt;download Django 2.0.3&lt;/a&gt; | &lt;a class="reference external" href="https://www.djangoproject.com/m/pgp/Django-2.0.3.checksum.txt"&gt;2.0.3 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The PGP key ID used for these releases is Tim Graham: 1E8ABDC773EDE252.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-general-notes-regarding-security-reporting"&gt;
+&lt;h3&gt;General notes regarding security reporting&lt;/h3&gt;
+&lt;p&gt;As always, we ask that potential security issues be reported via
+private email to &lt;tt class="docutils literal"&gt;security&amp;#64;djangoproject.com&lt;/tt&gt;, and not via Django's
+Trac instance or the django-developers list. Please see &lt;a class="reference external" href="https://www.djangoproject.com/security/"&gt;our security
+policies&lt;/a&gt; for further
+information.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Graham</dc:creator><pubDate>Tue, 06 Mar 2018 08:44:23 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2018/mar/06/security-releases/</guid></item><item><title>Django security releases issued: 2.0.2 and 1.11.10</title><link>https://www.djangoproject.com/weblog/2018/feb/01/security-releases/</link><description>&lt;p&gt;In accordance with &lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/internals/security/"&gt;our security release policy&lt;/a&gt;, the Django team is issuing &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/1.11.10/"&gt;Django 1.11.10&lt;/a&gt; and &lt;a class="reference external" href="https://docs.djangoproject.com/en/stable/releases/2.0.2/"&gt;Django 2.0.2&lt;/a&gt;. These release addresses the security issue detailed below. We encourage all users of Django to upgrade as soon as possible.&lt;/p&gt;
+&lt;div class="section" id="s-cve-2018-6188-information-leakage-in-authenticationform"&gt;
+&lt;h3&gt;CVE-2018-6188: Information leakage in &lt;tt class="docutils literal"&gt;AuthenticationForm&lt;/tt&gt;&lt;/h3&gt;
+&lt;p&gt;A regression in Django 1.11.8 made
+&lt;tt class="docutils literal"&gt;django.contrib.auth.forms.AuthenticationForm&lt;/tt&gt; run its
+&lt;tt class="docutils literal"&gt;confirm_login_allowed()&lt;/tt&gt; method even if an incorrect password is entered.
+This can leak information about a user, depending on what messages
+&lt;tt class="docutils literal"&gt;confirm_login_allowed()&lt;/tt&gt; raises. If &lt;tt class="docutils literal"&gt;confirm_login_allowed()&lt;/tt&gt; isn't
+overridden, an attacker enter an arbitrary username and see if that user has
+been set to &lt;tt class="docutils literal"&gt;is_active=False&lt;/tt&gt;. If &lt;tt class="docutils literal"&gt;confirm_login_allowed()&lt;/tt&gt; is overridden,
+more sensitive details could be leaked.&lt;/p&gt;
+&lt;p&gt;Thanks Jack Cushman for reporting this issue.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-affected-supported-versions"&gt;
+&lt;h3&gt;Affected supported versions&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Django master branch&lt;/li&gt;
+&lt;li&gt;Django 2.0 and 2.0.1&lt;/li&gt;
+&lt;li&gt;Django 1.11.8 and 1.11.9&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Per our &lt;a class="reference external" href="https://www.djangoproject.com/download/#supported-versions"&gt;supported versions policy&lt;/a&gt;, Django 1.10 and 1.9 are no longer supported (but aren't affected). Django 1.8 LTS (for which security support ends on April 1) is unaffected.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-resolution"&gt;
+&lt;h3&gt;Resolution&lt;/h3&gt;
+&lt;p&gt;Patches to resolve the issue have been applied to Django's master branch and
+the 2.0 and 1.11 release branches. The patches may be obtained from the following changesets:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/af33fb250e9847f1ca8c0ba0d72671d76659704f"&gt;master branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/c37bb28677295f6edda61d8ac461014ef0d3aeb2"&gt;2.0 release branch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;On the &lt;a class="reference external" href="https://github.com/django/django/commit/57b95fedad5e0b83fc9c81466b7d1751c6427aae"&gt;1.11 release branch&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The following releases have been issued:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Django 1.11.10 (&lt;a class="reference external" href="https://www.djangoproject.com/m/releases/1.11/Django-1.11.10.tar.gz"&gt;download Django 1.11.10&lt;/a&gt; | &lt;a class="reference external" href="https://www.djangoproject.com/m/pgp/Django-1.11.10.checksum.txt"&gt;1.11.10 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Django 2.0.2 (&lt;a class="reference external" href="https://www.djangoproject.com/m/releases/2.0/Django-2.0.2.tar.gz"&gt;download Django 2.0.2&lt;/a&gt; | &lt;a class="reference external" href="https://www.djangoproject.com/m/pgp/Django-2.0.2.checksum.txt"&gt;2.0.2 checksums&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The PGP key ID used for these releases is Tim Graham: 1E8ABDC773EDE252.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="s-general-notes-regarding-security-reporting"&gt;
+&lt;h3&gt;General notes regarding security reporting&lt;/h3&gt;
+&lt;p&gt;As always, we ask that potential security issues be reported via
+private email to &lt;tt class="docutils literal"&gt;security&amp;#64;djangoproject.com&lt;/tt&gt;, and not via Django's
+Trac instance or the django-developers list. Please see &lt;a class="reference external" href="https://www.djangoproject.com/security/"&gt;our security
+policies&lt;/a&gt; for further
+information.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Graham</dc:creator><pubDate>Thu, 01 Feb 2018 09:11:25 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2018/feb/01/security-releases/</guid></item><item><title>2017 Malcolm Tredinnick Memorial Prize awarded to Claude Paroz</title><link>https://www.djangoproject.com/weblog/2018/jan/22/2017-malcolm-tredinnick-prize-claude-paroz/</link><description>&lt;p&gt;The Board of the Django Software Foundation is pleased to announce that the 2017 &lt;a class="reference external" href="https://www.djangoproject.com/foundation/prizes/"&gt;Malcolm Tredinnick Memorial Prize&lt;/a&gt; has been awarded to Claude Paroz.&lt;/p&gt;
+&lt;p&gt;Claude has been a contributor to Django since 2012. He was selected for the prize by the board from amongst the nominees on the basis of his long-term, consistent contribution. Claude has given service to Django though code and also by enabling others to contribute effectively.&lt;/p&gt;
+&lt;p&gt;His work represents a less-visible but essential aspect of contribution to Django. It's not the kind of work that will be publicly applauded at a conference, or stand out as news, but it's of enormous importance to the project. Claude is owed a debt of thanks for it.&lt;/p&gt;
+&lt;p&gt;Tim Graham wrote in his nomination:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I nominate Claude Paroz for five years of tireless and unheralded
+contributions to Django, including shepherding the GeoDjango project
+and serving as the Django translations manager. He's the primary
+answering authority on the geodjango and django-i18n mailing lists.&lt;/p&gt;
+&lt;p&gt;While his contributing began in 2012, Claude is the most active
+volunteer contributor based on number of commits since 2008. He
+regularly offers his expertise by triaging tickets and reviewing pull
+requests. If I ask Claude for some advice in an area of Django in
+which I'm less versed, his responses are quick, respectful, and
+helpful.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Several other people were also nominated for this prize. The Malcom Tredinnick prize could once again have deservedly been awarded several times over. It is an enduring pleasure to observe that there is no shortage of members of our community who, like Claude, exemplify the spirit of generosity and support that the prize celebrates.&lt;/p&gt;
+&lt;p&gt;The other nominees were:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Ifunanya Ikemma, for her work teaching and encouraging women in to programming, through PyLadies
+and Django Girls in Nigeria&lt;/li&gt;
+&lt;li&gt;Katie McLaughlin, for her work in open source projects as a contributor and mentor&lt;/li&gt;
+&lt;li&gt;Melanie Crutchfield, for her work with PyLadies and Django Girls&lt;/li&gt;
+&lt;li&gt;Jeff Triplett, for his huge contribution to the running of DjangoCon US, and the consistently
+warm, supportive attitude he brings to this and to his other work in the world of Django&lt;/li&gt;
+&lt;li&gt;Veronica Munro, for her work organising Django Girls events in Australia&lt;/li&gt;
+&lt;li&gt;Lacey Williams Henschel, for her work in DjangoCon US (including her magnificent work as the 2017
+conference chair), and helping to build the Django community in the US&lt;/li&gt;
+&lt;li&gt;Tim Graham, for being an ever-responsive and valuable point of technical contact for Django.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Many congratulations to Claude, and our sincere thanks to all the nominees for their continued work in Django. Thanks are also due to all who took the trouble to nominate someone.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Daniele Procida</dc:creator><pubDate>Mon, 22 Jan 2018 16:53:58 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2018/jan/22/2017-malcolm-tredinnick-prize-claude-paroz/</guid></item><item><title>The DSF Welcomes Carlton Gibson as its Newest Fellow</title><link>https://www.djangoproject.com/weblog/2018/jan/12/dsf-welcomes-carlton-gibson-its-newest-fellow/</link><description>&lt;p&gt;On November 16, 2017, the DSF made a call for Django Fellow applicants. On behalf of the Django Software Foundation, the DSF Fellowship Committee is pleased to announce Carlton Gibson as the newest Django Fellow.  Carlton is joining Tim Graham who recently announced his scale back of hours. Tim will be transitioning to part-time but remaining as a Fellow.&lt;/p&gt;
+&lt;p&gt;Carlton has been involved in the Django community since 2009. He has been a core team member of the Django REST Framework for several years. He's a major contributor to Django Filter, Django Crispy Forms and Django AppConf as well as Django Compressor and many others. He is also an instructor for Django Girls in Barcelona.&lt;/p&gt;
+&lt;p&gt;The DSF received 15 applicants, all of which were reviewed by the Fellowship Committee before coming to a consensus decision on Carlton. The level of talent and professionalism in the applicant pool made the decision process a difficult one. We are grateful for all who applied and their desire to participate in this important initiative.&lt;/p&gt;
+&lt;p&gt;The Fellowship program has been a great success for the past three years and is only possible through generous support of the Django Software Foundation. If you or your organization benefit from Django and the work of the Fellowship program, please consider a &lt;a class="reference external" href="/fundraising/"&gt;donation&lt;/a&gt;. Every dollar amount, large or small, makes an impact.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Brian Moloney</dc:creator><pubDate>Fri, 12 Jan 2018 11:07:35 -0600</pubDate><guid>https://www.djangoproject.com/weblog/2018/jan/12/dsf-welcomes-carlton-gibson-its-newest-fellow/</guid></item></channel></rss>

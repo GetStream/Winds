@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lobsters</title>
+    <description></description>
+    <link>https://lobste.rs/</link>
+    <atom:link href="https://lobste.rs/rss" rel="self" type="application/rss+xml" />
+
+      <item>
+        <title>JWZ&#39;s snarky, but relevant take on Github</title>
+        <link>https://www.jwz.org/blog/2018/06/lol-github/</link>
+        <guid isPermaLink="false">https://lobste.rs/s/243k9d</guid>
+        <author>stevelord@users.lobste.rs</author>
+        <pubDate>Wed, 06 Jun 2018 02:51:24 -0500</pubDate>
+        <comments>https://lobste.rs/s/243k9d/jwz_s_snarky_relevant_take_on_github</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/243k9d/jwz_s_snarky_relevant_take_on_github&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>practices</category>
+      </item>
+      <item>
+        <title>Speeding up Zsh and Oh-My-Zsh</title>
+        <link>https://blog.jonlu.ca/posts/speeding-up-zsh</link>
+        <guid isPermaLink="false">https://lobste.rs/s/neetd2</guid>
+        <author>JonLuca@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 23:45:21 -0500</pubDate>
+        <comments>https://lobste.rs/s/neetd2/speeding_up_zsh_oh_my_zsh</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/neetd2/speeding_up_zsh_oh_my_zsh&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>unix</category>
+          <category>devops</category>
+          <category>performance</category>
+      </item>
+      <item>
+        <title>Mailing lists vs Github</title>
+        <link>https://begriffs.com/posts/2018-06-05-mailing-list-vs-github.html</link>
+        <guid isPermaLink="false">https://lobste.rs/s/a88fsl</guid>
+        <author>begriffs@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 03:40:35 -0500</pubDate>
+        <comments>https://lobste.rs/s/a88fsl/mailing_lists_vs_github</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/a88fsl/mailing_lists_vs_github&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>vcs</category>
+          <category>culture</category>
+      </item>
+      <item>
+        <title>There is only one OS, and it&#8217;s been obsolete for decades</title>
+        <link>https://programmingmadecomplicated.wordpress.com/2017/08/12/there-is-only-one-os-and-its-been-obsolete-for-decades/</link>
+        <guid isPermaLink="false">https://lobste.rs/s/uxygzt</guid>
+        <author>davmac@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 03:37:01 -0500</pubDate>
+        <comments>https://lobste.rs/s/uxygzt/there_is_only_one_os_it_s_been_obsolete_for</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/uxygzt/there_is_only_one_os_it_s_been_obsolete_for&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>unix</category>
+          <category>philosophy</category>
+      </item>
+      <item>
+        <title>Your own VPN with OpenIKED &#38; OpenBSD</title>
+        <link>https://medium.com/@cmacrae/your-own-vpn-with-openiked-openbsd-13d7abd3d1d4</link>
+        <guid isPermaLink="false">https://lobste.rs/s/bealzm</guid>
+        <author>cmacrae@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 10:29:11 -0500</pubDate>
+        <comments>https://lobste.rs/s/bealzm/your_own_vpn_with_openiked_openbsd</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/bealzm/your_own_vpn_with_openiked_openbsd&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>security</category>
+          <category>openbsd</category>
+          <category>devops</category>
+          <category>networking</category>
+      </item>
+      <item>
+        <title>Fast.ai: Up to speed with the best of Deep Learning</title>
+        <link>https://www.zerotosingularity.com/blog/fast.ai-up-to-speed-with-the-best-of-deep-learning/</link>
+        <guid isPermaLink="false">https://lobste.rs/s/zjyqyz</guid>
+        <author>zerotosingularity@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 23:34:28 -0500</pubDate>
+        <comments>https://lobste.rs/s/zjyqyz/fast_ai_up_speed_with_best_deep_learning</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/zjyqyz/fast_ai_up_speed_with_best_deep_learning&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>ai</category>
+      </item>
+      <item>
+        <title>RC is moving</title>
+        <link>https://www.recurse.com/blog/134-rc-is-moving</link>
+        <guid isPermaLink="false">https://lobste.rs/s/umqfbb</guid>
+        <author>rhonorv@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 16:03:02 -0500</pubDate>
+        <comments>https://lobste.rs/s/umqfbb/rc_is_moving</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/umqfbb/rc_is_moving&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>culture</category>
+      </item>
+      <item>
+        <title>Zip Slip: Widespread Critical Arbitrary File Overwrite Vulnerability</title>
+        <link>https://snyk.io/research/zip-slip-vulnerability</link>
+        <guid isPermaLink="false">https://lobste.rs/s/vdowdh</guid>
+        <author>lili2311@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 08:56:14 -0500</pubDate>
+        <comments>https://lobste.rs/s/vdowdh/zip_slip_widespread_critical_arbitrary</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/vdowdh/zip_slip_widespread_critical_arbitrary&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>security</category>
+      </item>
+      <item>
+        <title>git ssb - cel/git-ssb@master</title>
+        <link>https://git.scuttlebot.io/%25n92DiQh7ietE%2BR%2BX%2FI403LQoyf2DtR3WQfCkDKlheQU%3D.sha256</link>
+        <guid isPermaLink="false">https://lobste.rs/s/yprzoq</guid>
+        <author>enkiv2@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 08:20:35 -0500</pubDate>
+        <comments>https://lobste.rs/s/yprzoq/git_ssb_cel_git_ssb_master</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/yprzoq/git_ssb_cel_git_ssb_master&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>vcs</category>
+          <category>distributed</category>
+      </item>
+      <item>
+        <title>Markets are efficient if and only if P = NP</title>
+        <link>https://arxiv.org/pdf/1002.2284.pdf</link>
+        <guid isPermaLink="false">https://lobste.rs/s/1lfvdx</guid>
+        <author>pushcx@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 16:16:31 -0500</pubDate>
+        <comments>https://lobste.rs/s/1lfvdx/markets_are_efficient_if_only_if_p_np</comments>
+        <description>
+          &#60;p&#62;Abstract:&#60;/p&#62;&#10;&#60;blockquote&#62;&#10;&#60;p&#62;I prove that if markets are weak-form efficient, meaning current prices fully reflect all information available in past prices, then P = NP, meaning every computational problem whose solution can be verified in polynomial time can also be solved in polynomial time. I also prove the converse by showing how we can &#8220;program&#8221; the market to solve NP-complete problems. Since P probably does not equal NP, markets are probably not efficient. Specifically, markets become increasingly inefficient as the time series lengthens or becomes more frequent. An illustration by way of partitioning the excess returns to momentum strategies based on data availability confirms this prediction.&#60;/p&#62;&#10;&#60;/blockquote&#62;&#10;
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/1lfvdx/markets_are_efficient_if_only_if_p_np&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>pdf</category>
+          <category>math</category>
+          <category>finance</category>
+      </item>
+      <item>
+        <title>GitPub: An extension to ActivityPub for web-based Git services federation</title>
+        <link>https://github.com/git-federation/gitpub</link>
+        <guid isPermaLink="false">https://lobste.rs/s/d0pdor</guid>
+        <author>pizzaiolo@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 09:33:56 -0500</pubDate>
+        <comments>https://lobste.rs/s/d0pdor/gitpub_extension_activitypub_for_web</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/d0pdor/gitpub_extension_activitypub_for_web&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>vcs</category>
+          <category>distributed</category>
+      </item>
+      <item>
+        <title>Pony 0.22.4 has been released</title>
+        <link>https://www.ponylang.org/blog/2018/06/0.22.4-released/</link>
+        <guid isPermaLink="false">https://lobste.rs/s/ielm2y</guid>
+        <author>SeanTAllen@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 06:13:22 -0500</pubDate>
+        <comments>https://lobste.rs/s/ielm2y/pony_0_22_4_has_been_released</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/ielm2y/pony_0_22_4_has_been_released&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>release</category>
+      </item>
+      <item>
+        <title>AMPstinction</title>
+        <link>https://adactio.com/journal/13964</link>
+        <guid isPermaLink="false">https://lobste.rs/s/oeeusd</guid>
+        <author>GeoffWozniak@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 22:04:23 -0500</pubDate>
+        <comments>https://lobste.rs/s/oeeusd/ampstinction</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/oeeusd/ampstinction&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>web</category>
+      </item>
+      <item>
+        <title>Bootstrapping Haskell: part 1</title>
+        <link>https://elephly.net/posts/2017-01-09-bootstrapping-haskell-part-1.html</link>
+        <guid isPermaLink="false">https://lobste.rs/s/bukpqx</guid>
+        <author>pushcx@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 16:19:36 -0500</pubDate>
+        <comments>https://lobste.rs/s/bukpqx/bootstrapping_haskell_part_1</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/bukpqx/bootstrapping_haskell_part_1&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>haskell</category>
+          <category>compilers</category>
+      </item>
+      <item>
+        <title>Robot Pedantry, Human Empathy</title>
+        <link>https://mikemcquaid.com/2018/06/05/robot-pedantry-human-empathy/</link>
+        <guid isPermaLink="false">https://lobste.rs/s/oot91l</guid>
+        <author>pushcx@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 17:52:21 -0500</pubDate>
+        <comments>https://lobste.rs/s/oot91l/robot_pedantry_human_empathy</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/oot91l/robot_pedantry_human_empathy&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>practices</category>
+      </item>
+      <item>
+        <title>ASCAP for Open Source Software</title>
+        <link>https://www.petekeen.net/asacp-for-open-source-software</link>
+        <guid isPermaLink="false">https://lobste.rs/s/wbysfk</guid>
+        <author>mperham@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 13:20:42 -0500</pubDate>
+        <comments>https://lobste.rs/s/wbysfk/ascap_for_open_source_software</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/wbysfk/ascap_for_open_source_software&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>programming</category>
+      </item>
+      <item>
+        <title>How a 20-year Old Mobile Technology Protocol is Revolutionising Africa (With Numbers)</title>
+        <link>https://medium.com/@wizaj/how-a-20-year-old-mobile-technology-protocol-is-revolutionising-africa-with-numbers-744a52cbea92</link>
+        <guid isPermaLink="false">https://lobste.rs/s/he3pff</guid>
+        <author>friendlysock@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 13:13:44 -0500</pubDate>
+        <comments>https://lobste.rs/s/he3pff/how_20_year_old_mobile_technology</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/he3pff/how_20_year_old_mobile_technology&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>networking</category>
+          <category>historical</category>
+      </item>
+      <item>
+        <title>YES! I Compiled 1,000,000 TypeScript files in Under 40 Seconds. This is How.</title>
+        <link>https://medium.com/@urish/yes-i-compiled-1-000-000-typescript-files-in-under-40-seconds-this-is-how-6429a665999c</link>
+        <guid isPermaLink="false">https://lobste.rs/s/iqygaw</guid>
+        <author>antifuchs@users.lobste.rs</author>
+        <pubDate>Wed, 06 Jun 2018 03:56:49 -0500</pubDate>
+        <comments>https://lobste.rs/s/iqygaw/yes_i_compiled_1_000_000_typescript_files</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/iqygaw/yes_i_compiled_1_000_000_typescript_files&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>databases</category>
+          <category>performance</category>
+      </item>
+      <item>
+        <title>Ratelimiting at API Gateways</title>
+        <link>https://blog.getambassador.io/rate-limiting-for-api-gateways-892310a2da02</link>
+        <guid isPermaLink="false">https://lobste.rs/s/adfqgu</guid>
+        <author>rshetty@users.lobste.rs</author>
+        <pubDate>Wed, 06 Jun 2018 03:14:18 -0500</pubDate>
+        <comments>https://lobste.rs/s/adfqgu/ratelimiting_at_api_gateways</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/adfqgu/ratelimiting_at_api_gateways&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>distributed</category>
+      </item>
+      <item>
+        <title>Deprecation of OpenGL and OpenCL in macOS Mojave</title>
+        <link>https://developer.apple.com/macos/whats-new/</link>
+        <guid isPermaLink="false">https://lobste.rs/s/pqxwqj</guid>
+        <author>lewis@users.lobste.rs</author>
+        <pubDate>Mon, 04 Jun 2018 15:37:12 -0500</pubDate>
+        <comments>https://lobste.rs/s/pqxwqj/deprecation_opengl_opencl_macos_mojave</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/pqxwqj/deprecation_opengl_opencl_macos_mojave&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>mac</category>
+      </item>
+      <item>
+        <title>A Kubernetes extension to deploy and run Tor onion services</title>
+        <link>https://github.com/kragniz/tor-controller</link>
+        <guid isPermaLink="false">https://lobste.rs/s/9dqmqz</guid>
+        <author>kragniz@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 12:33:37 -0500</pubDate>
+        <comments>https://lobste.rs/s/9dqmqz/kubernetes_extension_deploy_run_tor</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/9dqmqz/kubernetes_extension_deploy_run_tor&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>devops</category>
+          <category>programming</category>
+      </item>
+      <item>
+        <title>Boilerplate README.md Template for GitHub/GitLab</title>
+        <link>https://github.com/vladocar/boilerplate-readme-template</link>
+        <guid isPermaLink="false">https://lobste.rs/s/7j1e5z</guid>
+        <author>vladocar@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 05:15:21 -0500</pubDate>
+        <comments>https://lobste.rs/s/7j1e5z/boilerplate_readme_md_template_for</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/7j1e5z/boilerplate_readme_md_template_for&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>programming</category>
+      </item>
+      <item>
+        <title>The Beginning of the Monte Carlo Method (1987)</title>
+        <link>https://fas.org/sgp/othergov/doe/lanl/pubs/00326866.pdf</link>
+        <guid isPermaLink="false">https://lobste.rs/s/k8jy9v</guid>
+        <author>calvin@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 21:03:28 -0500</pubDate>
+        <comments>https://lobste.rs/s/k8jy9v/beginning_monte_carlo_method_1987</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/k8jy9v/beginning_monte_carlo_method_1987&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>pdf</category>
+          <category>math</category>
+          <category>historical</category>
+      </item>
+      <item>
+        <title>How to speed up the Rust compiler some more in 2018</title>
+        <link>https://blog.mozilla.org/nnethercote/2018/06/05/how-to-speed-up-the-rust-compiler-some-more-in-2018/</link>
+        <guid isPermaLink="false">https://lobste.rs/s/tycqal</guid>
+        <author>calvin@users.lobste.rs</author>
+        <pubDate>Mon, 04 Jun 2018 23:45:36 -0500</pubDate>
+        <comments>https://lobste.rs/s/tycqal/how_speed_up_rust_compiler_some_more_2018</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/tycqal/how_speed_up_rust_compiler_some_more_2018&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>rust</category>
+          <category>compilers</category>
+          <category>performance</category>
+      </item>
+      <item>
+        <title>SOD - An Embedded Computer Vision and Machine Learning Library</title>
+        <link>https://sod.pixlab.io</link>
+        <guid isPermaLink="false">https://lobste.rs/s/vgcg9i</guid>
+        <author>chmrad@users.lobste.rs</author>
+        <pubDate>Tue, 05 Jun 2018 23:50:56 -0500</pubDate>
+        <comments>https://lobste.rs/s/vgcg9i/sod_embedded_computer_vision_machine</comments>
+        <description>
+
+            &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/vgcg9i/sod_embedded_computer_vision_machine&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+        </description>
+          <category>programming</category>
+          <category>ai</category>
+      </item>
+  </channel>
+</rss>

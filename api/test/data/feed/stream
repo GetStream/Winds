@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>The Stream Blog</title>
+	<atom:link href="https://getstream.io/blog/feed/" rel="self" type="application/rss+xml" />
+	<link>https://getstream.io/blog</link>
+	<description>Welcome to the Official Stream Blog.</description>
+	<lastBuildDate>Thu, 24 May 2018 14:53:56 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+
+
+<image>
+	<url>https://getstream-blog.imgix.net/blog/wp-content/uploads/2016/08/8597527.png?w=32&#038;h=32</url>
+	<title>The Stream Blog</title>
+	<link>https://getstream.io/blog</link>
+	<width>32</width>
+	<height>32</height>
+</image>
+	<item>
+		<title>Try out the Stream API with Postman</title>
+		<link>https://getstream.io/blog/try-out-the-stream-api-with-postman/</link>
+		<comments>https://getstream.io/blog/try-out-the-stream-api-with-postman/#respond</comments>
+		<pubDate>Thu, 24 May 2018 09:00:43 +0000</pubDate>
+		<dc:creator><![CDATA[Dwight Gunning]]></dc:creator>
+				<category><![CDATA[APIs]]></category>
+		<category><![CDATA[Best Practices]]></category>
+		<category><![CDATA[Postman]]></category>
+		<category><![CDATA[RESTful]]></category>
+		<category><![CDATA[testing]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3102</guid>
+		<description><![CDATA[<p>As many developers are aware, Postman is a fantastic tool for developing and testing RESTful web-services and APIs. Since its inception, Postman has evolved beyond simply sending HTTP requests into a feature-rich product with support for automated testing and team collaboration. Many of us at Stream use Postman regularly as we build and test our [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/try-out-the-stream-api-with-postman/">Try out the Stream API with Postman</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_postman.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="Postman Collection for the Stream API" style="display: block; margin:0 auto 10px auto;" /><p><span style="font-weight: 400;">As many developers are aware, </span><a href="https://getpostman.com"><span style="font-weight: 400;">Postman</span></a><span style="font-weight: 400;"> is a fantastic tool for developing and testing RESTful web-services and APIs. Since its inception, Postman has evolved beyond simply sending HTTP requests into a feature-rich product with support for automated testing and team collaboration.</span></p>
+<p><span style="font-weight: 400;">Many of us at Stream use Postman regularly as we build and test our services. We&#8217;re also always looking for ways to make it quick and easy for other developers to try the service. One of our goals is to help people see first hand how simple it is to build powerful social apps with Stream.</span></p>
+<p><span style="font-weight: 400;">When we realized that Postman&#8217;s newest features provide an opportunity to bundle API request examples, and perform more advanced steps like generating JSON Web Tokens (JWTs) for each request, we were keen to give it a shot with Stream. We&#8217;re now happy to publish a Postman collection that demonstrates all of the RESTful API endpoints to the Stream service.</span></p>
+<figure id="attachment_3105"  class="wp-caption aligncenter"><a href="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png"><img class="wp-image-3105 size-fp-small" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=640" alt="Stream API Postman Collection screenshot" width="640" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=1378 1378w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=1024 1024w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=640 640w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.04.11-am.png?w=1200 1200w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></a><figcaption class="wp-caption-text">The Stream API Postman Collection</figcaption></figure>
+<p>&nbsp;</p>
+<p><span style="font-weight: 400;">Those who&#8217;re itching to try it out can head to the Stream <a href="https://getstream.io/docs/#postman">documentation</a> and download the collection</span><span style="font-weight: 400;">.</span></p>
+<p><span style="font-weight: 400;">I</span><span style="font-weight: 400;">f you&#8217;d like to learn a little more about what&#8217;s in the collection and how we built it, read on.</span></p>
+<h2>What&#8217;s in the Collection</h2>
+<p><span style="font-weight: 400;">The collection contains around 30 requests that demonstrate all of Stream&#8217;s major features as well as the individual API calls that correspond to each step in our <a href="https://getstream.io/try-the-api">Getting Started tutorial</a>. This covers adding and modifying activities, retrieving feeds, and maintaining the follower relationships in order to maintain the social graph within an application. This will no doubt broaden even further as we add new API endpoints and expanded features.</span></p>
+<p><span style="font-weight: 400;">One challenge we faced in building the collection was setting up an authentication mechanism to ensure Stream would accept and process the requests initiated by Postman. Although Postman supports several common authentication mechanisms like HTTP Basic Authentication, OAuth, and Bearer Tokens, it lacks built-in support for generating the JWTs which Stream makes use of. Thanks to another helpful Postman feature called </span><a href="https://www.getpostman.com/docs/v6/postman/scripts/pre_request_scripts"><span style="font-weight: 400;">Pre-request Scripts,</span></a><span style="font-weight: 400;"> we were presented with an elegant solution. For the Stream requests, a simple custom JavaScript program first generates a JWT and populates the HTTP request header on each request.</span></p>
+<figure id="attachment_3106"  class="wp-caption aligncenter"><a href="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png"><img class="wp-image-3106 size-fp-small" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=640" alt="Collection-level Pre-Request Script screenshot" width="640" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=885 885w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=286 286w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.15.47-am.png?w=640 640w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></a><figcaption class="wp-caption-text">The Collection-level Pre-request script generates a JSON web token for authentication.</figcaption></figure>
+<p>&nbsp;</p>
+<p><span style="font-weight: 400;">As with all but the most non-trivial APIs, each request includes dynamic data and parameters that relate to the resource and/or operation being requested. Configuration and &#8216;secrets&#8217; for authentication purposes are also needed. To avoid unnecessary setup steps, we embed appropriate configuration for a &#8220;starter&#8221; app. This configuration can be updated later via Postman&#8217;s environment variables.</span></p>
+<p><span style="font-weight: 400;">Finally, we wanted to not only demonstrate the requests but also help developers begin to understand how they themselves can work with the Stream service. With Postman&#8217;s focus on quality API documentation, we were able to include explanations of each resource URL fragment, HTTP header, and the request body (JSON payloads) that are sent. This includes the optional parameters and references to our online </span><a href="https://getstream.io/docs/"><span style="font-weight: 400;">API Documentation</span></a><span style="font-weight: 400;"> where more guidance on advanced use cases can be found.</span></p>
+<figure id="attachment_3107"  class="wp-caption aligncenter"><a href="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png"><img class="wp-image-3107 size-fp-small" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=640" alt="Parameter, Field and HTTP Header Descriptions screenshots" width="640" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=869 869w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Screen-Shot-2018-04-26-at-10.05.52-am.png?w=640 640w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></a><figcaption class="wp-caption-text">Descriptions are provided for URL query string parameters, body fields, and HTTP headers.</figcaption></figure>
+<h2></h2>
+<h2>Wrapping up</h2>
+<p><span style="font-weight: 400;">If you’re interested in the running the Postman Collection, head over to the Stream <a href="https://getstream.io/docs/#postman">documentation</a> to download the collection</span><span style="font-weight: 400;">. Fire up Postman and following the README instructions. Don&#8217;t forget to star us and feel free to raise issues or submit pull requests if you see any areas for improvement.</span></p>
+<p><span style="font-weight: 400;">This is our first attempt at packaging and sharing a Postman Collection so we&#8217;re curious what you think. Chime in on Twitter or shoot us an email at </span><a href="mailto:support@getstream.io"><span style="font-weight: 400;">support@getstream.io</span></a><span style="font-weight: 400;"> with your thoughts.</span></p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/try-out-the-stream-api-with-postman/">Try out the Stream API with Postman</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/try-out-the-stream-api-with-postman/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Winds 2.0: It’s Time to Revive RSS</title>
+		<link>https://getstream.io/blog/winds-2-0-its-time-to-revive-rss/</link>
+		<comments>https://getstream.io/blog/winds-2-0-its-time-to-revive-rss/#respond</comments>
+		<pubDate>Tue, 22 May 2018 09:21:07 +0000</pubDate>
+		<dc:creator><![CDATA[Thierry Schellenbach]]></dc:creator>
+				<category><![CDATA[Examples]]></category>
+		<category><![CDATA[Machine Learning]]></category>
+		<category><![CDATA[News]]></category>
+		<category><![CDATA[Open Source]]></category>
+		<category><![CDATA[Winds]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3123</guid>
+		<description><![CDATA[<p>I love using RSS to follow the programming and tech news I care about. Unfortunately, the number of sites supporting RSS has been in rapid decline over the last few years. The reader ecosystem is slowly degrading as well. Facebook and Twitter’s dominance is now delivering its final blow to the open standard of RSS. [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/winds-2-0-its-time-to-revive-rss/">Winds 2.0: It’s Time to Revive RSS</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/winds-announce.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><p>I love using RSS to follow the programming and tech news I care about. Unfortunately, the number of sites supporting RSS has been in rapid decline over the last few years. The reader ecosystem is slowly degrading as well. Facebook and Twitter’s dominance is now delivering its final blow to the open standard of RSS.</p>
+<p>It’s time to turn the tide. <a href="https://getstream.io/">Stream</a> is releasing <a href="https://getstream.io/winds/">Winds 2.0</a>, an open-source Podcast &amp; RSS Reader. You can download Winds <a href="https://getstream.io/winds/">here</a> or head over to <a href="https://github.com/getstream/winds">Github</a> for the code.</p>
+<p><img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png" alt="" width="1312" height="1000" class="aligncenter size-full wp-image-3124" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=1312 1312w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=1024 1024w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=640 640w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/05/image1.png?w=1200 1200w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></p>
+<p>Many power users of RSS are developers, designers and journalists. Together, we hope to tip the balance and<b> #ReviveRSS</b>. With the help of the community we can build an RSS experience that’s polished, bug free and popular enough to convince publications to improve their support for open standards and RSS.</p>
+<p>Winds is not perfect yet, we’re working on it though and with your help we might just manage to #<b>ReviveRSS</b></p>
+<ul>
+<li><a href="https://github.com/getstream/winds">Star Winds on Github</a></li>
+<li>Share your feedback on Winds’ features and roadmap on <a href="https://www.producthunt.com/posts/winds-2-0">Product Hunt</a></li>
+<li><a href="http://bit.ly/winds-tweet">Tweet about Winds &#038; RSS</a></li>
+<li>Ask your favorite publications to fix and/or implement RSS support</li>
+<li>Write about Winds and RSS</li>
+<li><a href="http://github.com/getstream/winds">Contribute to Winds on Github</a></li>
+</ul>
+<p>A huge thank you to:</p>
+<ul>
+<li><a href="https://hackernoon.com/stream-go-news-feeds-for-over-300-million-end-users-b227614cf32f">Hackernoon</a> for sharing this message</li>
+<li><a href="https://dev.to/">Dev.to</a> for getting the community involved</li>
+<li><a href="https://www.producthunt.com/">Product Hunt</a> for the product feedback</li>
+<li>My colleagues at <a href="https://getstream.io/">Stream</a> for building and sponsoring Winds</li>
+<li><a href="https://www.algolia.com/">Algolia</a> for sponsoring Winds</li>
+<li><a href="http://mbsy.co/mongodb/228644">MongoDB</a> for helping with promotion</li>
+</ul>
+<p>And of a course many thanks to the devrel team at <a href="https://getstream.io/">Stream</a> for taking what started out as an example app and turning it into such a beautiful polished experience!</p>
+<p><a href="https://getstream.io/winds">Download Winds</a> or checkout the code on <a href="https://github.com/getstream/winds">Github</a>.</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/winds-2-0-its-time-to-revive-rss/">Winds 2.0: It’s Time to Revive RSS</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/winds-2-0-its-time-to-revive-rss/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Build a scalable Twitter clone with Django and Stream</title>
+		<link>https://getstream.io/blog/build-a-scalable-twitter-clone-with-django-and-stream/</link>
+		<comments>https://getstream.io/blog/build-a-scalable-twitter-clone-with-django-and-stream/#respond</comments>
+		<pubDate>Tue, 01 May 2018 09:00:42 +0000</pubDate>
+		<dc:creator><![CDATA[Dwight Gunning]]></dc:creator>
+				<category><![CDATA[APIs]]></category>
+		<category><![CDATA[Best Practices]]></category>
+		<category><![CDATA[Clients]]></category>
+		<category><![CDATA[Documentation]]></category>
+		<category><![CDATA[Tutorial]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[hashtag]]></category>
+		<category><![CDATA[mentions]]></category>
+		<category><![CDATA[scale]]></category>
+		<category><![CDATA[twitter]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3067</guid>
+		<description><![CDATA[<p>In this tutorial, we will build a Twitter clone using Django and Stream, a hosted API for newsfeed development. By the end, you&#8217;ll see how easy is to power your newsfeeds with Stream. For brevity, we leave out some basic Django-specific code and recommend referring to the Github project for the complete runnable source code. [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/build-a-scalable-twitter-clone-with-django-and-stream/">Build a scalable Twitter clone with Django and Stream</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/twitterclones.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><p>In this tutorial, we will build a Twitter clone using Django and <a href="https://GetStream.io">Stream</a>, a hosted API for newsfeed development.</p>
+<p>By the end, you&#8217;ll see how easy is to power your newsfeeds with Stream. For brevity, we leave out some basic Django-specific code and recommend referring to the <a href="https://github.com/GetStream/django_twitter/)">Github project</a> for the complete runnable source code. At the end of this tutorial, we&#8217;ll have a Django app (with a profile feed), a timeline feed, and support for following users, hashtags and mentions.</p>
+<p>For this tutorial, we&#8217;re assuming you&#8217;re familiar with Django. If you&#8217;re new to Django the <a href="https://docs.djangoproject.com/en/2.0/intro/">official tutorial</a> explains it very well.</p>
+<h2>Bootstrap the Django application</h2>
+<p>We will use Python 3.6 and Django 2.0, which is the latest major release at the time of writing.</p>
+<p>Make sure you have a working Django project before you continue to the next part of the tutorial.</p>
+<h2>Create the Django app</h2>
+<p>Let&#8217;s start by creating a new Django app called stream_twitter:</p>
+<pre><code class="language-bash">python manage.py startapp stream_twitter</code></pre>
+<h2>Install stream_django</h2>
+<p>The <a href="http://github.com/getstream/stream-django">stream_django</a> project provides the GetStream integration for Django. It is built on top of thelow-levell <a href="https://github.com/getstream/stream-python">stream_python</a> API client.</p>
+<pre><code class="language-bash">pip install stream-django</code></pre>
+<p>To enable stream_django you need to add it to your INSTALLED_APPS:</p>
+<pre><code class="language-python">INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'stream_twitter',
+    'stream_django'
+)</code></pre>
+<h2>Stream setup</h2>
+<p>First of all, we need to create a Stream account. You can signup with Github, which is free for usage below 3 million feed updates per month. Once you&#8217;ve signed up, get your API &#8216;key&#8217; and &#8216;secret&#8217; from the dashboard and add them to Django&#8217;s settings:</p>
+<pre><code class="language-python">STREAM_API_KEY = 'my_api_key'
+STREAM_API_SECRET = 'my_api_secret'</code></pre>
+<h2>The models</h2>
+<p>In this application we will have three different models: users, tweets and follows.</p>
+<p>To keep it as simple as possible, we will use Django&#8217;s contrib.auth user model. Have a look below at the initial version of the Tweet and Follow models.</p>
+<pre><code class="language-python">from django.db import models
+
+class Tweet(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    text = models.CharField(max_length=160)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Follow(models.Model):
+    user = models.ForeignKey('auth.User', related_name='friends', on_delete=models.CASCADE)
+    target = models.ForeignKey('auth.User', related_name='followers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'target')</code></pre>
+<p>Now, let&#8217;s create the schema migrations and apply them:</p>
+<pre><code class="language-bash">python manage.py makemigrations stream_twitter
+python manage.py migrate</code></pre>
+<p>Let&#8217;s also setup the view to add tweets:</p>
+<pre><code class="language-python">from django.views.generic.edit import CreateView
+from stream_twitter.models import Tweet
+
+class TweetView(CreateView):
+    model = Tweet
+    fields = ['text']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(Tweet, self).form_valid(form)</code></pre>
+<p>And, of course, add it to urls.py:</p>
+<pre><code class="language-python">from django.contrib import admin
+from django.contrib.auth.decorators import login_required
+from django.urls import path
+
+from stream_twitter import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('timeline/', login_required(views.TimelineView.as_view()), name='timeline'),
+    re_path(r'^user/(?P&lt;username&gt;.+)/', views.UserView.as_view(), name='user_feed')
+]</code></pre>
+<p>Now that we have the view setup for creating tweets, we can move on to setting up the newsfeed.</p>
+<h2>Model integration</h2>
+<p>We want the tweets to be stored in the author&#8217;s feed. This is when we start using the stream_django integration. We can configure the Tweet model so that it will syncronise automatically with feeds.</p>
+<p>To do this, we need to make Tweet a subclass of &#8216;stream_django.activity.Activity&#8217;:</p>
+<p>We&#8217;ll do that by modifying the model we defined earlier in `stream_twitter.models`:</p>
+<pre><code class="language-python">from stream_django import activity
+
+class Tweet(activity.Activity, models.Model):
+    ...
+</code></pre>
+<p>From now on, new tweets will be added to the user feed of the author *and* to the feeds of all their followers. The same applies to deleting a tweet.</p>
+<p>So, let&#8217;s give it a try using Django&#8217;s shell:</p>
+<pre><code class="language-bash">python manage.py shell</code></pre>
+<pre><code class="language-python">from stream_twitter.models import Tweet
+from django.contrib.auth.models import User
+
+user, _created = User.objects.get_or_create(username='tester')
+
+Tweet.objects.create(
+    user=user,
+    text='Go Cows!')</code></pre>
+<p>We&#8217;ve now created our first Tweet and, in turn, added an Activity to a Feed via the Stream API. By default, *stream-django* creates and adds the Activity to a feed named after the &#8216;actor&#8217; property. This can be customized by overriding the `_attr` functions inherited from the `stream_django.activity.Activity` mixin on the Django Model.</p>
+<p><img class="size-fp-small wp-image-3090 aligncenter" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=640" alt="" width="640" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=1253 1253w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=1024 1024w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=640 640w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer-1.png?w=1200 1200w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></p>
+<p>Now, this is the first time we talk about Activities and Feeds so let&#8217;s take a moment to define what an activity is.</p>
+<p>An <strong>activity</strong> is an object that contains information about an <strong>action</strong> that is performed by someone involving an <strong>object</strong>. When you write data to Stream&#8217;s feeds, you send this data in the form of activities. The simplest activity is made by these three fields: <strong>actor</strong>, <strong>object</strong> and <strong>verb</strong>. For example: Tommaso tweets <em>&#8216;Go cows!&#8217;</em></p>
+<p>Stream&#8217;s APIs allow you to store additional fields in your feeds, as you can see from the documentation <a href="https://getstream.io/docs/#adding-activities">here</a>.</p>
+<p>We can verify the Activity was added by using the Data Browser in Stream&#8217;s Dashboard. In this example you can determine the feed name by inspecting the `activity_actor` property:</p>
+<pre><code class="language-python">&gt;&gt;&gt; t.activity_actor
+'auth.User:1'</code></pre>
+<p>The Stream Data Explorer:</p>
+<p><img class="size-fp-small wp-image-3068 aligncenter" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/stream_explorer.png?w=640" alt="" width="640" /></p>
+<h2>User feed</h2>
+<p>So now that every tweet gets stored in the author&#8217;s feed, we&#8217;ll add a view that reads them.</p>
+<pre><code class="language-python">
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView
+
+from stream_django.enrich import Enrich
+from stream_django.feed_manager import feed_manager
+
+enricher = Enrich()
+
+class UserView(DetailView):
+    model = User
+    template_name = 'stream_twitter/user.html'
+
+    def get_object(self):
+        return self.get_queryset().get(username=self.kwargs['username'])
+
+    def get_context_data(self, object):
+        user = self.object
+        feeds = feed_manager.get_user_feed(user.id)
+        activities = feeds.get()['results']
+        activities = enricher.enrich_activities(activities)
+
+        return {
+            'activities': activities,
+            'user': user,
+            'login_user': self.request.user
+        }
+</code></pre>
+<p>There are two new things that I should explain: the *feed manager* and the *enricher*. As the name suggests, the feed manager takes care of managing the different feeds involved in your app. In this case, we ask the feed manager to give us the user feed for the current user.</p>
+<p>We learned before that data is stored as activities within feeds. This is what a tweet looks like when we read it from Stream:</p>
+<pre><code class="language-python">[{
+    'actor': 'auth.User:1',
+    'object': 'stream_twitter.Tweet:1',
+    'verb': 'tweet',
+    ... other fields ...
+}]</code></pre>
+<p>As you can see, &#8216;object&#8217; field does not contain the tweet itself but a reference to that instead(the same applies to the &#8216;actor&#8217; field). The enricher replaces these references with model instances.</p>
+<h2>Templating feeds</h2>
+<p>*django_stream* comes with a template tag that helps you to show the content from feeds in your templates. This can get quite complex as you add different kinds of activities to your feeds.</p>
+<p>Here is a very minimal tweets.html template:</p>
+<pre class="language-html"><code>{% load activity_tags %}
+
+{% for activity in activities %}
+    {% render_activity activity %}
+{% endfor %}</code></pre>
+<p>The first time you run this, Django will complain that &#8216;activity/tweet.html&#8217; is missing. That&#8217;s because the render_activity templatetag inspects the activity object and loads the template based on the verb. Because the verb in this case is &#8216;tweet&#8217;, it will look for tweet.html in activity path. The template tag accepts extra options to make your templates as re-usable as possible, see <a href="https://github.com/GetStream/stream-Django#templating">here</a> for the template tag documentation.</p>
+<h2>Feed Follow</h2>
+<p>As a next step, well add the ability to follow users to the application. To do this we create a view that creates Follow objects.</p>
+<pre><code class="language-python">from django.views.generic.edit import CreateView, DeleteView
+from django.urls import reverse_lazy
+from stream_twitter.forms import FollowForm
+from stream_twitter.models import Follow
+
+class FollowView(CreateView):
+    form_class = FollowForm
+    model = Follow
+    success_url = reverse_lazy('timeline_feed')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(FollowView, self).form_valid(form)
+
+class UnfollowView(DeleteView):
+    model = Follow
+    success_url = reverse_lazy('timeline_feed')
+
+    def get_object(self):
+        target_id = self.kwargs['target_id']
+        return self.get_queryset().get(target__id=target_id)</code></pre>
+<p>Now we can use Django&#8217;s signals to perform follow/unfollow requests on Stream&#8217;s APIs.</p>
+<pre><code class="language-python">def unfollow_feed(sender, instance, **kwargs):
+    feed_manager.unfollow_user(instance.user_id, instance.target_id)
+
+def follow_feed(sender, instance, created, **kwargs):
+    if created:
+        feed_manager.follow_user(instance.user_id, instance.target_id)
+
+    post_save.connect(follow_feed, sender=Follow)
+    post_delete.connect(unfollow_feed, sender=Follow)</code></pre>
+<h2>Timeline view (AKA Flat Feed)</h2>
+<p>The hardest part for a scalable Twitter clone is displaying a feed that shows the tweets from people you follow. This is commonly called the timeline view or newsfeed. The code below shows the timeline.</p>
+<pre><code class="language-python">from django.views.generic import TemplateView
+
+class TimelineView(TemplateView):
+    template_name = 'stream_twitter/timeline.html'
+
+def get_context_data(self):
+    context = super(TimelineView, self).get_context_data()
+
+    feeds = feed_manager.get_news_feeds(self.request.user.id)
+    activities = feeds.get('timeline').get()['results']
+    enriched_activities = enricher.enrich_activities(activities)
+
+    context['activities'] = enriched_activities
+
+    return context</code></pre>
+<p>This code looks very similar to the code of profile_feed. The main difference is we use feed manager&#8217;s get_news_feeds. By default, Stream apps and stream_django come with two newsfeeds predefined: flat and aggregated feeds. When you use `feed_manager.get_news_feeds`, you get a dictionary with flat and aggregated feeds. Since we are not going to use aggregated feeds, we can adjust Django settings:</p>
+<pre><code class="language-python">STREAM_NEWS_FEEDS = dict(flat='flat')</code></pre>
+<h2>Adding activities</h2>
+<p>Let&#8217;s modify the `TimelineView` to include a form that will accept new tweets:</p>
+<pre><code class="language-python">from django.views.generic.edit import CreateView
+
+class TimelineView(CreateView):
+    fields= ['text']
+    model = Tweet
+    success_url = reverse_lazy('timeline_feed')
+    template_name = 'stream_twitter/timeline.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(TimelineView, self).form_valid(form)
+
+    def get_context_data(self, form=None):
+        context = super(TimelineView, self).get_context_data()
+
+        feeds = feed_manager.get_news_feeds(self.request.user.id)
+        activities = feeds.get('timeline').get()['results']
+        enriched_activities = enricher.enrich_activities(activities)
+
+        context['activities'] = enriched_activities
+        context['login_user'] = self.request.user
+        context['hashtags'] = Hashtag.objects.order_by('-occurrences')
+
+        return context</code></pre>
+<h2>Hashtags feeds</h2>
+<p>We want Twitter style hashtags to work as well &#8211; which is surprisingly easy. First, let&#8217;s open Stream&#8217;s dashboard and create the &#8216;hashtag&#8217; feed type. Note: by default Stream will setup `user`, `timeline`, `timeline_aggregated` and `notification` feeds. If you more feeds, you need to configure them in the dashboard.</p>
+<pre><code class="language-python">from django.template.defaultfilters import slugify
+
+class Tweet(activity.Activity, models.Model):
+
+    def parse_hashtags(self):
+        return [slugify(i) for i in self.text.split() if i.startswith("#")]</code></pre>
+<p>Now that we have parsed the hashtags, we could loop over them and publish the same activity to every hashtag feed. Fortunately, there&#8217;s a shortcut. Stream allows you to send a copy of an activity to many feeds with a single request.</p>
+<p>To do this, we only need to implement the `activity_notify` method to the Twitter model we created previously:</p>
+<pre><code class="language-python">from stream_django.feed_manager import feed_manager
+
+class Tweet(activity.Activity, models.Model):
+
+    @property
+    def activity_notify(self):
+        targets = []
+        for hashtag in self.parse_hashtags():
+            targets.append(feed_manager.get_feed('hashtag', hashtag))
+        return targets</code></pre>
+<p>From now on, activities will be stored to hashtags feeds as well. For instance, the feed &#8216;hashtag:Django&#8217; will contain all tweets with &#8216;#Django&#8217;.</p>
+<p>Again, the view code looks really similar to the other views.</p>
+<pre><code class="language-python">from django.views.generic import TemplateView
+
+from stream_django.enrich import Enrich
+from stream_django.feed_manager import feed_manager
+
+class HashtagView(TemplateView):
+    template_name = 'stream_twitter/hashtag.html'
+
+    def get_context_data(self, hashtag):
+        context = super(TemplateView, self).get_context_data()
+
+        hashtag = hashtag.lower()
+        feed = feed_manager.get_feed('user', f'hash_{hashtag}')
+        activities = feed.get(limit=25)['results']
+
+        context['hashtag'] = hashtag
+        context['activities'] = enricher.enrich_activities(activities)
+
+        return context</code></pre>
+<h2>Mentions</h2>
+<p>Now that we found out about the `activity_notify` property, it only takes a bunch of extra lines of code to add user mentions.</p>
+<pre><code class="language-python">class Tweet(activity.Activity, models.Model):
+
+    def parse_mentions(self):
+        mentions = [slugify(i) for i in self.text.split() if i.startswith("@")]
+        return User.objects.filter(username__in=mentions)
+
+    @property
+    def activity_notify(self):
+        targets = []
+    for hashtag in self.parse_hashtags():
+        targets.append(feed_manager.get_feed('hashtag', hashtag))
+    for user in self.parse_mentions():
+        targets.append(feed_manager.get_news_feeds(user.id)['flat'])
+    return targets</code></pre>
+<h2>Wrapping up</h2>
+<p>Congratulations, you&#8217;ve reached the end of this tutorial! This article showed you how easy it is to build scalable newsfeeds with Django and GetStream.io. It took us just 100 LoC and (I hope) less than one hour to get this far.</p>
+<p>You can find the code from this tutorial and the fully functional application on <a href="https://github.com/GetStream/django_twitter">GitHub</a>. The application is also running and can be tested <a href="http://tw.getstream.io/">here</a>. I hope you found this interesting and useful and I&#8217;d be glad to answer all of your questions.</p>
+<p>If you&#8217;re new to Django or Stream, I highly recommend the <a href="https://docs.djangoproject.com/en/2.0/intro/">official Django tutorial</a> and the Stream <a href="https://getstream.io/get_started/#intro">&#8216;getting started&#8217; tutorial</a>.</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/build-a-scalable-twitter-clone-with-django-and-stream/">Build a scalable Twitter clone with Django and Stream</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/build-a-scalable-twitter-clone-with-django-and-stream/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Stream and GDPR</title>
+		<link>https://getstream.io/blog/stream-and-gdpr/</link>
+		<comments>https://getstream.io/blog/stream-and-gdpr/#respond</comments>
+		<pubDate>Fri, 20 Apr 2018 08:00:23 +0000</pubDate>
+		<dc:creator><![CDATA[Scott Lasica]]></dc:creator>
+				<category><![CDATA[Best Practices]]></category>
+		<category><![CDATA[News]]></category>
+		<category><![CDATA[GDPR]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3055</guid>
+		<description><![CDATA[<p>As an organization who has customers located within the European Union (EU), the General Data Protection Regulation (GDPR) is an important topic for us here at Stream. The GDPR is a regulation by which the European government has intended to strengthen and unify data protection for all individuals within the EU (source). Companies must be [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/stream-and-gdpr/">Stream and GDPR</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/gdpr.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="gdpr" style="display: block; margin:0 auto 10px auto;" /><p>As an organization who has customers located within the European Union (EU), the General Data Protection Regulation (GDPR) is an important topic for us here at <a href="https://getstream.io/">Stream</a>. The GDPR is a regulation by which the European government has intended to strengthen and unify data protection for all individuals within the EU (<a href="https://www.eugdpr.org/">source</a>). Companies must be able to show compliance by May 25, 2018. Failure to comply could mean a €20 million fine or 4% of your organization’s global turnover, whichever is greater.</p>
+<h2>What it is:</h2>
+<ul>
+<li>Access control – access to personal data must be restricted to people and machines that need to use the data.</li>
+<li>Historical data – you must have the ability to delete personal data and let users download their provided personal data.</li>
+<li>Encryption – personal data should be secured through encryption so it can’t be seen.</li>
+<li>Store and process – you must have a valid reason for storing and processing personal data.</li>
+<li>Audit and logging – all access to personal data must be logged.</li>
+</ul>
+<h2>What Stream is doing:</h2>
+<ul>
+<li>Access control – all access is restricted to the minimal set of employees that maintain those systems.</li>
+<li>Historical data – our API currently allows customers to read all of a user’s data from their feed (which they can then provide to their end users) as well as delete it.</li>
+<li>Encryption – all API communication with Stream is encrypted, as well as backups.</li>
+<li>Store and process – Stream only stores the data that our customers put into the activities they send to us. Stream may use this data in personalization of feed content if our customer requests it.</li>
+<li>Audit and logging – all access to stored data is logged.</li>
+</ul>
+<h2>What you should do:</h2>
+<p>The GDPR defines personal data to include name, passport number, and birthdate as well as information that some may not consider to be personally identifiable information (PII) like IP addresses or device IDs. Personal data can even include data about an individual that has been hashed or encrypted. We still recommend our customers do not send us any PII if possible.</p>
+<p>If you must send us personal data, we have a DPA addendum for enterprise customers that includes the GDPR forms. Otherwise, our standard terms apply: https://getstream.io/legal/</p>
+<p>For a comprehensive list of what GDPR considers personal data, please read Article 4(1) of the <a href="http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.L_.2016.119.01.0001.01.ENG&amp;toc=OJ:L:2016:119:FULL">GDPR</a>.</p>
+<p><em>Note: the information provided </em>in<em> this blog is strictly for informational purposes. We recommend that if you have any questions, or think the GDPR laws may impact your company, that you contact a lawyer.</em></p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/stream-and-gdpr/">Stream and GDPR</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/stream-and-gdpr/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Using Feed Technology for Travel Use Cases</title>
+		<link>https://getstream.io/blog/using-feed-technology-for-travel-use-cases/</link>
+		<comments>https://getstream.io/blog/using-feed-technology-for-travel-use-cases/#respond</comments>
+		<pubDate>Wed, 18 Apr 2018 08:00:17 +0000</pubDate>
+		<dc:creator><![CDATA[Dani Feldman]]></dc:creator>
+				<category><![CDATA[Best Practices]]></category>
+		<category><![CDATA[Examples]]></category>
+		<category><![CDATA[Feed Personalization]]></category>
+		<category><![CDATA[Machine Learning]]></category>
+		<category><![CDATA[Personalization]]></category>
+		<category><![CDATA[travel]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3058</guid>
+		<description><![CDATA[<p>When we visit sites like Amazon, Netflix, or YouTube, we take for granted the fact these services have been exploring and learning our behavior for years. They know us well &#8211; they make relevant recommendations that are unique to the user, drawing us back to their sites time and time again. The big players in [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/using-feed-technology-for-travel-use-cases/">Using Feed Technology for Travel Use Cases</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/travel.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="travel use case" style="display: block; margin:0 auto 10px auto;" /><p>When we visit sites like Amazon, Netflix, or YouTube, we take for granted the fact these services have been exploring and learning our behavior for years. They know us well &#8211; they make relevant recommendations that are unique to the user, drawing us back to their sites time and time again. The big players in travel (think Expedia Group, Booking.com, TripAdvisor, etc.) are no different. They have already been using personalization for years and achieving impressive results. Today, travelers are accustomed to online booking, on-demand virtual assistants, and constant access via devices and applications. Whether they’re booking hotels, looking for flights, or browsing unique experiences, they not only expect to be able to browse from their phones they also expect the website (or application) they’re using to provide options that fit the specific criteria they’re looking for.</p>
+<p>Whether you’re traveling for pleasure, business, or a combo of the two, travel is becoming more intelligent, diversified and customized. <a href="https://getstream.io/personalization">Machine learning and personalization</a> can give travelers on-demand services, customization of unique experiences, and insights (like predictive pricing or delayed forecasting) providing the customer with the unique, tailored experience they desire.</p>
+<p>By using personalization methods companies are able to make more relevant recommendations to consumers, improving their experience, typically resulting in increased conversions. We’ve found one of the best ways to do this is by creating a personalized feed. To implement an intelligent feed that displays relevant flights, hotels, trips, or packages to viewers, we recommend these 5 steps.</p>
+<h2>1. Capture Explicit User Preferences</h2>
+<p>This is the basis of doing any kind of personalized feed. The service needs to ask the user for the specific criteria they’re looking for in their trip. Obvious criteria or filters include location, price, specific travel dates (or a flex search), activities, and/or experiences.. Most travel sites today have the ability to filter based on these options. Something to consider is presenting the user with a “deal breaker / must have” toggle. Having this toggle, or some kind of sliding scale on how strong of a preference it is, will be fantastic input for your personalization engine later on.</p>
+<h2>2. Track Implicit User Behavior</h2>
+<p>As your users interact with the platform, be sure to <a href="https://getstream.io/analytics/">track their actions and record </a>those analytics. Some behaviors will indicate stronger preferences than others. For instance, sharing a destination or activity with a spouse or friend is a much stronger indicator than viewing some pictures or looking at reviews and moving on.</p>
+<h2>3. Compare to Other Users</h2>
+<p>As the models of user preferences are developed and evolve, you will find users who are similar to each other. Once you’ve identified these similar users, you can leverage their actions, flights, destinations, hotel or activities they’re viewing to add options for their counterparts.</p>
+<h2>4. Rinse, Repeat</h2>
+<p>The <a href="https://getstream.io/personalization/">personalization engine</a> evolves over time and requires constant input as well as tweaking. As more and more data is fed into the system, new insights will be gained and profiles will morph. This feedback loop of both positively reinforcing and negatively detracting behaviors will help the model tune itself and become better at making recommendations for each user to view.</p>
+<h2>5. Bringing It All Together</h2>
+<p>Once steps 1-4 are in place, the travel platform will be well positioned to capture a market of users that expect to be able to self-serve. This platform will present the most relevant destinations, flights, activities or rental properties to each user, being sure not to show content that is irrelevant.</p>
+<h2>Now what?</h2>
+<p>Users of intelligent, highly personalized feeds are more likely to remain engaged, spread the word, and ultimately find their dream vacation. There are many travel companies out there, so providing your clients and prospects with the best user experience is crucial. To gain a broader understanding of the benefits of feed technology and how you can implement them <a href="https://getstream.io/contact/">contact us</a> with your questions!</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/using-feed-technology-for-travel-use-cases/">Using Feed Technology for Travel Use Cases</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/using-feed-technology-for-travel-use-cases/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Winds 2.0 Beta &#8211; Now Available for Download</title>
+		<link>https://getstream.io/blog/winds-2-0-beta-now-available/</link>
+		<comments>https://getstream.io/blog/winds-2-0-beta-now-available/#respond</comments>
+		<pubDate>Tue, 17 Apr 2018 08:00:20 +0000</pubDate>
+		<dc:creator><![CDATA[Ken Hoff]]></dc:creator>
+				<category><![CDATA[APIs]]></category>
+		<category><![CDATA[Design]]></category>
+		<category><![CDATA[Examples]]></category>
+		<category><![CDATA[Features]]></category>
+		<category><![CDATA[Feed Personalization]]></category>
+		<category><![CDATA[Integrations]]></category>
+		<category><![CDATA[Open Source]]></category>
+		<category><![CDATA[Winds]]></category>
+		<category><![CDATA[Algolia]]></category>
+		<category><![CDATA[feeds]]></category>
+		<category><![CDATA[mercury]]></category>
+		<category><![CDATA[MongoDB]]></category>
+		<category><![CDATA[Podcast]]></category>
+		<category><![CDATA[RSS]]></category>
+		<category><![CDATA[sendgrid]]></category>
+		<category><![CDATA[Stream]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3046</guid>
+		<description><![CDATA[<p>In case you haven’t already heard, the devrel team at Stream has been working on a really exciting project over the past couple months called Winds 2.0! Tl;Dr Winds is an open-source RSS reader and podcast player built with React &#38; Stream. It’s not only free and open source, but is also created by a [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/winds-2-0-beta-now-available/">Winds 2.0 Beta &#8211; Now Available for Download</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Winds-2.0-Beta.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><p>In case you haven’t already heard, the devrel team at <a href="https://getstream.io/">Stream</a> has been working on a really exciting project over the past couple months called <a href="https://getstream.io/winds/">Winds 2.0</a>!</p>
+<h2>Tl;Dr</h2>
+<p>Winds is an open-source RSS reader and podcast player built with React &amp; Stream. It’s not only free and open source, but is also created by a company that doesn’t want to make money off of your data. Want to skip the spiel and get right to it? Go download it here → <a href="https://getstream.io/winds/">https://getstream.io/winds/</a>.</p>
+<p><img class="aligncenter wp-image-3063" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/Mac-OSX-winds.gif?w=1200" alt="http://www.hollandresidential.com/platform-at-union-station/" width="569" height="404" /></p>
+<p>Of course, we hope you’ll take also take a moment to check out <a href="https://getstream.io/try-the-api/">Stream</a>.</p>
+<h2>Winds 2.0 will “blow” your mind</h2>
+<p><img class="aligncenter wp-image-3049" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/image1.gif?w=1200" alt="Winds blown" width="400" height="225" /></p>
+<p>Winds is an open-source podcast player AND RSS reader. The beta is now available for download at <a href="https://getstream.io/winds/">https://getstream.io/winds/</a>. You&#8217;ll also be able to check out the source code very soon over on <a href="http://github.com/getstream/winds-2.0">GitHub</a>.</p>
+<p>This year, we’ve decided to revisit the project and work on Winds 2.0 &#8211; a completely new build of the application. We wanted to make a splash (again) and to do so, we needed something profound. We’re excited to announce that we&#8217;re introducing podcast discovery and playback support within the Winds application. Although the addition of podcast support may sound trivial, it’s actually quite a difficult task from both a design and development perspective. Combining two vastly different forms of content has proven to be an aesthetic challenge as well (thankfully, our lead designer has come up with a beautiful, unifying design).</p>
+<h2>The Tech Behind Winds</h2>
+<p>When building a podcast / RSS reader, there are many different “activity feeds” within the app. Users expect to see lists of episodes and articles from the podcasts and RSS feeds they follow and, because we’ve also built in a social network, they also want to see new status updates from those they follow.</p>
+<p>Creating activity feeds for large numbers of users who create many activities can be quite a challenge. Luckily, Stream makes this easy. When a user follows dozens or even thousands of other users, RSS feeds, or podcasts, Stream creates a “timeline” feed in milliseconds (check it out in our <a href="http://getstream.io/try-the-api/">tutorial</a>).</p>
+<p>Within Winds, we want to make migration from another RSS reader easy (RIP Google Reader, even if that’s a dated reference at this point). If you’re using another RSS reader, just import OPML files and simply drag-and-drop your feeds into Winds. <span style="font-weight: 400;"><img src="https://s.w.org/images/core/emoji/2.4/72x72/1f44d.png" alt="👍" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></p>
+<p><img class="aligncenter wp-image-3050" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/image4.png?w=1200" alt="Winds-add new RSS feed" width="407" height="374" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/image4.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/image4.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/image4.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/image4.png?w=360 360w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 407px" /></p>
+<p>Now, you’re probably wondering about Winds’ tech stack. The frontend is an <a href="https://electronjs.org/">Electron</a> app, along with <a href="https://github.com/facebook/create-react-app">create-react-app</a>. We’re using React, Redux, and React-router, plus SCSS to generate all of the cool styling.</p>
+<p>Our backend services are written in Node.js, Express, and Mongoose. There’s an API server, which handles the authentication and CRUD operations. The service workers retrieve new articles and episodes from RSS feeds and podcasts, then adds them to Stream, Algolia, and MongoDB. To generate a new app release and deploy the new API and services, we use a couple of small shell scripts along with Fabric.</p>
+<p>It’s also important to mention that we relied on many other services to help build Winds:</p>
+<ul>
+<li><a href="https://www.algolia.com/">Algolia</a> for search: search for any user, RSS feed, RSS article, podcast, podcast episode, or playlist in Winds.</li>
+<li><a href="https://mercury.postlight.com/web-parser/">Mercury</a> for article parsing: turns out that extracting the text of a blog post from an HTML page is pretty hard.</li>
+<li><a href="https://www.mongodb.com/">MongoDB</a> for our main datastore: hosted on MongoDB Atlas.</li>
+<li><a href="https://sendgrid.com/">Sendgrid</a> for email: sends all password resets and “hey you got a new follower!” emails.</li>
+<li>And, of course, <a href="https://getstream.io/">Stream</a>: the reason we don’t get “fail whales” when 10,000 new users sign up. <img src="https://s.w.org/images/core/emoji/2.4/72x72/1f604.png" alt="😄" class="wp-smiley" style="height: 1em; max-height: 1em;" /></li>
+</ul>
+<h2>If You Haven’t Already, Time to Download!</h2>
+<p>If you want to give Winds a whirl, head on over to <a href="https://getstream.io/winds/">getstream.io/winds</a> to download the app. As I previously mentioned, Winds is currently in beta. We’ll be making lots of improvements to this over the next few months, and posting a lot more about the project as a whole, so stay tuned!</p>
+<p>And, if you’d like to check out the technology that powers Winds 2.0, check out <a href="https://getstream.io/">Stream</a>, where you can build your own applications with personalized and scalable activity feeds.</p>
+<h2>How can I contribute?</h2>
+<p>If you’d like to contribute to Winds, we’ll be releasing the source code over on <a href="https://github.com/GetStream/winds">GitHub</a> very soon, where you can download, modify, and start contributing to Winds. If you’re looking for some easy things to fix, check out the issues section at <a href="https://github.com/GetStream/winds/issues">https://github.com/GetStream/winds/issues</a>.</p>
+<h2>What’s next for Winds?</h2>
+<p>There’s still loads of features that we want to include in Winds &#8211; releasing Windows and React Native versions, sending snippets of podcasts to your friends, and more advanced social features. If there&#8217;s a feature you’d love to see, let us know by opening an issue over at <a href="https://github.com/GetStream/winds/issues">https://github.com/GetStream/winds/issues</a>.</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/winds-2-0-beta-now-available/">Winds 2.0 Beta &#8211; Now Available for Download</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/winds-2-0-beta-now-available/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Go Client Now Available</title>
+		<link>https://getstream.io/blog/go-client-now-available/</link>
+		<comments>https://getstream.io/blog/go-client-now-available/#respond</comments>
+		<pubDate>Thu, 05 Apr 2018 08:38:16 +0000</pubDate>
+		<dc:creator><![CDATA[Federico Ruggi]]></dc:creator>
+				<category><![CDATA[APIs]]></category>
+		<category><![CDATA[Clients]]></category>
+		<category><![CDATA[Documentation]]></category>
+		<category><![CDATA[Go]]></category>
+		<category><![CDATA[client]]></category>
+		<category><![CDATA[go]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3039</guid>
+		<description><![CDATA[<p>Go is one of the fastest growing languages around. We ourselves use it extensively inside the Stream API service. Support for Go was added almost two years ago by MrHenry and HyperWorks, which open-sourced a Go client. We are proud to announce that starting today, we are releasing our official Go API client. You can [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/go-client-now-available/">Go Client Now Available</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/04/new-Go-client-available.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><p>Go is one of the fastest growing languages around. We ourselves use it extensively inside the Stream API service. Support for Go was added almost two years ago by MrHenry and <a href="https://github.com/hyperworks">HyperWorks,</a> which open-sourced a Go client.</p>
+<p>We are proud to announce that starting today, we are releasing our official Go API client. You can find it on GitHub at <a href="https://github.com/GetStream/stream-go2">https://github.com/GetStream/stream-go2</a>.</p>
+<p>The new client APIs are more simple and easy to use. Compared to the previous version (which is still <a href="https://github.com/GetStream/stream-go">available here</a>), the new version has a much smaller code footprint, with about 57% less lines of code. Here’s a list of the key features:</p>
+<ul>
+<li>Complete test coverage of Stream API endpoints and options</li>
+<li>Smaller code footprint (less than 900 relevant lines of code)</li>
+<li>Extensive use of <a href="https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis">functional options</a> for clearer method calls that, in the future, can be extended without breaking compatibility</li>
+<li>Utilities for initializing a client directly from environment variables</li>
+<li>Complete endpoints support</li>
+<li>Happy Go <a href="https://github.com/golang/lint">linter</a>, meaning more consistent docs and idiomatic code</li>
+<li>Code versioning via <a href="http://labix.org/gopkg.in">gopkg.in</a></li>
+</ul>
+<p>The complete documentation for the client is available via <a href="https://godoc.org/github.com/GetStream/stream-go2">GoDoc</a>, while Stream-specific docs are available on our <a href="https://getstream.io/docs/go/">docs page</a>.</p>
+<p>Let’s see how to use it with some simple examples.</p>
+<p>Obtaining stream-go2 is straightforward. Type the following to retrieve the latest stable version of the client:<br />
+<em>go get </em>gopkg<em>.in/GetStream/stream-go2.v1</em></p>
+<p>Then, we&#8217;ll start by creating a new client which we’ll use in our application:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/597d2a8b11779f91644126f8a8afcaec">Gist</a>.</p>
+<p>We can now use the newly created client to initialize the feeds we want to interact with:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/59ec2951d79681f0b99a09d6d67d8bc0">Gist</a>.</p>
+<p>Flat, aggregated, and notification feeds implement the <a href="https://godoc.org/github.com/GetStream/stream-go2#Feed">stream.Feed</a> interface. To retrieve activities, all of them offer a GetActivities method that returns different structs based on the kind of feed:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/8d8274a2375ca42687e072c3a9247b0d">Gist</a>.</p>
+<p>Feeds pagination via offset and limit can be done using the WithActivitiesOffset and WithActivitiesLimit option functions:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/47ecb965037b8e4763f434cac3aacbb5">Gist</a>.</p>
+<p>Pagination via activity ID can be done with the WithActivitiesID[GT,GTE,LT,LTE] functions for the feeds that support it.</p>
+<p>Moreover, multiple filters can be combined:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/5d3711667da289f56173a44874e89cc3">Gist</a>.</p>
+<p>Here are all the <a href="https://godoc.org/github.com/GetStream/stream-go2#GetActivitiesOption">supported read options</a>.</p>
+<p>If you have a flat feed with custom ranking you can retrieve its&#8217; activities by applying one of the ranking methods configured for that feed with the GetActivitiesWithRanking method:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/de84e2692cd4e780a3aa055e55f182f9">Gist</a>.</p>
+<p>You can add activities to any kind of stream.Feed with the AddActivity and AddActivities methods:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/88e3a3b47cc6c9b80fe9afe46aa8df06">Gist</a>.</p>
+<p>Removing an activity can be done either by its ID or its foreign ID. The stream.Feed interface offers two methods for doing so: RemoveActivityByID and RemoveActivityByForeignID.</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/6f24975fea397db8730788c482f41a70">Gist</a>.</p>
+<p>Following and unfollowing a feed is done via the Follow and Unfollow methods offered by the Feed interface:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/d9eb00be330684a1ff5d392f0d64c712">Gist</a>.</p>
+<p>Note: many methods offered by stream.Feed and stream.Client support <a href="https://en.wikipedia.org/wiki/Variadic_function">variadic</a> option functions to customize the behavior of the methods themselves, and by convention, they all start with the “With…” prefix. You can find them all listed on the <a href="http://godoc.org/github.com/GetStream/stream-go2">GoDoc</a> page.</p>
+<p>For example, when using a feed’s GetFollowing method to retrieve the feeds which are being followed, you can use these option functions:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/61c9e4af55c2f9e49f4a6ccbea59832c">Gist</a>.</p>
+<p>Which results in something like this:</p>
+<p>View the code on <a href="https://gist.github.com/ruggi/9d253b0f4c262980fd0a118e4c7c0583">Gist</a>.</p>
+<h2>Wrapping up</h2>
+<p>Once again, we would like to thank <a href="https://github.com/mrhenry">MrHenry</a> and <a href="https://github.com/hyperworks">HyperWorks</a> for their efforts in creating the original stream-go client, a great community contribution which made it possible for many Go developers to use Stream.</p>
+<p>The <a href="https://github.com/GetStream/stream-go2">new Go client</a> exposes all Stream’s API features via a clean and easy to use interface. The client was rewritten from scratch, and this approach allowed us to follow Go’s coding best practices and test the entire code base very easily.</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/go-client-now-available/">Go Client Now Available</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/go-client-now-available/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Looking Forward to What&#8217;s Coming from Stream in 2018</title>
+		<link>https://getstream.io/blog/looking-forward-whats-coming-from-stream-in-2018/</link>
+		<comments>https://getstream.io/blog/looking-forward-whats-coming-from-stream-in-2018/#respond</comments>
+		<pubDate>Wed, 21 Mar 2018 05:06:26 +0000</pubDate>
+		<dc:creator><![CDATA[Thierry Schellenbach]]></dc:creator>
+				<category><![CDATA[APIs]]></category>
+		<category><![CDATA[Documentation]]></category>
+		<category><![CDATA[Features]]></category>
+		<category><![CDATA[Feed Personalization]]></category>
+		<category><![CDATA[Machine Learning]]></category>
+		<category><![CDATA[Scalability]]></category>
+		<category><![CDATA[feedback]]></category>
+		<category><![CDATA[filtering]]></category>
+		<category><![CDATA[performance]]></category>
+		<category><![CDATA[Personalization]]></category>
+		<category><![CDATA[roadmap]]></category>
+		<category><![CDATA[scalability]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3015</guid>
+		<description><![CDATA[<p>Looking Back 2017 wrapped up with the launch of Stream V2 and multi-region support. The new version of our API uses Go, RocksDB and Raft to power the feeds for over 300 million users. V2 represents our largest improvement in performance so far. Switching from Cassandra to RocksDB was a major step forward for Stream. It’s [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/looking-forward-whats-coming-from-stream-in-2018/">Looking Forward to What&#8217;s Coming from Stream in 2018</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/2018stream.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><h2>Looking Back</h2>
+<p>2017 wrapped up with the launch of Stream V2 and multi-region support. The new version of our API uses <a href="https://stackshare.io/stream/stream-and-go-news-feeds-for-over-300-million-end-users">Go, RocksDB and Raft</a> to power the feeds for over 300 million users. V2 represents our largest improvement in performance so far. Switching from Cassandra to RocksDB was a major step forward for Stream. It’s also been great to see a <a href="https://engineering.instagram.com/open-sourcing-a-10x-reduction-in-apache-cassandra-tail-latency-d64f86b43589">similar move</a> by Instagram and other companies who have adopted RocksDB. In terms of numbers, here’s what Stream looks like today:</p>
+<ul>
+<li><span style="font-weight: 400;">Number of servers: 140</span></li>
+<li><span style="font-weight: 400;">Feed updates per month: 34 billion</span></li>
+<li><span style="font-weight: 400;">Average API response time: 12 milliseconds</span></li>
+<li><span style="font-weight: 400;">Average real-time response time: 2 milliseconds</span></li>
+<li><span style="font-weight: 400;">Regions: 4 (US-East, EU-West, Tokyo and Singapore)</span></li>
+<li><span style="font-weight: 400;">API requests per month: 1 billion (~20k/minute)</span></li>
+<li><span style="font-weight: 400;">Team members: 22</span></li>
+</ul>
+<p>Multi-region support substantially reduced the latency for our customers in Asia and Europe. <a href="https://getstream.io/blog/sketchfab-utilizes-stream-to-increase-performance/">Sketchfab</a>, for instance, moved from US-east (V1) to Ireland (V2) and noticed an increase in performance, resulting in a round-trip decrease from 146ms to only 12ms.</p>
+<p>Our real-time infrastructure also received a full rewrite and greatly improved performance. So, if you want to use feeds for <a href="https://getstream.io/blog/news-feeds-for-real-time-use-cases/">real time use cases</a> such as events, games or discussions between famous users, we’ve got you covered.</p>
+<p>In true Stream fashion, we’ve created the following roadmap for 2018 based on customer input. We’d like to encourage all users to <a href="https://getstream.io/contact/">email us</a> if you have any questions or feedback.</p>
+<p>Here are several enhancements to look forward to in the coming months:</p>
+<h3>1. Filtering</h3>
+<p>There are a few different use cases for filtering support:</p>
+<ul>
+<li>Privacy settings on activities</li>
+<li>Removing flagged/inappropriate content</li>
+<li>Filtering mature content</li>
+<li>Selecting activities of a certain type (ie: showing only posts or likes)</li>
+<li>Complex follows (ie: houses listed in Boulder below $1 million)</li>
+</ul>
+<p>While there is a way to do this currently, it’s not a simple process. Right now, the only way to build that with Stream is to create multiple feed groups. Many of our customers have setup feed groups called user_private, user_friends, user_public, etc. While that approach works, it makes it harder to integrate Stream. Additionally, it doesn’t work if you need more complex filtering criteria or if you have a combination of filtering criteria (ie. supporting both privacy settings and filtering on activities of a certain type).</p>
+<h3>2. React Components</h3>
+<p>The popularity of <a href="https://getstream.io/based-feed-ui-kit-sketch/">Based</a>, our UI Kit for feeds, has inspired us to create a React component library for feeds. This will make it extremely easy to add notification feeds, activity streams or news feeds to your React based app.</p>
+<p>We’re even thinking about including a generator for the React components in the dashboard, making it easier to get up and running with Stream. <a href="https://getstream.io/contact/">What do you think?</a></p>
+<h3>3. Likes &amp; Comments</h3>
+<p>Many of our customers want to store likes and comments in their own database. For a long time, we’ve considered likes and comments to be out of scope. To our surprise, many of our enterprise customers asked for us to include this functionality. As we previously mentioned, we believe in the importance of listening to customer feedback and can admit when we’re wrong. In the coming months, we’ll add support for likes, comments and other reactions to Stream’s API. When you read the feed you’ll automatically see the counts and if the user has already liked the given activity.</p>
+<h3>4. Enrichment and normalization</h3>
+<p>One of the hardest aspects of integrating with Stream is enrichment. Most of our customers&#8217; store IDs to external objects in the activities. One example is user IDs. When you read the feed you need to:</p>
+<ul>
+<li>Gather the list of objects referenced</li>
+<li>Efficiently lookup those objects in cache and your database</li>
+<li>Replace the IDs with the full objects</li>
+</ul>
+<p>While this isn’t very complex it definitely makes it a bit harder to integrate with Stream. Our plan is to remove this complexity from the integration and take care of the whole process transparently.</p>
+<p>For example, say you want the actor field of an activity to be a user from your application. Right now you would store the user ID in the actor field and, at read time, replace all IDs with the data from your primary storage.</p>
+<p>With the new approach, you can send the data in the actor field as it is and Stream will take care of the rest.</p>
+<pre><span style="font-weight: 400;">activity = {
+</span><span style="font-weight: 400;">  actor:ken,
+</span><span style="font-weight: 400;">  verb:run,
+</span><span style="font-weight: 400;">  object:run123,
+</span><span style="font-weight: 400;">  track:{
+</span><span style="font-weight: 400;">     collection:'track',
+</span><span style="font-weight: 400;">     id:'123',
+</span><span style="font-weight: 400;">     distance:'20 miles'
+</span><span style="font-weight: 400;">  }
+</span><span style="font-weight: 400;">}
+
+
+</span></pre>
+<p>In the example above, Stream could detect that you added a track object, normalized it and stored it separately from the activity. When reading the feed we would simply lookup the “track:123” object and show you the full details. You could update the object using our <a href="https://getstream.io/docs_personalization/">collections endpoint</a>.</p>
+<h3>5. Personalization V2</h3>
+<p>A. Currently, personalization is only supported through our <a href="https://github.com/getstream/stream-python">Python SDK</a>. Customers using other languages have to directly use the REST SDKs which isn’t ideal.<br />
+<em>Next step: updating our other SDKs to make it easier to integrate personalization.</em></p>
+<p>B. Our analytics endpoint currently doesn’t have a REST API. However many larger customers prefer to integrate analytics on the server side.<br />
+<em>Next step: adding a REST endpoint to batch create impressions and events.</em></p>
+<p>C. We’re going to release a “<a href="https://getstream.io/get_started/">getting started</a>” type of tutorial for personalization. This will make it easier to get up and running with any of the 5 use cases for personalization. <a href="https://getstream.io/docs_personalization/">Read the docs.</a></p>
+<p><img class="aligncenter wp-image-3017" title="Personalization types" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=1200" alt="" width="769" height="606" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=975 975w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/5-Ways-to-use-Personalization.png?w=640 640w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 769px" /></p>
+<h3>6. Performance &amp; Scalability Improvements</h3>
+<p>After we released the new version of Stream based on Go, RocksDB, and Raft, we saw a large and immediate performance improvement. There’s still a lot of room left for optimization on the new architecture. This means you’ll continue to see performance improvements in the coming months.</p>
+<h3>7. Documentation</h3>
+<p>One thing that always amazed me is that the documentation for many APIs isn’t great &#8211; even when the product is! It’s surprising since I know, as a developer, that docs are one of the main things we look at when deciding whether or not to adopt a new tool. Over the past few years, <a href="https://getstream.io/docs/">Stream’s documentation</a> has not been kept entirely up-to-date. It’s actually quite difficult to keep the docs completely relevant when your product is moving quickly. We’re going to invest a good amount of time to improving the writing, updating the code and checking all our example apps and integrations.</p>
+<h2>Send us your Feedback!</h2>
+<p>Once again, we’d love to get your feedback. <a href="https://getstream.io/contact/">Send us an email</a> with your thoughts, product improvements, new features, etc. Even small things like spotting issues in our documentation help make the API easier to use for the entire Stream community. We look forward to hearing from you!</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/looking-forward-whats-coming-from-stream-in-2018/">Looking Forward to What&#8217;s Coming from Stream in 2018</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/looking-forward-whats-coming-from-stream-in-2018/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Dubsmash Switches to Stream from an In-House Solution</title>
+		<link>https://getstream.io/blog/dubsmash-switches-to-stream-from-an-in-house-solution/</link>
+		<comments>https://getstream.io/blog/dubsmash-switches-to-stream-from-an-in-house-solution/#respond</comments>
+		<pubDate>Mon, 19 Mar 2018 14:45:25 +0000</pubDate>
+		<dc:creator><![CDATA[Jessie Newell]]></dc:creator>
+				<category><![CDATA[Case Study]]></category>
+		<category><![CDATA[case study]]></category>
+		<category><![CDATA[Dubsmash]]></category>
+		<category><![CDATA[in-house]]></category>
+		<category><![CDATA[ranking]]></category>
+		<category><![CDATA[scalability]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3019</guid>
+		<description><![CDATA[<p>About Dubsmash Dubsmash is a global entertainment platform that allows users to interact with the content they love. Their team is building the interactive video quote database of the future, allowing users around the world to share, lip-sync, and meme over pop culture content. With over 200M global users who create &#38; interact with 35 [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/dubsmash-switches-to-stream-from-an-in-house-solution/">Dubsmash Switches to Stream from an In-House Solution</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/dubsmash-casestudy.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><h2><b>About Dubsmash</b></h2>
+<p><a href="https://dubsmash.com/"><span style="font-weight: 400;">Dubsmash</span></a><span style="font-weight: 400;"> is a global entertainment platform that allows users to interact with the content they love. Their team is building the interactive video quote database of the future, allowing users around the world to share, lip-sync, and meme over pop culture content. With over 200M global users who create &amp; interact with 35 videos every second, Dubsmash is building the entertainment product of the future &#8211; one where consumers are actively participating versus passively consuming.</span></p>
+<p style="text-align: center;"><iframe src="https://www.youtube.com/embed/AbFmE4jSIiY" width="560" height="315" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<h2>Challenge</h2>
+<p>Dubsmash has always been a huge fan of not &#8220;reinventing the wheel&#8221; by using existing solutions, being that they’re a small team operating very quickly. However, they initially believed that they could build an in-house feed solution that would have all the features and functionality they needed, at a lower price than what they saw in the market. They soon discovered that the complexities of building streams and feeds are vast. While they were able to easily construct a simple chronological feed, they ran into many difficulties when attempting to add features such as ranking and personalization. After spending many weeks and valuable resources on development, they realized that continuing to build in-house would not provide them with the best and most sustainable outcome.</p>
+<blockquote><p>“Building out feed technology is quite a challenge. We made the mistake of trying to build it ourselves…and we were just stuck. From a feature perspective, we couldn’t build something as robust as what Stream can provide. I’m simply amazed at how certain features, such as ranking, work. Stream is also very easy to implement and their team has been responsive on Slack!” &#8211; Tim Specht, CTO of Dubsmash</p></blockquote>
+<h2>Why Stream</h2>
+<p><img class="wp-image-3020 alignleft" title="dubsmash" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/03/Dubsmash-feed.png?w=1200" alt="" width="193" height="433" /></p>
+<p><strong>Primary Reasons</strong><br />
+&#8211; Time to market<br />
+&#8211; Scalability<br />
+&#8211; Simple implementation</p>
+<p>Dubsmash has been familiar with Stream for over two years. They had experience with the original, open source Stream framework and had gone through the <a href="https://getstream.io/try-the-api/">Try-the-API</a> tutorials. They had also done extensive research on <a href="https://getstream.io/blog/">The Stream Blog</a> and <a href="https://getstream.io/docs/">documentation page</a>. When they reached out to Stream, they were in need of a feature-rich solution that could scale for their expected growth while integrating quickly and easily. Dubsmash was particularly impressed with Stream’s easy-to-use <a href="https://getstream.io/docs/#custom_ranking">ranking feature</a>, and the fact that the API can cover many use cases. Dubsmash uses several ranking methods side by side. The feed in their admin is strictly stored by time and the feed shown to users takes into account both popularity and time decay. What would have taken weeks of development time to build in-house, took a day and a half to implement with the API. With Stream, they just “don’t need to worry about it!”</p>
+<h2></h2>
+<h2>Moving forward…</h2>
+<p>Dubsmash is planning on expanding their offerings with more mobile and web-based products built around their core product &#8211; their ‘video quote database’. We can’t wait to see what they come up with!</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/dubsmash-switches-to-stream-from-an-in-house-solution/">Dubsmash Switches to Stream from an In-House Solution</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/dubsmash-switches-to-stream-from-an-in-house-solution/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Building a Node.js Powered API with Express, Mongoose &#038; MongoDB</title>
+		<link>https://getstream.io/blog/building-a-node-js-powered-api-with-express-mongoose-mongodb/</link>
+		<comments>https://getstream.io/blog/building-a-node-js-powered-api-with-express-mongoose-mongodb/#respond</comments>
+		<pubDate>Thu, 22 Feb 2018 16:19:21 +0000</pubDate>
+		<dc:creator><![CDATA[Nick Parsons]]></dc:creator>
+				<category><![CDATA[APIs]]></category>
+		<category><![CDATA[Best Practices]]></category>
+		<category><![CDATA[Examples]]></category>
+		<category><![CDATA[Libraries]]></category>
+		<category><![CDATA[Open Source]]></category>
+		<category><![CDATA[Tutorial]]></category>
+		<category><![CDATA[API]]></category>
+		<category><![CDATA[ES6]]></category>
+		<category><![CDATA[Express]]></category>
+		<category><![CDATA[MongoDB]]></category>
+		<category><![CDATA[Mongoose]]></category>
+		<category><![CDATA[RESTful]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=3002</guid>
+		<description><![CDATA[<p>One of my favorite parts of my job as a Developer Evangelist at Stream is building sample applications. It is an enthralling way to engage and interact with potential and existing customers, as well as show off the fun technology we use and build with every single day. The applications I build range from small [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/building-a-node-js-powered-api-with-express-mongoose-mongodb/">Building a Node.js Powered API with Express, Mongoose &#038; MongoDB</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/nodenick.jpeg?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><p><span style="font-weight: 400;">One of my favorite parts of my job as a Developer Evangelist at </span><a href="https://getstream.io"><span style="font-weight: 400;">Stream</span></a><span style="font-weight: 400;"> is building sample applications. It is an enthralling way to engage and interact with potential and existing customers, as well as show off the fun technology we use and build with every single day. The applications I build range from small code snippets outlining how to perform basic operations, such as marking an item as “read” in Stream, to large microservice based applications that generally require robust backend architectures, like </span><a href="https://github.com/GetStream/Winds"><span style="font-weight: 400;">Winds</span></a><span style="font-weight: 400;">.</span></p>
+<p><span style="font-weight: 400;">Last year, I created a post on </span><a href="https://medium.com/@nparsons08/in-depth-guide-on-building-a-rest-api-with-node-js-restify-mongodb-a8e92efbb50f"><span style="font-weight: 400;">how to build a RESTful API with Restify</span></a><span style="font-weight: 400;">. Now that </span><a href="http://expressjs.com/"><span style="font-weight: 400;">Express</span></a><span style="font-weight: 400;"> and </span><a href="http://restify.com/"><span style="font-weight: 400;">Restify</span></a><span style="font-weight: 400;"> are nearly </span><a href="https://raygun.com/blog/node-js-performance-2017/"><span style="font-weight: 400;">neck and neck</span></a><span style="font-weight: 400;"> in terms of requests per second, I thought it might be interesting to show you how I go about structuring my APIs with </span><i><span style="font-weight: 400;">Express </span></i><span style="font-weight: 400;">(just to toss in a little friendly competition / play devil-oper’s advocate </span><span style="font-weight: 400;"><img src="https://s.w.org/images/core/emoji/2.4/72x72/1f609.png" alt="😉" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span><span style="font-weight: 400;">).</span></p>
+<h2><span style="font-weight: 400;">Structuring Your API</span></h2>
+<p><span style="font-weight: 400;">The way you choose to structure your API is one of the most important decisions you’ll make. You must ensure that it’s smart, flexible, and easy to use &#8211; this is a </span><b>must</b><span style="font-weight: 400;">. If it’s not easy to use, other developers will not understand what you’re building nor will they be able to figure out how to build on top of it. Think before you build (I know. Planning sucks. Especially when you are excited to get going, but it *pays off*).</span></p>
+<p><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> build</span><span style="font-weight: 400;">.</span><span style="font-weight: 400;">sh</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> dist</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> &#8230;</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">├──</span> <span style="font-weight: 400;">package</span><span style="font-weight: 400;">.</span><span style="font-weight: 400;">json</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> src</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> config</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">└──</span><span style="font-weight: 400;"> index</span><span style="font-weight: 400;">.</span><span style="font-weight: 400;">js</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> controllers</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> &#8230;</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> models</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> &#8230;</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span> <span style="font-weight: 400;">package</span><span style="font-weight: 400;">.</span><span style="font-weight: 400;">json</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> routes</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> &#8230;</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> server</span><span style="font-weight: 400;">.</span><span style="font-weight: 400;">js</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> utils</span><span style="font-weight: 400;"><br />
+</span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">│</span><span style="font-weight: 400;">   </span><span style="font-weight: 400;">├──</span><span style="font-weight: 400;"> &#8230;</span></p>
+<p><span style="font-weight: 400;">All source code is stored in </span><b>/src</b><span style="font-weight: 400;">. It compiles down from ES6+ to ES5 into the </span><b>/dist</b><span style="font-weight: 400;"> directory for execution on the server. You’re probably asking yourself why you’d take the extra step to write in something that is just going to be compiled down? Good question. ES6+ standards provide some pretty killer additional functionalities, such as arrow functions, modified scoping, destructuring, rest/spread parameter handling, and </span><a href="http://es6-features.org/"><span style="font-weight: 400;">more</span></a><span style="font-weight: 400;">!</span></p>
+<p><span style="font-weight: 400;">Let’s have a look at the compilation that takes place in the </span><b>build.sh</b><span style="font-weight: 400;"> file:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/fa0de121579ae9bd35b013238ff7a1f6">Gist</a>.</p>
+<p><span style="font-weight: 400;">That is ALL you need to be able to write in a super awesome language while having it still be supported in all the usual places! That said, the code above *may* look like gibberish, so let’s break it down </span><span style="font-weight: 400;"><img src="https://s.w.org/images/core/emoji/2.4/72x72/1f913.png" alt="🤓" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span><span style="font-weight: 400;">:</span></p>
+<ol>
+<li style="font-weight: 400;"><span style="font-weight: 400;">#!/bin/bash </span>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Denotes that this is an executable bash file</span></li>
+</ul>
+</li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">rm </span><span style="font-weight: 400;">&#8211;</span><span style="font-weight: 400;">rf dist </span><span style="font-weight: 400;">&amp;&amp;</span><span style="font-weight: 400;"> mkdir dist</span>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Removes the</span><b> /dist </b><span style="font-weight: 400;">directory if it exists (cleanup).</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Creates a new </span><b>/dist</b><span style="font-weight: 400;"> directory.</span></li>
+</ul>
+</li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">npx babel src </span><span style="font-weight: 400;">&#8212;</span><span style="font-weight: 400;">out</span><span style="font-weight: 400;">&#8211;</span><span style="font-weight: 400;">dir dist </span><span style="font-weight: 400;">&#8212;</span><span style="font-weight: 400;">ignore node_modules</span>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Compiles every file to ES5 and moves the files to the </span><b>/dist</b><span style="font-weight: 400;"> directory, with the exception of </span><b>node_modules</b><span style="font-weight: 400;"> (those are already compiled).</span></li>
+</ul>
+</li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">cp src</span><span style="font-weight: 400;">/</span><span style="font-weight: 400;">package</span><span style="font-weight: 400;">.</span><span style="font-weight: 400;">json dist</span>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">By design, npx doesn’t migrate json files, so we need to copy it ourselves using the </span><b>cp</b><span style="font-weight: 400;"> command.</span></li>
+</ul>
+</li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">cd dist </span><span style="font-weight: 400;">&amp;&amp;</span><span style="font-weight: 400;"> yarn install </span><span style="font-weight: 400;">&#8212;</span><span style="font-weight: 400;">production </span><span style="font-weight: 400;">&#8212;</span><span style="font-weight: 400;">modules</span><span style="font-weight: 400;">&#8211;</span><span style="font-weight: 400;">folder node_modules</span></li>
+</ol>
+<p><span style="font-weight: 400;">Move into the </span><b>/dist</b><span style="font-weight: 400;"> directory and install the npm modules using </span><a href="https://yarnpkg.com/en/"><span style="font-weight: 400;">yarn</span><span style="font-weight: 400;"><br />
+</span></a></p>
+<p><span style="font-weight: 400;">Running the build is as simple as running the following command from your terminal:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/a67264e091070bf7b512c9de5a32d4c1">Gist</a>.</p>
+<p><b><i>Note: </i></b><i><span style="font-weight: 400;">You will need to ensure that the build.sh file is executable&#8230;<br />
+</span></i><br />
+OR i<span style="font-weight: 400;">f you are like me and enjoy automating </span><i><span style="font-weight: 400;">everything</span></i><span style="font-weight: 400;">, you can create an npm script like so:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/36d69aeb777b1d962b727089305f13d0">Gist</a>.</p>
+<p><span style="font-weight: 400;">Which can be executed by running the following from your terminal:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/64c88e9e62a46c3097be3f20eda3a02d">Gist</a>.</p>
+<h2><span style="font-weight: 400;">The Main File</span></h2>
+<p><span style="font-weight: 400;">The following file, </span><b>server.js</b><span style="font-weight: 400;">, contains the most important logic and sits on the top-level of our codebase. The beginning portion imports all of the necessary npm modules, followed by our </span><b>config</b><span style="font-weight: 400;"> and </span><b>logger utility</b><span style="font-weight: 400;">.</span></p>
+<p><span style="font-weight: 400;">Next, we take advantage of the Express </span><b>use </b><span style="font-weight: 400;">method to invoke several of our imported middleware libraries (</span><a href="https://www.npmjs.com/package/cors"><span style="font-weight: 400;">cors</span></a><span style="font-weight: 400;">, </span><a href="https://www.npmjs.com/package/compression"><span style="font-weight: 400;">compression</span></a><span style="font-weight: 400;">, and our </span><a href="https://www.npmjs.com/package/body-parser"><span style="font-weight: 400;">body-parser</span></a><span style="font-weight: 400;">). **Please note** that there are several other middleware libraries that we include for additional functionality (e.g. email, logging, jwt authentication, etc.). </span><span style="font-weight: 400;">Last but not least, after a bit of initialization, we dynamically include all routes and pass the </span><b>API</b><span style="font-weight: 400;"> context to the route for binding.</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/de13406e98461f2cf88568aa7f57fb7a">Gist</a>.</p>
+<p><b><i>Note: </i></b><i><span style="font-weight: 400;">The customer logger module can be used with most logging services (</span></i><a href="https://papertrailapp.com/"><i><span style="font-weight: 400;">Papertrail</span></i></a><i><span style="font-weight: 400;">, </span></i><a href="https://www.loggly.com/"><i><span style="font-weight: 400;">Loggly</span></i></a><i><span style="font-weight: 400;">, etc.). For this demo, as well as other projects, I like to use Papertrail. You may need to adjust the settings and ENV variables if you use something other than Papertrail.</span></i></p>
+<h2><span style="font-weight: 400;">Routing</span></h2>
+<p><span style="font-weight: 400;">To keep things tidy and organized, all routing logic (e.g. GET /users) is kept in its own route file inside of a </span><b>/routes</b><span style="font-weight: 400;"> directory.</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/7a6d882e2dfc257777f3297ba3b4c7ab">Gist</a>.</p>
+<p><span style="font-weight: 400;">As you can see, the contents of the route file above hold all references to the controllers for </span><b>GET</b><span style="font-weight: 400;">, </span><b>POST</b><span style="font-weight: 400;">, </span><b>PUT</b><span style="font-weight: 400;">, and </span><b>DELETE</b><span style="font-weight: 400;"> operations. This works because we import and reference the </span><b>User</b> <b>Controller</b><span style="font-weight: 400;">, passing along the necessary parameters and/or data with </span><i><span style="font-weight: 400;">every</span></i><span style="font-weight: 400;"> API call.</span></p>
+<h2><span style="font-weight: 400;">Controllers</span></h2>
+<p><span style="font-weight: 400;">Controllers include the database model associated with the data that they will be handling, receiving data from the routes, and then making an informed decision on how to handle the data. Finally, the controllers communicate through the models which then talk to the database, and return a status code with a payload.</span></p>
+<p><span style="font-weight: 400;">If you’re a visual person, a production instance should look a little something like this:</span></p>
+<p><img class="alignnone wp-image-3003" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png" alt="Architecture" width="558" height="331" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=1792 1792w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=1024 1024w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=640 640w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/image2.png?w=1200 1200w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 558px" /></p>
+<p><span style="font-weight: 400;">And, the code for an example user controller would look like this:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/0b6418f12e78c3d0ef122cecc3124183">Gist</a>.</p>
+<h2><span style="font-weight: 400;">Mongoose Models (MongoDB)</span></h2>
+<p><a href="http://mongoosejs.com/"><span style="font-weight: 400;">Mongoose</span></a><span style="font-weight: 400;"> is a wonderful ODM (Object Data Modeling) library for Node.js and </span><a href="http://mbsy.co/mongodb/228644"><span style="font-weight: 400;">MongoDB</span></a><span style="font-weight: 400;">. If you’re familiar with the reference ORM (Object Resource Mapping) and libraries for Node.js, such as </span><a href="http://docs.sequelizejs.com/"><span style="font-weight: 400;">Sequelize</span></a><span style="font-weight: 400;"> and </span><a href="http://bookshelfjs.org/"><span style="font-weight: 400;">Bookshelf</span></a><span style="font-weight: 400;">, Mongoose is pretty straightforward. The massive benefit with Mongoose is how easy it is to structure MongoDB schemas &#8211; there’s no need to fuss around with custom business logic. </span></p>
+<p><span style="font-weight: 400;">What’s even more exciting are the many goodies like middleware, </span><a href="http://plugins.mongoosejs.com/"><span style="font-weight: 400;">plugins</span></a><span style="font-weight: 400;">, object population, and schema validation either baked in, or one </span><a href="https://yarnpkg.com/en/"><span style="font-weight: 400;">yarn</span></a><span style="font-weight: 400;"> (I love yarn) or one </span><a href="https://www.npmjs.com/"><span style="font-weight: 400;">npm</span></a><span style="font-weight: 400;"> install away. It’s truly remarkable how popular the project has become among developers who use MongoDB.</span></p>
+<p><span style="font-weight: 400;">When it comes to Mongoose models, I tend to keep things somewhat flat (or at least a maximum of 3 deeply nested objects) to avoid confusion. Here’s an example of a user model pulled directly from a project currently under development here at Stream:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/4d399a2b6eabfa938552b07aa1cc51a3">Gist</a>.</p>
+<p><b><i>Note: </i></b><i><span style="font-weight: 400;">When it comes to hosting and running MongoDB, I like to use </span></i><a href="http://mbsy.co/mongodb/228644"><i><span style="font-weight: 400;">MongoDB Atlas</span></i></a><i><span style="font-weight: 400;">. It’s a database as a service provided by the makers of MongoDB themselves. If you don’t want to use a free MongoDB Atlas instance, you’re welcome to use a local version. Additionally, if you want to monitor your data, </span></i><a href="https://www.mongodb.com/products/compass"><i><span style="font-weight: 400;">MongoDB Compass</span></i></a><i><span style="font-weight: 400;"> is an excellent choice!</span></i></p>
+<h2><span style="font-weight: 400;">Utilities</span></h2>
+<p><span style="font-weight: 400;">Custom utilities can be used for a variety of things – basically, anything you want. I generally reserve them for separating concerns and keeping my code clean. Some examples include establishing database connections, sending emails, logging to an external service, and even communicating with HTTP based service here at Stream.</span></p>
+<p><span style="font-weight: 400;">I’m often asked the question of when to turn something into a utility and my answer is always the same… When you find yourself </span><b>1)</b><span style="font-weight: 400;"> reusing code OR </span><b>2)</b><span style="font-weight: 400;"> jamming third-party services into code where it just doesn’t feel right.</span></p>
+<p><span style="font-weight: 400;">Here’s an example of a utility I wrote to help called the </span><a href="https://getstream.io/personalization/"><span style="font-weight: 400;">Stream Personalization REST API</span></a><span style="font-weight: 400;">. This integration was completed in about a dozen lines of code:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/138a60d3215a5bf32b881f777eb408bf">Gist</a>.</p>
+<p><span style="font-weight: 400;">The code above can now be called from any file like so:</span></p>
+<p>View the code on <a href="https://gist.github.com/nparsons08/f4f10bf0e36ab4469f8a5629b1cda1ad">Gist</a>.</p>
+<h2><span style="font-weight: 400;">Final Thoughts</span></h2>
+<p><span style="font-weight: 400;">APIs are the building blocks of modern applications. They govern how an application can talk to another, as well as to the database. While we have other flavors of API structures (</span><a href="https://graphql.org"><span style="font-weight: 400;">GraphQL</span></a><span style="font-weight: 400;">, etc.), RESTful APIs continue to pull their own weight and aren’t going anywhere soon.</span></p>
+<p><span style="font-weight: 400;">If you’re interested in seeing a fully built out skeleton for a REST API built with Node.js, Express, Mongoose, and MongoDB, head over to this </span><a href="https://github.com/GetStream/node-express-mongo-api"><span style="font-weight: 400;">GitHub repo</span></a><span style="font-weight: 400;">.</span></p>
+<p><span style="font-weight: 400;">As always, if you have any questions, please don’t hesitate to reach out to me on </span><a href="https://twitter.com/nickparsons"><span style="font-weight: 400;">Twitter</span></a><span style="font-weight: 400;"> or below in the comments. Thank you!</span></p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/building-a-node-js-powered-api-with-express-mongoose-mongodb/">Building a Node.js Powered API with Express, Mongoose &#038; MongoDB</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/building-a-node-js-powered-api-with-express-mongoose-mongodb/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Sketchfab Utilizes Stream’s Feed Technology to Increase Performance and Reliability</title>
+		<link>https://getstream.io/blog/sketchfab-utilizes-stream-to-increase-performance/</link>
+		<comments>https://getstream.io/blog/sketchfab-utilizes-stream-to-increase-performance/#respond</comments>
+		<pubDate>Wed, 21 Feb 2018 15:48:19 +0000</pubDate>
+		<dc:creator><![CDATA[Jessie Newell]]></dc:creator>
+				<category><![CDATA[Case Study]]></category>
+		<category><![CDATA[Examples]]></category>
+		<category><![CDATA[Features]]></category>
+		<category><![CDATA[Open Source]]></category>
+		<category><![CDATA[case study]]></category>
+		<category><![CDATA[customers]]></category>
+		<category><![CDATA[performance]]></category>
+		<category><![CDATA[reliability]]></category>
+		<category><![CDATA[sketchfab]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=2993</guid>
+		<description><![CDATA[<p>“From posting updates to commenting and more, Stream provided us with the most flexible and scalable solution for displaying all our user&#8217;s activities. The Stream team made implementing our news feed solution a collaborative experience and ultimately the right decision for us.” &#8211; Paul Chambers, Artist Evangelist at Sketchfab. Sketchfab’s community consists of artists, designers, [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/sketchfab-utilizes-stream-to-increase-performance/">Sketchfab Utilizes Stream’s Feed Technology to Increase Performance and Reliability</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketch-fab.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><blockquote><p>“From posting updates to commenting and more, Stream provided us with the most flexible and scalable solution for displaying all our user&#8217;s activities. The Stream team made implementing our news feed solution a collaborative experience and ultimately the right decision for us.”<br />
+&#8211; Paul Chambers, Artist Evangelist at Sketchfab.</p></blockquote>
+<p><a href="https://sketchfab.com/">Sketchfab’s</a> community consists of artists, designers, architects, hobbyists, engineers, brands, museums, game studios, schools and more. Some of the most talented 3D artists showcase their work on Sketchfab’s platform.</p>
+<p><img class="wp-image-2994 aligncenter" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=1200" alt="" width="853" height="616" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=975 975w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/sketchfab_1.png?w=640 640w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></p>
+<p>Sketchfab&#8217;s rapid growth triggered them to research solutions for their feeds. Since conception, they had relied on custom-built feeds that caused several issues. They had no other option but to maintain their own infrastructure in order to support their initial solution (ie. PostgreSQL database and Redis cache). The former implementation also relied on storing user activity in a PostgreSQL table which, as activity grew, it took more and more time to scan and retrieve activities relevant to a unique user. They knew their in-house solution wouldn&#8217;t scale indefinitely and adding and maintaining more infrastructure in order to fix it was not an option they wanted to explore.</p>
+<p><img class="wp-image-2995 aligncenter" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=1200" alt="" width="848" height="679" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=975 975w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_2.png?w=640 640w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></p>
+<h2>Solution</h2>
+<p>Sketchfab heard about Stream since they are a fellow <a href="https://www.techstars.com/companies/">TechStars graduate</a>. They tried out the interactive <a href="https://getstream.io/get_started/">API tutorial</a> and were impressed with how easy Stream&#8217;s API is to use. Before making the final decision to work with Stream, they did their research. The main alternative they considered was building an in-house solution on top of Stream’s open source Stream-Framework. Stream’s built-in support for aggregation, notification feeds and ranking was a major reason for why they chose the hosted solution. Another benefit is the solid performance and reliability offered by the API. Stream’s hosted platform is based on Go and a highly optimized feed storage infrastructure. That level of performance and reliability is hard to achieve when building an in-house solution. The final reason they decided to use Stream&#8217;s API is pricing. The team at Sketchfab realized that hosting and maintaining their own Cassandra cluster, worker instances, task broker, real time infrastructure and API workers would simply not be cost-effective.</p>
+<p>The end result of this collaboration is the new feed on Sketchfab:</p>
+<p><img class="wp-image-2996 aligncenter" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=1200" alt="" width="806" height="652" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=975 975w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_3.png?w=640 640w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></p>
+<p>In addition to the news feed, their notification feed is also powered by Stream.</p>
+<h2>Performance</h2>
+<p>Sketchfab uses Stream’s region in EU-west. This is right next to their own data center, so the performance is very high. Here’s a graph of their read performance before and after Stream’s switch to Go:</p>
+<p><img class="alignnone size-fp-large wp-image-2997" src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=1200" alt="" width="1200" srcset="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=975 975w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=300 300w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=768 768w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=600 600w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=470 470w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=360 360w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=620 620w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=740 740w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=870 870w, https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/Sketchfab_4.png?w=640 640w" sizes="(max-width: 639px) 98vw, (max-width: 1199px) 64vw, 770px" /></p>
+<h2>Primary reasons for choosing Stream:</h2>
+<ul>
+<li>Aggregation, ranking and notifications supported out of the box</li>
+<li>Scalable</li>
+<li>Feature-as-a-Service</li>
+<li>TechStars graduates</li>
+<li>Low maintenance</li>
+<li>Solid performance and reliability</li>
+<li>Cost effective compared to in-house</li>
+<li>Dashboard reporting</li>
+</ul>
+<p>&nbsp;</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/sketchfab-utilizes-stream-to-increase-performance/">Sketchfab Utilizes Stream’s Feed Technology to Increase Performance and Reliability</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/sketchfab-utilizes-stream-to-increase-performance/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Activity Streams and News Feeds for Real-Time Use Cases</title>
+		<link>https://getstream.io/blog/news-feeds-for-real-time-use-cases/</link>
+		<comments>https://getstream.io/blog/news-feeds-for-real-time-use-cases/#respond</comments>
+		<pubDate>Wed, 07 Feb 2018 12:00:21 +0000</pubDate>
+		<dc:creator><![CDATA[Thierry Schellenbach]]></dc:creator>
+				<category><![CDATA[APIs]]></category>
+		<category><![CDATA[Features]]></category>
+		<category><![CDATA[Go]]></category>
+		<category><![CDATA[Real-Time]]></category>
+		<category><![CDATA[use case]]></category>
+
+		<guid isPermaLink="false">https://getstream.io/blog/?p=2983</guid>
+		<description><![CDATA[<p>There are many feed use cases where it’s important to show updates in real-time. If a feed has thousands or even millions of followers, this can be pretty hard to do. Over the past months, our team has vastly improved the capacity of our real-time infrastructure, allowing you to: Show live activities for a sporting [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/news-feeds-for-real-time-use-cases/">Activity Streams and News Feeds for Real-Time Use Cases</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<img src="https://getstream-blog.imgix.net/blog/wp-content/uploads/2018/02/real-time.png?w=1024&amp;h=1024" class="attachment-large size-large wp-post-image" alt="" style="display: block; margin:0 auto 10px auto;" /><p>There are many feed use cases where it’s important to show updates in real-time. If a feed has thousands or even millions of followers, this can be pretty hard to do. Over the past months, our team has vastly improved the capacity of our real-time infrastructure, allowing you to:</p>
+<ul>
+<li>Show live activities for a sporting event</li>
+<li>Organize raids in a video game</li>
+<li>Notify a user about something important</li>
+<li>Enable discussions between several famous or popular users</li>
+<li>Announce a concert that’s going on sale <a href="https://www.bandsintown.com/a/1371750-the-weeknd?came_from=245">(follow The Weeknd on Bandsintown</a>)</li>
+<li>Share the latest VR for cats app on Product Hunt (<a href="https://getstream.io/blog/product-hunt-case-study/">Product Hunt uses Stream</a>)</li>
+</ul>
+<p>The metric that matters the most in the examples above is the round-trip time for an activity insert. More specifically, inserting the activity, handling the fanout of notifications, and the latency back to your infrastructure using either websockets, <a href="https://aws.amazon.com/sqs/">SQS</a> or webhooks. It’s important to note that Stream only fires the real-time event after the insert and fanout are fully completed. This prevents scenarios where your user opens the app from a notification but the activity isn’t there yet.</p>
+<p>In the past, our Python-based infrastructure could take up to 2 minutes for a feed update to propagate and for your user to receive the notification. With our new real-time infrastructure, the average round-trip time (including network latency) is around 230 milliseconds. The 99th percentile is 550 milliseconds.</p>
+<p>Several recent changes to Stream have enabled this increase in speed. First, our team has made a major migration from <a href="https://getstream.io/blog/switched-python-go/">Python to Go</a>. You can read more about our <a href="https://stackshare.io/stream/stream-and-go-news-feeds-for-over-300-million-end-users">Go based infrastructure on StackShare</a>. The second is rewriting our real-time infrastructure from Node to Go.</p>
+<h2>Looking Forward…</h2>
+<p>We’re considering adding <a href="https://socket.io/">socket.io</a> support to our real-time infrastructure. This will make it easier to connect to Stream from various platforms such as iOS, Android and React-Native. The team is also working on additional performance improvements, so we suspect the 99th percentile will further improve in the coming months.</p>
+<p>We are excited to see what you can build with faster real-time updates. As always, please <a href="https://getstream.io/contact/">contact us</a> if you have any feature requests or recommendations.</p>
+<p>The post <a rel="nofollow" href="https://getstream.io/blog/news-feeds-for-real-time-use-cases/">Activity Streams and News Feeds for Real-Time Use Cases</a> appeared first on <a rel="nofollow" href="https://getstream.io/blog">The Stream Blog</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://getstream.io/blog/news-feeds-for-real-time-use-cases/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

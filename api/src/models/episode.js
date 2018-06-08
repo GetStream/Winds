@@ -93,7 +93,29 @@ export const EpisodeSchema = new Schema(
 			default: true,
 		},
 	},
-	{ collection: 'episodes' },
+	{
+		collection: 'episodes',
+		toJSON: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+	},
 );
 
 EpisodeSchema.plugin(timestamps, {
@@ -103,6 +125,6 @@ EpisodeSchema.plugin(timestamps, {
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
 
-EpisodeSchema.index({ podcast: 1, url: 1 }, {unique: true});
+EpisodeSchema.index({ podcast: 1, url: 1 }, { unique: true });
 
 module.exports = exports = mongoose.model('Episode', EpisodeSchema);

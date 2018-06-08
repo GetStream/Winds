@@ -117,6 +117,8 @@ export const ArticleSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || ""
+				ret.images.og = ret.images.og || ""
 			},
 		},
 		toObject: {
@@ -125,6 +127,8 @@ export const ArticleSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || ""
+				ret.images.og = ret.images.og || ""
 			},
 		},
 	},
