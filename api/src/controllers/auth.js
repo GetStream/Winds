@@ -67,7 +67,7 @@ exports.signup = async (req, res, _) => {
 	}
 
 	const user = await User.create(data);
-	let sent = await SendWelcomeEmail({email: user.email})
+	await SendWelcomeEmail({email: user.email});
 
 	await client.feed('timeline', user._id).follow('user', user._id);
 	await followInterest(user._id, { featured: true });
@@ -114,7 +114,7 @@ exports.forgotPassword = async (req, res, _) => {
 		return res.sendStatus(404);
 	}
 
-	let sent = await SendPasswordResetEmail({email: user.email, passcode: user.passcode})
+	await SendPasswordResetEmail({email: user.email, passcode: user.passcode})
 
 	res.sendStatus(200);
 };
