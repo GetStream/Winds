@@ -1,13 +1,10 @@
 import '../loadenv';
 
-import async from 'async';
 import moment from 'moment';
 
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
-import db from '../utils/db';
-import config from '../config';
 import logger from '../utils/logger';
 
 import asyncTasks from '../asyncTasks';
@@ -47,6 +44,7 @@ async function conduct() {
 				isParsing: {
 					$ne: true,
 				},
+				valid: true,
 				lastScraped: {
 					$lte: moment()
 						.subtract(durationInMinutes, 'minutes')
@@ -83,7 +81,7 @@ async function conduct() {
 			});
 			promises.push(promise);
 		}
-		let results = await Promise.all(promises);
+		await Promise.all(promises);
 
 		logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`);
 	}
