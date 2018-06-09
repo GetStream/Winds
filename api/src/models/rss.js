@@ -147,7 +147,7 @@ RSSSchema.statics.resetScrapeFailures = async function(id) {
 	await this.findOneAndUpdate({_id :id}, {$set : {consecutiveScrapeFailures : 0}}).exec();
 };
 
-RSSSchema.statics.searchDocument = function() {
+RSSSchema.methods.searchDocument = function() {
 	return {
 		_id: this._id,
 		objectID: this._id,
