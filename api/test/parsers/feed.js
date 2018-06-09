@@ -327,7 +327,6 @@ describe('Parsing', () => {
 					expect(feedResponse.articles[0].url).to.equal(test.expectations.firstArticleUrl);
 					if (test.expectations.firstArticlePublicationDate) {
 						expect(feedResponse.articles[0].publicationDate).to.equal(test.expectations.firstArticlePublicationDate);
-
 					}
 				}
 			});
