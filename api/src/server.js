@@ -4,6 +4,7 @@ if (config.newrelic){
 	require('newrelic');
 }
 
+import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 
@@ -15,9 +16,12 @@ import jwt from 'express-jwt';
 import limit from 'express-rate-limit';
 
 import logger from './utils/logger';
+import { setupAxiosRedirectInterceptor } from './utils/axios';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
 import User from './models/user';
 import { AnalyticsMiddleware } from './utils/events/analytics';
+
+setupAxiosRedirectInterceptor(axios);
 
 const api = express();
 
