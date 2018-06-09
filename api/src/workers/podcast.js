@@ -54,8 +54,10 @@ async function _handlePodcast(job) {
 	let podcastContent;
 	try {
 		podcastContent = await ParsePodcast(job.data.url);
+		await Podcast.resetScrapeFailures(podcastID);
 	} catch (e) {
 		logger.info(`podcast scraping broke for url ${job.data.url}`);
+		await Podcast.consecutiveScrapeFailures(podcastID);
 		return;
 	}
 

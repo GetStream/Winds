@@ -64,7 +64,14 @@ async function _handleRSS(job) {
 
 	// parse the articles
 	let rssContent = await timeIt('winds.handle_rss.parsing', async () => {
-		return await ParseFeed(job.data.url);
+		try {
+			const res = await ParseFeed(job.data.url);
+			await RSS.resetScrapeFailures(rssID);
+			return res;
+		} catch (err) {
+			await RSS.consecutiveScrapeFailures(rssID);
+			throw err;
+		}
 	});
 
 	if (!rssContent) {
