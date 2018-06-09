@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
-import {RSSSchema} from "./rss";
 
 export const PodcastSchema = new Schema(
 	{
@@ -138,7 +137,7 @@ PodcastSchema.plugin(timestamps, {
 
 PodcastSchema.plugin(mongooseStringQuery);
 
-PodcastSchema.statics.consecutiveScrapeFailures = async function(id) {
+PodcastSchema.statics.incrScrapeFailures = async function(id) {
 	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures: 1}}).exec();
 };
 

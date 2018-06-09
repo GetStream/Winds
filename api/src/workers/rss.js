@@ -69,7 +69,7 @@ async function _handleRSS(job) {
 			await RSS.resetScrapeFailures(rssID);
 			return res;
 		} catch (err) {
-			await RSS.consecutiveScrapeFailures(rssID);
+			await RSS.incrScrapeFailures(rssID);
 			throw err;
 		}
 	});

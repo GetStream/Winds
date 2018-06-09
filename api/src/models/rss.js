@@ -139,7 +139,7 @@ RSSSchema.plugin(timestamps, {
 	updatedAt: { index: true },
 });
 
-RSSSchema.statics.consecutiveScrapeFailures = async function(id) {
+RSSSchema.statics.incrScrapeFailures = async function(id) {
 	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures : 1}}).exec();
 };
 
