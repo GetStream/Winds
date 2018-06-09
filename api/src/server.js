@@ -15,6 +15,10 @@ import { AnalyticsMiddleware } from './utils/events/analytics';
 
 const api = express();
 
+if (config.newrelic){
+	require('newrelic');
+}
+
 setupExpressRequestHandler(api);
 
 api.use(cors());
