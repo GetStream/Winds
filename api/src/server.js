@@ -1,5 +1,5 @@
 import config from './config';
-import './newrelic';
+import './utils/newrelic';
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
