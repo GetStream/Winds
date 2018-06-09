@@ -104,6 +104,10 @@ export const RSSSchema = new Schema(
 			type: String,
 			default: '',
 		},
+		consecutiveScrapeFailures: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		collection: 'rss',
@@ -134,6 +138,14 @@ RSSSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },
 });
+
+RSSSchema.statics.incrScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures : 1}}).exec();
+};
+
+RSSSchema.statics.resetScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$set : {consecutiveScrapeFailures : 0}}).exec();
+};
 
 RSSSchema.methods.searchDocument = function() {
 	return {

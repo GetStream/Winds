@@ -21,7 +21,7 @@ const queues = {
 	'Podcast Queue': podcastQueue,
 };
 
-exports.health = (req, res) => {
+exports.health = async (req, res) => {
 	res.status(200).send({ version, healthy: '100%' });
 };
 

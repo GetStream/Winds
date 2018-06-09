@@ -23,8 +23,8 @@ const conductor = () => {
 
 	function forever() {
 		conduct().then(()=> {
-			logger.info('Conductor iteration completed...')
-		}).catch(e => {
+			logger.info('Conductor iteration completed...');
+		}).catch(err => {
 			logger.error('Conductor broke down', {err});
 		});
 		setTimeout(forever, conductorInterval * 1000);
@@ -43,6 +43,7 @@ async function conduct() {
 		logger.info(
 			`conductor will schedule at most ${maxToSchedule} to scrape per ${conductorInterval} seconds`,
 		);
+
 		// find the publications that we need to update
 		let publications = await publicationConfig.schema
 			.find({

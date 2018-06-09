@@ -98,6 +98,10 @@ export const PodcastSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		consecutiveScrapeFailures: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		collection: 'podcasts',
@@ -132,6 +136,14 @@ PodcastSchema.plugin(timestamps, {
 });
 
 PodcastSchema.plugin(mongooseStringQuery);
+
+PodcastSchema.statics.incrScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures: 1}}).exec();
+};
+
+PodcastSchema.statics.resetScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$set : {consecutiveScrapeFailures : 0}}).exec();
+};
 
 PodcastSchema.methods.searchDocument = function() {
 	return {
