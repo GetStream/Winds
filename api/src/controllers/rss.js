@@ -9,6 +9,8 @@ import personalization from '../utils/personalization';
 import moment from 'moment';
 import search from '../utils/search';
 import asyncTasks from '../asyncTasks';
+import mongoose from 'mongoose';
+
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
@@ -27,10 +29,13 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	if (req.params.rssId === 'undefined') {
-		return res.sendStatus(404);
+	let rssID = req.params.rssId
+
+	if (!mongoose.Types.ObjectId.isValid(rssID)) {
+		return res.status(422).json({ error: `RSS ID ${rssID} is invalid.`});
 	}
-	let rss = await RSS.findById(req.params.rssId).exec();
+
+	let rss = await RSS.findById(rssID).exec();
 	if (!rss) {
 		return res.sendStatus(404);
 	}
