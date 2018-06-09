@@ -1,5 +1,12 @@
+import config from './config';
+
+if (config.newrelic){
+	require('newrelic');
+}
+
 import fs from 'fs';
 import path from 'path';
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -7,17 +14,12 @@ import compression from 'compression';
 import jwt from 'express-jwt';
 import limit from 'express-rate-limit';
 
-import config from './config';
 import logger from './utils/logger';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
 import User from './models/user';
 import { AnalyticsMiddleware } from './utils/events/analytics';
 
 const api = express();
-
-if (config.newrelic){
-	require('newrelic');
-}
 
 setupExpressRequestHandler(api);
 
