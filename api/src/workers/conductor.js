@@ -23,8 +23,8 @@ const conductor = () => {
 
 	function forever() {
 		conduct().then(()=> {
-			logger.info('Conductor iteration completed...')
-		}).catch(e => {
+			logger.info('Conductor iteration completed...');
+		}).catch(err => {
 			logger.error('Conductor broke down', {err});
 		});
 		setTimeout(forever, conductorInterval * 1000);
