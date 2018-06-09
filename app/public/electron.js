@@ -8,14 +8,14 @@ let mainWindow;
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		backgroundColor: '#F7F7F7',
-		height: 800,
-		minWidth: 850,
+		minWidth: 880,
 		show: false,
 		titleBarStyle: 'hidden',
 		webPreferences: {
 			nodeIntegration: false,
 			preload: __dirname + '/preload.js',
 		},
+		height: 860,
 		width: 1280,
 	});
 
@@ -78,7 +78,7 @@ function generateMenu() {
 	const template = [
 		{
 			label: 'File',
-			submenu: [        
+			submenu: [
 				{ role: 'about' },
 				{ role: 'quit' }
 			],

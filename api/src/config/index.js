@@ -79,6 +79,7 @@ const _default = {
 		port: process.env.STATSD_PORT || 8125,
 		prefix: process.env.STATSD_PREFIX || '',
 	},
+	newrelic: false,
 };
 
 

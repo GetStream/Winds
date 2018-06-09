@@ -1,6 +1,13 @@
+import config from './config';
+
+if (config.newrelic){
+	require('newrelic');
+}
+
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -8,7 +15,6 @@ import compression from 'compression';
 import jwt from 'express-jwt';
 import limit from 'express-rate-limit';
 
-import config from './config';
 import logger from './utils/logger';
 import { setupAxiosRedirectInterceptor } from './utils/axios';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
@@ -43,6 +49,7 @@ api.use(
 			'/',
 			'/health',
 			'/status',
+			'/queue',
 			'/sentry/log',
 			'/sentry/throw',
 			'/auth/signup',

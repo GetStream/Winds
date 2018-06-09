@@ -5,13 +5,11 @@ import validator from 'validator';
 import User from '../models/user';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
+import Follow from '../models/follow';
 
 import config from '../config';
 
-import followRssFeed from '../shared/followRssFeed';
-import followPodcast from '../shared/followPodcast';
 import {SendPasswordResetEmail, SendWelcomeEmail} from '../utils/email/send';
-
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -19,14 +17,14 @@ async function followInterest(userId, interest) {
 	const interestRssFeeds = await RSS.find(interest);
 	await Promise.all(
 		interestRssFeeds.map(interestRssFeed => {
-			return followRssFeed(userId, interestRssFeed._id);
+			return Follow.getOrCreate('rss', userId, interestRssFeed._id);
 		}),
 	);
 
 	const interestPodcasts = await Podcast.find(interest);
 	await Promise.all(
 		interestPodcasts.map(interestPodcast => {
-			return followPodcast(userId, interestPodcast._id);
+			return Follow.getOrCreate('podcast', userId, interestPodcast._id);
 		}),
 	);
 }
@@ -67,7 +65,7 @@ exports.signup = async (req, res, _) => {
 
 	await client.feed('timeline', user._id).follow('user', user._id);
 	await followInterest(user._id, { featured: true });
-	// follow all podcasts and rss feeds specified in "interests" payload
+
 	await Promise.all(
 		data.interests.map(interest => {
 			return followInterest(user._id, { interest });
@@ -85,14 +83,16 @@ exports.login = async (req, res, _) => {
 	}
 
 	const email = cleanString(data.email);
-
 	const user = await User.findOne({ email: email });
+
 	if (!user) {
 		return res.sendStatus(404);
 	}
+
 	if (!(await user.verifyPassword(data.password))) {
 		return res.sendStatus(403);
 	}
+
 	res.status(200).send(user.serializeAuthenticatedUser());
 };
 
@@ -110,10 +110,11 @@ exports.forgotPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'User could not be found.' });
 	}
 
 	await SendPasswordResetEmail({email: user.email, passcode: user.recoveryCode});
+
 	res.sendStatus(200);
 };
 
@@ -126,8 +127,9 @@ exports.resetPassword = async (req, res, _) => {
 		{ password: data.password },
 		opts,
 	);
+
 	if (!user) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'User could not be found.' });
 	}
 
 	res.status(200).send(user.serializeAuthenticatedUser());

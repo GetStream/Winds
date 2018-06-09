@@ -8,9 +8,6 @@ import Podcast from '../models/podcast';
 import logger from '../utils/logger';
 import personalization from '../utils/personalization';
 
-import followRssFeed from '../shared/followRssFeed';
-import followPodcast from '../shared/followPodcast';
-
 exports.list = async (req, res) => {
 	const query = req.query || {};
 	let users = [];
@@ -104,6 +101,8 @@ exports.put = async (req, res) => {
 		}
 	}
 
+	// TODO: we don't allow you to edit this... so what's up?
+	/*
 	if (data.interests) {
 		const promises = data.interests.flatMap(async (interest) => {
 			// find all rss feeds and podcasts for that interest, and follow them
@@ -113,7 +112,7 @@ exports.put = async (req, res) => {
 			];
 		});
 		await Promise.all(promises);
-	}
+	}*/
 
 	// update the user
 	user = await User.findByIdAndUpdate(

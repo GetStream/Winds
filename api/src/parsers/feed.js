@@ -190,25 +190,28 @@ export function ParseFeedPosts(posts) {
 			article.commentUrl = post.comments;
 		}
 
-		// product hunt comments url
-		if (post.link.indexOf('https://www.producthunt.com') === 0) {
-			let matches = post.description.match(
-				/(https:\/\/www.producthunt.com\/posts\/.*)"/,
-			);
-			if (matches && matches.length) {
-				article.commentUrl = matches[1];
+		if (post.link) {
+			// product hunt comments url
+			if (post.link.indexOf('https://www.producthunt.com') === 0) {
+				let matches = post.description.match(
+					/(https:\/\/www.producthunt.com\/posts\/.*)"/,
+				);
+				if (matches && matches.length) {
+					article.commentUrl = matches[1];
+				}
+			}
+
+			// nice images for XKCD
+			if (post.link.indexOf('https://xkcd') === 0) {
+				let matches = post.description.match(
+					/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/,
+				);
+				if (matches && matches.length) {
+					article.images = { og: matches[1] };
+				}
 			}
 		}
 
-		// nice images for XKCD
-		if (post.link.indexOf('https://xkcd') === 0) {
-			let matches = post.description.match(
-				/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/,
-			);
-			if (matches && matches.length) {
-				article.images = { og: matches[1] };
-			}
-		}
 		feedContents.articles.push(article);
 	}
 	if (posts.length) {

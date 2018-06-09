@@ -1,4 +1,5 @@
 import '../loadenv';
+import '../utils/db';
 
 import moment from 'moment';
 
@@ -21,7 +22,11 @@ const conductor = () => {
 	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
 
 	function forever() {
-		conduct();
+		conduct().then(()=> {
+			logger.info('Conductor iteration completed...');
+		}).catch(err => {
+			logger.error('Conductor broke down', {err});
+		});
 		setTimeout(forever, conductorInterval * 1000);
 	}
 	forever();
@@ -38,6 +43,7 @@ async function conduct() {
 		logger.info(
 			`conductor will schedule at most ${maxToSchedule} to scrape per ${conductorInterval} seconds`,
 		);
+
 		// find the publications that we need to update
 		let publications = await publicationConfig.schema
 			.find({

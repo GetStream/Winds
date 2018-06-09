@@ -64,7 +64,14 @@ async function _handleRSS(job) {
 
 	// parse the articles
 	let rssContent = await timeIt('winds.handle_rss.parsing', async () => {
-		return await ParseFeed(job.data.url);
+		try {
+			const res = await ParseFeed(job.data.url);
+			await RSS.resetScrapeFailures(rssID);
+			return res;
+		} catch (err) {
+			await RSS.incrScrapeFailures(rssID);
+			throw err;
+		}
 	});
 
 	if (!rssContent) {
@@ -88,6 +95,14 @@ async function _handleRSS(job) {
 		});
 		return upsertManyArticles(rssID, articles);
 	});
+
+	// update the count
+	await RSS.update(
+		{ _id: rssID },
+		{
+			postCount: await Article.count({rss: rssID}),
+		}
+	);
 
 	// updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
 	let updatedArticles = allArticles.filter(updatedArticle => {

@@ -3,7 +3,6 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
-import logger from '../utils/logger';
 import {ParseArticle} from '../parsers/article';
 
 export const EnclosureSchema = new Schema({
