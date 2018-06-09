@@ -98,6 +98,17 @@ FollowSchema.plugin(timestamps, {
 FollowSchema.plugin(mongooseStringQuery);
 FollowSchema.plugin(autopopulate);
 
+FollowSchema.methods.removeFromStream = async function remove(follows) {
+	let publicationType = (this.rss) ? 'rss': 'podcast'
+	let feedGroup = (this.rss) ? 'user_article' : 'user_episode'
+	let publicationID = (this.rss) ? this.rss._id : this.podcast._id
+	// sync to stream
+	let results = await Promise.all(
+		[ streamClient.feed('timeline', this.userID).unfollow(publicationType, publicationID),
+		await streamClient.feed(feedGroup, this.userID).unfollow(publicationType, publicationID)])
+	return results
+
+}
 FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 
 	// validate
