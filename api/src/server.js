@@ -39,6 +39,7 @@ api.use(
 			'/',
 			'/health',
 			'/status',
+			'/queue',
 			'/sentry/log',
 			'/sentry/throw',
 			'/auth/signup',
