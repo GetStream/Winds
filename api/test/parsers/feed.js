@@ -186,6 +186,18 @@ const rssTestData = [
 			firstArticleTitle: 'Here\'s how the Hawai\'ian Islands formed',
 		},
 	},
+	{
+		filename: 'strava',
+		expectations: {
+			title: 'strava-engineering - Medium',
+			link: 'https://medium.com/strava-engineering?source=rss----89d4108ce2a3---4',
+			description: 'Engineers building the social network for athletes. - Medium',
+			articlesLength: 10,
+			firstArticleUrl: 'https://medium.com/strava-engineering/apple-dev-guild-week-f5981fe525a4?source=rss----89d4108ce2a3---4',
+			firstArticleTitle: 'Apple Dev Guild Week',
+			firstArticlePublicationDate: '2018-06-04T23:55:00.000Z',
+		},
+	},
 ];
 
 // Test data is extracted from the original feeds. Modifications to accommodate acceptable internal changes (e.g. normalization) are noted.
@@ -286,6 +298,7 @@ const podcastTestData = [
 			firstPodcastPublicationDate: new Date(Date.UTC(2018, 3, 10, 5, 1, 0)),  // Tue, 10 Apr 2018 05:01:00 GMT
 		},
 	},
+
 ];
 
 function getTestFeed(type, name) {
@@ -312,6 +325,10 @@ describe('Parsing', () => {
 				if (test.expectations.articlesLength > 0) {
 					expect(feedResponse.articles[0].title).to.equal(test.expectations.firstArticleTitle);
 					expect(feedResponse.articles[0].url).to.equal(test.expectations.firstArticleUrl);
+					if (test.expectations.firstArticlePublicationDate) {
+						expect(feedResponse.articles[0].publicationDate).to.equal(test.expectations.firstArticlePublicationDate);
+
+					}
 				}
 			});
 		}
