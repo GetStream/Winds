@@ -43,6 +43,7 @@ async function conduct() {
 		logger.info(
 			`conductor will schedule at most ${maxToSchedule} to scrape per ${conductorInterval} seconds`,
 		);
+
 		// find the publications that we need to update
 		let publications = await publicationConfig.schema
 			.find({
