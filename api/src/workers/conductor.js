@@ -1,4 +1,5 @@
 import '../loadenv';
+import '../utils/db';
 
 import moment from 'moment';
 
@@ -21,7 +22,11 @@ const conductor = () => {
 	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
 
 	function forever() {
-		conduct();
+		conduct().then(()=> {
+			logger.info('Conductor iteration completed...')
+		}).catch(e => {
+			logger.error('Conductor broke down', {err});
+		});
 		setTimeout(forever, conductorInterval * 1000);
 	}
 	forever();
