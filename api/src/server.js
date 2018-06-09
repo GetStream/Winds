@@ -1,9 +1,5 @@
 import config from './config';
-
-if (config.newrelic){
-	require('newrelic');
-}
-
+import './newrelic';
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
