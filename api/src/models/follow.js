@@ -104,8 +104,9 @@ FollowSchema.methods.removeFromStream = async function remove(follows) {
 	let publicationID = (this.rss) ? this.rss._id : this.podcast._id
 	// sync to stream
 	let results = await Promise.all(
-		[ streamClient.feed('timeline', this.userID).unfollow(publicationType, publicationID),
-		await streamClient.feed(feedGroup, this.userID).unfollow(publicationType, publicationID)])
+		[
+			streamClient.feed('timeline', this.userID).unfollow(publicationType, publicationID),
+		  streamClient.feed(feedGroup, this.userID).unfollow(publicationType, publicationID)])
 	return results
 
 }

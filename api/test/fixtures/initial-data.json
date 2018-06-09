@@ -187,6 +187,18 @@
 				"enclosures": []
 			}
 		],
+		"Follow": [
+			{
+				"rss": "5b0ad0baf6f89574a638887a",
+				"user": "5b0f306d8e147f10f16aceaf"
+			}
+		],
+		"Pin": [
+			{
+				"article": "5b0ad37226dc3db38194e5ec",
+				"user": "5b0f306d8e147f10f16aceaf"
+			}
+		],
 		"Episode": [
 			{
 				"_id": "5b0ad37026dc3db38194e286",
