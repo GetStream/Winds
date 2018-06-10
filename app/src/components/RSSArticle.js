@@ -6,6 +6,8 @@ import ReactHtmlParser from 'react-html-parser';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import TimeAgo from './TimeAgo';
+import { Player } from 'video-react';
+import '../../node_modules/video-react/dist/video-react.css';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -129,7 +131,18 @@ class RSSArticle extends React.Component {
 						</span>
 					</div>
 				</div>
-				<div className="content">{articleContents}</div>
+
+				<div className="content">
+					<div className="enclosures">
+						{this.props.enclosures}
+						<Player
+							playsInline
+							poster="/assets/poster.png"
+							src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+						/>
+					</div>
+					{articleContents}
+				</div>
 			</React.Fragment>
 		);
 	}
