@@ -154,7 +154,8 @@ ArticleSchema.pre('save', function(next) {
 });
 
 ArticleSchema.methods.computeContentHash = function() {
-	return `${this.title}:${this.description}:${this.content}:${this.enclosures.join(',')}`;
+	const data = `${this.title}:${this.description}:${this.content}:${this.enclosures.join(',')}`;
+	return crypto.createHash('md5').update(data).digest('hex');
 };
 
 ArticleSchema.methods.getParsedArticle = async function() {

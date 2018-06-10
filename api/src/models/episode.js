@@ -137,7 +137,8 @@ EpisodeSchema.pre('save', function(next) {
 });
 
 EpisodeSchema.methods.computeContentHash = function() {
-	return `${this.title}:${this.description}:${this.content}:${this.enclosure}`;
+	const data = `${this.title}:${this.description}:${this.content}:${this.enclosure}`;
+	return crypto.createHash('md5').update(data).digest('hex');
 };
 
 EpisodeSchema.index({ podcast: 1, url: 1 }, { unique: true });
