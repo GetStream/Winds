@@ -92,6 +92,10 @@ export const EpisodeSchema = new Schema(
 			type: Boolean,
 			default: true,
 		},
+		contentHash: {
+			type: String,
+			default: '',
+		},
 	},
 	{
 		collection: 'episodes',
@@ -124,6 +128,17 @@ EpisodeSchema.plugin(timestamps, {
 });
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
+
+EpisodeSchema.pre('save', function(next) {
+	if(!this.contentHash) {
+		this.contentHash = this.computeContentHash();
+	}
+	next();
+});
+
+EpisodeSchema.methods.computeContentHash = function() {
+	return `${this.title}:${this.description}:${this.content}:${this.enclosure}`;
+};
 
 EpisodeSchema.index({ podcast: 1, url: 1 }, { unique: true });
 
