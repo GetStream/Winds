@@ -2,9 +2,15 @@ import { expect, request } from 'chai';
 
 import api from '../../src/server';
 import User from '../../src/models/user';
-import { withLogin, loadFixture, getMockClient, getMockFeed } from '../utils';
+import { withLogin, loadFixture, getMockClient, getMockFeed, dropDBs } from '../utils';
+
 
 describe('User controller', () => {
+	before(async () => {
+		await dropDBs()
+		await loadFixture('initial-data');
+	});
+
 	let authUser = {
 			email: 'logged_in_user@email.com',
 			sub: '4342306d8e147f10f16aceaf',
