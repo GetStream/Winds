@@ -52,6 +52,7 @@ class OnboardingGrid extends React.Component {
 			selectedInterests: [],
 		};
 	}
+
 	toggleInterest(interestName) {
 		// look through this.state.selectedInterests - if it's in there, pop and return
 		let foundInterestIndex = this.state.selectedInterests.findIndex(
@@ -351,7 +352,7 @@ class AccountDetailsForm extends React.Component {
 							autoComplete="current-password"
 							type="password"
 							name="password"
-							placeholder="Password (>= 8 characters)"
+							placeholder="Password"
 							onChange={this.validatePassword}
 						/>
 					</label>
