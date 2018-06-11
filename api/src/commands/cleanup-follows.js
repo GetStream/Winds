@@ -41,11 +41,15 @@ async function main() {
 	let grouped = {};
 	for (let c of counts) {
     let lookup = c._id
+    let debug = JSON.stringify(lookup)
+    if (Object.keys(lookup).length != 2) {
+      throw Error(`OH no you dont, broken lookup: ${debug}`)
+    }
     let versions = await Follow.find(lookup)
     // remove everything except the first result
     if (versions.length > 1) {
       let removing = versions.length - 1
-      let debug = JSON.stringify(lookup)
+
       logger.info(`removing ${removing} instances for query ${debug}`)
       for (let v of versions.slice(1)) {
         logger.info(`removing ${v._id}`)
