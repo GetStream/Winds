@@ -42,7 +42,7 @@ async function main() {
 	for (let c of counts) {
     let lookup = c._id
     let debug = JSON.stringify(lookup)
-    if (Object.keys(lookup).length != 2) {
+    if (Object.keys(lookup).length == 0) {
       throw Error(`OH no you dont, broken lookup: ${debug}`)
     }
     let versions = await Follow.find(lookup)
