@@ -92,11 +92,16 @@ describe('Listen controller', () => {
 			expect(response).to.have.status(200);
 			const keys = ['user', 'episode', 'duration'];
 			expect(Object.keys(response.body)).to.include.members(keys);
+			const newListen = await Listen.findOne(data);
+			expect(newListen).to.not.be.null;
 
-			for (const key of keys) {
-				//XXX: converting to string to avoid type differences
-				expect(String(response.body[key])).to.be.equal(String(data[key]));
-			}
+			expect(response.body._id).to.be.equal(String(newListen._id));
+			expect(response.body.user).to.be.equal(String(data.user));
+			expect(response.body.user).to.be.equal(String(newListen.user._id));
+			expect(response.body.episode).to.be.equal(data.episode);
+			expect(response.body.episode).to.be.equal(String(newListen.episode._id));
+			expect(response.body.duration).to.be.equal(data.duration);
+			expect(response.body.duration).to.be.equal(newListen.duration);
 		});
 
 		it('should return 200 for existing entry', async () => {
@@ -114,11 +119,13 @@ describe('Listen controller', () => {
 			const keys = ['_id', 'user', 'episode', 'duration'];
 			expect(Object.keys(response.body)).to.include.members(keys);
 
-			for (const key of keys) {
-				//XXX: converting to string to avoid type differences
-				expect(String(response.body[key])).to.be.equal(String(data[key]));
-				expect(String(updatedListen[key])).to.be.equal(String(data[key]));
-			}
+			expect(response.body._id).to.be.equal(String(updatedListen._id));
+			expect(response.body.user).to.be.equal(String(data.user));
+			expect(response.body.user).to.be.equal(String(updatedListen.user._id));
+			expect(response.body.episode).to.be.equal(data.episode);
+			expect(response.body.episode).to.be.equal(String(updatedListen.episode._id));
+			expect(response.body.duration).to.be.equal(data.duration);
+			expect(response.body.duration).to.be.equal(updatedListen.duration);
 		});
 
 		it('should return 500 for invalid request', async () => {
