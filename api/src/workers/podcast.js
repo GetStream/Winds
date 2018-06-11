@@ -54,8 +54,10 @@ async function _handlePodcast(job) {
 	let podcastContent;
 	try {
 		podcastContent = await ParsePodcast(job.data.url);
+		await Podcast.resetScrapeFailures(podcastID);
 	} catch (e) {
 		logger.info(`podcast scraping broke for url ${job.data.url}`);
+		await Podcast.incrScrapeFailures(podcastID);
 		return;
 	}
 
@@ -67,6 +69,14 @@ async function _handlePodcast(job) {
 			episode.url = normalizedUrl;
 			return upsertEpisode(podcast._id, normalizedUrl, episode);
 		}),
+	);
+
+	// update the count
+	await Podcast.update(
+		{ _id: podcastID },
+		{
+			postCount: await Episode.count({podcast: podcastID}),
+		}
 	);
 
 	// Only send updated episodes to Stream

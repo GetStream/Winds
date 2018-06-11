@@ -21,7 +21,7 @@ const queues = {
 	'Podcast Queue': podcastQueue,
 };
 
-exports.health = (req, res) => {
+exports.health = async (req, res) => {
 	res.status(200).send({ version, healthy: '100%' });
 };
 
@@ -65,6 +65,16 @@ exports.status = async (req, res) => {
 		}`;
 	}
 
+
+
+	// send the response
+	res.status(output.code).send(output);
+};
+
+// Check the server health more extensively...
+exports.queue = async (req, res) => {
+	let output = { version, code: 200 };
+
 	// check the queue status
 	for (const [key, queue] of Object.entries(queues)) {
 		let queueStatus = await queue.getJobCounts();
@@ -79,7 +89,7 @@ exports.status = async (req, res) => {
 
 	// send the response
 	res.status(output.code).send(output);
-};
+}
 
 exports.sentryThrow = async (req, res) => {
 	Throw();

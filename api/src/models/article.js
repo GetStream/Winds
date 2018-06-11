@@ -3,7 +3,6 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
-import logger from '../utils/logger';
 import {ParseArticle} from '../parsers/article';
 
 export const EnclosureSchema = new Schema({
@@ -107,6 +106,10 @@ export const ArticleSchema = new Schema(
 			default: true,
 			valid: true,
 		},
+		contentHash: {
+			type: String,
+			default: '',
+		},
 	},
 	{
 		collection: 'articles',
@@ -117,6 +120,8 @@ export const ArticleSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 		toObject: {
@@ -125,6 +130,8 @@ export const ArticleSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 	},
@@ -138,6 +145,18 @@ ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
+
+ArticleSchema.pre('save', function(next) {
+	if(!this.contentHash) {
+		this.contentHash = this.computeContentHash();
+	}
+	next();
+});
+
+ArticleSchema.methods.computeContentHash = function() {
+	const data = `${this.title}:${this.description}:${this.content}:${this.enclosures.join(',')}`;
+	return crypto.createHash('md5').update(data).digest('hex');
+};
 
 ArticleSchema.methods.getParsedArticle = async function() {
 	let cached = await Cache.findOne({ url: this.url });

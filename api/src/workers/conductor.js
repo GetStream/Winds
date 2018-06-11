@@ -1,13 +1,11 @@
 import '../loadenv';
+import '../utils/db';
 
-import async from 'async';
 import moment from 'moment';
 
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
-import db from '../utils/db';
-import config from '../config';
 import logger from '../utils/logger';
 
 import asyncTasks from '../asyncTasks';
@@ -24,12 +22,30 @@ const conductor = () => {
 	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
 
 	function forever() {
-		conduct();
+		conduct().then(()=> {
+			logger.info('Conductor iteration completed...');
+		}).catch(err => {
+			logger.error('Conductor broke down', {err});
+		});
 		setTimeout(forever, conductorInterval * 1000);
 	}
 	forever();
 };
 conductor();
+
+// returns a random number from 2**1, 2**2, ..., 2**n-1, 2**n
+// 2 is two time more likely to be returned than 4, 4 than 8 and so until 2**n
+function rand(n=6){
+	const exp = n;
+	let rand = Math.floor(Math.random() * 2**exp);
+	let b;
+	for (b of [...Array(exp).keys()].reverse()) {
+		if (rand >= (2**b)-1) {
+			break;
+		}
+	}
+	return 2**(exp-b);
+}
 
 // conduct does the actual work of scheduling the scraping
 async function conduct() {
@@ -41,16 +57,21 @@ async function conduct() {
 		logger.info(
 			`conductor will schedule at most ${maxToSchedule} to scrape per ${conductorInterval} seconds`,
 		);
+
 		// find the publications that we need to update
 		let publications = await publicationConfig.schema
 			.find({
 				isParsing: {
 					$ne: true,
 				},
+				valid: true,
 				lastScraped: {
 					$lte: moment()
 						.subtract(durationInMinutes, 'minutes')
 						.toDate(),
+				},
+				consecutiveScrapeFailures: {
+					$lte: rand(),
 				},
 			})
 			.limit(maxToSchedule);
@@ -83,7 +104,7 @@ async function conduct() {
 			});
 			promises.push(promise);
 		}
-		let results = await Promise.all(promises);
+		await Promise.all(promises);
 
 		logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`);
 	}

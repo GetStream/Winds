@@ -152,7 +152,7 @@
                         <tr>
                             <td><b>Linux Distros</b> (.AppImage)</td>
                             <td id="td-appimage" class="download-alt">
-                                <a href="https://s3.amazonaws.com/winds-2.0-releases/releases/winds-${version}-x86_64.AppImage" title="AppImage">
+                                <a href="https://s3.amazonaws.com/winds-2.0-releases/releases/Winds-${version}-x86_64.AppImage" title="AppImage">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 59">
                                         <path d="M20.2 28.3c-0.4-0.4-1-0.4-1.4 0s-0.4 1 0 1.4l10 10C28.9 39.9 29.2 40 29.5 40c0 0 0 0 0 0 0 0 0 0 0 0 0.3 0 0.6-0.2 0.8-0.4l9.9-9.9c0.4-0.4 0.4-1 0-1.4s-1-0.4-1.4 0L30.5 36.5V1c0-0.6-0.4-1-1-1s-1 0.4-1 1v35.6L20.2 28.3z" class="a"/>
                                         <path d="M36.5 16c-0.6 0-1 0.4-1 1s0.4 1 1 1h13v39h-40V18h13c0.6 0 1-0.4 1-1s-0.4-1-1-1h-15v43h44V16H36.5z" class="a"/>

@@ -92,8 +92,34 @@ export const EpisodeSchema = new Schema(
 			type: Boolean,
 			default: true,
 		},
+		contentHash: {
+			type: String,
+			default: '',
+		},
 	},
-	{ collection: 'episodes' },
+	{
+		collection: 'episodes',
+		toJSON: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+	},
 );
 
 EpisodeSchema.plugin(timestamps, {
@@ -103,6 +129,18 @@ EpisodeSchema.plugin(timestamps, {
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
 
-EpisodeSchema.index({ podcast: 1, url: 1 }, {unique: true});
+EpisodeSchema.pre('save', function(next) {
+	if(!this.contentHash) {
+		this.contentHash = this.computeContentHash();
+	}
+	next();
+});
+
+EpisodeSchema.methods.computeContentHash = function() {
+	const data = `${this.title}:${this.description}:${this.content}:${this.enclosure}`;
+	return crypto.createHash('md5').update(data).digest('hex');
+};
+
+EpisodeSchema.index({ podcast: 1, url: 1 }, { unique: true });
 
 module.exports = exports = mongoose.model('Episode', EpisodeSchema);

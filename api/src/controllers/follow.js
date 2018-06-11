@@ -6,8 +6,6 @@ import User from '../models/user';
 
 import config from '../config';
 import logger from '../utils/logger';
-import followRssFeed from '../shared/followRssFeed';
-import followPodcast from '../shared/followPodcast';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -143,7 +141,7 @@ exports.post = (req, res) => {
 			},
 		);
 	} else if (query.type === 'podcast') {
-		followPodcast(data.user, query.podcast)
+		Follow.getOrCreate('podcast', data.user, query.podcast)
 			.then(followRelationship => {
 				res.json(followRelationship);
 			})
@@ -152,7 +150,7 @@ exports.post = (req, res) => {
 				res.status(500).send(err);
 			});
 	} else if (query.type === 'rss') {
-		followRssFeed(data.user, query.rss)
+		Follow.getOrCreate('rss', data.user, query.rss)
 			.then(followRelationship => {
 				res.json(followRelationship);
 			})

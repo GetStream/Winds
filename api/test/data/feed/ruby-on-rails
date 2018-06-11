@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="https://weblog.rubyonrails.org/feed/atom.xml" rel="self" type="application/atom+xml" /><link href="https://weblog.rubyonrails.org/" rel="alternate" type="text/html" /><updated>2018-05-27T14:56:31+00:00</updated><id>https://weblog.rubyonrails.org/</id><title type="html">Riding Rails</title><entry><title type="html">Enumerable#index_with, transaction fixes, and more!</title><link href="https://weblog.rubyonrails.org/2018/5/27/this-week-in-rails-enumerable-index_with-transaction-fixes-and-more/" rel="alternate" type="text/html" title="Enumerable#index_with, transaction fixes, and more!" /><published>2018-05-27T00:00:00+00:00</published><updated>2018-05-27T00:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/5/27/this-week-in-rails-enumerable-index_with-transaction-fixes-and-more</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/5/27/this-week-in-rails-enumerable-index_with-transaction-fixes-and-more/">&lt;p&gt;Hello everyone! This is &lt;a href=&quot;https://twitter.com/eugeneius&quot;&gt;Eugene&lt;/a&gt;, with a roundup of the last two weeks of activity in the Rails world. Let’s get started!&lt;/p&gt;
+
+&lt;h3 id=&quot;this-weeks-contributors&quot;&gt;&lt;a href=&quot;http://contributors.rubyonrails.org/contributors/in-time-window/20180513-20180526&quot;&gt;This Week’s Contributors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;In the last two weeks, Rails saw contributions from 29 people, including 10 first-time contributors. Thank you all!&lt;/p&gt;
+
+&lt;p&gt;If you’d like to be included here, why not check out the list of &lt;a href=&quot;https://github.com/rails/rails/issues&quot;&gt;open issues&lt;/a&gt;?&lt;/p&gt;
+
+&lt;h3 id=&quot;add-enumerableindex_with&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32523&quot;&gt;Add &lt;code class=&quot;highlighter-rouge&quot;&gt;Enumerable#index_with&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;This new method converts an enumerable to a hash, where the keys are the enumerable’s elements and the values are determined by the provided block or argument.&lt;/p&gt;
+
+&lt;h3 id=&quot;action-mailer-now-eager-loads-the-mail-gem&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32808&quot;&gt;Action Mailer now eager loads the mail gem&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Loading the mail gem during boot avoids burdening the first request with the responsibility, and conveniently sidesteps a deadlock that the author encountered in their application.&lt;/p&gt;
+
+&lt;h3 id=&quot;allow-range-and-rangecover-on-range&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32938&quot;&gt;Allow &lt;code class=&quot;highlighter-rouge&quot;&gt;Range#===&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Range#cover?&lt;/code&gt; on &lt;code class=&quot;highlighter-rouge&quot;&gt;Range&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Active Support extends &lt;code class=&quot;highlighter-rouge&quot;&gt;Range#===&lt;/code&gt; to match other ranges, but a change to the native Ruby implementation broke it. This patch ensures that the behaviour will work on Ruby 2.6, and also adds it to &lt;code class=&quot;highlighter-rouge&quot;&gt;Range#cover?&lt;/code&gt; for good measure.&lt;/p&gt;
+
+&lt;h3 id=&quot;speed-up-xor_byte_strings-by-70&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32931&quot;&gt;Speed up &lt;code class=&quot;highlighter-rouge&quot;&gt;xor_byte_strings&lt;/code&gt; by 70%&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The benchmark included with this performance patch shows that it saves a cool 5 microseconds whenever Rails generates a CSRF token. 🐎&lt;/p&gt;
+
+&lt;h3 id=&quot;roll-back-parent-transaction-when-children-fail-to-save&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32796&quot;&gt;Roll back parent transaction when children fail to save&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;If a record’s associations contains valid but unsaveable data, it will now correctly fail to save and roll back its transaction.&lt;/p&gt;
+
+&lt;h3 id=&quot;finalize-transaction-record-state-after-real-transaction&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32911&quot;&gt;Finalize transaction record state after real transaction&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;When a record was saved multiple times in the same transaction, its previous state wasn’t always immediately restored if the transaction was later rolled back.&lt;/p&gt;
+
+&lt;h3 id=&quot;disable-foreign-keys-during-alter_table-for-sqlite3-adapter&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32865&quot;&gt;Disable foreign keys during &lt;code class=&quot;highlighter-rouge&quot;&gt;alter_table&lt;/code&gt; for SQLite3 adapter&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Tables that are referenced by foreign keys can now be successfully altered when using the SQLite3 adapter.&lt;/p&gt;
+
+&lt;p&gt;In related news, &lt;a href=&quot;https://github.com/rails/rails/pull/32923&quot;&gt;Rails 6.0 will require a minimum SQLite version of 3.8.0&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As always, there were many more changes to the Rails codebase than we can cover here - if you’re interested, you can check out &lt;a href=&quot;https://github.com/rails/rails/compare/master@%7B2018-05-13%7D...@%7B2018-05-26%7D&quot;&gt;the full listing of commits from the last two weeks&lt;/a&gt;. Until next week!&lt;/p&gt;</content><author><name>eugeneius</name></author><summary type="html">Hello everyone! This is Eugene, with a roundup of the last two weeks of activity in the Rails world. Let’s get started!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">Google Cloud Storage streaming downloads, performance improvements and more!</title><link href="https://weblog.rubyonrails.org/2018/5/12/this-week-in-rails-google-cloud-storage-streaming-downloads-performance-improvements-and-more/" rel="alternate" type="text/html" title="Google Cloud Storage streaming downloads, performance improvements and more!" /><published>2018-05-12T00:00:00+00:00</published><updated>2018-05-12T00:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/5/12/this-week-in-rails-google-cloud-storage-streaming-downloads-performance-improvements-and-more</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/5/12/this-week-in-rails-google-cloud-storage-streaming-downloads-performance-improvements-and-more/">&lt;p&gt;Hello everyone! This is &lt;a href=&quot;https://twitter.com/repinel&quot;&gt;Roque&lt;/a&gt; bringing you the latest news from the Rails world. I will cover the highlights from the last two weeks. Let’s get started!&lt;/p&gt;
+
+&lt;h3 id=&quot;this-weeks-contributors&quot;&gt;&lt;a href=&quot;http://contributors.rubyonrails.org/contributors/in-time-window/20180428-20180512&quot;&gt;This Week’s Contributors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;39 people contributed to Rails in the last two weeks, including 9 for the first time! A big thank you to all of you!&lt;/p&gt;
+
+&lt;p&gt;If you’d like to see yourself on that board, why not check out the list of &lt;a href=&quot;https://github.com/rails/rails/issues&quot;&gt;open issues&lt;/a&gt;, or get involved in the &lt;a href=&quot;https://groups.google.com/d/forum/rubyonrails-core&quot;&gt;core discussion list&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;support-streaming-downloads-from-google-cloud-storage&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32788&quot;&gt;Support streaming downloads from Google Cloud Storage&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Active Storage now supports streaming downloads from Google Cloud Storage. You will need version &lt;code class=&quot;highlighter-rouge&quot;&gt;1.11&lt;/code&gt; or greater of the gem &lt;code class=&quot;highlighter-rouge&quot;&gt;google-cloud-storage&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;add-option-identify-to-activestorageblob&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32833&quot;&gt;Add option &lt;code class=&quot;highlighter-rouge&quot;&gt;identify&lt;/code&gt; to ActiveStorage::Blob&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;This allows control over the content type identification performed by Active Storage. For instance, if &lt;code class=&quot;highlighter-rouge&quot;&gt;identify&lt;/code&gt; is &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;, then you can provide your own &lt;code class=&quot;highlighter-rouge&quot;&gt;content_type&lt;/code&gt; value.&lt;/p&gt;
+
+&lt;h3 id=&quot;improve-the-performance-of-activesupportinflectorordinal&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/commit/0c54fc460e52d2b9aa02e1e27a090dbe7ee98829&quot;&gt;Improve the performance of &lt;code class=&quot;highlighter-rouge&quot;&gt;ActiveSupport::Inflector.ordinal&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Big performance improvement for ordinal generation! The power of benchmarks-oriented solutions.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-did_you_mean-for-spelling-suggestions&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32289&quot;&gt;Use &lt;code class=&quot;highlighter-rouge&quot;&gt;did_you_mean&lt;/code&gt; for spelling suggestions&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Now that Rails requires Ruby &lt;code class=&quot;highlighter-rouge&quot;&gt;2.3&lt;/code&gt; or greater, Rails will use the gem &lt;code class=&quot;highlighter-rouge&quot;&gt;did_you_mean&lt;/code&gt; for spelling suggestions. The gem is shipped with Ruby, and automatically required when the Ruby process starts.&lt;/p&gt;
+
+&lt;h3 id=&quot;fix-logic-on-disabling-commit-callbacks&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32807&quot;&gt;Fix logic on disabling commit callbacks&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Callbacks were being called unexpectedly when errors occur due to a small issue with precedence of logical operators.&lt;/p&gt;
+
+&lt;h3 id=&quot;reset-content_length-between-test-requests&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32773&quot;&gt;Reset &lt;code class=&quot;highlighter-rouge&quot;&gt;CONTENT_LENGTH&lt;/code&gt; between test requests&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;If a &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; request was followed by a &lt;code class=&quot;highlighter-rouge&quot;&gt;GET&lt;/code&gt; request in a controller test, then the &lt;code class=&quot;highlighter-rouge&quot;&gt;rack.input&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;RAW_POST_DATA&lt;/code&gt; headers from the first request would be reset but the &lt;code class=&quot;highlighter-rouge&quot;&gt;CONTENT_LENGTH&lt;/code&gt; header would leak to the second request.&lt;/p&gt;
+
+&lt;p&gt;As always there were many more changes to the Rails codebase than we can cover here. But you can read all about them &lt;a href=&quot;https://github.com/rails/rails/compare/master@%7B2018-04-28%7D...@%7B2018-05-12%7D&quot;&gt;here&lt;/a&gt;! Until next week!&lt;/p&gt;</content><author><name>repinel</name></author><summary type="html">Hello everyone! This is Roque bringing you the latest news from the Rails world. I will cover the highlights from the last two weeks. Let’s get started!</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">Arel merged to Active Record, faster image processing and more</title><link href="https://weblog.rubyonrails.org/2018/4/29/this-week-in-rails-arel-merged-to-active-record-faster-image-processing-and-more/" rel="alternate" type="text/html" title="Arel merged to Active Record, faster image processing and more" /><published>2018-04-29T00:00:00+00:00</published><updated>2018-04-29T00:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/4/29/this-week-in-rails-arel-merged-to-active-record-faster-image-processing-and-more</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/4/29/this-week-in-rails-arel-merged-to-active-record-faster-image-processing-and-more/">&lt;p&gt;Hello 🌧 from London! This is &lt;a href=&quot;http://twitter.com/kirshatrov&quot;&gt;Kir&lt;/a&gt;, bringing you the latest Rails updates in this episode of the newsletter.&lt;/p&gt;
+
+&lt;h3 id=&quot;this-weeks-contributors&quot;&gt;&lt;a href=&quot;http://contributors.rubyonrails.org/contributors/in-time-window/20180421-20180427&quot;&gt;This Week’s Contributors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;28 people contributed to Rails in the last week, including 3 for the first time! A big thank you to all of you!&lt;/p&gt;
+
+&lt;p&gt;If you’d like to see yourself on that board, why not check out the list of &lt;a href=&quot;https://github.com/rails/rails/issues&quot;&gt;open issues&lt;/a&gt;, or get involved in the &lt;a href=&quot;https://groups.google.com/d/forum/rubyonrails-core&quot;&gt;core discussion list&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-imageprocessing-gem-for-active-storage-variants&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32471&quot;&gt;Use ImageProcessing gem for Active Storage variants&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;ImageProcessing gem provides a wrapper around MiniMagic and ruby-vips, allowing you to change backends on the fly and benefit from libvips being up to 10x faster than ImageMagick.&lt;/p&gt;
+
+&lt;h3 id=&quot;update-rails_welcomepng-to-reflect-a-more-diverse-population&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32735&quot;&gt;Update ‘rails_welcome.png’ to reflect a more diverse population&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The Getting Started picture that you can see in new Rails apps was updated with a more diverse population.&lt;/p&gt;
+
+&lt;h3 id=&quot;support-active-storage-attachment-in-presence-validator&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/31956&quot;&gt;Support Active Storage attachment in presence validator&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;assert_presence_of&lt;/code&gt; now works with ActiveStorage attachments.&lt;/p&gt;
+
+&lt;h3 id=&quot;merge-arel-to-active-record&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32097&quot;&gt;Merge Arel to Active Record&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;To simplify release management, Arel library hosted in rails/arel has been merged to ActiveRecord, and is now located in rails/rails.&lt;/p&gt;
+
+&lt;p&gt;As always there were many more changes to the Rails codebase than we can cover here. But you can read all about them &lt;a href=&quot;https://github.com/rails/rails/compare/master@%7B2018-04-21%7D...@%7B2018-04-27%7D&quot;&gt;here&lt;/a&gt;! Until next week!&lt;/p&gt;</content><author><name>kirshatrov</name></author><summary type="html">Hello 🌧 from London! This is Kir, bringing you the latest Rails updates in this episode of the newsletter.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">RailsConf 2018 Edition</title><link href="https://weblog.rubyonrails.org/2018/4/22/this-week-in-rails-railsconf-2018-edition/" rel="alternate" type="text/html" title="RailsConf 2018 Edition" /><published>2018-04-22T00:00:00+00:00</published><updated>2018-04-22T00:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/4/22/this-week-in-rails-railsconf-2018-edition</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/4/22/this-week-in-rails-railsconf-2018-edition/">&lt;p&gt;Hello 🌨 from Pittsburgh! RailsConf was amazing: more than a thousand attendees showing that Rails is more alive and welcoming than ever.&lt;/p&gt;
+
+&lt;p&gt;All the presentations will be available on YouTube in about a month. For now, you can take a sneak peek by browsing the slide decks: from &lt;a href=&quot;https://speakerdeck.com/eileencodes/railsconf-2018-the-future-of-rails-6-scalable-by-default&quot;&gt;Rails 6&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/claudiob/active-storage&quot;&gt;Active Storage&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/derekprior/up-and-down-again-a-migrations-tale&quot;&gt;Migrations&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/tmikeschu/stop-testing-start-storytelling-railsconf-2018&quot;&gt;Testing&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/jnraine/ten-years-of-rails-upgrades&quot;&gt;Upgrades&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/saarons/api-how-lendinghome-approaches-legacy-technologies&quot;&gt;API&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/vaidehijoshi/re-graphing-the-mental-model-of-the-rails-router-1&quot;&gt;Router&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/dinahshi/your-first-contribution-and-beyond&quot;&gt;Contributing&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/qrush/the-graphql-way-a-new-path-for-json-apis&quot;&gt;GraphQL&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/a_matsuda/turbo-boosting-real-world-applications&quot;&gt;Performance&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/justinweiss/building-a-collaborative-text-editor&quot;&gt;Collaboration&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/lauramosher/harry-the-hedgehog-learns-you-a-communication&quot;&gt;Communication&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/stellacotton/so-youve-got-yourself-a-kafka-event-powered-rails-services&quot;&gt;Kafka&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/genslein/postgres-10-performance-and-you&quot;&gt;PostgreSQL&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/tegon/warden-the-building-block-behind-devise&quot;&gt;Warden&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails&quot;&gt;Authorization&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/michaelherold/whats-in-a-price-how-to-price-your-products-and-services&quot;&gt;Economy&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/wonderwoman13/draw-a-crowd-the-contextual-camouflage-story&quot;&gt;Art&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/rofreg/the-doctor-is-in-using-checkups-to-find-bugs-in-production&quot;&gt;Bugs&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/presidentbeef/the-evolution-of-rails-security&quot;&gt;Security&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/dazuma/containerizing-rails-techniques-pitfalls-and-best-practices&quot;&gt;Containers&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/xdite/blitzbuilding-product-with-rails&quot;&gt;Crypto&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/toomuchpete/the-code-free-developer-interview&quot;&gt;Interviews&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/geoffreylitt/ruby-a-family-history-railsconf-2018&quot;&gt;History&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/sinthetix/leveling-up-a-heroic-team&quot;&gt;Teams&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/awood45/broken-apis-break-trust-tips-for-creating-and-updating-apis&quot;&gt;Trust&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/edouardchin/upgrading-rails-at-scale-railsconf-2018&quot;&gt;Shopify&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/talsafran/github-and-rails-10-years-together&quot;&gt;GitHub&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/lazyatom/heres-to-the-crazy-ones&quot;&gt;Engines&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/andrewglass1/human-powered-rails-automated-crowdsourcing-in-your-rails-app&quot;&gt;Crowdsourcing&lt;/a&gt;, from &lt;a href=&quot;https://speakerdeck.com/olivierlacan/the-life-and-death-of-a-rails-app&quot;&gt;Mortality&lt;/a&gt; to &lt;a href=&quot;https://speakerdeck.com/erniemiller/stating-the-obvious&quot;&gt;Life&lt;/a&gt;, there was really something for everyone!&lt;/p&gt;
+
+&lt;h3 id=&quot;this-weeks-contributors&quot;&gt;&lt;a href=&quot;http://contributors.rubyonrails.org/contributors/in-time-window/20180414-20180420&quot;&gt;This Week’s Contributors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;37 people contributed to Rails in the last week, including 9 for the first time! A big thank you to all of you!&lt;/p&gt;
+
+&lt;p&gt;If you’d like to see yourself on that board, why not check out the list of &lt;a href=&quot;https://github.com/rails/rails/issues&quot;&gt;open issues&lt;/a&gt;, or get involved in the &lt;a href=&quot;https://groups.google.com/d/forum/rubyonrails-core&quot;&gt;core discussion list&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;inclusive-language-in-documentation-examples&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32582&quot;&gt;Inclusive Language in Documentation Examples&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A couple of changes to make the docs more inclusive of trans and non-binary individuals. Hurray! 💗🌈🏳️‍🌈&lt;/p&gt;
+
+&lt;h3 id=&quot;add-the-nonce-true-option-for-javascript_include_tag-helper&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32607&quot;&gt;Add the &lt;code class=&quot;highlighter-rouge&quot;&gt;nonce: true&lt;/code&gt; option for &lt;code class=&quot;highlighter-rouge&quot;&gt;javascript_include_tag&lt;/code&gt; helper&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Works the same way as &lt;em&gt;javascript_tag nonce: true&lt;/em&gt; to support automatic nonce generation for Content Security Policy.&lt;/p&gt;
+
+&lt;h3 id=&quot;improve-performance-of-translation-helper&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32326&quot;&gt;Improve performance of translation helper&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A PR that is worth reading to learn how to benchmark a possible performance improvement using the right tools.&lt;/p&gt;
+
+&lt;h3 id=&quot;dont-pass-splat-keyword-arguments-as-a-single-hash&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32612&quot;&gt;Don’t pass splat keyword arguments as a single Hash&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Looking ahead at Ruby 2.6, which will raise a warning when a method is called with &lt;em&gt;(*args)&lt;/em&gt;. Declaring the arguments makes for more readable code.&lt;/p&gt;
+
+&lt;h3 id=&quot;fix-exception-in-astimezoneall-when-any-tzinfo-data-is-missing&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32613&quot;&gt;Fix exception in AS::Timezone.all when any tzinfo data is missing&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Time zones change every year, even &lt;a href=&quot;https://www.iana.org/time-zones&quot;&gt;multiple times a year&lt;/a&gt;. &lt;em&gt;ActiveSupport::Timezone.all&lt;/em&gt; won’t raise an error even when a time zone is missing from TZInfo.&lt;/p&gt;
+
+&lt;h3 id=&quot;output-only-one-nonce-in-csp-header-per-request&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32602&quot;&gt;Output only one nonce in CSP header per request&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Nonces from old requests were saved, causing the header to grow infinitely after every request.&lt;/p&gt;
+
+&lt;h3 id=&quot;avoid-blocking-the-server-in-delete_matched&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/commit/ef2af628a9ec1cc4e7b6997a021dd3f85cfe4665&quot;&gt;Avoid blocking the server in &lt;code class=&quot;highlighter-rouge&quot;&gt;#delete_matched&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A fix to the newly added redis-cache-store feature of Rails 5.2. Calling &lt;em&gt;delete_matched&lt;/em&gt; will no longer block the Redis server.&lt;/p&gt;
+
+&lt;p&gt;Coming back home after an amazing event like RailsConf is always tough. Can’t wait to see you all next year at RailsConf 2019 in Minneapolis from April 30th to May 2nd. Hopefully it won’t snow! 🤞– &lt;a href=&quot;http://claudiob.github.io&quot;&gt;Claudio&lt;/a&gt;&lt;/p&gt;</content><author><name>claudiob</name></author><summary type="html">Hello 🌨 from Pittsburgh! RailsConf was amazing: more than a thousand attendees showing that Rails is more alive and welcoming than ever.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">Rails 5.2.0, performance optimizations, space-saving compression and more!</title><link href="https://weblog.rubyonrails.org/2018/4/15/this-week-in-rails-rails-5-2-0-performance-optimizations-space-saving-compression-and-more/" rel="alternate" type="text/html" title="Rails 5.2.0, performance optimizations, space-saving compression and more!" /><published>2018-04-15T00:00:00+00:00</published><updated>2018-04-15T00:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/4/15/this-week-in-rails-rails-5-2-0-performance-optimizations-space-saving-compression-and-more</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/4/15/this-week-in-rails-rails-5-2-0-performance-optimizations-space-saving-compression-and-more/">&lt;p&gt;And now a Rails 🌩 News Flash 🌩! (Hint: we’ve got some big news this week, if you hadn’t heard). We take you now, live, to our reporter on the scene, &lt;a href=&quot;https://twitter.com/imtayadeway&quot;&gt;Tim&lt;/a&gt;, for all the latest and greatest this week.&lt;/p&gt;
+
+&lt;h3 id=&quot;rails-520-is-out&quot;&gt;&lt;a href=&quot;http://weblog.rubyonrails.org/2018/4/9/Rails-5-2-0-final/&quot;&gt;Rails 5.2.0 is out!&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;5.2.0 is officially among us, a little bit ahead of &lt;a href=&quot;http://railsconf.com/&quot;&gt;RailsConf&lt;/a&gt; this year. If you can’t wait until then to find out everything that this new release brings, do go read the original &lt;a href=&quot;http://weblog.rubyonrails.org/2018/4/9/Rails-5-2-0-final/&quot;&gt;blog post&lt;/a&gt; that accompanied the release for all the details!&lt;/p&gt;
+
+&lt;h3 id=&quot;this-weeks-contributors&quot;&gt;&lt;a href=&quot;http://contributors.rubyonrails.org/contributors/in-time-window/20180401-20180413&quot;&gt;This Week’s Contributors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;48 people contributed to Rails in the last two weeks, including an incredible 11 for the first time! A big thank you to all of you!&lt;/p&gt;
+
+&lt;p&gt;If you’d like to see yourself on that board, why not check out the list of &lt;a href=&quot;https://github.com/rails/rails/issues&quot;&gt;open issues&lt;/a&gt;, or get involved in the &lt;a href=&quot;https://groups.google.com/d/forum/rubyonrails-core&quot;&gt;core discussion list&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;api-controliers-now-get-a-set-of-default-headers&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32484&quot;&gt;API controlIers now get a set of default headers&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Though you may not need all these headers, there are specific instances where you may want them to enhance security, so it makes sense to have this configured on by default.&lt;/p&gt;
+
+&lt;h3 id=&quot;an-optimization-for-the-query-cache-middleware&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32414&quot;&gt;An optimization for the Query Cache middleware&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;This nice little optimization eliminated some array allocations, that you may benefit from if you have a large number of connection pools.&lt;/p&gt;
+
+&lt;h3 id=&quot;avoid-generating-full-changes-hash-on-every-save&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32497&quot;&gt;Avoid generating full changes hash on every save&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;By asking the mutation tracker for the list of changed attributes, some work can be skipped when generating the changes hash. This may be most noticeable for serialized attributes, for which calling &lt;code class=&quot;highlighter-rouge&quot;&gt;#original_value&lt;/code&gt; can be significantly more expensive.&lt;/p&gt;
+
+&lt;h3 id=&quot;fix-activesupportcache-compression&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32539&quot;&gt;Fix ActiveSupport::Cache compression&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A regression was found whereby compressed items in the cache store were taking up more space than their original, uncompressed versions. That is now fixed thanks to the great detective work shown in this PR!&lt;/p&gt;
+
+&lt;p&gt;As always there were many more changes to the Rails codebase than we can cover here. But you can read all about them &lt;a href=&quot;https://github.com/rails/rails/compare/master@%7B2018-04-01%7D...@%7B2018-04-13%7D&quot;&gt;here&lt;/a&gt;! Until next week!&lt;/p&gt;</content><author><name>imtayadeway</name></author><summary type="html">And now a Rails 🌩 News Flash 🌩! (Hint: we’ve got some big news this week, if you hadn’t heard). We take you now, live, to our reporter on the scene, Tim, for all the latest and greatest this week.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">Rails 5.2.0 FINAL: Active Storage, Redis Cache Store, HTTP/2 Early Hints, CSP, Credentials</title><link href="https://weblog.rubyonrails.org/2018/4/9/Rails-5-2-0-final/" rel="alternate" type="text/html" title="Rails 5.2.0 FINAL: Active Storage, Redis Cache Store, HTTP/2 Early Hints, CSP, Credentials" /><published>2018-04-09T21:00:00+00:00</published><updated>2018-04-09T21:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/4/9/Rails-5-2-0-final</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/4/9/Rails-5-2-0-final/">&lt;p&gt;Nearly 14 years since &lt;a href=&quot;http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/107370&quot;&gt;the first public version of Rails&lt;/a&gt;, it’s our pleasure to release yet another major upgrade to the framework in the form of 5.2.0 final. We’ve been diligently polishing Active Storage and the other big new components for stable release, and it’s great to see so many applications already running the release candidates in production. &lt;a href=&quot;https://basecamp.com&quot;&gt;Basecamp&lt;/a&gt; and &lt;a href=&quot;https://shopify.com&quot;&gt;Shopify&lt;/a&gt; have both been running Rails 5.2.0 for quite a while.&lt;/p&gt;
+
+&lt;p&gt;This release comes just in time for &lt;a href=&quot;https://railsconf.com/&quot;&gt;RailsConf&lt;/a&gt;, which features sessions on the new &lt;a href=&quot;https://railsconf.com/program/sessions#session-627&quot;&gt;encrypted credentials&lt;/a&gt;, &lt;a href=&quot;https://railsconf.com/program/sessions#session-562&quot;&gt;a code review of Active Storage&lt;/a&gt;, &lt;a href=&quot;https://railsconf.com/program/sessions#session-588&quot;&gt;advice on how to upgrade to a new Rails version&lt;/a&gt;, and a &lt;a href=&quot;https://railsconf.com/program/sessions#session-552&quot;&gt;lot&lt;/a&gt; &lt;a href=&quot;https://railsconf.com/program/sessions#session-568&quot;&gt;of&lt;/a&gt; &lt;a href=&quot;https://railsconf.com/program/sessions#session-549&quot;&gt;Webpack&lt;/a&gt; talks.&lt;/p&gt;
+
+&lt;p&gt;You can read in even more detail about everything that’s &lt;a href=&quot;http://edgeguides.rubyonrails.org/5_2_release_notes.html&quot;&gt;new in Rails 5.2 in the newly finished release notes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note that &lt;a href=&quot;https://github.com/rails/rails&quot;&gt;rails/master&lt;/a&gt; development is now targeting Rails 6.0.&lt;/p&gt;
+
+&lt;p&gt;Many thanks to Rails core, Rails contributors, and everyone else who’ve helped with code, documentation, bug reports, and whatever else to get Rails 5.2.0 out the door. It’s amazing to have &lt;a href=&quot;http://contributors.rubyonrails.org/releases/5-2-0/contributors&quot;&gt;over 400 code contributors&lt;/a&gt; with fingerprints on this release.&lt;/p&gt;
+
+&lt;h2 id=&quot;feature-highlights&quot;&gt;Feature highlights&lt;/h2&gt;
+
+&lt;p&gt;It’s been too hard to deal with file uploads in Rails for too long. Sure, there’s been a lot of fine plugins available,
+but it was overdue that we incorporated something right into the framework. So now we have!&lt;/p&gt;
+
+&lt;p&gt;With the new &lt;a href=&quot;https://github.com/rails/rails/blob/d3893ec38ec61282c2598b01a298124356d6b35a/activestorage/README.md&quot;&gt;Active Storage&lt;/a&gt;
+framework in Rails 5.2, we’ve solved for the modern approach of uploading files straight to the cloud. Out of the box,
+there’s support for Amazon’s S3, Google’s Cloud Storage, and Microsoft Azure Cloud File Storage.&lt;/p&gt;
+
+&lt;p&gt;If you’re dealing with images, you can create variants on the fly. If you’re dealing with videos or PDFs, you can create
+previews on the fly. And regardless of the type, you can analyze uploads for metadata extraction asynchronously.&lt;/p&gt;
+
+&lt;p&gt;Active Storage was extracted from Basecamp 3 by George Claghorn and yours truly. So not only is the framework already
+used in production, it was born from production. There’s that Extraction Design guarantee stamp alright!&lt;/p&gt;
+
+&lt;p&gt;Speaking of extractions, Jeremy Daer has untangled the long jungle twine of hacks we were using at Basecamp to employ
+Redis for general partial, fragment, and other Rails caching jobs. There’s a sparkling new &lt;a href=&quot;https://github.com/rails/rails/pull/31134&quot;&gt;Redis Cache Store&lt;/a&gt;
+that incorporates all those years of veteran hacks into a cohesive unit that anyone can use.&lt;/p&gt;
+
+&lt;p&gt;This new Redis Cache Store supports Redis::Distributed, for Memcached-like sharding across Redises. It’s fault tolerant,
+so will treat failures like misses, rather than kill the request with an exception. It even supports distributed MGETs
+for that full partial collection caching goodness.&lt;/p&gt;
+
+&lt;p&gt;This comes together with a massive leap forward for cache efficiency with &lt;a href=&quot;https://github.com/rails/rails/pull/29092&quot;&gt;key recycling&lt;/a&gt;
+and &lt;a href=&quot;https://github.com/rails/rails/pull/31147&quot;&gt;compression&lt;/a&gt; both available by default. For Basecamp, it meant improving
+the cache lifetime by two orders of magnitude! We went from having caches trashed in as little as a day to having
+caches last for months. If you’re using partial caching and the nesting doll strategy, your cache lifetime will improve
+dramatically between these two changes.&lt;/p&gt;
+
+&lt;p&gt;We’ve also embraced the cherry of HTTP/2 with &lt;a href=&quot;https://github.com/rails/rails/pull/30744&quot;&gt;early hints&lt;/a&gt; through the work
+of Aaron Patterson and Eileen Uchitelle. This means we can automatically instruct the web server to send required style
+sheet and JavaScript assets early. Which means faster full page delivery, as who wouldn’t want that?&lt;/p&gt;
+
+&lt;p&gt;On the topic of performance, Rails now ships with &lt;a href=&quot;https://github.com/Shopify/bootsnap&quot;&gt;Bootsnap&lt;/a&gt; in the default &lt;code class=&quot;highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt;, created by our friends at Shopify. It generally reduces application boot times by over 50%.&lt;/p&gt;
+
+&lt;p&gt;Rails has always been in the forefront of making your web applications more secure, leading the way with built-in CSRF
+and XSS protection and we’ve enhanced that further in Rails 5.2 with &lt;a href=&quot;https://github.com/rails/rails/pull/31162&quot;&gt;the addition of a new DSL&lt;/a&gt;
+that allows you to configure a &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy&quot;&gt;Content Security Policy&lt;/a&gt;
+for your application. You can configure a global default policy and then override it on a per-resource basis and even
+use lambdas to inject per-request values into the header such as account subdomains in a multi-tenant application.&lt;/p&gt;
+
+&lt;p&gt;But it’s not all just new starry-eyed wonders. In Rails 5.1, we added &lt;a href=&quot;https://github.com/rails/rails/pull/28038&quot;&gt;encrypted secrets&lt;/a&gt;.
+These secrets were like the old secrets but, uhm, more secret, because, you know, ENCRYPTION! Confusing? Yes. Why would
+you want secrets that weren’t really secret? Well, you don’t.&lt;/p&gt;
+
+&lt;p&gt;In Rails 5.2, we’ve rectified the mess by deprecating the two different kinds of secrets and introduced a new shared
+concept called &lt;a href=&quot;https://github.com/rails/rails/pull/30067&quot;&gt;Credentials&lt;/a&gt;. Credentials, like AWS access keys and other forms of logins and passwords, were the dominant
+use case for secrets, so why not just call a spade a spade. So spade it is!&lt;/p&gt;
+
+&lt;p&gt;Credentials are always encrypted. This means they’re safe to check into revision control, as long as you keep the key
+out of it. That means atomic deploys, no need to mess with a flurry of environment variables, and other benefits of having all
+credentials that the app needs in one place, safe and secure.&lt;/p&gt;
+
+&lt;p&gt;In addition, we’ve opened up the API underlying Credentials, so you can easily deal with other encrypted configurations,
+keys, and files.&lt;/p&gt;
+
+&lt;p&gt;Since Rails 5.1, we’ve also made great strides with &lt;a href=&quot;https://github.com/rails/webpacker&quot;&gt;Webpacker&lt;/a&gt;. So Rails 5.2 is
+meant to pair beautifully with the new Webpacker 3.0 release. Rails has fully embraced modern JavaScript with a
+pre-configured build pipeline run by Webpack. We keep strengthening that relationship.&lt;/p&gt;</content><author><name>dhh</name></author><summary type="html">Nearly 14 years since the first public version of Rails, it’s our pleasure to release yet another major upgrade to the framework in the form of 5.2.0 final. We’ve been diligently polishing Active Storage and the other big new components for stable release, and it’s great to see so many applications already running the release candidates in production. Basecamp and Shopify have both been running Rails 5.2.0 for quite a while.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">New Rails bug fix releases, closer to multi dbs and more!</title><link href="https://weblog.rubyonrails.org/2018/3/31/this-week-in-rails-new-rails-bug-fix-releases-closer-to-multi-dbs-and-more/" rel="alternate" type="text/html" title="New Rails bug fix releases, closer to multi dbs and more!" /><published>2018-03-31T00:00:00+00:00</published><updated>2018-03-31T00:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/3/31/this-week-in-rails-new-rails-bug-fix-releases-closer-to-multi-dbs-and-more</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/3/31/this-week-in-rails-new-rails-bug-fix-releases-closer-to-multi-dbs-and-more/">&lt;p&gt;Hey there, esteemed readers of Rails’ public repo tea leaves. It’s &lt;a href=&quot;https://twitter.com/kaspth&quot;&gt;Kasper&lt;/a&gt; bringing you the latest hot cup to steel transcendence from.&lt;/p&gt;
+
+&lt;h3 id=&quot;this-weeks-contributors&quot;&gt;&lt;a href=&quot;http://contributors.rubyonrails.org/contributors/in-time-window/20180324-20180331&quot;&gt;This Week’s Contributors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Here goes a hey-o to the 16 contributors this week! You can make the list no doubt, try finding an &lt;a href=&quot;https://github.com/rails/rails/issues&quot;&gt;open issue&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;rails-507-and-516-are-out&quot;&gt;&lt;a href=&quot;http://weblog.rubyonrails.org/2018/3/29/Rails-5-0-7-and-5-1-6-have-been-released/&quot;&gt;Rails 5.0.7 and 5.1.6 are out&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;New bug fix releases are out, so you can upgrade your apps today.&lt;/p&gt;
+
+&lt;h3 id=&quot;easy-multi-databases-basic-rake-tasks&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32274&quot;&gt;Easy Multi databases: basic rake tasks&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;For applications with multiple databases you always had to create your own rake tasks. No more! One of the stepping stones for Rails 6.0 to have multi db support out of the box is in.&lt;/p&gt;
+
+&lt;h3 id=&quot;compare-dates-with-before-and-after&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32185&quot;&gt;Compare dates with before? and after?&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;To compare two dates and/or times we’d use the standard &amp;lt; and &amp;gt; operators. Now date arithmetic is a little easier with &lt;em&gt;today.before?(tomorrow)&lt;/em&gt; and &lt;em&gt;today.after?(yesterday)&lt;/em&gt;. Thus joining &lt;em&gt;today.between?(yesterday, tomorrow)&lt;/em&gt;. Your app now has no excuse not to show up on time!&lt;/p&gt;
+
+&lt;h3 id=&quot;allow-prefixing-store-attributes&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32306&quot;&gt;Allow prefixing store attributes&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;In the vein of &lt;em&gt;delegate :name, to: :person, prefix: true&lt;/em&gt; adding &lt;em&gt;person_name&lt;/em&gt;, your store attributes now houses the same trick to squash duplicate accessors. Also sports specific prefixes to really clear the path of method name clashing.&lt;/p&gt;
+
+&lt;h3 id=&quot;favor-app-wide-configforce_ssl-for-https&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/pull/32277&quot;&gt;Favor app-wide config.force_ssl for HTTPS&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Rails has long had a way to incrementally force users onto HTTPS, a controller level force_ssl! Times have changed and Rails 6.0 deprecates that option in favor of the app-wide config.force_ssl so every endpoint will use HTTPS.&lt;/p&gt;
+
+&lt;p&gt;There were many more changes to Rails’ codebase, which you can check out &lt;a href=&quot;https://github.com/rails/rails/compare/master@%7B2018-03-24%7D...@%7B2018-03-31%7D&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;
+Until next week!&lt;/p&gt;</content><author><name>kaspth</name></author><summary type="html">Hey there, esteemed readers of Rails’ public repo tea leaves. It’s Kasper bringing you the latest hot cup to steel transcendence from.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">Rails 5.0.7 and 5.1.6 have been released</title><link href="https://weblog.rubyonrails.org/2018/3/29/Rails-5-0-7-and-5-1-6-have-been-released/" rel="alternate" type="text/html" title="Rails 5.0.7 and 5.1.6 have been released" /><published>2018-03-29T18:40:00+00:00</published><updated>2018-03-29T18:40:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/3/29/Rails-5-0-7-and-5-1-6-have-been-released</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/3/29/Rails-5-0-7-and-5-1-6-have-been-released/">&lt;p&gt;Hi everyone,&lt;/p&gt;
+
+&lt;p&gt;I am happy to announce that Rails 5.0.7 and 5.1.6 have been released.&lt;/p&gt;
+
+&lt;h2 id=&quot;changes-since-506&quot;&gt;CHANGES since 5.0.6&lt;/h2&gt;
+
+&lt;p&gt;To view the changes for each gem, please read the changelogs on GitHub:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/actioncable/CHANGELOG.md&quot;&gt;Action Cable CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/actionmailer/CHANGELOG.md&quot;&gt;Action Mailer CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/actionpack/CHANGELOG.md&quot;&gt;Action Pack CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/actionview/CHANGELOG.md&quot;&gt;Action View CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/activejob/CHANGELOG.md&quot;&gt;Active Job CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/activemodel/CHANGELOG.md&quot;&gt;Active Model CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/activerecord/CHANGELOG.md&quot;&gt;Active Record CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/activesupport/CHANGELOG.md&quot;&gt;Active Support CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.0.7/railties/CHANGELOG.md&quot;&gt;Railties CHANGELOG&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Full listing&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;To see the full list of changes, &lt;a href=&quot;https://github.com/rails/rails/compare/v5.0.6...v5.0.7&quot;&gt;check out all the commits on
+GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;changes-since-515&quot;&gt;CHANGES since 5.1.5&lt;/h2&gt;
+
+&lt;p&gt;To view the changes for each gem, please read the changelogs on GitHub:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/actioncable/CHANGELOG.md&quot;&gt;Action Cable CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/actionmailer/CHANGELOG.md&quot;&gt;Action Mailer CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/actionpack/CHANGELOG.md&quot;&gt;Action Pack CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/actionview/CHANGELOG.md&quot;&gt;Action View CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/activejob/CHANGELOG.md&quot;&gt;Active Job CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/activemodel/CHANGELOG.md&quot;&gt;Active Model CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/activerecord/CHANGELOG.md&quot;&gt;Active Record CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/activesupport/CHANGELOG.md&quot;&gt;Active Support CHANGELOG&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rails/rails/blob/v5.1.6/railties/CHANGELOG.md&quot;&gt;Railties CHANGELOG&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Full listing&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;To see the full list of changes, &lt;a href=&quot;https://github.com/rails/rails/compare/v5.1.5...v5.1.6&quot;&gt;check out all the commits on
+GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;sha-256&quot;&gt;SHA-256&lt;/h2&gt;
+
+&lt;p&gt;If you’d like to verify that your gem is the same as the one I’ve uploaded,
+please use these SHA-256 hashes.&lt;/p&gt;
+
+&lt;p&gt;Here are the checksums for 5.0.7:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ shasum -a 256 *-5.0.7.gem
+c023d1df2fd6f5e1ac042ad6a0338e8a2c4d1404484f8fe77121b81f10b75f2c  actioncable-5.0.7.gem
+5f9b12f26ae8906d20b9f4784644853121a3b03f74a396943677fc30f91c2e35  actionmailer-5.0.7.gem
+08e0d4582d1b37cc059aca1d19cd271e7bb575265093c4a99cb79d80dcb0d196  actionpack-5.0.7.gem
+eb20007cc9ee40ee7a2f96147e9776394f72d59979b23da15f444a9906c17b8b  actionview-5.0.7.gem
+e8a15b73302c02352da9463b134daf037841fec7d5d5c2ec97487456f96bb8d5  activejob-5.0.7.gem
+fe35b1bbfb140c7416723e3a7d7ef2a78e8921739863d8a917a93131e2b7cc87  activemodel-5.0.7.gem
+c6349cd59e29118aaed5d4d2414e87b427affd28925b7fe1559cb45a21152366  activerecord-5.0.7.gem
+a595a42311ea13ce994b1feea3325cbbb1ac5c0bf40cd96c89797882121da7fb  activesupport-5.0.7.gem
+76815a2a7e99c83b53ea52325c5bbc5ca15e25ecdfb741ea329ca153cf11ff84  rails-5.0.7.gem
+e08b95ec3dbb708f9d449a01c083c66d47ddba2f373e4a2fd1bde2c7a92fdb48  railties-5.0.7.gem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here are the checksums for 5.1.6:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ shasum -a 256 *-5.1.6.gem
+2e678b45852f242e5897a0d4e43dca1088fb3d5c350592b22768b502a085261f  actioncable-5.1.6.gem
+ecbc307e66102b1406fba38f6d7c869fd763cafa98b02fd4f6049fd41d663de9  actionmailer-5.1.6.gem
+8dcd333263bdea533de7ac8e087f530f20bde6167c3c02060b82630b90aee26f  actionpack-5.1.6.gem
+0181e71b9d307425605c50aa70358148aa0dff270bf2e07dbb87acb3d3a7ddcd  actionview-5.1.6.gem
+a291963337402f3dcd5aee1dff3fd980256742bb0cfa06c47315257d11d69a0a  activejob-5.1.6.gem
+7e3d2904a524a18c4f710a170243eac706279a36142289431d3c504df665c881  activemodel-5.1.6.gem
+1da0546d452cc9b25b900bc2616b57d1e41e24039c33466b46d7add27fdf13c7  activerecord-5.1.6.gem
+94d2f2a9fe1a7421165e0014eaa4c8eb2d229f72dc9815cf7c2f0c595f05b521  activesupport-5.1.6.gem
+b8301a87151de3feb7cbdf57a66842bb668493f4cec464fd0f67d4c7173b6051  rails-5.1.6.gem
+482a97c40ff61f4e8aed5f449a5f54fcb3890ddd53c3a7dc0efd02a9da139e79  railties-5.1.6.gem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As always, huge thanks to the many contributors who helped with this release.&lt;/p&gt;</content><author><name>pixeltrix</name></author><summary type="html">Hi everyone,</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">Rails 5.2.0.RC2, AWS authentication options and more</title><link href="https://weblog.rubyonrails.org/2018/3/24/this-week-in-rails-rails-5-2-0-rc2-aws-authentication-options-and-more/" rel="alternate" type="text/html" title="Rails 5.2.0.RC2, AWS authentication options and more" /><published>2018-03-24T00:00:00+00:00</published><updated>2018-03-24T00:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/3/24/this-week-in-rails-rails-5-2-0-rc2-aws-authentication-options-and-more</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/3/24/this-week-in-rails-rails-5-2-0-rc2-aws-authentication-options-and-more/">&lt;p&gt;Hello fellow Rubyists, this is &lt;a href=&quot;https://twitter.com/morgoth85&quot;&gt;Wojtek&lt;/a&gt; bringing you the polished set of latest Rails news.&lt;br /&gt;
+We do like to “polish” things here in Poland ;-)&lt;/p&gt;
+
+&lt;h3 id=&quot;rails-520rc2-released&quot;&gt;&lt;a href=&quot;http://weblog.rubyonrails.org/2018/3/20/Rails-5-2-RC2/&quot;&gt;Rails 5.2.0.RC2 released&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Aiming for 5.2.0 final version to be released before the RailsConf in April. Help us test it, to have a solid and stable release.&lt;/p&gt;
+
+&lt;h3 id=&quot;this-weeks-contributors&quot;&gt;&lt;a href=&quot;http://contributors.rubyonrails.org/contributors/in-time-window/20180318-20180324&quot;&gt;This Week’s Contributors&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Big thanks to 16 people who contributed to Rails this week! If you’d like to join them, check out the list of &lt;a href=&quot;https://github.com/rails/rails/issues&quot;&gt;open issues&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;allow-full-use-of-the-aws-s3-sdk-authentication-options&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/commit/c1600009b2bbb3b67db20ddb14fef34d4cfa82bc&quot;&gt;Allow full use of the AWS S3 SDK authentication options&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;It’s now possible to use environment variables and IAM roles to authenticate to AWS in Active Storage.&lt;/p&gt;
+
+&lt;h3 id=&quot;support-mysql2-gem-version-05&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/commit/9f5477af93d18e9644903f89bce4ffde13cc376e&quot;&gt;Support mysql2 gem version 0.5&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;New version of mysql2 gem brings some bugfixes and features but also some backward incompatibilites. Check them out in &lt;a href=&quot;https://github.com/brianmario/mysql2/releases/tag/0.5.0&quot;&gt;changelog&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;memoize-the-result-of-calculating-path-to-translation&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/commit/05eaa07627376626902bd7acde35406edf1bb2f2&quot;&gt;Memoize the result of calculating path to translation&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Speeds up usage of &lt;strong&gt;I18n.translate&lt;/strong&gt;. Benchmark included in the comments.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-ascii-8bit-paths-in-actiondispatchstatic&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/commit/2ef145883348e92c9e6393ece9b6967e3a5a80c7&quot;&gt;Use ASCII-8BIT paths in ActionDispatch::Static&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Fixes encoding incompatibilites between Rack and Rails middlewares.&lt;/p&gt;
+
+&lt;h3 id=&quot;remove-support-for-qu-gem-from-active-job&quot;&gt;&lt;a href=&quot;https://github.com/rails/rails/commit/6ef720791d6532a107f4777edfe1d708b6b9c068&quot;&gt;Remove support for Qu gem from Active Job&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Qu gem wasn’t compatible since Rails 5.1. Development was stopped in 2014 and maintainers have confirmed its demise.&lt;/p&gt;
+
+&lt;p&gt;There were many more changes to Rails’ codebase, which you can check out &lt;a href=&quot;https://github.com/rails/rails/compare/master@%7B2018-03-18%7D...@%7B2018-03-24%7D&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;
+Until next week!&lt;/p&gt;</content><author><name>morgoth85</name></author><summary type="html">Hello fellow Rubyists, this is Wojtek bringing you the polished set of latest Rails news. We do like to “polish” things here in Poland ;-)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry><entry><title type="html">Rails 5.2.0 RC2: Active Storage, Redis Cache Store, HTTP/2 Early Hints, CSP, Credentials</title><link href="https://weblog.rubyonrails.org/2018/3/20/Rails-5-2-RC2/" rel="alternate" type="text/html" title="Rails 5.2.0 RC2: Active Storage, Redis Cache Store, HTTP/2 Early Hints, CSP, Credentials" /><published>2018-03-20T21:00:00+00:00</published><updated>2018-03-20T21:00:00+00:00</updated><id>https://weblog.rubyonrails.org/2018/3/20/Rails-5-2-RC2</id><content type="html" xml:base="https://weblog.rubyonrails.org/2018/3/20/Rails-5-2-RC2/">&lt;p&gt;It’s almost time for &lt;a href=&quot;https://railsconf.com&quot;&gt;RailsConf&lt;/a&gt;, and we’re determined to get the final version of Rails 5.2 released before then.
+So here’s the hopefully last release candidate before that can happen. We’ve put a ton of into ironing out all the issues with Active Storage
+in particular, now that more and more applications are starting to use it in production.&lt;/p&gt;
+
+&lt;p&gt;You can peruse the &lt;a href=&quot;https://github.com/rails/rails/compare/v5.2.0.rc1...v5.2.0.rc2&quot;&gt;nearly 200 commits&lt;/a&gt; since the first release candidate from the beginning of the year to see everything that has been fixed.&lt;/p&gt;
+
+&lt;p&gt;If you’re about to start a new application, I feel confident enough in this release to recommend that you should base it off this RC2.
+If you like to keep up with the latest release, now is also a great time to update your existing application.&lt;/p&gt;
+
+&lt;p&gt;You can read in even more detail about everything that’s &lt;a href=&quot;http://edgeguides.rubyonrails.org/5_2_release_notes.html&quot;&gt;new in Rails 5.2 in the newly finished release notes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Enjoy Rails 5.2 and hope to see a good portion of everybody at RailsConf in a month or so!&lt;/p&gt;
+
+&lt;h2 id=&quot;recap-of-the-highlights-of-rails-52-from-the-beta-announcement&quot;&gt;Recap of the highlights of Rails 5.2 from the beta announcement&lt;/h2&gt;
+
+&lt;p&gt;It’s been too hard to deal with file uploads in Rails for too long. Sure, there’s been a lot of fine plugins available,
+but it was overdue that we incorporated something right into the framework. So now we have!&lt;/p&gt;
+
+&lt;p&gt;With the new &lt;a href=&quot;https://github.com/rails/rails/blob/d3893ec38ec61282c2598b01a298124356d6b35a/activestorage/README.md&quot;&gt;Active Storage&lt;/a&gt;
+framework in Rails 5.2, we’ve solved for the modern approach of uploading files straight to the cloud. Out of the box,
+there’s support for Amazon’s S3, Google’s Cloud Storage, and Microsoft Azure Cloud File Storage.&lt;/p&gt;
+
+&lt;p&gt;If you’re dealing with images, you can create variants on the fly. If you’re dealing with videos or PDFs, you can create
+previews on the fly. And regardless of the type, you can analyze uploads for metadata extraction asynchronously.&lt;/p&gt;
+
+&lt;p&gt;Active Storage was extracted from Basecamp 3 by George Claghorn and yours truly. So not only is the framework already
+used in production, it was born from production. There’s that Extraction Design guarantee stamp alright!&lt;/p&gt;
+
+&lt;p&gt;Speaking of extractions, Jeremy Daer has untangled the long jungle twine of hacks we were using at Basecamp to employ
+Redis for general partial, fragment, and other Rails caching jobs. There’s a sparkling new &lt;a href=&quot;https://github.com/rails/rails/pull/31134&quot;&gt;Redis Cache Store&lt;/a&gt;
+that incorporates all those years of veteran hacks into a cohesive unit that anyone can use.&lt;/p&gt;
+
+&lt;p&gt;This new Redis Cache Store supports Redis::Distributed, for Memcached-like sharding across Redises. It’s fault tolerant,
+so will treat failures like misses, rather than kill the request with an exception. It even supports distributed MGETs
+for that full partial collection caching goodness.&lt;/p&gt;
+
+&lt;p&gt;This comes together with a massive leap forward for cache efficiency with &lt;a href=&quot;https://github.com/rails/rails/pull/29092&quot;&gt;key recycling&lt;/a&gt;
+and &lt;a href=&quot;https://github.com/rails/rails/pull/31147&quot;&gt;compression&lt;/a&gt; both available by default. For Basecamp, it meant improving
+the cache lifetime by two orders of magnitude! We went from having caches trashed in as little as a day to having
+caches last for months. If you’re using partial caching and the nesting doll strategy, your cache lifetime will improve
+dramatically between these two changes.&lt;/p&gt;
+
+&lt;p&gt;We’ve also embraced the cherry of HTTP/2 with &lt;a href=&quot;https://github.com/rails/rails/pull/30744&quot;&gt;early hints&lt;/a&gt; through the work
+of Aaron Patterson and Eileen Uchitelle. This means we can automatically instruct the web server to send required style
+sheet and JavaScript assets early. Which means faster full page delivery, as who wouldn’t want that?&lt;/p&gt;
+
+&lt;p&gt;On the topic of performance, Rails now ships with &lt;a href=&quot;https://github.com/Shopify/bootsnap&quot;&gt;Bootsnap&lt;/a&gt; in the default &lt;code class=&quot;highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt;, created by our friends at Shopify. It generally reduces application boot times by over 50%.&lt;/p&gt;
+
+&lt;p&gt;Rails has always been in the forefront of making your web applications more secure, leading the way with built-in CSRF
+and XSS protection and we’ve enhanced that further in Rails 5.2 with &lt;a href=&quot;https://github.com/rails/rails/pull/31162&quot;&gt;the addition of a new DSL&lt;/a&gt;
+that allows you to configure a &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy&quot;&gt;Content Security Policy&lt;/a&gt;
+for your application. You can configure a global default policy and then override it on a per-resource basis and even
+use lambdas to inject per-request values into the header such as account subdomains in a multi-tenant application.&lt;/p&gt;
+
+&lt;p&gt;But it’s not all just new starry-eyed wonders. In Rails 5.1, we added &lt;a href=&quot;https://github.com/rails/rails/pull/28038&quot;&gt;encrypted secrets&lt;/a&gt;.
+These secrets were like the old secrets but, uhm, more secret, because, you know, ENCRYPTION! Confusing? Yes. Why would
+you want secrets that weren’t really secret? Well, you don’t.&lt;/p&gt;
+
+&lt;p&gt;In Rails 5.2, we’ve rectified the mess by deprecating the two different kinds of secrets and introduced a new shared
+concept called &lt;a href=&quot;https://github.com/rails/rails/pull/30067&quot;&gt;Credentials&lt;/a&gt;. Credentials, like AWS access keys and other forms of logins and passwords, were the dominant
+use case for secrets, so why not just call a spade a spade. So spade it is!&lt;/p&gt;
+
+&lt;p&gt;Credentials are always encrypted. This means they’re safe to check into revision control, as long as you keep the key
+out of it. That means atomic deploys, no need to mess with a flurry of environment variables, and other benefits of having all
+credentials that the app needs in one place, safe and secure.&lt;/p&gt;
+
+&lt;p&gt;In addition, we’ve opened up the API underlying Credentials, so you can easily deal with other encrypted configurations,
+keys, and files.&lt;/p&gt;
+
+&lt;p&gt;Since Rails 5.1, we’ve also made great strides with &lt;a href=&quot;https://github.com/rails/webpacker&quot;&gt;Webpacker&lt;/a&gt;. So Rails 5.2 is
+meant to pair beautifully with the new Webpacker 3.0 release. Rails has fully embraced modern JavaScript with a
+pre-configured build pipeline run by Webpack. We keep strengthening that relationship.&lt;/p&gt;</content><author><name>dhh</name></author><summary type="html">It’s almost time for RailsConf, and we’re determined to get the final version of Rails 5.2 released before then. So here’s the hopefully last release candidate before that can happen. We’ve put a ton of into ironing out all the issues with Active Storage in particular, now that more and more applications are starting to use it in production.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://avatars.githubusercontent.com/u/4223" /></entry></feed>

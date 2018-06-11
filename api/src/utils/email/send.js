@@ -44,7 +44,7 @@ export async function SendEmail(obj) {
 		return obj;
 	} else {
 		if (!config.email.sendgrid.secret) {
-			logger.error(`couldnt find sendgrid secret, email send failing`);
+			throw new Error('Could not send reset email, missing Sendgrid secret');
 		}
 		sendgrid.setApiKey(config.email.sendgrid.secret);
 		let res;

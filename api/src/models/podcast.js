@@ -90,6 +90,18 @@ export const PodcastSchema = new Schema(
 			type: String,
 			default: '',
 		},
+		followerCount: {
+			type: Number,
+			default: 0,
+		},
+		postCount: {
+			type: Number,
+			default: 0,
+		},
+		consecutiveScrapeFailures: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		collection: 'podcasts',
@@ -99,6 +111,8 @@ export const PodcastSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 		toObject: {
@@ -107,12 +121,14 @@ export const PodcastSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 	},
 );
 
-PodcastSchema.index({featured: 1}, {partialFilterExpression: {featured: true}});
+PodcastSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });
 
 PodcastSchema.plugin(timestamps, {
 	createdAt: { index: true },
@@ -120,6 +136,14 @@ PodcastSchema.plugin(timestamps, {
 });
 
 PodcastSchema.plugin(mongooseStringQuery);
+
+PodcastSchema.statics.incrScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures: 1}}).exec();
+};
+
+PodcastSchema.statics.resetScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$set : {consecutiveScrapeFailures : 0}}).exec();
+};
 
 PodcastSchema.methods.searchDocument = function() {
 	return {

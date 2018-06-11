@@ -8,14 +8,8 @@ import LikeSchema from './like';
 import PinSchema from './pin';
 import PlaylistSchema from './playlist';
 
-import logger from '../utils/logger';
 import jwt from 'jsonwebtoken';
 import config from '../config';
-import stream from 'getstream';
-
-const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
-
-
 
 export const UserSchema = new Schema(
 	{

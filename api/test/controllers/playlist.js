@@ -1,121 +1,186 @@
+import sinon from 'sinon';
 import { expect, request } from 'chai';
 
 import User from '../../src/models/user';
 import Playlist from '../../src/models/playlist';
 import api from '../../src/server';
+import logger from '../../src/utils/logger';
 import { dropDBs, loadFixture, withLogin } from '../utils';
 
 describe('Playlist controller', () => {
-    const otherUserId = '4342306d8e147f10f16aceaf';
-    let user;
-    let playlist;
+	const otherUserId = '4342306d8e147f10f16aceaf';
+	let user;
+	let playlist;
+	
+	before(async () => {
+		await dropDBs();
+		await loadFixture('initial-data', 'playlists');
 
-    before(async () => {
-        await dropDBs();
-        await loadFixture('initial-data', 'playlists');
+		user = await User.findOne();
+		playlist = await Playlist.findOne();
+	});
+	
+	describe('listing all entries', () => {
+		it('should return 200 for valid request', async () => {
+			const response = await withLogin(request(api).get('/playlists'));
 
-        user = await User.findOne();
-        playlist = await Playlist.findOne();
-    });
+			expect(response).to.have.status(200);
+		});
+		
+		it('should filter results if query is provided', async () => {
+			const fileters = [
+				{ episode: '5b0ad37026dc3db38194e286' },
+				{ type: 'recommended' },
+				{ type: 'featured' },
+			];
+			const response = await withLogin(request(api).get('/playlists').query());
 
-    describe('listing all entries', () => {
-        it('should return 200 for valid request', async () => {
-            const response = await withLogin(request(api).get('/playlists'));
+			expect(response).to.have.status(200);
+		});
+		
+		it('should return 403 when retrieving entries created by other users', async () => {
+			const response = await withLogin(request(api).get('/playlists').query({ user: otherUserId }));
 
-            expect(response).to.have.status(200);
-        });
+			expect(response).to.have.status(403);
+		});
 
-        it('should filter results if query is provided', async () => {
-            const fileters = [
-                { episode: '5b0ad37026dc3db38194e286' },
-                { type: 'recommended' },
-                { type: 'featured' },
-            ];
-            const response = await withLogin(request(api).get('/playlists').query());
+		it('should return 500 for invalid request', async () => {
+			//XXX: silensing error logs to have nice clean test output
+			sinon.stub(logger, 'error');
+			const response = await withLogin(request(api).get('/playlists').query({ episode: { $gte: '' } }));
 
-            expect(response).to.have.status(200);
-        });
+			expect(response).to.have.status(500);
+			logger.error.restore();
+		});
+	});
+	
+	describe('retrieving entry by id', () => {
+		it('should return 200 for valid request', async () => {
+			const response = await withLogin(request(api).get(`/playlists/${playlist._id}`));
 
-        it('should return 403 when retrieving entries created by other users', async () => {
-            const response = await withLogin(request(api).get('/playlists').query({ user: otherUserId }));
+			expect(response).to.have.status(200);
+		});
 
-            expect(response).to.have.status(403);
-        });
+		it('should return 404 for invalid id', async () => {
+			const response = await withLogin(request(api).get('/playlists/5b0f306d8e147f10deadbeef'));
 
-        it('should return 422 for invalid request', async () => {
-            const response = await withLogin(request(api).get('/playlists').query({ episode: { $gte: '' } }));
+			expect(response).to.have.status(404);
+		});
 
-            expect(response).to.have.status(422);
-        });
-    });
+		it('should return 403 when retrieving entries created by other users', async () => {
+			const otherPlaylist = await Playlist.create({
+				user: otherUserId,
+				name: 'other playlist',
+				episodes: []
+			});
+			const response = await withLogin(request(api).get(`/playlists/${otherPlaylist._id}`));
 
-    describe('retrieving entry by id', () => {
-        it('should return 200 for valid request', async () => {
-            const response = await withLogin(request(api).get(`/playlists/${playlist._id}`));
+			expect(response).to.have.status(403);
+		});
 
-            expect(response).to.have.status(200);
-        });
+		it('should return 500 for invalid request', async () => {
+			//XXX: silensing error logs to have nice clean test output
+			sinon.stub(logger, 'error');
+			const response = await withLogin(request(api).get('/playlists/<bogus-id>/'));
 
-        it('should return 404 for invalid id', async () => {
-            const response = await withLogin(request(api).get('/playlists/5b0f306d8e147f10deadbeef'));
+			expect(response).to.have.status(500);
+			logger.error.restore();
+		});
+	});
 
-            expect(response).to.have.status(404);
-        });
+	describe('creating new entry', () => {
+		it('should return 200 for valid request', async () => {
+			const data = {
+				user: user.id,
+				name: 'yet other playlist',
+				episodes: ['5b0ad37626dc3db38194fa73']
+			};
+			const response = await withLogin(request(api).post('/playlists').send(data));
 
-        it('should return 403 when retrieving entries created by other users', async () => {
-            const otherPlaylist = await Playlist.create({
-                user: otherUserId,
-                name: 'other playlist',
-                episodes: []
-            });
-            const response = await withLogin(request(api).get(`/playlists/${otherPlaylist._id}`));
+			expect(response).to.have.status(200);
+		});
 
-            expect(response).to.have.status(403);
-        });
+		it('should return 500 for invalid request', async () => {
+			//XXX: silensing error logs to have nice clean test output
+			sinon.stub(logger, 'error');
+			const data = { _id: 'Howdy pardner' };
+			const response = await withLogin(request(api).post('/playlists').send(data));
 
-        it('should return 422 for invalid request', async () => {
-            const response = await withLogin(request(api).get('/playlists/<bogus-id>/'));
+			expect(response).to.have.status(500);
+			logger.error.restore();
+		});
+	});
 
-            expect(response).to.have.status(422);
-        });
-    });
+	describe('updating existing entry', () => {
+		it('should return 200 for valid request', async () => {
+			const data = {
+				user: user.id,
+				name: 'Episode w/ new name',
+				episodes: playlist.episodes.map(e => e._id)
+			};
+			const response = await withLogin(request(api).put(`/playlists/${playlist._id}`).send(data));
 
-    describe('creating new entry', () => {
-        // api.route('/playlists').post(Playlist.post);
-    });
+			expect(response).to.have.status(200);
+		});
+		
+		it('shoudl return 404 for invalid id', async () => {
+			const response = await withLogin(request(api).put('/playlists/5b0f306d8e147f10deadbeef').send(playlist));
 
-    describe('updating existing entry', () => {
-        // api.route('/playlists/:playlistId').put(Playlist.put);
-    });
+			expect(response).to.have.status(404);
+		});
 
-    describe('deleting entry by id', () => {
-        it('should return 204 for valid request', async () => {
-            const response = await withLogin(request(api).delete(`/playlists/${playlist._id}`));
+		it('should return 403 when updating entries created by other users', async () => {
+			const otherPlaylist = await Playlist.create({
+				user: otherUserId,
+				name: 'other playlist',
+				episodes: []
+			});
+			const response = await withLogin(request(api).put(`/playlists/${otherPlaylist._id}`).send(playlist));
 
-            expect(response).to.have.status(204);
-        });
+			expect(response).to.have.status(403);
+		});
 
-        it('shoudl return 404 for invalid id', async () => {
-            const response = await withLogin(request(api).delete('/playlists/5b0f306d8e147f10deadbeef'));
+		it('should return 500 for invalid request', async () => {
+			//XXX: silensing error logs to have nice clean test output
+			sinon.stub(logger, 'error');
+			const response = await withLogin(request(api).delete('/playlists/<bogus-id>/'));
 
-            expect(response).to.have.status(404);
-        });
+			expect(response).to.have.status(500);
+			logger.error.restore();
+		});
+	});
+	
+	describe('deleting entry by id', () => {
+		it('should return 204 for valid request', async () => {
+			const response = await withLogin(request(api).delete(`/playlists/${playlist._id}`));
 
-        it('should return 403 when deleting entries created by other users', async () => {
-            const otherPlaylist = await Playlist.create({
-                user: otherUserId,
-                name: 'other playlist',
-                episodes: []
-            });
-            const response = await withLogin(request(api).delete(`/playlists/${otherPlaylist._id}`));
+			expect(response).to.have.status(204);
+		});
 
-            expect(response).to.have.status(403);
-        });
+		it('shoudl return 404 for invalid id', async () => {
+			const response = await withLogin(request(api).delete('/playlists/5b0f306d8e147f10deadbeef'));
 
-        it('should return 422 for invalid request', async () => {
-            const response = await withLogin(request(api).delete('/playlists/<bogus-id>/'));
+			expect(response).to.have.status(404);
+		});
 
-            expect(response).to.have.status(422);
-        });
-    });
+		it('should return 403 when deleting entries created by other users', async () => {
+			const otherPlaylist = await Playlist.create({
+				user: otherUserId,
+				name: 'other playlist',
+				episodes: []
+			});
+			const response = await withLogin(request(api).delete(`/playlists/${otherPlaylist._id}`));
+
+			expect(response).to.have.status(403);
+		});
+
+		it('should return 500 for invalid request', async () => {
+			//XXX: silensing error logs to have nice clean test output
+			sinon.stub(logger, 'error');
+			const response = await withLogin(request(api).delete('/playlists/<bogus-id>/'));
+
+			expect(response).to.have.status(500);
+			logger.error.restore();
+		});
+	});
 });

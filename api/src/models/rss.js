@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
-import {ArticleSchema} from "./article";
+import { ArticleSchema } from './article';
 
 export const RSSSchema = new Schema(
 	{
@@ -79,6 +79,14 @@ export const RSSSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		followerCount: {
+			type: Number,
+			default: 0,
+		},
+		postCount: {
+			type: Number,
+			default: 0,
+		},
 		summary: {
 			type: String,
 			default: '',
@@ -96,14 +104,48 @@ export const RSSSchema = new Schema(
 			type: String,
 			default: '',
 		},
+		consecutiveScrapeFailures: {
+			type: Number,
+			default: 0,
+		},
 	},
-	{ collection: 'rss' },
+	{
+		collection: 'rss',
+		toJSON: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				// Frontend breaks if images is null, should be {} instead
+				if (!ret.images) {
+					ret.images = {};
+				}
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
+			},
+		},
+	},
 );
 
 RSSSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },
 });
+
+RSSSchema.statics.incrScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures : 1}}).exec();
+};
+
+RSSSchema.statics.resetScrapeFailures = async function(id) {
+	await this.findOneAndUpdate({_id :id}, {$set : {consecutiveScrapeFailures : 0}}).exec();
+};
 
 RSSSchema.methods.searchDocument = function() {
 	return {
@@ -119,7 +161,7 @@ RSSSchema.methods.searchDocument = function() {
 	};
 };
 
-RSSSchema.index({featured: 1}, {partialFilterExpression: {featured: true}});
+RSSSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });
 
 RSSSchema.plugin(mongooseStringQuery);
 

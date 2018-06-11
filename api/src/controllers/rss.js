@@ -9,6 +9,8 @@ import personalization from '../utils/personalization';
 import moment from 'moment';
 import search from '../utils/search';
 import asyncTasks from '../asyncTasks';
+import mongoose from 'mongoose';
+
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
@@ -27,10 +29,13 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	if (req.params.rssId === 'undefined') {
-		return res.sendStatus(404);
+	let rssID = req.params.rssId
+
+	if (!mongoose.Types.ObjectId.isValid(rssID)) {
+		return res.status(422).json({ error: `RSS ID ${rssID} is invalid.`});
 	}
-	let rss = await RSS.findById(req.params.rssId).exec();
+
+	let rss = await RSS.findById(rssID).exec();
 	if (!rss) {
 		return res.sendStatus(404);
 	}
@@ -41,13 +46,13 @@ exports.post = async (req, res) => {
 	const data = req.body || {};
 
 	if (!data.feedUrl || !validUrl.isUri(normalizeUrl(data.feedUrl))) {
-		return res.status(400).send('Please provide a valid RSS URL.');
+		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
 	}
 
 	let foundRSS = await rssFinder(normalizeUrl(data.feedUrl));
 
 	if (!foundRSS.feedUrls.length) {
-		return res.status(404).send('We couldn\'t find any feeds for that RSS feed URL :(');
+		return res.status(404).json({ error: 'We couldn\'t find any feeds for that RSS feed URL :(' });
 	}
 
 	let insertedFeeds = [];
@@ -132,11 +137,13 @@ exports.post = async (req, res) => {
 
 exports.put = async (req, res) => {
 	if (!req.User.admin) {
-		return res.status(403).send();
+		return res.status(403).json({ error: 'You must be an admin to perform this action.' });
 	}
+
 	if (!req.params.rssId) {
-		return res.status(401).send();
+		return res.status(401).json({ error: 'You must provide a valid RSS ID to perform this action' });
 	}
+
 	let rss = await RSS.findByIdAndUpdate(
 		{
 			_id: req.params.rssId,
@@ -144,8 +151,10 @@ exports.put = async (req, res) => {
 		req.body,
 		{new: true},
 	);
+
 	if (!rss) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: `Can't find RSS feed with id ${req.params.rssId}` });
 	}
+
 	res.json(rss);
 };
