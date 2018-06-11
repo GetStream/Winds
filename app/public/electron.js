@@ -14,7 +14,7 @@ const isDev = require('electron-is-dev');
 
 let mainWindow;
 
-function createWindow() {
+createWindow = () => {
 	mainWindow = new BrowserWindow({
 		backgroundColor: '#F7F7F7',
 		minWidth: 880,
@@ -71,7 +71,7 @@ function createWindow() {
 	});
 };
 
-function registerProtocol() {
+registerProtocol = () => {
 	protocol.registerFileProtocol(
 		'winds',
 		(request, callback) => {
@@ -86,7 +86,7 @@ function registerProtocol() {
 	);
 };
 
-function generateMenu() {
+generateMenu = () => {
 	const template = [
 		{
 			label: 'File',
@@ -153,24 +153,24 @@ function generateMenu() {
 	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 };
 
-function mediaControls(event, args) {
+mediaControls = (event, args) => {
 	let next = new TouchBarButton({
 		icon: `${__dirname}/static/next.png`,
-		click: function() {
+		click: () => {
 			event.sender.send('media-controls', 'next');
 		},
 	});
 
 	let previous = new TouchBarButton({
 		icon: `${__dirname}/static/previous.png`,
-		click: function() {
+		click: () => {
 			event.sender.send('media-controls', 'previous');
 		},
 	});
 
 	let playPause = new TouchBarButton({
 		icon: `${__dirname}/static/pause.png`,
-		click: function() {
+		click: () => {
 			event.sender.send('media-controls', 'togglePlayPause');
 		},
 	});

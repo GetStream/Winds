@@ -25,14 +25,14 @@ class Player extends Component {
 			volume: 0.5,
 		};
 
+		this.playbackSpeedOptions = [1, 1.25, 1.5, 1.75, 2];
+		this.lastSent = 0;
+
 		this.cyclePlaybackSpeed = this.cyclePlaybackSpeed.bind(this);
 		this.setVolume = this.setVolume.bind(this);
 		this.seekTo = this.seekTo.bind(this);
-		this.playbackSpeedOptions = [1, 1.25, 1.5, 1.75, 2];
-		this.lastSent = 0;
-		this.togglePlayOrPause = this.togglePlayOrPause.bind(this);
+		this.togglePlayPause = this.togglePlayPause.bind(this);
 		this.incomingMediaControls = this.incomingMediaControls.bind(this);
-		this.outboundMediaControls = this.outboundMediaControls.bind(this);
 	}
 
 	componentDidMount() {
@@ -41,6 +41,12 @@ class Player extends Component {
 		if (this.props.episode) {
 			this.audioPlayerElement.audioEl.volume = this.state.volume / 100;
 		}
+
+		window.ipcRenderer.on('media-controls', this.incomingMediaControls);
+	}
+
+	componentWillUnmount() {
+		window.ipcRenderer.removeAllListeners('media-controls', this.incomingMediaControls);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -86,7 +92,7 @@ class Player extends Component {
 		}
 	}
 
-	togglePlayOrPause() {
+	togglePlayPause() {
 		if (this.props.playing) {
 			this.props.pause();
 		} else {
@@ -159,20 +165,14 @@ class Player extends Component {
 		});
 	}
 
-	incomingMediaControls() {
-		window.ipcRenderer.on('media-controls', (event, args) => {
-			if (args === 'togglePlayPause') {
-				this.togglePlayOrPause();
-			} else if (args === 'next') {
-				this.skipAhead();
-			} else if (args === 'previous') {
-				this.skipBack();
-			}
-		});
-	}
-
-	outboundMediaControls(args) {
-		window.ipcRenderer.send('media-controls', args);
+	incomingMediaControls(event, args) {
+		if (args === 'togglePlayPause') {
+			this.togglePlayPause();
+		} else if (args === 'next') {
+			this.skipAhead();
+		} else if (args === 'previous') {
+			this.skipBack();
+		}
 	}
 
 	render() {
@@ -181,13 +181,13 @@ class Player extends Component {
 		}
 
 		let playButton = (
-			<div className="btn play" onClick={this.togglePlayOrPause}>
+			<div className="btn play" onClick={this.togglePlayPause}>
 				<Img src={playIcon} />
 			</div>
 		);
 
 		let pauseButton = (
-			<div className="btn pause" onClick={this.togglePlayOrPause}>
+			<div className="btn pause" onClick={this.togglePlayPause}>
 				<Img src={pauseIcon} />
 			</div>
 		);
@@ -349,9 +349,10 @@ const mapStateToProps = state => {
 	if (!('player' in state)) {
 		return { episode: null };
 	}
+
 	let episode = { ...state.episodes[state.player.episodeID] };
-	// populate podcast parent too
-	episode.podcast = { ...state.podcasts[episode.podcast] };
+	episode.podcast = { ...state.podcasts[episode.podcast] }; // populate podcast parent too
+
 	let context = { ...state.player };
 
 	if (context.playing) {
@@ -366,6 +367,7 @@ const mapStateToProps = state => {
 	}
 
 	let currentUserID = localStorage['authedUser'];
+
 	return {
 		context,
 		currentUserID,
