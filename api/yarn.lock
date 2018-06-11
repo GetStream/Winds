@@ -82,6 +82,18 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
+"@newrelic/koa@^1.0.0":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@newrelic/koa/-/koa-1.0.5.tgz#76ca506c956b6f6599d866a7a725b573fde2fe1a"
+  dependencies:
+    methods "^1.1.2"
+
+"@newrelic/native-metrics@^2.1.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@newrelic/native-metrics/-/native-metrics-2.4.0.tgz#65503820f1fc6afc215cd9893077848a6c013cae"
+  dependencies:
+    nan "^2.8.0"
+
 "@sendgrid/client@^6.2.1":
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/@sendgrid/client/-/client-6.2.1.tgz#f1732f8fbda197c6d11507de6f33efbc1f2cdb31"
@@ -140,6 +152,10 @@
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.3.tgz#7f226d67d654ec9070e755f46daebf014628e9d9"
 
+"@tyriar/fibonacci-heap@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@tyriar/fibonacci-heap/-/fibonacci-heap-2.0.7.tgz#73a441ca0e5108d2621c72e9b34dcf566387f078"
+
 Base64@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/Base64/-/Base64-1.0.1.tgz#def45cc50c961bcc9bf2321d0f52bcbfec1f1bb1"
@@ -158,6 +174,12 @@ accepts@~1.3.4, accepts@~1.3.5:
 addressparser@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/addressparser/-/addressparser-1.0.1.tgz#47afbe1a2a9262191db6838e4fd1d39b40821746"
+
+agent-base@^4.1.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.2.0.tgz#9838b5c3392b962bad031e6a4c5e1024abec45ce"
+  dependencies:
+    es6-promisify "^5.0.0"
 
 agentkeepalive@^2.2.0:
   version "2.2.0"
@@ -410,7 +432,7 @@ async@^1.3.0, async@^1.4.0, async@^1.5.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@^2.6.0, async@^2.6.1:
+async@^2.1.4, async@^2.6.0, async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.1.tgz#b245a23ca71930044ec53fa46aa00a3e87c6a610"
   dependencies:
@@ -1948,9 +1970,15 @@ es-to-primitive@^1.1.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.1"
 
-es6-promise@^4.1.0:
+es6-promise@^4.0.3, es6-promise@^4.1.0:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.4.tgz#dc4221c2b16518760bd8c39a52d8f356fc00ed29"
+
+es6-promisify@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/es6-promisify/-/es6-promisify-5.0.0.tgz#5109d62f3e56ea967c4b63505aef08291c8a5203"
+  dependencies:
+    es6-promise "^4.0.3"
 
 escape-html@~1.0.3:
   version "1.0.3"
@@ -2894,6 +2922,13 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
+https-proxy-agent@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.1.tgz#51552970fa04d723e04c56d04178c3f92592bbc0"
+  dependencies:
+    agent-base "^4.1.0"
+    debug "^3.1.0"
+
 iconv-js@^0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/iconv-js/-/iconv-js-0.3.5.tgz#40d4ee237fd2d2ec9bdb02cef58bbffb540ee940"
@@ -3461,7 +3496,7 @@ json-stable-stringify@^1.0.1:
   dependencies:
     jsonify "~0.0.0"
 
-json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
+json-stringify-safe@^5.0.0, json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
@@ -4218,7 +4253,7 @@ n-gram@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/n-gram/-/n-gram-1.0.1.tgz#d29a465e4debcff7f9eed9fb57d9da6c806f4112"
 
-nan@^2.3.5, nan@^2.9.2:
+nan@^2.3.5, nan@^2.8.0, nan@^2.9.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
@@ -4250,6 +4285,21 @@ needle@^2.2.0:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+newrelic@^4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-4.1.4.tgz#102fa74dce38b03f917d671368a58555fba1efb0"
+  dependencies:
+    "@newrelic/koa" "^1.0.0"
+    "@tyriar/fibonacci-heap" "^2.0.7"
+    async "^2.1.4"
+    concat-stream "^1.5.0"
+    https-proxy-agent "^2.2.1"
+    json-stringify-safe "^5.0.0"
+    readable-stream "^2.1.4"
+    semver "^5.3.0"
+  optionalDependencies:
+    "@newrelic/native-metrics" "^2.1.0"
 
 nise@^1.3.3:
   version "1.3.3"
@@ -4928,7 +4978,7 @@ readable-stream@1.1.x:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.5:
+readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.5:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   dependencies:
