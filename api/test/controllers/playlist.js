@@ -116,6 +116,19 @@ describe('Playlist controller', () => {
 			const response = await withLogin(request(api).post('/playlists').send(data));
 
 			expect(response).to.have.status(200);
+
+			const keys = ['_id', 'user', 'name', 'episodes'];
+			expect(Object.keys(response.body)).to.include.members(keys);
+			const newPlaylist = await Playlist.findOne({ name: 'yet other playlist' });
+
+			expect(response.body._id).to.be.equal(String(newPlaylist._id));
+			expect(response.body.user._id).to.be.equal(data.user);
+			expect(response.body.user._id).to.be.equal(String(newPlaylist.user._id));
+			expect(response.body.name).to.be.equal(data.name);
+			expect(response.body.name).to.be.equal(newPlaylist.name);
+			//XXX: mocha seems to hang if we try to do a full compare
+			expect(response.body.episodes.map(e => e._id)).to.have.all.members(data.episodes);
+			expect(response.body.episodes.map(e => e._id)).to.have.all.members(newPlaylist.episodes.map(e => String(e._id)));
 		});
 
 		it('should return 500 for invalid request', async () => {
@@ -139,6 +152,19 @@ describe('Playlist controller', () => {
 			const response = await withLogin(request(api).put(`/playlists/${playlist._id}`).send(data));
 
 			expect(response).to.have.status(200);
+
+			const keys = ['_id', 'user', 'name', 'episodes'];
+			expect(Object.keys(response.body)).to.include.members(keys);
+			const updatedPlaylist = await Playlist.findById(playlist._id).lean();
+
+			expect(response.body._id).to.be.equal(String(updatedPlaylist._id));
+			expect(response.body.user._id).to.be.equal(data.user);
+			expect(response.body.user._id).to.be.equal(String(updatedPlaylist.user._id));
+			expect(response.body.name).to.be.equal(data.name);
+			expect(response.body.name).to.be.equal(updatedPlaylist.name);
+			//XXX: mocha seems to hang if we try to do a full compare
+			expect(response.body.episodes.map(e => e._id)).to.have.all.members(data.episodes.map(String));
+			expect(response.body.episodes.map(e => e._id)).to.have.all.members(updatedPlaylist.episodes.map(e => String(e._id)));
 		});
 		
 		it('shoudl return 404 for invalid id', async () => {
@@ -173,6 +199,7 @@ describe('Playlist controller', () => {
 			const response = await withLogin(request(api).delete(`/playlists/${playlist._id}`));
 
 			expect(response).to.have.status(204);
+			expect(await Playlist.findById(playlist._id)).to.be.null;
 		});
 
 		it('shoudl return 404 for invalid id', async () => {
