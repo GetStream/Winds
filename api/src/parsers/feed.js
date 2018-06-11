@@ -158,7 +158,7 @@ export function ParseFeedPosts(posts) {
 	let feedContents = { articles: [] };
 	let i = 0;
 
-	for (let post of posts.slice(0, 1000)) {
+	for (let post of posts.slice(0, 1)) {
 		i++;
 
 		let article;
@@ -183,6 +183,11 @@ export function ParseFeedPosts(posts) {
 		} catch (err) {
 			logger.info('skipping article', { err });
 			continue;
+		}
+
+		if (post['yt:videoid']) {
+			let youtubeID = post['yt:videoid']['#']
+			article.enclosures.push({type: 'youtube', url: `https://www.youtube.com/watch?v=${youtubeID}`})
 		}
 
 		// HNEWS
