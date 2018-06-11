@@ -276,6 +276,7 @@ class AccountDetailsForm extends React.Component {
 			})
 			.catch(err => {
 				let errorMessage;
+				
 				if (
 					err.response &&
 					err.response.status > 399 &&
