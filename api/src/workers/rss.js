@@ -198,14 +198,10 @@ async function upsertArticle(rssID, post) {
 	let update = Object.assign({}, search);
 	update.url = post.url;
 	update.rss = rssID;
-
-	// this fields are only added to the article when it gets created
-	let defaults = {
-		enclosures: post.enclosures || {},
-		images: post.images || {},
-		publicationDate: post.publicationDate,
-		contentHash: Article.computeContentHash(post),
-	};
+	update.enclosures = post.enclosures || {};
+	update.images = post.images || {};
+	update.publicationDate = post.publicationDate;
+	update.contentHash = Article.computeContentHash(post);
 
 	try {
 		let rawArticle = await Article.findOneAndUpdate(
@@ -231,7 +227,6 @@ async function upsertArticle(rssID, post) {
 				new: true,
 				upsert: true,
 				rawResult: true,
-				setDefaultsOnInsert: defaults,
 			},
 		);
 		if (!rawArticle.lastErrorObject.updatedExisting) {
