@@ -18,7 +18,6 @@ class RSSArticleList extends React.Component {
 		super(props);
 		this.state = {
 			articleCursor: 1,
-			loading: true,
 			menuIsOpen: false,
 			sortBy: 'latest',
 		};
@@ -123,16 +122,9 @@ class RSSArticleList extends React.Component {
 					articles: res.data,
 					type: 'BATCH_UPDATE_ARTICLES',
 				});
-
-				this.setState({
-					loading: false,
-				});
 			})
 			.catch(err => {
 				console.log(err); // eslint-disable-line no-console
-				this.setState({
-					loading: false,
-				});
 			});
 	}
 	follow() {
@@ -200,7 +192,7 @@ class RSSArticleList extends React.Component {
 			</div>
 		);
 
-		if (this.state.loading) {
+		if (this.props.loading) {
 			return <Loader />;
 		} else {
 			let rightContents;
@@ -314,6 +306,7 @@ class RSSArticleList extends React.Component {
 
 RSSArticleList.defaultProps = {
 	articles: [],
+	loading: true,
 	following: false,
 	rssFeed: {
 		images: {},
@@ -329,6 +322,7 @@ RSSArticleList.propTypes = {
 			rssFeedID: PropTypes.string.isRequired,
 		}),
 	}),
+	loading: PropTypes.bool,
 	rssFeed: PropTypes.shape({
 		_id: PropTypes.string,
 		images: PropTypes.shape({
