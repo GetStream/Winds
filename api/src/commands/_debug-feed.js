@@ -150,10 +150,10 @@ export async function debugFeed(feedType, feedUrls) {
 		}
 
 		if (feedType === 'rss') {
-			let feedContent = await ParseFeed(target);
+			let feedContent = await ParseFeed(target, 2);
 			validate(feedContent)
 		} else {
-			let podcastContent = await ParsePodcast(target);
+			let podcastContent = await ParsePodcast(target, 2);
 			validate(podcastContent)
 		}
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');

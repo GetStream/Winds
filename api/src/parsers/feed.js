@@ -33,13 +33,13 @@ export async function ParsePodcast(podcastUrl, limit=1000) {
 }
 
 // ParseFeed parses the feedURL
-export async function ParseFeed(feedURL) {
+export async function ParseFeed(feedURL, limit=1000) {
 	logger.info(`Attempting to parse RSS ${feedURL}`);
 	// timers
 	let t0 = new Date();
 	let stream = await ReadFeedURL(feedURL);
 	let posts = await ReadFeedStream(stream);
-	let feedResponse = ParseFeedPosts(posts);
+	let feedResponse = ParseFeedPosts(posts, limit);
 	statsd.timing('winds.parsers.rss.finished_parsing', new Date() - t0);
 	return feedResponse;
 }
@@ -154,11 +154,11 @@ export async function ReadFeedStream(feedStream) {
 }
 
 // Parse the posts and add our custom logic
-export function ParseFeedPosts(posts) {
+export function ParseFeedPosts(posts, limit=1000) {
 	let feedContents = { articles: [] };
 	let i = 0;
 
-	for (let post of posts.slice(0, 1)) {
+	for (let post of posts.slice(0, limit)) {
 		i++;
 
 		let article;
