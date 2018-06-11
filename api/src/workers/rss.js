@@ -199,10 +199,12 @@ async function upsertArticle(rssID, post) {
 	update.url = post.url;
 	update.rss = rssID;
 
+	// this fields are only added to the article when it gets created
 	let defaults = {
 		enclosures: post.enclosures || {},
 		images: post.images || {},
 		publicationDate: post.publicationDate,
+		contentHash: Article.computeContentHash(post),
 	};
 
 	try {

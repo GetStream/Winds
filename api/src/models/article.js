@@ -4,6 +4,7 @@ import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
 import {ParseArticle} from '../parsers/article';
+import { createHash } from 'crypto';
 
 export const EnclosureSchema = new Schema({
 	url: {
@@ -153,9 +154,17 @@ ArticleSchema.pre('save', function(next) {
 	next();
 });
 
+function computeContentHash(article) {
+	const data = `${article.title}:${article.description}:${article.content}:${article.enclosures.join(',')}`;
+	return createHash('md5').update(data).digest('hex');
+}
+
+ArticleSchema.statics.computeContentHash = function(article) {
+	return computeContentHash(article);
+};
+
 ArticleSchema.methods.computeContentHash = function() {
-	const data = `${this.title}:${this.description}:${this.content}:${this.enclosures.join(',')}`;
-	return crypto.createHash('md5').update(data).digest('hex');
+	return computeContentHash(this);
 };
 
 ArticleSchema.methods.getParsedArticle = async function() {
