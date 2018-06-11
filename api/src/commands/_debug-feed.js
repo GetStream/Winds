@@ -84,7 +84,7 @@ export async function debugFeed(feedType, feedUrls) {
 			}
 
 			let schema = feedType === 'rss' ? RSS : Podcast;
-			let lookup = { feedUrl: target };
+			let lookup = { $or: [{feedUrl: target}, {feedUrl: normalize(target)}] };
 			if (program.task) {
 				logger.info('trying to create a task on the bull queue');
 				let instance = await schema.findOne(lookup)

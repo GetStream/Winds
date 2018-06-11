@@ -12,7 +12,6 @@ export const RSSSchema = new Schema(
 		feedUrl: {
 			type: String,
 			trim: true,
-			lowercase: true,
 			index: true,
 			unique: true,
 			required: true,

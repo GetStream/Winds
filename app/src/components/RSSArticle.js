@@ -6,8 +6,8 @@ import ReactHtmlParser from 'react-html-parser';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import TimeAgo from './TimeAgo';
-import { Player } from 'video-react';
-import '../../node_modules/video-react/dist/video-react.css';
+import ReactPlayer from 'react-player'
+
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -135,9 +135,8 @@ class RSSArticle extends React.Component {
 				<div className="content">
 					<div className="enclosures">
 						{this.props.enclosures.map((enclosure) =>
-							<Player key={enclosure._id}
-								playsInline
-								src={enclosure.url}
+							<ReactPlayer key={enclosure._id}
+								url={enclosure.url}
 							/>
 						)}
 					</div>

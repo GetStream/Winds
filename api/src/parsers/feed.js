@@ -168,8 +168,12 @@ export function ParseFeedPosts(posts) {
 				0,
 				280,
 			);
+			if (description == 'null') {
+				description = null
+			}
+			let content = sanitize(post.summary)
 			article = {
-				content: sanitize(post.summary),
+				content: content,
 				description: description,
 				enclosures: post.enclosures,
 				publicationDate:
@@ -188,6 +192,9 @@ export function ParseFeedPosts(posts) {
 		if (post['yt:videoid']) {
 			let youtubeID = post['yt:videoid']['#']
 			article.enclosures.push({type: 'youtube', url: `https://www.youtube.com/watch?v=${youtubeID}`})
+			if (post['media:group'] && !article.description) {
+				article.description = post['media:group']['media:description']['#']
+			}
 		}
 
 		// HNEWS
