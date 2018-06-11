@@ -1,4 +1,13 @@
-const { app, BrowserWindow, shell, ipcMain, Menu, protocol } = require('electron');
+const {
+	app,
+	BrowserWindow,
+	shell,
+	ipcMain,
+	Menu,
+	TouchBar,
+	protocol,
+} = require('electron');
+const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -34,29 +43,33 @@ function createWindow() {
 
 		installExtension(REACT_DEVELOPER_TOOLS)
 			.then(name => {
-				console.log(`Added Extension: ${name}`); // eslint-disable-line no-console
+				console.log(`Added Extension: ${name}`);
 			})
 			.catch(err => {
-				console.log('An error occurred: ', err); // eslint-disable-line no-console
+				console.log('An error occurred: ', err);
 			});
 
 		installExtension(REDUX_DEVTOOLS)
 			.then(name => {
-				console.log(`Added Extension: ${name}`); // eslint-disable-line no-console
+				console.log(`Added Extension: ${name}`);
 			})
 			.catch(err => {
-				console.log('An error occurred: ', err); // eslint-disable-line no-console
+				console.log('An error occurred: ', err);
 			});
 	}
 
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show();
 
-		ipcMain.on('open-external-window', function(event, arg) {
+		ipcMain.on('open-external-window', (event, arg) => {
 			shell.openExternal(arg);
 		});
+
+		ipcMain.on('media-controls', (event, args) => {
+			mediaControls(event, args);
+		});
 	});
-}
+};
 
 function registerProtocol() {
 	protocol.registerFileProtocol(
@@ -67,14 +80,13 @@ function registerProtocol() {
 		},
 		error => {
 			if (error) {
-				console.error('Failed to register protocol'); // eslint-disable-line no-console
+				console.error('Failed to register protocol');
 			}
 		},
 	);
-}
+};
 
 function generateMenu() {
-	// apple menu guidelines: https://developer.apple.com/macos/human-interface-guidelines/menus/menu-anatomy/
 	const template = [
 		{
 			label: 'File',
@@ -132,14 +144,63 @@ function generateMenu() {
 							'https://github.com/GetStream/Winds/issues',
 						);
 					},
-					label: 'File Issue',
+					label: 'File Issue on GitHub',
 				},
 			],
 		},
 	];
 
 	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-}
+};
+
+function mediaControls(event, args) {
+	let next = new TouchBarButton({
+		icon: `${__dirname}/static/next.png`,
+		click: function() {
+			event.sender.send('media-controls', 'next');
+		},
+	});
+
+	let previous = new TouchBarButton({
+		icon: `${__dirname}/static/previous.png`,
+		click: function() {
+			event.sender.send('media-controls', 'previous');
+		},
+	});
+
+	let playPause = new TouchBarButton({
+		icon: `${__dirname}/static/pause.png`,
+		click: function() {
+			event.sender.send('media-controls', 'togglePlayPause');
+		},
+	});
+
+	let info = new TouchBarLabel({
+		label:
+			args.title && args.title.length > 40
+				? `${args.title.substr(0, 40) + '...'}`
+				: args.title,
+		textColor: '#FFFFFF',
+	});
+
+	if (args.type === 'play') {
+		playPause.icon = `${__dirname}/static/pause.png`;
+		info.label = args.title;
+	} else {
+		playPause.icon = `${__dirname}/static/play.png`;
+	}
+
+	let touchBar = new TouchBar([
+		previous,
+		playPause,
+		next,
+		new TouchBarSpacer({ size: 'flexible' }),
+		info,
+		new TouchBarSpacer({ size: 'flexible' }),
+	]);
+
+	mainWindow.setTouchBar(touchBar);
+};
 
 app.on('ready', () => {
 	createWindow();
@@ -149,10 +210,7 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => {
-	//if (process.platform !== 'darwin') {
-// single window application guideline is to close the app
-		app.quit();
-	//}
+	app.quit();
 });
 
 app.on('activate', () => {
