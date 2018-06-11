@@ -63,6 +63,13 @@ export async function debugFeed(feedType, feedUrls) {
 					} else {
 						logger.info(chalk.red('Image missing :('));
 					}
+					if (article.enclosures.length) {
+						logger.info(`found ${article.enclosures.length} enclosures`)
+						for (let enclosure of article.enclosures) {
+							logger.info(JSON.stringify(enclosure))
+						}
+
+					}
 					if (feedType === 'podcast') {
 						if (article.enclosure) {
 							logger.info(chalk.green('Enclosure found :)'));

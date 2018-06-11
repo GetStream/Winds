@@ -134,12 +134,12 @@ class RSSArticle extends React.Component {
 
 				<div className="content">
 					<div className="enclosures">
-						{this.props.enclosures}
-						<Player
-							playsInline
-							poster="/assets/poster.png"
-							src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-						/>
+						{this.props.enclosures.map((enclosure) =>
+							<Player key={enclosure._id}
+								playsInline
+								src={enclosure.url}
+							/>
+						)}
 					</div>
 					{articleContents}
 				</div>
@@ -155,6 +155,12 @@ RSSArticle.defaultProps = {
 RSSArticle.propTypes = {
 	_id: PropTypes.string,
 	commentUrl: PropTypes.string,
+	enclosures: PropTypes.arrayOf(PropTypes.shape({
+		_id: PropTypes.string,
+		url: PropTypes.string,
+		type: PropTypes.string,
+		length: PropTypes.string,
+	})),
 	description: PropTypes.string,
 	dispatch: PropTypes.func.isRequired,
 	images: PropTypes.shape({
@@ -180,6 +186,9 @@ RSSArticle.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let articleID = ownProps.match.params.articleID;
 	let article = {};
+	if (!article.enclosures) {
+		article.enclosures = [];
+	}
 	let rss = {};
 	let loading = false;
 	if (!('articles' in state) || !(articleID in state.articles)) {
