@@ -25,6 +25,11 @@ describe('Playlist controller', () => {
 			const response = await withLogin(request(api).get('/playlists'));
 
 			expect(response).to.have.status(200);
+
+			const keys = ['_id', 'user', 'name', 'episodes'];
+			for (const entry of response.body) {
+				expect(Object.keys(entry)).to.include.members(keys);
+			}
 		});
 		
 		it('should filter results if query is provided', async () => {
@@ -36,6 +41,11 @@ describe('Playlist controller', () => {
 			const response = await withLogin(request(api).get('/playlists').query());
 
 			expect(response).to.have.status(200);
+
+			const keys = ['_id', 'user', 'name', 'episodes'];
+			for (const entry of response.body) {
+				expect(Object.keys(entry)).to.include.members(keys);
+			}
 		});
 		
 		it('should return 403 when retrieving entries created by other users', async () => {
@@ -59,6 +69,14 @@ describe('Playlist controller', () => {
 			const response = await withLogin(request(api).get(`/playlists/${playlist._id}`));
 
 			expect(response).to.have.status(200);
+			const keys = ['_id', 'user', 'name', 'episodes'];
+			expect(Object.keys(response.body)).to.include.members(keys);
+
+			expect(response.body._id).to.be.equal(String(playlist._id));
+			expect(response.body.user._id).to.be.equal(String(playlist.user._id));
+			expect(response.body.name).to.be.equal(playlist.name);
+			//XXX: mocha seems to hang if we try to do a full compare
+			expect(response.body.episodes.map(e => e._id)).to.have.all.members(playlist.episodes.map(e => String(e._id)));
 		});
 
 		it('should return 404 for invalid id', async () => {
