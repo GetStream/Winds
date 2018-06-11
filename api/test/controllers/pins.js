@@ -72,7 +72,7 @@ describe('Pin controller', () => {
 			const res = await withLogin(
 				request(api).delete(`/pins/${pin._id}`)
 			);
-			expect(res).to.have.status(404);
+			expect(res).to.have.status(204);
 		});
 	});
 });
