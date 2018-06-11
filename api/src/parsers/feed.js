@@ -103,7 +103,7 @@ export async function ReadURL(url) {
 		response.data.pipe(zlib.createGunzip());
 		break;
 	case 'deflate':
-		response.data.pipe(zlib.createGunzip());
+		response.data.pipe(zlib.createDeflate());
 		break;
 	default:
 		break;

@@ -7,9 +7,12 @@ import FollowSchema from './follow';
 import LikeSchema from './like';
 import PinSchema from './pin';
 import PlaylistSchema from './playlist';
+import stream from 'getstream';
 
 import jwt from 'jsonwebtoken';
 import config from '../config';
+
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 export const UserSchema = new Schema(
 	{
@@ -129,6 +132,11 @@ UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedU
 	let user = this;
 	let serialized;
 
+	let streamTokens = {}
+	for (let k of ['timeline', 'user_article', 'user_episode']) {
+		streamTokens[k] = streamClient.feed(k, user._id).getReadOnlyToken()
+	}
+
 	serialized = {
 		_id: user._id,
 		email: user.email,
@@ -136,8 +144,7 @@ UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedU
 		jwt: jwt.sign( { email: user.email, sub: user._id }, config.jwt.secret),
 		name: user.name,
 		username: user.username,
-		streamTokens: {
-		},
+		streamTokens: streamTokens,
 	};
 	return serialized;
 };

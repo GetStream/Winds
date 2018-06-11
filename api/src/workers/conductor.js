@@ -64,6 +64,7 @@ async function conduct() {
 				isParsing: {
 					$ne: true,
 				},
+				followerCount: {$gte: 1},
 				valid: true,
 				lastScraped: {
 					$lte: moment()

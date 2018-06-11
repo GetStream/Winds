@@ -2,6 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
+import 'crypto';
+import { createHash } from 'crypto';
 
 export const EpisodeSchema = new Schema(
 	{
@@ -92,6 +94,10 @@ export const EpisodeSchema = new Schema(
 			type: Boolean,
 			default: true,
 		},
+		contentHash: {
+			type: String,
+			default: '',
+		},
 	},
 	{
 		collection: 'episodes',
@@ -124,6 +130,26 @@ EpisodeSchema.plugin(timestamps, {
 });
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
+
+function computeContentHash(episode) {
+	const data = `${episode.title}:${episode.description}:${episode.content}:${episode.enclosure}`;
+	return createHash('md5').update(data).digest('hex');
+}
+
+EpisodeSchema.pre('save', function(next) {
+	if(!this.contentHash) {
+		this.contentHash = this.computeContentHash();
+	}
+	next();
+});
+
+EpisodeSchema.methods.computeContentHash = function() {
+	return computeContentHash(this);
+};
+
+EpisodeSchema.statics.computeContentHash = function(episode) {
+	return computeContentHash(episode);
+};
 
 EpisodeSchema.index({ podcast: 1, url: 1 }, { unique: true });
 

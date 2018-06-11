@@ -97,7 +97,22 @@ FollowSchema.plugin(timestamps, {
 });
 FollowSchema.plugin(mongooseStringQuery);
 FollowSchema.plugin(autopopulate);
+FollowSchema.index({ user: 1, rss: 1, podcast: 1 }, { unique: true });
 
+
+FollowSchema.methods.removeFromStream = async function remove(follows) {
+	let publicationType = (this.rss) ? 'rss': 'podcast'
+	let feedGroup = (this.rss) ? 'user_article' : 'user_episode'
+	let publicationID = (this.rss) ? this.rss._id : this.podcast._id
+	// sync to stream
+	let timelineFeed = streamClient.feed('timeline', this.userID)
+	let otherFeed = streamClient.feed(feedGroup, this.userID)
+	let results = await Promise.all(
+		[timelineFeed.unfollow(publicationType, publicationID),
+		  otherFeed.unfollow(publicationType, publicationID)])
+	return results
+
+}
 FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 
 	// validate
@@ -157,3 +172,4 @@ FollowSchema.statics.getOrCreate = async function getOrCreate(
 };
 
 module.exports = exports = mongoose.model('Follow', FollowSchema);
+module.exports.FollowSchema = FollowSchema

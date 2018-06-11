@@ -4,6 +4,7 @@ import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
 import {ParseArticle} from '../parsers/article';
+import { createHash } from 'crypto';
 
 export const EnclosureSchema = new Schema({
 	url: {
@@ -106,6 +107,10 @@ export const ArticleSchema = new Schema(
 			default: true,
 			valid: true,
 		},
+		contentHash: {
+			type: String,
+			default: '',
+		},
 	},
 	{
 		collection: 'articles',
@@ -116,8 +121,8 @@ export const ArticleSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
-				ret.images.favicon = ret.images.favicon || ""
-				ret.images.og = ret.images.og || ""
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 		toObject: {
@@ -126,8 +131,8 @@ export const ArticleSchema = new Schema(
 				if (!ret.images) {
 					ret.images = {};
 				}
-				ret.images.favicon = ret.images.favicon || ""
-				ret.images.og = ret.images.og || ""
+				ret.images.favicon = ret.images.favicon || '';
+				ret.images.og = ret.images.og || '';
 			},
 		},
 	},
@@ -141,6 +146,26 @@ ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
+
+ArticleSchema.pre('save', function(next) {
+	if(!this.contentHash) {
+		this.contentHash = this.computeContentHash();
+	}
+	next();
+});
+
+function computeContentHash(article) {
+	const data = `${article.title}:${article.description}:${article.content}:${article.enclosures.join(',')}`;
+	return createHash('md5').update(data).digest('hex');
+}
+
+ArticleSchema.statics.computeContentHash = function(article) {
+	return computeContentHash(article);
+};
+
+ArticleSchema.methods.computeContentHash = function() {
+	return computeContentHash(this);
+};
 
 ArticleSchema.methods.getParsedArticle = async function() {
 	let cached = await Cache.findOne({ url: this.url });

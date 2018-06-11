@@ -54,6 +54,28 @@
 				"__v": 0
 			},
 			{
+				"_id": "5b0ad0baf6f89574a638887b",
+				"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
+				"description": "Dorkly: Comics",
+				"categories": "RSS",
+				"featured": true,
+				"public": true,
+				"valid": true,
+				"likes": 0,
+				"summary": "",
+				"interest": "",
+				"isParsing": true,
+				"language": "eng",
+				"feedUrl": "http://dorkly.com/comics/rss/original",
+				"lastScraped": "2018-06-01T17:52:10.655Z",
+				"publicationDate": "2018-05-27T15:37:30.011Z",
+				"title": "Dorkly: Comics",
+				"url": "http://dorkly.com/comics/original",
+				"updatedAt": "2018-06-01T18:07:31.230Z",
+				"createdAt": "2018-05-27T15:37:30.017Z",
+				"__v": 0
+			},
+			{
 				"_id": "5b0ad0baf6f89574a638887e",
 				"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
 				"description": "BILDblog",
@@ -147,6 +169,29 @@
 				"enclosures": []
 			},
 			{
+				"_id": "5b0ad37226dc3db38194e5ed",
+				"rss": "5b0ad0baf6f89574a638887a",
+				"url":
+					"http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/",
+				"__v": 0,
+				"commentUrl": null,
+				"content":
+					"<p><img src=\"https://media0dk-a.akamaihd.net/88/15/6c29d61373a1f7056ea81ca96e7b0dec.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/28/70/44ef0712bedd4bb409cdf463f8e5808e.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/66/89/ae36e819b67bae7db3872af89230bc05.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/81/26/2a9963589329a2447a8f312c422f73d8.jpeg\" alt=\"undefined\" /><br /><br /><br /><img src=\"https://media0dk-a.akamaihd.net/64/44/e7931e4fcae882f335325adb6b915395.jpeg\" alt=\"undefined\" /></p>\n<p><br /><br /></p>\nFollow Justin on <strong><a>Twitter</a></strong> and <strong><a>Facebook</a><br /><br /><br /><br /></strong>",
+				"createdAt": "2018-05-27T15:48:59.230Z",
+				"description": "Follow Justin on Twitter and Facebook",
+				"images": {
+					"featured": "",
+					"banner": "",
+					"favicon": "",
+					"og":
+						"http://1.media.dorkly.cvcdn.com/44/64/fd010b185a4610d2a9914b42af6a4de6.jpeg"
+				},
+				"publicationDate": "2018-05-25T13:00:00.000Z",
+				"title": "What If Deadpool Was In Avengers: Infinity War",
+				"updatedAt": "2018-05-30T06:52:15.685Z",
+				"enclosures": []
+			},
+			{
 				"_id": "5b0ad37226dc3db38194e69b",
 				"rss": "5b0ad0baf6f89574a638887e",
 				"url": "http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk",
@@ -163,6 +208,22 @@
 					"Exklusives Fake-Interview, Macht und Deutungshoheit, Heidis Abgründe",
 				"updatedAt": "2018-05-29T19:49:22.315Z",
 				"enclosures": []
+			}
+		],
+		"Follow": [
+			{
+				"rss": "5b0ad0baf6f89574a638887a",
+				"user": "5b0f306d8e147f10f16aceaf"
+			},
+			{
+				"rss": "5b0ad0baf6f89574a638887b",
+				"user": "5b0f306d8e147f10f16aceaf"
+			}
+		],
+		"Pin": [
+			{
+				"article": "5b0ad37226dc3db38194e5ed",
+				"user": "5b0f306d8e147f10f16aceaf"
 			}
 		],
 		"Episode": [

@@ -123,6 +123,7 @@ async function _handlePodcast(job) {
 // updateEpisode updates 1 episode and sync the data to og scraping
 async function upsertEpisode(podcastID, normalizedUrl, episode) {
 	let update = {
+		contentHash: episode.computeContentHash(),
 		description: episode.description,
 		duration: episode.duration,
 		enclosure: episode.enclosure,
