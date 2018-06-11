@@ -12,7 +12,6 @@ import Slider from 'rc-slider';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import moment from 'moment';
-// this needs to be after `moment`
 import 'moment-duration-format'; // eslint-disable-line sort-imports
 
 class Player extends Component {
@@ -31,7 +30,9 @@ class Player extends Component {
 		this.seekTo = this.seekTo.bind(this);
 		this.playbackSpeedOptions = [1, 1.25, 1.5, 1.75, 2];
 		this.lastSent = 0;
-		this.handlePlayOrPauseButtonClick = this.handlePlayOrPauseButtonClick.bind(this);
+		this.togglePlayOrPause = this.togglePlayOrPause.bind(this);
+		this.incomingMediaControls = this.incomingMediaControls.bind(this);
+		this.outboundMediaControls = this.outboundMediaControls.bind(this);
 	}
 
 	componentDidMount() {
@@ -85,7 +86,7 @@ class Player extends Component {
 		}
 	}
 
-	handlePlayOrPauseButtonClick() {
+	togglePlayOrPause() {
 		if (this.props.playing) {
 			this.props.pause();
 		} else {
@@ -158,19 +159,35 @@ class Player extends Component {
 		});
 	}
 
+	incomingMediaControls() {
+		window.ipcRenderer.on('media-controls', (event, args) => {
+			if (args === 'togglePlayPause') {
+				this.togglePlayOrPause();
+			} else if (args === 'next') {
+				this.skipAhead();
+			} else if (args === 'previous') {
+				this.skipBack();
+			}
+		});
+	}
+
+	outboundMediaControls(args) {
+		window.ipcRenderer.send('media-controls', args);
+	}
+
 	render() {
 		if (!this.props.episode) {
 			return null;
 		}
 
 		let playButton = (
-			<div className="btn play" onClick={this.handlePlayOrPauseButtonClick}>
+			<div className="btn play" onClick={this.togglePlayOrPause}>
 				<Img src={playIcon} />
 			</div>
 		);
 
 		let pauseButton = (
-			<div className="btn pause" onClick={this.handlePlayOrPauseButtonClick}>
+			<div className="btn pause" onClick={this.togglePlayOrPause}>
 				<Img src={pauseIcon} />
 			</div>
 		);
@@ -336,6 +353,18 @@ const mapStateToProps = state => {
 	// populate podcast parent too
 	episode.podcast = { ...state.podcasts[episode.podcast] };
 	let context = { ...state.player };
+
+	if (context.playing) {
+		window.ipcRenderer.send('media-controls', {
+			type: 'play',
+			title: `${episode.title} - ${episode.podcast.title}`,
+		});
+	} else {
+		window.ipcRenderer.send('media-controls', {
+			type: 'pause',
+		});
+	}
+
 	let currentUserID = localStorage['authedUser'];
 	return {
 		context,
