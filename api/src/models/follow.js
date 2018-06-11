@@ -97,7 +97,7 @@ FollowSchema.plugin(timestamps, {
 });
 FollowSchema.plugin(mongooseStringQuery);
 FollowSchema.plugin(autopopulate);
-FollowSchema.index({ user: 1, rss: 1, podcast: 1 }, { unique: true });
+//FollowSchema.index({ user: 1, rss: 1, podcast: 1 }, { unique: true });
 
 
 FollowSchema.methods.removeFromStream = async function remove(follows) {
