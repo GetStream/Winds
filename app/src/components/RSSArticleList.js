@@ -69,7 +69,7 @@ class RSSArticleList extends React.Component {
 		}
 	}
 	getRSSFeed(rssFeedID) {
-		fetch('GET', `/rss/${rssFeedID}`)
+		return fetch('GET', `/rss/${rssFeedID}`)
 			.then(res => {
 				this.props.dispatch({
 					rssFeed: res.data,
@@ -81,7 +81,7 @@ class RSSArticleList extends React.Component {
 			});
 	}
 	getFollowState(rssFeedID) {
-		fetch(
+		return fetch(
 			'get',
 			'/follows',
 			{},
@@ -101,7 +101,7 @@ class RSSArticleList extends React.Component {
 	}
 	getRSSArticles(rssFeedID) {
 		// get rss articles
-		fetch(
+		return fetch(
 			'GET',
 			'/articles',
 			{},
@@ -340,8 +340,33 @@ RSSArticleList.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
+	let rssFeed = { images: {} };
+
+	// first, check to see if the RSS feed has been loaded into redux state. if not, return ownProps + loading.
+
+	if ('rssFeeds' in state && ownProps.match.params.rssFeedID in state.rssFeeds) {
+		rssFeed = { ...state.rssFeeds[ownProps.match.params.rssFeedID] };
+	} else {
+		return {
+			...ownProps,
+			loading: true,
+		};
+	}
+
+	// then, attach "follow" state to rss feed
+	let following = false;
+	if (
+		state.followedRssFeeds &&
+		state.followedRssFeeds[localStorage['authedUser']] &&
+		state.followedRssFeeds[localStorage['authedUser']][
+			ownProps.match.params.rssFeedID
+		]
+	) {
+		following = true;
+	}
+
+	// then, check to see if articles have been loaded into redux state yet. if not, return ownProps + loading.
 	let articles = [];
-	let loading = false;
 	if (state.articles) {
 		for (let articleID of Object.keys(state.articles)) {
 			if (state.articles[articleID].rss === ownProps.match.params.rssFeedID) {
@@ -349,15 +374,13 @@ const mapStateToProps = (state, ownProps) => {
 			}
 		}
 	} else {
-		loading = true;
+		return {
+			...ownProps,
+			loading: true,
+		};
 	}
 
-	let rssFeed = { images: {} };
-
-	if ('rssFeeds' in state && ownProps.match.params.rssFeedID in state.rssFeeds) {
-		rssFeed = { ...state.rssFeeds[ownProps.match.params.rssFeedID] };
-	}
-
+	// then, attach pin state, "recent" state, and rss parent to all articles
 	for (let article of articles) {
 		// attach pinned state
 		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
@@ -367,6 +390,7 @@ const mapStateToProps = (state, ownProps) => {
 			article.pinned = false;
 		}
 
+		// attach "recent" state
 		if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
 			if (
 				state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
@@ -382,29 +406,19 @@ const mapStateToProps = (state, ownProps) => {
 			}
 		}
 
+		// attach rss feed
 		article.rss = { ...rssFeed };
 	}
 
+	// last, sort the articles, because the IDs might not be in chronological order
 	articles.sort((a, b) => {
 		return moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
 	});
 
-	let following = false;
-	// get follow state for rss feed
-	if (
-		state.followedRssFeeds &&
-		state.followedRssFeeds[localStorage['authedUser']] &&
-		state.followedRssFeeds[localStorage['authedUser']][
-			ownProps.match.params.rssFeedID
-		]
-	) {
-		following = true;
-	}
-
 	return {
 		articles,
 		following,
-		loading,
+		loading: false,
 		rssFeed,
 		...ownProps,
 	};
