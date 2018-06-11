@@ -55,7 +55,21 @@ async function main() {
       {multi: true}
   	);
     logger.info(`Updated ${result.nModified} out of ${publicationIDs.length}`)
+
 	}
+
+  // set everyone else to 0
+  for (let schema of [RSS, Podcast]) {
+    let result = await schema.update(
+      {followerCount: {$exists: false}},
+      {
+        followerCount: 0,
+      },
+      {multi: true}
+    );
+    logger.info(`Updated ${result.nModified} with no values to 0`)
+  }
+
 }
 
 main()
