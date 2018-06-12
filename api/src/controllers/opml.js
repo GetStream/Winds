@@ -1,4 +1,3 @@
-import isUrl from 'url-regex';
 import opmlParser from 'node-opml-parser';
 import opmlGenerator from 'opml-generator';
 import moment from 'moment';
@@ -17,7 +16,7 @@ import config from '../config';
 import asyncTasks from '../asyncTasks';
 import { IsPodcastURL} from '../parsers/detect-type';
 import search from '../utils/search';
-import validUrl from 'valid-url';
+import validator from 'validator';
 
 import { TrackMetadata } from '../utils/events/analytics';
 
@@ -73,13 +72,13 @@ exports.post = async (req, res) => {
 	let parsedFeeds = feeds.map(feed => {
 		feed.valid = true;
 
-		if (isUrl().test(feed.feedUrl)) {
+		if (validator.isURL(feed.feedUrl)) {
 			feed.feedUrl = normalizeUrl(feed.feedUrl).trim();
 		} else {
 			feed.valid = false;
 		}
 
-		if (isUrl().test(feed.url)) {
+		if (validator.isURL(feed.url)) {
 			feed.url = normalizeUrl(feed.url);
 		}
 
@@ -133,7 +132,7 @@ async function followOPMLFeed(feed, userID) {
 	}
 
 	let feedUrl = normalizeUrl(feed.feedUrl)
-	if (!validUrl.isWebUri(feedUrl)) {
+	if (!validator.isURL(feedUrl)) {
 		result.error = `Invalid URL for OPML import ${feedUrl}`;
 		return result
 	}

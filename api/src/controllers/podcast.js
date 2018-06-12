@@ -1,6 +1,6 @@
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
-import validUrl from 'valid-url';
+import validator from 'validator';
 import Podcast from '../models/podcast';
 import personalization from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
@@ -45,7 +45,15 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
 	const data = Object.assign(req.body, { user: req.user.sub }) || {};
 
-	if (!data.feedUrl || !validUrl.isUri(normalizeUrl(data.feedUrl))) {
+// todo refactor this check for validating partial urls like google.com
+	let url
+	try {
+		url = normalizeUrl(data.feedUrl)
+	}catch(e) {
+		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
+	}
+
+	if (!data.feedUrl || !validator.isURL(url)) {
 		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
 	}
 
@@ -77,7 +85,7 @@ exports.post = async (req, res) => {
 		}
 
 		let feedUrl = normalizeUrl(feed.url)
-		if (!validUrl.isWebUri(feedUrl)) {
+		if (!validator.isURL(feedUrl)) {
 			continue
 		}
 

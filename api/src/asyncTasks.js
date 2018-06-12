@@ -3,9 +3,9 @@ import config from './config';
 import Queue from 'bull';
 import { getStatsDClient } from './utils/statsd';
 
-const rssQueue = new Queue('rss', config.cache.uri);
-const ogQueue = new Queue('og', config.cache.uri);
-const podcastQueue = new Queue('podcast', config.cache.uri);
+export const rssQueue = new Queue('rss', config.cache.uri);
+export const ogQueue = new Queue('og', config.cache.uri);
+export const podcastQueue = new Queue('podcast', config.cache.uri);
 
 function makeMetricKey(queue, event) {
 	return ['winds', 'bull', queue.name, event].join('.');
@@ -52,21 +52,21 @@ AddQueueTracking(rssQueue);
 AddQueueTracking(ogQueue);
 AddQueueTracking(podcastQueue);
 
-exports.RssQueueAdd = rssQueue.add.bind(rssQueue);
-exports.OgQueueAdd = ogQueue.add.bind(ogQueue);
-exports.PodcastQueueAdd = podcastQueue.add.bind(podcastQueue);
+export const RssQueueAdd = rssQueue.add.bind(rssQueue);
+export const OgQueueAdd = ogQueue.add.bind(ogQueue);
+export const PodcastQueueAdd = podcastQueue.add.bind(podcastQueue);
 
-exports.ProcessRssQueue = function() {
+export function ProcessRssQueue() {
 	getStatsDClient().increment(makeMetricKey(rssQueue, 'started'));
 	return rssQueue.process(...arguments);
-};
+}
 
-exports.ProcessOgQueue = function() {
+export function ProcessOgQueue() {
 	getStatsDClient().increment(makeMetricKey(ogQueue, 'started'));
 	ogQueue.process(...arguments);
-};
+}
 
-exports.ProcessPodcastQueue = function() {
+export function ProcessPodcastQueue() {
 	getStatsDClient().increment(makeMetricKey(podcastQueue, 'started'));
 	podcastQueue.process(...arguments);
-};
+}
