@@ -14,7 +14,7 @@ import logger from '../utils/logger';
 import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
 import { ParseFeed } from '../parsers/feed';
 
-import asyncTasks from '../asyncTasks';
+import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
@@ -22,16 +22,16 @@ const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecre
 // connect the handler to the queue
 logger.info('Starting the RSS worker');
 
-// TODO: move this to a separate main.js
-asyncTasks.ProcessRssQueue(100, handleRSS);
+//TODO: move this to a separate main.js
+ProcessRssQueue(100, rssProcessor);
 
 const statsd = getStatsDClient();
 
-// the top level handleRSS just intercepts error handling before it goes to Bull
-async function handleRSS(job) {
+export async function rssProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
+	// just intercept error handling before it goes to Bull
 	try {
-		await _handleRSS(job);
+		await handleRSS(job);
 	} catch (err) {
 		let tags = { queue: 'rss' };
 		let extra = {
@@ -44,7 +44,7 @@ async function handleRSS(job) {
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
-async function _handleRSS(job) {
+export async function handleRSS(job) {
 	let rssID = job.data.rss;
 
 	await timeIt('winds.handle_rss.ack', () => {
@@ -114,7 +114,7 @@ async function _handleRSS(job) {
 	await timeIt('winds.handle_rss.OgQueueAdd', () => {
 		return Promise.all(
 			updatedArticles.map(article => {
-				asyncTasks.OgQueueAdd(
+				OgQueueAdd(
 					{
 						type: 'article',
 						url: article.url,

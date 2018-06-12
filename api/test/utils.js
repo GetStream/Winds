@@ -22,7 +22,7 @@ export function createMockFeed(group, id) {
 		userId: id,
 		id: group + ':' + id,
 	};
-	for (const method of ['follow', 'addActivity', 'get', 'unfollow', 'getReadOnlyToken']) {
+	for (const method of ['follow', 'addActivity', 'addActivities', 'get', 'unfollow', 'getReadOnlyToken']) {
 		mock[method] = sinon.spy(sinon.stub().returns(Promise.resolve({ results: [] })));
 	}
 	mockFeeds[group + ':' + id] = mock;
