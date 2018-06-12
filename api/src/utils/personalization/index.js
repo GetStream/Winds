@@ -29,9 +29,10 @@ const personalization = async data => {
 		},
 		url: data.endpoint,
 	});
-	return response.data.results.map(result => {
+	let articleIDs = response.data.results.map(result => {
 		return result.foreign_id.split(':')[1];
 	});
+	return articleIDs
 };
 
 export default personalization;

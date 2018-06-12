@@ -172,3 +172,4 @@ FollowSchema.statics.getOrCreate = async function getOrCreate(
 };
 
 module.exports = exports = mongoose.model('Follow', FollowSchema);
+module.exports.FollowSchema = FollowSchema
