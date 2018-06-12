@@ -78,7 +78,7 @@ exports.post = async (req, res) => {
 			feed.valid = false;
 		}
 
-		if (isUrl().test(feed.url)) {
+		if (validator.isURL(feed.url)) {
 			feed.url = normalizeUrl(feed.url);
 		}
 
