@@ -9,7 +9,7 @@ import Podcast from '../models/podcast';
 import logger from '../utils/logger';
 
 import asyncTasks from '../asyncTasks';
-import validUrl from 'valid-url';
+import validator from 'validator';
 
 
 const publicationTypes = {
@@ -99,7 +99,7 @@ async function conduct() {
 		logger.info(`conductor found ${publications.length} of type ${publicationType} to scrape`);
 		let promises = [];
 		for (let publication of publications) {
-			if (!validUrl.isWebUri(publication.feedUrl)) {
+			if (!validator.isURL(publication.feedUrl)) {
 				logger.error(`Conductor, url looks invalid for ${publication.feedUrl} with id ${publication._id}`)
 				continue
 			}

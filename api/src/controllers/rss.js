@@ -1,7 +1,7 @@
 import rssFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
-import validUrl from 'valid-url';
+import validator from 'validator';
 
 import RSS from '../models/rss';
 
@@ -51,7 +51,7 @@ exports.post = async (req, res) => {
 	} catch (e) {
 		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
 	}
-	if (!data.feedUrl || !validUrl.isUri(normalizedUrl)) {
+	if (!data.feedUrl || !validator.isURL(normalizedUrl)) {
 		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
 	}
 
@@ -72,7 +72,7 @@ exports.post = async (req, res) => {
 			feedTitle = foundRSS.site.title;
 		}
 		let feedUrl = normalizeUrl(feed.url);
-		if (!validUrl.isWebUri(feedUrl)) {
+		if (!validator.isURL(feedUrl)) {
 			continue;
 		}
 		let rss;
