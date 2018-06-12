@@ -14,7 +14,7 @@ import logger from '../utils/logger';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from '../parsers/feed';
 
-import {ProcessPodcastQueue} from '../asyncTasks';
+import {ProcessPodcastQueue, OgQueueAdd} from '../asyncTasks';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -85,7 +85,7 @@ async function _handlePodcast(job) {
 	});
 
 	await Promise.all(updatedEpisodes.map( episode => {
-		asyncTasks.OgQueueAdd(
+		OgQueueAdd(
 			{
 				type: 'episode',
 				url: episode.link,
