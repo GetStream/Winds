@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { rssQueue, OgQueueAdd } from '../../src/asyncTasks'
 import RSS from '../../src/models/rss';
 import Article from '../../src/models/article';
-import { ParseFeed, ReadFeedURL } from '../../src/parsers/feed';
+import { ParseFeed } from '../../src/parsers/feed';
 import { rssProcessor, handleRSS } from '../../src/workers/rss';
 import { loadFixture, dropDBs, getTestFeed, getMockFeed } from '../utils';
 
@@ -33,8 +33,8 @@ describe('RSS worker', () => {
 			setupHandler();
 
 			const data = {
-			    rss: '5b0ad0baf6f89574a638887a',
-			    url: 'http://dorkly.com/comics/rss'
+				rss: '5b0ad0baf6f89574a638887a',
+				url: 'http://dorkly.com/comics/rss'
 			};
 
 			await rssQueue.add(data);

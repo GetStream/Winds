@@ -155,7 +155,8 @@ ArticleSchema.pre('save', function(next) {
 });
 
 function computeContentHash(article) {
-	const data = `${article.title}:${article.description}:${article.content}:${article.enclosures.join(',')}`;
+	const enclosure = article.enclosures && article.enclosures.join(',') || '';
+	const data = `${article.title}:${article.description}:${article.content}:${enclosure}`;
 	return createHash('md5').update(data).digest('hex');
 }
 
