@@ -1,18 +1,7 @@
-import { expect, request } from 'chai';
+import { expect } from 'chai';
 import normalize from 'normalize-url';
 
-import api from '../../src/server';
-import auth from '../../src/controllers/auth';
-import Podcast from '../../src/models/podcast';
-import RSS from '../../src/models/rss';
-import User from '../../src/models/user';
-import { loadFixture, getMockClient, getMockFeed } from '../utils';
-import fs from 'fs';
-import path from 'path';
-import FeedParser from 'feedparser';
-import jwt from 'jsonwebtoken';
-import config from '../../src/config';
-import { IsPodcastStream } from '../../src/parsers/detect-type';
+import { getTestFeed, getTestPodcast } from '../utils';
 import {
 	ReadFeedStream,
 	ParseFeedPosts,
@@ -301,18 +290,12 @@ const podcastTestData = [
 
 ];
 
-function getTestFeed(type, name) {
-	let p = path.join(__dirname, '..', 'data', type, name);
-	let feedStream = fs.createReadStream(p);
-	return feedStream;
-}
-
 describe('Parsing', () => {
 
 	describe('RSS', () => {
 		for (let test of rssTestData) {
 			it(`should parse feed ${test.filename}`, async () => {
-				let tc = getTestFeed('feed', test.filename);
+				let tc = getTestFeed(test.filename);
 				let posts = await ReadFeedStream(tc);
 				let feedResponse = ParseFeedPosts(posts);
 
@@ -339,7 +322,7 @@ describe('Parsing', () => {
 
 		for (let test of podcastTestData) {
 			it(`should parse podcast feed ${test.filename}`, async () => {
-				let tc = getTestFeed('podcast-feed', test.filename);
+				let tc = getTestPodcast(test.filename);
 				let posts = await ReadFeedStream(tc);
 				let podcastResponse = ParsePodcastPosts(posts);
 
