@@ -13,6 +13,7 @@ program
 	.command('article', 'Debug Article Parsing')
 	.command('discover', 'Debug RSS discovery')
 	.command('rebuild-search', 'Rebuild search')
+	.command('rehash', 'Rehash articles and episodes')
 	.command('truncate-rss-feed <id>', 'Truncate articles for one RSS feed')
 	.parse(process.argv);
 

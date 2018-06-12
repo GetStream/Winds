@@ -22,7 +22,7 @@ export function createMockFeed(group, id) {
 		userId: id,
 		id: group + ':' + id,
 	};
-	for (const method of ['follow', 'addActivity', 'get', 'unfollow', 'getReadOnlyToken']) {
+	for (const method of ['follow', 'addActivity', 'addActivities', 'get', 'unfollow', 'getReadOnlyToken']) {
 		mock[method] = sinon.spy(sinon.stub().returns(Promise.resolve({ results: [] })));
 	}
 	mockFeeds[group + ':' + id] = mock;
@@ -50,6 +50,10 @@ export function getMockClient() {
 
 export function getTestFeed(name) {
 	return fs.createReadStream(path.join(__dirname, 'data', 'feed', name));
+}
+
+export function getTestPodcast(name) {
+	return fs.createReadStream(path.join(__dirname, 'data', 'podcast-feed', name));
 }
 
 export function getTestPage(name) {
