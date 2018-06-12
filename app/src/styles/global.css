@@ -458,8 +458,6 @@ body {
   color: #e55262; }
 
 .forgot-password-wrapper {
-  height: auto;
-  margin-top: 10%;
   width: 303px; }
   .forgot-password-wrapper .back {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -561,6 +559,8 @@ body {
   -webkit-app-region: drag; }
   .auth-view > * {
     margin-bottom: 3rem; }
+  .auth-view > p.info {
+    margin-bottom: 1rem; }
   .auth-view > button {
     margin-bottom: 1rem; }
   .auth-view a {

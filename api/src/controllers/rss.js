@@ -11,16 +11,16 @@ import search from '../utils/search';
 import asyncTasks from '../asyncTasks';
 import mongoose from 'mongoose';
 
-
 exports.list = async (req, res) => {
 	const query = req.query || {};
 	let feeds = [];
 
 	if (query.type === 'recommended') {
 		let recommendedRssIds = await personalization({
-			endpoint: '/winds_rss_recommendations', userId: req.user.sub,
+			endpoint: '/winds_rss_recommendations',
+			userId: req.user.sub,
 		});
-		feeds = await RSS.find({_id: {$in: recommendedRssIds}});
+		feeds = await RSS.find({ _id: { $in: recommendedRssIds } });
 	} else {
 		feeds = await RSS.apiQuery(req.query);
 	}
@@ -29,10 +29,10 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	let rssID = req.params.rssId
+	let rssID = req.params.rssId;
 
 	if (!mongoose.Types.ObjectId.isValid(rssID)) {
-		return res.status(422).json({ error: `RSS ID ${rssID} is invalid.`});
+		return res.status(422).json({ error: `RSS ID ${rssID} is invalid.` });
 	}
 
 	let rss = await RSS.findById(rssID).exec();
@@ -44,35 +44,43 @@ exports.get = async (req, res) => {
 
 exports.post = async (req, res) => {
 	const data = req.body || {};
-
-	if (!data.feedUrl || !validUrl.isUri(normalizeUrl(data.feedUrl))) {
+	let normalizedUrl;
+	// TODO: refactor this url check in utitlies
+	try {
+		normalizedUrl = normalizeUrl(data.feedUrl);
+	} catch (e) {
+		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
+	}
+	if (!data.feedUrl || !validUrl.isUri(normalizedUrl)) {
 		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
 	}
 
 	let foundRSS = await rssFinder(normalizeUrl(data.feedUrl));
 
 	if (!foundRSS.feedUrls.length) {
-		return res.status(404).json({ error: 'We couldn\'t find any feeds for that RSS feed URL :(' });
+		return res
+			.status(404)
+			.json({ error: "We couldn't find any feeds for that RSS feed URL :(" });
 	}
 
 	let insertedFeeds = [];
 	let feeds = [];
 
-	for (let feed of foundRSS.feedUrls.slice(0,10)) {
+	for (let feed of foundRSS.feedUrls.slice(0, 10)) {
 		let feedTitle = feed.title;
 		if (feedTitle.toLowerCase() === 'rss') {
 			feedTitle = foundRSS.site.title;
 		}
-		let feedUrl = normalizeUrl(feed.url)
+		let feedUrl = normalizeUrl(feed.url);
 		if (!validUrl.isWebUri(feedUrl)) {
-			continue
+			continue;
 		}
-		let rss
-		rss = await RSS.findOne({feedUrl: feedUrl})
+		let rss;
+		rss = await RSS.findOne({ feedUrl: feedUrl });
 		// don't update featured RSS feeds since that ends up removing images etc
 		if (!rss || (rss && !rss.featured)) {
 			let response = await RSS.findOneAndUpdate(
-				{feedUrl: feedUrl},
+				{ feedUrl: feedUrl },
 				{
 					categories: 'RSS',
 					description: entities.decodeHTML(feed.title),
@@ -92,17 +100,17 @@ exports.post = async (req, res) => {
 				},
 			);
 
-			rss = response.value
+			rss = response.value;
 			if (response.lastErrorObject.upserted) {
 				insertedFeeds.push(rss);
 			}
 		}
-		feeds.push(rss)
+		feeds.push(rss);
 	}
 
-	let promises = []
+	let promises = [];
 	insertedFeeds.map(f => {
-		promises.push(search(f.searchDocument()))
+		promises.push(search(f.searchDocument()));
 		let rssScrapingPromise = asyncTasks.RssQueueAdd(
 			{
 				rss: f._id,
@@ -113,8 +121,8 @@ exports.post = async (req, res) => {
 				removeOnComplete: true,
 				removeOnFail: true,
 			},
-		)
-		promises.push(rssScrapingPromise)
+		);
+		promises.push(rssScrapingPromise);
 		if (!f.images.og && f.url) {
 			let ogPromise = asyncTasks.OgQueueAdd(
 				{
@@ -126,10 +134,10 @@ exports.post = async (req, res) => {
 					removeOnFail: true,
 				},
 			);
-			promises.push(ogPromise)
+			promises.push(ogPromise);
 		}
 	});
-	await Promise.all(promises)
+	await Promise.all(promises);
 
 	res.status(201);
 	res.json(feeds);
@@ -137,11 +145,15 @@ exports.post = async (req, res) => {
 
 exports.put = async (req, res) => {
 	if (!req.User.admin) {
-		return res.status(403).json({ error: 'You must be an admin to perform this action.' });
+		return res
+			.status(403)
+			.json({ error: 'You must be an admin to perform this action.' });
 	}
 
 	if (!req.params.rssId) {
-		return res.status(401).json({ error: 'You must provide a valid RSS ID to perform this action' });
+		return res
+			.status(401)
+			.json({ error: 'You must provide a valid RSS ID to perform this action' });
 	}
 
 	let rss = await RSS.findByIdAndUpdate(
@@ -149,11 +161,13 @@ exports.put = async (req, res) => {
 			_id: req.params.rssId,
 		},
 		req.body,
-		{new: true},
+		{ new: true },
 	);
 
 	if (!rss) {
-		return res.status(404).json({ error: `Can't find RSS feed with id ${req.params.rssId}` });
+		return res
+			.status(404)
+			.json({ error: `Can't find RSS feed with id ${req.params.rssId}` });
 	}
 
 	res.json(rss);

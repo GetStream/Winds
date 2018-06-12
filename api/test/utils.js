@@ -52,6 +52,10 @@ export function getTestFeed(name) {
 	return fs.createReadStream(path.join(__dirname, 'data', 'feed', name));
 }
 
+export function getTestPodcast(name) {
+	return fs.createReadStream(path.join(__dirname, 'data', 'podcast-feed', name));
+}
+
 export function getTestPage(name) {
 	return fs.createReadStream(path.join(__dirname, 'data', 'og', name));
 }
