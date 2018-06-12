@@ -8,7 +8,7 @@ import Episode from '../models/episode';
 
 import RSS from '../models/rss';
 
-import asyncTasks from '../asyncTasks';
+import {OgQueueAdd} from '../asyncTasks';
 
 program
 	.option('--all', 'Rescrape articles for which we already have an og image')
@@ -36,7 +36,7 @@ async function main() {
 			for (const instance of chunk) {
 				let missingImage = !instance.images || !instance.images.og
 				if (missingImage || program.all) {
-					let promise = asyncTasks.OgQueueAdd(
+					let promise = OgQueueAdd(
 						{
 							type: contentType,
 							url: instance[field],

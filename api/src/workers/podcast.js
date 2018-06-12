@@ -14,13 +14,13 @@ import logger from '../utils/logger';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from '../parsers/feed';
 
-import asyncTasks from '../asyncTasks';
+import {ProcessPodcastQueue} from '../asyncTasks';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-asyncTasks.ProcessPodcastQueue(15, handlePodcast);
+ProcessPodcastQueue(15, handlePodcast);
 
 // the top level handlePodcast just handles error handling
 async function handlePodcast(job) {

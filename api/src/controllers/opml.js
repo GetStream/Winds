@@ -13,7 +13,7 @@ import User from '../models/user';
 import util from 'util';
 
 import config from '../config';
-import asyncTasks from '../asyncTasks';
+import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
 import { IsPodcastURL} from '../parsers/detect-type';
 import search from '../utils/search';
 import validator from 'validator';
@@ -159,8 +159,8 @@ async function followOPMLFeed(feed, userID) {
 
 		let queue =
 			publicationType == 'rss'
-				? asyncTasks.RssQueueAdd
-				: asyncTasks.PodcastQueueAdd;
+				? RssQueueAdd
+				: PodcastQueueAdd;
 
 		await queue(queueData, {
 			priority: 1,

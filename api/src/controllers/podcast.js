@@ -6,7 +6,7 @@ import personalization from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
-import asyncTasks from '../asyncTasks';
+import {PodcastQueueAdd, OgQueueAdd} from '../asyncTasks';
 import mongoose from 'mongoose';
 
 
@@ -125,7 +125,7 @@ exports.post = async (req, res) => {
 
 	let promises = []
 	insertedPodcasts.map( p => {
-		let scrapingPromise = asyncTasks.PodcastQueueAdd(
+		let scrapingPromise = PodcastQueueAdd(
 			{
 				podcast: p._id,
 				url: p.feedUrl,
@@ -140,7 +140,7 @@ exports.post = async (req, res) => {
 		promises.push(scrapingPromise);
 
 		if (!p.images.og && p.link) {
-			promises.push( asyncTasks.OgQueueAdd(
+			promises.push( OgQueueAdd(
 				{
 					url: p.url,
 					type: 'podcast',

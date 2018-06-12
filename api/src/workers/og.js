@@ -14,13 +14,13 @@ import '../utils/db';
 import logger from '../utils/logger';
 import {ParseOG, IsValidOGUrl} from '../parsers/og';
 
-import asyncTasks from '../asyncTasks';
+import {ProcessOgQueue} from '../asyncTasks';
 
 const schemaMap = { article: Article, rss: RSS, episode: Episode, podcast: Podcast };
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker');
-asyncTasks.ProcessOgQueue(30, handleOg);
+ProcessOgQueue(30, handleOg);
 
 async function handleOg(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);
