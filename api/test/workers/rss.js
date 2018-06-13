@@ -71,11 +71,14 @@ describe('RSS worker', () => {
 			rss: '5b0ad0baf6f89574a638887a',
 			url: 'http://dorkly.com/comics/rss'
 		};
+		let initialArticles;
 
 		describe('invalid feed', () => {
 			beforeEach(async () => {
 				await dropDBs();
 				await loadFixture('initial-data');
+
+				initialArticles = await Article.find({ rss: data.rss });
 
 				getMockFeed('rss', data.rss).addActivities.resetHistory();
 				ParseFeed.resetHistory();
@@ -92,7 +95,7 @@ describe('RSS worker', () => {
 				await handler;
 
 				const articles = await Article.find({ rss: data.rss });
-				expect(articles).to.have.length(17);
+				expect(articles).to.have.length(initialArticles.length + 15);
 			});
 
 			it('should fail to parse empty feed', async () => {
@@ -110,24 +113,23 @@ describe('RSS worker', () => {
 				expect(error).to.be.an.instanceOf(Error);
 
 				const articles = await Article.find({ rss: data.rss });
-				expect(articles).to.have.length(2);
+				expect(articles).to.have.length(initialArticles.length);
 			});
 		});
 
 		describe('valid feed', () => {
-			let initialArticles;
 			const newArticleCount = 30;
 
 			before(async () => {
 				await dropDBs();
 				await loadFixture('initial-data');
 
+				initialArticles = await Article.find({ rss: data.rss });
+
 				getMockFeed('rss', data.rss).addActivities.resetHistory();
 				ParseFeed.resetHistory();
 				OgQueueAdd.resetHistory();
 				setupHandler();
-
-				initialArticles = await Article.find({ rss: data.rss });
 
 				nock(data.url).get('').reply(200, () => {
 					return getTestFeed('hackernews');
