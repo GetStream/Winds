@@ -48,17 +48,18 @@ describe('Podcast worker', () => {
 				{ podcast: '5afb7fedfe7430d35996d66e', url: 'http://dorkly.com/comics/rssss' },
 			];
 
-			for (const data of testCases) {
+			for (let i = 0; i < testCases.length; ++i) {
 				setupHandler();
 
+				const data = testCases[i];
 				await podcastQueue.add(data);
-				let error = null;
 				try {
 					await handler;
 				} catch (err) {
-					error = err;
+					// ignore error
 				}
-				expect(error).to.be.an.instanceOf(Error);
+				const podcast = await Podcast.findById(data.podcast);
+				expect(podcast.consecutiveScrapeFailures).to.be.an.equal(i + 1);
 			}
 		});
 	});
@@ -116,13 +117,16 @@ describe('Podcast worker', () => {
 				_id: { $nin: initialEpisodes.map(a => a._id) },
 				podcast: data.podcast,
 			});
-			for (const i = 0; i < 7; ++i) {
+			const batchCount = Math.ceil(episodes.length / 100);
+			const foreignIds = episodes.map(e => `episodes:${e._id}`);
+			let matchedActivities = 0;
+			for (let i = 0; i < batchCount; ++i) {
+				const batchSize = Math.min(100, episodes.length - i * 100);
 				const args = feed.addActivities.getCall(i).args[0].map(a => a.foreign_id);
-				expect(args).to.have.length(episodes.length);
-				for (const episode of episodes) {
-					expect(args).to.include(`episodes:${episode._id}`);
-				}
+				expect(args).to.have.length(batchSize);
+				matchedActivities += args.filter(arg => foreignIds.includes(arg)).length;
 			}
+			expect(matchedActivities).to.equal(episodes.length);
 		});
 
 		it('should schedule OG job', async () => {
@@ -134,7 +138,7 @@ describe('Podcast worker', () => {
 
 			const opts = { removeOnComplete: true, removeOnFail: true };
 			for (const episode of episodes) {
-				const args = { type: 'episode', url: episode.url };
+				const args = { type: 'episode', url: episode.link };
 				expect(OgQueueAdd.calledWith(args, opts), `Adding ${args.url} to OG queue`).to.be.true;
 			}
 		});
