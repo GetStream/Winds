@@ -92,6 +92,7 @@ export async function handleRSS(job) {
 		const articles = rssContent.articles.map(a => {
 			try {
 				a.url = normalize(a.url);
+				a.contentHash = Article.computeContentHash(a);
 			} catch (err) {
 				logger.warn({err});
 				return null;
@@ -158,15 +159,17 @@ export async function handleRSS(job) {
 
 async function upsertManyArticles(rssID, articles) {
 	let searchData = articles.map(article => {
-		const clone = Object.assign({}, article);
-		delete clone.images;
-		delete clone.publicationDate;
-		return clone;
+		return {url: article.url, contentHash: article.contentHash};
 	});
 
-	let existingArticles = await Article.find({ $or: searchData }, { url: 1 }).read('sp');
+	let existingArticles = await Article.find({$and: [{rss: rssID}, {$or: searchData }]}, { url: 1, contentHash: 1 }).read('sp');
+
 	let existingArticleUrls = existingArticles.map(a => {
 		return a.url;
+	});
+
+	let existingArticleHashes = existingArticles.map(a => {
+		return a.contentHash;
 	});
 
 	statsd.increment(
@@ -175,7 +178,10 @@ async function upsertManyArticles(rssID, articles) {
 	);
 
 	let articlesToUpsert = articles.filter(article => {
-		return existingArticleUrls.indexOf(article.url) === -1;
+		return (
+			existingArticleUrls.indexOf(article.url) === -1 &&
+			existingArticleHashes.indexOf(article.contentHash) === -1
+		);
 	});
 
 	logger.info(
@@ -203,10 +209,10 @@ async function upsertArticle(rssID, post) {
 	let update = Object.assign({}, search);
 	update.url = post.url;
 	update.rss = rssID;
+	update.contentHash = post.contentHash;
 	update.enclosures = post.enclosures || {};
 	update.images = post.images || {};
 	update.publicationDate = post.publicationDate;
-	update.contentHash = Article.computeContentHash(post);
 
 	try {
 		let rawArticle = await Article.findOneAndUpdate(
