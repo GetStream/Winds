@@ -74,7 +74,7 @@ async function conduct() {
 						.toDate(),
 				},
 				consecutiveScrapeFailures: {
-					$lte: rand(),
+					$lt: rand(),
 				},
 			})
 			.limit(maxToSchedule);
