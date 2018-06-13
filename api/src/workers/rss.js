@@ -89,10 +89,15 @@ export async function handleRSS(job) {
 	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
 
 	let allArticles = await timeIt('winds.handle_rss.upsertManyArticles', () => {
-		let articles = rssContent.articles.map(a => {
-			a.url = normalize(a.url);
+		const articles = rssContent.articles.map(a => {
+			try {
+				a.url = normalize(a.url);
+			} catch (err) {
+				logger.warn({err});
+				return null;
+			}
 			return a;
-		});
+		}).filter(a => a);
 		return upsertManyArticles(rssID, articles);
 	});
 

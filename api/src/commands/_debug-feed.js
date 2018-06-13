@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
-import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
+import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
 
 // do stuff
 export async function debugFeed(feedType, feedUrls) {

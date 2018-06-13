@@ -10,9 +10,10 @@ import PropTypes from 'prop-types';
 import ReactAudioPlayer from 'react-audio-player';
 import Slider from 'rc-slider';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
 import moment from 'moment';
+import isElectron from 'is-electron';
 import 'moment-duration-format'; // eslint-disable-line sort-imports
+import fetch from '../util/fetch';
 
 class Player extends Component {
 	constructor(props) {
@@ -42,11 +43,15 @@ class Player extends Component {
 			this.audioPlayerElement.audioEl.volume = this.state.volume / 100;
 		}
 
-		window.ipcRenderer.on('media-controls', this.incomingMediaControls);
+		if (isElectron()) {
+			window.ipcRenderer.on('media-controls', this.incomingMediaControls);
+		}
 	}
 
 	componentWillUnmount() {
-		window.ipcRenderer.removeAllListeners('media-controls', this.incomingMediaControls);
+		if (isElectron()) {
+			window.ipcRenderer.removeAllListeners('media-controls', this.incomingMediaControls);
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -355,15 +360,17 @@ const mapStateToProps = state => {
 
 	let context = { ...state.player };
 
-	if (context.playing) {
-		window.ipcRenderer.send('media-controls', {
-			type: 'play',
-			title: `${episode.title} - ${episode.podcast.title}`,
-		});
-	} else {
-		window.ipcRenderer.send('media-controls', {
-			type: 'pause',
-		});
+	if (isElectron()) {
+		if (context.playing) {
+			window.ipcRenderer.send('media-controls', {
+				type: 'play',
+				title: `${episode.title} - ${episode.podcast.title}`,
+			});
+		} else {
+			window.ipcRenderer.send('media-controls', {
+				type: 'pause',
+			});
+		}
 	}
 
 	let currentUserID = localStorage['authedUser'];

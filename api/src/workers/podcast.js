@@ -14,19 +14,19 @@ import logger from '../utils/logger';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from '../parsers/feed';
 
-import asyncTasks from '../asyncTasks';
+import {ProcessPodcastQueue, OgQueueAdd} from '../asyncTasks';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-asyncTasks.ProcessPodcastQueue(15, handlePodcast);
+ProcessPodcastQueue(15, podcastProcessor);
 
 // the top level handlePodcast just handles error handling
-async function handlePodcast(job) {
+export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
 	try {
-		await _handlePodcast(job);
+		await handlePodcast(job);
 	} catch (err) {
 		let tags = {queue: 'rss'};
 		let extra = {
@@ -38,7 +38,7 @@ async function handlePodcast(job) {
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
-async function _handlePodcast(job) {
+export async function handlePodcast(job) {
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
@@ -85,7 +85,7 @@ async function _handlePodcast(job) {
 	});
 
 	await Promise.all(updatedEpisodes.map( episode => {
-		asyncTasks.OgQueueAdd(
+		OgQueueAdd(
 			{
 				type: 'episode',
 				url: episode.link,

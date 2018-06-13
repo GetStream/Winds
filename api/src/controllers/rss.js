@@ -8,7 +8,7 @@ import RSS from '../models/rss';
 import personalization from '../utils/personalization';
 import moment from 'moment';
 import search from '../utils/search';
-import asyncTasks from '../asyncTasks';
+import {RssQueueAdd, OgQueueAdd} from '../asyncTasks';
 import mongoose from 'mongoose';
 
 exports.list = async (req, res) => {
@@ -111,7 +111,7 @@ exports.post = async (req, res) => {
 	let promises = [];
 	insertedFeeds.map(f => {
 		promises.push(search(f.searchDocument()));
-		let rssScrapingPromise = asyncTasks.RssQueueAdd(
+		let rssScrapingPromise = RssQueueAdd(
 			{
 				rss: f._id,
 				url: f.feedUrl,
@@ -124,7 +124,7 @@ exports.post = async (req, res) => {
 		);
 		promises.push(rssScrapingPromise);
 		if (!f.images.og && f.url) {
-			let ogPromise = asyncTasks.OgQueueAdd(
+			let ogPromise = OgQueueAdd(
 				{
 					url: f.url,
 					type: 'rss',

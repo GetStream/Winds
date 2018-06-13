@@ -8,13 +8,13 @@ import Podcast from '../models/podcast';
 
 import logger from '../utils/logger';
 
-import asyncTasks from '../asyncTasks';
+import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
 import validator from 'validator';
 
 
 const publicationTypes = {
-	rss: { schema: RSS, enqueue: asyncTasks.RssQueueAdd },
-	podcast: { schema: Podcast, enqueue: asyncTasks.PodcastQueueAdd },
+	rss: { schema: RSS, enqueue: RssQueueAdd },
+	podcast: { schema: Podcast, enqueue: PodcastQueueAdd },
 };
 const conductorInterval = 60;
 const durationInMinutes = 15;
