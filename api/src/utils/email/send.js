@@ -12,7 +12,7 @@ export async function SendWelcomeEmail(data) {
 
 	const obj = {
 		to: data.email,
-		from: config.email.sender.default.email,
+		from: config.email.sender.support.email,
 		subject: 'Welcome to Winds!',
 		html: msg,
 	};
@@ -25,14 +25,14 @@ export async function SendPasswordResetEmail(data) {
 	const msg = ejs.render(
 		fs.readFileSync(__dirname + '/templates/password.ejs', 'utf8'),
 		{
-			passcode: data.passcode,
+			recoveryCode: data.recoveryCode,
 		},
 	);
 
 	const obj = {
 		to: data.email,
 		from: config.email.sender.support.email,
-		subject: 'Forgot Password',
+		subject: 'Winds – Forgot Password',
 		html: msg,
 	};
 	return await SendEmail(obj);
@@ -44,11 +44,10 @@ export async function SendEmail(obj) {
 		return obj;
 	} else {
 		if (!config.email.sendgrid.secret) {
-			throw new Error('Could not send reset email, missing Sendgrid secret');
+			throw new Error('Could not send reset email, missing Sendgrid secret.');
 		}
 		sendgrid.setApiKey(config.email.sendgrid.secret);
-		let res;
-		res = await sendgrid.send(obj);
+		let res = await sendgrid.send(obj);
 		return res;
 	}
 }

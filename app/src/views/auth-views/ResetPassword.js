@@ -11,22 +11,22 @@ class ResetPassword extends Component {
 		super(props);
 
 		this.state = {
-			code: null,
 			email: null,
 			password: null,
+			recoveryCode: null,
 			redirect: false,
 			valid: false,
 		};
 
 		this.validateEmail = this.validateEmail.bind(this);
-		this.validateCode = this.validateCode.bind(this);
+		this.validateRecoveryCode = this.validateRecoveryCode.bind(this);
 		this.validatePassword = this.validatePassword.bind(this);
 
 		this.requestPasswordReset = this.requestPasswordReset.bind(this);
 	}
 
 	validateForm() {
-		if (this.state.email && this.state.code && this.state.password) {
+		if (this.state.email && this.state.recoveryCode && this.state.password) {
 			this.setState({ valid: true });
 		} else {
 			this.setState({ valid: false });
@@ -55,13 +55,13 @@ class ResetPassword extends Component {
 		}
 	}
 
-	validateCode(e) {
-		let code = e.target.value.trim();
+	validateRecoveryCode(e) {
+		let recoveryCode = e.target.value.trim();
 
-		if (code.length >= 10) {
+		if (recoveryCode.length >= 10) {
 			this.setState(
 				{
-					code,
+					recoveryCode,
 				},
 				() => {
 					this.validateForm();
@@ -70,7 +70,7 @@ class ResetPassword extends Component {
 		} else {
 			this.setState(
 				{
-					code: null,
+					recoveryCode: null,
 				},
 				() => {
 					this.validateForm();
@@ -109,7 +109,7 @@ class ResetPassword extends Component {
 		axios
 			.post(config.api.url + '/auth/reset-password', {
 				email: this.state.email.toLowerCase(),
-				passphrase: this.state.code,
+				recoveryCode: this.state.recoveryCode,
 				password: this.state.password,
 			})
 			.then(() => {
@@ -164,8 +164,8 @@ class ResetPassword extends Component {
 								<br />
 								<input
 									type="text"
-									name="code"
-									onChange={this.validateCode}
+									name="passcode"
+									onChange={this.validateRecoveryCode}
 								/>
 							</label>
 							<br />
