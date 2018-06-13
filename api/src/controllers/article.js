@@ -7,19 +7,21 @@ import logger from '../utils/logger';
 exports.list = async (req, res) => {
 	const query = req.query || {};
 	let articles = [];
+
 	if (query.type === 'recommended') {
-		let articleIDs = await personalization({
+		const articleIds = await personalization({
 			endpoint: '/winds_article_recommendations',
 			userId: req.user.sub,
 		});
-		// handle failure from the article personalization endpoint gracefully
-		for (let articleID of articleIDs) {
-			if (!mongoose.Types.ObjectId.isValid(articleID)) {
-				logger.error(`Personalization for ${req.user.sub} returned an invalid articleID ${articleID}`)
-				return res.status(500).json({ error: `Failed to load personalized follow suggestions` });
+
+		for (let articleId of articleIds) {
+			if (!mongoose.Types.ObjectId.isValid(articleId)) {
+				logger.error(`Personalization for ${req.user.sub} returned an invalid articleID ${articleID}.`)
+				return res.status(500).json({ error: `Failed to load personalized follow suggestions.` });
 			}
 		}
-		articles = await Article.find({ _id: {$in: articleIDs}});
+
+		articles = await Article.find({ _id: { $in: articleIds }});
 	} else {
 		articles = await Article.apiQuery(req.query);
 	}
@@ -28,22 +30,26 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	let articleID = req.params.articleId
+	const articleId = req.params.articleId;
 
-	if (!mongoose.Types.ObjectId.isValid(articleID)) {
-		return res.status(400).json({ error: `Article ID ${articleID} is invalid` });
+	if (!mongoose.Types.ObjectId.isValid(articleId)) {
+		return res.status(400).json({ error: `Article ID ${articleId} is invalid.` });
 	}
 
-	let article = await Article.findById(articleID);
-	if (!article) {
-		return res.status(404).json({ error: `Can't find article with id ${articleID}` });
-	}
+	try {
+		const article = await Article.findById(articleId);
 
-	if (req.query && req.query.type === 'parsed') {
-		let parsed = await article.getParsedArticle();
+		if (!article) {
+			return res.status(404).json({ error: `Can't find article with id ${articleId}.` });
+		}
 
-		res.json(parsed);
-	} else {
-		res.json(article);
+		if (req.query && req.query.type === 'parsed') {
+			let parsed = await article.getParsedArticle();
+			res.json(parsed);
+		} else {
+			res.json(article);
+		}
+	} catch(e) {
+		return res.status(400).json({ error: `Article ID ${articleId} is invalid.` });
 	}
 };
