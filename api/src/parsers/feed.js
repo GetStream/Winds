@@ -93,7 +93,7 @@ export async function ReadURL(url) {
 		url: url,
 		responseType: 'stream',
 		maxContentLength: maxContentLengthBytes,
-		timeout: 6000,
+		timeout: 9000,
 		headers: headers,
 		maxRedirects: 20,
 	});
