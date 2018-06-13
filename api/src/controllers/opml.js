@@ -16,7 +16,7 @@ import config from '../config';
 import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
 import { IsPodcastURL} from '../parsers/detect-type';
 import search from '../utils/search';
-import validator from 'validator';
+import {isURL} from '../utils/validation';
 
 import { TrackMetadata } from '../utils/events/analytics';
 
@@ -72,13 +72,13 @@ exports.post = async (req, res) => {
 	let parsedFeeds = feeds.map(feed => {
 		feed.valid = true;
 
-		if (validator.isURL(feed.feedUrl)) {
+		if (isURL(feed.feedUrl)) {
 			feed.feedUrl = normalizeUrl(feed.feedUrl).trim();
 		} else {
 			feed.valid = false;
 		}
 
-		if (validator.isURL(feed.url)) {
+		if (isURL(feed.url)) {
 			feed.url = normalizeUrl(feed.url);
 		}
 
@@ -132,7 +132,7 @@ async function followOPMLFeed(feed, userID) {
 	}
 
 	let feedUrl = normalizeUrl(feed.feedUrl)
-	if (!validator.isURL(feedUrl)) {
+	if (!isURL(feedUrl)) {
 		result.error = `Invalid URL for OPML import ${feedUrl}`;
 		return result
 	}

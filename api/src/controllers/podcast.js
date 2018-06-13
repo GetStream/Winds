@@ -1,6 +1,6 @@
 import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
-import validator from 'validator';
+import {isURL} from '../utils/validation';
 import Podcast from '../models/podcast';
 import personalization from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
@@ -53,7 +53,7 @@ exports.post = async (req, res) => {
 		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
 	}
 
-	if (!data.feedUrl || !validator.isURL(url)) {
+	if (!data.feedUrl || !isURL(url)) {
 		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
 	}
 
@@ -85,7 +85,7 @@ exports.post = async (req, res) => {
 		}
 
 		let feedUrl = normalizeUrl(feed.url)
-		if (!validator.isURL(feedUrl)) {
+		if (!isURL(feedUrl)) {
 			continue
 		}
 

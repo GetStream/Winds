@@ -15,7 +15,7 @@ program
 	.parse(process.argv);
 
 async function main() {
-	let schemas = { article: Article, rss: RSS, episode: Episode, podcast: Podcast };
+	let schemas = { rss: RSS, episode: Episode, podcast: Podcast, article: Article };
 	let fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
 	logger.info(`program.all is set to ${program.all}`)
 
