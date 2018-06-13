@@ -62,12 +62,13 @@ export function getTestPage(name) {
 
 export async function loadFixture(...fixtures) {
 	const filters = {
-		User: async user => {
-			const salt = await bcrypt.genSalt(10);
-			const hash = await bcrypt.hash(user.password, salt);
-			user.password = hash;
-			return user;
-		},
+		// XXX: we don't need this anymore since we call model.create now which calls Mongoose middlewares
+		// User: async user => {
+		// 	const salt = await bcrypt.genSalt(10);
+		// 	const hash = await bcrypt.hash(user.password, salt);
+		// 	user.password = hash;
+		// 	return user;
+		// },
 	};
 
 	for (const fixture of fixtures) {
@@ -98,7 +99,7 @@ export async function loadFixture(...fixtures) {
 				//     causes double-registration of mongoose models
 				const cachedModule = require.cache[require.resolve(modulePath)];
 				const model = cachedModule ? cachedModule.exports : require(modulePath);
-				await model.collection.insertMany(filteredData);
+				await Promise.all(filteredData.map(f => { return model.create(f); }));
 			}
 		}
 	}
