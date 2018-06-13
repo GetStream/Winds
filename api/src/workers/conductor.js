@@ -100,7 +100,7 @@ async function conduct() {
 		let promises = [];
 		for (let publication of publications) {
 			if (!isURL(publication.feedUrl)) {
-				logger.error(`Conductor, url looks invalid for ${publication.feedUrl} with id ${publication._id}`)
+				logger.warn(`Conductor, url looks invalid for ${publication.feedUrl} with id ${publication._id}`)
 				continue
 			}
 			let job = { url: publication.feedUrl };
