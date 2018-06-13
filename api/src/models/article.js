@@ -146,6 +146,7 @@ ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
+ArticleSchema.index({ rss: 1, contentHash: 1 }, { unique: true });
 
 ArticleSchema.pre('save', function(next) {
 	if(!this.contentHash) {
@@ -197,3 +198,4 @@ ArticleSchema.methods.getParsedArticle = async function() {
 };
 
 module.exports = exports =  mongoose.model('Article', ArticleSchema);
+module.exports.ArticleSchema = ArticleSchema;
