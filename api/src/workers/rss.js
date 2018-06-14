@@ -189,11 +189,6 @@ async function upsertManyArticles(rssID, articles) {
 			articlesToUpsert.length
 		} need a sync`,
 	);
-console.log(
-		`Feed ${rssID}: got ${articles.length} articles of which ${
-			articlesToUpsert.length
-		} need a sync`,
-);
 
 	return Promise.all(
 		articlesToUpsert.map(article => {
