@@ -3,7 +3,7 @@ module.exports = {
 		uri: 'mongodb://localhost:27017/test',
 	},
 	cache: {
-		uri: 'redis://localhost:6379?db=10',
+		uri: 'redis://localhost:6379/10',
 	},
 	email: {
 		sender: {

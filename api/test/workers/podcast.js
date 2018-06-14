@@ -9,7 +9,13 @@ import { podcastProcessor, handlePodcast } from '../../src/workers/podcast';
 import { loadFixture, dropDBs, getTestPodcast, getMockFeed } from '../utils';
 
 describe('Podcast worker', () => {
+	const data = {
+		podcast: '5afb7fedfe7430d35996d66e',
+		url: 'https://anchor.fm/s/1f47f58/podcast/rss'
+	};
+
 	let handler;
+	let initialEpisodes;
 
 	function setupHandler() {
 		handler = new Promise((resolve, reject) => {
@@ -22,6 +28,8 @@ describe('Podcast worker', () => {
 	before(async () => {
 		await dropDBs();
 		await loadFixture('initial-data');
+
+		initialEpisodes = await Episode.find({ podcast: data.podcast });
 	});
 
 	after(() => {
@@ -32,13 +40,11 @@ describe('Podcast worker', () => {
 		it('should call worker when enqueueing jobs', async () => {
 			setupHandler();
 
-			const data = {
-				podcast: '5afb7fedfe7430d35996d66e',
-				url: 'http://mbmbam.libsyn.com/rss'
-			};
-
 			await podcastQueue.add(data);
 			await handler;
+
+			const episodes = await Episode.find({ podcast: data.podcast });
+			expect(episodes).to.have.length.above(initialEpisodes.length);
 		});
 
 		it('should fail for invalid job', async () => {
@@ -65,12 +71,6 @@ describe('Podcast worker', () => {
 	});
 
 	describe('worker', () => {
-		const data = {
-			podcast: '5afb7fedfe7430d35996d66e',
-			url: 'http://mbmbam.libsyn.com/rss'
-		};
-		let initialEpisodes;
-
 		before(async () => {
 			await dropDBs();
 			await loadFixture('initial-data');
