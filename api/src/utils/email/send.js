@@ -32,7 +32,7 @@ export async function SendPasswordResetEmail(data) {
 	const obj = {
 		to: data.email,
 		from: config.email.sender.support.email,
-		subject: 'Winds – Forgot Password',
+		subject: 'Forgot Password',
 		html: msg,
 	};
 	return await SendEmail(obj);

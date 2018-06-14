@@ -271,8 +271,8 @@ describe('Auth controller', () => {
 				it('should send recovery code email to user', async () => {
 					const user = await User.findOne({ email: 'valid@email.com' });
 
-					let email = DummyEmailTransport.emails[0]
-					expect(email.subject).to.equal('Forgot Password')
+					let email = DummyEmailTransport.emails[0];
+					expect(email.subject).to.equal('Forgot Password');
 				});
 			});
 
