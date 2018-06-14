@@ -40,22 +40,6 @@ describe('OG worker', () => {
 			ParseOG.resetHistory();
 		});
 
-		it('shouldn\'t update article if no image is found', async () => {
-			setupHandler();
-
-			const data = {
-				type: 'article',
-				url: 'http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk'
-			};
-
-			await ogQueue.add(data);
-			await handler;
-
-			expect(ParseOG.calledWith(data.url)).to.be.true;
-			const image = await ParseOG.firstCall.returnValue;
-			expect(image).to.be.null;
-		});
-
 		it('should update article if image is found', async () => {
 			setupHandler();
 
@@ -80,19 +64,6 @@ describe('OG worker', () => {
 			expect(afterUpdate.images.og).to.be.equal(image);
 		});
 
-		it('shouldn\'t update article with image if update not requested', async () => {
-			setupHandler();
-
-			const data = {
-				type: 'article',
-				url: 'http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/'
-			};
-
-			await ogQueue.add(data);
-			await handler;
-			expect(ParseOG.called).to.be.false;
-		});
-
 		it('should update article with image if update requested', async () => {
 			setupHandler();
 
@@ -113,6 +84,36 @@ describe('OG worker', () => {
 			expect(image).to.not.be.null;
 			const afterUpdate = await Article.findById(beforeUpdate._id);
 			expect(afterUpdate.images.og).to.be.equal(image);
+		});
+
+		it('shouldn\'t update article with image if update not requested', async () => {
+			setupHandler();
+
+			const data = {
+				type: 'article',
+				url: 'http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/'
+			};
+
+			await ogQueue.add(data);
+			await handler;
+
+			expect(ParseOG.called).to.be.false;
+		});
+
+		it('shouldn\'t update article if no image is found', async () => {
+			setupHandler();
+
+			const data = {
+				type: 'article',
+				url: 'http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk'
+			};
+
+			await ogQueue.add(data);
+			await handler;
+
+			expect(ParseOG.calledWith(data.url)).to.be.true;
+			const image = await ParseOG.firstCall.returnValue;
+			expect(image).to.be.null;
 		});
 	});
 
