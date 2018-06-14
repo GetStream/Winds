@@ -4,6 +4,7 @@ import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import 'crypto';
 import { createHash } from 'crypto';
+import {EnclosureSchema} from './enclosure';
 
 export const EpisodeSchema = new Schema(
 	{
@@ -36,15 +37,24 @@ export const EpisodeSchema = new Schema(
 			required: true,
 			index: true,
 		},
+		fingerprint: {
+			type: String,
+			trim: true,
+			required: true,
+		},
+		guid: {
+			type: String,
+			trim: true,
+		},
 		link: {
 			type: String,
 			trim: true,
-			index: true,
 		},
 		enclosure: {
 			type: String,
 			trim: true,
 		},
+		enclosures: [EnclosureSchema],
 		title: {
 			type: String,
 			trim: true,

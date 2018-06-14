@@ -6,20 +6,8 @@ import Cache from './cache';
 import {ParseArticle} from '../parsers/article';
 import { createHash } from 'crypto';
 
-export const EnclosureSchema = new Schema({
-	url: {
-		type: String,
-		trim: true,
-	},
-	type: {
-		type: String,
-		trim: true,
-	},
-	length: {
-		type: String,
-		trim: true,
-	},
-});
+import {EnclosureSchema} from './enclosure';
+
 
 export const ArticleSchema = new Schema(
 	{
@@ -49,6 +37,20 @@ export const ArticleSchema = new Schema(
 			trim: true,
 			required: true,
 			index: true,
+		},
+		// fingerprint stores the best uniqueness field we have for the given article
+		fingerprint: {
+			type: String,
+			trim: true,
+			required: true,
+		},
+		guid: {
+			type: String,
+			trim: true,
+		},
+		link: {
+			type: String,
+			trim: true,
 		},
 		title: {
 			type: String,
