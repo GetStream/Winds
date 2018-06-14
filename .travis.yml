@@ -10,6 +10,6 @@ cache: npm
 install:
     - "cd api && npm install"
 script:
-    - "npm test 2>&1"
+    - "npm test"
 after_success:
     - "npm run coverage"
