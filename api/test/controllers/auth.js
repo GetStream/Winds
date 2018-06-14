@@ -55,7 +55,9 @@ describe('Auth controller', () => {
 
 			it('should return valid jwt', async () => {
 				expect(response.body.jwt).to.not.be.empty;
+
 				const decoded = jwt.verify(response.body.jwt, config.jwt.secret);
+
 				expect(decoded).to.not.be.null;
 				expect(Object.keys(decoded)).to.include.members(['email', 'sub']);
 				expect(decoded.email).to.equal(user.email);
@@ -269,8 +271,8 @@ describe('Auth controller', () => {
 				it('should send recovery code email to user', async () => {
 					const user = await User.findOne({ email: 'valid@email.com' });
 
-					let email = DummyEmailTransport.emails[0]
-					expect(email.subject).to.equal('Forgot Password')
+					let email = DummyEmailTransport.emails[0];
+					expect(email.subject).to.equal('Forgot Password');
 				});
 			});
 
@@ -300,7 +302,7 @@ describe('Auth controller', () => {
 						.post('/auth/reset-password')
 						.send({
 							email: 'valid@email.com',
-							passcode: user.recoveryCode,
+							recoveryCode: user.recoveryCode,
 							password: 'new-password',
 						});
 				});
@@ -338,12 +340,12 @@ describe('Auth controller', () => {
 					expect(response).to.have.status(404);
 				});
 
-				it('should return 404 for incorrect passcode', async () => {
+				it('should return 404 for incorrect recoveryCode', async () => {
 					const response = await request(api)
 						.post('/auth/reset-password')
 						.send({
 							email: 'valid@email.com',
-							passcode: 'incorrect-passcode',
+							recoveryCode: 'incorrect-recovery-code',
 						});
 
 					expect(response).to.have.status(404);
