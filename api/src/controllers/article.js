@@ -21,6 +21,9 @@ exports.list = async (req, res) => {
 		}
 		articles = await Article.find({ _id: {$in: articleIDs}});
 	} else {
+		if (query.rss && !mongoose.Types.ObjectId.isValid(query.rss)) {
+			return res.status(400).json({ error: `Invalid RSS id ${query.rss}` });
+		}
 		articles = await Article.apiQuery(req.query);
 	}
 

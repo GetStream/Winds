@@ -96,27 +96,31 @@ async function getContentFeed(req, res, type, model) {
 	const query = req.query || {};
 	const limit = query.per_page || 10;
 	const offset = query.page * limit || 0;
-
-	try {
-		const response = await client.feed(`user_${type}`, params.userId).get({ limit, offset })
-		let enriched;
-		try {
-			enriched = await Promise.all(response.results.map(activity => {
-				return model.findById(activity.foreign_id.split(':')[1]);
-			}));
-		} catch(err) {
-			logger.error({err});
-			return res.status(422).send(err.errors);
-		}
-
-		res.json(enriched);
-	} catch(err) {
-		logger.error({err});
-		res.status(500).send(err);
+	const response = await client.feed(`user_${type}`, params.userId).get({ limit, offset })
+	let articleIDs = response.results.map(r => {
+		return r.foreign_id.split(':')[1]
+	})
+	let articles = await model.find({_id: {$in: articleIDs}})
+	let articleLookup = {}
+	for (let a of articles) {
+		articleLookup[a._id] = a
 	}
+	let sortedArticles = []
+	for (let r of response.results) {
+		let articleID = r.foreign_id.split(':')[1]
+		let article = articleLookup[articleID]
+		if (!article) {
+			logger.error(`Failed to load article ${articleID} specified in feed user_${type}:${params.userId}`)
+			continue
+		}
+		sortedArticles.push(article)
+	}
+
+	res.json(sortedArticles);
+
 }
 
-exports.get = (req, res, _) => {
+exports.get = async (req, res, _) => {
 	const params = req.params || {};
 	const query = req.query || {};
 
