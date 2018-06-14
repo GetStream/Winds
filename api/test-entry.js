@@ -44,6 +44,7 @@ mock('getstream', {
 });
 mock('./src/utils/events', sinon.spy(sinon.stub().returns(Promise.resolve())));
 mock('./src/parsers/feed', spyOnEverything('./src/parsers/feed'));
+mock('./src/parsers/og', spyOnEverything('./src/parsers/og'));
 mock('./src/asyncTasks', spyOnEverything('./src/asyncTasks'));
 
 require('./setup-tests');
