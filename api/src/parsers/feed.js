@@ -13,6 +13,8 @@ import logger from '../utils/logger';
 import { getStatsDClient } from '../utils/statsd';
 import axios from 'axios';
 import zlib from 'zlib';
+import { createHash } from 'crypto';
+
 
 const WindsUserAgent =
 	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
@@ -42,6 +44,74 @@ export async function ParseFeed(feedURL) {
 	let feedResponse = ParseFeedPosts(posts);
 	statsd.timing('winds.parsers.rss.finished_parsing', new Date() - t0);
 	return feedResponse;
+}
+
+export function ComputeHash(post) {
+	const enclosureUrls = post.enclosures.map(e=>{e.url})
+	const enclosureString = enclosureUrls.join(',') || '';
+	// ignore post.content for now, it changes too often I think
+	const data = `${post.title}:${post.description}:${post.link}:${enclosureString}`;
+	return createHash('md5').update(data).digest('hex');
+}
+
+export function ComputePublicationHash(posts) {
+	let fingerprints = []
+	for (let p of posts.slice(0,20)) {
+		if (!p.fingerprint) {
+			throw Error('missing fingerprint')
+		}
+		fingerprints.push(p.fingerprint)
+	}
+	const data = fingerprints.join(',')
+	return createHash('md5').update(data).digest('hex');
+}
+
+export function CreateFingerPrints(posts) {
+	if (!posts.length) {
+		return posts
+	}
+	// start by selecting the best strategy for uniqueness
+	let uniqueness = {guid: {}, link: {}, enclosure: {}, hash: {}}
+	for (let p of posts) {
+		uniqueness.guid[p.guid] = 1
+		uniqueness.link[p.link] = 1
+		if (p.enclosures.length && p.enclosures[0].url) {
+			uniqueness.enclosure[p.enclosures[0].url] = 1
+			p.enclosure = p.enclosures[0].url
+		}
+		p.hash = ComputeHash(p)
+		uniqueness.hash[p.hash] = 1
+	}
+	// count which strategy is the best
+	let uniquenessCounts = {}
+	for (const [k, v] of Object.entries(uniqueness)) {
+		uniquenessCounts[k] = Object.keys(v).length
+	}
+	// selection the best strategy
+	let strategy = 'hash'
+	const l = posts.length
+	for (let s of ['guid', 'link', 'enclosure']) {
+		if (uniquenessCounts[s] == l) {
+			strategy = s
+			break
+		}
+	}
+
+	// compute the post fingerprints
+	for (let p of posts) {
+		p.fingerprint = `${strategy}:${p[strategy]}`
+		console.log(p.fingerprint)
+	}
+
+	// next compute the publication fingerprint
+	let hash = ComputePublicationHash(posts)
+	posts[0].meta.fingerprint = `${strategy}:${hash}`
+
+	console.log(uniquenessCounts, strategy, posts[0].meta.fingerprint)
+
+
+	return posts
+
 }
 
 // Parse the posts and add our custom logic
@@ -157,6 +227,8 @@ export async function ReadFeedStream(feedStream) {
 export function ParseFeedPosts(posts) {
 	let feedContents = { articles: [] };
 	let i = 0;
+	// create finger prints before doing anything else
+	posts = CreateFingerPrints(posts)
 
 	for (let post of posts.slice(0, 1000)) {
 		i++;
