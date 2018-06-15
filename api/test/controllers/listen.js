@@ -32,7 +32,7 @@ describe('Listen controller', () => {
 				expect(Object.keys(entry)).to.include.members(keys);
 			}
 		});
-		
+
 		it('should filter results if query is provided', async () => {
 			const response = await withLogin(request(api).get('/listens').query({ episode: episodeId }));
 
