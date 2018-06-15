@@ -44,6 +44,11 @@ export const PinSchema = new Schema(
 				select: ['parent', 'url', 'title', 'description', 'images', 'publicationDate'],
 			},
 		},
+		// convenient in case we have to trash articles and episodes and start from scratch
+		url: {
+			type: String,
+			trim: true,
+		},
 	},
 	{ collection: 'pins' },
 );
