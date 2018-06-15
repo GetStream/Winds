@@ -15,6 +15,8 @@ import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from '../parsers/feed';
 
 import {ProcessPodcastQueue, OgQueueAdd} from '../asyncTasks';
+import { upsertManyPosts } from '../utils/upsert';
+
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -69,6 +71,7 @@ export async function handlePodcast(job) {
 	}
 
 	let operationMap = upsertManyPosts(podcastID, episodes, 'podcast')
+	console.log(operationMap)
 	let updatedEpisodes = operationMap.new.concat(operationMap.changed)
 
 

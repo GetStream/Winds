@@ -16,6 +16,7 @@ import { ParseFeed } from '../parsers/feed';
 
 import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
+import { upsertManyPosts } from '../utils/upsert';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 const duplicateKeyError = 11000;
