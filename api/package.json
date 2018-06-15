@@ -50,6 +50,7 @@
 				"bull-arena": "^2.4.5",
 				"compression": "^1.7.2",
 				"cors": "^2.8.4",
+				"deep-object-diff": "^1.1.0",
 				"dotenv": "^6.0.0",
 				"ejs": "^2.6.1",
 				"entities": "^1.1.1",

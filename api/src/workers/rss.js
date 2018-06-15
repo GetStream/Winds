@@ -89,18 +89,13 @@ export async function handleRSS(job) {
 	statsd.increment('winds.handle_rss.articles.parsed', rssContent.articles.length);
 	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
 
+	let updatedArticles
 	let allArticles = await timeIt('winds.handle_rss.upsertManyArticles', () => {
-		const articles = rssContent.articles.map(a => {
-			try {
-				a.url = normalize(a.url);
-				a.contentHash = Article.computeContentHash(a);
-			} catch (err) {
-				logger.warn({err});
-				return null;
-			}
-			return a;
-		}).filter(a => a);
-		return upsertManyArticles(rssID, articles);
+		const articles = rssContent.articles;
+		for (let a of articles) {
+			a.rss = rssID
+		}
+		updatedArticles = upsertManyPosts(rssID, articles, 'rss')
 	});
 
 	// update the count
@@ -111,11 +106,6 @@ export async function handleRSS(job) {
 			fingerprint: rssContent.fingerprint,
 		}
 	);
-
-	// updatedArticles will contain `null` for all articles that didn't get updated, that we already have in the system.
-	let updatedArticles = allArticles.filter(updatedArticle => {
-		return updatedArticle;
-	});
 
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);
 
@@ -159,78 +149,6 @@ export async function handleRSS(job) {
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
 }
 
-export async function upsertManyArticles(rssID, articles) {
-	const searchData = articles.map(article => {
-		return {url: article.url, contentHash: article.contentHash};
-	});
-
-	const existingArticles = await Article.find({$and: [{rss: rssID}, {$or: searchData }]}, { url: 1, contentHash: 1 }).read('sp');
-
-	const existingArticleUrls = existingArticles.map(a => a.url);
-	const existingArticleHashes = existingArticles.map(a => a.contentHash);
-
-	statsd.increment('winds.handle_rss.articles.already_in_mongo', existingArticleUrls.length);
-
-	const articlesToUpsert = articles.filter(article => {
-		return !existingArticleUrls.includes(article.url) && !existingArticleHashes.includes(article.contentHash);
-	});
-
-	logger.info(`Feed ${rssID}: got ${articles.length} articles of which ${articlesToUpsert.length} need a sync`);
-
-	return Promise.all(articlesToUpsert.map(article => upsertArticle(rssID, article)));
-}
-
-// updateArticle updates the article in mongodb if it changed and create a new one if it did not exist
-export async function upsertArticle(rssID, post) {
-	const search = {
-		commentUrl: post.commentUrl,
-		content: post.content,
-		description: post.description,
-		title: post.title,
-	};
-	const update = Object.assign({}, search, {
-		url: post.url,
-		rss: rssID,
-		contentHash: post.contentHash,
-		guid: post.guid,
-		link: post.link,
-		fingerprint: post.fingerprint,
-		enclosures: post.enclosures || {},
-		images: post.images || {},
-		publicationDate: post.publicationDate
-	});
-	// Query matches fields affecting content hash
-	const postContentDiffers = Object.keys(search).map(k => {
-		return { [k]: { $ne: search[k] } };
-	});
-
-	try {
-		// Find article in feed w/ rssID matching post url but w/ different content
-		const rawArticle = await Article.findOneAndUpdate(
-			{
-				$and: [
-					{ rss: rssID, url: post.url },
-					{ $or: postContentDiffers }
-				],
-			},
-			update,
-			{
-				new: true,
-				upsert: true,
-				rawResult: true,
-			},
-		);
-		if (!rawArticle.lastErrorObject.updatedExisting) {
-			return rawArticle.value;
-		}
-	} catch (err) {
-		if (err.code === duplicateKeyError) {
-			statsd.increment('winds.handle_rss.articles.ignored');
-			return null;
-		}
-		throw err;
-	}
-}
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(rssID) {

@@ -41,6 +41,7 @@ export const EpisodeSchema = new Schema(
 			type: String,
 			trim: true,
 			required: true,
+			index: true,
 		},
 		guid: {
 			type: String,
@@ -103,11 +104,7 @@ export const EpisodeSchema = new Schema(
 		valid: {
 			type: Boolean,
 			default: true,
-		},
-		contentHash: {
-			type: String,
-			default: '',
-		},
+		}
 	},
 	{
 		collection: 'episodes',

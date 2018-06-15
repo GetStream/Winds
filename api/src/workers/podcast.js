@@ -63,13 +63,12 @@ export async function handlePodcast(job) {
 
 	// update the episodes
 	logger.info(`Updating ${podcastContent.episodes.length} episodes`);
-	let allEpisodes = await Promise.all(
-		podcastContent.episodes.map(episode => {
-			let normalizedUrl = normalize(episode.url);
-			episode.url = normalizedUrl;
-			return upsertEpisode(podcast._id, normalizedUrl, episode);
-		}),
-	);
+	let episodes = podcastContent.episodes
+	for (let e of episodes) {
+		e.podcast = podcastID
+	}
+
+	let updatedEpisodes = upsertManyPosts(podcastID, episodes, 'podcast')
 
 	// update the count
 	await Podcast.update(
@@ -78,11 +77,6 @@ export async function handlePodcast(job) {
 			postCount: await Episode.count({podcast: podcastID}),
 		}
 	);
-
-	// Only send updated episodes to Stream
-	let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
-		return updatedEpisode && updatedEpisode.link;
-	});
 
 	await Promise.all(updatedEpisodes.map( episode => {
 		OgQueueAdd(
@@ -117,55 +111,6 @@ export async function handlePodcast(job) {
 		}
 		// update the collection information for follow suggestions
 		await sendPodcastToCollections(podcast);
-	}
-}
-
-// updateEpisode updates 1 episode and sync the data to og scraping
-async function upsertEpisode(podcastID, normalizedUrl, episode) {
-	let update = {
-		contentHash: episode.computeContentHash(),
-		description: episode.description,
-		duration: episode.duration,
-		enclosure: episode.enclosure,
-		images: episode.images,
-		link: episode.link,
-		podcast: podcastID,
-		publicationDate: episode.publicationDate,
-		title: episode.title,
-		url: episode.url,
-	};
-
-	try {
-		return await Episode.findOneAndUpdate(
-			{
-				$and: [
-					{
-						podcast: podcastID,
-						url: normalizedUrl,
-					},
-					{
-						$or: Object.keys(update).map(k => {
-							return {
-								[k]: {
-									$ne: update[k],
-								},
-							};
-						}),
-					},
-				],
-			},
-			update,
-			{
-				new: true,
-				upsert: true,
-			},
-		);
-	} catch(err) {
-		if (err.code === 11000){
-			return null;
-		} else {
-			throw err;
-		}
 	}
 }
 
