@@ -18,6 +18,7 @@ import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const duplicateKeyError = 11000;
 
 // connect the handler to the queue
 logger.info('Starting the RSS worker');
@@ -157,80 +158,55 @@ export async function handleRSS(job) {
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
 }
 
-async function upsertManyArticles(rssID, articles) {
-	let searchData = articles.map(article => {
+export async function upsertManyArticles(rssID, articles) {
+	const searchData = articles.map(article => {
 		return {url: article.url, contentHash: article.contentHash};
 	});
 
-	let existingArticles = await Article.find({$and: [{rss: rssID}, {$or: searchData }]}, { url: 1, contentHash: 1 }).read('sp');
+	const existingArticles = await Article.find({$and: [{rss: rssID}, {$or: searchData }]}, { url: 1, contentHash: 1 }).read('sp');
 
-	let existingArticleUrls = existingArticles.map(a => {
-		return a.url;
+	const existingArticleUrls = existingArticles.map(a => a.url);
+	const existingArticleHashes = existingArticles.map(a => a.contentHash);
+
+	statsd.increment('winds.handle_rss.articles.already_in_mongo', existingArticleUrls.length);
+
+	const articlesToUpsert = articles.filter(article => {
+		return !existingArticleUrls.includes(article.url) && !existingArticleHashes.includes(article.contentHash);
 	});
 
-	let existingArticleHashes = existingArticles.map(a => {
-		return a.contentHash;
-	});
+	logger.info(`Feed ${rssID}: got ${articles.length} articles of which ${articlesToUpsert.length} need a sync`);
 
-	statsd.increment(
-		'winds.handle_rss.articles.already_in_mongo',
-		existingArticleUrls.length,
-	);
-
-	let articlesToUpsert = articles.filter(article => {
-		return (
-			existingArticleUrls.indexOf(article.url) === -1 &&
-			existingArticleHashes.indexOf(article.contentHash) === -1
-		);
-	});
-
-	logger.info(
-		`Feed ${rssID}: got ${articles.length} articles of which ${
-			articlesToUpsert.length
-		} need a sync`,
-	);
-
-	return Promise.all(
-		articlesToUpsert.map(article => {
-			return upsertArticle(rssID, article);
-		}),
-	);
+	return Promise.all(articlesToUpsert.map(article => upsertArticle(rssID, article)));
 }
 
 // updateArticle updates the article in mongodb if it changed and create a new one if it did not exist
-async function upsertArticle(rssID, post) {
-	let search = {
+export async function upsertArticle(rssID, post) {
+	const search = {
 		commentUrl: post.commentUrl,
 		content: post.content,
 		description: post.description,
 		title: post.title,
 	};
-
-	let update = Object.assign({}, search);
-	update.url = post.url;
-	update.rss = rssID;
-	update.contentHash = post.contentHash;
-	update.enclosures = post.enclosures || {};
-	update.images = post.images || {};
-	update.publicationDate = post.publicationDate;
+	const update = Object.assign({}, search, {
+		url: post.url,
+		rss: rssID,
+		contentHash: post.contentHash,
+		enclosures: post.enclosures || {},
+		images: post.images || {},
+		publicationDate: post.publicationDate
+	});
+	// Query matches fields affecting content hash
+	const postContentDiffers = Object.keys(search).map(k => {
+		return { [k]: { $ne: search[k] } };
+	});
 
 	try {
-		let rawArticle = await Article.findOneAndUpdate(
+		// Find article in feed w/ rssID matching post url but w/ different content
+		const rawArticle = await Article.findOneAndUpdate(
 			{
 				$and: [
-					{
-						rss: rssID,
-						url: post.url,
-					},
-					{
-						$or: Object.keys(search).map(k => {
-							return {
-								[k]: {
-									$ne: search[k],
-								},
-							};
-						}),
-					},
+					{ rss: rssID, url: post.url },
+					{ $or: postContentDiffers }
 				],
 			},
 			update,
@@ -244,26 +220,19 @@ async function upsertArticle(rssID, post) {
 			return rawArticle.value;
 		}
 	} catch (err) {
-		if (err.code === 11000) {
+		if (err.code === duplicateKeyError) {
 			statsd.increment('winds.handle_rss.articles.ignored');
 			return null;
-		} else {
-			throw err;
 		}
+		throw err;
 	}
 }
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(rssID) {
-	/*
-  Set the last scraped for the given rssID
-  */
-	let now = moment().toISOString();
+	const now = moment().toISOString();
 	return await RSS.update(
 		{ _id: rssID },
-		{
-			lastScraped: now,
-			isParsing: false,
-		},
+		{ lastScraped: now, isParsing: false },
 	);
 }
