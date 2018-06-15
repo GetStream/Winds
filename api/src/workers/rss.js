@@ -95,7 +95,8 @@ export async function handleRSS(job) {
 		for (let a of articles) {
 			a.rss = rssID
 		}
-		updatedArticles = upsertManyPosts(rssID, articles, 'rss')
+		let operationMap = upsertManyPosts(rssID, articles, 'rss')
+		updatedArticles = operationMap.new.concat(operationMap.changed)
 	});
 
 	// update the count

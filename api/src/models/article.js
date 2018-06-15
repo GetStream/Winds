@@ -41,7 +41,6 @@ export const ArticleSchema = new Schema(
 		// fingerprint stores the best uniqueness field we have for the given article
 		fingerprint: {
 			type: String,
-			index: true,
 			trim: true,
 			required: true,
 		},
@@ -144,29 +143,8 @@ ArticleSchema.plugin(timestamps, {
 ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
-ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
-ArticleSchema.index({ rss: 1, contentHash: 1 }, { unique: true });
+ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
 
-ArticleSchema.pre('save', function(next) {
-	if(!this.contentHash) {
-		this.contentHash = this.computeContentHash();
-	}
-	next();
-});
-
-function computeContentHash(article) {
-	const enclosure = article.enclosures && article.enclosures.join(',') || '';
-	const data = `${article.title}:${article.description}:${article.content}:${enclosure}`;
-	return createHash('md5').update(data).digest('hex');
-}
-
-ArticleSchema.statics.computeContentHash = function(article) {
-	return computeContentHash(article);
-};
-
-ArticleSchema.methods.computeContentHash = function() {
-	return computeContentHash(this);
-};
 
 ArticleSchema.methods.getParsedArticle = async function() {
 	let cached = await Cache.findOne({ url: this.url });

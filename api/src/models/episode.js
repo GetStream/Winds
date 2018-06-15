@@ -41,7 +41,6 @@ export const EpisodeSchema = new Schema(
 			type: String,
 			trim: true,
 			required: true,
-			index: true,
 		},
 		guid: {
 			type: String,
@@ -138,26 +137,6 @@ EpisodeSchema.plugin(timestamps, {
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
 
-function computeContentHash(episode) {
-	const data = `${episode.title}:${episode.description}:${episode.content}:${episode.enclosure}`;
-	return createHash('md5').update(data).digest('hex');
-}
-
-EpisodeSchema.pre('save', function(next) {
-	if(!this.contentHash) {
-		this.contentHash = this.computeContentHash();
-	}
-	next();
-});
-
-EpisodeSchema.methods.computeContentHash = function() {
-	return computeContentHash(this);
-};
-
-EpisodeSchema.statics.computeContentHash = function(episode) {
-	return computeContentHash(episode);
-};
-
-EpisodeSchema.index({ podcast: 1, url: 1 }, { unique: true });
+EpisodeSchema.index({ podcast: 1, fingerprint: 1 }, { unique: true });
 
 module.exports = exports = mongoose.model('Episode', EpisodeSchema);
