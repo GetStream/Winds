@@ -111,6 +111,11 @@
 		grid-area: content;
 		max-width: 100%;
 		overflow-y: scroll;
+
+		.enclosures {
+			margin: auto;
+			max-width: 720px;
+		}
 	}
 
 	.content-header {

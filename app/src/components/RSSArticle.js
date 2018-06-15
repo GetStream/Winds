@@ -6,8 +6,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import TimeAgo from './TimeAgo';
-import ReactPlayer from 'react-player'
-
+import ReactPlayer from 'react-player';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -134,11 +133,13 @@ class RSSArticle extends React.Component {
 
 				<div className="content">
 					<div className="enclosures">
-						{this.props.enclosures.map((enclosure) =>
-							<ReactPlayer key={enclosure._id}
+						{this.props.enclosures.map(enclosure => (
+							<ReactPlayer
+								controls={true}
+								key={enclosure._id}
 								url={enclosure.url}
 							/>
-						)}
+						))}
 					</div>
 					{articleContents}
 				</div>
@@ -154,12 +155,14 @@ RSSArticle.defaultProps = {
 RSSArticle.propTypes = {
 	_id: PropTypes.string,
 	commentUrl: PropTypes.string,
-	enclosures: PropTypes.arrayOf(PropTypes.shape({
-		_id: PropTypes.string,
-		url: PropTypes.string,
-		type: PropTypes.string,
-		length: PropTypes.string,
-	})),
+	enclosures: PropTypes.arrayOf(
+		PropTypes.shape({
+			_id: PropTypes.string,
+			url: PropTypes.string,
+			type: PropTypes.string,
+			length: PropTypes.string,
+		}),
+	),
 	description: PropTypes.string,
 	dispatch: PropTypes.func.isRequired,
 	images: PropTypes.shape({
