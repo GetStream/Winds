@@ -2469,6 +2469,9 @@ a.column-header:hover {
     grid-area: content;
     max-width: 100%;
     overflow-y: scroll; }
+    .rss-view .content .enclosures {
+      margin: auto;
+      max-width: 720px; }
   .rss-view .content-header {
     grid-area: content-header;
     margin: auto;
