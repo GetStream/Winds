@@ -108,6 +108,7 @@ export async function handleRSS(job) {
 		{ _id: rssID },
 		{
 			postCount: await Article.count({rss: rssID}),
+			fingerprint: rssContent.fingerprint,
 		}
 	);
 
@@ -191,6 +192,9 @@ export async function upsertArticle(rssID, post) {
 		url: post.url,
 		rss: rssID,
 		contentHash: post.contentHash,
+		guid: post.guid,
+		link: post.link,
+		fingerprint: post.fingerprint,
 		enclosures: post.enclosures || {},
 		images: post.images || {},
 		publicationDate: post.publicationDate
