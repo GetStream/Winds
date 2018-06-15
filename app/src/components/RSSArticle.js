@@ -6,6 +6,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import TimeAgo from './TimeAgo';
+import ReactPlayer from 'react-player';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -129,7 +130,19 @@ class RSSArticle extends React.Component {
 						</span>
 					</div>
 				</div>
-				<div className="content">{articleContents}</div>
+
+				<div className="content">
+					<div className="enclosures">
+						{this.props.enclosures.map(enclosure => (
+							<ReactPlayer
+								controls={true}
+								key={enclosure._id}
+								url={enclosure.url}
+							/>
+						))}
+					</div>
+					{articleContents}
+				</div>
 			</React.Fragment>
 		);
 	}
@@ -142,6 +155,14 @@ RSSArticle.defaultProps = {
 RSSArticle.propTypes = {
 	_id: PropTypes.string,
 	commentUrl: PropTypes.string,
+	enclosures: PropTypes.arrayOf(
+		PropTypes.shape({
+			_id: PropTypes.string,
+			url: PropTypes.string,
+			type: PropTypes.string,
+			length: PropTypes.string,
+		}),
+	),
 	description: PropTypes.string,
 	dispatch: PropTypes.func.isRequired,
 	images: PropTypes.shape({
@@ -167,6 +188,9 @@ RSSArticle.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let articleID = ownProps.match.params.articleID;
 	let article = {};
+	if (!article.enclosures) {
+		article.enclosures = [];
+	}
 	let rss = {};
 	let loading = false;
 	if (!('articles' in state) || !(articleID in state.articles)) {

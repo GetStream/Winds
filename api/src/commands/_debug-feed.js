@@ -62,6 +62,13 @@ export async function debugFeed(feedType, feedUrls) {
 					} else {
 						logger.info(chalk.red('Image missing :('));
 					}
+					if (article.enclosures.length) {
+						logger.info(`found ${article.enclosures.length} enclosures`)
+						for (let enclosure of article.enclosures) {
+							logger.info(JSON.stringify(enclosure))
+						}
+
+					}
 					if (feedType === 'podcast') {
 						if (article.enclosure) {
 							logger.info(chalk.green('Enclosure found :)'));
@@ -76,7 +83,7 @@ export async function debugFeed(feedType, feedUrls) {
 			}
 
 			let schema = feedType === 'rss' ? RSS : Podcast;
-			let lookup = { feedUrl: target };
+			let lookup = { $or: [{feedUrl: target}, {feedUrl: normalize(target)}] };
 			if (program.task) {
 				logger.info('trying to create a task on the bull queue');
 				let instance = await schema.findOne(lookup)
@@ -142,10 +149,10 @@ export async function debugFeed(feedType, feedUrls) {
 		}
 
 		if (feedType === 'rss') {
-			let feedContent = await ParseFeed(target);
+			let feedContent = await ParseFeed(target, 2);
 			validate(feedContent)
 		} else {
-			let podcastContent = await ParsePodcast(target);
+			let podcastContent = await ParsePodcast(target, 2);
 			validate(podcastContent)
 		}
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');
