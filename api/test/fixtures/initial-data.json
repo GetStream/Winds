@@ -148,6 +148,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e5ec",
 				"rss": "5b0ad0baf6f89574a638887a",
+				"fingerprint": "test:11",
 				"url":
 					"http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war",
 				"__v": 0,
@@ -171,6 +172,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e5ed",
 				"rss": "5b0ad0baf6f89574a638887a",
+				"fingerprint": "test:12",
 				"url":
 					"http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/",
 				"__v": 0,
@@ -194,6 +196,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e69b",
 				"rss": "5b0ad0baf6f89574a638887e",
+				"fingerprint": "test:13",
 				"url": "http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk",
 				"__v": 0,
 				"commentUrl": null,
@@ -230,6 +233,7 @@
 			{
 				"_id": "5b0ad37026dc3db38194e286",
 				"podcast": "5afb7fedfe7430d35996d66e",
+				"fingerprint": "test:1",
 				"url": "http://mbmbam.libsyn.com/mbmbam-398-rest-in-reeses-pieces",
 				"__v": 0,
 				"createdAt": "2018-05-27T15:49:00.021Z",
@@ -253,6 +257,7 @@
 			{
 				"_id": "5b0ad37626dc3db38194fa73",
 				"podcast": "5afb7f68fe7430d35996cc62",
+				"fingerprint": "test:2",
 				"url": "http://openargs.com/?p=45",
 				"__v": 0,
 				"createdAt": "2018-05-27T15:49:03.509Z",

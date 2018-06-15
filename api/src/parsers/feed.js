@@ -87,7 +87,7 @@ export function CreateFingerPrints(posts) {
 	for (const [k, v] of Object.entries(uniqueness)) {
 		uniquenessCounts[k] = Object.keys(v).length
 	}
-	// selection the best strategy
+	// select the strategy that's 100% unique, if none match fall back to a hash
 	let strategy = 'hash'
 	const l = posts.length
 	for (let s of ['guid', 'link', 'enclosure']) {
@@ -96,19 +96,20 @@ export function CreateFingerPrints(posts) {
 			break
 		}
 	}
+	if (strategy == 'hash' && uniquenessCounts.guid >= 3) {
+		// better to fail in a predictable way
+		strategy = 'guid'
+	}
 
 	// compute the post fingerprints
 	for (let p of posts) {
 		p.fingerprint = `${strategy}:${p[strategy]}`
-		console.log(p.fingerprint)
 	}
 
 	// next compute the publication fingerprint
 	let hash = ComputePublicationHash(posts)
 	posts[0].meta.fingerprint = `${strategy}:${hash}`
-
-	console.log(uniquenessCounts, strategy, posts[0].meta.fingerprint)
-
+	posts[0].meta.fingerprintCounts = uniquenessCounts
 
 	return posts
 
@@ -118,6 +119,8 @@ export function CreateFingerPrints(posts) {
 export function ParsePodcastPosts(posts, limit=1000) {
 	let podcastContent = { episodes: [] };
 	let i = 0;
+
+	posts = CreateFingerPrints(posts)
 
 	for (let post of posts.slice(0, limit)) {
 		i++;
@@ -148,6 +151,7 @@ export function ParsePodcastPosts(posts, limit=1000) {
 		podcastContent.link = posts[0].meta.link;
 		podcastContent.image = posts[0].meta.image && posts[0].meta.image.url;
 		podcastContent.description = posts[0].meta.description;
+		podcastContent.fingerprint = posts[0].meta.fingerprint;
 	}
 	return podcastContent;
 }
@@ -292,6 +296,8 @@ export function ParseFeedPosts(posts) {
 		feedContents.link = meta.link;
 		feedContents.image = meta.image;
 		feedContents.description = meta.description;
+		feedContents.fingerprint = meta.fingerprint;
+
 		if (meta.link) {
 			if (meta.link.indexOf("reddit.com") != -1) {
 				feedContents.title = `/r/${feedContents.title}`

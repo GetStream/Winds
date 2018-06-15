@@ -101,6 +101,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e5eb",
 				"rss": "5b0ad0baf6f89574a6388879",
+				"fingerprint": "test:1",
 				"url":
 					"http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war",
 				"__v": 0,
@@ -123,6 +124,7 @@
 			},
 			{
 				"_id": "5b0ad37226dc3db38194e613",
+				"fingerprint": "test:2",
 				"rss": "5b0ad0baf6f89574a6388879",
 				"url": "http://dorkly.com/post/86533/pokemon-sun-playthrough-episode-91",
 				"__v": 0,
@@ -170,6 +172,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e620",
 				"rss": "5b0ad0baf6f89574a6388879",
+				"fingerprint": "test:3",
 				"url": "http://dorkly.com/post/86493/pokemon-sun-playthrough-episode-90",
 				"__v": 0,
 				"commentUrl": null,
@@ -185,6 +188,7 @@
 			},
 			{
 				"_id": "5b0ad37226dc3db38194e62b",
+				"fingerprint": "test:4",
 				"rss": "5b0ad0baf6f89574a6388879",
 				"url": "http://dorkly.com/post/86336/how-every-game-of-fortnite-goes",
 				"__v": 0,
@@ -208,6 +212,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e62f",
 				"rss": "5b0ad0baf6f89574a6388879",
+				"fingerprint": "test:5",
 				"url":
 					"http://dorkly.com/post/86468/avengers-infinity-war-characters-are-everyone-in-your-highschool",
 				"__v": 0,
@@ -232,6 +237,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e63d",
 				"rss": "5b0ad0baf6f89574a6388879",
+				"fingerprint": "test:6",
 				"url":
 					"http://dorkly.com/post/86378/why-fictional-worlds-will-always-seem-more-appealing-than-reality",
 				"__v": 0,
@@ -256,6 +262,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e640",
 				"rss": "5b0ad0baf6f89574a6388879",
+				"fingerprint": "test:7",
 				"url":
 					"http://dorkly.com/post/86418/4-questions-i-still-have-about-avengers-infinity-war",
 				"__v": 0,
@@ -280,6 +287,7 @@
 			{
 				"_id": "5b0ad37226dc3db38194e69a",
 				"rss": "5b0ad0baf6f89574a638887d",
+				"fingerprint": "test:8",
 				"url": "http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk",
 				"__v": 0,
 				"commentUrl": null,
@@ -298,6 +306,7 @@
 			{
 				"_id": "5b0c680026dc3db381af5478",
 				"rss": "5adb6ba6b30a726c02b02a0a",
+				"fingerprint": "test:9",
 				"url":
 					"http://xcodebook.com/pdf-file/engineering-research-paper-example.pdf",
 				"__v": 0,
@@ -314,6 +323,7 @@
 			{
 				"_id": "5b0c680026dc3db381af5479",
 				"rss": "5adb6ba6b30a726c02b02a0a",
+				"fingerprint": "test:10",
 				"url": "http://xcodebook.com/pdf-file/r-cookbook-paul-teetor.pdf",
 				"__v": 0,
 				"commentUrl": null,
