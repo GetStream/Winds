@@ -57,8 +57,18 @@ export async function mergeFeeds(masterID, copyID) {
   // Remove the old feed
   let feedUrl = copy.feedUrl
   await copy.remove()
-  logger.info(`Completed the merge. ${copy.feedUrl} is now merged with ${master.feedUrl}`)
 
   // TODO: merge the feed url information
-  console.log('should store', feedUrl)
+  let feedUrls = [master.feedUrl].concat(master.feedUrls, [copy.feedUrl], copy.feedUrls)
+  let uniqueUrls = {}
+  for (let url of feedUrls) {
+    uniqueUrls[url] = 1
+  }
+  let newFeedUrls = Object.keys(uniqueUrls)
+  logger.info(`FeedUrls is now ${newFeedUrls}`)
+  master.feedUrls = newFeedUrls
+  await master.save()
+  logger.info(`Completed the merge. ${copy.feedUrl} is now merged with ${master.feedUrl}`)
+
+  return master
 }
