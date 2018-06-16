@@ -77,7 +77,7 @@ async function conduct() {
 					$lt: rand(),
 				},
 			})
-			.limit(maxToSchedule);
+			.limit(maxToSchedule).sort('-followerCount');
 
 		// make sure we don't schedule these guys again till its finished
 		let publicationIDs = [];
