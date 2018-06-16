@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:media="http://search.yahoo.com/mrss/"
+	>
+
+<channel>
+	<title>Andreessen Horowitz</title>
+	<atom:link href="https://a16z.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://a16z.com</link>
+	<description>Software Is Eating the World</description>
+	<lastBuildDate>Wed, 06 Jun 2018 05:55:38 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.com/</generator>
+
+<image>
+	<url>https://a16z.files.wordpress.com/2017/12/cropped-a16z-favicon.png?w=32</url>
+	<title>Andreessen Horowitz</title>
+	<link>https://a16z.com</link>
+	<width>32</width>
+	<height>32</height>
+</image>
+<cloud domain='a16z.com' port='80' path='/?rsscloud=notify' registerProcedure='' protocol='http-post' />
+<atom:link rel="search" type="application/opensearchdescription+xml" href="https://a16z.com/osd.xml" title="Andreessen Horowitz" />
+	<atom:link rel='hub' href='https://a16z.com/?pushpress=hub'/>
+	<item>
+		<title>How Startups Get Addicted to Paid Marketing (and How to Go Beyond the Local Max)</title>
+		<link>http://andrewchen.co/paid-marketing-addiction/</link>
+		<pubDate>Mon, 04 Jun 2018 17:00:38 +0000</pubDate>
+		<dc:creator><![CDATA[sonala16z]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=214101</guid>
+		<description><![CDATA[<p>&#8230;</p>]]></description>
+
+		<media:content url="http://0.gravatar.com/avatar/0a6cea5804bdc50314d9adf7c8a2ad0e?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">sonala16z</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Microsoft Buys GitHub for $7.5 Billion</title>
+		<link>https://a16z.com/2018/06/04/microsoft-buys-github-for-7-5-billion/</link>
+		<pubDate>Mon, 04 Jun 2018 13:11:17 +0000</pubDate>
+		<dc:creator><![CDATA[peterlevinea16z]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[announcements]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=213988</guid>
+		<description><![CDATA[<p>Six years ago we invested an “eye-popping” $100 million into GitHub. This was not only a Series A investment and the first institutional money ever raised by the company, but it was also the largest single check we had ever &#8230;</p>]]></description>
+
+		<media:content url="http://2.gravatar.com/avatar/b83c8bbc5298f76f33fa5b352041c199?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">peterlevinea16z</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Video: Netflix&#8217; Ted Sarandos in Conversation with Marc Andreessen</title>
+		<link>https://a16z.com/2018/06/01/sarandos-andreessen-summit-excerpts/</link>
+		<pubDate>Sat, 02 Jun 2018 03:00:37 +0000</pubDate>
+		<dc:creator><![CDATA[sonala16z]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[a16z Bytes]]></category>
+		<category><![CDATA[entertainment]]></category>
+		<category><![CDATA[our Summit events]]></category>
+		<category><![CDATA[videos]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=213061</guid>
+		<description><![CDATA[<p><iframe class='youtube-player' type='text/html' width='640' height='390' src='https://www.youtube.com/embed/oy97TfvnMuo?version=3&#038;rel=1&#038;fs=1&#038;autohide=2&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' allowfullscreen='true' style='border:0;'></iframe></p>
+<p><strong>watch time: 22 minutes</strong></p>
+<p>Netflix chief content officer Ted Sarandos shares nuggets &#8212; from the business of streaming and creating content to making decisions about taste and culture &#8212; about the Netflix journey, in conversation with Marc Andreessen.</p>
+<p>Based on &#8230;</p>]]></description>
+
+		<media:content url="http://0.gravatar.com/avatar/0a6cea5804bdc50314d9adf7c8a2ad0e?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">sonala16z</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Yubico - Hardware Eats Security</title>
+		<link>https://a16z.com/2018/05/31/yubico/</link>
+		<pubDate>Thu, 31 May 2018 15:00:01 +0000</pubDate>
+		<dc:creator><![CDATA[garcegarce]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[announcements]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=211583</guid>
+		<description><![CDATA[<p>I’ve been directly or peripherally involved in the security community approaching two decades now: in the early 2000’s working with the intelligence community; as a PhD student researching networking security; subsequently at my startup Nicira where security was a major &#8230;</p>]]></description>
+
+		<media:content url="http://0.gravatar.com/avatar/6d60e2b836af2aa53e1ae86aebc84428?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">garcegarce</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>CAMP4</title>
+		<link>https://a16z.com/2018/05/31/camp4/</link>
+		<pubDate>Thu, 31 May 2018 12:30:13 +0000</pubDate>
+		<dc:creator><![CDATA[htidnam]]></dc:creator>
+				<category><![CDATA[bio]]></category>
+		<category><![CDATA[announcements]]></category>
+		<category><![CDATA[bio fund]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=211705</guid>
+		<description><![CDATA[<p>Biology is elegant, but it’s rarely simple. Following the completion of the $3 billion <a href="https://www.genome.gov/10001772/all-about-the--human-genome-project-hgp/" target="_blank" rel="noopener">Human Genome Project</a> in the early 2000s, scientists were surprised to discover that the human genome contained <em>only</em> 20,000 or so genes, accounting for less than &#8230;</p>]]></description>
+
+		<media:content url="http://1.gravatar.com/avatar/df0c9c7e33454384ed1c5d00573200ae?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">htidnam</media:title>
+		</media:content>
+
+		<media:content url="http://a16z.files.wordpress.com/2018/05/camp4.png?w=300" medium="image" />
+	</item>
+		<item>
+		<title>FlyHomes</title>
+		<link>https://a16z.com/2018/05/31/flyhomes/</link>
+		<pubDate>Thu, 31 May 2018 10:00:37 +0000</pubDate>
+		<dc:creator><![CDATA[htidnam]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[announcements]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=211711</guid>
+		<description><![CDATA[<blockquote>
+<p style="text-align:left;"><span style="font-weight:400;">“You can observe a lot just by watching.”<br />
+</span><span style="font-weight:400;">&#8211;Yogi Berra</span></p>
+</blockquote>
+<p><span style="font-weight:400;">David Ricardo was born in the late 18th century, and along with Adam Smith was one of the most influential early economists, pioneering the term “comparative advantage.” A plumber is </span>&#8230;</p>]]></description>
+
+		<media:content url="http://1.gravatar.com/avatar/df0c9c7e33454384ed1c5d00573200ae?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">htidnam</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>a16z Podcast: Autonomy in Service</title>
+		<link>https://a16z.com/2018/05/27/autonomy-service-national-security-ai/</link>
+		<pubDate>Sun, 27 May 2018 21:06:33 +0000</pubDate>
+		<dc:creator><![CDATA[htidnam]]></dc:creator>
+				<category><![CDATA[autonomous cars & drones]]></category>
+		<category><![CDATA[security & privacy]]></category>
+		<category><![CDATA[tech is global]]></category>
+		<category><![CDATA[veterans]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=210237</guid>
+		<description><![CDATA[<iframe width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F449132874&#038;visual=true&#038;color=%23ff5500&#038;auto_play=false&#038;hide_related=false&#038;show_comments=true&#038;show_user=true&#038;show_reposts=false&#038;show_teaser=true"></iframe>
+<div class="page" title="Page 6">
+<div class="section">
+<div class="layoutArea">
+<div class="column">
+<div>We now live in a world where connecting the dots between intel and modeling threats has become infinitely more complex: not only is the surface area to protect larger than ever, but the entry points and issues are more diverse </div></div></div></div></div><p>&#8230;</p>]]></description>
+
+		<media:content url="http://1.gravatar.com/avatar/df0c9c7e33454384ed1c5d00573200ae?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">htidnam</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>a16z Podcast: When Journalism Goes Global</title>
+		<link>https://a16z.com/2018/05/26/journalism-tech-global-icij-panama-papers/</link>
+		<pubDate>Sat, 26 May 2018 19:33:58 +0000</pubDate>
+		<dc:creator><![CDATA[Madelyne Xiao]]></dc:creator>
+				<category><![CDATA[networking]]></category>
+		<category><![CDATA[online communities]]></category>
+		<category><![CDATA[policy]]></category>
+		<category><![CDATA[security & privacy]]></category>
+		<category><![CDATA[storytelling]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=209248</guid>
+		<description><![CDATA[<iframe width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F448164903&#038;visual=true&#038;color=%23ff5500&#038;auto_play=false&#038;hide_related=false&#038;show_comments=true&#038;show_user=true&#038;show_reposts=false&#038;show_teaser=true"></iframe>
+<p><span class="im">The <a href="https://www.icij.org/">International Consortium of Investigative Journalists</a> is the organization responsible for the compilation and release of the first the Panama Papers, a series of 11.5 million documents that detailed the offshore dealings of governments and individuals the world over, soon </span>&#8230;</p>]]></description>
+
+		<media:content url="http://1.gravatar.com/avatar/d2ad024d49dc1fad8c307fba07675b73?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">madelynexiao1</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>How To Democratize Healthcare: AI Gives Everyone The Very Best Doctor</title>
+		<link>https://a16z.com/2018/05/25/democratizing-healthcare-ai-doctors/</link>
+		<pubDate>Fri, 25 May 2018 18:30:51 +0000</pubDate>
+		<dc:creator><![CDATA[Madelyne Xiao]]></dc:creator>
+				<category><![CDATA[AI, machine & deep learning]]></category>
+		<category><![CDATA[bio]]></category>
+		<category><![CDATA[healthcare]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=208839</guid>
+		<description><![CDATA[<p>The greatest problem of health care in United States – <a href="https://www.washingtonpost.com/news/wonk/wp/2017/06/05/america-is-a-world-leader-in-health-inequality/?utm_term=.3a4aebdcaf99" target="_blank" rel="nofollow noopener">the world leader in health inequality</a> – isn’t actually about the <em>quality</em> of care. The greatest problem we have is <em>access</em> to care. According to the <a href="https://www.cdc.gov/nchs/data/hus/hus16.pdf#062" target="_blank" rel="nofollow noopener">CDC</a>, nearly 20% &#8230;</p>]]></description>
+
+		<media:content url="http://1.gravatar.com/avatar/d2ad024d49dc1fad8c307fba07675b73?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">madelynexiao1</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>12 Business Lessons about Growth from Andrew Chen</title>
+		<link>https://25iq.com/2018/05/19/business-lessons-about-growth-from-andrew-chen-andreessen-horowitz/</link>
+		<pubDate>Tue, 22 May 2018 14:00:01 +0000</pubDate>
+		<dc:creator><![CDATA[sonala16z]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[listicles]]></category>
+
+		<guid isPermaLink="false">http://a16z.com/?p=208048</guid>
+		<description><![CDATA[<p>&#8230;</p>]]></description>
+
+		<media:content url="http://0.gravatar.com/avatar/0a6cea5804bdc50314d9adf7c8a2ad0e?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">sonala16z</media:title>
+		</media:content>
+	</item>
+	</channel>
+</rss>
