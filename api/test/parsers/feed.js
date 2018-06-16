@@ -188,7 +188,7 @@ const rssTestData = [
 			articlesLength: 10,
 			firstArticleUrl: 'https://medium.com/strava-engineering/apple-dev-guild-week-f5981fe525a4?source=rss----89d4108ce2a3---4',
 			firstArticleTitle: 'Apple Dev Guild Week',
-			firstArticlePublicationDate: '2018-06-04T23:55:00.000Z',
+			firstArticlePublicationDate: new Date(Date.UTC(2018, 6, 4, 23, 55, 0)),
 		},
 	},
 ];
