@@ -157,7 +157,7 @@ describe('RSS worker', () => {
 				expect(rss.postCount).to.be.equal(initialArticles.length + newArticleCount);
 			});
 
-			it('should add article data to Stream feed', async () => {
+			it.skip('should add article data to Stream feed', async () => {
 				const feed = getMockFeed('rss', data.rss);
 				expect(feed).to.not.be.null;
 				expect(feed.addActivities.called).to.be.true;

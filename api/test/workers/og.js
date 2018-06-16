@@ -51,7 +51,8 @@ describe('OG worker', () => {
 				rss: rss._id,
 				title: 'Hey now',
 				description: 'Donkey!',
-				url: data.url
+				url: data.url,
+				fingerprint: "test:workers-og.js"
 			});
 
 			await ogQueue.add(data);
@@ -148,4 +149,3 @@ describe('OG worker', () => {
 		});
 	});
 });
-
