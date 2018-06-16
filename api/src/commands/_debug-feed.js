@@ -7,6 +7,7 @@ import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
+import normalize from 'normalize-url'
 
 // do stuff
 export async function debugFeed(feedType, feedUrls) {

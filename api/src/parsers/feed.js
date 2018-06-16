@@ -7,6 +7,10 @@ import FeedParser from 'feedparser';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
+import Article from '../models/article';
+
+import RSS from '../models/rss';
+
 
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
@@ -248,10 +252,13 @@ export function ParseFeedPosts(posts, limit=1000) {
 				description = null
 			}
 			let content = sanitize(post.summary)
-			article = {
+			article = new Article( {
 				content: content,
 				description: description,
 				enclosures: post.enclosures,
+				fingerprint: post.fingerprint,
+				guid: post.guid,
+				link: post.link,
 				publicationDate:
 					moment(post.pubdate).toISOString() ||
 					moment()
@@ -259,7 +266,7 @@ export function ParseFeedPosts(posts, limit=1000) {
 						.toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
 				url: normalize(post.link),
-			};
+			});
 		} catch (err) {
 			logger.info('skipping article', { err });
 			continue;
