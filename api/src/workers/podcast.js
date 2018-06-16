@@ -70,10 +70,9 @@ export async function handlePodcast(job) {
 		e.podcast = podcastID
 	}
 
-	let operationMap = upsertManyPosts(podcastID, episodes, 'podcast')
-	console.log(operationMap)
+	let operationMap = await upsertManyPosts(podcastID, episodes.slice(0,2), 'podcast')
 	let updatedEpisodes = operationMap.new.concat(operationMap.changed)
-
+	logger.info(`Finished updating ${updatedEpisodes.length} out of ${podcastContent.episodes.length} changed`)
 
 	// update the count
 	await Podcast.update(

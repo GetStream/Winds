@@ -136,9 +136,12 @@ export function ParsePodcastPosts(posts, limit=1000) {
 		let episode = new Episode({
 			description: strip(post.description).substring(0, 280),
 			duration: post.duration,
+			guid: post.guid,
+			link: post.link,
+			enclosures: post.enclosures,
+			fingerprint: post.fingerprint,
 			enclosure: post.enclosures && post.enclosures[0] && post.enclosures[0].url,
 			images: { og: image },
-			link: post.link,
 			publicationDate:
 				moment(post.pubdate).toISOString() ||
 				moment()
