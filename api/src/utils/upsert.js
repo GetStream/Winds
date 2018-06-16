@@ -37,6 +37,9 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
   let operationMap = {new: [], changed: [], unchanged: []}
   let operations = []
   for (let p of newPosts) {
+    if (!p[schemaField]) {
+      throw new Error(`You forgot to specify the ${schemaField} field`)
+    }
     let postData = (p.toObject) ? p.toObject() : p
     delete postData['_id']
     if (p.fingerprint in existingPostsMap) {
@@ -104,7 +107,6 @@ export function postChanged(existingPost, newPost) {
   for (let f of immutableFields) {
     delete objectDiff[f]
   }
-  console.log('objectDiff', objectDiff)
   let changes = Object.keys(objectDiff).length
 
   return changes

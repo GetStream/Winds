@@ -5,20 +5,30 @@ import Follow from '../../src/models/follow';
 
 import Pin from '../../src/models/pin';
 import Article from '../../src/models/article';
+import Episode from '../../src/models/episode';
+
+import mongoose from 'mongoose';
 
 import logger from '../../src/utils/logger';
 
 import { loadFixture, getMockClient, getMockFeed, dropDBs } from '../utils';
 import { postChanged, upsertManyPosts } from '../../src/utils/upsert';
+import { getTestFeed, getTestPodcast } from '../utils';
+import {
+	ReadFeedStream,
+	ParseFeedPosts,
+	ParsePodcastPosts,
+} from '../../src/parsers/feed';
 
 describe('Upsert', () => {
-	let article1, article2;
+	let article1, article2, episode1;
 
 	before(async () => {
 		await dropDBs();
 		await loadFixture('initial-data');
 		article1 = await Article.findOne({ _id: '5b0ad37226dc3db38194e5ec' }).lean();
 		article2 = await Article.findOne({ _id: '5b0ad37226dc3db38194e5ed' }).lean();
+		episode1 = await Episode.findOne().lean();
 	});
 
 	describe('upsertManyPosts', () => {
@@ -50,18 +60,61 @@ describe('Upsert', () => {
 	});
 
 	describe('Episode upsertManyPosts', () => {
-
+		it('the same episode shouldnt trigger an update', async () => {
+			let operationMap = await upsertManyPosts(episode1.podcast, [episode1], 'podcast');
+			expect(operationMap.changed.length).to.equal(0);
+      expect(operationMap.new.length).to.equal(0);
+		});
+		it('a new episode should be inserted', async () => {
+      let episode3 = episode1
+			episode3.fingerprint = 'hello world';
+			episode3['_id'] = null
+			episode3.url = 'https://google.com/testhelloworld';
+			let operationMap = await upsertManyPosts(episode1.podcast, [episode1], 'podcast');
+			expect(operationMap.new.length).to.equal(1);
+		});
 	})
 
-	describe('Double Inserts', () => {
+	describe('Double Inserts RSS feed', () => {
 
 		// loop over feeds, and verify that the 2nd insert has 0 changes
 		// this will break if something is wrong with the upsert/change detection
+		for (let f of ['techcrunch', 'reddit-r-programming', 'hackernews', 'medium-technology']) {
+			it(`the second run should be unchanged for ${f}`, async () => {
+				let posts = await ReadFeedStream(getTestFeed(f));
+				let feedResponse = ParseFeedPosts(posts);
+				let articles = feedResponse.articles
 
-		it('a new article should be inserted', async () => {
+				for (let a of articles) {
+					a['rss'] = '5b0ad37226dc3db38194e5ef'
+				}
+				await upsertManyPosts('5b0ad37226dc3db38194e5ef', articles, 'rss');
+				let operationMap = await upsertManyPosts('5b0ad37226dc3db38194e5ef', articles, 'rss');
+				expect(operationMap.new.length).to.equal(0)
+				expect(operationMap.changed.length).to.equal(0)
+			});
+		}
+	})
 
-		});
+	describe('Double Inserts Podcasts', () => {
 
+		// loop over feeds, and verify that the 2nd insert has 0 changes
+		// this will break if something is wrong with the upsert/change detection
+		for (let f of ['giant-bombcast', 'serial', 'a16z']) {
+			it(`the second run should be unchanged for ${f}`, async () => {
+				let posts = await ReadFeedStream(getTestPodcast(f));
+				let feedResponse = ParsePodcastPosts(posts);
+				let episodes = feedResponse.episodes
+
+				for (let e of episodes) {
+					e['podcast'] = '5b0ad37226dc3db38194e5ef'
+				}
+				await upsertManyPosts('5b0ad37226dc3db38194e5ef', episodes, 'podcast');
+				let operationMap = await upsertManyPosts('5b0ad37226dc3db38194e5ef', episodes, 'podcast');
+				expect(operationMap.new.length).to.equal(0)
+				expect(operationMap.changed.length).to.equal(0)
+			});
+		}
 	})
 
 	describe('postChanged diff function', () => {
