@@ -7,6 +7,7 @@ import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
+import normalize from 'normalize-url'
 
 // do stuff
 export async function debugFeed(feedType, feedUrls) {
@@ -62,7 +63,7 @@ export async function debugFeed(feedType, feedUrls) {
 					} else {
 						logger.info(chalk.red('Image missing :('));
 					}
-					if (article.enclosures.length) {
+					if (article.enclosures && article.enclosures.length) {
 						logger.info(`found ${article.enclosures.length} enclosures`)
 						for (let enclosure of article.enclosures) {
 							logger.info(JSON.stringify(enclosure))

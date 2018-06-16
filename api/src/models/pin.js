@@ -44,6 +44,10 @@ export const PinSchema = new Schema(
 				select: ['parent', 'url', 'title', 'description', 'images', 'publicationDate'],
 			},
 		},
+		url: {
+			type: String,
+			trim: true,
+		},
 	},
 	{ collection: 'pins' },
 );
