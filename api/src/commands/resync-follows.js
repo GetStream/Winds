@@ -18,7 +18,7 @@ async function main() {
 	logger.info(`time to resync those follows, \\0/`);
 
   let followCount = await Follow.count({})
-  let chunkSize = 300
+  let chunkSize = 500
 
   for (let i = 0, j = followCount; i < j; i += chunkSize) {
     let follows = await Follow.find({}).skip(i).limit(chunkSize).lean();
