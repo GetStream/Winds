@@ -12,12 +12,17 @@ async function sendPodcastToCollections(podcast) {
 		podcast: podcast.id,
 	}).sort({ publicationDate: -1 }).limit(1000);
 
+	let mostRecentPublicationDate
+	if (episodes.length) {
+		mostRecentPublicationDate = episodes[0].publicationDate
+	}
+
 	let eventsData = {
 		[`podcast:${podcast.id}`]: {
 			articleCount: episodes.length,
 			description: podcast.description,
 			language: podcast.language,
-			mostRecentPublicationDate: episodes[0].publicationDate,
+			mostRecentPublicationDate: mostRecentPublicationDate,
 			title: podcast.title,
 		}};
 
