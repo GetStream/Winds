@@ -49,6 +49,7 @@ export const EpisodeSchema = new Schema(
 		link: {
 			type: String,
 			trim: true,
+			index: true,
 		},
 		enclosure: {
 			type: String,
