@@ -23,7 +23,7 @@ async function main() {
   let counts = {denormalized: 0, normalized: 0, missing: 0}
   for (let p of pins) {
     let url = (p.article && p.article.url) || (p.episode && p.episode.url)
-    if (!p.url) {
+    if (!p.url && p.user) {
       p.url = url
       await p.save()
       counts.denormalized += 1
@@ -50,6 +50,9 @@ async function main() {
         logger.info(`found a new instance for ${p.url} with id ${newInstance.id}`)
         counts.normalized += 1
       } else {
+        if (p.id) {
+          await schema.deleteOne({_id: p.id})
+        }
         logger.info(`couldnt find a new instance :(`)
         counts.missing += 1
       }
