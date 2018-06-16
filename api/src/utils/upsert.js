@@ -27,7 +27,9 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
 
   // step 1: get the existing objects in mongodb
   let fingerprints = newPosts.map(p=>p.fingerprint)
-  let existingPosts = await schema.find({fingerprint: {$in: fingerprints}}).lean()
+  let lookup = {fingerprint: {$in: fingerprints}}
+  lookup[schemaField] = publicationID
+  let existingPosts = await schema.find().lean()
   let existingPostsMap = {}
   for (let p of existingPosts) {
     existingPostsMap[p.fingerprint] = p
