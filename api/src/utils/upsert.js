@@ -74,7 +74,7 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
   // https://docs.mongodb.com/manual/core/bulk-write-operations/
   // http://mongoosejs.com/docs/api.html#bulkwrite_bulkWrite
   if (operations.length) {
-    let response = await schema.bulkWrite(operations)
+    let response = await schema.bulkWrite(operations, {ordered: false})
     // TODO: How to handle errors, such as duplicate keys
   }
 
