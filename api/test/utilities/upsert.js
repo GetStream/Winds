@@ -49,6 +49,21 @@ describe('Upsert', () => {
 		});
 	});
 
+	describe('Episode upsertManyPosts', () => {
+
+	})
+
+	describe('Double Inserts', () => {
+
+		// loop over feeds, and verify that the 2nd insert has 0 changes
+		// this will break if something is wrong with the upsert/change detection
+
+		it('a new article should be inserted', async () => {
+
+		});
+
+	})
+
 	describe('postChanged diff function', () => {
 		it('the diff between these 2 articles should be 4', async () => {
 			let changes = postChanged(article1, article2);
