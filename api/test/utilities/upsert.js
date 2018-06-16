@@ -30,6 +30,9 @@ describe('Upsert', () => {
 		article2 = await Article.findOne({ _id: '5b0ad37226dc3db38194e5ed' }).lean();
 		episode1 = await Episode.findOne().lean();
 	});
+	after(async () => {
+		await dropDBs();
+	});
 
 	describe('upsertManyPosts', () => {
 		it('the same article shouldnt trigger an update', async () => {
