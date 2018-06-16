@@ -17,8 +17,8 @@ describe('Upsert', () => {
 	before(async () => {
 		await dropDBs();
 		await loadFixture('initial-data');
-		article1 = await Article.findOne({ _id: '5b0ad37226dc3db38194e5ec' });
-		article2 = await Article.findOne({ _id: '5b0ad37226dc3db38194e5ed' });
+		article1 = await Article.findOne({ _id: '5b0ad37226dc3db38194e5ec' }).lean();
+		article2 = await Article.findOne({ _id: '5b0ad37226dc3db38194e5ed' }).lean();
 	});
 
 	describe('upsertManyPosts', () => {
@@ -52,20 +52,20 @@ describe('Upsert', () => {
 	describe('postChanged diff function', () => {
 		it('the diff between these 2 articles should be 4', async () => {
 			let changes = postChanged(article1, article2);
-			expect(changes).to.equal(4);
+			expect(changes).to.equal(3);
 		});
 		it('the diff between these 2 articles should be 0', async () => {
 			let changes = postChanged(article1, article1);
 			expect(changes).to.equal(0);
 		});
 		it('test if we ignore publication date', async () => {
-			let article3 = Object.assign({}, article1.toObject());
+			let article3 = Object.assign({}, article1);
 			article3.publicationDate = new Date();
 			let changes = postChanged(article1, article3);
 			expect(changes).to.equal(0);
 		});
 		it('ensure we dont ignore other fields', async () => {
-			let article3 = Object.assign({}, article1.toObject());
+			let article3 = Object.assign({}, article1);
 			article3.link = '123';
 			let changes = postChanged(article1, article3);
 			expect(changes).to.equal(1);
