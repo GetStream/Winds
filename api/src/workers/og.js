@@ -36,11 +36,12 @@ export async function handleOg(job) {
 	const jobType = job.data.type;
 	const update = job.data.update;
 
-	if (!['episode', 'article'].includes(jobType)) {
+	if (!['episode', 'article', 'rss', 'podcast'].includes(jobType)) {
 		return logger.error(`couldnt find schema for jobtype ${jobType}`);
 	}
 	// Lookup the right type of schema: article, episode or podcast
-	const mongoSchema = jobType === 'episode' ? Episode : Article;
+	const lookup = {'episode': Episode, 'article': Article, 'rss': RSS, 'podcast': Podcast}
+	const mongoSchema = lookup[jobType]
 	const field = jobType === 'episode' ? 'link' : 'url';
 
 	// if the instance hasn't been created yet, or it already has an OG image, ignore
