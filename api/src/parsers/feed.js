@@ -255,6 +255,10 @@ export function ParseFeedPosts(posts, limit=1000) {
 				description = null
 			}
 			let content = sanitize(post.summary)
+			let url
+			if (post.link) {
+				url = normalize(post.link)
+			}
 			article = new Article( {
 				content: content,
 				description: description,
@@ -268,7 +272,7 @@ export function ParseFeedPosts(posts, limit=1000) {
 						.subtract(i, 'minutes') // ensure we keep order for feeds with no time
 						.toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
-				url: normalize(post.link),
+				url: url,
 			});
 		} catch (err) {
 			logger.info('skipping article', { err });
