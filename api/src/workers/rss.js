@@ -92,7 +92,7 @@ export async function handleRSS(job) {
 
 	let updatedArticles
 	let allArticles = await timeIt('winds.handle_rss.upsertManyArticles', async () => {
-		const articles = rssContent.articles;
+		let articles = rssContent.articles;
 		for (let a of articles) {
 			a.rss = rssID
 		}
