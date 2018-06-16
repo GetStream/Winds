@@ -45,6 +45,9 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
     if (p.fingerprint in existingPostsMap) {
       let existing = existingPostsMap[p.fingerprint]
       if (postChanged(existing, p)) {
+        // make sure we don't use the generated mongodb id that hasn't been saved yet
+        // we want the new data, with the old id
+        p._id = existing._id
         operationMap.changed.push(p)
         // filter on both rss and fingerprint so we can use the index
         const filter = {fingerprint: existing.fingerprint}
