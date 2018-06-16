@@ -90,16 +90,13 @@ export async function handleRSS(job) {
 	statsd.increment('winds.handle_rss.articles.parsed', rssContent.articles.length);
 	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
 
-	let updatedArticles
-	let allArticles = await timeIt('winds.handle_rss.upsertManyArticles', async () => {
-		let articles = rssContent.articles;
-		for (let a of articles) {
-			a.rss = rssID
-		}
-		let operationMap = await upsertManyPosts(rssID, articles, 'rss')
-		updatedArticles = operationMap.new.concat(operationMap.changed)
-		logger.info(`Finished updating. ${updatedArticles.length} out of ${articles.length} changed`)
-	});
+	let articles = rssContent.articles
+	for (let a of articles) {
+		a.rss = rssID
+	}
+	let operationMap = await upsertManyPosts(rssID, articles, 'rss')
+	let updatedArticles = operationMap.new.concat(operationMap.changed)
+	logger.info(`Finished updating. ${updatedArticles.length} out of ${articles.length} changed`)
 
 	// update the count
 	await RSS.update(
