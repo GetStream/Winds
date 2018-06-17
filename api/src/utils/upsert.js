@@ -31,7 +31,7 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
 	let fingerprints = newPosts.map(p => p.fingerprint);
 	let lookup = { fingerprint: { $in: fingerprints } };
 	lookup[schemaField] = publicationID;
-	let existingPosts = await schema.find().lean();
+	let existingPosts = await schema.find(lookup).lean();
 	let existingPostsMap = {};
 	for (let p of existingPosts) {
 		existingPostsMap[p.fingerprint] = p;
