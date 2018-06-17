@@ -85,7 +85,7 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
 			let response = await schema.bulkWrite(operations, { ordered: false });
 		} catch (e) {
       // since we use an unordered query it doesnt matter if we hit a few unique constraints
-			if (e.code != duplicateKeyError) {
+			if (!e || (e.code != duplicateKeyError)) {
 				throw e;
 			}
 		}
