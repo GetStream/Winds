@@ -14,7 +14,9 @@ import { ProcessOgQueue } from '../asyncTasks';
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker');
-ProcessOgQueue(30, ogProcessor);
+const concurrency = 30
+ProcessOgQueue(concurrency, ogProcessor);
+logger.info(`Start the og queue, concurrency ${concurrency}`)
 
 export async function ogProcessor(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);
@@ -40,14 +42,18 @@ export async function handleOg(job) {
 		return logger.error(`couldnt find schema for jobtype ${jobType}`);
 	}
 	// Lookup the right type of schema: article, episode or podcast
-	const lookup = {'episode': Episode, 'article': Article, 'rss': RSS, 'podcast': Podcast}
-	const mongoSchema = lookup[jobType]
+	const schemaMap = {'episode': Episode, 'article': Article, 'rss': RSS, 'podcast': Podcast}
+	const mongoSchema = schemaMap[jobType]
 	const field = jobType === 'episode' ? 'link' : 'url';
 
 	// if the instance hasn't been created yet, or it already has an OG image, ignore
-	const instances = await mongoSchema.find({ [field]: url });
+	let lookup = {}
+	lookup[field] = url
+	const instances = await mongoSchema.find(lookup);
 	if (!instances.length) {
 		return logger.warn(`instance not found for type ${jobType} with lookup ${field}: ${url}`);
+	} else {
+		logger.info(`found ${instances.length} to update with url ${url}`)
 	}
 
 	const needUpdate = instances.filter(i => !i.images.og);
