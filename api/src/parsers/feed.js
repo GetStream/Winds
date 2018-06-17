@@ -258,6 +258,9 @@ export function ParseFeedPosts(posts, limit=1000) {
 			let url
 			if (post.link) {
 				url = normalize(post.link)
+			} else {
+				// can't have an article without a link
+				continue
 			}
 			article = new Article( {
 				content: content,

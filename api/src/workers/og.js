@@ -54,8 +54,7 @@ export async function handleOg(job) {
 	// if the instance hasn't been created yet, or it already has an OG image, ignore
 	let lookup = {}
 	lookup[field] = url
-	const instances = await mongoSchema.find(lookup);
-	console.log(lookup)
+	const instances = await mongoSchema.find(lookup).lean().limit(10);
 	if (!instances.length) {
 		return logger.warn(`instance not found for type ${jobType} with lookup ${field}: ${url}`);
 	} else {
@@ -81,7 +80,8 @@ export async function handleOg(job) {
 			return logger.info(`Didn't find image for ${url}`);
 		}
 	} catch (err) {
-		return logger.info(`OGS scraping broke for URL ${url}`, {err});
+		// err object is huge, dont log it
+		return logger.info(`OGS scraping broke for URL ${url}`);
 	}
 	let normalized;
 	try {
