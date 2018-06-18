@@ -70,6 +70,9 @@ exports.post = async (req, res) => {
 
 	for (let feed of foundRSS.feedUrls.slice(0, 10)) {
 		let feedTitle = feed.title;
+		if (!feedTitle) {
+			continue
+		}
 		if (feedTitle.toLowerCase() === 'rss') {
 			feedTitle = foundRSS.site.title;
 		}
