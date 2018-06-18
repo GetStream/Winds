@@ -30,8 +30,8 @@ describe('Upsert', () => {
 	describe('Article upsertManyPosts', () => {
 		it('the same article shouldnt trigger an update', async () => {
 			let operationMap = await upsertManyPosts(article1.rss, [article2], 'rss');
-			expect(operationMap.changed).to.have.length(0);
-			expect(operationMap.new).to.have.length(0);
+			expect(operationMap.changed).to.be.empty;
+			expect(operationMap.new).to.be.empty;
 		});
 
 		it('publicationDate change shouldn\'t result in an update', async () => {
@@ -39,8 +39,8 @@ describe('Upsert', () => {
 			CreateFingerPrints([article3]);
 
 			const operationMap = await upsertManyPosts(article1.rss, [article3], 'rss');
-			expect(operationMap.changed).to.have.length(0);
-			expect(operationMap.new).to.have.length(0);
+			expect(operationMap.changed).to.be.empty;
+			expect(operationMap.new).to.be.empty;
 		});
 
 		it('link change should result in an update', async () => {
@@ -49,7 +49,7 @@ describe('Upsert', () => {
 
 			const operationMap = await upsertManyPosts(article1.rss, [article3], 'rss');
 			expect(operationMap.changed).to.have.length(1);
-			expect(operationMap.new).to.have.length(0);
+			expect(operationMap.new).to.be.empty;
 			expect(await Article.findOne({_id: operationMap.changed[0]._id})).to.not.be.null
 		});
 
@@ -65,8 +65,8 @@ describe('Upsert', () => {
 	describe('Episode upsertManyPosts', () => {
 		it('the same episode shouldnt trigger an update', async () => {
 			let operationMap = await upsertManyPosts(episode1.podcast, [episode1], 'podcast');
-			expect(operationMap.changed).to.have.length(0);
-			expect(operationMap.new).to.have.length(0);
+			expect(operationMap.changed).to.be.empty;
+			expect(operationMap.new).to.be.empty;
 		});
 
 		it('a new episode should be inserted', async () => {
@@ -100,8 +100,8 @@ describe('Upsert', () => {
 					articles,
 					'rss',
 				);
-				expect(operationMap.new).to.have.length(0);
-				expect(operationMap.changed).to.have.length(0);
+				expect(operationMap.new).to.be.empty;
+				expect(operationMap.changed).to.be.empty;
 			});
 		}
 	});
@@ -163,8 +163,8 @@ describe('Upsert', () => {
 				}
 				await upsertManyPosts('5b0ad37226dc3db38194e5ef', episodes, 'podcast');
 				const operationMap = await upsertManyPosts('5b0ad37226dc3db38194e5ef', episodes, 'podcast');
-				expect(operationMap.new).to.have.length(0);
-				expect(operationMap.changed).to.have.length(0);
+				expect(operationMap.new).to.be.empty;
+				expect(operationMap.changed).to.be.empty;
 			});
 		}
 	});
