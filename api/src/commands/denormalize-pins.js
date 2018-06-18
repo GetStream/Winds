@@ -42,16 +42,17 @@ async function main() {
 
     if (!instance && p.url) {
       logger.info(`restoring relation for pin with url ${p.url}`)
-      let newInstance = await schema.findOne({url: p.url})
+      let newInstance = await schema.findOne({url: p.url}).lean()
       if (newInstance) {
         let data = {}
-        data[postType] = newInstance.id
-        let result = await schema.updateOne({_id: p.id}, data)
+        data[postType] = newInstance._id
+				console.log(p._id, data)
+        let result = await schema.updateOne({_id: p._id}, data)
         logger.info(`found a new instance for ${p.url} with id ${newInstance.id}`)
         counts.normalized += 1
       } else {
         if (p.id) {
-          await schema.deleteOne({_id: p.id})
+          await schema.deleteOne({_id: p._id})
         }
         logger.info(`couldnt find a new instance :(`)
         counts.missing += 1
