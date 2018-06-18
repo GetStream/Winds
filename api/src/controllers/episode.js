@@ -16,6 +16,9 @@ exports.list = async (req, res) => {
 
 		episodes = await Episode.find({ _id: { $in: episodeIds }}).find().exec();
 	} else {
+		if (query.podcast && !mongoose.Types.ObjectId.isValid(query.podcast)) {
+			return res.status(400).json({ error: `Invalid Podcast id ${query.podcast}` });
+		}
 		episodes = await Episode.apiQuery(req.query);
 	}
 
