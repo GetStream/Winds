@@ -86,16 +86,19 @@ describe('RSS worker', () => {
 				setupHandler();
 			});
 
-			it('should parse malformed feed', async () => {
+			it('should fail to parse malformed feed', async () => {
 				nock(data.url).get('').reply(200, () => {
 					return getTestFeed('malformed-hackernews');
 				});
 
 				await rssQueue.add(data);
-				await handler;
-
-				const articles = await Article.find({ rss: data.rss });
-				expect(articles).to.have.length.above(initialArticles.length);
+				let error = null;
+				try {
+					await handler;
+				} catch (err) {
+					error = err;
+				}
+				expect(error).to.be.an.instanceOf(Error);
 			});
 
 			it('should fail to parse empty feed', async () => {
@@ -157,7 +160,7 @@ describe('RSS worker', () => {
 				expect(rss.postCount).to.be.equal(initialArticles.length + newArticleCount);
 			});
 
-			it.skip('should add article data to Stream feed', async () => {
+			it('should add article data to Stream feed', async () => {
 				const feed = getMockFeed('rss', data.rss);
 				expect(feed).to.not.be.null;
 				expect(feed.addActivities.called).to.be.true;

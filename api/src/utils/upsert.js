@@ -56,7 +56,6 @@ export async function upsertManyPosts(publicationID, newPosts, schemaField) {
 			operations.push({ updateOne: { filter: filter, update: dataWithoutId } });
 			operationMap.changed.push({ _id: existing._id, ...dataWithoutId });
 		} else {
-			// insert scenario
 			operations.push({ insertOne: { document: data } });
 			operationMap.new.push(data);
 		}

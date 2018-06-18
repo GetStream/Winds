@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { expect } from 'chai';
 
 import RSS from '../../src/models/rss';
@@ -127,12 +128,12 @@ describe('Upsert', () => {
 		});
 
 		it(`bulkwrite errors`, async () => {
-			const data = objectifyAndStripId(new Article({
+			const data = (new Article({
 				fingerprint: 'hihi3',
 				url: 'https://google.com/',
 				rss: '5b0ad37226dc3db38194e5ef',
 				title: 123,
-			}));
+			})).toObject();
 			const operations = [
 				{ insertOne: { document: data } },
 				{ insertOne: { document: data } }
@@ -237,6 +238,7 @@ describe('upsertManyPosts', () => {
 
 	it('should update articles', async () => {
 		for (let i in articles) {
+			articles[i]._id = mongoose.Types.ObjectId();
 			articles[i].title = `Article №${i}`;
 			articles[i].description = 'Article about pugs';
 		}
@@ -263,6 +265,7 @@ describe('upsertManyPosts', () => {
 
 		// content changed = update
 		for (let i in articles) {
+			articles[i]._id = mongoose.Types.ObjectId();
 			articles[i].content = `c${i}`;
 		}
 		CreateFingerPrints(articles);
@@ -277,6 +280,7 @@ describe('upsertManyPosts', () => {
 
 		// url changed content stayed the same = insert
 		for (let i in articles) {
+			articles[i]._id = mongoose.Types.ObjectId();
 			articles[i].url = `http://google.com/${i}/`;
 			articles[i].link = `http://google.com/${i}/`;
 			articles[i].guid = `http://google.com/${i}/`;
@@ -285,7 +289,7 @@ describe('upsertManyPosts', () => {
 		const insertResult = await upsertManyPosts(rssID, articles, 'rss');
 		expect(insertResult.new).to.not.be.empty;
 		expect(insertResult.changed).to.be.empty;
-		const newArticles = await Article.find({ rss: rssID, _id: { $nin: existingArticles.map(a => a._id) } }).sort('fingerprint');
+		const newArticles = await Article.find({ rss: rssID, _id: { $nin: existingArticles.map(a => String(a._id)) } }).sort('fingerprint');
 		expect(newArticles).to.have.length(articles.length);
 		for (let i in articles) {
 			expect(newArticles[i].url).to.be.equal(articles[i].url);
