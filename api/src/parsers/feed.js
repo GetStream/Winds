@@ -132,6 +132,16 @@ export function ParsePodcastPosts(posts, limit=1000) {
 		if (!url) {
 			url = post.enclosures && post.enclosures[0] ? post.enclosures[0].url : post.guid;
 		}
+		url = normalize(url)
+		const title = strip(post.title)
+		if (!url) {
+			logger.info(`skipping episode since there is no url`)
+			continue
+		}
+		if (!title) {
+			logger.info(`skipping episode since there is no title`)
+			continue
+		}
 		let image = post.image && post.image.url;
 		let episode = new Episode({
 			description: strip(post.description).substring(0, 280),
