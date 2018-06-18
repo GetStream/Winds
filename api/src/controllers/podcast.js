@@ -1,6 +1,6 @@
 import normalizeUrl from 'normalize-url';
 import {isURL} from '../utils/validation';
-import {discoverRSS} from '../utils/discovery';
+import {discoverRSS} from '../parsers/discovery';
 import Podcast from '../models/podcast';
 import personalization from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';

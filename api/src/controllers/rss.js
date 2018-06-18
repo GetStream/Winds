@@ -6,7 +6,7 @@ import {isURL} from '../utils/validation';
 import RSS from '../models/rss';
 
 import personalization from '../utils/personalization';
-import {discoverRSS} from '../utils/discovery';
+import {discoverRSS} from '../parsers/discovery';
 
 import moment from 'moment';
 import search from '../utils/search';
@@ -57,7 +57,7 @@ exports.post = async (req, res) => {
 		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
 	}
 
-	let foundRSS = await DiscoverRSS(normalizeUrl(data.feedUrl));
+	let foundRSS = await discoverRSS(normalizeUrl(data.feedUrl));
 
 	if (!foundRSS.feedUrls.length) {
 		return res
