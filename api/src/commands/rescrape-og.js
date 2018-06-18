@@ -8,14 +8,14 @@ import Episode from '../models/episode';
 
 import RSS from '../models/rss';
 
-import asyncTasks from '../asyncTasks';
+import {OgQueueAdd} from '../asyncTasks';
 
 program
 	.option('--all', 'Rescrape articles for which we already have an og image')
 	.parse(process.argv);
 
 async function main() {
-	let schemas = { article: Article, rss: RSS, episode: Episode, podcast: Podcast };
+	let schemas = { rss: RSS, episode: Episode, podcast: Podcast, article: Article };
 	let fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
 	logger.info(`program.all is set to ${program.all}`)
 
@@ -36,7 +36,7 @@ async function main() {
 			for (const instance of chunk) {
 				let missingImage = !instance.images || !instance.images.og
 				if (missingImage || program.all) {
-					let promise = asyncTasks.OgQueueAdd(
+					let promise = OgQueueAdd(
 						{
 							type: contentType,
 							url: instance[field],

@@ -33,13 +33,15 @@
             "_id"  : "5b0ad37626dc3db38194fa85",
             "rss"  : "5b0ad37626dc3db38194fa84",
             "title": "RSS feed article #1",
-            "url"  : "http://google.com/1"
+            "url"  : "http://google.com/1",
+            "fingerprint": "test:20"
         },
         {
             "_id"  : "5b0ad37626dc3db38194fa90",
             "rss"  : "5b0ad37626dc3db38194fa84",
             "title": "RSS feed article #2",
-            "url"  : "http://google.com/2"
+            "url"  : "http://google.com/2",
+            "fingerprint": "test:21"
         }
     ],
     "Episode": [
@@ -47,7 +49,8 @@
             "_id"  : "5b0ad37626dc3db38194fa87",
             "podcast": "5b0ad37626dc3db38194fa86",
             "title"  : "Podcast episode #1",
-            "url"    : "http://google.com"
+            "url"    : "http://google.com",
+            "fingerprint": "test:23"
         }
     ]
 }, {

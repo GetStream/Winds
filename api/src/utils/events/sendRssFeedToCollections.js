@@ -13,6 +13,10 @@ async function sendRssFeedToCollections(rssFeed) {
 	let articles = await Article.find({
 		rss: rssFeed.id,
 	}).sort({ publicationDate: -1 }).limit(1000);
+	let mostRecentPublicationDate
+	if (articles.length) {
+		mostRecentPublicationDate = articles[0].publicationDate
+	}
 
 	await events({
 		meta: {
@@ -21,7 +25,7 @@ async function sendRssFeedToCollections(rssFeed) {
 					articleCount: articles.length,
 					description: rssFeed.description,
 					language: rssFeed.language,
-					mostRecentPublicationDate: articles[0].publicationDate,
+					mostRecentPublicationDate: mostRecentPublicationDate,
 					title: rssFeed.title,
 				},
 			},

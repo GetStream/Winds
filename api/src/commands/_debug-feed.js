@@ -6,8 +6,8 @@ import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
-import normalize from 'normalize-url';
-import asyncTasks from '../asyncTasks';
+import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
+import normalize from 'normalize-url'
 
 // do stuff
 export async function debugFeed(feedType, feedUrls) {
@@ -63,7 +63,7 @@ export async function debugFeed(feedType, feedUrls) {
 					} else {
 						logger.info(chalk.red('Image missing :('));
 					}
-					if (article.enclosures.length) {
+					if (article.enclosures && article.enclosures.length) {
 						logger.info(`found ${article.enclosures.length} enclosures`)
 						for (let enclosure of article.enclosures) {
 							logger.info(JSON.stringify(enclosure))
@@ -103,7 +103,7 @@ export async function debugFeed(feedType, feedUrls) {
 						}
 
 						if (feedType == 'rss') {
-							queuePromise = asyncTasks.RssQueueAdd(
+							queuePromise = RssQueueAdd(
 								{
 									rss: instance._id,
 									url: instance.feedUrl,
@@ -115,7 +115,7 @@ export async function debugFeed(feedType, feedUrls) {
 								},
 							);
 						} else {
-							queuePromise = asyncTasks.PodcastQueueAdd(
+							queuePromise = PodcastQueueAdd(
 								{
 									podcast: instance._id,
 									url: instance.feedUrl,

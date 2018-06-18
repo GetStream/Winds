@@ -9,7 +9,7 @@ import Follow from '../models/follow';
 
 import config from '../config';
 
-import {SendPasswordResetEmail, SendWelcomeEmail} from '../utils/email/send';
+import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
 
 const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -82,7 +82,7 @@ exports.login = async (req, res, _) => {
 		return res.sendStatus(401);
 	}
 
-	const email = cleanString(data.email);
+	const email = cleanString(data.email.toLowerCase());
 	const user = await User.findOne({ email: email });
 
 	if (!user) {
@@ -99,13 +99,13 @@ exports.login = async (req, res, _) => {
 exports.forgotPassword = async (req, res, _) => {
 	const data = req.body || {};
 	const opts = { new: true };
-	const passcode = uuidv4();
+	const recoveryCode = uuidv4();
 
 	let email = data.email.toLowerCase();
 
 	const user = await User.findOneAndUpdate(
 		{ email: email },
-		{ recoveryCode: passcode },
+		{ recoveryCode: recoveryCode },
 		opts,
 	);
 
@@ -113,7 +113,7 @@ exports.forgotPassword = async (req, res, _) => {
 		return res.status(404).json({ error: 'User could not be found.' });
 	}
 
-	await SendPasswordResetEmail({email: user.email, passcode: user.recoveryCode});
+	await SendPasswordResetEmail({ email: user.email, recoveryCode: user.recoveryCode });
 
 	res.sendStatus(200);
 };
@@ -123,7 +123,7 @@ exports.resetPassword = async (req, res, _) => {
 	const opts = { new: true };
 
 	const user = await User.findOneAndUpdate(
-		{ email: data.email.toLowerCase(), recoveryCode: data.passcode },
+		{ email: data.email.toLowerCase(), recoveryCode: data.recoveryCode },
 		{ password: data.password },
 		opts,
 	);

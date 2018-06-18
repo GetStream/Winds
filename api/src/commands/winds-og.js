@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import logger from '../utils/logger';
 const version = '0.0.1';
 import normalize from 'normalize-url';
-import asyncTasks from '../asyncTasks';
+import {OgQueueAdd} from '../asyncTasks';
 import {ParseOG, IsValidOGUrl} from '../parsers/og';
 
 
@@ -48,8 +48,7 @@ async function main() {
 
 		if (program.task) {
 			logger.info('creating a task on the bull queue');
-			asyncTasks
-				.OgQueueAdd(
+			let res = await OgQueueAdd(
 					{
 						url: normalizedUrl,
 						type: program.type,
@@ -60,12 +59,6 @@ async function main() {
 						removeOnFail: true,
 					},
 				)
-				.then(() => {
-					logger.info('task sent to bull, time to run pm2 log og');
-				})
-				.catch(err => {
-					logger.error('Failed to schedule task on og queue', {err});
-				});
 		}
 	}
 }

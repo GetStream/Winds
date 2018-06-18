@@ -428,15 +428,15 @@ async@2.1.4:
   dependencies:
     lodash "^4.14.0"
 
-async@^1.3.0, async@^1.4.0, async@^1.5.0:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
-
-async@^2.1.4, async@^2.6.0, async@^2.6.1:
+async@2.6.1, async@^2.1.4, async@^2.6.0, async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.1.tgz#b245a23ca71930044ec53fa46aa00a3e87c6a610"
   dependencies:
     lodash "^4.17.10"
+
+async@^1.3.0, async@^1.4.0, async@^1.5.0:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -1728,6 +1728,10 @@ deep-extend@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.5.1.tgz#b894a9dd90d3023fbf1c55a394fb858eb2066f1f"
 
+deep-object-diff@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/deep-object-diff/-/deep-object-diff-1.1.0.tgz#d6fabf476c2ed1751fc94d5ca693d2ed8c18bc5a"
+
 default-compare@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/default-compare/-/default-compare-1.0.0.tgz#cb61131844ad84d84788fb68fd01681ca7781a2f"
@@ -1873,9 +1877,9 @@ dotdir-regex@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/dotdir-regex/-/dotdir-regex-0.1.0.tgz#d45df4c8863be6f5593d716914381767e938c0b6"
 
-dotenv@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
+dotenv@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.0.0.tgz#24e37c041741c5f4b25324958ebbc34bca965935"
 
 double-ended-queue@^2.1.0-0:
   version "2.1.0-0"
@@ -3576,6 +3580,10 @@ kareem@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.1.0.tgz#d63197b57311830e4ceb3f34431f22f2de826a03"
 
+kareem@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.2.1.tgz#9950809415aa3cde62ab43b4f7b919d99816e015"
+
 keyv@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-3.0.0.tgz#44923ba39e68b12a7cec7df6c3268c031f2ef373"
@@ -4100,14 +4108,12 @@ mongodb-core@3.0.8:
     bson "~1.0.4"
     require_optional "^1.0.1"
 
-mongodb-core@3.1.0-beta4:
-  version "3.1.0-beta4"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.1.0-beta4.tgz#44813da6ee0a61d26f0d523207cfba8ca32e59fc"
+mongodb-core@3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.9.tgz#8327410c88811013fb3e4ac7c4c670f324349be1"
   dependencies:
     bson "~1.0.4"
     require_optional "^1.0.1"
-  optionalDependencies:
-    saslprep "^1.0.0"
 
 mongodb@3.0.8:
   version "3.0.8"
@@ -4115,11 +4121,17 @@ mongodb@3.0.8:
   dependencies:
     mongodb-core "3.0.8"
 
-mongodb@^3.1.0-beta4:
-  version "3.1.0-beta4"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.1.0-beta4.tgz#922cb05c37d04a51ea783569743ef2a893585bfe"
+mongodb@3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.9.tgz#742e685e45ac9c3ead02a91c9ebaae7165bb2def"
   dependencies:
-    mongodb-core "3.1.0-beta4"
+    mongodb-core "3.0.8"
+
+mongodb@^3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.10.tgz#f948cb9595adcbfcad7444f6b24a040b653b23e8"
+  dependencies:
+    mongodb-core "3.0.9"
 
 mongoose-autopopulate@^0.7.0:
   version "0.7.0"
@@ -4174,15 +4186,15 @@ mongoose-validators@^0.1.0:
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-mongoose@^5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.3.tgz#77576b117d6387fb6dd0a6db95ac41b5882dac0a"
+mongoose@^5.1.5:
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.5.tgz#0d0b4dc658deeb7ad9794af7453442ecf7fc7cb0"
   dependencies:
-    async "2.1.4"
+    async "2.6.1"
     bson "~1.0.5"
-    kareem "2.1.0"
+    kareem "2.2.1"
     lodash.get "4.4.2"
-    mongodb "3.0.8"
+    mongodb "3.0.9"
     mongoose-legacy-pluralize "1.0.2"
     mpath "0.4.1"
     mquery "3.0.0"
@@ -5275,10 +5287,6 @@ sanitize-html@^1.18.2:
     srcset "^1.0.0"
     xtend "^4.0.0"
 
-saslprep@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/saslprep/-/saslprep-1.0.0.tgz#2c4968a0bfbf249530cd597bc62870ccd4b41a24"
-
 sax@1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.1.5.tgz#1da50a8d00cdecd59405659f5ff85349fe773743"
@@ -6047,10 +6055,6 @@ v8flags@^2.1.1:
   dependencies:
     user-home "^1.1.1"
 
-valid-url@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/valid-url/-/valid-url-1.0.9.tgz#1c14479b40f1397a75782f115e4086447433a200"
-
 validate-npm-package-license@^3.0.1:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/validate-npm-package-license/-/validate-npm-package-license-3.0.3.tgz#81643bcbef1bdfecd4623793dc4648948ba98338"
@@ -6066,9 +6070,9 @@ validator@3.16.0:
   version "3.16.0"
   resolved "https://registry.yarnpkg.com/validator/-/validator-3.16.0.tgz#ec2c6c3a8be5f7e7085cb79e1b1681fc5bd27846"
 
-validator@^10.2.0:
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-10.2.0.tgz#61d6b10c3d5c9f368c75c2ce8ca2b792522eaafa"
+validator@^10.3.0:
+  version "10.3.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-10.3.0.tgz#157a8c0981858cff381f59aabcdb8f83b57317cc"
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"

@@ -7,12 +7,18 @@ import FeedParser from 'feedparser';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
+import Article from '../models/article';
+
+import RSS from '../models/rss';
+
 
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 import { getStatsDClient } from '../utils/statsd';
 import axios from 'axios';
 import zlib from 'zlib';
+import { createHash } from 'crypto';
+
 
 const WindsUserAgent =
 	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
@@ -44,10 +50,81 @@ export async function ParseFeed(feedURL, limit=1000) {
 	return feedResponse;
 }
 
+export function ComputeHash(post) {
+	const enclosureUrls = post.enclosures.map(e=>{e.url})
+	const enclosureString = enclosureUrls.join(',') || '';
+	// ignore post.content for now, it changes too often I think
+	const data = `${post.title}:${post.description}:${post.link}:${enclosureString}`;
+	return createHash('md5').update(data).digest('hex');
+}
+
+export function ComputePublicationHash(posts) {
+	let fingerprints = []
+	for (let p of posts.slice(0,20)) {
+		if (!p.fingerprint) {
+			throw Error('missing fingerprint')
+		}
+		fingerprints.push(p.fingerprint)
+	}
+	const data = fingerprints.join(',')
+	return createHash('md5').update(data).digest('hex');
+}
+
+export function CreateFingerPrints(posts) {
+	if (!posts.length) {
+		return posts
+	}
+	// start by selecting the best strategy for uniqueness
+	let uniqueness = {guid: {}, link: {}, enclosure: {}, hash: {}}
+	for (let p of posts) {
+		uniqueness.guid[p.guid] = 1
+		uniqueness.link[p.link] = 1
+		if (p.enclosures.length && p.enclosures[0].url) {
+			uniqueness.enclosure[p.enclosures[0].url] = 1
+			p.enclosure = p.enclosures[0].url
+		}
+		p.hash = ComputeHash(p)
+		uniqueness.hash[p.hash] = 1
+	}
+	// count which strategy is the best
+	let uniquenessCounts = {}
+	for (const [k, v] of Object.entries(uniqueness)) {
+		uniquenessCounts[k] = Object.keys(v).length
+	}
+	// select the strategy that's 100% unique, if none match fall back to a hash
+	let strategy = 'hash'
+	const l = posts.length
+	for (let s of ['guid', 'link', 'enclosure']) {
+		if (uniquenessCounts[s] == l) {
+			strategy = s
+			break
+		}
+	}
+	if (strategy == 'hash' && uniquenessCounts.guid >= 3) {
+		// better to fail in a predictable way
+		strategy = 'guid'
+	}
+
+	// compute the post fingerprints
+	for (let p of posts) {
+		p.fingerprint = `${strategy}:${p[strategy]}`
+	}
+
+	// next compute the publication fingerprint
+	let hash = ComputePublicationHash(posts)
+	posts[0].meta.fingerprint = `${strategy}:${hash}`
+	posts[0].meta.fingerprintCounts = uniquenessCounts
+
+	return posts
+
+}
+
 // Parse the posts and add our custom logic
 export function ParsePodcastPosts(posts, limit=1000) {
 	let podcastContent = { episodes: [] };
 	let i = 0;
+
+	posts = CreateFingerPrints(posts)
 
 	for (let post of posts.slice(0, limit)) {
 		i++;
@@ -59,9 +136,12 @@ export function ParsePodcastPosts(posts, limit=1000) {
 		let episode = new Episode({
 			description: strip(post.description).substring(0, 280),
 			duration: post.duration,
+			guid: post.guid,
+			link: post.link,
+			enclosures: post.enclosures,
+			fingerprint: post.fingerprint,
 			enclosure: post.enclosures && post.enclosures[0] && post.enclosures[0].url,
 			images: { og: image },
-			link: post.link,
 			publicationDate:
 				moment(post.pubdate).toISOString() ||
 				moment()
@@ -78,6 +158,7 @@ export function ParsePodcastPosts(posts, limit=1000) {
 		podcastContent.link = posts[0].meta.link;
 		podcastContent.image = posts[0].meta.image && posts[0].meta.image.url;
 		podcastContent.description = posts[0].meta.description;
+		podcastContent.fingerprint = posts[0].meta.fingerprint;
 	}
 	return podcastContent;
 }
@@ -93,7 +174,7 @@ export async function ReadURL(url) {
 		url: url,
 		responseType: 'stream',
 		maxContentLength: maxContentLengthBytes,
-		timeout: 6000,
+		timeout: 12 * 1000,
 		headers: headers,
 		maxRedirects: 20,
 	});
@@ -157,6 +238,8 @@ export async function ReadFeedStream(feedStream) {
 export function ParseFeedPosts(posts, limit=1000) {
 	let feedContents = { articles: [] };
 	let i = 0;
+	// create finger prints before doing anything else
+	posts = CreateFingerPrints(posts)
 
 	for (let post of posts.slice(0, limit)) {
 		i++;
@@ -172,18 +255,28 @@ export function ParseFeedPosts(posts, limit=1000) {
 				description = null
 			}
 			let content = sanitize(post.summary)
-			article = {
+			let url
+			if (post.link) {
+				url = normalize(post.link)
+			} else {
+				// can't have an article without a link
+				continue
+			}
+			article = new Article( {
 				content: content,
 				description: description,
 				enclosures: post.enclosures,
+				fingerprint: post.fingerprint,
+				guid: post.guid,
+				link: post.link,
 				publicationDate:
 					moment(post.pubdate).toISOString() ||
 					moment()
 						.subtract(i, 'minutes') // ensure we keep order for feeds with no time
 						.toISOString(),
 				title: strip(entities.decodeHTML(post.title)),
-				url: normalize(post.link),
-			};
+				url: url,
+			});
 		} catch (err) {
 			logger.info('skipping article', { err });
 			continue;
@@ -232,6 +325,8 @@ export function ParseFeedPosts(posts, limit=1000) {
 		feedContents.link = meta.link;
 		feedContents.image = meta.image;
 		feedContents.description = meta.description;
+		feedContents.fingerprint = meta.fingerprint;
+
 		if (meta.link) {
 			if (meta.link.indexOf("reddit.com") != -1) {
 				feedContents.title = `/r/${feedContents.title}`

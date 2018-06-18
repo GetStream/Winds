@@ -11,8 +11,13 @@ export async function DetectLanguage(feedURL) {
 // DetectLangFromStream returns the language for the given feed stream
 export async function DetectLangFromStream(feedStream) {
 	let posts = await ReadFeedStream(feedStream);
-	let meta = posts[0].meta;
+
 	let bestGuessLanguage = 'eng'
+	if (!posts || !posts.length) {
+		return bestGuessLanguage
+	}
+
+	let meta = posts[0].meta;
 	// language = meta.language
   // guess the language using franc
   let languageSums = {};

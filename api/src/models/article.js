@@ -6,20 +6,8 @@ import Cache from './cache';
 import {ParseArticle} from '../parsers/article';
 import { createHash } from 'crypto';
 
-export const EnclosureSchema = new Schema({
-	url: {
-		type: String,
-		trim: true,
-	},
-	type: {
-		type: String,
-		trim: true,
-	},
-	length: {
-		type: String,
-		trim: true,
-	},
-});
+import {EnclosureSchema} from './enclosure';
+
 
 export const ArticleSchema = new Schema(
 	{
@@ -49,6 +37,20 @@ export const ArticleSchema = new Schema(
 			trim: true,
 			required: true,
 			index: true,
+		},
+		// fingerprint stores the best uniqueness field we have for the given article
+		fingerprint: {
+			type: String,
+			trim: true,
+			required: true,
+		},
+		guid: {
+			type: String,
+			trim: true,
+		},
+		link: {
+			type: String,
+			trim: true,
 		},
 		title: {
 			type: String,
@@ -106,11 +108,7 @@ export const ArticleSchema = new Schema(
 			type: Boolean,
 			default: true,
 			valid: true,
-		},
-		contentHash: {
-			type: String,
-			default: '',
-		},
+		}
 	},
 	{
 		collection: 'articles',
@@ -145,27 +143,8 @@ ArticleSchema.plugin(timestamps, {
 ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
-ArticleSchema.index({ rss: 1, url: 1 }, { unique: true });
+ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
 
-ArticleSchema.pre('save', function(next) {
-	if(!this.contentHash) {
-		this.contentHash = this.computeContentHash();
-	}
-	next();
-});
-
-function computeContentHash(article) {
-	const data = `${article.title}:${article.description}:${article.content}:${article.enclosures.join(',')}`;
-	return createHash('md5').update(data).digest('hex');
-}
-
-ArticleSchema.statics.computeContentHash = function(article) {
-	return computeContentHash(article);
-};
-
-ArticleSchema.methods.computeContentHash = function() {
-	return computeContentHash(this);
-};
 
 ArticleSchema.methods.getParsedArticle = async function() {
 	let cached = await Cache.findOne({ url: this.url });
@@ -196,3 +175,4 @@ ArticleSchema.methods.getParsedArticle = async function() {
 };
 
 module.exports = exports =  mongoose.model('Article', ArticleSchema);
+module.exports.ArticleSchema = ArticleSchema;

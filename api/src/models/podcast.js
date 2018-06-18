@@ -15,6 +15,11 @@ export const PodcastSchema = new Schema(
 			unique: true,
 			required: true,
 		},
+		feedUrls: [String],
+		fingerprint: {
+			type: String,
+			trim: true,
+		},
 		title: {
 			type: String,
 			trim: true,

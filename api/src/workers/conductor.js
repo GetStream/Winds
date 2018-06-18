@@ -8,11 +8,13 @@ import Podcast from '../models/podcast';
 
 import logger from '../utils/logger';
 
-import asyncTasks from '../asyncTasks';
+import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
+import {isURL} from '../utils/validation';
+
 
 const publicationTypes = {
-	rss: { schema: RSS, enqueue: asyncTasks.RssQueueAdd },
-	podcast: { schema: Podcast, enqueue: asyncTasks.PodcastQueueAdd },
+	rss: { schema: RSS, enqueue: RssQueueAdd },
+	podcast: { schema: Podcast, enqueue: PodcastQueueAdd },
 };
 const conductorInterval = 60;
 const durationInMinutes = 15;
@@ -72,10 +74,10 @@ async function conduct() {
 						.toDate(),
 				},
 				consecutiveScrapeFailures: {
-					$lte: rand(),
+					$lt: rand(),
 				},
 			})
-			.limit(maxToSchedule);
+			.limit(maxToSchedule).sort('-followerCount');
 
 		// make sure we don't schedule these guys again till its finished
 		let publicationIDs = [];
@@ -97,6 +99,10 @@ async function conduct() {
 		logger.info(`conductor found ${publications.length} of type ${publicationType} to scrape`);
 		let promises = [];
 		for (let publication of publications) {
+			if (!isURL(publication.feedUrl)) {
+				logger.warn(`Conductor, url looks invalid for ${publication.feedUrl} with id ${publication._id}`)
+				continue
+			}
 			let job = { url: publication.feedUrl };
 			job[publicationType] = publication._id;
 			let promise = publicationConfig.enqueue(job, {

@@ -6,7 +6,6 @@ import chalk from 'chalk';
 import logger from '../utils/logger';
 const version = '0.0.1';
 import normalize from 'normalize-url';
-import asyncTasks from '../asyncTasks';
 import {ParseArticle} from '../parsers/article';
 
 

@@ -97,10 +97,10 @@ class Login extends Component {
 					</button>
 					<div className="error">{this.state.errorMessage}</div>
 				</form>
-				<p>
+				<p className="info">
 					New to Winds? <Link to={'/create-account'}>Create an Account</Link>
 				</p>
-				<p>
+				<p className="info">
 					Forget password? <Link to={'/forgot-password'}>Reset Password</Link>
 				</p>
 			</div>

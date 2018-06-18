@@ -10,7 +10,7 @@ describe('Article controller', () => {
 	let article;
 
 	before(async () => {
-        await dropDBs();
+		await dropDBs();
 		await loadFixture('initial-data', 'articles');
 		article = await Article.findOne({});
 		expect(article).to.not.be.null;

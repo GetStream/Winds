@@ -37,6 +37,7 @@
         {
             "_id": "aaaad37026dc3db38194e286",
             "podcast": "bbbb7fedfe7430d35996d66e",
+            "fingerprint": "test:55",
             "url": "http://openargs.com/?p=45",
             "__v": 0,
             "createdAt": "2018-05-27T15:49:03.509Z",

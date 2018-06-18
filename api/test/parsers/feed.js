@@ -1,18 +1,7 @@
-import { expect, request } from 'chai';
+import { expect } from 'chai';
 import normalize from 'normalize-url';
 
-import api from '../../src/server';
-import auth from '../../src/controllers/auth';
-import Podcast from '../../src/models/podcast';
-import RSS from '../../src/models/rss';
-import User from '../../src/models/user';
-import { loadFixture, getMockClient, getMockFeed } from '../utils';
-import fs from 'fs';
-import path from 'path';
-import FeedParser from 'feedparser';
-import jwt from 'jsonwebtoken';
-import config from '../../src/config';
-import { IsPodcastStream } from '../../src/parsers/detect-type';
+import { getTestFeed, getTestPodcast } from '../utils';
 import {
 	ReadFeedStream,
 	ParseFeedPosts,
@@ -28,6 +17,7 @@ const rssTestData = [
 			link: 'https://techcrunch.com/',
 			description: 'Startup and Technology News',
 			articlesLength: 20,
+			fingerprint: 'guid:f53cec9fa49a491db35dae6e10b85498',
 			firstArticleUrl: 'https://techcrunch.com/2018/05/31/area-120-subway-pigeon',
 			firstArticleTitle: 'Google’s Area 120 incubator aims to improve your NYC subway commute with Pigeon',
 		},
@@ -39,6 +29,7 @@ const rssTestData = [
 			link: 'https://www.reddit.com/r/programming/',
 			description: 'Computer Programming',  // no description; description taken from subtitle
 			articlesLength: 25,
+			fingerprint: 'guid:8e55ca2e471abf0209050ea60b5f19ab',
 			firstArticleUrl: 'https://reddit.com/r/programming/comments/8oryk9/github_was_also_talking_to_google_about_a_deal',  // normalize-url drops 'www' subdomain, trailing slash
 			firstArticleTitle: 'GitHub was also talking to Google about a deal, but went with Microsoft instead',
 		},
@@ -50,6 +41,7 @@ const rssTestData = [
 			link: 'https://news.ycombinator.com/',
 			description: 'Links for the intellectually curious, ranked by readers.',
 			articlesLength: 30,
+			fingerprint: 'guid:f9a5c3ce2fd3f2cb3aced7c0d7332ea3',
 			firstArticleUrl: 'https://gitea.io',
 			firstArticleTitle: 'Gitea – Alternative to GitLab and GitHub',
 		},
@@ -61,6 +53,7 @@ const rssTestData = [
 			link: 'https://a16z.com/',
 			description: 'Software Is Eating the World',
 			articlesLength: 10,
+			fingerprint: 'guid:0d1d4a53e6156a0250e6212700858984',
 			firstArticleUrl: 'http://andrewchen.co/paid-marketing-addiction',
 			firstArticleTitle: 'How Startups Get Addicted to Paid Marketing (and How to Go Beyond the Local Max)',
 		},
@@ -195,7 +188,7 @@ const rssTestData = [
 			articlesLength: 10,
 			firstArticleUrl: 'https://medium.com/strava-engineering/apple-dev-guild-week-f5981fe525a4?source=rss----89d4108ce2a3---4',
 			firstArticleTitle: 'Apple Dev Guild Week',
-			firstArticlePublicationDate: '2018-06-04T23:55:00.000Z',
+			firstArticlePublicationDate: new Date(Date.UTC(2018, 6, 4, 23, 55, 0)),
 		},
 	},
 ];
@@ -301,24 +294,21 @@ const podcastTestData = [
 
 ];
 
-function getTestFeed(type, name) {
-	let p = path.join(__dirname, '..', 'data', type, name);
-	let feedStream = fs.createReadStream(p);
-	return feedStream;
-}
-
 describe('Parsing', () => {
 
 	describe('RSS', () => {
 		for (let test of rssTestData) {
 			it(`should parse feed ${test.filename}`, async () => {
-				let tc = getTestFeed('feed', test.filename);
+				let tc = getTestFeed(test.filename);
 				let posts = await ReadFeedStream(tc);
 				let feedResponse = ParseFeedPosts(posts);
 
 				expect(feedResponse.title).to.equal(test.expectations.title);
 				expect(feedResponse.link).to.equal(test.expectations.link);
 				expect(feedResponse.description).to.equal(test.expectations.description);
+				if (test.expectations.fingerprint) {
+				expect(feedResponse.fingerprint).to.equal(test.expectations.fingerprint);
+				}
 
 				expect(feedResponse.articles.length).to.equal(test.expectations.articlesLength);
 				expect(feedResponse.image).to.be.a('object');
@@ -339,13 +329,18 @@ describe('Parsing', () => {
 
 		for (let test of podcastTestData) {
 			it(`should parse podcast feed ${test.filename}`, async () => {
-				let tc = getTestFeed('podcast-feed', test.filename);
+				let tc = getTestPodcast(test.filename);
 				let posts = await ReadFeedStream(tc);
 				let podcastResponse = ParsePodcastPosts(posts);
 
 				expect(podcastResponse.title).to.equal(test.expectations.title);
 				expect(podcastResponse.link).to.equal(test.expectations.link);
 				expect(podcastResponse.image).to.equal(test.expectations.image);
+
+if (test.expectations.fingerprint) {
+				expect(podcastResponse.fingerprint).to.equal(test.expectations.fingerprint);
+			}
+
 
 				expect(podcastResponse.episodes.length).to.equal(test.expectations.episodesLength);
 				if (test.expectations.episodesLength > 0) {

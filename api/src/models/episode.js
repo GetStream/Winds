@@ -4,6 +4,7 @@ import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import 'crypto';
 import { createHash } from 'crypto';
+import {EnclosureSchema} from './enclosure';
 
 export const EpisodeSchema = new Schema(
 	{
@@ -36,6 +37,15 @@ export const EpisodeSchema = new Schema(
 			required: true,
 			index: true,
 		},
+		fingerprint: {
+			type: String,
+			trim: true,
+			required: true,
+		},
+		guid: {
+			type: String,
+			trim: true,
+		},
 		link: {
 			type: String,
 			trim: true,
@@ -45,6 +55,7 @@ export const EpisodeSchema = new Schema(
 			type: String,
 			trim: true,
 		},
+		enclosures: [EnclosureSchema],
 		title: {
 			type: String,
 			trim: true,
@@ -93,11 +104,7 @@ export const EpisodeSchema = new Schema(
 		valid: {
 			type: Boolean,
 			default: true,
-		},
-		contentHash: {
-			type: String,
-			default: '',
-		},
+		}
 	},
 	{
 		collection: 'episodes',
@@ -131,26 +138,6 @@ EpisodeSchema.plugin(timestamps, {
 EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
 
-function computeContentHash(episode) {
-	const data = `${episode.title}:${episode.description}:${episode.content}:${episode.enclosure}`;
-	return createHash('md5').update(data).digest('hex');
-}
-
-EpisodeSchema.pre('save', function(next) {
-	if(!this.contentHash) {
-		this.contentHash = this.computeContentHash();
-	}
-	next();
-});
-
-EpisodeSchema.methods.computeContentHash = function() {
-	return computeContentHash(this);
-};
-
-EpisodeSchema.statics.computeContentHash = function(episode) {
-	return computeContentHash(episode);
-};
-
-EpisodeSchema.index({ podcast: 1, url: 1 }, { unique: true });
+EpisodeSchema.index({ podcast: 1, fingerprint: 1 }, { unique: true });
 
 module.exports = exports = mongoose.model('Episode', EpisodeSchema);

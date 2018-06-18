@@ -10,10 +10,10 @@ import PropTypes from 'prop-types';
 import ReactAudioPlayer from 'react-audio-player';
 import Slider from 'rc-slider';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
 import moment from 'moment';
-// this needs to be after `moment`
+import isElectron from 'is-electron';
 import 'moment-duration-format'; // eslint-disable-line sort-imports
+import fetch from '../util/fetch';
 
 class Player extends Component {
 	constructor(props) {
@@ -26,12 +26,14 @@ class Player extends Component {
 			volume: 0.5,
 		};
 
+		this.playbackSpeedOptions = [1, 1.25, 1.5, 1.75, 2];
+		this.lastSent = 0;
+
 		this.cyclePlaybackSpeed = this.cyclePlaybackSpeed.bind(this);
 		this.setVolume = this.setVolume.bind(this);
 		this.seekTo = this.seekTo.bind(this);
-		this.playbackSpeedOptions = [1, 1.25, 1.5, 1.75, 2];
-		this.lastSent = 0;
-		this.handlePlayOrPauseButtonClick = this.handlePlayOrPauseButtonClick.bind(this);
+		this.togglePlayPause = this.togglePlayPause.bind(this);
+		this.incomingMediaControls = this.incomingMediaControls.bind(this);
 	}
 
 	componentDidMount() {
@@ -39,6 +41,16 @@ class Player extends Component {
 
 		if (this.props.episode) {
 			this.audioPlayerElement.audioEl.volume = this.state.volume / 100;
+		}
+
+		if (isElectron()) {
+			window.ipcRenderer.on('media-controls', this.incomingMediaControls);
+		}
+	}
+
+	componentWillUnmount() {
+		if (isElectron()) {
+			window.ipcRenderer.removeAllListeners('media-controls', this.incomingMediaControls);
 		}
 	}
 
@@ -85,7 +97,7 @@ class Player extends Component {
 		}
 	}
 
-	handlePlayOrPauseButtonClick() {
+	togglePlayPause() {
 		if (this.props.playing) {
 			this.props.pause();
 		} else {
@@ -158,19 +170,29 @@ class Player extends Component {
 		});
 	}
 
+	incomingMediaControls(event, args) {
+		if (args === 'togglePlayPause') {
+			this.togglePlayPause();
+		} else if (args === 'next') {
+			this.skipAhead();
+		} else if (args === 'previous') {
+			this.skipBack();
+		}
+	}
+
 	render() {
 		if (!this.props.episode) {
 			return null;
 		}
 
 		let playButton = (
-			<div className="btn play" onClick={this.handlePlayOrPauseButtonClick}>
+			<div className="btn play" onClick={this.togglePlayPause}>
 				<Img src={playIcon} />
 			</div>
 		);
 
 		let pauseButton = (
-			<div className="btn pause" onClick={this.handlePlayOrPauseButtonClick}>
+			<div className="btn pause" onClick={this.togglePlayPause}>
 				<Img src={pauseIcon} />
 			</div>
 		);
@@ -332,11 +354,27 @@ const mapStateToProps = state => {
 	if (!('player' in state)) {
 		return { episode: null };
 	}
+
 	let episode = { ...state.episodes[state.player.episodeID] };
-	// populate podcast parent too
-	episode.podcast = { ...state.podcasts[episode.podcast] };
+	episode.podcast = { ...state.podcasts[episode.podcast] }; // populate podcast parent too
+
 	let context = { ...state.player };
+
+	if (isElectron()) {
+		if (context.playing) {
+			window.ipcRenderer.send('media-controls', {
+				type: 'play',
+				title: `${episode.title} - ${episode.podcast.title}`,
+			});
+		} else {
+			window.ipcRenderer.send('media-controls', {
+				type: 'pause',
+			});
+		}
+	}
+
 	let currentUserID = localStorage['authedUser'];
+
 	return {
 		context,
 		currentUserID,

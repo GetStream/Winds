@@ -14,19 +14,21 @@ import logger from '../utils/logger';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from '../parsers/feed';
 
-import asyncTasks from '../asyncTasks';
+import {ProcessPodcastQueue, OgQueueAdd} from '../asyncTasks';
+import { upsertManyPosts } from '../utils/upsert';
+
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-asyncTasks.ProcessPodcastQueue(15, handlePodcast);
+ProcessPodcastQueue(15, podcastProcessor);
 
 // the top level handlePodcast just handles error handling
-async function handlePodcast(job) {
+export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
 	try {
-		await _handlePodcast(job);
+		await handlePodcast(job);
 	} catch (err) {
 		let tags = {queue: 'rss'};
 		let extra = {
@@ -38,7 +40,7 @@ async function handlePodcast(job) {
 }
 
 // Handle Podcast scrapes the podcast and updates the episodes
-async function _handlePodcast(job) {
+export async function handlePodcast(job) {
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
@@ -63,13 +65,14 @@ async function _handlePodcast(job) {
 
 	// update the episodes
 	logger.info(`Updating ${podcastContent.episodes.length} episodes`);
-	let allEpisodes = await Promise.all(
-		podcastContent.episodes.map(episode => {
-			let normalizedUrl = normalize(episode.url);
-			episode.url = normalizedUrl;
-			return upsertEpisode(podcast._id, normalizedUrl, episode);
-		}),
-	);
+	let episodes = podcastContent.episodes
+	for (let e of episodes) {
+		e.podcast = podcastID
+	}
+
+	let operationMap = await upsertManyPosts(podcastID, episodes, 'podcast')
+	let updatedEpisodes = operationMap.new.concat(operationMap.changed)
+	logger.info(`Finished updating ${updatedEpisodes.length} out of ${podcastContent.episodes.length} changed`)
 
 	// update the count
 	await Podcast.update(
@@ -79,13 +82,8 @@ async function _handlePodcast(job) {
 		}
 	);
 
-	// Only send updated episodes to Stream
-	let updatedEpisodes = allEpisodes.filter(updatedEpisode => {
-		return updatedEpisode && updatedEpisode.link;
-	});
-
 	await Promise.all(updatedEpisodes.map( episode => {
-		asyncTasks.OgQueueAdd(
+		OgQueueAdd(
 			{
 				type: 'episode',
 				url: episode.link,
@@ -117,55 +115,6 @@ async function _handlePodcast(job) {
 		}
 		// update the collection information for follow suggestions
 		await sendPodcastToCollections(podcast);
-	}
-}
-
-// updateEpisode updates 1 episode and sync the data to og scraping
-async function upsertEpisode(podcastID, normalizedUrl, episode) {
-	let update = {
-		contentHash: episode.computeContentHash(),
-		description: episode.description,
-		duration: episode.duration,
-		enclosure: episode.enclosure,
-		images: episode.images,
-		link: episode.link,
-		podcast: podcastID,
-		publicationDate: episode.publicationDate,
-		title: episode.title,
-		url: episode.url,
-	};
-
-	try {
-		return await Episode.findOneAndUpdate(
-			{
-				$and: [
-					{
-						podcast: podcastID,
-						url: normalizedUrl,
-					},
-					{
-						$or: Object.keys(update).map(k => {
-							return {
-								[k]: {
-									$ne: update[k],
-								},
-							};
-						}),
-					},
-				],
-			},
-			update,
-			{
-				new: true,
-				upsert: true,
-			},
-		);
-	} catch(err) {
-		if (err.code === 11000){
-			return null;
-		} else {
-			throw err;
-		}
 	}
 }
 
