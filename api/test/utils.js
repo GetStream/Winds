@@ -12,6 +12,7 @@ import api from '../src/server';
 import config from '../src/config';
 import db from '../src/utils/db';
 import logger from '../src/utils/logger';
+import { CreateFingerPrints } from '../src/parsers/feed';
 
 let mockClient = null;
 const mockFeeds = {};
@@ -62,13 +63,20 @@ export function getTestPage(name) {
 
 export async function loadFixture(...fixtures) {
 	const filters = {
-		// XXX: we don't need this anymore since we call model.create now which calls Mongoose middlewares
-		// User: async user => {
-		// 	const salt = await bcrypt.genSalt(10);
-		// 	const hash = await bcrypt.hash(user.password, salt);
-		// 	user.password = hash;
-		// 	return user;
-		// },
+		Article: articles => {
+			for (const article of articles) {
+				article.enclosures = article.enclosures || [];
+			}
+			CreateFingerPrints(articles);
+			return articles;
+		},
+		Episode: episodes => {
+			for (const episode of episodes) {
+				episode.enclosures = episode.enclosures || [];
+			}
+			CreateFingerPrints(episodes);
+			return episodes;
+		},
 	};
 
 	for (const fixture of fixtures) {
@@ -89,8 +97,8 @@ export async function loadFixture(...fixtures) {
 					}
 					return data;
 				});
-				const filter = filters[modelName] || (x => Promise.resolve(x));
-				const filteredData = await Promise.all(fixedData.map(filter));
+				const filter = filters[modelName] || (x => x);
+				const filteredData = filter(fixedData);
 
 				const modulePath = `../src/models/${modelName.toLowerCase()}`;
 				//XXX: hack to avoid loading models explicitly before loading fixtures

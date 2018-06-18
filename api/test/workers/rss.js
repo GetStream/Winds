@@ -194,3 +194,4 @@ describe('RSS worker', () => {
 		});
 	});
 });
+

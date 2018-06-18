@@ -20,8 +20,7 @@ import zlib from 'zlib';
 import { createHash } from 'crypto';
 
 
-const WindsUserAgent =
-	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
+const WindsUserAgent = 'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
 const AcceptHeader = 'text/html,application/xhtml+xml,application/xml';
 const statsd = getStatsDClient();
 
@@ -112,11 +111,11 @@ export function CreateFingerPrints(posts) {
 
 	// next compute the publication fingerprint
 	let hash = ComputePublicationHash(posts)
+	posts[0].meta = posts[0].meta || {};
 	posts[0].meta.fingerprint = `${strategy}:${hash}`
 	posts[0].meta.fingerprintCounts = uniquenessCounts
 
 	return posts
-
 }
 
 // Parse the posts and add our custom logic
