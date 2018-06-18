@@ -262,6 +262,11 @@ export function ParseFeedPosts(posts, limit=1000) {
 				// can't have an article without a link
 				continue
 			}
+			// articles need to have a title
+			const title = strip(entities.decodeHTML(post.title))
+			if (!title) {
+				continue
+			}
 			article = new Article( {
 				content: content,
 				description: description,
@@ -274,7 +279,7 @@ export function ParseFeedPosts(posts, limit=1000) {
 					moment()
 						.subtract(i, 'minutes') // ensure we keep order for feeds with no time
 						.toISOString(),
-				title: strip(entities.decodeHTML(post.title)),
+				title: title,
 				url: url,
 			});
 		} catch (err) {
