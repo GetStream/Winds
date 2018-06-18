@@ -46,9 +46,8 @@ async function main() {
       if (newInstance) {
         let data = {}
         data[postType] = newInstance._id
-				console.log(p._id, data)
-        let result = await schema.updateOne({_id: p._id}, data)
-        logger.info(`found a new instance for ${p.url} with id ${newInstance.id}`)
+        let result = await Pin.updateOne({_id: p._id}, data)
+        logger.info(`found a new instance for ${p._id}: ${p.url} with id ${newInstance._id}`)
         counts.normalized += 1
       } else {
         if (p.id) {
