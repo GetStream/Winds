@@ -112,7 +112,8 @@ Sign up for both Stream and Algolia, and create the following `.env` file in the
 ```
 DATABASE_URI=mongodb://localhost/WINDS
 CACHE_URI=redis://localhost:6379
-JWT_SECRET=some-super-secret-arbitrary-jwt-string
+JWT_SECRET=YOUR_JWT_SECRET
+
 API_PORT=8080
 REACT_APP_API_ENDPOINT=http://localhost:8080
 STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
