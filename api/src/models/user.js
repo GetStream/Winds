@@ -138,10 +138,11 @@ UserSchema.index({ email: 1, username: 1 });
 UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedUser () {
 	let user = this;
 	let serialized;
-
+	
 	let streamTokens = {}
-	for (let k of ['timeline', 'user_article', 'user_episode']) {
-		streamTokens[k] = streamClient.feed(k, user._id).getReadOnlyToken()
+	for (const k of ['timeline', 'user_article', 'user_episode']) {
+		let token = streamClient.feed(k, user._id).getReadOnlyToken()
+		streamTokens[k] = token
 	}
 
 	serialized = {

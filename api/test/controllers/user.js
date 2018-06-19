@@ -35,6 +35,8 @@ describe('User controller', () => {
 
 				expect(response).to.have.status(200);
 				expect(response.body._id).to.equal(user._id.toString());
+				expect(response.body.email).to.not.be.false;
+				expect(response.body.streamTokens).to.not.be.false;
 			});
 
 			it('should return 200 and the user resource, excluding the email field, when retrieving another user', async () => {
