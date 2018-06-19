@@ -69,6 +69,9 @@ wrapMocha(async () => {
 		}
 	});
 }, failures => {
+	//XXX: it seems Travis-ci is having trouble with process wrap-up procedures so lets
+	//     allocate more time before shutting down
+	const timeout = process.env.TRAVIS ? 10000 : 1500;
 	//XXX: don't care about open connections
 	setTimeout(() => process.exit(failures ? 1 : 0), 1500);
 });
