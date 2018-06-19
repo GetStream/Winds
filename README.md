@@ -395,6 +395,7 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 
 *   [Hackernoon](https://hackernoon.com/)
 *   [Product Hunt](https://www.producthunt.com/)
+*   [StackShare](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
 
 ### Primary Maintainers
 
