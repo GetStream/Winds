@@ -26,6 +26,12 @@ const statsd = getStatsDClient();
 
 const maxContentLengthBytes = 1024 * 1024 * 5;
 
+function sanitize(dirty) {
+	return sanitizeHtml(dirty, {
+		allowedAttributes: { img: ['src', 'title', 'alt'], },
+		allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+	});
+}
 
 export async function ParsePodcast(podcastUrl, limit=1000) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
@@ -121,27 +127,28 @@ export function CreateFingerPrints(posts) {
 // Parse the posts and add our custom logic
 export function ParsePodcastPosts(posts, limit=1000) {
 	let podcastContent = { episodes: [] };
-	let i = 0;
 
 	posts = CreateFingerPrints(posts)
 
-	for (let post of posts.slice(0, limit)) {
-		i++;
+	for (let i in posts.slice(0, limit)) {
+		const post = posts[i];
 		let url = post.link;
 		if (!url) {
 			url = post.enclosures && post.enclosures[0] ? post.enclosures[0].url : post.guid;
 		}
-		url = normalize(url)
-		const title = strip(post.title)
+		url = normalize(url);
+		const title = strip(post.title);
 		if (!url) {
-			logger.info(`skipping episode since there is no url`)
+			logger.info('skipping episode since there is no url');
 			continue
 		}
 		if (!title) {
-			logger.info(`skipping episode since there is no title`)
+			logger.info('skipping episode since there is no title');
 			continue
 		}
 		let image = post.image && post.image.url;
+		// ensure we keep order for feeds with no time
+		const time = moment(post.pubdate).toISOString() || moment().subtract(i, 'minutes').toISOString();
 		let episode = new Episode({
 			description: strip(post.description).substring(0, 280),
 			duration: post.duration,
@@ -151,11 +158,7 @@ export function ParsePodcastPosts(posts, limit=1000) {
 			fingerprint: post.fingerprint,
 			enclosure: post.enclosures && post.enclosures[0] && post.enclosures[0].url,
 			images: { og: image },
-			publicationDate:
-				moment(post.pubdate).toISOString() ||
-				moment()
-					.subtract(i, 'minutes') // ensure we keep order for feeds with no time
-					.toISOString(),
+			publicationDate: time,
 			title: strip(post.title),
 			url: normalize(url),
 		});
@@ -246,48 +249,41 @@ export async function ReadFeedStream(feedStream) {
 // Parse the posts and add our custom logic
 export function ParseFeedPosts(posts, limit=1000) {
 	let feedContents = { articles: [] };
-	let i = 0;
 	// create finger prints before doing anything else
-	posts = CreateFingerPrints(posts)
+	posts = CreateFingerPrints(posts);
 
-	for (let post of posts.slice(0, limit)) {
-		i++;
+	for (let i in posts.slice(0, limit)) {
+		const post = posts[i];
 
 		let article;
 
 		try {
-			let description = strip(entities.decodeHTML(post.description)).substring(
-				0,
-				280,
-			);
+			let description = strip(entities.decodeHTML(post.description)).substring(0, 280);
 			if (description == 'null') {
-				description = null
+				description = null;
 			}
-			let content = sanitize(post.summary)
-			let url
-			if (post.link) {
-				url = normalize(post.link)
-			} else {
-				// can't have an article without a link
-				continue
+			const content = sanitize(post.summary);
+			const url = normalize(post.link);
+			if (!url) {
+				logger.info('skipping article since there is no url')
+				continue;
 			}
 			// articles need to have a title
 			const title = strip(entities.decodeHTML(post.title))
 			if (!title) {
-				continue
+				logger.info('skipping article since there is no title')
+				continue;
 			}
-			article = new Article( {
+			// ensure we keep order for feeds with no time
+			const time = moment(post.pubdate).toISOString() || moment().subtract(i, 'minutes').toISOString();
+			article = new Article({
 				content: content,
 				description: description,
 				enclosures: post.enclosures,
 				fingerprint: post.fingerprint,
 				guid: post.guid,
 				link: post.link,
-				publicationDate:
-					moment(post.pubdate).toISOString() ||
-					moment()
-						.subtract(i, 'minutes') // ensure we keep order for feeds with no time
-						.toISOString(),
+				publicationDate: time,
 				title: title,
 				url: url,
 			});
@@ -311,20 +307,16 @@ export function ParseFeedPosts(posts, limit=1000) {
 
 		if (post.link) {
 			// product hunt comments url
-			if (post.link.indexOf('https://www.producthunt.com') === 0) {
-				let matches = post.description.match(
-					/(https:\/\/www.producthunt.com\/posts\/.*)"/,
-				);
+			if (post.link.startsWith('https://www.producthunt.com')) {
+				const matches = post.description.match(/(https:\/\/www.producthunt.com\/posts\/.*)"/);
 				if (matches && matches.length) {
 					article.commentUrl = matches[1];
 				}
 			}
 
 			// nice images for XKCD
-			if (post.link.indexOf('https://xkcd') === 0) {
-				let matches = post.description.match(
-					/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/,
-				);
+			if (post.link.startsWith('https://xkcd')) {
+				const matches = post.description.match(/(https:\/\/imgs.xkcd.com\/comics\/.*?)"/);
 				if (matches && matches.length) {
 					article.images = { og: matches[1] };
 				}
@@ -341,22 +333,10 @@ export function ParseFeedPosts(posts, limit=1000) {
 		feedContents.description = meta.description;
 		feedContents.fingerprint = meta.fingerprint;
 
-		if (meta.link) {
-			if (meta.link.indexOf("reddit.com") != -1) {
-				feedContents.title = `/r/${feedContents.title}`
-			}
+		if (meta.link && meta.link.includes("reddit.com")) {
+			feedContents.title = `/r/${feedContents.title}`;
 		}
 
 	}
 	return feedContents;
 }
-
-// sanitize cleans the html before returning it to the frontend
-var sanitize = function(dirty) {
-	return sanitizeHtml(dirty, {
-		allowedAttributes: {
-			img: ['src', 'title', 'alt'],
-		},
-		allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
-	});
-};

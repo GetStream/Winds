@@ -96,13 +96,10 @@ describe('RSS worker', () => {
 				});
 
 				await rssQueue.add(data);
-				let error = null;
-				try {
-					await handler;
-				} catch (err) {
-					error = err;
-				}
-				expect(error).to.be.an.instanceOf(Error);
+				await handler;
+
+				const articles = await Article.find({ rss: data.rss });
+				expect(articles).to.have.length.above(initialArticles.length);
 			});
 
 			it('should fail to parse empty feed', async () => {
