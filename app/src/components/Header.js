@@ -106,9 +106,12 @@ class Header extends Component {
 				<div className="panel-element user">
 					<div className="avatar">
 						<a href="https://gravatar.com">
-							<Avatar height={80} width={80}>
-								{this.props.user._id}
-							</Avatar>
+							<Avatar
+								gravatarURL={this.props.user.gravatar}
+								height={80}
+								userID={this.props.user._id}
+								width={80}
+							/>
 						</a>
 					</div>
 					<div className="user-info">
@@ -308,7 +311,10 @@ class Header extends Component {
 							tipSize={0.1}
 						>
 							<div onClick={this.toggleProfilePopover}>
-								<Avatar>{this.props.user._id}</Avatar>
+								<Avatar
+									gravatarURL={this.props.user.gravatar}
+									userID={this.props.user._id}
+								/>
 							</div>
 						</Popover>
 						<Popover
@@ -390,6 +396,7 @@ Header.propTypes = {
 		admin: PropTypes.bool,
 		name: PropTypes.string,
 		username: PropTypes.string,
+		gravatar: PropTypes.string,
 	}),
 };
 
