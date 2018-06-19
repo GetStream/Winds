@@ -67,7 +67,13 @@ exports.post = async (req, res) => {
 		return res.status(422).json({ error: 'Invalid OPML upload.' });
 	}
 
-	let feeds = await util.promisify(opmlParser)(upload);
+	let feeds
+	try {
+		feeds = await util.promisify(opmlParser)(upload);
+	} catch(e) {
+		logger.info(`opml upload failed wiht err`, {err})
+		return res.status(422).json({ error: 'Invalid OPML upload.' });
+	}
 
 	let parsedFeeds = feeds.map(feed => {
 		feed.valid = true;
