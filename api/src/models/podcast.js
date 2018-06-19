@@ -1,6 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
+import config from '../config';
+import stream from 'getstream';
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+
 
 export const PodcastSchema = new Schema(
 	{
@@ -162,6 +166,12 @@ PodcastSchema.methods.searchDocument = function() {
 		title: this.title,
 		type: 'podcast',
 	};
+};
+
+PodcastSchema.methods.serialize = function serialize () {
+	const serialized = this.toObject();
+	serialized.streamToken = streamClient.feed('podcast', this._id).getReadOnlyToken()
+	return serialized;
 };
 
 module.exports = exports = mongoose.model('Podcast', PodcastSchema);

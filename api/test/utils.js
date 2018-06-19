@@ -13,7 +13,7 @@ import config from '../src/config';
 import db from '../src/utils/db';
 import logger from '../src/utils/logger';
 
-let mockClient = null;
+var mockClient = null;
 const mockFeeds = {};
 
 export function createMockFeed(group, id) {

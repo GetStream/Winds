@@ -39,7 +39,7 @@ exports.get = async (req, res) => {
 		return res.status(404).json({ error: `Can't find podcast with id ${podcastID}.` });
 	}
 
-	res.json(podcast);
+	res.json(podcast.serialize());
 };
 
 exports.post = async (req, res) => {
@@ -158,7 +158,7 @@ exports.post = async (req, res) => {
 
 	await Promise.all(promises);
 
-	res.status(200).json(podcasts);
+	res.status(200).json(podcasts.map(p => {return p.serialize()}));
 };
 
 exports.put = async (req, res) => {

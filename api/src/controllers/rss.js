@@ -41,7 +41,8 @@ exports.get = async (req, res) => {
 	if (!rss) {
 		return res.sendStatus(404);
 	}
-	res.json(rss);
+
+	res.json(rss.serialize());
 };
 
 exports.post = async (req, res) => {
@@ -145,7 +146,7 @@ exports.post = async (req, res) => {
 	await Promise.all(promises);
 
 	res.status(201);
-	res.json(feeds);
+	res.json(feeds.map(f => {return f.serialize()}));
 };
 
 exports.put = async (req, res) => {
