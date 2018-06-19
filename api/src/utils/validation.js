@@ -1,6 +1,6 @@
 import normalizeUrl from 'normalize-url';
 import validator from 'validator';
-import logger from '../utils/logger';
+import logger from './logger';
 
 export function isURL(url) {
 	if (!url) {
