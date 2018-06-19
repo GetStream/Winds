@@ -6,7 +6,7 @@ import Header from './components/Header';
 import Player from './components/Player.js';
 import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
-import { Router, Switch } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
 import analytics from './util/tracking';
 import config from './config';
@@ -15,6 +15,7 @@ import fetch from './util/fetch';
 import AdminView from './views/AdminView';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import NotFound from './views/404View';
 
 var userAgent = navigator.userAgent.toLowerCase();
 let isElectron = userAgent.indexOf(' electron/') > -1;
@@ -53,31 +54,30 @@ class AppRouter extends Component {
 			<Router history={history}>
 				<div className="app">
 					<AuthedRoute component={Header} redirect={false} showLoader={false} />
-					<AuthedRoute component={Dashboard} exact path="/" />
 					<Switch>
+						<AuthedRoute component={Dashboard} exact path="/" />
+						<AuthedRoute component={PodcastsView} exact path="/podcasts" />
 						<AuthedRoute
 							component={PodcastsView}
 							path="/podcasts/:podcastID"
 						/>
-						<AuthedRoute component={PodcastsView} path="/podcasts" />
-					</Switch>
-					<Switch>
+						<AuthedRoute component={RSSFeedsView} exact path="/rss" />
 						<AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
-						<AuthedRoute component={RSSFeedsView} path="/rss" />
+						<AuthedRoute component={AdminView} path="/admin" />
+						<UnauthedRoute component={Login} exact path="/login" />
+						<UnauthedRoute component={Create} exact path="/create-account" />
+						<UnauthedRoute
+							component={ForgotPassword}
+							exact
+							path="/forgot-password"
+						/>
+						<UnauthedRoute
+							component={ResetPassword}
+							exact
+							path="/reset-password"
+						/>
+						<Route component={NotFound} />
 					</Switch>
-					<AuthedRoute component={AdminView} path="/admin" />
-					<UnauthedRoute component={Login} exact path="/login" />
-					<UnauthedRoute component={Create} exact path="/create-account" />
-					<UnauthedRoute
-						component={ForgotPassword}
-						exact
-						path="/forgot-password"
-					/>
-					<UnauthedRoute
-						component={ResetPassword}
-						exact
-						path="/reset-password"
-					/>
 					<AuthedRoute component={Player} redirect={false} showLoader={false} />
 				</div>
 			</Router>

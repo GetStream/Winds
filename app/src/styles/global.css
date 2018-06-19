@@ -1997,6 +1997,20 @@ a.column-header:hover {
   display: inline-block;
   margin-bottom: 0.6em; }
 
+.not-found {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  justify-content: center;
+  max-width: 100%;
+  overflow-y: hidden; }
+  .not-found a {
+    color: #44bc75;
+    cursor: pointer;
+    text-decoration: underline; }
+
 .dashboard {
   display: grid;
   flex-grow: 1;

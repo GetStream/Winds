@@ -1,0 +1,17 @@
+.not-found {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	height: 100%;
+	justify-content: center;
+	max-width: 100%;
+	overflow-y: hidden;
+
+	// interesting use case here - using the standard href="#" trick breaks some stuff with our electron link handler, so gonna just style a normal link for now.
+	a {
+		color: $foreground-green;
+		cursor: pointer;
+		text-decoration: underline;
+	}
+}

@@ -38,7 +38,10 @@ class RSSFeedsView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.match.params.rssFeedID !== nextProps.match.params.rssFeedID) {
+		if (
+			this.props.match.params.rssFeedID !== nextProps.match.params.rssFeedID &&
+			nextProps.match.params.rssFeedID !== 'recent'
+		) {
 			fetch('get', `/rss/${nextProps.match.params.rssFeedID}`).then(response => {
 				this.props.dispatch({
 					rssFeed: response.data,
