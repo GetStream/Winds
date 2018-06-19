@@ -8,8 +8,8 @@ services:
   - mongodb
 cache: npm
 install:
-    - "cd api && yarn"
+    - "cd api && npm install"
 script:
-    - "yarn run test_deep -- --grep 'RSS worker'"
+    - "npm test"
 after_success:
-    - "yarn run coverage"
+    - "npm run coverage"
