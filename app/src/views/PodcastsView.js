@@ -38,7 +38,10 @@ class PodcastsView extends React.Component {
 		}
 	}
 	componentWillReceiveProps(nextProps) {
-		if (this.props.match.params.podcastID !== nextProps.match.params.podcastID) {
+		if (
+			this.props.match.params.podcastID !== nextProps.match.params.podcastID &&
+			nextProps.match.params.podcastID !== 'recent'
+		) {
 			fetch('get', `/podcasts/${nextProps.match.params.podcastID}`).then(
 				response => {
 					this.props.dispatch({
