@@ -10,6 +10,6 @@ cache: npm
 install:
     - "cd api && yarn"
 script:
-    - "yarn run test"
+    - "yarn run test_deep -- --grep 'RSS worker'"
 after_success:
     - "yarn run coverage"
