@@ -1,4 +1,3 @@
-import nock from 'nock';
 import { expect } from 'chai';
 
 import { ogQueue } from '../../src/asyncTasks'

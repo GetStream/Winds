@@ -86,6 +86,10 @@ describe('RSS worker', () => {
 				setupHandler();
 			});
 
+			after(() => {
+				nock.cleanAll();
+			});
+
 			it('should fail to parse malformed feed', async () => {
 				nock(data.url).get('').reply(200, () => {
 					return getTestFeed('malformed-hackernews');
