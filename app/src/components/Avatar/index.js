@@ -1,24 +1,27 @@
 import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
-import md5 from 'md5';
 
 let Avatar = props => {
-	if (!props || !props.children) return null;
-	let avatarMD5Hash = md5(props.children);
+	let url;
+
+	if (props.gravatarURL) {
+		url = props.gravatarURL;
+	} else if (props.userID) {
+		url = `https://www.gravatar.com/avatar/${props.userID}?s=200&default=identicon`;
+	} else {
+		return null;
+	}
 	return (
 		<div className="avatar">
-			<Img
-				height={props.height || 28}
-				src={`https://www.gravatar.com/avatar/${avatarMD5Hash}?s=200&default=identicon`}
-				width={props.width || 28}
-			/>
+			<Img height={props.height || 28} src={url} width={props.width || 28} />
 		</div>
 	);
 };
 
 Avatar.propTypes = {
-	children: PropTypes.string,
+	gravatarURL: PropTypes.string,
+	userID: PropTypes.string,
 	height: PropTypes.number,
 	width: PropTypes.number,
 };

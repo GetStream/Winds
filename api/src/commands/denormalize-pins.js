@@ -20,13 +20,21 @@ async function main() {
 
 	// denormalize the pin urls
 	let pins = await Pin.find({})
-  let counts = {denormalized: 0, normalized: 0, missing: 0}
+  let counts = {denormalized: 0, normalized: 0, missing: 0, brokenref: 0}
   for (let p of pins) {
     let url = (p.article && p.article.url) || (p.episode && p.episode.url)
     if (!p.url && p.user) {
-      p.url = url
-      await p.save()
-      counts.denormalized += 1
+			if (url) {
+				p.url = url
+	      await p.save()
+	      counts.denormalized += 1
+			} else {
+				if (p._id) {
+          await Pin.deleteOne({_id: p._id})
+        }
+				counts.brokenref += 1
+			}
+
     }
     logger.info(`pin url ${p.url} is now denormalized`)
   }
@@ -42,16 +50,16 @@ async function main() {
 
     if (!instance && p.url) {
       logger.info(`restoring relation for pin with url ${p.url}`)
-      let newInstance = await schema.findOne({url: p.url})
+      let newInstance = await schema.findOne({url: p.url}).lean()
       if (newInstance) {
         let data = {}
-        data[postType] = newInstance.id
-        let result = await schema.updateOne({_id: p.id}, data)
-        logger.info(`found a new instance for ${p.url} with id ${newInstance.id}`)
+        data[postType] = newInstance._id
+        let result = await Pin.updateOne({_id: p._id}, data)
+        logger.info(`found a new instance for ${p._id}: ${p.url} with id ${newInstance._id}`)
         counts.normalized += 1
       } else {
-        if (p.id) {
-          await schema.deleteOne({_id: p.id})
+        if (p._id) {
+          await Pin.deleteOne({_id: p._id})
         }
         logger.info(`couldnt find a new instance :(`)
         counts.missing += 1

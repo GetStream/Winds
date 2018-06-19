@@ -33,7 +33,9 @@ class UserProfileSettingsDrawer extends React.Component {
 			weeklyNotifications,
 		};
 		this.toggleDeleteAccountPopover = this.toggleDeleteAccountPopover.bind(this);
-		this.handleDeleteAccountConfirmationClick = this.handleDeleteAccountConfirmationClick.bind(this);
+		this.handleDeleteAccountConfirmationClick = this.handleDeleteAccountConfirmationClick.bind(
+			this,
+		);
 		this.handleAccountFormSubmit = this.handleAccountFormSubmit.bind(this);
 		this.handlePasswordFormSubmit = this.handlePasswordFormSubmit.bind(this);
 	}
@@ -145,13 +147,21 @@ class UserProfileSettingsDrawer extends React.Component {
 				<div className="panel-element">
 					<div className="header">
 						<h3>Delete Account</h3>
-						<p class="message"><strong>Warning:</strong> This cannot be undone.</p>
+						<p class="message">
+							<strong>Warning:</strong> This cannot be undone.
+						</p>
 					</div>
 				</div>
-				<div className="panel-element menu-item" onClick={this.handleDeleteAccountConfirmationClick}>
+				<div
+					className="panel-element menu-item"
+					onClick={this.handleDeleteAccountConfirmationClick}
+				>
 					<span>Yes - Delete my account</span>
 				</div>
-				<div className="panel-element menu-item"  onClick={this.toggleDeleteAccountPopover}>
+				<div
+					className="panel-element menu-item"
+					onClick={this.toggleDeleteAccountPopover}
+				>
 					<span>Cancel</span>
 				</div>
 			</div>
@@ -165,9 +175,12 @@ class UserProfileSettingsDrawer extends React.Component {
 					rel="noopener noreferrer"
 					target="_blank"
 				>
-					<Avatar height={50} width={50}>
-						{this.props.email}
-					</Avatar>
+					<Avatar
+						gravatarURL={this.props.gravatar}
+						height={50}
+						userID={this.props._id}
+						width={50}
+					/>
 				</a>
 				<div className="form-section">
 					<input
@@ -281,11 +294,16 @@ class UserProfileSettingsDrawer extends React.Component {
 							isOpen={this.state.deleteAccountPopoverIsOpen}
 							onOuterAction={this.toggleDeleteAccountPopover}
 							preferPlace="above"
-							tipSize={0.1}>
-						<button className="btn link cancel" type="button" onClick={this.toggleDeleteAccountPopover}>
-							Delete account
-						</button>
-					</Popover>
+							tipSize={0.1}
+						>
+							<button
+								className="btn link cancel"
+								type="button"
+								onClick={this.toggleDeleteAccountPopover}
+							>
+								Delete account
+							</button>
+						</Popover>
 					</div>
 					<button className="btn primary with-circular-icon" type="submit">
 						<Img src={saveIcon} />
@@ -409,6 +427,7 @@ UserProfileSettingsDrawer.propTypes = {
 	updateUser: PropTypes.func.isRequired,
 	url: PropTypes.string,
 	username: PropTypes.string,
+	gravatar: PropTypes.string,
 };
 
 const mapStateToProps = state => {

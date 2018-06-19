@@ -133,13 +133,18 @@ class RSSArticle extends React.Component {
 
 				<div className="content">
 					<div className="enclosures">
-						{this.props.enclosures.map(enclosure => (
-							<ReactPlayer
-								controls={true}
-								key={enclosure._id}
-								url={enclosure.url}
-							/>
-						))}
+						{this.props.enclosures.map(
+							enclosure =>
+								enclosure.type.includes('audio') ||
+								enclosure.type.includes('video') ||
+								enclosure.type.includes('youtube') ? (
+									<ReactPlayer
+										controls={true}
+										key={enclosure._id}
+										url={enclosure.url}
+									/>
+								) : null,
+						)}
 					</div>
 					{articleContents}
 				</div>

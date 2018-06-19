@@ -1,4 +1,4 @@
-import rssFinder from 'rss-finder';
+
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
 import {isURL} from '../utils/validation';
@@ -6,6 +6,8 @@ import {isURL} from '../utils/validation';
 import RSS from '../models/rss';
 
 import personalization from '../utils/personalization';
+import {discoverRSS} from '../parsers/discovery';
+
 import moment from 'moment';
 import search from '../utils/search';
 import {RssQueueAdd, OgQueueAdd} from '../asyncTasks';
@@ -55,7 +57,7 @@ exports.post = async (req, res) => {
 		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
 	}
 
-	let foundRSS = await rssFinder(normalizeUrl(data.feedUrl));
+	let foundRSS = await discoverRSS(normalizeUrl(data.feedUrl));
 
 	if (!foundRSS.feedUrls.length) {
 		return res
@@ -68,6 +70,9 @@ exports.post = async (req, res) => {
 
 	for (let feed of foundRSS.feedUrls.slice(0, 10)) {
 		let feedTitle = feed.title;
+		if (!feedTitle) {
+			continue
+		}
 		if (feedTitle.toLowerCase() === 'rss') {
 			feedTitle = foundRSS.site.title;
 		}

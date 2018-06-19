@@ -8,7 +8,7 @@ const version = '0.0.1';
 import normalize from 'normalize-url';
 import asyncTasks from '../asyncTasks';
 import {ParseArticle} from '../parsers/article';
-import rssFinder from 'rss-finder';
+import {discoverRSS} from '../parsers/discovery';
 
 
 program
@@ -20,7 +20,7 @@ let pageUrls = program.args;
 async function main() {
 	logger.info('Starting the article parsing debugger \\0/');
 	for (let url of pageUrls) {
-    let foundRSS = await rssFinder(normalize(url));
+    let foundRSS = await discoverRSS(normalize(url));
 
     if (!foundRSS.feedUrls.length) {
       logger.info('no RSS found')

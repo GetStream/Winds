@@ -1,6 +1,6 @@
-import podcastFinder from 'rss-finder';
 import normalizeUrl from 'normalize-url';
 import {isURL} from '../utils/validation';
+import {discoverRSS} from '../parsers/discovery';
 import Podcast from '../models/podcast';
 import personalization from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
@@ -57,7 +57,7 @@ exports.post = async (req, res) => {
 		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
 	}
 
-	let foundPodcasts = await podcastFinder(normalizeUrl(data.feedUrl));
+	let foundPodcasts = await discoverRSS(normalizeUrl(data.feedUrl));
 	if (!foundPodcasts.feedUrls.length) {
 		return res.status(404).json({ error: `Can't find any podcasts.` });
 	}

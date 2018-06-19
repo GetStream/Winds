@@ -2,6 +2,7 @@ import Episode from '../models/episode';
 
 import {TrackMetadata} from '../utils/events/analytics';
 import personalization from '../utils/personalization';
+import mongoose from 'mongoose';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
@@ -16,6 +17,9 @@ exports.list = async (req, res) => {
 
 		episodes = await Episode.find({ _id: { $in: episodeIds }}).find().exec();
 	} else {
+		if (query.podcast && !mongoose.Types.ObjectId.isValid(query.podcast)) {
+			return res.status(400).json({ error: `Invalid Podcast id ${query.podcast}` });
+		}
 		episodes = await Episode.apiQuery(req.query);
 	}
 

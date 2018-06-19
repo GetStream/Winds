@@ -11,6 +11,7 @@ import stream from 'getstream';
 
 import jwt from 'jsonwebtoken';
 import config from '../config';
+import gravatar from 'gravatar';
 
 const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
@@ -100,11 +101,17 @@ export const UserSchema = new Schema(
 		toJSON: {
 			transform: function(doc, ret) {
 				delete ret.password;
+				if (ret.email) {
+					ret.gravatar = gravatar.url(ret.email, {s: '200', d: 'identicon'});
+				}
 			},
 		},
 		toObject: {
 			transform: function(doc, ret) {
 				delete ret.password;
+				if (ret.email) {
+					ret.gravatar = gravatar.url(ret.email, {s: '200', d: 'identicon'});
+				}
 			},
 		},
 	},

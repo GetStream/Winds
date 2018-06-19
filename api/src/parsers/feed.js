@@ -131,6 +131,16 @@ export function ParsePodcastPosts(posts, limit=1000) {
 		if (!url) {
 			url = post.enclosures && post.enclosures[0] ? post.enclosures[0].url : post.guid;
 		}
+		url = normalize(url)
+		const title = strip(post.title)
+		if (!url) {
+			logger.info(`skipping episode since there is no url`)
+			continue
+		}
+		if (!title) {
+			logger.info(`skipping episode since there is no title`)
+			continue
+		}
 		let image = post.image && post.image.url;
 		let episode = new Episode({
 			description: strip(post.description).substring(0, 280),
@@ -261,6 +271,11 @@ export function ParseFeedPosts(posts, limit=1000) {
 				// can't have an article without a link
 				continue
 			}
+			// articles need to have a title
+			const title = strip(entities.decodeHTML(post.title))
+			if (!title) {
+				continue
+			}
 			article = new Article( {
 				content: content,
 				description: description,
@@ -273,7 +288,7 @@ export function ParseFeedPosts(posts, limit=1000) {
 					moment()
 						.subtract(i, 'minutes') // ensure we keep order for feeds with no time
 						.toISOString(),
-				title: strip(entities.decodeHTML(post.title)),
+				title: title,
 				url: url,
 			});
 		} catch (err) {

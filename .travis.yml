@@ -8,8 +8,8 @@ services:
   - mongodb
 cache: npm
 install:
-    - "cd api && npm install"
+    - "cd api && yarn"
 script:
-    - "npm test"
+    - "yarn run test"
 after_success:
-    - "npm run coverage"
+    - "yarn run coverage"
