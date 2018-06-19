@@ -35,7 +35,7 @@ export const EpisodeSchema = new Schema(
 			type: String,
 			trim: true,
 			required: true,
-			index: true,
+			index: {type:'hashed'},
 		},
 		fingerprint: {
 			type: String,

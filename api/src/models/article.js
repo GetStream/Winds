@@ -36,7 +36,7 @@ export const ArticleSchema = new Schema(
 			type: String,
 			trim: true,
 			required: true,
-			index: true,
+			index: {type:'hashed'},
 		},
 		// fingerprint stores the best uniqueness field we have for the given article
 		fingerprint: {
