@@ -4,8 +4,8 @@ import '../utils/db';
 import normalize from 'normalize-url';
 
 // rss import model is needed because Article refs it
-import RSS from '../models/rss' // eslint-disable-line
-import Podcast from '../models/podcast' // eslint-disable-line
+import RSS from '../models/rss'; // eslint-disable-line
+import Podcast from '../models/podcast'; // eslint-disable-line
 import Article from '../models/article';
 import Episode from '../models/episode';
 import logger from '../utils/logger';
@@ -14,23 +14,23 @@ import { ProcessOgQueue } from '../asyncTasks';
 
 // TODO: move this to a different main.js
 logger.info('Starting the OG worker');
-const schemaMap = {'episode': Episode, 'article': Article, 'rss': RSS, 'podcast': Podcast}
+const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podcast };
 
-const concurrency = 30
+const concurrency = 30;
 ProcessOgQueue(concurrency, ogProcessor);
-logger.info(`Start the og queue, concurrency ${concurrency}`)
+logger.info(`Start the og queue, concurrency ${concurrency}`);
 
 export async function ogProcessor(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);
 	try {
 		await handleOg(job);
 	} catch (err) {
-		let tags = {queue: 'og'};
+		let tags = { queue: 'og' };
 		let extra = {
 			JobURL: job.data.url,
 			JobType: job.data.type,
 		};
-		logger.error('OG job encountered an error', {err, tags, extra});
+		logger.error('OG job encountered an error', { err, tags, extra });
 	}
 }
 
@@ -44,38 +44,47 @@ export async function handleOg(job) {
 		return logger.error(`couldnt find schema for jobtype ${jobType}`);
 	}
 	if (!url) {
-		return logger.error(`URL is missing`)
+		return logger.error(`URL is missing`);
 	}
 
 	// Lookup the right type of schema: article, episode or podcast
-	const mongoSchema = schemaMap[jobType]
-	const field = (jobType === 'episode') ? 'link' : 'url';
+	const mongoSchema = schemaMap[jobType];
+	const field = jobType === 'episode' ? 'link' : 'url';
 
 	// if the instance hasn't been created yet, or it already has an OG image, ignore
-	let lookup = {}
-	lookup[field] = url
-	const instances = await mongoSchema.find(lookup).lean().limit(10);
+	let lookup = {};
+	lookup[field] = url;
+	const instances = await mongoSchema
+		.find(lookup)
+		.lean()
+		.limit(10);
 	if (!instances.length) {
-		return logger.warn(`instance not found for type ${jobType} with lookup ${field}: ${url}`);
+		return logger.warn(
+			`instance not found for type ${jobType} with lookup ${field}: ${url}`,
+		);
 	} else {
-		logger.info(`found ${instances.length} to update with url ${url}`)
+		logger.info(`found ${instances.length} to update with url ${url}`);
 	}
 
 	const needUpdate = instances.filter(i => !i.images.og);
 	if (!needUpdate.length && !update) {
 		for (const instance of instances.filter(i => !!i.images.og)) {
-			logger.info(`instance already has an image ${ instance.images.og }: ${jobType} with lookup ${field}: ${url}`);
+			logger.info(
+				`instance already has an image ${
+					instance.images.og
+				}: ${jobType} with lookup ${field}: ${url}`,
+			);
 		}
 		return;
 	}
 
-	if (!await IsValidOGUrl(url)) {
+	if (!(await IsValidOGUrl(url))) {
 		return;
 	}
 
 	let ogImage;
 	try {
-		ogImage = await ParseOG(url)
+		ogImage = await ParseOG(url);
 		if (!ogImage) {
 			return logger.info(`Didn't find image for ${url}`);
 		}
@@ -87,7 +96,7 @@ export async function handleOg(job) {
 	try {
 		normalized = normalize(ogImage);
 	} catch (err) {
-		return logger.warn(`Bad OG Image URL ${ogImage}`, {err});
+		return logger.warn(`Bad OG Image URL ${ogImage}`, { err });
 	}
 
 	for (const instance of needUpdate) {

@@ -23,4 +23,3 @@ if (config.algolia.appId && config.algolia.writeKey && config.algolia.index) {
 		logger.info('Faking search indexing');
 	};
 }
-

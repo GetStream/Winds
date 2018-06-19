@@ -1,20 +1,26 @@
 import events from './index';
 import Podcast from '../../models/podcast';
 import Episode from '../../models/episode';
-import {DetectLanguage} from '../../parsers/detect-language';
+import { DetectLanguage } from '../../parsers/detect-language';
 
 async function sendPodcastToCollections(podcast) {
 	if (!podcast.language) {
 		podcast.language = await DetectLanguage(podcast.feedUrl);
-		await Podcast.findByIdAndUpdate(podcast.id, { language: podcast.language }, { new: true });
+		await Podcast.findByIdAndUpdate(
+			podcast.id,
+			{ language: podcast.language },
+			{ new: true },
+		);
 	}
 	let episodes = await Episode.find({
 		podcast: podcast.id,
-	}).sort({ publicationDate: -1 }).limit(1000);
+	})
+		.sort({ publicationDate: -1 })
+		.limit(1000);
 
-	let mostRecentPublicationDate
+	let mostRecentPublicationDate;
 	if (episodes.length) {
-		mostRecentPublicationDate = episodes[0].publicationDate
+		mostRecentPublicationDate = episodes[0].publicationDate;
 	}
 
 	let eventsData = {
@@ -24,7 +30,8 @@ async function sendPodcastToCollections(podcast) {
 			language: podcast.language,
 			mostRecentPublicationDate: mostRecentPublicationDate,
 			title: podcast.title,
-		}};
+		},
+	};
 
 	await events({
 		meta: {

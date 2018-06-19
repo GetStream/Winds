@@ -1,6 +1,6 @@
 import Episode from '../models/episode';
 
-import {TrackMetadata} from '../utils/events/analytics';
+import { TrackMetadata } from '../utils/events/analytics';
 import personalization from '../utils/personalization';
 import mongoose from 'mongoose';
 
@@ -15,7 +15,9 @@ exports.list = async (req, res) => {
 			endpoint: '/winds_episode_recommendations',
 		});
 
-		episodes = await Episode.find({ _id: { $in: episodeIds }}).find().exec();
+		episodes = await Episode.find({ _id: { $in: episodeIds } })
+			.find()
+			.exec();
 	} else {
 		if (query.podcast && !mongoose.Types.ObjectId.isValid(query.podcast)) {
 			return res.status(400).json({ error: `Invalid Podcast id ${query.podcast}` });
@@ -38,9 +40,7 @@ exports.get = async (req, res) => {
 
 	req.analytics.trackImpression({
 		label: 'view',
-		content_list: [
-			{ foreign_id: `episode:${episode._id}`, },
-		],
+		content_list: [{ foreign_id: `episode:${episode._id}` }],
 	});
 
 	await TrackMetadata(`episode:${episode._id}`, {

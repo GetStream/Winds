@@ -3,7 +3,6 @@ import personalization from '../utils/personalization';
 import mongoose from 'mongoose';
 import logger from '../utils/logger';
 
-
 exports.list = async (req, res) => {
 	const query = req.query || {};
 	let articles = [];
@@ -15,11 +14,17 @@ exports.list = async (req, res) => {
 		// handle failure from the article personalization endpoint gracefully
 		for (let articleID of articleIDs) {
 			if (!mongoose.Types.ObjectId.isValid(articleID)) {
-				logger.error(`Personalization for ${req.user.sub} returned an invalid articleID ${articleID}`)
-				return res.status(500).json({ error: `Failed to load personalized follow suggestions` });
+				logger.error(
+					`Personalization for ${
+						req.user.sub
+					} returned an invalid articleID ${articleID}`,
+				);
+				return res
+					.status(500)
+					.json({ error: `Failed to load personalized follow suggestions` });
 			}
 		}
-		articles = await Article.find({ _id: {$in: articleIDs}});
+		articles = await Article.find({ _id: { $in: articleIDs } });
 	} else {
 		if (query.rss && !mongoose.Types.ObjectId.isValid(query.rss)) {
 			return res.status(400).json({ error: `Invalid RSS id ${query.rss}` });
@@ -31,7 +36,7 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	let articleID = req.params.articleId
+	let articleID = req.params.articleId;
 
 	if (!mongoose.Types.ObjectId.isValid(articleID)) {
 		return res.status(400).json({ error: `Article ID ${articleID} is invalid` });

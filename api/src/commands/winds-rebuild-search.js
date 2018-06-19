@@ -4,7 +4,7 @@ import '../utils/db';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
-import {indexMany} from '../utils/search';
+import { indexMany } from '../utils/search';
 
 async function main() {
 	logger.info('Reindexing all Podcasts to Algolia');
@@ -18,17 +18,19 @@ async function loadModel(Model) {
 	let indexed = 0;
 	let accumulatedDocs = [];
 	// XXX: enter Mongoose genius: { timeout: true } means disabling cursor timeouts
-	await Model.find({followerCount: {$gte: 1}}, {}, { timeout: true }).cursor().eachAsync(async (d) => {
-		accumulatedDocs.push(d.searchDocument());
-		if (accumulatedDocs.length >= batchSize) {
-			await indexMany(accumulatedDocs);
-			indexed += accumulatedDocs.length;
-			process.stdout.clearLine();
-			process.stdout.cursorTo(0);
-			process.stdout.write(`Indexed: ${indexed}`);
-			accumulatedDocs = [];
-		}
-	});
+	await Model.find({ followerCount: { $gte: 1 } }, {}, { timeout: true })
+		.cursor()
+		.eachAsync(async d => {
+			accumulatedDocs.push(d.searchDocument());
+			if (accumulatedDocs.length >= batchSize) {
+				await indexMany(accumulatedDocs);
+				indexed += accumulatedDocs.length;
+				process.stdout.clearLine();
+				process.stdout.cursorTo(0);
+				process.stdout.write(`Indexed: ${indexed}`);
+				accumulatedDocs = [];
+			}
+		});
 	if (accumulatedDocs.length >= 0) {
 		await indexMany(accumulatedDocs);
 		indexed += accumulatedDocs.length;
@@ -40,10 +42,12 @@ async function loadModel(Model) {
 	process.stdout.write('\n');
 }
 
-main().then(() => {
-	console.info('done');
-	process.exit(0);
-}).catch(err => {
-	console.info(`failed with err ${err}`);
-	process.exit(1);
-});
+main()
+	.then(() => {
+		console.info('done');
+		process.exit(0);
+	})
+	.catch(err => {
+		console.info(`failed with err ${err}`);
+		process.exit(1);
+	});

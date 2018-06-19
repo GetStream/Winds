@@ -18,7 +18,7 @@ const personalization = async data => {
 	let response = await axios({
 		baseURL: config.stream.baseUrl,
 		headers: {
-			'Authorization': token,
+			Authorization: token,
 			'Content-Type': 'application/json',
 			'Stream-Auth-Type': 'jwt',
 		},
@@ -32,7 +32,7 @@ const personalization = async data => {
 	let articleIDs = response.data.results.map(result => {
 		return result.foreign_id.split(':')[1];
 	});
-	return articleIDs
+	return articleIDs;
 };
 
 export default personalization;

@@ -18,7 +18,10 @@ exports.list = async (req, res) => {
 
 	let shuffled;
 
-	shuffled = results.map((a) => [Math.random(), a]).sort((a, b) => a[0] - b[0]).map((a) => a[1]);
+	shuffled = results
+		.map(a => [Math.random(), a])
+		.sort((a, b) => a[0] - b[0])
+		.map(a => a[1]);
 
 	res.json(shuffled);
 };

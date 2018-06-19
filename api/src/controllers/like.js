@@ -13,7 +13,10 @@ import config from '../config';
 import logger from '../utils/logger';
 import events from '../utils/events';
 
-const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const client = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 
 exports.list = (req, res) => {
 	Like.apiQuery(req.query)
@@ -51,7 +54,15 @@ exports.post = (req, res) => {
 	const data = Object.assign({}, req.body, { user: req.user.sub }) || {};
 
 	let type;
-	const types = ['podcast', 'episode', 'rss', 'article', 'playlist', 'share', 'comment'];
+	const types = [
+		'podcast',
+		'episode',
+		'rss',
+		'article',
+		'playlist',
+		'share',
+		'comment',
+	];
 	types.map(key => {
 		if (data.hasOwnProperty(key)) {
 			type = key;

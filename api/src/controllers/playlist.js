@@ -42,10 +42,10 @@ exports.list = async (req, res, _) => {
 	}
 
 	switch (query.type) {
-	case 'recommended':
-		return await listRecommended(req, res);
-	case 'featured':
-		return await listFeatured(req, res);
+		case 'recommended':
+			return await listRecommended(req, res);
+		case 'featured':
+			return await listFeatured(req, res);
 	}
 	await listFilter(req, res);
 };
@@ -55,7 +55,7 @@ exports.get = async (req, res, _) => {
 		return res.sendStatus(404);
 	}
 
-	const playlist = await Playlist.findById(req.params.playlistId)
+	const playlist = await Playlist.findById(req.params.playlistId);
 	if (!playlist) {
 		return res.sendStatus(404);
 	}
@@ -63,7 +63,10 @@ exports.get = async (req, res, _) => {
 		return res.sendStatus(403);
 	}
 
-	const like = await Like.findOne({ playlist: playlist._id, user: req.user.sub }).lean()
+	const like = await Like.findOne({
+		playlist: playlist._id,
+		user: req.user.sub,
+	}).lean();
 	res.json(Object.assign(playlist.toObject(), { liked: !!like }));
 };
 
@@ -80,7 +83,7 @@ exports.post = async (req, res, _) => {
 		name: playlist.name,
 		type: 'playlist',
 		user: playlist.user,
-	})
+	});
 	res.json(playlist);
 };
 

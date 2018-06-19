@@ -5,7 +5,10 @@ import Share from '../models/share';
 import config from '../config';
 import logger from '../utils/logger';
 
-const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const client = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 
 exports.list = (req, res) => {
 	const page = parseInt(req.query.page, 10) || 0;
@@ -118,9 +121,11 @@ exports.put = (req, res) => {
 				// keep as !=, not !==
 				return res.status(401).send();
 			} else {
-				return Share.update({ _id: req.params.shareId }, data, opts).then(newShare => {
-					res.json(newShare);
-				});
+				return Share.update({ _id: req.params.shareId }, data, opts).then(
+					newShare => {
+						res.json(newShare);
+					},
+				);
 			}
 		})
 		.catch(err => {

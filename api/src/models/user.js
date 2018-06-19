@@ -13,7 +13,10 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import gravatar from 'gravatar';
 
-const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const streamClient = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 
 export const UserSchema = new Schema(
 	{
@@ -102,7 +105,7 @@ export const UserSchema = new Schema(
 			transform: function(doc, ret) {
 				delete ret.password;
 				if (ret.email) {
-					ret.gravatar = gravatar.url(ret.email, {s: '200', d: 'identicon'});
+					ret.gravatar = gravatar.url(ret.email, { s: '200', d: 'identicon' });
 				}
 			},
 		},
@@ -110,7 +113,7 @@ export const UserSchema = new Schema(
 			transform: function(doc, ret) {
 				delete ret.password;
 				if (ret.email) {
-					ret.gravatar = gravatar.url(ret.email, {s: '200', d: 'identicon'});
+					ret.gravatar = gravatar.url(ret.email, { s: '200', d: 'identicon' });
 				}
 			},
 		},
@@ -119,10 +122,10 @@ export const UserSchema = new Schema(
 
 UserSchema.post('remove', async function(user) {
 	return await Promise.all([
-		PinSchema.remove({user}),
-		PlaylistSchema.remove({user}),
-		FollowSchema.remove({user}),
-		LikeSchema.remove({user}),
+		PinSchema.remove({ user }),
+		PlaylistSchema.remove({ user }),
+		FollowSchema.remove({ user }),
+		LikeSchema.remove({ user }),
 	]);
 });
 
@@ -135,21 +138,21 @@ UserSchema.plugin(mongooseStringQuery);
 
 UserSchema.index({ email: 1, username: 1 });
 
-UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedUser () {
+UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedUser() {
 	let user = this;
 	let serialized;
-	
-	let streamTokens = {}
+
+	let streamTokens = {};
 	for (const k of ['timeline', 'user_article', 'user_episode']) {
-		let token = streamClient.feed(k, user._id).getReadOnlyToken()
-		streamTokens[k] = token
+		let token = streamClient.feed(k, user._id).getReadOnlyToken();
+		streamTokens[k] = token;
 	}
 
 	serialized = {
 		_id: user._id,
 		email: user.email,
 		interests: user.interests,
-		jwt: jwt.sign( { email: user.email, sub: user._id }, config.jwt.secret),
+		jwt: jwt.sign({ email: user.email, sub: user._id }, config.jwt.secret),
 		name: user.name,
 		username: user.username,
 		streamTokens: streamTokens,

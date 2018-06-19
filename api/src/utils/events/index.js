@@ -43,7 +43,7 @@ const events = data => {
 			axios({
 				data: data.meta,
 				headers: {
-					'Authorization': token,
+					Authorization: token,
 					'stream-auth-type': 'jwt',
 				},
 				method: 'POST',

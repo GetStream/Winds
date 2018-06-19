@@ -14,8 +14,8 @@ export async function IsValidOGUrl(url) {
 	if (!url) {
 		return false;
 	}
-	let invalid = invalidExtensions.some(extension=> {
-		if( url.endsWith(`.${extension}`)) {
+	let invalid = invalidExtensions.some(extension => {
+		if (url.endsWith(`.${extension}`)) {
 			return extension;
 		}
 	});

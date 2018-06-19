@@ -18,7 +18,10 @@ import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { upsertManyPosts } from '../utils/upsert';
 
-const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const streamClient = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 const duplicateKeyError = 11000;
 
 // connect the handler to the queue
@@ -87,27 +90,29 @@ export async function handleRSS(job) {
 		return;
 	}
 
-	logger.info('statsd pre')
+	logger.info('statsd pre');
 	statsd.increment('winds.handle_rss.articles.parsed', rssContent.articles.length);
 	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
-	logger.info('statsd post')
+	logger.info('statsd post');
 
-	let articles = rssContent.articles
+	let articles = rssContent.articles;
 	for (let a of articles) {
-		a.rss = rssID
+		a.rss = rssID;
 	}
-	logger.info(`starting the upsertManyPosts for ${rssID}`)
-	let operationMap = await upsertManyPosts(rssID, articles, 'rss')
-	let updatedArticles = operationMap.new.concat(operationMap.changed)
-	logger.info(`Finished updating. ${updatedArticles.length} out of ${articles.length} changed`)
+	logger.info(`starting the upsertManyPosts for ${rssID}`);
+	let operationMap = await upsertManyPosts(rssID, articles, 'rss');
+	let updatedArticles = operationMap.new.concat(operationMap.changed);
+	logger.info(
+		`Finished updating. ${updatedArticles.length} out of ${articles.length} changed`,
+	);
 
 	// update the count
 	await RSS.update(
 		{ _id: rssID },
 		{
-			postCount: await Article.count({rss: rssID}),
+			postCount: await Article.count({ rss: rssID }),
 			fingerprint: rssContent.fingerprint,
-		}
+		},
 	);
 
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);
@@ -155,8 +160,5 @@ export async function handleRSS(job) {
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(rssID) {
 	const now = moment().toISOString();
-	return await RSS.update(
-		{ _id: rssID },
-		{ lastScraped: now, isParsing: false },
-	);
+	return await RSS.update({ _id: rssID }, { lastScraped: now, isParsing: false });
 }

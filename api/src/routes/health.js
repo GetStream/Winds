@@ -1,7 +1,6 @@
 import Health from '../controllers/health';
 import { wrapAsync } from '../utils/controllers';
 
-
 module.exports = api => {
 	api.route('/health').get(wrapAsync(Health.health));
 	api.route('/status').get(wrapAsync(Health.status));

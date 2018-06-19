@@ -13,14 +13,17 @@ import User from '../models/user';
 import util from 'util';
 
 import config from '../config';
-import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
-import { IsPodcastURL} from '../parsers/detect-type';
+import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
+import { IsPodcastURL } from '../parsers/detect-type';
 import search from '../utils/search';
-import {isURL} from '../utils/validation';
+import { isURL } from '../utils/validation';
 
 import { TrackMetadata } from '../utils/events/analytics';
 
-const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const streamClient = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 
 exports.get = async (req, res) => {
 	let userID = req.user.sub;
@@ -67,11 +70,11 @@ exports.post = async (req, res) => {
 		return res.status(422).json({ error: 'Invalid OPML upload.' });
 	}
 
-	let feeds
+	let feeds;
 	try {
 		feeds = await util.promisify(opmlParser)(upload);
-	} catch(e) {
-		logger.info(`opml upload failed wiht err`, {err})
+	} catch (e) {
+		logger.info(`opml upload failed wiht err`, { err });
 		return res.status(422).json({ error: 'Invalid OPML upload.' });
 	}
 
@@ -114,7 +117,7 @@ async function followOPMLFeed(feed, userID) {
 
 	let result = {
 		feedUrl: feed.feedUrl,
-		follow: {}
+		follow: {},
 	};
 
 	if (!feed.valid) {
@@ -124,7 +127,7 @@ async function followOPMLFeed(feed, userID) {
 
 	try {
 		isPodcast = await IsPodcastURL(feed.feedUrl);
-	} catch(e) {
+	} catch (e) {
 		result.error = `Error opening ${feed.feedUrl}`;
 		return result;
 	}
@@ -137,10 +140,10 @@ async function followOPMLFeed(feed, userID) {
 		publicationType = 'rss';
 	}
 
-	let feedUrl = normalizeUrl(feed.feedUrl)
+	let feedUrl = normalizeUrl(feed.feedUrl);
 	if (!isURL(feedUrl)) {
 		result.error = `Invalid URL for OPML import ${feedUrl}`;
-		return result
+		return result;
 	}
 
 	let instance = await schema.findOne({ feedUrl: feedUrl });
@@ -163,10 +166,7 @@ async function followOPMLFeed(feed, userID) {
 		let queueData = { url: feedUrl };
 		queueData[publicationType] = instance._id;
 
-		let queue =
-			publicationType == 'rss'
-				? RssQueueAdd
-				: PodcastQueueAdd;
+		let queue = publicationType == 'rss' ? RssQueueAdd : PodcastQueueAdd;
 
 		await queue(queueData, {
 			priority: 1,
@@ -177,9 +177,8 @@ async function followOPMLFeed(feed, userID) {
 		await search(instance.searchDocument());
 	}
 	// always create the follow
-	let publicationID = instance._id
-	let follow = await Follow.getOrCreate(publicationType, userID, publicationID)
-
+	let publicationID = instance._id;
+	let follow = await Follow.getOrCreate(publicationType, userID, publicationID);
 
 	await TrackMetadata(`${publicationType}:${publicationID}`, {
 		description: instance.description,

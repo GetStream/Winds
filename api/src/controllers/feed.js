@@ -9,7 +9,10 @@ import Like from '../models/like';
 import config from '../config';
 import logger from '../utils/logger';
 
-const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const client = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 
 async function getUserFeed(req, res) {
 	const params = req.params || {};
@@ -18,20 +21,22 @@ async function getUserFeed(req, res) {
 	try {
 		const shares = await Share.find({
 			user: params.userId,
-			flags: { $lte: 5 }
+			flags: { $lte: 5 },
 		}).sort({ createdAt: 'desc' });
 
-		const enriched = await Promise.all(shares.map(async share => {
-			const like = await Like.findOne({
-				share: share._id,
-				user: params.userId,
-			}).lean();
-			return Object.assign(share.toObject(), { liked: !!like, type: 'share' });
-		}));
+		const enriched = await Promise.all(
+			shares.map(async share => {
+				const like = await Like.findOne({
+					share: share._id,
+					user: params.userId,
+				}).lean();
+				return Object.assign(share.toObject(), { liked: !!like, type: 'share' });
+			}),
+		);
 
 		res.json(enriched);
 	} catch (err) {
-		logger.error({err});
+		logger.error({ err });
 		res.status(422).send(err.errors);
 	}
 }
@@ -44,7 +49,9 @@ async function getTimelineFeed(req, res) {
 	const articles = [];
 
 	try {
-		const activities = await client.feed('timeline', params.userId).get({ limit: 10 });
+		const activities = await client
+			.feed('timeline', params.userId)
+			.get({ limit: 10 });
 
 		try {
 			for (const activity of activities.results) {
@@ -53,40 +60,42 @@ async function getTimelineFeed(req, res) {
 
 				if (collection === 'shares') {
 					const share = await Share.findById(id);
-					if (!share)
-						continue;
+					if (!share) continue;
 
 					const like = await Like.findOne({
 						share: share._id,
 						user: params.userId,
 					}).lean();
-					shares.push(Object.assign(share.toObject(), { liked: !!like, type: 'share' }));
+					shares.push(
+						Object.assign(share.toObject(), { liked: !!like, type: 'share' }),
+					);
 				} else if (collection === 'articles') {
 					const article = await Article.findById(id);
-					if (!article)
-						continue;
+					if (!article) continue;
 
 					articles.push(Object.assign(article.toObject(), { type: 'article' }));
 				} else if (collection === 'episodes') {
 					const episode = await Article.findById(id);
-					if (!episode)
-						continue;
+					if (!episode) continue;
 
 					episodes.push(Object.assign(episode.toObject(), { type: 'article' }));
 				}
 			}
 		} catch (err) {
-			logger.error({err});
+			logger.error({ err });
 			return res.status(422).send(err.errors);
 		}
 
-		const timeline = shares.concat(articles).concat(episodes).sort((a, b) => {
-			return b.createdAt - a.createdAt;
-		});
+		const timeline = shares
+			.concat(articles)
+			.concat(episodes)
+			.sort((a, b) => {
+				return b.createdAt - a.createdAt;
+			});
 
 		res.json(timeline);
 	} catch (err) {
-		logger.error({err});
+		logger.error({ err });
 		res.status(500).send(err);
 	}
 }
@@ -96,28 +105,33 @@ async function getContentFeed(req, res, type, model) {
 	const query = req.query || {};
 	const limit = query.per_page || 10;
 	const offset = query.page * limit || 0;
-	const response = await client.feed(`user_${type}`, params.userId).get({ limit, offset })
+	const response = await client
+		.feed(`user_${type}`, params.userId)
+		.get({ limit, offset });
 	let articleIDs = response.results.map(r => {
-		return r.foreign_id.split(':')[1]
-	})
-	let articles = await model.find({_id: {$in: articleIDs}})
-	let articleLookup = {}
+		return r.foreign_id.split(':')[1];
+	});
+	let articles = await model.find({ _id: { $in: articleIDs } });
+	let articleLookup = {};
 	for (let a of articles) {
-		articleLookup[a._id] = a
+		articleLookup[a._id] = a;
 	}
-	let sortedArticles = []
+	let sortedArticles = [];
 	for (let r of response.results) {
-		let articleID = r.foreign_id.split(':')[1]
-		let article = articleLookup[articleID]
+		let articleID = r.foreign_id.split(':')[1];
+		let article = articleLookup[articleID];
 		if (!article) {
-			logger.error(`Failed to load article ${articleID} specified in feed user_${type}:${params.userId}`)
-			continue
+			logger.error(
+				`Failed to load article ${articleID} specified in feed user_${type}:${
+					params.userId
+				}`,
+			);
+			continue;
 		}
-		sortedArticles.push(article)
+		sortedArticles.push(article);
 	}
 
 	res.json(sortedArticles);
-
 }
 
 exports.get = async (req, res, _) => {
@@ -134,9 +148,11 @@ exports.get = async (req, res, _) => {
 		case 'timeline':
 			return getTimelineFeed(req, res);
 		case 'article':
-			return getContentFeed(req, res, 'article', Article)
+			return getContentFeed(req, res, 'article', Article);
 		case 'episode':
-			return getContentFeed(req, res, 'episode', Episode)
+			return getContentFeed(req, res, 'episode', Episode);
 	}
-	res.status(400).send('Request must include "type" of user, timeline, article or episode');
+	res.status(400).send(
+		'Request must include "type" of user, timeline, article or episode',
+	);
 };

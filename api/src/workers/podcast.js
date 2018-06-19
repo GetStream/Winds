@@ -14,11 +14,13 @@ import logger from '../utils/logger';
 import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
 import { ParsePodcast } from '../parsers/feed';
 
-import {ProcessPodcastQueue, OgQueueAdd} from '../asyncTasks';
+import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 
-
-const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const streamClient = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
@@ -30,12 +32,12 @@ export async function podcastProcessor(job) {
 	try {
 		await handlePodcast(job);
 	} catch (err) {
-		let tags = {queue: 'rss'};
+		let tags = { queue: 'rss' };
 		let extra = {
 			JobPodcast: job.data.podcast,
 			JobURL: job.data.url,
 		};
-		logger.error('Podcast job encountered an error', {err, tags, extra});
+		logger.error('Podcast job encountered an error', { err, tags, extra });
 	}
 }
 
@@ -65,35 +67,41 @@ export async function handlePodcast(job) {
 
 	// update the episodes
 	logger.info(`Updating ${podcastContent.episodes.length} episodes`);
-	let episodes = podcastContent.episodes
+	let episodes = podcastContent.episodes;
 	for (let e of episodes) {
-		e.podcast = podcastID
+		e.podcast = podcastID;
 	}
 
-	let operationMap = await upsertManyPosts(podcastID, episodes, 'podcast')
-	let updatedEpisodes = operationMap.new.concat(operationMap.changed)
-	logger.info(`Finished updating ${updatedEpisodes.length} out of ${podcastContent.episodes.length} changed`)
+	let operationMap = await upsertManyPosts(podcastID, episodes, 'podcast');
+	let updatedEpisodes = operationMap.new.concat(operationMap.changed);
+	logger.info(
+		`Finished updating ${updatedEpisodes.length} out of ${
+			podcastContent.episodes.length
+		} changed`,
+	);
 
 	// update the count
 	await Podcast.update(
 		{ _id: podcastID },
 		{
-			postCount: await Episode.count({podcast: podcastID}),
-		}
+			postCount: await Episode.count({ podcast: podcastID }),
+		},
 	);
 
-	await Promise.all(updatedEpisodes.map( episode => {
-		OgQueueAdd(
-			{
-				type: 'episode',
-				url: episode.link,
-			},
-			{
-				removeOnComplete: true,
-				removeOnFail: true,
-			},
-		);
-	}));
+	await Promise.all(
+		updatedEpisodes.map(episode => {
+			OgQueueAdd(
+				{
+					type: 'episode',
+					url: episode.link,
+				},
+				{
+					removeOnComplete: true,
+					removeOnFail: true,
+				},
+			);
+		}),
+	);
 
 	if (updatedEpisodes.length > 0) {
 		let chunkSize = 100;

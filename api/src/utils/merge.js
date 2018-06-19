@@ -20,10 +20,16 @@ export async function mergeFeeds(masterID, copyID) {
 	// refollow all of them
 	let followInstructions = [];
 	for (let f of follows) {
-		followInstructions.push({ type: 'rss', userID: f.user._id, publicationID: master._id});
+		followInstructions.push({
+			type: 'rss',
+			userID: f.user._id,
+			publicationID: master._id,
+		});
 	}
 	await Follow.getOrCreateMany(followInstructions);
-	logger.info(`Removed ${follows.length} follow from stream and added them for the new feed`);
+	logger.info(
+		`Removed ${follows.length} follow from stream and added them for the new feed`,
+	);
 	// update the follows
 	// TODO is there a better way to handle unique constrains with MongoDB
 	let existingFollows = await Follow.find({ rss: master });
@@ -33,7 +39,11 @@ export async function mergeFeeds(masterID, copyID) {
 		{ rss: master },
 		{ multi: true },
 	);
-	logger.info(`Updated the follow records, found ${existingFollows.length} existing follows, ${result.nModified} changed`);
+	logger.info(
+		`Updated the follow records, found ${existingFollows.length} existing follows, ${
+			result.nModified
+		} changed`,
+	);
 
 	// move the pins where possible
 	let articles = await Article.find({ rss: copy._id });
@@ -44,7 +54,11 @@ export async function mergeFeeds(masterID, copyID) {
 	for (let pin of pins) {
 		let newArticle = await Article.findOne({ rss: master, url: pin.article.url });
 		if (newArticle) {
-			await Pin.create({ user: pin.user, createdAt: pin.createdAt, article: newArticle });
+			await Pin.create({
+				user: pin.user,
+				createdAt: pin.createdAt,
+				article: newArticle,
+			});
 		}
 		// always remove the old to prevent broken state
 		await pin.remove();
@@ -57,7 +71,11 @@ export async function mergeFeeds(masterID, copyID) {
 	await copy.remove();
 
 	// TODO: merge the feed url information
-	let feedUrls = [master.feedUrl].concat(master.feedUrls, [copy.feedUrl], copy.feedUrls);
+	let feedUrls = [master.feedUrl].concat(
+		master.feedUrls,
+		[copy.feedUrl],
+		copy.feedUrls,
+	);
 	let uniqueUrls = {};
 	for (let url of feedUrls) {
 		uniqueUrls[url] = 1;
@@ -66,7 +84,9 @@ export async function mergeFeeds(masterID, copyID) {
 	logger.info(`FeedUrls is now ${newFeedUrls}`);
 	master.feedUrls = newFeedUrls;
 	await master.save();
-	logger.info(`Completed the merge. ${copy.feedUrl} is now merged with ${master.feedUrl}`);
+	logger.info(
+		`Completed the merge. ${copy.feedUrl} is now merged with ${master.feedUrl}`,
+	);
 
 	return master;
 }

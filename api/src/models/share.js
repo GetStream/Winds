@@ -37,14 +37,28 @@ export const ShareSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'Article',
 			autopopulate: {
-				select: ['parent', 'url', 'title', 'description', 'image', 'publictionDate'],
+				select: [
+					'parent',
+					'url',
+					'title',
+					'description',
+					'image',
+					'publictionDate',
+				],
 			},
 		},
 		episode: {
 			type: Schema.Types.ObjectId,
 			ref: 'Episode',
 			autopopulate: {
-				select: ['parent', 'url', 'title', 'description', 'image', 'publictionDate'],
+				select: [
+					'parent',
+					'url',
+					'title',
+					'description',
+					'image',
+					'publictionDate',
+				],
 			},
 		},
 		flags: {

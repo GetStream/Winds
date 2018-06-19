@@ -8,9 +8,8 @@ import Podcast from '../models/podcast';
 
 import logger from '../utils/logger';
 
-import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
-import {isURL} from '../utils/validation';
-
+import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
+import { isURL } from '../utils/validation';
 
 const publicationTypes = {
 	rss: { schema: RSS, enqueue: RssQueueAdd },
@@ -21,14 +20,18 @@ const durationInMinutes = 15;
 
 // conductor runs conduct every interval seconds
 const conductor = () => {
-	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
+	logger.info(
+		`Starting the conductor... will conduct every ${conductorInterval} seconds`,
+	);
 
 	function forever() {
-		conduct().then(()=> {
-			logger.info('Conductor iteration completed...');
-		}).catch(err => {
-			logger.error('Conductor broke down', {err});
-		});
+		conduct()
+			.then(() => {
+				logger.info('Conductor iteration completed...');
+			})
+			.catch(err => {
+				logger.error('Conductor broke down', { err });
+			});
 		setTimeout(forever, conductorInterval * 1000);
 	}
 	forever();
@@ -37,16 +40,16 @@ conductor();
 
 // returns a random number from 2**1, 2**2, ..., 2**n-1, 2**n
 // 2 is two time more likely to be returned than 4, 4 than 8 and so until 2**n
-function rand(n=6){
+function rand(n = 6) {
 	const exp = n;
-	let rand = Math.floor(Math.random() * 2**exp);
+	let rand = Math.floor(Math.random() * 2 ** exp);
 	let b;
 	for (b of [...Array(exp).keys()].reverse()) {
-		if (rand >= (2**b)-1) {
+		if (rand >= 2 ** b - 1) {
 			break;
 		}
 	}
-	return 2**(exp-b);
+	return 2 ** (exp - b);
 }
 
 // conduct does the actual work of scheduling the scraping
@@ -66,7 +69,7 @@ async function conduct() {
 				isParsing: {
 					$ne: true,
 				},
-				followerCount: {$gte: 1},
+				followerCount: { $gte: 1 },
 				valid: true,
 				lastScraped: {
 					$lte: moment()
@@ -77,7 +80,8 @@ async function conduct() {
 					$lt: rand(),
 				},
 			})
-			.limit(maxToSchedule).sort('-followerCount');
+			.limit(maxToSchedule)
+			.sort('-followerCount');
 
 		// make sure we don't schedule these guys again till its finished
 		let publicationIDs = [];
@@ -96,12 +100,18 @@ async function conduct() {
 		logger.info(`marked ${updated.nModified} publications as isParsing`);
 
 		// actually schedule the update
-		logger.info(`conductor found ${publications.length} of type ${publicationType} to scrape`);
+		logger.info(
+			`conductor found ${publications.length} of type ${publicationType} to scrape`,
+		);
 		let promises = [];
 		for (let publication of publications) {
 			if (!isURL(publication.feedUrl)) {
-				logger.warn(`Conductor, url looks invalid for ${publication.feedUrl} with id ${publication._id}`)
-				continue
+				logger.warn(
+					`Conductor, url looks invalid for ${publication.feedUrl} with id ${
+						publication._id
+					}`,
+				);
+				continue;
 			}
 			let job = { url: publication.feedUrl };
 			job[publicationType] = publication._id;
@@ -113,6 +123,8 @@ async function conduct() {
 		}
 		await Promise.all(promises);
 
-		logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`);
+		logger.info(
+			`Processing complete! Will try again in ${conductorInterval} seconds...`,
+		);
 	}
 }

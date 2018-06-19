@@ -12,7 +12,9 @@ export function setupAxiosRedirectInterceptor(axios) {
 		});
 	}, Promise.reject);
 
-	const response = axios.interceptors.response.use(res => res, err => {
+	const response = axios.interceptors.response.use(
+		res => res,
+		err => {
 			if (!err.response || err.response.status > 399) {
 				return Promise.reject(err);
 			}

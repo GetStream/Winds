@@ -5,14 +5,17 @@ import logger from '../logger';
 
 mongoose.Promise = global.Promise;
 
-const connection = mongoose.connect(config.database.uri, {
-	autoIndex: true,
-	reconnectTries: Number.MAX_VALUE,
-	reconnectInterval: 500,
-	poolSize: 50,
-	bufferMaxEntries: 0,
-	keepAlive: 120,
-});
+const connection = mongoose.connect(
+	config.database.uri,
+	{
+		autoIndex: true,
+		reconnectTries: Number.MAX_VALUE,
+		reconnectInterval: 500,
+		poolSize: 50,
+		bufferMaxEntries: 0,
+		keepAlive: 120,
+	},
+);
 
 connection
 	.then(db => {
@@ -28,7 +31,7 @@ connection
 			logger.info('Attempting to re-establish database connection.');
 			mongoose.connect(config.database.uri);
 		} else {
-			logger.error('Error while attempting to connect to database:', {err});
+			logger.error('Error while attempting to connect to database:', { err });
 		}
 	});
 

@@ -51,7 +51,10 @@ export async function upsertManyPosts(publicationID, newPosts, schemaField) {
 			}
 
 			// filter on both rss and fingerprint so we can use the index
-			const filter = { [schemaField]: publicationID, fingerprint: existing.fingerprint };
+			const filter = {
+				[schemaField]: publicationID,
+				fingerprint: existing.fingerprint,
+			};
 			const { _id, id, ...dataWithoutId } = data;
 			operations.push({ updateOne: { filter: filter, update: dataWithoutId } });
 			operationMap.changed.push({ _id: existing._id, ...dataWithoutId });
@@ -108,5 +111,5 @@ export function normalizedDiff(existingPost, newPost) {
 }
 
 export function postChanged(existingPost, newPost) {
-    return normalizedDiff(existingPost, newPost).length != 0;
+	return normalizedDiff(existingPost, newPost).length != 0;
 }

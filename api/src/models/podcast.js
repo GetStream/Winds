@@ -1,8 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
-import {getStreamClient} from '../utils/stream'
-
+import { getStreamClient } from '../utils/stream';
 
 export const PodcastSchema = new Schema(
 	{
@@ -145,11 +144,17 @@ PodcastSchema.plugin(timestamps, {
 PodcastSchema.plugin(mongooseStringQuery);
 
 PodcastSchema.statics.incrScrapeFailures = async function(id) {
-	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures: 1}}).exec();
+	await this.findOneAndUpdate(
+		{ _id: id },
+		{ $inc: { consecutiveScrapeFailures: 1 } },
+	).exec();
 };
 
 PodcastSchema.statics.resetScrapeFailures = async function(id) {
-	await this.findOneAndUpdate({_id :id}, {$set : {consecutiveScrapeFailures : 0}}).exec();
+	await this.findOneAndUpdate(
+		{ _id: id },
+		{ $set: { consecutiveScrapeFailures: 0 } },
+	).exec();
 };
 
 PodcastSchema.methods.searchDocument = function() {
@@ -166,9 +171,11 @@ PodcastSchema.methods.searchDocument = function() {
 	};
 };
 
-PodcastSchema.methods.serialize = function serialize () {
+PodcastSchema.methods.serialize = function serialize() {
 	const serialized = this.toObject();
-	serialized.streamToken = getStreamClient().feed('podcast', this._id).getReadOnlyToken()
+	serialized.streamToken = getStreamClient()
+		.feed('podcast', this._id)
+		.getReadOnlyToken();
 	return serialized;
 };
 

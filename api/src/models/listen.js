@@ -27,7 +27,14 @@ export const ListenSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'Episode',
 			autopopulate: {
-				select: ['parent', 'url', 'title', 'description', 'image', 'publictionDate'],
+				select: [
+					'parent',
+					'url',
+					'title',
+					'description',
+					'image',
+					'publictionDate',
+				],
 			},
 			required: true,
 		},

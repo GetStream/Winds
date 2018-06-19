@@ -1,14 +1,13 @@
 import normalizeUrl from 'normalize-url';
-import {isURL} from '../utils/validation';
-import {discoverRSS} from '../parsers/discovery';
+import { isURL } from '../utils/validation';
+import { discoverRSS } from '../parsers/discovery';
 import Podcast from '../models/podcast';
 import personalization from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
-import {PodcastQueueAdd, OgQueueAdd} from '../asyncTasks';
+import { PodcastQueueAdd, OgQueueAdd } from '../asyncTasks';
 import mongoose from 'mongoose';
-
 
 exports.list = async (req, res) => {
 	let query = req.query || {};
@@ -19,7 +18,7 @@ exports.list = async (req, res) => {
 			endpoint: '/winds_podcast_recommendations',
 			userId: req.user.sub,
 		});
-		podcasts = await Podcast.find({ _id: {$in: podcastIDs} }).exec();
+		podcasts = await Podcast.find({ _id: { $in: podcastIDs } }).exec();
 	} else {
 		podcasts = await Podcast.apiQuery(req.query);
 	}
@@ -31,12 +30,14 @@ exports.get = async (req, res) => {
 	let podcastID = req.params.podcastId;
 
 	if (!mongoose.Types.ObjectId.isValid(podcastID)) {
-		return res.status(422).json({ error: `Podcast ID ${podcastID} is invalid.`});
+		return res.status(422).json({ error: `Podcast ID ${podcastID} is invalid.` });
 	}
 
 	let podcast = await Podcast.findById(podcastID).exec();
 	if (!podcast) {
-		return res.status(404).json({ error: `Can't find podcast with id ${podcastID}.` });
+		return res
+			.status(404)
+			.json({ error: `Can't find podcast with id ${podcastID}.` });
 	}
 
 	res.json(podcast.serialize());
@@ -45,11 +46,11 @@ exports.get = async (req, res) => {
 exports.post = async (req, res) => {
 	const data = Object.assign(req.body, { user: req.user.sub }) || {};
 
-// todo refactor this check for validating partial urls like google.com
-	let url
+	// todo refactor this check for validating partial urls like google.com
+	let url;
 	try {
-		url = normalizeUrl(data.feedUrl)
-	}catch(e) {
+		url = normalizeUrl(data.feedUrl);
+	} catch (e) {
 		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
 	}
 
@@ -84,9 +85,9 @@ exports.post = async (req, res) => {
 			description = '';
 		}
 
-		let feedUrl = normalizeUrl(feed.url)
+		let feedUrl = normalizeUrl(feed.url);
 		if (!isURL(feedUrl)) {
-			continue
+			continue;
 		}
 
 		let podcast;
@@ -120,11 +121,10 @@ exports.post = async (req, res) => {
 		}
 
 		podcasts.push(podcast);
-
 	}
 
-	let promises = []
-	insertedPodcasts.map( p => {
+	let promises = [];
+	insertedPodcasts.map(p => {
 		let scrapingPromise = PodcastQueueAdd(
 			{
 				podcast: p._id,
@@ -134,31 +134,37 @@ exports.post = async (req, res) => {
 				priority: 1,
 				removeOnComplete: true,
 				removeOnFail: true,
-			}
+			},
 		);
 
 		promises.push(scrapingPromise);
 
 		if (!p.images.og && p.link) {
-			promises.push( OgQueueAdd(
-				{
-					url: p.url,
-					type: 'podcast',
-				},
-				{
-					removeOnComplete: true,
-					removeOnFail: true,
-				},
-			))
+			promises.push(
+				OgQueueAdd(
+					{
+						url: p.url,
+						type: 'podcast',
+					},
+					{
+						removeOnComplete: true,
+						removeOnFail: true,
+					},
+				),
+			);
 		}
 
 		// schedule search index
-		promises.push(search(p.searchDocument()))
+		promises.push(search(p.searchDocument()));
 	});
 
 	await Promise.all(promises);
 
-	res.status(200).json(podcasts.map(p => {return p.serialize()}));
+	res.status(200).json(
+		podcasts.map(p => {
+			return p.serialize();
+		}),
+	);
 };
 
 exports.put = async (req, res) => {
@@ -173,7 +179,7 @@ exports.put = async (req, res) => {
 	let podcast = await Podcast.findByIdAndUpdate(
 		{ _id: req.params.podcastId },
 		req.body,
-		{new: true},
+		{ new: true },
 	);
 
 	if (!podcast) {

@@ -82,7 +82,6 @@ const _default = {
 	newrelic: false,
 };
 
-
 const config = require(`./${configs[currentEnvironment].config}`);
 
 module.exports = Object.assign({ env: currentEnvironment }, _default, config);

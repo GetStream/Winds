@@ -3,11 +3,10 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
-import {ParseArticle} from '../parsers/article';
+import { ParseArticle } from '../parsers/article';
 import { createHash } from 'crypto';
 
-import {EnclosureSchema} from './enclosure';
-
+import { EnclosureSchema } from './enclosure';
 
 export const ArticleSchema = new Schema(
 	{
@@ -36,7 +35,7 @@ export const ArticleSchema = new Schema(
 			type: String,
 			trim: true,
 			required: true,
-			index: {type:'hashed'},
+			index: { type: 'hashed' },
 		},
 		// fingerprint stores the best uniqueness field we have for the given article
 		fingerprint: {
@@ -108,7 +107,7 @@ export const ArticleSchema = new Schema(
 			type: Boolean,
 			default: true,
 			valid: true,
-		}
+		},
 	},
 	{
 		collection: 'articles',
@@ -145,14 +144,13 @@ ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
 
-
 ArticleSchema.methods.getParsedArticle = async function() {
 	let cached = await Cache.findOne({ url: this.url });
 	if (cached) {
 		return cached;
 	}
 
- 	let response = await ParseArticle(this.url);
+	let response = await ParseArticle(this.url);
 	let parsed = response.data;
 	let content = parsed.content;
 
@@ -174,5 +172,5 @@ ArticleSchema.methods.getParsedArticle = async function() {
 	return cached;
 };
 
-module.exports = exports =  mongoose.model('Article', ArticleSchema);
+module.exports = exports = mongoose.model('Article', ArticleSchema);
 module.exports.ArticleSchema = ArticleSchema;

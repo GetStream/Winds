@@ -5,8 +5,6 @@ import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
 import { createHash } from 'crypto';
 
-
-
 export const EnclosureSchema = new Schema({
 	url: {
 		type: String,

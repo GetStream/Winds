@@ -14,11 +14,14 @@ exports.list = async (req, res) => {
 
 	if (query.type === 'recommended') {
 		let recommendedUserIds = await personalization({
-			endpoint: '/winds_user_recommendations', userId: req.user.sub,
+			endpoint: '/winds_user_recommendations',
+			userId: req.user.sub,
 		});
-		users = await User.find({_id: {$in: recommendedUserIds}});
+		users = await User.find({ _id: { $in: recommendedUserIds } });
 	} else {
-		users = await User.apiQuery(req.query).select('name email username bio url twitter background admin');
+		users = await User.apiQuery(req.query).select(
+			'name email username bio url twitter background admin',
+		);
 	}
 	res.json(users);
 };
@@ -37,7 +40,7 @@ exports.get = async (req, res) => {
 		return res.sendStatus(404);
 	}
 
-	let user = await User.findById(req.params.userId)
+	let user = await User.findById(req.params.userId);
 	if (!user) {
 		return res.status(404).send('User not found');
 	}
@@ -80,7 +83,7 @@ exports.put = async (req, res) => {
 
 	if (data.username) {
 		// check for existing username
-		let userByUsername = await User.findOne({username: data.username});
+		let userByUsername = await User.findOne({ username: data.username });
 		if (userByUsername && userByUsername.id != user.id) {
 			res.status(409).send('User with this username already exists');
 			return;
@@ -88,7 +91,7 @@ exports.put = async (req, res) => {
 	}
 	if (data.email) {
 		// check for existing email
-		let userByEmail = await User.findOne({email: data.email});
+		let userByEmail = await User.findOne({ email: data.email });
 		if (userByEmail && userByEmail.email != user.email) {
 			res.status(409).send('User with this email already exists');
 			return;
@@ -109,11 +112,7 @@ exports.put = async (req, res) => {
 	}*/
 
 	// update the user
-	user = await User.findByIdAndUpdate(
-		{ _id: req.params.userId },
-		data,
-		{new: true}
-	);
+	user = await User.findByIdAndUpdate({ _id: req.params.userId }, data, { new: true });
 
 	// send back the user
 	user.password = undefined;

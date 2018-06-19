@@ -16,7 +16,7 @@ const errorHandler = error => {
 	console.log(error);
 };
 
-let isError = function(e){
+let isError = function(e) {
 	return e && e.stack && e.message;
 };
 
@@ -48,11 +48,15 @@ const prepareMeta = info => {
 		extra.stackError = info.message.err.stack;
 	}
 
-	return [hasError, msg, {
-		level: winstonLevelToSentryLevel[info.level],
-		tags: info.tags || {},
-		extra,
-	}];
+	return [
+		hasError,
+		msg,
+		{
+			level: winstonLevelToSentryLevel[info.level],
+			tags: info.tags || {},
+			extra,
+		},
+	];
 };
 
 class SentryWinstonTransport extends Transport {
@@ -73,16 +77,16 @@ class SentryWinstonTransport extends Transport {
 	}
 
 	/**
-     * @param {{}} info
-     * @param {string} info.level
-     * @param {Error|string} info.message
-     * @param {Function} done
-     */
+	 * @param {{}} info
+	 * @param {string} info.level
+	 * @param {Error|string} info.message
+	 * @param {Function} done
+	 */
 	async log(info, done) {
 		if (this.silent) return done(null, true);
 		let [hasError, msg, meta] = prepareMeta(info);
 
-		let method = hasError ? 'captureException': 'captureMessage';
+		let method = hasError ? 'captureException' : 'captureMessage';
 		try {
 			let eventId = await this.raven[method](msg, meta);
 			done(null, eventId);

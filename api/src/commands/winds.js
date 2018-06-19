@@ -2,7 +2,6 @@
 import program from 'commander';
 import logger from '../utils/logger';
 
-
 import { version } from '../../../app/package.json';
 
 program

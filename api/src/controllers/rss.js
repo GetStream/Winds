@@ -1,16 +1,15 @@
-
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
-import {isURL} from '../utils/validation';
+import { isURL } from '../utils/validation';
 
 import RSS from '../models/rss';
 
 import personalization from '../utils/personalization';
-import {discoverRSS} from '../parsers/discovery';
+import { discoverRSS } from '../parsers/discovery';
 
 import moment from 'moment';
 import search from '../utils/search';
-import {RssQueueAdd, OgQueueAdd} from '../asyncTasks';
+import { RssQueueAdd, OgQueueAdd } from '../asyncTasks';
 import mongoose from 'mongoose';
 
 exports.list = async (req, res) => {
@@ -72,7 +71,7 @@ exports.post = async (req, res) => {
 	for (let feed of foundRSS.feedUrls.slice(0, 10)) {
 		let feedTitle = feed.title;
 		if (!feedTitle) {
-			continue
+			continue;
 		}
 		if (feedTitle.toLowerCase() === 'rss') {
 			feedTitle = foundRSS.site.title;
@@ -146,7 +145,11 @@ exports.post = async (req, res) => {
 	await Promise.all(promises);
 
 	res.status(201);
-	res.json(feeds.map(f => {return f.serialize()}));
+	res.json(
+		feeds.map(f => {
+			return f.serialize();
+		}),
+	);
 };
 
 exports.put = async (req, res) => {

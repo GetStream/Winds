@@ -22,25 +22,25 @@ const analytics = new Analytics({
 });
 
 async function trackingWrapper(fn) {
-	return async (args) => {
-		try{
+	return async args => {
+		try {
 			return await fn(...args);
-		} catch(err) {
-			logger.warn({err});
+		} catch (err) {
+			logger.warn({ err });
 		}
 	};
 }
 
 async function TrackMetadata(key, data) {
-	if(config.analyticsDisabled){
+	if (config.analyticsDisabled) {
 		return;
 	}
 	try {
-		let payload = {data: {[key]: data}};
+		let payload = { data: { [key]: data } };
 		await axios({
 			data: payload,
 			headers: {
-				'Authorization': token,
+				Authorization: token,
 				'stream-auth-type': 'jwt',
 			},
 			method: 'POST',
@@ -50,7 +50,7 @@ async function TrackMetadata(key, data) {
 			url: `${config.stream.baseUrl}/winds_meta/`,
 		});
 	} catch (err) {
-		logger.warn({err});
+		logger.warn({ err });
 	}
 }
 
@@ -63,8 +63,12 @@ async function AnalyticsMiddleware(req, res, next) {
 			});
 		}
 		req.analytics = {
-			trackImpression: config.analyticsDisabled ? noop : trackingWrapper(analytics.trackImpression.bind(analytics)),
-			trackEngagement: config.analyticsDisabled ? noop : trackingWrapper(analytics.trackEngagement.bind(analytics)),
+			trackImpression: config.analyticsDisabled
+				? noop
+				: trackingWrapper(analytics.trackImpression.bind(analytics)),
+			trackEngagement: config.analyticsDisabled
+				? noop
+				: trackingWrapper(analytics.trackEngagement.bind(analytics)),
 		};
 		next();
 	} catch (err) {
@@ -72,4 +76,4 @@ async function AnalyticsMiddleware(req, res, next) {
 	}
 }
 
-export {AnalyticsMiddleware, TrackMetadata};
+export { AnalyticsMiddleware, TrackMetadata };

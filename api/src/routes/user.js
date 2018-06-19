@@ -11,6 +11,6 @@ module.exports = api => {
 	api.route('/users/:userId').delete(wrapAsync(User.delete));
 
 	api.route('/users/:userId/feeds').get(wrapAsync(Feed.get));
-//	api.route('/users/:userId/following').get(Following.get);
+	//	api.route('/users/:userId/following').get(Following.get);
 	//api.route('/users/:userId/followers').get(Follower.get);
 };

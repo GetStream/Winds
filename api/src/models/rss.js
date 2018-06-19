@@ -2,8 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import { ArticleSchema } from './article';
-import {getStreamClient} from '../utils/stream'
-
+import { getStreamClient } from '../utils/stream';
 
 export const RSSSchema = new Schema(
 	{
@@ -146,11 +145,17 @@ RSSSchema.plugin(timestamps, {
 });
 
 RSSSchema.statics.incrScrapeFailures = async function(id) {
-	await this.findOneAndUpdate({_id :id}, {$inc : {consecutiveScrapeFailures : 1}}).exec();
+	await this.findOneAndUpdate(
+		{ _id: id },
+		{ $inc: { consecutiveScrapeFailures: 1 } },
+	).exec();
 };
 
 RSSSchema.statics.resetScrapeFailures = async function(id) {
-	await this.findOneAndUpdate({_id :id}, {$set : {consecutiveScrapeFailures : 0}}).exec();
+	await this.findOneAndUpdate(
+		{ _id: id },
+		{ $set: { consecutiveScrapeFailures: 0 } },
+	).exec();
 };
 
 RSSSchema.methods.searchDocument = function() {
@@ -167,9 +172,11 @@ RSSSchema.methods.searchDocument = function() {
 	};
 };
 
-RSSSchema.methods.serialize = function serialize () {
+RSSSchema.methods.serialize = function serialize() {
 	const serialized = this.toObject();
-	serialized.streamToken = getStreamClient().feed('rss', this._id).getReadOnlyToken()
+	serialized.streamToken = getStreamClient()
+		.feed('rss', this._id)
+		.getReadOnlyToken();
 	return serialized;
 };
 

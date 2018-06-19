@@ -1,5 +1,5 @@
 import Auth from '../controllers/auth';
-import {wrapAsync} from "../utils/controllers";
+import { wrapAsync } from '../utils/controllers';
 
 module.exports = api => {
 	api.route('/auth/signup').post(wrapAsync(Auth.signup));

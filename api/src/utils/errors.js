@@ -8,11 +8,14 @@ require.resolve('raven');
 const executable = path.basename(process.argv[1]);
 var ravenInstance;
 
-function sendSourceMaps(data){
+function sendSourceMaps(data) {
 	var stacktrace = data.exception && data.exception[0].stacktrace;
 	if (stacktrace && stacktrace.frames) {
 		stacktrace.frames.forEach(function(frame) {
-			if (frame.filename.indexOf('/api/dist/') !== -1 && frame.filename.indexOf('/node_modules/') === -1) {
+			if (
+				frame.filename.indexOf('/api/dist/') !== -1 &&
+				frame.filename.indexOf('/node_modules/') === -1
+			) {
 				frame.filename = `app:///${frame.filename.split('api/dist/')[1]}`;
 			}
 		});
@@ -40,17 +43,17 @@ function captureError(err, msg) {
 	Raven.captureException(err);
 }
 
-exports.setupExpressRequestHandler = (app) => {
+exports.setupExpressRequestHandler = app => {
 	if (config.sentry.dsn) {
 		app.use(ravenInstance.requestHandler());
 	}
 };
 
-exports.setupExpressErrorHandler = (app) => {
+exports.setupExpressErrorHandler = app => {
 	if (config.sentry.dsn) {
 		app.use(ravenInstance.errorHandler());
 	}
-	app.use(function (err, req, res, next) {
+	app.use(function(err, req, res, next) {
 		var status =
 			err.status ||
 			err.statusCode ||
@@ -59,7 +62,7 @@ exports.setupExpressErrorHandler = (app) => {
 			500;
 		// skip anything not marked as an internal server error
 		if (status < 500) return next(err);
-		logger.error({err});
+		logger.error({ err });
 		return next(err);
 	});
 };

@@ -6,8 +6,8 @@ import chalk from 'chalk';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
-import {RssQueueAdd, PodcastQueueAdd} from '../asyncTasks';
-import normalize from 'normalize-url'
+import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
+import normalize from 'normalize-url';
 
 // do stuff
 export async function debugFeed(feedType, feedUrls) {
@@ -23,7 +23,6 @@ export async function debugFeed(feedType, feedUrls) {
 		logger.info(`Looking up the first ${program.limit} articles from ${target}`);
 
 		async function validate(response) {
-
 			// validate the podcast or RSS feed
 			logger.info('========== Validating Publication ==========');
 			logger.info(`Title: ${response.title}`);
@@ -64,11 +63,10 @@ export async function debugFeed(feedType, feedUrls) {
 						logger.info(chalk.red('Image missing :('));
 					}
 					if (article.enclosures && article.enclosures.length) {
-						logger.info(`found ${article.enclosures.length} enclosures`)
+						logger.info(`found ${article.enclosures.length} enclosures`);
 						for (let enclosure of article.enclosures) {
-							logger.info(JSON.stringify(enclosure))
+							logger.info(JSON.stringify(enclosure));
 						}
-
 					}
 					if (feedType === 'podcast') {
 						if (article.enclosure) {
@@ -80,14 +78,14 @@ export async function debugFeed(feedType, feedUrls) {
 					}
 				}
 			} else {
-				logger.info(chalk.red('Didn\'t find any articles or episodes.'));
+				logger.info(chalk.red("Didn't find any articles or episodes."));
 			}
 
 			let schema = feedType === 'rss' ? RSS : Podcast;
-			let lookup = { $or: [{feedUrl: target}, {feedUrl: normalize(target)}] };
+			let lookup = { $or: [{ feedUrl: target }, { feedUrl: normalize(target) }] };
 			if (program.task) {
 				logger.info('trying to create a task on the bull queue');
-				let instance = await schema.findOne(lookup)
+				let instance = await schema.findOne(lookup);
 
 				schema
 					.findOne(lookup)
@@ -151,10 +149,10 @@ export async function debugFeed(feedType, feedUrls) {
 
 		if (feedType === 'rss') {
 			let feedContent = await ParseFeed(target, 2);
-			validate(feedContent)
+			validate(feedContent);
 		} else {
 			let podcastContent = await ParsePodcast(target, 2);
-			validate(podcastContent)
+			validate(podcastContent);
 		}
 		logger.info('Note that upgrading feedparser can sometimes improve parsing.');
 	}

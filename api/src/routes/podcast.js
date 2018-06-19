@@ -1,5 +1,5 @@
 import Podcast from '../controllers/podcast';
-import {wrapAsync} from '../utils/controllers';
+import { wrapAsync } from '../utils/controllers';
 
 module.exports = api => {
 	api.route('/podcasts').get(wrapAsync(Podcast.list));

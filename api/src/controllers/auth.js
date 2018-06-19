@@ -11,7 +11,10 @@ import config from '../config';
 
 import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
 
-const client = stream.connect(config.stream.apiKey, config.stream.apiSecret);
+const client = stream.connect(
+	config.stream.apiKey,
+	config.stream.apiSecret,
+);
 
 async function followInterest(userId, interest) {
 	const interestRssFeeds = await RSS.find(interest);
@@ -61,7 +64,7 @@ exports.signup = async (req, res, _) => {
 	}
 
 	const user = await User.create(data);
-	await SendWelcomeEmail({email: user.email});
+	await SendWelcomeEmail({ email: user.email });
 
 	await client.feed('timeline', user._id).follow('user', user._id);
 	await followInterest(user._id, { featured: true });

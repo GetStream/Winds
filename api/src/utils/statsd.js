@@ -16,10 +16,10 @@ function getStatsDClient() {
 	return statsDClient;
 }
 
-async function timeIt(name, fn){
+async function timeIt(name, fn) {
 	let t0 = new Date();
 	let r = await fn();
-	getStatsDClient().timing(name, (new Date() - t0));
+	getStatsDClient().timing(name, new Date() - t0);
 	return r;
 }
 

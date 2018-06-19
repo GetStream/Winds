@@ -39,7 +39,10 @@ exports.status = async (req, res) => {
 	output.mostRecentArticle = moment(latestArticle.createdAt).fromNow();
 	output.mostRecentEpisode = moment(latestEpisode.createdAt).fromNow();
 
-	if (now - latestArticle.createdAt > tooOld || now - latestEpisode.createdAt > tooOld) {
+	if (
+		now - latestArticle.createdAt > tooOld ||
+		now - latestEpisode.createdAt > tooOld
+	) {
 		output.code = 500;
 		output.error =
 			now - latestArticle.createdAt > tooOld
@@ -65,8 +68,6 @@ exports.status = async (req, res) => {
 		}`;
 	}
 
-
-
 	// send the response
 	res.status(output.code).send(output);
 };
@@ -89,7 +90,7 @@ exports.queue = async (req, res) => {
 
 	// send the response
 	res.status(output.code).send(output);
-}
+};
 
 exports.sentryThrow = async (req, res) => {
 	Throw();
@@ -99,12 +100,16 @@ exports.sentryLog = async (req, res) => {
 	try {
 		Throw();
 	} catch (err) {
-		logger.error('this is a test error', {err, tags:{'env': 'testing'}, extra:{'additional': 'data', 'is': 'awesome'}});
+		logger.error('this is a test error', {
+			err,
+			tags: { env: 'testing' },
+			extra: { additional: 'data', is: 'awesome' },
+		});
 	}
 	try {
 		Throw();
 	} catch (err) {
-		logger.error({err});
+		logger.error({ err });
 	}
 	logger.error('0');
 	logger.error('1');
