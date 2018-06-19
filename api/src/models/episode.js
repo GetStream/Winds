@@ -49,7 +49,7 @@ export const EpisodeSchema = new Schema(
 		link: {
 			type: String,
 			trim: true,
-			index: true,
+			index: {type:'hashed'},
 		},
 		enclosure: {
 			type: String,
