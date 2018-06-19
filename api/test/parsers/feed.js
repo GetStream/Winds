@@ -188,7 +188,7 @@ const rssTestData = [
 			articlesLength: 10,
 			firstArticleUrl: 'https://medium.com/strava-engineering/apple-dev-guild-week-f5981fe525a4?source=rss----89d4108ce2a3---4',
 			firstArticleTitle: 'Apple Dev Guild Week',
-			firstArticlePublicationDate: new Date(Date.UTC(2018, 6, 4, 23, 55, 0)),
+			firstArticlePublicationDate: new Date(Date.UTC(2018, 5, 4, 23, 55, 0)),
 		},
 	},
 ];
@@ -291,11 +291,9 @@ const podcastTestData = [
 			firstPodcastPublicationDate: new Date(Date.UTC(2018, 3, 10, 5, 1, 0)),  // Tue, 10 Apr 2018 05:01:00 GMT
 		},
 	},
-
 ];
 
 describe('Parsing', () => {
-
 	describe('RSS', () => {
 		for (let test of rssTestData) {
 			it(`should parse feed ${test.filename}`, async () => {
@@ -316,7 +314,7 @@ describe('Parsing', () => {
 					expect(feedResponse.articles[0].title).to.equal(test.expectations.firstArticleTitle);
 					expect(feedResponse.articles[0].url).to.equal(test.expectations.firstArticleUrl);
 					if (test.expectations.firstArticlePublicationDate) {
-						expect(feedResponse.articles[0].publicationDate).to.equal(test.expectations.firstArticlePublicationDate);
+						expect(String(feedResponse.articles[0].publicationDate)).to.equal(String(test.expectations.firstArticlePublicationDate));
 					}
 				}
 			});
@@ -337,10 +335,9 @@ describe('Parsing', () => {
 				expect(podcastResponse.link).to.equal(test.expectations.link);
 				expect(podcastResponse.image).to.equal(test.expectations.image);
 
-if (test.expectations.fingerprint) {
-				expect(podcastResponse.fingerprint).to.equal(test.expectations.fingerprint);
-			}
-
+				if (test.expectations.fingerprint) {
+					expect(podcastResponse.fingerprint).to.equal(test.expectations.fingerprint);
+				}
 
 				expect(podcastResponse.episodes.length).to.equal(test.expectations.episodesLength);
 				if (test.expectations.episodesLength > 0) {

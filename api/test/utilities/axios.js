@@ -2,7 +2,7 @@ import http from 'http';
 import axios from  'axios';
 import { expect } from 'chai';
 
-import { setupAxiosRedirectInterceptor } from '../../src/utils/axios';
+import { setupAxiosRedirectInterceptor, cleanupAxiosRedirectInterceptor } from '../../src/utils/axios';
 
 describe('axios', () => {
 	let redirectCount;
@@ -73,8 +73,14 @@ describe('axios', () => {
 	});
 
 	describe('interceptors', () => {
+		let interceptor;
+
 		before(() => {
-			setupAxiosRedirectInterceptor(axios);
+			interceptor = setupAxiosRedirectInterceptor(axios);
+		});
+
+		after(() => {
+			cleanupAxiosRedirectInterceptor(axios, interceptor);
 		});
 
 		it('should follow redirects', async () => {

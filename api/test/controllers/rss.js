@@ -72,8 +72,6 @@ describe('RSS controller', () => {
 		});
 	});
 
-
-
 	describe('add RSS feed - HN', () => {
 		let rss;
 

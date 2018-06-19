@@ -152,7 +152,6 @@ export async function handleRSS(job) {
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
 }
 
-
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(rssID) {
 	const now = moment().toISOString();

@@ -108,7 +108,7 @@ describe('Podcast worker', () => {
 			expect(podcast.postCount).to.be.equal(initialEpisodes.length + 649);
 		});
 
-		it.skip('should add episode data to Stream feed', async () => {
+		it('should add episode data to Stream feed', async () => {
 			const feed = getMockFeed('podcast', data.podcast);
 			expect(feed).to.not.be.null;
 			expect(feed.addActivities.called).to.be.true;

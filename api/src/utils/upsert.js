@@ -23,57 +23,41 @@ const immutableFields = ['publicationDate', 'createdAt', 'updatedAt', 'id', '_id
 const statsd = getStatsDClient();
 
 // upsertManyPosts at once at super speed
-export async function upsertManyPosts(publicationID, newPosts, publicationType) {
-	let schema = publicationType == 'rss' ? Article : Episode;
-	let schemaField = publicationType;
-
+export async function upsertManyPosts(publicationID, newPosts, schemaField) {
 	// step 1: get the existing objects in mongodb
-	let fingerprints = newPosts.map(p => p.fingerprint);
-	let lookup = { fingerprint: { $in: fingerprints } };
-	lookup[schemaField] = publicationID;
-	let existingPosts = await schema.find(lookup).lean();
-	let existingPostsMap = {};
-	for (let p of existingPosts) {
-		existingPostsMap[p.fingerprint] = p;
+	const fingerprints = newPosts.map(p => p.fingerprint);
+	const lookup = { [schemaField]: publicationID, fingerprint: { $in: fingerprints } };
+	const schema = schemaField == 'rss' ? Article : Episode;
+	const existingPosts = await schema.find(lookup).lean();
+	const existingPostsMap = {};
+	for (const post of existingPosts) {
+		existingPostsMap[post.fingerprint] = post;
 	}
 
 	// step 2: make a list of posts we should update
-	let operationMap = { new: [], changed: [], unchanged: [] };
-	let operations = [];
-	for (let p of newPosts) {
-		if (!p[schemaField]) {
+	const operationMap = { new: [], changed: [], unchanged: [] };
+	const operations = [];
+	for (const post of newPosts) {
+		if (!post[schemaField]) {
 			throw new Error(`You forgot to specify the ${schemaField} field`);
 		}
-		let postData = p.toObject ? p.toObject() : p;
-		if (p.fingerprint in existingPostsMap) {
-			let existing = existingPostsMap[p.fingerprint];
-			if (postChanged(existing, p)) {
-				// make sure we don't use the generated mongodb id that hasn't been saved yet
-				// we want the new data, with the old id
-				p._id = existing._id;
-				operationMap.changed.push(p);
-				// filter on both rss and fingerprint so we can use the index
-				const filter = { fingerprint: existing.fingerprint };
-				filter[schemaField] = publicationID;
-        delete postData['_id'];
-				operations.push({
-					updateOne: {
-						filter: filter,
-						update: postData,
-					},
-				});
-			} else {
-				operationMap.unchanged.push(p);
-			}
-		} else {
-			// insert scenario
-			operationMap.new.push(p);
 
-			operations.push({
-				insertOne: {
-					document: postData,
-				},
-			});
+		const data = post.toObject ? post.toObject() : post;
+		if (post.fingerprint in existingPostsMap) {
+			const existing = existingPostsMap[post.fingerprint];
+			if (!postChanged(existing, post)) {
+				operationMap.unchanged.push(data);
+				continue;
+			}
+
+			// filter on both rss and fingerprint so we can use the index
+			const filter = { [schemaField]: publicationID, fingerprint: existing.fingerprint };
+			const { _id, id, ...dataWithoutId } = data;
+			operations.push({ updateOne: { filter: filter, update: dataWithoutId } });
+			operationMap.changed.push({ _id: existing._id, ...dataWithoutId });
+		} else {
+			operations.push({ insertOne: { document: data } });
+			operationMap.new.push(data);
 		}
 	}
 
@@ -82,10 +66,10 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
 	// http://mongoosejs.com/docs/api.html#bulkwrite_bulkWrite
 	if (operations.length) {
 		try {
-			let response = await schema.bulkWrite(operations, { ordered: false });
+			await schema.bulkWrite(operations, { ordered: false });
 		} catch (e) {
-      // since we use an unordered query it doesnt matter if we hit a few unique constraints
-			if (!e || (e.code != duplicateKeyError)) {
+			// since we use an unordered query it doesnt matter if we hit a few unique constraints
+			if (e.code != duplicateKeyError) {
 				throw e;
 			}
 		}
@@ -97,19 +81,11 @@ export async function upsertManyPosts(publicationID, newPosts, publicationType) 
 		statsd.increment(`winds.handle_rss.${schemaField}.${k}`, v.length);
 	}
 
-  // sanity check
-  let updated = operationMap.new.concat(operationMap.changed)
-  for (let u of updated) {
-    if (!u._id) {
-      throw Error(`missing id for object ${u.fingerprint} and feed ${publicationID}`)
-    }
-  }
-
 	return operationMap;
 }
 
 export function normalizePost(post) {
-	let postObject = post.toObject ? post.toObject() : post;
+	const postObject = post.toObject ? post.toObject() : post;
 	// these ids are not present in the RSS feed, so that causes issues
 	for (let e of postObject.enclosures) {
 		delete e['_id'];
@@ -118,7 +94,7 @@ export function normalizePost(post) {
 }
 
 // compare 2 posts and see if they changed
-export function postChanged(existingPost, newPost) {
+export function normalizedDiff(existingPost, newPost) {
 	let existingObject = normalizePost(existingPost);
 	let newObject = normalizePost(newPost);
 	// handle the fact that images are updated via OG scraping, so we only care if more became available
@@ -128,7 +104,9 @@ export function postChanged(existingPost, newPost) {
 	for (let f of immutableFields) {
 		delete objectDiff[f];
 	}
-	let changes = Object.keys(objectDiff).length;
+	return Object.keys(objectDiff);
+}
 
-	return changes;
+export function postChanged(existingPost, newPost) {
+    return normalizedDiff(existingPost, newPost).length != 0;
 }
