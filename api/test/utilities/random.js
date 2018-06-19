@@ -4,7 +4,7 @@ import weightedRandom from '../../src/utils/random';
 describe('Weighted random', () => {
     it('should distribute results logarithmically', () => {
         const results = {};
-        for (let i = 0; i < 10000000; ++i) {
+        for (let i = 0; i < 5000000; ++i) {
             const value = weightedRandom(10);
             const previousCount = results[value] || 0;
             results[value] = previousCount + 1;
