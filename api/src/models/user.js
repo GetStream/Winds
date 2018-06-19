@@ -102,7 +102,7 @@ export const UserSchema = new Schema(
 			transform: function(doc, ret) {
 				delete ret.password;
 				if (ret.email) {
-					ret.gravatar = gravatar.url(ret.email, {s: '28'})
+					ret.gravatar = gravatar.url(ret.email, {s: '200', d: 'identicon'});
 				}
 			},
 		},
@@ -110,7 +110,7 @@ export const UserSchema = new Schema(
 			transform: function(doc, ret) {
 				delete ret.password;
 				if (ret.email) {
-					ret.gravatar = gravatar.url(ret.email, {s: '28'})
+					ret.gravatar = gravatar.url(ret.email, {s: '200', d: 'identicon'});
 				}
 			},
 		},
