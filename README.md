@@ -87,7 +87,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 9.  Preparing an Electron app for deployment to the macOS store
 10. Deploying to the macOS store
 11. Electron gotchas
-12. [https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript] (The Winds Stack)
+12. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
 
 ## Download
 
