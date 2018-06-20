@@ -34,6 +34,7 @@ export const PinSchema = new Schema(
 					'description',
 					'images',
 					'publicationDate',
+					'enclosures',
 				],
 			},
 		},
