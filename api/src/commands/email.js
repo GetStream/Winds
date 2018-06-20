@@ -55,15 +55,11 @@ async function getRecommendations(userID, type) {
 }
 
 async function sendEmail(user, globalContext) {
-	let articleIDs = await getRecommendations(user._id, 'article');
-	let episodeIDs = await getRecommendations(user._id, 'episode');
-	let articles = await Article.find({ _id: { $in: articleIDs } }).lean();
-	let episodes = await Episode.find({ _id: { $in: episodeIDs } }).lean();
-
-	let podcastIDs = await getRecommendations(user._id, 'podcast');
-	let podcasts = await Podcast.find({ _id: { $in: podcastIDs } }).lean();
-	let rssIDs = await getRecommendations(user._id, 'rss');
-	let rss = await RSS.find({ _id: { $in: rssIDs } }).lean();
+	const userID = user._id;
+	let articles = getArticleRecommendations(userID);
+	let episodes = getEpisodeRecommendations(userID);
+	let podcasts = getPodcastRecommendations(userID);
+	let rss = getRSSRecommendations(userID);
 
 	let userContext = {
 		email: user.email,

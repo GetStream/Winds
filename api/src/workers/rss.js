@@ -11,17 +11,14 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 
-import sendRssFeedToCollections from '../utils/events/sendRssFeedToCollections';
+import { sendRssFeedToCollections } from '../utils/collections';
 import { ParseFeed } from '../parsers/feed';
 
 import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { upsertManyPosts } from '../utils/upsert';
+import { getStreamClient } from '../utils/stream';
 
-const streamClient = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
 const duplicateKeyError = 11000;
 
 // connect the handler to the queue
@@ -135,7 +132,7 @@ export async function handleRSS(job) {
 	});
 
 	let t0 = new Date();
-	let rssFeed = streamClient.feed('rss', rssID);
+	let rssFeed = getStreamClient().feed('rss', rssID);
 	logger.info(`Syncing ${updatedArticles.length} articles to Stream`);
 	if (updatedArticles.length > 0) {
 		let chunkSize = 100;

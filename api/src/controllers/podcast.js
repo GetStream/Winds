@@ -2,7 +2,7 @@ import normalizeUrl from 'normalize-url';
 import { isURL } from '../utils/validation';
 import { discoverRSS } from '../parsers/discovery';
 import Podcast from '../models/podcast';
-import personalization from '../utils/personalization';
+import { getPodcastRecommendations } from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
@@ -11,14 +11,10 @@ import mongoose from 'mongoose';
 
 exports.list = async (req, res) => {
 	let query = req.query || {};
-	let podcasts = [];
+	let podcasts;
 
 	if (query.type === 'recommended') {
-		let podcastIDs = await personalization({
-			endpoint: '/winds_podcast_recommendations',
-			userId: req.user.sub,
-		});
-		podcasts = await Podcast.find({ _id: { $in: podcastIDs } }).exec();
+		podcasts = await getPodcastRecommendations(req.User);
 	} else {
 		podcasts = await Podcast.apiQuery(req.query);
 	}

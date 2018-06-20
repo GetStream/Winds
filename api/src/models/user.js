@@ -12,11 +12,7 @@ import stream from 'getstream';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import gravatar from 'gravatar';
-
-const streamClient = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
+import { getStreamClient } from '../utils/stream';
 
 export const UserSchema = new Schema(
 	{
@@ -144,7 +140,9 @@ UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedU
 
 	let streamTokens = {};
 	for (const k of ['timeline', 'user_article', 'user_episode']) {
-		let token = streamClient.feed(k, user._id).getReadOnlyToken();
+		let token = getStreamClient()
+			.feed(k, user._id)
+			.getReadOnlyToken();
 		streamTokens[k] = token;
 	}
 

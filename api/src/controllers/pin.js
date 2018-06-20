@@ -1,11 +1,7 @@
-import stream from 'getstream';
 import Pin from '../models/pin';
 import config from '../config';
-
-const client = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
+import { trackEngagement } from '../utils/analytics';
+import { getStreamClient } from '../utils/stream';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
@@ -59,12 +55,23 @@ exports.post = async (req, res) => {
 	} else {
 		pin = await Pin.create(data);
 
-		await client.feed('user', pin.user).addActivity({
-			actor: pin.user,
-			verb: 'pin',
-			object: pin._id,
-			foreign_id: `pins:${pin._id}`,
-			time: pin.createdAt,
+		await getStreamClient()
+			.feed('user', pin.user)
+			.addActivity({
+				actor: pin.user,
+				verb: 'pin',
+				object: pin._id,
+				foreign_id: `pins:${pin._id}`,
+				time: pin.createdAt,
+			});
+
+		const label = pin.article ? 'pin_article' : 'pin_episode';
+		const foreignID = pin.article
+			? `article:${pin.article}`
+			: `episode:${pin.episode}`;
+		await trackEngagement(req.User, {
+			label: label,
+			content: { foreign_id: foreignID },
 		});
 
 		pin = await Pin.findOne({ _id: pin._id });

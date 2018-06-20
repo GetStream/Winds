@@ -13,10 +13,6 @@ import logger from '../utils/logger';
 
 import { getStatsDClient, timeIt } from '../utils/statsd';
 
-const streamClient = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
 const duplicateKeyError = 11000;
 const immutableFields = ['publicationDate', 'createdAt', 'updatedAt', 'id', '_id'];
 

@@ -18,13 +18,6 @@ import { IsPodcastURL } from '../parsers/detect-type';
 import search from '../utils/search';
 import { isURL } from '../utils/validation';
 
-import { TrackMetadata } from '../utils/events/analytics';
-
-const streamClient = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
-
 exports.get = async (req, res) => {
 	let userID = req.user.sub;
 	let follows = await Follow.find({ user: userID });
@@ -179,11 +172,6 @@ async function followOPMLFeed(feed, userID) {
 	// always create the follow
 	let publicationID = instance._id;
 	let follow = await Follow.getOrCreate(publicationType, userID, publicationID);
-
-	await TrackMetadata(`${publicationType}:${publicationID}`, {
-		description: instance.description,
-		title: instance.title,
-	});
 
 	result.follow = follow;
 

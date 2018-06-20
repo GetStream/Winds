@@ -9,10 +9,7 @@ import Like from '../models/like';
 import config from '../config';
 import logger from '../utils/logger';
 
-const client = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
+import { getStreamClient } from '../utils/stream';
 
 async function getUserFeed(req, res) {
 	const params = req.params || {};
@@ -49,7 +46,7 @@ async function getTimelineFeed(req, res) {
 	const articles = [];
 
 	try {
-		const activities = await client
+		const activities = await getStreamClient()
 			.feed('timeline', params.userId)
 			.get({ limit: 10 });
 
@@ -105,7 +102,7 @@ async function getContentFeed(req, res, type, model) {
 	const query = req.query || {};
 	const limit = query.per_page || 10;
 	const offset = query.page * limit || 0;
-	const response = await client
+	const response = await getStreamClient()
 		.feed(`user_${type}`, params.userId)
 		.get({ limit, offset });
 	let articleIDs = response.results.map(r => {

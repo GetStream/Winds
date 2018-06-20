@@ -7,11 +7,6 @@ import User from '../models/user';
 import config from '../config';
 import logger from '../utils/logger';
 
-const client = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
-
 exports.list = (req, res) => {
 	if (req.query.type === 'rss') {
 		Follow.find({ user: req.user.sub })
@@ -92,7 +87,7 @@ exports.post = (req, res) => {
 						});
 				},
 				(follow, cb) => {
-					client
+					getStreamClient()
 						.feed('timeline', data.user)
 						.follow('user', data.followee)
 						.then(follow => {
@@ -175,10 +170,12 @@ exports.delete = (req, res) => {
 		})
 			.then(() => {
 				return Promise.all([
-					client
+					getStreamClient()
 						.feed('user_episode', data.user)
 						.unfollow('podcast', query.podcast),
-					client.feed('timeline', data.user).unfollow('podcast', query.podcast),
+					getStreamClient()
+						.feed('timeline', data.user)
+						.unfollow('podcast', query.podcast),
 				]);
 			})
 			.then(() => {
@@ -195,8 +192,12 @@ exports.delete = (req, res) => {
 		})
 			.then(() => {
 				return Promise.all([
-					client.feed('user_article', data.user).unfollow('rss', query.rss),
-					client.feed('timeline', data.user).unfollow('rss', query.rss),
+					getStreamClient()
+						.feed('user_article', data.user)
+						.unfollow('rss', query.rss),
+					getStreamClient()
+						.feed('timeline', data.user)
+						.unfollow('rss', query.rss),
 				]);
 			})
 			.then(() => {
@@ -212,7 +213,7 @@ exports.delete = (req, res) => {
 			user: data.user,
 		})
 			.then(() => {
-				return client
+				return getStreamClient()
 					.feed('timeline', data.user)
 					.unfollow('user', query.followee);
 			})
