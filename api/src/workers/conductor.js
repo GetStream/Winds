@@ -16,7 +16,8 @@ const publicationTypes = {
 	podcast: { schema: Podcast, enqueue: PodcastQueueAdd },
 };
 const conductorInterval = 60;
-const durationInMinutes = 15;
+var scrapeInterval = 25;
+var popularScrapeInterval = 2;
 
 // conductor runs conduct every interval seconds
 const conductor = () => {
@@ -52,11 +53,36 @@ function rand(n = 6) {
 	return 2 ** (exp - b);
 }
 
+async function getPublications(schema, followerCount, scrapeInterval, limit) {
+	return await schema
+		.find({
+			isParsing: {
+				$ne: true,
+			},
+			followerCount: { $gte: followerCount },
+			valid: true,
+			lastScraped: {
+				$lte: moment()
+					.subtract(scrapeInterval, 'minutes')
+					.toDate(),
+			},
+			consecutiveScrapeFailures: {
+				$lt: rand(),
+			},
+		})
+		.limit(limit)
+		.sort('-followerCount');
+}
+
 // conduct does the actual work of scheduling the scraping
 async function conduct() {
 	for (const [publicationType, publicationConfig] of Object.entries(publicationTypes)) {
 		// lookup the total number of rss feeds or podcasts
 		let total = await publicationConfig.schema.count({});
+		if (total < 1000) {
+			// when running winds locally we can scrape more frequently
+			scrapeInterval = popularScrapeInterval;
+		}
 		// never schedule more than 1/15 per minute interval
 		let maxToSchedule = Math.ceil(total / 15 + 1);
 		logger.info(
@@ -64,24 +90,18 @@ async function conduct() {
 		);
 
 		// find the publications that we need to update
-		let publications = await publicationConfig.schema
-			.find({
-				isParsing: {
-					$ne: true,
-				},
-				followerCount: { $gte: 1 },
-				valid: true,
-				lastScraped: {
-					$lte: moment()
-						.subtract(durationInMinutes, 'minutes')
-						.toDate(),
-				},
-				consecutiveScrapeFailures: {
-					$lt: rand(),
-				},
-			})
-			.limit(maxToSchedule)
-			.sort('-followerCount');
+		const limit = maxToSchedule / 2;
+		const schema = publicationConfig.schema;
+		let popular = await getPublications(schema, 100, popularScrapeInterval, limit);
+		let other = await getPublications(schema, 1, scrapeInterval, limit);
+		logger.info(
+			`found ${
+				popular.length
+			} popular publications that we scrape every ${popularScrapeInterval} minutes and ${
+				other.length
+			} that we scrape every ${scrapeInterval} minutes`,
+		);
+		let publications = popular.concat(other);
 
 		// make sure we don't schedule these guys again till its finished
 		let publicationIDs = [];
