@@ -8,8 +8,8 @@ import { RssQueueAdd, PodcastQueueAdd } from '../../src/asyncTasks';
 import { loadFixture, dropDBs } from '../utils';
 
 describe('Conductor worker', () => {
-	const beforeDeadline = moment().subtract(16, 'minutes').toDate();
-	const afterDeadline = moment().subtract(14, 'minutes').toDate();
+	const beforeDeadline = moment().subtract(3, 'minutes').toDate();
+	const afterDeadline = moment().subtract(1, 'minutes').toDate();
 	let RssQueueAddFn;
 	let PodcastQueueAddFn;
 
@@ -30,7 +30,7 @@ describe('Conductor worker', () => {
 		PodcastQueueAdd.resetHistory();
 	});
 
-	it('should only touch data updated later then 15 minutes ago', async () => {
+	it('should only touch data updated later then one scrape interval ago', async () => {
 		const rssBefore = await RSS.create({
 			title: "RSS feed",
 			valid: true,
@@ -123,12 +123,21 @@ describe('Conductor worker', () => {
 	});
 
 	it('should touch at most 1/15 of dataset at a time', async () => {
-		const rss = await Promise.all(Array.from(Array(30).keys()).map(i => {
-			return RSS.create({
+		await Promise.all(Array.from(Array(15).keys()).map(async i => {
+			await RSS.create({
 				title: `RSS feed #${i}`,
 				valid: true,
 				isParsing: false,
 				followerCount: 2,
+				consecutiveScrapeFailures: 0,
+				feedUrl: `http://google.com/${i}`,
+				lastScraped: beforeDeadline
+			});
+			await RSS.create({
+				title: `RSS popular feed #${i}`,
+				valid: true,
+				isParsing: false,
+				followerCount: 102,
 				consecutiveScrapeFailures: 0,
 				feedUrl: `http://google.com/${i}`,
 				lastScraped: beforeDeadline
@@ -142,12 +151,21 @@ describe('Conductor worker', () => {
 	});
 
 	it('should take at least 15 invocations to touch all dataset', async () => {
-		const rss = await Promise.all(Array.from(Array(30).keys()).map(i => {
-			return RSS.create({
+		await Promise.all(Array.from(Array(15).keys()).map(async i => {
+			await RSS.create({
 				title: `RSS feed #${i}`,
 				valid: true,
 				isParsing: false,
 				followerCount: 2,
+				consecutiveScrapeFailures: 0,
+				feedUrl: `http://google.com/${i}`,
+				lastScraped: beforeDeadline
+			});
+			await RSS.create({
+				title: `RSS popular feed #${i}`,
+				valid: true,
+				isParsing: false,
+				followerCount: 102,
 				consecutiveScrapeFailures: 0,
 				feedUrl: `http://google.com/${i}`,
 				lastScraped: beforeDeadline

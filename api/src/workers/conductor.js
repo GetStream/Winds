@@ -17,7 +17,8 @@ const publicationTypes = {
 	podcast: { schema: Podcast, enqueue: PodcastQueueAdd },
 };
 const conductorInterval = 60;
-const durationInMinutes = 15;
+const popularScrapeInterval = 2;
+const defaultScrapeInterval = 25;
 
 logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
 
@@ -34,25 +35,38 @@ if (require.main === module) {
 	forever();
 }
 
-// conduct does the actual work of scheduling the scraping
+function getPublications(schema, followerMin, followerMax, interval, limit, exclude=[]) {
+	const time = moment().subtract(interval, 'minutes').toDate();
+	return schema.find({
+		_id: { $nin: exclude },
+		valid: true,
+		isParsing: { $ne: true, },
+		lastScraped: { $lte: time, },
+		followerCount: { $gte: followerMin, $lte: followerMax },
+		consecutiveScrapeFailures: { $lt: weightedRandom() }
+	}).limit(limit).sort('-followerCount');
+}
+
 export async function conduct() {
 	const publicationOptions = { removeOnComplete: true, removeOnFail: true };
 
 	for (const [type, { schema, enqueue }] of Object.entries(publicationTypes)) {
 		const total = await schema.count();
+		//XXX: when running winds locally we can scrape more frequently
+		const scrapeInterval = total < 1000 ? popularScrapeInterval : defaultScrapeInterval;
 		// never schedule more than 1/15 per minute interval
 		const maxToSchedule = Math.max(1, Math.floor(total / 15));
-		logger.info(`conductor will schedule at most ${maxToSchedule} to scrape per ${conductorInterval} seconds`);
+		logger.info(`conductor will schedule at most ${maxToSchedule} of type ${type} ` +
+		            `to scrape per ${conductorInterval} seconds`);
 
 		// find the publications that we need to update
-		const time = moment().subtract(durationInMinutes, 'minutes').toDate();
-		const publications = await schema.find({
-				valid: true,
-				isParsing: { $ne: true, },
-				lastScraped: { $lte: time, },
-				followerCount: { $gte: 1 },
-				consecutiveScrapeFailures: { $lt: weightedRandom() }
-			}).limit(maxToSchedule).sort('-followerCount');
+		const limit = Math.max(1, maxToSchedule / 2);
+		const popular = await getPublications(schema, 100, Number.POSITIVE_INFINITY, popularScrapeInterval, limit);
+		const other = await getPublications(schema, 1, 100, scrapeInterval, limit, popular.map(p => p._id));
+		logger.info(`found ${popular.length} popular publications of type ${type} that ` +
+		            `we scrape every ${popularScrapeInterval} minutes and ` +
+		            `${other.length} that we scrape every ${scrapeInterval} minutes`);
+		const publications = popular.concat(other);
 
 		// make sure we don't schedule these guys again till its finished
 		const publicationIDs = publications.map(p => p._id);
@@ -61,7 +75,7 @@ export async function conduct() {
 			{ isParsing: true },
 			{ multi: true },
 		);
-		logger.info(`marked ${updated.nModified} publications as isParsing`);
+		logger.info(`marked ${updated.nModified} of type ${type} publications as isParsing`);
 		logger.info(`conductor found ${publications.length} of type ${type} to scrape`);
 		const validPublications = publications.filter(p => isURL(p.feedUrl));
 		await Promise.all(validPublications.map(publication => {

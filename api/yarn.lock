@@ -4140,17 +4140,17 @@ mongodb-core@3.0.9:
     bson "~1.0.4"
     require_optional "^1.0.1"
 
+mongodb@3.0.10, mongodb@^3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.10.tgz#f948cb9595adcbfcad7444f6b24a040b653b23e8"
+  dependencies:
+    mongodb-core "3.0.9"
+
 mongodb@3.0.9:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.9.tgz#742e685e45ac9c3ead02a91c9ebaae7165bb2def"
   dependencies:
     mongodb-core "3.0.8"
-
-mongodb@^3.0.10:
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.10.tgz#f948cb9595adcbfcad7444f6b24a040b653b23e8"
-  dependencies:
-    mongodb-core "3.0.9"
 
 mongoose-autopopulate@^0.7.0:
   version "0.7.0"
@@ -4189,7 +4189,7 @@ mongoose-validators@^0.1.0:
   dependencies:
     validator "3.16.0"
 
-"mongoose@3.8.* || >=4", mongoose@^5.1.5:
+"mongoose@3.8.* || >=4":
   version "5.1.5"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.5.tgz#0d0b4dc658deeb7ad9794af7453442ecf7fc7cb0"
   dependencies:
@@ -4198,6 +4198,22 @@ mongoose-validators@^0.1.0:
     kareem "2.2.1"
     lodash.get "4.4.2"
     mongodb "3.0.9"
+    mongoose-legacy-pluralize "1.0.2"
+    mpath "0.4.1"
+    mquery "3.0.0"
+    ms "2.0.0"
+    regexp-clone "0.0.1"
+    sliced "1.0.1"
+
+mongoose@^5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.6.tgz#af92762c1e0317c897435594e83d6a5952873a0e"
+  dependencies:
+    async "2.6.1"
+    bson "~1.0.5"
+    kareem "2.2.1"
+    lodash.get "4.4.2"
+    mongodb "3.0.10"
     mongoose-legacy-pluralize "1.0.2"
     mpath "0.4.1"
     mquery "3.0.0"
