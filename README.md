@@ -70,7 +70,7 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 
 [MongoDB Atlas](http://mbsy.co/mongodb/228644) provides a Database as a Service, and serves as the backend datastore for Winds.
 
-## Tutorials
+## Tutorials & Blog Posts
 
 The following tutorials will not only help you start contributing to Winds, but also provide inspiration for your next app.
 
@@ -87,6 +87,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 9.  Preparing an Electron app for deployment to the macOS store
 10. Deploying to the macOS store
 11. Electron gotchas
+12. [https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript](The Winds Stack)
 
 ## Download
 
