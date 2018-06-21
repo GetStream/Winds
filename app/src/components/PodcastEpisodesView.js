@@ -22,7 +22,7 @@ class PodcastEpisodesView extends React.Component {
 			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
 			menuIsOpen: false,
 			sortBy: 'latest',
-			newEpisodesAvailable: false,
+			newEpisodesAvailable: true,
 		};
 	}
 	subscribeToStreamFeed(podcastID, streamFeedToken) {
@@ -30,6 +30,9 @@ class PodcastEpisodesView extends React.Component {
 			.feed('podcast', podcastID, streamFeedToken)
 			.subscribe(data => {
 				console.log(data);
+				this.setState({
+					newEpisodesAvailable: true,
+				});
 			});
 	}
 
@@ -282,7 +285,25 @@ class PodcastEpisodesView extends React.Component {
 					</div>
 				</div>
 
-				<div className="list podcast-episode-list content">{rightColumn}</div>
+				<div className="list podcast-episode-list content">
+					{this.state.newEpisodesAvailable ? (
+						<div
+							className="toast"
+							onClick={() => {
+								this.props.getPodcast(this.props.match.params.podcastID);
+								this.getEpisodes(this.props.match.params.podcastID);
+								getPinnedEpisodes(this.props.dispatch);
+								getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
+								this.setState({
+									newEpisodesAvailable: false,
+								});
+							}}
+						>
+							New episodes available - click to refresh
+						</div>
+					) : null}
+					{rightColumn}
+				</div>
 			</React.Fragment>
 		);
 	}
