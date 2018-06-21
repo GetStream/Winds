@@ -22,7 +22,7 @@ class PodcastEpisodesView extends React.Component {
 			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
 			menuIsOpen: false,
 			sortBy: 'latest',
-			newEpisodesAvailable: true,
+			newEpisodesAvailable: false,
 		};
 	}
 	subscribeToStreamFeed(podcastID, streamFeedToken) {
