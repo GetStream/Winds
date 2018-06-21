@@ -12,6 +12,7 @@ class AllEpisodesList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			newEpisodesAvailable: false,
 			cursor: 0,
 			reachedEndOfFeed: false,
 		};
@@ -42,12 +43,25 @@ class AllEpisodesList extends React.Component {
 				console.log(err); // eslint-disable-line no-console
 			});
 	}
+
 	componentDidMount() {
 		this.getEpisodes();
+		this.subscription = window.streamClient
+			.feed('user_episode', this.props.userID, this.props.userEpisodeStreamToken)
+			.subscribe(() => {
+				this.setState({
+					newEpisodesAvailable: true,
+				});
+			});
 	}
 	getEpisodes() {
 		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
 	}
+
+	componentWillUnmount() {
+		this.subscription.cancel();
+	}
+
 	render() {
 		return (
 			<React.Fragment>
@@ -55,6 +69,20 @@ class AllEpisodesList extends React.Component {
 					<h1>All Episodes</h1>
 				</div>
 				<div className="list content">
+					{this.state.newEpisodesAvailable ? (
+						<div
+							className="toast"
+							onClick={() => {
+								this.getEpisodes();
+								this.setState({
+									newEpisodesAvailable: false,
+								});
+							}}
+						>
+							New episodes available - click to refresh
+						</div>
+					) : null}
+
 					{this.props.episodes.map(episode => {
 						return (
 							<EpisodeListItem
@@ -111,6 +139,8 @@ AllEpisodesList.defaultProps = {
 AllEpisodesList.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 	episodes: PropTypes.arrayOf(PropTypes.shape({})),
+	userID: PropTypes.string.isRequired,
+	userEpisodeStreamToken: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -147,7 +177,13 @@ const mapStateToProps = (state, ownProps) => {
 		}
 	}
 
-	return { ...ownProps, episodes };
+	return {
+		...ownProps,
+		episodes,
+		userEpisodeStreamToken:
+			state.users[localStorage['authedUser']].streamTokens.user_episode,
+		userID: localStorage['authedUser'],
+	};
 };
 
 export default connect(mapStateToProps)(AllEpisodesList);

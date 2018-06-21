@@ -8,8 +8,6 @@ import PinSchema from './pin';
 import ListenSchema from './listen';
 
 import PlaylistSchema from './playlist';
-import stream from 'getstream';
-
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import gravatar from 'gravatar';
@@ -104,6 +102,11 @@ export const UserSchema = new Schema(
 				if (ret.email) {
 					ret.gravatar = gravatar.url(ret.email, { s: '200', d: 'identicon' });
 				}
+				ret.streamTokens = {};
+				for (const k of ['timeline', 'user_article', 'user_episode']) {
+					let token = getStreamClient.feed(k, ret._id).getReadOnlyToken();
+					ret.streamTokens[k] = token;
+				}
 			},
 		},
 		toObject: {
@@ -111,6 +114,11 @@ export const UserSchema = new Schema(
 				delete ret.password;
 				if (ret.email) {
 					ret.gravatar = gravatar.url(ret.email, { s: '200', d: 'identicon' });
+				}
+				ret.streamTokens = {};
+				for (const k of ['timeline', 'user_article', 'user_episode']) {
+					let token = getStreamClient.feed(k, ret._id).getReadOnlyToken();
+					ret.streamTokens[k] = token;
 				}
 			},
 		},

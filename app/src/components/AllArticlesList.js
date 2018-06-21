@@ -13,6 +13,7 @@ class AllArticles extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			newArticlesAvailable: false,
 			cursor: 0,
 			reachedEndOfFeed: false,
 		};
@@ -22,6 +23,13 @@ class AllArticles extends React.Component {
 	componentDidMount() {
 		this.getArticleFeed();
 		getPinnedArticles(this.props.dispatch);
+		this.subscription = window.streamClient
+			.feed('user_article', this.props.userID, this.props.userArticleStreamToken)
+			.subscribe(() => {
+				this.setState({
+					newArticlesAvailable: true,
+				});
+			});
 	}
 	componentWillReceiveProps() {
 		// scroll down to last saved position, then delete from localStorage
@@ -35,6 +43,9 @@ class AllArticles extends React.Component {
 	getArticleFeed() {
 		getFeed(this.props.dispatch, 'article', this.state.cursor, 10);
 	}
+	componentWillUnmount() {
+		this.subscription.cancel();
+	}
 	render() {
 		return (
 			<React.Fragment>
@@ -43,6 +54,19 @@ class AllArticles extends React.Component {
 				</div>
 
 				<div className="list content" ref={this.contentsEl}>
+					{this.state.newArticlesAvailable ? (
+						<div
+							className="toast"
+							onClick={() => {
+								this.getArticleFeed();
+								this.setState({
+									newArticlesAvailable: false,
+								});
+							}}
+						>
+							New articles available - click to refresh
+						</div>
+					) : null}
 					{this.props.articles.map(article => {
 						return (
 							<ArticleListItem
@@ -58,10 +82,10 @@ class AllArticles extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{"That's it! No more articles here."}</p>
+							<p>{'That\'s it! No more articles here.'}</p>
 							<p>
 								{
-									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
+									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
 								}
 							</p>
 						</div>
@@ -97,6 +121,8 @@ AllArticles.defaultProps = {
 AllArticles.propTypes = {
 	articles: PropTypes.arrayOf(PropTypes.shape({})),
 	dispatch: PropTypes.func.isRequired,
+	userID: PropTypes.string.isRequired,
+	userArticleStreamToken: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -133,7 +159,13 @@ const mapStateToProps = (state, ownProps) => {
 		}
 	}
 
-	return { ...ownProps, articles };
+	return {
+		...ownProps,
+		articles,
+		userArticleStreamToken:
+			state.users[localStorage['authedUser']].streamTokens.user_article,
+		userID: localStorage['authedUser'],
+	};
 };
 
 export default connect(mapStateToProps)(AllArticles);

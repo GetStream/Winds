@@ -7,6 +7,12 @@ import { getPinnedEpisodes } from '../util/pins';
 import { getFeed } from '../util/feeds';
 
 class RecentEpisodesList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			newEpisodesAvailable: false,
+		};
+	}
 	pinEpisode(episodeID) {
 		fetch('POST', '/pins', {
 			episode: episodeID,
@@ -36,6 +42,17 @@ class RecentEpisodesList extends React.Component {
 	componentDidMount() {
 		getPinnedEpisodes(this.props.dispatch);
 		getFeed(this.props.dispatch, 'episode', 0, 20);
+		this.subscription = window.streamClient
+			.feed('user_episode', this.props.userID, this.props.userEpisodeStreamToken)
+			.subscribe(() => {
+				this.setState({
+					newEpisodesAvailable: true,
+				});
+			});
+	}
+
+	componentWillUnmount() {
+		this.subscription.cancel();
 	}
 
 	render() {
@@ -45,6 +62,19 @@ class RecentEpisodesList extends React.Component {
 					<h1>Recent Episodes</h1>
 				</div>
 				<div className="list content">
+					{this.state.newEpisodesAvailable ? (
+						<div
+							className="toast"
+							onClick={() => {
+								getFeed(this.props.dispatch, 'episode', 0, 20);
+								this.setState({
+									newEpisodesAvailable: false,
+								});
+							}}
+						>
+							New episodes available - click to refresh
+						</div>
+					) : null}
 					{this.props.episodes.map(episode => {
 						return (
 							<EpisodeListItem
@@ -73,6 +103,8 @@ RecentEpisodesList.defaultProps = {
 RecentEpisodesList.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 	episodes: PropTypes.arrayOf(PropTypes.shape({})),
+	userID: PropTypes.string.isRequired,
+	userEpisodeStreamToken: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -112,6 +144,9 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		...ownProps,
 		episodes: episodes.slice(0, 20),
+		userEpisodeStreamToken:
+			state.users[localStorage['authedUser']].streamTokens.user_episode,
+		userID: localStorage['authedUser'],
 	};
 };
 
