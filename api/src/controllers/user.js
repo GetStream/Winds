@@ -111,7 +111,25 @@ exports.put = async (req, res) => {
 		await Promise.all(promises);
 	}*/
 
-	delete data.admin;
+	const whitelist = Object.assign(
+		{},
+		...[
+			'name',
+			'email',
+			'username',
+			'password',
+			'interests',
+			'bio',
+			'url',
+			'twitter',
+			'background',
+			'preferences',
+			'recoveryCode',
+			'active',
+		].map(key => ({
+			[key]: data[key],
+		})),
+	);
 
 	user = await User.findByIdAndUpdate({ _id: req.params.userId }, data, {
 		new: true,
