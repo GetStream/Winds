@@ -3,6 +3,8 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import { ArticleSchema } from './article';
 import { getStreamClient } from '../utils/stream';
+import { getUrl } from '../utils/urls';
+
 
 export const RSSSchema = new Schema(
 	{
@@ -156,6 +158,10 @@ RSSSchema.statics.resetScrapeFailures = async function(id) {
 		{ _id: id },
 		{ $set: { consecutiveScrapeFailures: 0 } },
 	).exec();
+};
+
+RSSSchema.methods.getUrl = function() {
+	return getUrl('rss_detail', this._id)
 };
 
 RSSSchema.methods.searchDocument = function() {

@@ -9,21 +9,29 @@
 
         <h3>top episodes for you</h3>
 
+        <% for(const e of episodes) { %>
+            <%= e.title %>
+            <%= e.link %>
+        <% } %>
+
         <h3>top stories for you</h3>
 
         <% for(const article of articles) { %>
             <%= article.title %>
             <%= article.link %>
+            <%= article.getUrl() %>
         <% } %>
 
         <h3>follow suggestions</h3>
         <% for(const podcast of podcasts) { %>
-            <%= podcasts.title %>
-            <%= podcasts.feedUrl %>
+            <%= podcast.title %>
+            <%= podcast.feedUrl %>
+            <%= podcast.getUrl() %>
         <% } %>
         <% for(const r of rss) { %>
             <%= r.title %>
             <%= r.feedUrl %>
+            <%= r.getUrl() %>
         <% } %>
 
         <h3>stats about winds</h3>

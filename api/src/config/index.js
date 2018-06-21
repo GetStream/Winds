@@ -52,6 +52,7 @@ const _default = {
 	sentry: {
 		dsn: process.env.SENTRY_DSN,
 	},
+	url: process.env.BASE_URL,
 	email: {
 		sender: {
 			default: {
