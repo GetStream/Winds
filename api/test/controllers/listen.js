@@ -16,8 +16,8 @@ describe('Listen controller', () => {
 		await dropDBs();
 		await loadFixture('initial-data', 'listens');
 
-		user = await User.findOne();
 		listen = await Listen.findOne().lean();
+		user = listen.user;
 	});
 
 	describe('upsert entry', () => {
@@ -82,5 +82,5 @@ describe('Listen controller', () => {
 		});
 	});
 
-	
+
 });

@@ -9,7 +9,6 @@ exports.post = async (req, res, _) => {
 	const data = Object.assign({}, req.body, { user: req.user.sub });
 	const { _id, id, ...cleanedData } = data;
 
-
 	const listen = await Listen.findOneAndUpdate(
 		{ user: cleanedData.user, episode: cleanedData.episode },
 		{ $set: cleanedData },
