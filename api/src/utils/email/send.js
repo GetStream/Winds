@@ -61,15 +61,15 @@ export async function SendPasswordResetEmail(data) {
 }
 
 export async function SendEmail(obj) {
-	if (config.env !== 'production') {
-		DummyEmailTransport.emails.unshift(obj);
-		return obj;
-	} else {
+	if (config.email.backend === 'sendgrid') {
 		if (!config.email.sendgrid.secret) {
 			throw new Error('Could not send reset email, missing Sendgrid secret.');
 		}
 		sendgrid.setApiKey(config.email.sendgrid.secret);
 		let res = await sendgrid.send(obj);
 		return res;
+	} else {
+		DummyEmailTransport.emails.unshift(obj);
+		return obj;
 	}
 }

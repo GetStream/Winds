@@ -54,6 +54,7 @@ const _default = {
 	},
 	url: process.env.BASE_URL,
 	email: {
+		backend: 'sendgrid',
 		sender: {
 			default: {
 				name: process.env.EMAIL_SENDER_DEFAULT_NAME,

@@ -36,11 +36,10 @@ async function main() {
 	for (const u of enabledUsers) {
 		let userContext = await weeklyContextUser(u)
 		let context = Object.assign({}, userContext, globalContext)
-		console.log(userContext)
 		let obj = CreateWeeklyEmail(context);
 		logger.info(`email ${obj.html}`);
 		if (program.send) {
-			logger.info(`sending email, yee to user ${user.email}`);
+			logger.info(`sending email, yee to user ${u.email}`);
 			SendWeeklyEmail(context);
 		}
 	}

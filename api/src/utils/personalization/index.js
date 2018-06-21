@@ -32,7 +32,6 @@ export async function getRecommendations(userID, type, limit) {
 		user_id: userID,
 		limit: limit,
 	}
-	console.log(config.stream.baseUrl, path, params)
 
 	let response = await axios({
 		baseURL: config.stream.baseUrl,
