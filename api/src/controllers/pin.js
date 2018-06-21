@@ -13,10 +13,7 @@ exports.list = async (req, res) => {
 	if (query.type === 'episode' || query.type === 'article') {
 		let obj = {};
 		obj[query.type] = { $exists: true };
-
-		if (query.user) {
-			obj['user'] = query.user;
-		}
+		obj['user'] = req.user.sub; // can only list pins for the
 
 		res.json(await Pin.find(obj));
 	} else {
