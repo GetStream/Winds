@@ -5,6 +5,7 @@ import Episode from '../models/episode';
 import { DetectLanguage } from '../parsers/detect-language';
 import config from '../config';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 
 // replaces TrackMetadata and events() calls
