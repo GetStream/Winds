@@ -93,10 +93,6 @@ export const UserSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		weeklyEmail: {
-			type: Boolean,
-			default: false,
-		},
 	},
 	{
 		collection: 'users',

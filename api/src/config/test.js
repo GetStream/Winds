@@ -21,4 +21,5 @@ module.exports = {
 		},
 	},
 	analyticsDisabled: true,
+	url: 'https://winds.gestream.io'
 };

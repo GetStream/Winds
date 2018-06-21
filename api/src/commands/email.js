@@ -19,24 +19,33 @@ import * as personalization from '../utils/personalization';
 program.option('--send', 'Actually send the email').parse(process.argv);
 
 async function sendEmail(user, globalContext) {
-	// TODO: make the sendEmail prod/send email configurable
-	// enable all staff users
-	const userID = user._id;
+	// TODO:
+	// - make the sendEmail prod/send email configurable
+	// - email click tracking
+	const userID = user._id.toString();
 	let articles = [];
 	let episodes = [];
 	let podcasts = [];
+	let a = await Article.findOne({})
 
 	let rss = [];
 
 	try {
-		articles = await personalization.getArticleRecommendations(userID);
-		episodes = await personalization.getEpisodeRecommendations(userID);
+		articles = await personalization.getArticleRecommendations(userID, 5);
+		episodes = await personalization.getEpisodeRecommendations(userID, 5);
 	} catch (e) {
 		logger.info(`article recommendations failed for ${userID}`);
+		if (e.request) {
+			logger.warn(`failed with code ${e.response.status} for path  ${e.request.path}`)
+		} else {
+			logger.warn(`error ${e}`)
+		}
+
 	}
 	try {
-		podcasts = await personalization.getPodcastRecommendations(userID);
-		rss = await personalization.getRSSRecommendations(userID);
+		podcasts = await personalization.getPodcastRecommendations(userID, 3);
+		
+		rss = await personalization.getRSSRecommendations(userID, 3);
 	} catch (e) {
 		logger.info(`follow suggestions failed for ${userID}`);
 	}
