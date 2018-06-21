@@ -4,6 +4,8 @@ import Article from '../models/article';
 import Episode from '../models/episode';
 import { DetectLanguage } from '../parsers/detect-language';
 import config from '../config';
+import jwt from 'jsonwebtoken';
+
 
 // replaces TrackMetadata and events() calls
 export async function upsertCollections(collections) {
