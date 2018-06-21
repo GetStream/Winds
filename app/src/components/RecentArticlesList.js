@@ -10,20 +10,37 @@ class RecentArticlesList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.contentsEl = React.createRef();
+		this.state = {
+			newArticlesAvailable: false,
+		};
 	}
 	componentDidMount() {
 		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
+		this.subscription = window.streamClient
+			.feed('user_article', this.props.userID, this.props.userArticleStreamToken)
+			.subscribe(() => {
+				this.setState({
+					newArticlesAvailable: true,
+				});
+			});
 	}
 	componentWillReceiveProps() {
 		// scroll down to last saved position, then delete from localStorage
 		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
-		if (this.contentsEl.current && localStorage['recent-article-list-scroll-position']) {
+		if (
+			this.contentsEl.current &&
+			localStorage['recent-article-list-scroll-position']
+		) {
 			this.contentsEl.current.scrollTop =
 				localStorage['recent-article-list-scroll-position'];
 			delete localStorage['recent-article-list-scroll-position'];
 		}
 	}
+	componentWillUnmount() {
+		this.subscription.cancel();
+	}
+
 	render() {
 		return (
 			<React.Fragment>
@@ -32,6 +49,19 @@ class RecentArticlesList extends React.Component {
 				</div>
 
 				<div className="list content" ref={this.contentsEl}>
+					{this.state.newArticlesAvailable ? (
+						<div
+							className="toast"
+							onClick={() => {
+								getFeed(this.props.dispatch, 'article', 0, 20);
+								this.setState({
+									newArticlesAvailable: false,
+								});
+							}}
+						>
+							New articles available - click to refresh
+						</div>
+					) : null}
 					{this.props.articles.map(article => {
 						return (
 							<ArticleListItem
@@ -58,6 +88,8 @@ RecentArticlesList.defaultProps = {
 RecentArticlesList.propTypes = {
 	articles: PropTypes.arrayOf(PropTypes.shape({})),
 	dispatch: PropTypes.func.isRequired,
+	userID: PropTypes.string.isRequired,
+	userArticleStreamToken: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -94,7 +126,13 @@ const mapStateToProps = (state, ownProps) => {
 		}
 	}
 
-	return { ...ownProps, articles: articles.slice(0, 20) };
+	return {
+		...ownProps,
+		articles: articles.slice(0, 20),
+		userArticleStreamToken:
+			state.users[localStorage['authedUser']].streamTokens.user_article,
+		userID: localStorage['authedUser'],
+	};
 };
 
 export default connect(mapStateToProps)(RecentArticlesList);
