@@ -33,7 +33,7 @@ export async function trackEngagement(user, engagement) {
 		id: user._id,
 	});
 	if (Object.keys(engagement).length && !config.analyticsDisabled) {
-		const res = await analytics.trackEngagement(engagement);
+		const res = await analyticsClient.trackEngagement(engagement);
 		return res;
 	}
 }
