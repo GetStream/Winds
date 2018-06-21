@@ -1,7 +1,6 @@
 // this should be the first import
 import '../loadenv';
 
-import stream from 'getstream';
 import normalize from 'normalize-url';
 import moment from 'moment';
 
@@ -11,16 +10,12 @@ import Episode from '../models/episode';
 import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
-import sendPodcastToCollections from '../utils/events/sendPodcastToCollections';
+import { sendPodcastToCollections } from '../utils/collections';
 import { ParsePodcast } from '../parsers/feed';
 
 import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
-
-const streamClient = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
+import { getStreamClient } from '../utils/stream';
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
@@ -105,7 +100,7 @@ export async function handlePodcast(job) {
 
 	if (updatedEpisodes.length > 0) {
 		let chunkSize = 100;
-		let podcastFeed = streamClient.feed('podcast', podcastID);
+		let podcastFeed = getStreamClient().feed('podcast', podcastID);
 		for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
 			let chunk = updatedEpisodes.slice(i, i + chunkSize);
 			let streamEpisodes = chunk.map(episode => {

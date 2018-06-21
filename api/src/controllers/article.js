@@ -1,5 +1,7 @@
 import Article from '../models/article';
-import personalization from '../utils/personalization';
+import { getArticleRecommendations } from '../utils/personalization';
+import { trackEngagement } from '../utils/analytics';
+
 import mongoose from 'mongoose';
 import logger from '../utils/logger';
 
@@ -7,24 +9,7 @@ exports.list = async (req, res) => {
 	const query = req.query || {};
 	let articles = [];
 	if (query.type === 'recommended') {
-		let articleIDs = await personalization({
-			endpoint: '/winds_article_recommendations',
-			userId: req.user.sub,
-		});
-		// handle failure from the article personalization endpoint gracefully
-		for (let articleID of articleIDs) {
-			if (!mongoose.Types.ObjectId.isValid(articleID)) {
-				logger.error(
-					`Personalization for ${
-						req.user.sub
-					} returned an invalid articleID ${articleID}`,
-				);
-				return res
-					.status(500)
-					.json({ error: `Failed to load personalized follow suggestions` });
-			}
-		}
-		articles = await Article.find({ _id: { $in: articleIDs } });
+		articles = await getArticleRecommendations(req.User);
 	} else {
 		if (query.rss && !mongoose.Types.ObjectId.isValid(query.rss)) {
 			return res.status(400).json({ error: `Invalid RSS id ${query.rss}` });
@@ -49,6 +34,10 @@ exports.get = async (req, res) => {
 
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
+		await trackEngagement(req.User, {
+			label: 'open_article',
+			content: { foreign_id: `article:${articleID}` },
+		});
 
 		res.json(parsed);
 	} else {

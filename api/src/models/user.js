@@ -4,7 +4,6 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 
 import FollowSchema from './follow';
-import LikeSchema from './like';
 import PinSchema from './pin';
 import PlaylistSchema from './playlist';
 import stream from 'getstream';
@@ -12,11 +11,7 @@ import stream from 'getstream';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import gravatar from 'gravatar';
-
-const streamClient = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
+import { getStreamClient } from '../utils/stream';
 
 export const UserSchema = new Schema(
 	{
@@ -98,6 +93,10 @@ export const UserSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		weeklyEmail: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		collection: 'users',
@@ -125,7 +124,6 @@ UserSchema.post('remove', async function(user) {
 		PinSchema.remove({ user }),
 		PlaylistSchema.remove({ user }),
 		FollowSchema.remove({ user }),
-		LikeSchema.remove({ user }),
 	]);
 });
 
@@ -144,7 +142,9 @@ UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedU
 
 	let streamTokens = {};
 	for (const k of ['timeline', 'user_article', 'user_episode']) {
-		let token = streamClient.feed(k, user._id).getReadOnlyToken();
+		let token = getStreamClient()
+			.feed(k, user._id)
+			.getReadOnlyToken();
 		streamTokens[k] = token;
 	}
 
