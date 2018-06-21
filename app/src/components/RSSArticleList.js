@@ -103,6 +103,9 @@ class RSSArticleList extends React.Component {
 			delete localStorage['rss-article-list-scroll-position'];
 		}
 	}
+	componentWillUnmount() {
+		this.unsubscribeFromStreamFeed();
+	}
 	getRSSFeed(rssFeedID) {
 		return fetch('GET', `/rss/${rssFeedID}`)
 			.then(res => {
