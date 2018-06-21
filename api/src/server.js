@@ -43,6 +43,7 @@ api.use(
 		path: [
 			'/',
 			'/health',
+			'/email/weekly',
 			'/status',
 			'/queue',
 			'/sentry/log',
