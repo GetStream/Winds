@@ -1,4 +1,3 @@
-import stream from 'getstream';
 import uuidv4 from 'uuid/v4';
 import validator from 'validator';
 
@@ -10,11 +9,6 @@ import Follow from '../models/follow';
 import config from '../config';
 
 import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
-
-const client = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
 
 async function followInterest(userId, interest) {
 	const interestRssFeeds = await RSS.find(interest);
@@ -39,16 +33,16 @@ function cleanString(s) {
 exports.signup = async (req, res, _) => {
 	const data = Object.assign({}, { interests: [] }, req.body);
 
-	if (!data.email || !data.username || !data.name || !data.password) {
-		return res.sendStatus(422);
+	if (!data.name || !data.email || !data.username || !data.password) {
+		return res.status(400).json({ error: 'Missing required fields.' });
 	}
 
 	if (data.email && !validator.isEmail(data.email)) {
-		return res.status(422).send('Invalid email address.');
+		return res.status(422).json({ error: 'Invalid or malformed email address.' });
 	}
 
 	if (data.username && !validator.isAlphanumeric(data.username)) {
-		return res.status(422).send('Usernames must be alphanumeric.');
+		return res.status(400).json({ error: 'Usernames must be alphanumeric.' });
 	}
 
 	data.username = cleanString(data.username);
@@ -63,10 +57,16 @@ exports.signup = async (req, res, _) => {
 		return;
 	}
 
-	const user = await User.create(data);
-	await SendWelcomeEmail({ email: user.email });
+	const whitelist = Object.assign(
+		{},
+		...['name', 'email', 'username', 'password', 'interests'].map(key => ({
+			[key]: data[key],
+		})),
+	);
 
-	await client.feed('timeline', user._id).follow('user', user._id);
+	const user = await User.create(whitelist);
+
+	await SendWelcomeEmail({ email: user.email });
 	await followInterest(user._id, { featured: true });
 
 	await Promise.all(
@@ -82,18 +82,18 @@ exports.login = async (req, res, _) => {
 	const data = req.body || {};
 
 	if (!data.email || !data.password) {
-		return res.sendStatus(401);
+		return res.status(400).json({ error: 'Missing required fields.' });
 	}
 
 	const email = cleanString(data.email.toLowerCase());
 	const user = await User.findOne({ email: email });
 
 	if (!user) {
-		return res.sendStatus(404);
+		return res.status(404).json({ error: 'Resource does not exist.' });
 	}
 
 	if (!(await user.verifyPassword(data.password))) {
-		return res.sendStatus(403);
+		return res.status(403).json({ error: 'Invalid password.' });
 	}
 
 	res.status(200).send(user.serializeAuthenticatedUser());

@@ -4,7 +4,7 @@ import { isURL } from '../utils/validation';
 
 import RSS from '../models/rss';
 
-import personalization from '../utils/personalization';
+import { getRSSRecommendations } from '../utils/personalization';
 import { discoverRSS } from '../parsers/discovery';
 
 import moment from 'moment';
@@ -17,11 +17,7 @@ exports.list = async (req, res) => {
 	let feeds = [];
 
 	if (query.type === 'recommended') {
-		let recommendedRssIds = await personalization({
-			endpoint: '/winds_rss_recommendations',
-			userId: req.user.sub,
-		});
-		feeds = await RSS.find({ _id: { $in: recommendedRssIds } });
+		feeds = await getRSSRecommendations(req.User._id.toString());
 	} else {
 		feeds = await RSS.apiQuery(req.query);
 	}

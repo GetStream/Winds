@@ -53,36 +53,4 @@
             "fingerprint": "test:23"
         }
     ]
-}, {
-    "Share": [
-        {
-            "_id"    : "5b0ad37626dc3db38194fa88",
-            "user"   : "5b0f306d8e147f10f16aceaf",
-            "article": "5b0ad37626dc3db38194fa85",
-            "flags"  : 0
-        },
-        {
-            "_id"    : "5b0ad37626dc3db38194fa89",
-            "user"   : "5b0f306d8e147f10f16aceaf",
-            "episode": "5b0ad37626dc3db38194fa87",
-            "flags"  : 0
-        },
-        {
-            "_id"    : "5b0ad37626dc3db38194fa91",
-            "user"   : "5b0f306d8e147f10f16aceaf",
-            "article": "5b0ad37626dc3db38194fa90",
-            "flags"  : 0
-        }
-    ]
-}, {
-    "Like": [
-        {
-            "user" : "5b0f306d8e147f10f16aceaf",
-            "share": "5b0ad37626dc3db38194fa88"
-        },
-        {
-            "user" : "5b0f306d8e147f10f16aceaf",
-            "share": "5b0ad37626dc3db38194fa89"
-        }
-    ]
 }]

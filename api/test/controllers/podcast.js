@@ -18,28 +18,28 @@ describe('Podcast controller', () => {
 
 	describe('get podcast list', () => {
 		it('should return the right podcast feed from /podcasts', async () => {
-			const response = await withLogin(
-				request(api).get('/podcasts')
-			);
+			const response = await withLogin(request(api).get('/podcasts'));
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.at.least(1);
 		});
 	});
 
 	describe('get podcast list from personalization', () => {
-		after(function () {
+		after(function() {
 			nock.cleanAll();
 		});
 
 		it('should return the right podcast feed from /podcasts?type=recommended', async () => {
 			nock(config.stream.baseUrl)
 				.get(/winds_podcast_recommendations/)
-				.reply(200, { results: [{foreign_id:`episode:${podcast.id}`}] });
+				.reply(200, { results: [{ foreign_id: `episode:${podcast.id}` }] });
 
 			const response = await withLogin(
-				request(api).get('/podcasts').query({
-					type: 'recommended',
-				})
+				request(api)
+					.get('/podcasts')
+					.query({
+						type: 'recommended',
+					}),
 			);
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.at.least(1);
@@ -50,7 +50,7 @@ describe('Podcast controller', () => {
 	describe('get podcast', () => {
 		it('should return the right rss feed from /podcasts/:podcastId', async () => {
 			const response = await withLogin(
-				request(api).get(`/podcasts/${podcast._id}`)
+				request(api).get(`/podcasts/${podcast._id}`),
 			);
 			expect(response).to.have.status(200);
 			expect(response.body._id).to.eq(`${podcast._id}`);
@@ -64,25 +64,24 @@ describe('Podcast controller', () => {
 			const response = await withLogin(
 				request(api)
 					.post('/podcasts')
-					.send({feedUrl: 'http://thetwentyminutevc.libsyn.com/rss'})
+					.send({ feedUrl: 'http://thetwentyminutevc.libsyn.com/rss' }),
 			);
 			expect(response).to.have.status(200);
 			expect(response.body).to.have.length(1);
 			expect(response.body[0].url).to.eq('http://thetwentyminutevc.com');
-			podcast = await Podcast.find({url:'http://thetwentyminutevc.com'});
+			podcast = await Podcast.find({ url: 'http://thetwentyminutevc.com' });
 		});
 
 		it('2nd time should not create or update anything', async () => {
 			const response = await withLogin(
 				request(api)
 					.post('/podcasts')
-					.send({feedUrl: 'http://thetwentyminutevc.libsyn.com/rss'})
+					.send({ feedUrl: 'http://thetwentyminutevc.libsyn.com/rss' }),
 			);
 			expect(response).to.have.status(200);
 			expect(response.body).to.have.length(1);
-			let podcast2 = await Podcast.find({url:'http://thetwentyminutevc.com'});
+			let podcast2 = await Podcast.find({ url: 'http://thetwentyminutevc.com' });
 			expect(podcast2.updatedAt).to.eq(podcast.updatedAt);
 		});
-
 	});
 });

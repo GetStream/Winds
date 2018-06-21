@@ -4,6 +4,8 @@ import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
 import { ParseArticle } from '../parsers/article';
+import { getUrl } from '../utils/urls';
+
 import { createHash } from 'crypto';
 
 import { EnclosureSchema } from './enclosure';
@@ -143,6 +145,10 @@ ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
+
+ArticleSchema.methods.getUrl = function() {
+	return getUrl('article_detail', this.rss._id, this._id)
+};
 
 ArticleSchema.methods.getParsedArticle = async function() {
 	let cached = await Cache.findOne({ url: this.url });

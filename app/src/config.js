@@ -18,4 +18,5 @@ export default {
 	cache: {
 		uri: process.env.CACHE_URI,
 	},
+	url: process.env.BASE_URL,
 };

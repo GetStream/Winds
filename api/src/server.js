@@ -14,7 +14,6 @@ import limit from 'express-rate-limit';
 import logger from './utils/logger';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
 import User from './models/user';
-import { AnalyticsMiddleware } from './utils/events/analytics';
 // import { setupAxiosRedirectInterceptor } from './utils/axios';
 
 // setupAxiosRedirectInterceptor(axios);
@@ -44,6 +43,7 @@ api.use(
 		path: [
 			'/',
 			'/health',
+			'/email/weekly',
 			'/status',
 			'/queue',
 			'/sentry/log',
@@ -72,8 +72,6 @@ api.use(async (req, res, next) => {
 	}
 	next();
 });
-
-api.use(AnalyticsMiddleware);
 
 api.use((err, req, res, next) => {
 	if (err.name === 'UnauthorizedError') {

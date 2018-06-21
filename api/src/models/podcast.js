@@ -2,6 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import { getStreamClient } from '../utils/stream';
+import { getUrl } from '../utils/urls';
+
 
 export const PodcastSchema = new Schema(
 	{
@@ -156,6 +158,8 @@ PodcastSchema.statics.incrScrapeFailures = async function(id) {
 	).exec();
 };
 
+
+
 PodcastSchema.statics.resetScrapeFailures = async function(id) {
 	await this.findOneAndUpdate(
 		{ _id: id },
@@ -175,6 +179,10 @@ PodcastSchema.methods.searchDocument = function() {
 		title: this.title,
 		type: 'podcast',
 	};
+};
+
+PodcastSchema.methods.getUrl = function() {
+	return getUrl('podcast_detail', this._id)
 };
 
 PodcastSchema.methods.serialize = function serialize() {

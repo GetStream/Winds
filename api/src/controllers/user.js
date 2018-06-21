@@ -58,7 +58,7 @@ exports.get = async (req, res) => {
 exports.put = async (req, res) => {
 	// Only permit access to the authenticated user's own model
 	if (req.params.userId !== req.user.sub) {
-		res.status(403).send();
+		res.status(403).json({ error: 'Access denied.' });
 		return;
 	}
 
@@ -70,7 +70,7 @@ exports.put = async (req, res) => {
 	}
 
 	if (data.username && !validator.isAlphanumeric(data.username)) {
-		res.status(422).send('Usernames must be alphanumeric.');
+		res.status(422).json({ error: 'Usernames must be alphanumeric.' });
 		return;
 	}
 
@@ -85,7 +85,7 @@ exports.put = async (req, res) => {
 		// check for existing username
 		let userByUsername = await User.findOne({ username: data.username });
 		if (userByUsername && userByUsername.id != user.id) {
-			res.status(409).send('User with this username already exists');
+			res.status(409).json({ error: 'User with this username already exists' });
 			return;
 		}
 	}
@@ -111,11 +111,32 @@ exports.put = async (req, res) => {
 		await Promise.all(promises);
 	}*/
 
-	// update the user
-	user = await User.findByIdAndUpdate({ _id: req.params.userId }, data, { new: true });
+	const whitelist = Object.assign(
+		{},
+		...[
+			'name',
+			'email',
+			'username',
+			'password',
+			'interests',
+			'bio',
+			'url',
+			'twitter',
+			'background',
+			'preferences',
+			'recoveryCode',
+			'active',
+		].map(key => ({
+			[key]: data[key],
+		})),
+	);
 
-	// send back the user
+	user = await User.findByIdAndUpdate({ _id: req.params.userId }, data, {
+		new: true,
+	});
+
 	user.password = undefined;
 	user.recoveryCode = undefined;
+
 	res.status(201).json(user);
 };

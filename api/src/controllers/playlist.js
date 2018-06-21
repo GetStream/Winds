@@ -1,38 +1,14 @@
 import async from 'async';
 
 import Playlist from '../models/playlist';
-import Like from '../models/like';
 
 import config from '../config';
 import logger from '../utils/logger';
 import search from '../utils/search';
 
-async function listRecommended(req, res) {
-	const playlists = await Playlist.apiQuery(req.query);
-	const likedPlaylists = playlists.map(async playlist => {
-		const like = await Like.findOne({ playlist: playlist._id, user: req.user.sub });
-		return Object.assign(playlist.toObject(), { liked: !!like });
-	});
-	res.json(await Promise.all(likedPlaylists));
-}
-
-async function listFeatured(req, res) {
-	const playlists = await Playlist.apiQuery(req.query);
-	if (playlists.length === 0) {
-		return res.status(204).send('No featured playlist');
-	}
-	const random = playlists.sort(() => 0.5 - Math.random());
-	res.json(random[0]);
-}
-
 async function listFilter(req, res) {
 	const playlists = await Playlist.apiQuery(req.query);
-	const likedPlaylists = playlists.map(async playlist => {
-		const likes = await Like.count({ playlist: playlist });
-		const like = await Like.findOne({ playlist: playlist._id, user: req.user.sub });
-		return Object.assign(playlist.toObject(), { liked: !!like, likes });
-	});
-	res.json(await Promise.all(likedPlaylists));
+	res.json(playlists);
 }
 
 exports.list = async (req, res, _) => {
@@ -41,12 +17,6 @@ exports.list = async (req, res, _) => {
 		return res.sendStatus(403);
 	}
 
-	switch (query.type) {
-		case 'recommended':
-			return await listRecommended(req, res);
-		case 'featured':
-			return await listFeatured(req, res);
-	}
 	await listFilter(req, res);
 };
 
@@ -63,11 +33,8 @@ exports.get = async (req, res, _) => {
 		return res.sendStatus(403);
 	}
 
-	const like = await Like.findOne({
-		playlist: playlist._id,
-		user: req.user.sub,
-	}).lean();
-	res.json(Object.assign(playlist.toObject(), { liked: !!like }));
+
+	res.json(playlist);
 };
 
 exports.post = async (req, res, _) => {
