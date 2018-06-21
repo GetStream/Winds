@@ -32,7 +32,14 @@ function spyOnEverything(module) {
 			continue;
 		}
 		const prop = proto[key];
-		spiedOn[key] = util.isFunction(prop) ? sinon.spy(prop) : prop;
+		if (util.isFunction(prop)) {
+			spiedOn[key] = sinon.spy(function() {
+				return spiedOn[key]._fn.apply(this, arguments);
+			});
+			spiedOn[key]._fn = prop;
+		} else {
+			spiedOn[key] = prop;
+		}
 	}
 	return spiedOn;
 }

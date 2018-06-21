@@ -7,6 +7,7 @@ import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
 import logger from '../utils/logger';
+import weightedRandom from '../utils/random';
 
 import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
 import { isURL } from '../utils/validation';
@@ -16,135 +17,72 @@ const publicationTypes = {
 	podcast: { schema: Podcast, enqueue: PodcastQueueAdd },
 };
 const conductorInterval = 60;
-var scrapeInterval = 25;
-var popularScrapeInterval = 2;
+const popularScrapeInterval = 2;
+const defaultScrapeInterval = 25;
 
-// conductor runs conduct every interval seconds
-const conductor = () => {
-	logger.info(
-		`Starting the conductor... will conduct every ${conductorInterval} seconds`,
-	);
+logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
 
-	function forever() {
-		conduct()
-			.then(() => {
-				logger.info('Conductor iteration completed...');
-			})
-			.catch(err => {
-				logger.error('Conductor broke down', { err });
-			});
-		setTimeout(forever, conductorInterval * 1000);
-	}
+function forever() {
+	conduct().then(()=> {
+		logger.info('Conductor iteration completed...');
+	}).catch(err => {
+		logger.error('Conductor broke down', {err});
+	});
+	setTimeout(forever, conductorInterval * 1000);
+}
+
+if (require.main === module) {
 	forever();
-};
-conductor();
-
-// returns a random number from 2**1, 2**2, ..., 2**n-1, 2**n
-// 2 is two time more likely to be returned than 4, 4 than 8 and so until 2**n
-function rand(n = 6) {
-	const exp = n;
-	let rand = Math.floor(Math.random() * 2 ** exp);
-	let b;
-	for (b of [...Array(exp).keys()].reverse()) {
-		if (rand >= 2 ** b - 1) {
-			break;
-		}
-	}
-	return 2 ** (exp - b);
 }
 
-async function getPublications(schema, followerCount, scrapeInterval, limit) {
-	return await schema
-		.find({
-			isParsing: {
-				$ne: true,
-			},
-			followerCount: { $gte: followerCount },
-			valid: true,
-			lastScraped: {
-				$lte: moment()
-					.subtract(scrapeInterval, 'minutes')
-					.toDate(),
-			},
-			consecutiveScrapeFailures: {
-				$lt: rand(),
-			},
-		})
-		.limit(limit)
-		.sort('-followerCount');
+function getPublications(schema, followerMin, followerMax, interval, limit, exclude=[]) {
+	const time = moment().subtract(interval, 'minutes').toDate();
+	return schema.find({
+		_id: { $nin: exclude },
+		valid: true,
+		isParsing: { $ne: true, },
+		lastScraped: { $lte: time, },
+		followerCount: { $gte: followerMin, $lte: followerMax },
+		consecutiveScrapeFailures: { $lt: weightedRandom() }
+	}).limit(limit).sort('-followerCount');
 }
 
-// conduct does the actual work of scheduling the scraping
-async function conduct() {
-	for (const [publicationType, publicationConfig] of Object.entries(publicationTypes)) {
-		// lookup the total number of rss feeds or podcasts
-		let total = await publicationConfig.schema.count({});
-		if (total < 1000) {
-			// when running winds locally we can scrape more frequently
-			scrapeInterval = popularScrapeInterval;
-		}
+export async function conduct() {
+	const publicationOptions = { removeOnComplete: true, removeOnFail: true };
+
+	for (const [type, { schema, enqueue }] of Object.entries(publicationTypes)) {
+		const total = await schema.count();
+		//XXX: when running winds locally we can scrape more frequently
+		const scrapeInterval = total < 1000 ? popularScrapeInterval : defaultScrapeInterval;
 		// never schedule more than 1/15 per minute interval
-		let maxToSchedule = Math.ceil(total / 15 + 1);
-		logger.info(
-			`conductor will schedule at most ${maxToSchedule} to scrape per ${conductorInterval} seconds`,
-		);
+		const maxToSchedule = Math.max(1, Math.floor(total / 15));
+		logger.info(`conductor will schedule at most ${maxToSchedule} of type ${type} ` +
+		            `to scrape per ${conductorInterval} seconds`);
 
 		// find the publications that we need to update
-		const limit = maxToSchedule / 2;
-		const schema = publicationConfig.schema;
-		let popular = await getPublications(schema, 100, popularScrapeInterval, limit);
-		let other = await getPublications(schema, 1, scrapeInterval, limit);
-		logger.info(
-			`found ${
-				popular.length
-			} popular publications that we scrape every ${popularScrapeInterval} minutes and ${
-				other.length
-			} that we scrape every ${scrapeInterval} minutes`,
-		);
-		let publications = popular.concat(other);
+		const limit = Math.max(1, maxToSchedule / 2);
+		const popular = await getPublications(schema, 100, Number.POSITIVE_INFINITY, popularScrapeInterval, limit);
+		const other = await getPublications(schema, 1, 100, scrapeInterval, limit, popular.map(p => p._id));
+		logger.info(`found ${popular.length} popular publications of type ${type} that ` +
+		            `we scrape every ${popularScrapeInterval} minutes and ` +
+		            `${other.length} that we scrape every ${scrapeInterval} minutes`);
+		const publications = popular.concat(other);
 
 		// make sure we don't schedule these guys again till its finished
-		let publicationIDs = [];
-		for (let publication of publications) {
-			publicationIDs.push(publication._id);
-		}
-		let updated = await publicationConfig.schema.update(
+		const publicationIDs = publications.map(p => p._id);
+		const updated = await schema.update(
 			{ _id: { $in: publicationIDs } },
-			{
-				isParsing: true,
-			},
-			{
-				multi: true,
-			},
+			{ isParsing: true },
+			{ multi: true },
 		);
-		logger.info(`marked ${updated.nModified} publications as isParsing`);
+		logger.info(`marked ${updated.nModified} of type ${type} publications as isParsing`);
+		logger.info(`conductor found ${publications.length} of type ${type} to scrape`);
+		const validPublications = publications.filter(p => isURL(p.feedUrl));
+		await Promise.all(validPublications.map(publication => {
+			const job = { [type]: publication._id, url: publication.feedUrl };
+			return enqueue(job, publicationOptions);
+		}));
 
-		// actually schedule the update
-		logger.info(
-			`conductor found ${publications.length} of type ${publicationType} to scrape`,
-		);
-		let promises = [];
-		for (let publication of publications) {
-			if (!isURL(publication.feedUrl)) {
-				logger.warn(
-					`Conductor, url looks invalid for ${publication.feedUrl} with id ${
-						publication._id
-					}`,
-				);
-				continue;
-			}
-			let job = { url: publication.feedUrl };
-			job[publicationType] = publication._id;
-			let promise = publicationConfig.enqueue(job, {
-				removeOnComplete: true,
-				removeOnFail: true,
-			});
-			promises.push(promise);
-		}
-		await Promise.all(promises);
-
-		logger.info(
-			`Processing complete! Will try again in ${conductorInterval} seconds...`,
-		);
+		logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`);
 	}
 }
