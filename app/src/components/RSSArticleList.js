@@ -20,7 +20,7 @@ class RSSArticleList extends React.Component {
 			articleCursor: 1,
 			menuIsOpen: false,
 			sortBy: 'latest',
-			newArticlesAvailable: true,
+			newArticlesAvailable: false,
 		};
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
@@ -37,11 +37,9 @@ class RSSArticleList extends React.Component {
 	}
 
 	subscribeToStreamFeed(rssFeedID, streamFeedToken) {
-		console.log(rssFeedID);
 		this.subscription = window.streamClient
 			.feed('rss', rssFeedID, streamFeedToken)
-			.subscribe(data => {
-				console.log(data);
+			.subscribe(() => {
 				this.setState({
 					newArticlesAvailable: true,
 				});
@@ -60,7 +58,6 @@ class RSSArticleList extends React.Component {
 		getFeed(this.props.dispatch, 'article', 0, 20);
 		// subscribe to feed updates
 		if (this.props.rssFeed) {
-			console.log(this.props.rssFeed);
 			this.subscribeToStreamFeed(
 				this.props.rssFeed._id,
 				this.props.rssFeed.streamToken,
@@ -238,15 +235,15 @@ class RSSArticleList extends React.Component {
 			if (this.props.articles.length === 0) {
 				rightContents = (
 					<div>
-						<p>{"We haven't found any articles for this RSS feed yet :("}</p>
+						<p>{'We haven\'t found any articles for this RSS feed yet :('}</p>
 						<p>
 							{
-								"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
+								'It might be because the RSS feed doesn\'t have any articles, or because it just got added and we\'re still parsing them. Come check back in a few minutes?'
 							}
 						</p>
 						<p>
 							{
-								"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
+								'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
 							}
 							<a href="https://github.com/getstream/winds/issues">
 								GitHub Issue
@@ -273,10 +270,10 @@ class RSSArticleList extends React.Component {
 
 						{this.state.reachedEndOfFeed ? (
 							<div className="end">
-								<p>{"That's it! No more articles here."}</p>
+								<p>{'That\'s it! No more articles here.'}</p>
 								<p>
 									{
-										"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
+										'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
 									}
 								</p>
 							</div>
@@ -387,6 +384,7 @@ RSSArticleList.propTypes = {
 			og: PropTypes.string,
 		}),
 		title: PropTypes.string,
+		streamToken: PropTypes.string.isRequired,
 	}),
 };
 

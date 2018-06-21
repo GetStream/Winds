@@ -28,8 +28,7 @@ class PodcastEpisodesView extends React.Component {
 	subscribeToStreamFeed(podcastID, streamFeedToken) {
 		this.subscription = window.streamClient
 			.feed('podcast', podcastID, streamFeedToken)
-			.subscribe(data => {
-				console.log(data);
+			.subscribe(() => {
 				this.setState({
 					newEpisodesAvailable: true,
 				});
