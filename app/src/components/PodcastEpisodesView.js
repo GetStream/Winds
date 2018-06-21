@@ -22,26 +22,68 @@ class PodcastEpisodesView extends React.Component {
 			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
 			menuIsOpen: false,
 			sortBy: 'latest',
+			newEpisodesAvailable: false,
 		};
 	}
+	subscribeToStreamFeed(podcastID, streamFeedToken) {
+		this.subscription = window.streamClient
+			.feed('podcast', podcastID, streamFeedToken)
+			.subscribe(() => {
+				this.setState({
+					newEpisodesAvailable: true,
+				});
+			});
+	}
+
+	unsubscribeFromStreamFeed() {
+		this.subscription.cancel();
+	}
+
 	componentDidMount() {
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.getEpisodes(this.props.match.params.podcastID);
 		getPinnedEpisodes(this.props.dispatch);
 		getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
+		// subscribe to feed updates
+		if (this.props.podcast) {
+			this.subscribeToStreamFeed(
+				this.props.podcast._id,
+				this.props.podcast.streamToken,
+			);
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
 			// essentially, if we've just switched views from one podcast to another
-			this.setState({
-				episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
-			}, () => {
-				this.props.getPodcast(nextProps.match.params.podcastID);
-				this.getEpisodes(nextProps.match.params.podcastID);
-				getPinnedEpisodes(this.props.dispatch);
-				getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
-			});
+			this.setState(
+				{
+					episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
+				},
+				() => {
+					this.props.getPodcast(nextProps.match.params.podcastID);
+					this.getEpisodes(nextProps.match.params.podcastID);
+					getPinnedEpisodes(this.props.dispatch);
+					getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
+				},
+			);
+			// if we're switching podcasts, unsubscribe from the old podcast feed, and subscribe to the new podcast feed
+			this.unsubscribeFromStreamFeed();
+			this.subscribeToStreamFeed(
+				nextProps.podcast._id,
+				nextProps.podcast.streamToken,
+			);
 		}
+		// if we didn't have a podcast before, subscribe to the new podcast feed
+		if (!this.props.podcast && nextProps.podcast) {
+			this.subscribeToStreamFeed(
+				nextProps.podcast._id,
+				nextProps.podcast.streamToken,
+			);
+		}
+	}
+
+	componentWillUnmount() {
+		this.unsubscribeFromStreamFeed();
 	}
 
 	getEpisodes(forPodcastID) {
@@ -242,7 +284,25 @@ class PodcastEpisodesView extends React.Component {
 					</div>
 				</div>
 
-				<div className="list podcast-episode-list content">{rightColumn}</div>
+				<div className="list podcast-episode-list content">
+					{this.state.newEpisodesAvailable ? (
+						<div
+							className="toast"
+							onClick={() => {
+								this.props.getPodcast(this.props.match.params.podcastID);
+								this.getEpisodes(this.props.match.params.podcastID);
+								getPinnedEpisodes(this.props.dispatch);
+								getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
+								this.setState({
+									newEpisodesAvailable: false,
+								});
+							}}
+						>
+							New episodes available - click to refresh
+						</div>
+					) : null}
+					{rightColumn}
+				</div>
 			</React.Fragment>
 		);
 	}
@@ -280,6 +340,7 @@ PodcastEpisodesView.propTypes = {
 			og: PropTypes.string,
 		}),
 		title: PropTypes.string,
+		streamToken: PropTypes.string.isRequired,
 	}),
 	resumeEpisode: PropTypes.func.isRequired,
 	unfollowPodcast: PropTypes.func.isRequired,

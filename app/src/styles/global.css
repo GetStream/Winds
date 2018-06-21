@@ -1099,6 +1099,15 @@ a.column-header:hover {
 .list {
   padding-left: 4px;
   padding-top: 4px; }
+  .list .toast {
+    background-color: #efefef;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 2em;
+    padding: 1em;
+    text-align: center;
+    text-transform: uppercase; }
   .list .end-loader,
   .list .end {
     align-items: center;

@@ -121,6 +121,9 @@ export const PodcastSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.streamToken = getStreamClient()
+					.feed('podcast', ret._id)
+					.getReadOnlyToken();
 			},
 		},
 		toObject: {
@@ -131,6 +134,9 @@ export const PodcastSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.streamToken = getStreamClient()
+					.feed('podcast', ret._id)
+					.getReadOnlyToken();
 			},
 		},
 	},

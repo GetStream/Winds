@@ -20,6 +20,7 @@ class RSSArticleList extends React.Component {
 			articleCursor: 1,
 			menuIsOpen: false,
 			sortBy: 'latest',
+			newArticlesAvailable: false,
 		};
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
@@ -35,12 +36,33 @@ class RSSArticleList extends React.Component {
 		});
 	}
 
+	subscribeToStreamFeed(rssFeedID, streamFeedToken) {
+		this.subscription = window.streamClient
+			.feed('rss', rssFeedID, streamFeedToken)
+			.subscribe(() => {
+				this.setState({
+					newArticlesAvailable: true,
+				});
+			});
+	}
+
+	unsubscribeFromStreamFeed() {
+		this.subscription.cancel();
+	}
+
 	componentDidMount() {
 		this.getRSSFeed(this.props.match.params.rssFeedID);
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
 		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
+		// subscribe to feed updates
+		if (this.props.rssFeed) {
+			this.subscribeToStreamFeed(
+				this.props.rssFeed._id,
+				this.props.rssFeed.streamToken,
+			);
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
@@ -57,6 +79,20 @@ class RSSArticleList extends React.Component {
 					getFeed(this.props.dispatch, 'article', 0, 20);
 				},
 			);
+			// if we're switching rss feeds, unsubscribe from the old rss feed, and subscribe to the new rss feed
+			this.unsubscribeFromStreamFeed();
+			this.subscribeToStreamFeed(
+				nextProps.rssFeed._id,
+				nextProps.rssFeed.streamToken,
+			);
+		}
+
+		// if we didn't have a rss feed before, subscribe to the new rss feed
+		if (!this.props.rssFeed && nextProps.rssFeed) {
+			this.subscribeToStreamFeed(
+				nextProps.rssFeed._id,
+				nextProps.rssFeed.streamToken,
+			);
 		}
 
 		// scroll down to last saved position, then delete from localStorage
@@ -66,6 +102,9 @@ class RSSArticleList extends React.Component {
 				localStorage['rss-article-list-scroll-position'];
 			delete localStorage['rss-article-list-scroll-position'];
 		}
+	}
+	componentWillUnmount() {
+		this.unsubscribeFromStreamFeed();
 	}
 	getRSSFeed(rssFeedID) {
 		return fetch('GET', `/rss/${rssFeedID}`)
@@ -199,15 +238,15 @@ class RSSArticleList extends React.Component {
 			if (this.props.articles.length === 0) {
 				rightContents = (
 					<div>
-						<p>{"We haven't found any articles for this RSS feed yet :("}</p>
+						<p>{'We haven\'t found any articles for this RSS feed yet :('}</p>
 						<p>
 							{
-								"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
+								'It might be because the RSS feed doesn\'t have any articles, or because it just got added and we\'re still parsing them. Come check back in a few minutes?'
 							}
 						</p>
 						<p>
 							{
-								"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
+								'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
 							}
 							<a href="https://github.com/getstream/winds/issues">
 								GitHub Issue
@@ -234,10 +273,10 @@ class RSSArticleList extends React.Component {
 
 						{this.state.reachedEndOfFeed ? (
 							<div className="end">
-								<p>{"That's it! No more articles here."}</p>
+								<p>{'That\'s it! No more articles here.'}</p>
 								<p>
 									{
-										"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
+										'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
 									}
 								</p>
 							</div>
@@ -296,6 +335,27 @@ class RSSArticleList extends React.Component {
 						</div>
 					</div>
 					<div className="list content" ref={this.contentsEl}>
+						{this.state.newArticlesAvailable ? (
+							<div
+								className="toast"
+								onClick={() => {
+									this.getRSSFeed(this.props.match.params.rssFeedID);
+									this.getFollowState(
+										this.props.match.params.rssFeedID,
+									);
+									this.getRSSArticles(
+										this.props.match.params.rssFeedID,
+									);
+									getPinnedArticles(this.props.dispatch);
+									getFeed(this.props.dispatch, 'article', 0, 20);
+									this.setState({
+										newArticlesAvailable: false,
+									});
+								}}
+							>
+								New episodes available - click to refresh
+							</div>
+						) : null}
 						{rightContents}
 					</div>
 				</React.Fragment>
@@ -308,9 +368,6 @@ RSSArticleList.defaultProps = {
 	articles: [],
 	loading: true,
 	following: false,
-	rssFeed: {
-		images: {},
-	},
 };
 
 RSSArticleList.propTypes = {
@@ -330,6 +387,7 @@ RSSArticleList.propTypes = {
 			og: PropTypes.string,
 		}),
 		title: PropTypes.string,
+		streamToken: PropTypes.string.isRequired,
 	}),
 };
 

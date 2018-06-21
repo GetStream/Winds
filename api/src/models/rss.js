@@ -126,6 +126,9 @@ export const RSSSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.streamToken = getStreamClient()
+					.feed('rss', ret._id)
+					.getReadOnlyToken();
 			},
 		},
 		toObject: {
@@ -136,6 +139,9 @@ export const RSSSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.streamToken = getStreamClient()
+					.feed('rss', ret._id)
+					.getReadOnlyToken();
 			},
 		},
 	},

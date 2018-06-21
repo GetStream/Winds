@@ -29,5 +29,6 @@ module.exports = {
 		'quote-props': ['warn', 'consistent-as-needed'],
 		'react/no-deprecated': 'off',
 		'no-console': 0,
+		'keyword-spacing': ['error']
 	},
 };
