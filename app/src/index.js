@@ -3,12 +3,20 @@ import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Raven from 'raven-js';
+import stream from 'getstream';
 
 import packageInfo from '../package.json';
 
 Raven.config(process.env.REACT_APP_SENTRY_DSN, {
 	release: packageInfo.version,
 }).install();
+
+// set up single instance of stream client
+window.streamClient = stream.connect(
+	process.env.REACT_APP_STREAM_API_KEY,
+	null,
+	process.env.REACT_APP_STREAM_APP_ID,
+);
 
 Raven.context(() => {
 	ReactDOM.render(<App />, document.getElementById('root'));

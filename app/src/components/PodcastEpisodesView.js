@@ -22,13 +22,24 @@ class PodcastEpisodesView extends React.Component {
 			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
 			menuIsOpen: false,
 			sortBy: 'latest',
+			newEpisodesAvailable: false,
 		};
 	}
+	subscribeToStreamFeed(podcastID, streamFeedKey) {
+		console.log("subscribing to stream feed....");
+		window.streamClient.feed('podcast', podcastID);
+	}
+
 	componentDidMount() {
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.getEpisodes(this.props.match.params.podcastID);
 		getPinnedEpisodes(this.props.dispatch);
 		getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
+		// subscribe to feed updates
+		console.log(this.props);
+		if (this.props.podcast) {
+			this.subscribeToStreamFeed(this.props.match.params.podcastID);
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
