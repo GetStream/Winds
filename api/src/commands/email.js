@@ -14,52 +14,32 @@ import asyncTasks from '../asyncTasks';
 import config from '../config';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import * as personalization from '../utils/personalization';
 
-program.parse(process.argv);
-
-async function getRecommendations(userID, type) {
-	return [];
-	if (!userID) {
-		throw Error('missing user id');
-	}
-	const token = jwt.sign(
-		{
-			action: '*',
-			feed_id: '*',
-			resource: '*',
-			user_id: '*',
-		},
-		config.stream.apiSecret,
-		{ algorithm: 'HS256', noTimestamp: true },
-	);
-
-	let response = await axios({
-		baseURL: config.stream.baseUrl,
-		headers: {
-			Authorization: token,
-			'Content-Type': 'application/json',
-			'Stream-Auth-Type': 'jwt',
-		},
-		method: 'GET',
-		params: {
-			api_key: config.stream.apiKey,
-			user_id: userID,
-		},
-		url: `/winds_${type}_recommendations`,
-	});
-	console.log(response.data);
-	let articleIDs = response.data.results.map(result => {
-		return result.foreign_id.split(':')[1];
-	});
-	return articleIDs;
-}
+program.option('--send', 'Actually send the email').parse(process.argv);
 
 async function sendEmail(user, globalContext) {
+	// TODO: make the sendEmail prod/send email configurable
+	// enable all staff users
 	const userID = user._id;
-	let articles = getArticleRecommendations(userID);
-	let episodes = getEpisodeRecommendations(userID);
-	let podcasts = getPodcastRecommendations(userID);
-	let rss = getRSSRecommendations(userID);
+	let articles = [];
+	let episodes = [];
+	let podcasts = [];
+
+	let rss = [];
+
+	try {
+		articles = await personalization.getArticleRecommendations(userID);
+		episodes = await personalization.getEpisodeRecommendations(userID);
+	} catch (e) {
+		logger.info(`article recommendations failed for ${userID}`);
+	}
+	try {
+		podcasts = await personalization.getPodcastRecommendations(userID);
+		rss = await personalization.getRSSRecommendations(userID);
+	} catch (e) {
+		logger.info(`follow suggestions failed for ${userID}`);
+	}
 
 	let userContext = {
 		email: user.email,
@@ -72,7 +52,11 @@ async function sendEmail(user, globalContext) {
 	let context = Object.assign({}, userContext, globalContext);
 
 	let obj = CreateWeeklyEmail(context);
-	console.log(obj.html);
+	logger.info(`email ${obj.html}`);
+	if (program.send) {
+		logger.info(`sending email, yee to user ${user.email}`);
+		SendWeeklyEmail(context);
+	}
 }
 
 async function main() {
@@ -86,16 +70,11 @@ async function main() {
 	counts.rss = await RSS.find({}).count();
 	counts.podcast = await Podcast.find({}).count();
 	let data = { counts };
-
 	let users = await User.find({});
 	let enabledUsers = users.filter(u => {
-		if (['thierryschellenbach@gmail.com'].includes(u.email)) {
-			return true;
-		} else if (u.email.indexOf('getstream') != -1) {
-			return true;
-		}
-		return false;
+		return u.weeklyEmail || u.admin;
 	});
+	logger.info(`going to email ${enabledUsers.length} users`);
 	for (const u of enabledUsers) {
 		await sendEmail(u, data);
 	}
