@@ -20,6 +20,7 @@ class RSSArticleList extends React.Component {
 			articleCursor: 1,
 			menuIsOpen: false,
 			sortBy: 'latest',
+			newArticlesAvailable: true,
 		};
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
@@ -35,12 +36,36 @@ class RSSArticleList extends React.Component {
 		});
 	}
 
+	subscribeToStreamFeed(rssFeedID, streamFeedToken) {
+		console.log(rssFeedID);
+		this.subscription = window.streamClient
+			.feed('rss', rssFeedID, streamFeedToken)
+			.subscribe(data => {
+				console.log(data);
+				this.setState({
+					newArticlesAvailable: true,
+				});
+			});
+	}
+
+	unsubscribeFromStreamFeed() {
+		this.subscription.cancel();
+	}
+
 	componentDidMount() {
 		this.getRSSFeed(this.props.match.params.rssFeedID);
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
 		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
+		// subscribe to feed updates
+		if (this.props.rssFeed) {
+			console.log(this.props.rssFeed);
+			this.subscribeToStreamFeed(
+				this.props.rssFeed._id,
+				this.props.rssFeed.streamToken,
+			);
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
@@ -56,6 +81,20 @@ class RSSArticleList extends React.Component {
 					getPinnedArticles(this.props.dispatch);
 					getFeed(this.props.dispatch, 'article', 0, 20);
 				},
+			);
+			// if we're switching rss feeds, unsubscribe from the old rss feed, and subscribe to the new rss feed
+			this.unsubscribeFromStreamFeed();
+			this.subscribeToStreamFeed(
+				nextProps.rssFeed._id,
+				nextProps.rssFeed.streamToken,
+			);
+		}
+
+		// if we didn't have a rss feed before, subscribe to the new rss feed
+		if (!this.props.rssFeed && nextProps.rssFeed) {
+			this.subscribeToStreamFeed(
+				nextProps.rssFeed._id,
+				nextProps.rssFeed.streamToken,
 			);
 		}
 
@@ -296,6 +335,27 @@ class RSSArticleList extends React.Component {
 						</div>
 					</div>
 					<div className="list content" ref={this.contentsEl}>
+						{this.state.newArticlesAvailable ? (
+							<div
+								className="toast"
+								onClick={() => {
+									this.getRSSFeed(this.props.match.params.rssFeedID);
+									this.getFollowState(
+										this.props.match.params.rssFeedID,
+									);
+									this.getRSSArticles(
+										this.props.match.params.rssFeedID,
+									);
+									getPinnedArticles(this.props.dispatch);
+									getFeed(this.props.dispatch, 'article', 0, 20);
+									this.setState({
+										newArticlesAvailable: false,
+									});
+								}}
+							>
+								New episodes available - click to refresh
+							</div>
+						) : null}
 						{rightContents}
 					</div>
 				</React.Fragment>
@@ -308,9 +368,6 @@ RSSArticleList.defaultProps = {
 	articles: [],
 	loading: true,
 	following: false,
-	rssFeed: {
-		images: {},
-	},
 };
 
 RSSArticleList.propTypes = {
