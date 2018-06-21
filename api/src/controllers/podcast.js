@@ -14,7 +14,7 @@ exports.list = async (req, res) => {
 	let podcasts;
 
 	if (query.type === 'recommended') {
-		podcasts = await getPodcastRecommendations(req.User);
+		podcasts = await getPodcastRecommendations(req.User._id.toString());
 	} else {
 		podcasts = await Podcast.apiQuery(req.query);
 	}
