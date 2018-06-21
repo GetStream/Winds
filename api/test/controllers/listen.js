@@ -20,66 +20,6 @@ describe('Listen controller', () => {
 		listen = await Listen.findOne().lean();
 	});
 
-	describe('listing all entries', () => {
-		it('should return 200 for valid request', async () => {
-			const response = await withLogin(request(api).get('/listens'));
-
-			expect(response).to.have.status(200);
-			expect(response.body.map(l => l._id)).to.include(String(listen._id));
-
-			const keys = ['_id', 'user', 'episode', 'duration'];
-			for (const entry of response.body) {
-				expect(Object.keys(entry)).to.include.members(keys);
-			}
-		});
-
-		it('should filter results if query is provided', async () => {
-			const response = await withLogin(request(api).get('/listens').query({ episode: episodeId }));
-
-			expect(response).to.have.status(200);
-			expect(response.body.map(l => l._id)).to.include(String(listen._id));
-		});
-
-		it('should return 500 for invalid request', async () => {
-			//XXX: silensing error logs to have nice clean test output
-			sinon.stub(logger, 'error');
-			const response = await withLogin(request(api).get('/listens').query({ episode: { $gte: '' } }));
-
-			expect(response).to.have.status(500);
-			logger.error.restore();
-		});
-	});
-
-	describe('retrieving entry by id', () => {
-		it('should return 200 for valid request', async () => {
-			const response = await withLogin(request(api).get(`/listens/${listen._id}`));
-
-			expect(response).to.have.status(200);
-			const keys = ['_id', 'user', 'episode', 'duration'];
-			expect(Object.keys(response.body)).to.include.members(keys);
-
-			for (const key of keys) {
-				//XXX: converting to string to avoid type differences
-				expect(String(response.body[key]._id || response.body[key])).to.be.equal(String(listen[key]));
-			}
-		});
-
-		it('should return 404 for invalid id', async () => {
-			const response = await withLogin(request(api).get('/listens/5b0f306d8e147f10deadbeef'));
-
-			expect(response).to.have.status(404);
-		});
-
-		it('should return 500 for invalid request', async () => {
-			//XXX: silensing error logs to have nice clean test output
-			sinon.stub(logger, 'error');
-			const response = await withLogin(request(api).get('/listens/<bogus-id>/'));
-
-			expect(response).to.have.status(500);
-			logger.error.restore();
-		});
-	});
-
 	describe('upsert entry', () => {
 		it('should return 200 for new entry', async () => {
 			const data = {
@@ -142,27 +82,5 @@ describe('Listen controller', () => {
 		});
 	});
 
-	describe('deleting entry by id', () => {
-		it('should return 204 for valid request', async () => {
-			const response = await withLogin(request(api).delete(`/listens/${listen._id}`));
-
-			expect(response).to.have.status(204);
-			expect(await Listen.findById(listen._id)).to.be.null;
-		});
-
-		it('shoudl return 404 for invalid id', async () => {
-			const response = await withLogin(request(api).delete('/listens/5b0f306d8e147f10deadbeef'));
-
-			expect(response).to.have.status(404);
-		});
-
-		it('should return 500 for invalid request', async () => {
-			//XXX: silensing error logs to have nice clean test output
-			sinon.stub(logger, 'error');
-			const response = await withLogin(request(api).delete('/listens/<bogus-id>/'));
-
-			expect(response).to.have.status(500);
-			logger.error.restore();
-		});
-	});
+	
 });

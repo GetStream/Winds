@@ -30,7 +30,7 @@ export async function trackEngagement(user, engagement) {
 	let analyticsClient = getAnalyticsClient();
 	analyticsClient.setUser({
 		alias: user.email,
-		id: user._id,
+		id: user._id.toString(),
 	});
 	if (Object.keys(engagement).length && !config.analyticsDisabled) {
 		const res = await analyticsClient.trackEngagement(engagement);

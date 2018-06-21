@@ -4,6 +4,7 @@ import Article from '../../models/article';
 import Podcast from '../../models/podcast';
 import RSS from '../../models/rss';
 import Episode from '../../models/episode';
+import logger from '../../utils/logger';
 
 import config from '../../config';
 
@@ -55,17 +56,28 @@ export async function getRSSRecommendations(userID, limit=20) {
 	return RSS.find({ _id: { $in: ids } });
 }
 
-export async function getArticleRecommendations(userID, limit=20) {
-	let ids = await getRecommendations(userID, 'article', limit);
-	return Article.find({ _id: { $in: ids } });
-}
+
 
 export async function getPodcastRecommendations(userID, limit=20) {
 	let ids = await getRecommendations(userID, 'podcast', limit);
+
 	return Podcast.find({ _id: { $in: ids } });
 }
 
 export async function getEpisodeRecommendations(userID, limit=20) {
 	let ids = await getRecommendations(userID, 'episode', limit);
-	return Episode.find({ _id: { $in: ids } });
+	let episodes = await Episode.find({ _id: { $in: ids } });
+	if (ids.length != episodes.length) {
+		logger.warn(`failed to find some episodes from list ${ids.join(',')}`)
+	}
+	return episodes
+}
+
+export async function getArticleRecommendations(userID, limit=20) {
+	let ids = await getRecommendations(userID, 'article', limit);
+	let articles = await Article.find({ _id: { $in: ids } });
+	if (ids.length != articles.length) {
+		logger.warn(`failed to find some articles from list ${ids.join(',')}`)
+	}
+	return articles
 }

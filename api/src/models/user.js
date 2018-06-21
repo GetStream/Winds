@@ -5,6 +5,8 @@ import mongooseStringQuery from 'mongoose-string-query';
 
 import FollowSchema from './follow';
 import PinSchema from './pin';
+import ListenSchema from './listen';
+
 import PlaylistSchema from './playlist';
 import stream from 'getstream';
 
@@ -120,6 +122,7 @@ UserSchema.post('remove', async function(user) {
 		PinSchema.remove({ user }),
 		PlaylistSchema.remove({ user }),
 		FollowSchema.remove({ user }),
+		ListenSchema.remove({ user }),
 	]);
 });
 
