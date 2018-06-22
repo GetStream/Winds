@@ -29,17 +29,40 @@ describe('RSS worker', () => {
 	});
 
 	describe('queue', () => {
-		it('should call worker when enqueueing jobs', async () => {
-			setupHandler();
+		const testCases = [
+			'http://apublica.org/feed',
+			'http://audiworld.com/rss.xml',
+			'http://bookshadow.com/weblog/feeds',
+			'http://dingxiaoyun555.blog.163.com/rss',
+			'http://douban.com/feed/people/52041165/interests',
+			'http://geektopia.es/rss.xml',
+			'http://kaiak.tw/?cat=205&feed=rss2',
+			'http://maxwell-land-surveying.com/feed',
+			'http://rss.cnki.net/kns/rss.aspx?journal=hhzx&virtual=knavi',
+			'http://shanzhuoboshi.com/feed',
+			'http://sospc.name/feed',
+			'http://straitstimes.com/news/asia/rss.xml',
+			'http://tejiendoelmundo.wordpress.com/feed',
+			'http://thewildeternal.com/blog/feed',
+			'http://totoyao.wordpress.com/feed',
+			'http://xda-developers.com/category/android/feed',
+			'http://zhukun.net/feed',
+			'https://90.cx/feed',
+			'https://api.prprpr.me/weibo/rss/5953553734',
+			'https://lowendbox.com/feed',
+			'https://seattle.craigslist.org/search/act?format=rss',
+			'https://torrentedigital.com/feed',
+			'https://ttt.tt/feed',
+		];
 
-			const data = {
-				rss: '5b0ad0baf6f89574a638887a',
-				url: 'https://seattle.craigslist.org/search/act?format=rss'
-			};
+		for (let i = 0; i < testCases.length; ++i) {
+			it(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
+				setupHandler();
 
-			await rssQueue.add(data);
-			await handler;
-		});
+				await rssQueue.add({ rss: '5b0ad0baf6f89574a638887a', url: testCases[i] });
+				await handler;
+			});
+		}
 
 		it('should fail for invalid job', async () => {
 			const testCases = [
