@@ -104,7 +104,7 @@ export const UserSchema = new Schema(
 				}
 				ret.streamTokens = {};
 				for (const k of ['timeline', 'user_article', 'user_episode']) {
-					let token = getStreamClient.feed(k, ret._id).getReadOnlyToken();
+					let token = getStreamClient().feed(k, ret._id).getReadOnlyToken();
 					ret.streamTokens[k] = token;
 				}
 			},
@@ -117,7 +117,7 @@ export const UserSchema = new Schema(
 				}
 				ret.streamTokens = {};
 				for (const k of ['timeline', 'user_article', 'user_episode']) {
-					let token = getStreamClient.feed(k, ret._id).getReadOnlyToken();
+					let token = getStreamClient().feed(k, ret._id).getReadOnlyToken();
 					ret.streamTokens[k] = token;
 				}
 			},

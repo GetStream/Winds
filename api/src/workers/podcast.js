@@ -84,7 +84,7 @@ export async function handlePodcast(job) {
 	);
 
 	await Promise.all(
-		updatedEpisodes.map(episode => {
+		updatedEpisodes.filter(e => !!e.link).map(episode => {
 			OgQueueAdd(
 				{
 					type: 'episode',

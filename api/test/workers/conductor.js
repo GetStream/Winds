@@ -7,9 +7,15 @@ import { conduct } from '../../src/workers/conductor';
 import { RssQueueAdd, PodcastQueueAdd } from '../../src/asyncTasks';
 import { loadFixture, dropDBs } from '../utils';
 
+function beforeDeadline() {
+	return moment().subtract(3, 'minutes').toDate();
+}
+
+function afterDeadline() {
+	return moment().subtract(1, 'minutes').toDate();
+}
+
 describe('Conductor worker', () => {
-	const beforeDeadline = moment().subtract(3, 'minutes').toDate();
-	const afterDeadline = moment().subtract(1, 'minutes').toDate();
 	let RssQueueAddFn;
 	let PodcastQueueAddFn;
 
@@ -38,7 +44,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 		const podcastBefore = await Podcast.create({
 			title: "Podcast feed",
@@ -47,7 +53,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
-			lastScraped: afterDeadline
+			lastScraped: afterDeadline()
 		});
 
 		await conduct();
@@ -69,7 +75,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 		const podcastBefore = await Podcast.create({
 			title: "Podcast feed",
@@ -78,7 +84,7 @@ describe('Conductor worker', () => {
 			followerCount: 0,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 
 		await conduct();
@@ -100,7 +106,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 		const podcastBefore = await Podcast.create({
 			title: "Podcast feed",
@@ -109,7 +115,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 
 		await conduct();
@@ -131,7 +137,7 @@ describe('Conductor worker', () => {
 				followerCount: 2,
 				consecutiveScrapeFailures: 0,
 				feedUrl: `http://google.com/${i}`,
-				lastScraped: beforeDeadline
+				lastScraped: beforeDeadline()
 			});
 			await RSS.create({
 				title: `RSS popular feed #${i}`,
@@ -140,7 +146,7 @@ describe('Conductor worker', () => {
 				followerCount: 102,
 				consecutiveScrapeFailures: 0,
 				feedUrl: `http://google.com/${i}`,
-				lastScraped: beforeDeadline
+				lastScraped: beforeDeadline()
 			});
 		}));
 
@@ -159,7 +165,7 @@ describe('Conductor worker', () => {
 				followerCount: 2,
 				consecutiveScrapeFailures: 0,
 				feedUrl: `http://google.com/${i}`,
-				lastScraped: beforeDeadline
+				lastScraped: beforeDeadline()
 			});
 			await RSS.create({
 				title: `RSS popular feed #${i}`,
@@ -168,7 +174,7 @@ describe('Conductor worker', () => {
 				followerCount: 102,
 				consecutiveScrapeFailures: 0,
 				feedUrl: `http://google.com/${i}`,
-				lastScraped: beforeDeadline
+				lastScraped: beforeDeadline()
 			});
 		}));
 
@@ -192,7 +198,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 		const podcast = await Podcast.create({
 			title: "Podcast feed",
@@ -201,7 +207,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 		const rssJob = { rss: rss._id, url: rss.feedUrl };
 		const podcastJob = { podcast: podcast._id, url: podcast.feedUrl };
@@ -220,7 +226,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 		const podcastBefore = await Podcast.create({
 			title: "Podcast feed",
@@ -229,7 +235,7 @@ describe('Conductor worker', () => {
 			followerCount: 2,
 			consecutiveScrapeFailures: 65,
 			feedUrl: 'http://bing.com',
-			lastScraped: beforeDeadline
+			lastScraped: beforeDeadline()
 		});
 
 		await conduct();

@@ -37,7 +37,7 @@ async function main() {
 			let promises = [];
 			for (const instance of chunk) {
 				let missingImage = !instance.images || !instance.images.og;
-				if (missingImage || program.all) {
+				if ((missingImage || program.all) && instance[field]) {
 					let promise = OgQueueAdd(
 						{
 							type: contentType,

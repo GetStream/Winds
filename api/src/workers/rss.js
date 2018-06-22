@@ -116,7 +116,7 @@ export async function handleRSS(job) {
 
 	await timeIt('winds.handle_rss.OgQueueAdd', () => {
 		return Promise.all(
-			updatedArticles.map(article => {
+			updatedArticles.filter(a => !!a.url).map(article => {
 				OgQueueAdd(
 					{
 						type: 'article',

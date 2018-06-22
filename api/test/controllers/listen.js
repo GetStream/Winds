@@ -16,7 +16,7 @@ describe('Listen controller', () => {
 		await dropDBs();
 		await loadFixture('initial-data', 'listens');
 
-		listen = await Listen.findOne().lean();
+		listen = (await Listen.find().sort('_id').limit(1).lean())[0];
 		user = listen.user;
 	});
 

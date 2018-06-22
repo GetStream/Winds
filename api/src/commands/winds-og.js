@@ -24,10 +24,14 @@ async function main() {
 		let isValid = await IsValidOGUrl(ogUrl);
 		if (!isValid) {
 			logger.warn(`invalid URL ${ogUrl}`);
-			return;
+			continue;
 		}
 
 		let normalizedUrl = normalize(ogUrl);
+		if (!normalizedUrl) {
+			logger.warn(`no normalized URL for '${ogUrl}'`);
+			continue;
+		}
 		logger.info(`Looking for og images at ${normalizedUrl} for type ${program.type}`);
 
 		let ogImage = await ParseOG(normalizedUrl);

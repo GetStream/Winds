@@ -145,11 +145,11 @@ export function ParsePodcastPosts(posts, limit = 1000) {
 					: post.guid;
 		}
 		url = normalize(url);
-		const title = strip(post.title);
 		if (!url) {
 			logger.info('skipping episode since there is no url');
 			continue;
 		}
+		const title = strip(post.title);
 		if (!title) {
 			logger.info('skipping episode since there is no title');
 			continue;
@@ -172,7 +172,7 @@ export function ParsePodcastPosts(posts, limit = 1000) {
 			images: { og: image },
 			publicationDate: time,
 			title: strip(post.title),
-			url: normalize(url),
+			url: url,
 		});
 		podcastContent.episodes.push(episode);
 	}

@@ -44,7 +44,7 @@ export async function handleOg(job) {
 		return logger.error(`couldnt find schema for jobtype ${jobType}`);
 	}
 	if (!url) {
-		return logger.error(`URL is missing`);
+		return logger.error(`URL is missing for jobtype ${jobType}`);
 	}
 
 	// Lookup the right type of schema: article, episode or podcast
