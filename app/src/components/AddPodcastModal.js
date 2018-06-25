@@ -62,7 +62,7 @@ class AddPodcastModal extends React.Component {
 					submitting: false,
 				});
 			})
-			.catch(err => {
+			.catch(() => {
 				this.setState({
 					errorMessage: 'Oops, something went wrong. Please try again later.',
 					errored: true,
@@ -150,7 +150,7 @@ class AddPodcastModal extends React.Component {
 						/>
 					</div>
 					<div className="info">
-						Enter a valid podcast URL and we'll add it to Winds.
+						{'Enter a valid podcast URL and we\'ll add it to Winds.'}
 					</div>
 					<div className="error-message">{this.state.errorMessage}</div>
 					<div className="buttons">
@@ -159,7 +159,7 @@ class AddPodcastModal extends React.Component {
 							disabled={this.state.submitting || this.state.success}
 							type="submit"
 						>
-							<Img src={saveIcon} />
+							<Img decode={false} src={saveIcon} />
 							<span className="button-text">Add Podcast</span>
 						</button>
 						<button
@@ -287,6 +287,8 @@ AddPodcastModal.defaultProps = {
 };
 
 AddPodcastModal.propTypes = {
+	history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+	dispatch: PropTypes.func.isRequired,
 	done: PropTypes.func.isRequired,
 	isOpen: PropTypes.bool,
 	toggleModal: PropTypes.func.isRequired,

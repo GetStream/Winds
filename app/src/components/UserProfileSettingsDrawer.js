@@ -70,7 +70,7 @@ class UserProfileSettingsDrawer extends React.Component {
 		e.preventDefault();
 		e.stopPropagation();
 		fetch('DELETE', `/users/${this.props._id}`)
-			.then(response => {
+			.then(() => {
 				this.props.closeDrawer();
 				localStorage.clear();
 				window.location.reload();
@@ -147,7 +147,7 @@ class UserProfileSettingsDrawer extends React.Component {
 				<div className="panel-element">
 					<div className="header">
 						<h3>Delete Account</h3>
-						<p class="message">
+						<p className="message">
 							<strong>Warning:</strong> This cannot be undone.
 						</p>
 					</div>
@@ -298,15 +298,15 @@ class UserProfileSettingsDrawer extends React.Component {
 						>
 							<button
 								className="btn link cancel"
-								type="button"
 								onClick={this.toggleDeleteAccountPopover}
+								type="button"
 							>
 								Delete account
 							</button>
 						</Popover>
 					</div>
 					<button className="btn primary with-circular-icon" type="submit">
-						<Img src={saveIcon} />
+						<Img decode={false} src={saveIcon} />
 						<span>Save</span>
 					</button>
 				</footer>
@@ -344,7 +344,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						disabled={!this.passwordIsValid()}
 						type="submit"
 					>
-						<Img src={saveIcon} />
+						<Img decode={false} src={saveIcon} />
 						<span>Save</span>
 					</button>
 				</footer>
@@ -361,6 +361,7 @@ class UserProfileSettingsDrawer extends React.Component {
 					<h1>Settings</h1>
 					<Img
 						className="close-icon"
+						decode={false}
 						onClick={this.props.closeDrawer}
 						src="/images/buttons/close.svg"
 					/>
