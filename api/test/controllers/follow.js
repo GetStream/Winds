@@ -8,8 +8,8 @@ import User from '../../src/models/user';
 import { loadFixture, withLogin, dropDBs } from '../utils';
 
 describe('Follow controller', () => {
-	let followRSS;
-	let followPodcast;
+	let followedRSS;
+	let followedPodcast;
 	let rss;
 	let podcast;
 	let user;
@@ -18,8 +18,8 @@ describe('Follow controller', () => {
 		await dropDBs();
 		await loadFixture('initial-data', 'follows');
 
-		followRSS = await Follow.findOne({ rss: { $exists: true, $ne: null } });
-		followPodcast = await Follow.findOne({ podcast: { $exists: true, $ne: null } });
+		followedRSS = await Follow.findOne({ rss: { $exists: true, $ne: null } });
+		followedPodcast = await Follow.findOne({ podcast: { $exists: true, $ne: null } });
 
 		rss = (await RSS.find()
 			.sort('_id')
@@ -80,7 +80,7 @@ describe('Follow controller', () => {
 
     describe('get', () => {
 		it('should return an RSS object if the current user follows the provided feed', async () => {
-			const res = await withLogin(request(api).get(`/follows?user=${user._id}&rss={followRSS.rss._id}`));
+			const res = await withLogin(request(api).get(`/follows?user=${user._id}&rss={followedRSS.rss._id}`));
 			expect(res).to.have.status(200);
 		});
 	});
@@ -157,7 +157,7 @@ describe('Follow controller', () => {
 	describe('post', () => {
 		it('should follow an existing RSS feed', async () => {
 			const res = await withLogin(
-				request(api).post(`/follows?type=rss&rss=${followRSS.rss._id}`),
+				request(api).post(`/follows?type=rss&rss=${followedRSS.rss._id}`),
 			);
 			expect(res).to.have.status(200);
 		});
@@ -167,7 +167,7 @@ describe('Follow controller', () => {
 		it('should follow an existing podcast feed', async () => {
 			const res = await withLogin(
 				request(api).post(
-					`/follows?type=podcast&podcast=${followPodcast.podcast._id}`,
+					`/follows?type=podcast&podcast=${followedPodcast.podcast._id}`,
 				),
 			);
 			expect(res).to.have.status(200);
@@ -178,7 +178,7 @@ describe('Follow controller', () => {
 		it('should remove an RSS follow relationship', async () => {
 			const res = await withLogin(
 				request(api).delete(
-					`/follows?type=rss&rss=${followRSS.rss._id}`,
+					`/follows?type=rss&rss=${followedRSS.rss._id}`,
 				),
 			);
 			expect(res).to.have.status(204);
@@ -189,7 +189,7 @@ describe('Follow controller', () => {
 		it('should remove a podcast follow relationship', async () => {
 			const res = await withLogin(
 				request(api).delete(
-					`/follows?type=podcast&podcast=${followPodcast.podcast._id}`,
+					`/follows?type=podcast&podcast=${followedPodcast.podcast._id}`,
 				),
 			);
 			expect(res).to.have.status(204);
@@ -200,7 +200,7 @@ describe('Follow controller', () => {
 		it('should remove a follow relationship that does not exist', async () => {
 			const res = await withLogin(
 				request(api).delete(
-					`/follows?type=rss&rss=${followRSS.rss._id}`,
+					`/follows?type=rss&rss=${followedRSS.rss._id}`,
 				),
 			);
 			expect(res).to.have.status(204);
