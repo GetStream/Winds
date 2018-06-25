@@ -9,7 +9,6 @@ describe('Health controller', () => {
 
 	before(async () => {
 		await dropDBs();
-		//await loadFixture('initial-data');
 	});
 
 	describe('get', () => {
