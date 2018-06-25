@@ -9,13 +9,11 @@ const cache = new Redis(config.cache.uri);
 
 exports.list = async (req, res) => {
 	const cacheKey = `featured:v${packageInfo.version.replace(/\./g, ':')}`;
-	console.log(cacheKey);
 
 	let resultString = await cache.get(cacheKey);
 	let results = JSON.parse(resultString);
 
 	if (!results) {
-		console.log('miss');
 		const rss = await RSS.find({ featured: true }).lean();
 		results = [];
 		rss.map(feed => {
