@@ -72,6 +72,7 @@ export async function handleRSS(job) {
 			return res;
 		} catch (err) {
 			await RSS.incrScrapeFailures(rssID);
+			logger.warn({err});
 			throw new Error(`http request failed for url ${job.data.url}`);
 		}
 	});

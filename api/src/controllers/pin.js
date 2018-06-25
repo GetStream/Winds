@@ -28,10 +28,9 @@ exports.get = async (req, res) => {
 };
 
 exports.post = async (req, res) => {
-	const data = Object.assign({}, req.body, { user: req.user.sub }) || {};
+	const data = Object.assign({}, req.body, { user: req.user.sub });
 
 	let type;
-	let pin;
 
 	if (data.hasOwnProperty('article')) {
 		type = 'article';
@@ -43,45 +42,36 @@ exports.post = async (req, res) => {
 		});
 	}
 
-	let obj = { user: data.user };
+	const obj = { user: data.user, [type]: data[type] };
 
-	obj[type] = { $exists: true };
-	obj[type] = data[type];
-
-	pin = await Pin.findOne(obj);
-
-	if (pin) {
+	if (!!await Pin.findOne(obj)) {
 		return res.status(409).json({ error: 'Resource already exists.' });
-	} else {
-		pin = await Pin.create(data);
+	}
 
-		await getStreamClient()
-			.feed('user', pin.user)
-			.addActivity({
-				actor: pin.user,
-				verb: 'pin',
-				object: pin._id,
-				foreign_id: `pins:${pin._id}`,
-				time: pin.createdAt,
-			});
+	const pin = await Pin.create(data);
 
-		const label = pin.article ? 'pin_article' : 'pin_episode';
-		const foreignID = pin.article
-			? `article:${pin.article}`
-			: `episode:${pin.episode}`;
-		await trackEngagement(req.User, {
-			label: label,
-			content: { foreign_id: foreignID },
+	await getStreamClient()
+		.feed('user', pin.user)
+		.addActivity({
+			actor: pin.user,
+			verb: 'pin',
+			object: pin._id,
+			foreign_id: `pins:${pin._id}`,
+			time: pin.createdAt,
 		});
 
-		pin = await Pin.findOne({ _id: pin._id });
+	const label = pin.article ? 'pin_article' : 'pin_episode';
+	const foreignID = pin.article ? `article:${pin.article}` : `episode:${pin.episode}`;
+	await trackEngagement(req.User, {
+		label: label,
+		content: { foreign_id: foreignID },
+	});
 
-		res.json(pin);
-	}
+	res.json(await Pin.findOne({ _id: pin._id }));
 };
 
 exports.delete = async (req, res) => {
-	let exists = await Pin.findOne({ _id: req.params.pinId, user: req.user.sub });
+	const exists = await Pin.findOne({ _id: req.params.pinId, user: req.user.sub });
 
 	if (!exists) {
 		return res.status(404).json({ error: 'Resource does not exist.' });

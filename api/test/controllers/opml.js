@@ -89,17 +89,12 @@ describe('OPML', () => {
 		});
 
 		describe('invalid request', () => {
-			let response;
-
-			before(async () => {
-				response = await AuthPostRequest('/opml/upload').attach(
+			it('should return 200', async () => {
+				const response = await AuthPostRequest('/opml/upload').attach(
 					'opml',
 					fs.readFileSync(path.join(__dirname, '..', 'data', '404.opml')),
 					'404.opml',
 				);
-			});
-
-			it('should return 200', () => {
 				expect(response).to.have.status(200);
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
@@ -108,7 +103,7 @@ describe('OPML', () => {
 			});
 
 			it('should return 200', async () => {
-				response = await AuthPostRequest('/opml/upload').attach(
+				const response = await AuthPostRequest('/opml/upload').attach(
 					'opml',
 					fs.readFileSync(path.join(__dirname, '..', 'data', 'not-a-url.opml')),
 					'not-a-url.opml',

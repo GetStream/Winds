@@ -71,7 +71,7 @@ exports.post = async (req, res) => {
 		return res.status(422).json({ error: 'Invalid OPML upload.' });
 	}
 
-	let parsedFeeds = feeds.map(feed => {
+	for (const feed of feeds) {
 		feed.valid = true;
 
 		if (isURL(feed.feedUrl)) {
@@ -88,17 +88,9 @@ exports.post = async (req, res) => {
 		if (feeds.site && feeds.site.favicon) {
 			feed.favicon = feeds.site.favicon;
 		}
-
-		return feed;
-	});
-
-	let promises = [];
-	for (let feed of parsedFeeds) {
-		let promise = followOPMLFeed(feed, userID);
-		promises.push(promise);
 	}
 
-	let results = await Promise.all(promises);
+	const results = await Promise.all(feeds.map(feed => followOPMLFeed(feed, userID)));
 
 	return res.json(results);
 };
