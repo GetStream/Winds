@@ -19,7 +19,7 @@ let isError = function(e) {
 };
 
 const sillyWinstonConsoleFormatter = format(info => {
-	let clone = Object.assign(info);
+	let clone = Object.assign({}, info);
 	if (isError(info.message)) {
 		clone.message = `${info.message.message} ${info.message.stack}`;
 	} else if (isError(info.err)) {
@@ -33,7 +33,7 @@ const sillyWinstonConsoleFormatter = format(info => {
 });
 
 const logger = winston.createLogger({
-	level: 'silly',
+	level: 'warn',
 	format: warnAboutWinston(),
 	transports: [
 		new winston.transports.Console({

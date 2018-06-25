@@ -61,7 +61,7 @@ export async function handlePodcast(job) {
 	}
 
 	// update the episodes
-	logger.info(`Updating ${podcastContent.episodes.length} episodes`);
+	logger.debug(`Updating ${podcastContent.episodes.length} episodes`);
 	let episodes = podcastContent.episodes;
 	for (let e of episodes) {
 		e.podcast = podcastID;

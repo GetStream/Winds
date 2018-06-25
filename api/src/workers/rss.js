@@ -72,7 +72,7 @@ export async function handleRSS(job) {
 			return res;
 		} catch (err) {
 			await RSS.incrScrapeFailures(rssID);
-			logger.warn({err});
+			logger.warn({ err });
 			throw new Error(`http request failed for url ${job.data.url}`);
 		}
 	});
@@ -82,22 +82,20 @@ export async function handleRSS(job) {
 	}
 
 	// update the articles
-	logger.info(`Updating ${rssContent.articles.length} articles for feed ${rssID}`);
+	logger.debug(`Updating ${rssContent.articles.length} articles for feed ${rssID}`);
 
 	if (rssContent.articles.length === 0) {
 		return;
 	}
 
-	logger.info('statsd pre');
 	statsd.increment('winds.handle_rss.articles.parsed', rssContent.articles.length);
 	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
-	logger.info('statsd post');
 
 	let articles = rssContent.articles;
 	for (let a of articles) {
 		a.rss = rssID;
 	}
-	logger.info(`starting the upsertManyPosts for ${rssID}`);
+	logger.debug(`starting the upsertManyPosts for ${rssID}`);
 	let operationMap = await upsertManyPosts(rssID, articles, 'rss');
 	let updatedArticles = operationMap.new.concat(operationMap.changed);
 	logger.info(
@@ -134,7 +132,7 @@ export async function handleRSS(job) {
 
 	let t0 = new Date();
 	let rssFeed = getStreamClient().feed('rss', rssID);
-	logger.info(`Syncing ${updatedArticles.length} articles to Stream`);
+	logger.debug(`Syncing ${updatedArticles.length} articles to Stream`);
 	if (updatedArticles.length > 0) {
 		let chunkSize = 100;
 		for (let i = 0, j = updatedArticles.length; i < j; i += chunkSize) {

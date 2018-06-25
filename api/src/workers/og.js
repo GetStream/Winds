@@ -63,13 +63,13 @@ export async function handleOg(job) {
 			`instance not found for type ${jobType} with lookup ${field}: ${url}`,
 		);
 	} else {
-		logger.info(`found ${instances.length} to update with url ${url}`);
+		logger.debug(`found ${instances.length} to update with url ${url}`);
 	}
 
 	const needUpdate = instances.filter(i => !i.images.og);
 	if (!needUpdate.length && !update) {
 		for (const instance of instances.filter(i => !!i.images.og)) {
-			logger.info(
+			logger.debug(
 				`instance already has an image ${
 					instance.images.og
 				}: ${jobType} with lookup ${field}: ${url}`,
@@ -86,17 +86,17 @@ export async function handleOg(job) {
 	try {
 		ogImage = await ParseOG(url);
 		if (!ogImage) {
-			return logger.info(`Didn't find image for ${url}`);
+			return logger.debug(`Didn't find image for ${url}`);
 		}
 	} catch (err) {
 		// err object is huge, dont log it
-		return logger.info(`OGS scraping broke for URL ${url}`);
+		return logger.debug(`OGS scraping broke for URL ${url}`);
 	}
 	let normalized;
 	try {
 		normalized = normalize(ogImage);
 	} catch (err) {
-		return logger.warn(`Bad OG Image URL ${ogImage}`, { err });
+		return logger.debug(`Bad OG Image URL ${ogImage}`, { err });
 	}
 
 	for (const instance of needUpdate) {
