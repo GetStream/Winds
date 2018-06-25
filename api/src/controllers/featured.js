@@ -1,24 +1,38 @@
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
+import config from '../config';
+import packageInfo from '../../../app/package.json';
+
+import Redis from 'ioredis';
+const cache = new Redis(config.cache.uri);
+
 exports.list = async (req, res) => {
-	let results = [];
+	const cacheKey = `featured:v${packageInfo.version.replace(/\./g, ':')}`;
+	console.log(cacheKey);
 
-	let rss = await RSS.find({ featured: true }).lean();
-	rss.map(feed => {
-		feed.type = 'rss';
-		results.push(feed);
-	});
+	let resultString = await cache.get(cacheKey);
+	let results = JSON.parse(resultString);
 
-	let podcasts = await Podcast.find({ featured: true }).lean();
-	podcasts.map(podcast => {
-		podcast.type = 'podcast';
-		results.push(podcast);
-	});
+	if (!results) {
+		console.log('miss');
+		const rss = await RSS.find({ featured: true }).lean();
+		results = [];
+		rss.map(feed => {
+			feed.type = 'rss';
+			results.push(feed);
+		});
 
-	let shuffled;
+		const podcasts = await Podcast.find({ featured: true }).lean();
+		podcasts.map(podcast => {
+			podcast.type = 'podcast';
+			results.push(podcast);
+		});
 
-	shuffled = results
+		await cache.set(cacheKey, JSON.stringify(results), 'EX', 60 * 30);
+	}
+
+	let shuffled = results
 		.map(a => [Math.random(), a])
 		.sort((a, b) => a[0] - b[0])
 		.map(a => a[1]);
