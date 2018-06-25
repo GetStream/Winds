@@ -50,7 +50,10 @@ class Player extends Component {
 
 	componentWillUnmount() {
 		if (isElectron()) {
-			window.ipcRenderer.removeAllListeners('media-controls', this.incomingMediaControls);
+			window.ipcRenderer.removeAllListeners(
+				'media-controls',
+				this.incomingMediaControls,
+			);
 		}
 	}
 
@@ -187,13 +190,13 @@ class Player extends Component {
 
 		let playButton = (
 			<div className="btn play" onClick={this.togglePlayPause}>
-				<Img src={playIcon} />
+				<Img decode={false} src={playIcon} />
 			</div>
 		);
 
 		let pauseButton = (
 			<div className="btn pause" onClick={this.togglePlayPause}>
-				<Img src={pauseIcon} />
+				<Img decode={false} src={pauseIcon} />
 			</div>
 		);
 
@@ -209,6 +212,7 @@ class Player extends Component {
 				<div className="left">
 					<Img
 						className="poster"
+						decode={false}
 						height="40"
 						src={this.props.episode.podcast.image}
 						width="40"
@@ -219,7 +223,7 @@ class Player extends Component {
 							this.skipBack();
 						}}
 					>
-						<Img src={rewindIcon} />
+						<Img decode={false} src={rewindIcon} />
 					</div>
 					{this.props.playing ? pauseButton : playButton}
 					<div
@@ -228,7 +232,7 @@ class Player extends Component {
 							this.skipAhead();
 						}}
 					>
-						<Img src={forwardIcon} />
+						<Img decode={false} src={forwardIcon} />
 					</div>
 					<div className="speed" onClick={this.cyclePlaybackSpeed}>
 						{this.state.playbackSpeed}x

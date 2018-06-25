@@ -25,9 +25,9 @@ class EpisodeListItem extends React.Component {
 				<div className="pause-icon">
 					<div className="icon-container">
 						{this.props.playing ? (
-							<Img src={pauseIcon} />
+							<Img decode={false} src={pauseIcon} />
 						) : (
-							<Img src={playIcon} />
+							<Img decode={false} src={playIcon} />
 						)}
 					</div>
 				</div>
@@ -36,7 +36,7 @@ class EpisodeListItem extends React.Component {
 			icon = (
 				<div className="play-icon">
 					<div className="icon-container">
-						<Img src={playIcon} />
+						<Img decode={false} src={playIcon} />
 					</div>
 				</div>
 			);
@@ -128,6 +128,7 @@ EpisodeListItem.propTypes = {
 	playOrPauseEpisode: PropTypes.func,
 	playable: PropTypes.bool,
 	playing: PropTypes.bool,
+	link: PropTypes.string,
 	podcast: PropTypes.shape({
 		_id: PropTypes.string.isRequired,
 		images: PropTypes.shape({

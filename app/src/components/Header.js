@@ -274,18 +274,18 @@ class Header extends Component {
 					<div className="left">
 						<div className="nav">
 							<div className="back" onClick={this.props.history.goBack}>
-								<Img decode src={backIcon} />
+								<Img decode={false} src={backIcon} />
 							</div>
 							<div
 								className="forward"
 								onClick={this.props.history.goForward}
 							>
-								<Img decode={true} src={forwardIcon} />
+								<Img decode={false} src={forwardIcon} />
 							</div>
 						</div>
 						<div className="logo">
 							<Link to="/">
-								<Img decode={true} src={homeIcon} />
+								<Img decode={false} src={homeIcon} />
 							</Link>
 						</div>
 						<div className="nav">
@@ -295,7 +295,7 @@ class Header extends Component {
 									window.location.reload();
 								}}
 							>
-								<Img decode={true} src={refreshIcon} />
+								<Img decode={false} src={refreshIcon} />
 							</div>
 						</div>
 					</div>
@@ -325,7 +325,7 @@ class Header extends Component {
 							tipSize={0.1}
 						>
 							<div className="new" onClick={this.toggleNewContentPopover}>
-								<Img decode={true} src={addIcon} />
+								<Img decode={false} src={addIcon} />
 								New
 							</div>
 						</Popover>
@@ -339,7 +339,7 @@ class Header extends Component {
 							<div onClick={this.toggleGithubPopover}>
 								<Img
 									className="open-source"
-									decode={true}
+									decode={false}
 									src={octocatDarkIcon}
 								/>
 							</div>
