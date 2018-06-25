@@ -7,7 +7,6 @@ import config from '../config';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
-
 // replaces TrackMetadata and events() calls
 export async function upsertCollections(collections) {
 	// Collection in the format {'user:1': {userdatahere}}
@@ -22,18 +21,24 @@ export async function upsertCollections(collections) {
 			config.stream.apiSecret,
 			{ algorithm: 'HS256', noTimestamp: true },
 		);
-		return await axios({
-			data: collections,
-			headers: {
-				Authorization: token,
-				'stream-auth-type': 'jwt',
-			},
-			method: 'POST',
-			params: {
-				api_key: config.stream.apiKey,
-			},
-			url: `${config.stream.baseUrl}/winds_meta/`,
-		});
+		let result;
+		try {
+			result = await axios({
+				data: collections,
+				headers: {
+					Authorization: token,
+					'stream-auth-type': 'jwt',
+				},
+				method: 'POST',
+				params: {
+					api_key: config.stream.apiKey,
+				},
+				url: `${config.stream.baseUrl}/winds_meta/`,
+			});
+		} catch (e) {
+			throw new Error(`failed to update the collection`);
+		}
+		return result;
 	}
 }
 

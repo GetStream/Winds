@@ -65,17 +65,14 @@ export async function handleRSS(job) {
 	logger.info(`Marked ${rssID} as done`);
 
 	// parse the articles
-	let rssContent = await timeIt('winds.handle_rss.parsing', async () => {
-		try {
-			const res = await ParseFeed(job.data.url);
-			await RSS.resetScrapeFailures(rssID);
-			return res;
-		} catch (err) {
-			await RSS.incrScrapeFailures(rssID);
-			logger.warn({ err });
-			throw new Error(`http request failed for url ${job.data.url}`);
-		}
-	});
+	let rssContent;
+	try {
+		rssContent = await ParseFeed(job.data.url);
+		await RSS.resetScrapeFailures(rssID);
+	} catch (err) {
+		await RSS.incrScrapeFailures(rssID);
+		throw new Error(`http request failed for url ${job.data.url}`);
+	}
 
 	if (!rssContent) {
 		return;
