@@ -4,7 +4,7 @@ import api from '../../src/server';
 
 import { loadFixture, withLogin, dropDBs } from '../utils';
 
-describe.only('Health controller', () => {
+describe('Health controller', () => {
 	let health;
 
 	before(async () => {
