@@ -11,7 +11,7 @@ exports.list = async (req, res) => {
 		obj[query.type] = { $exists: true };
 		obj['user'] = req.user.sub; // can only list pins for the
 
-		res.json(await Pin.find(obj));
+		res.json(await Pin.find(obj).sort({_id: -1}));
 	} else {
 		res.json(await Pin.apiQuery(req.query));
 	}
