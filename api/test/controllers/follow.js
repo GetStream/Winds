@@ -21,15 +21,9 @@ describe('Follow controller', () => {
 		followedRSS = await Follow.findOne({ rss: { $exists: true, $ne: null } });
 		followedPodcast = await Follow.findOne({ podcast: { $exists: true, $ne: null } });
 
-		rss = (await RSS.find()
-			.sort('_id')
-			.limit(1))[0];
-		podcast = (await User.find()
-			.sort('_id')
-			.limit(1))[0];
-		user = (await User.find()
-			.sort('_id')
-			.limit(1))[0];
+		rss = await RSS.findOne();
+		podcast = await Podcast.findOne();
+		user = await User.findById('5b0f306d8e147f10f16aceaf');
 	});
 
 	describe('get', () => {
@@ -61,7 +55,6 @@ describe('Follow controller', () => {
 		});
 
 		it('should return hydrated follows where type is podcast', async () => {
-			// TODO: missing query param?
 			const res = await withLogin(request(api).get('/follows?type=podcast'));
 			expect(res).to.have.status(200);
 			expect(res.body[0].rss).to.be.undefined;
@@ -69,13 +62,22 @@ describe('Follow controller', () => {
 			expect(res.body[0].user).to.have.own.property('_id');
 		});
 
-		it('should return an RSS object if the current user follows the provided feed', async () => {
-			// TODO: repeat this test for podcast
-			// TODO: Verify if the response has the correct data
+		it('should return a specific RSS follow relationship', async () => {
 			const res = await withLogin(
-				request(api).get(`/follows?user=${user._id}&rss={followedRSS.rss._id}`),
+				request(api).get(`/follows?user=${user._id}&rss=${followedRSS.rss._id}`),
 			);
 			expect(res).to.have.status(200);
+			expect(res.body[0]._id).to.equal(followedRSS._id.toString());
+		});
+
+		it('should return a specific podcast follow relationship', async () => {
+			const res = await withLogin(
+				request(api).get(
+					`/follows?user=${user._id}&podcast=${followedPodcast.podcast._id}`,
+				),
+			);
+			expect(res).to.have.status(200);
+			expect(res.body[0]._id).to.equal(followedPodcast._id.toString());
 		});
 	});
 
@@ -107,13 +109,13 @@ describe('Follow controller', () => {
 		});
 		it('should follow an RSS feed', async () => {
 			const res = await withLogin(
-				request(api).post(`/follows?type=rss&rss=${podcast._id}`),
+				request(api).post(`/follows?type=rss&rss=${rss._id}`),
 			);
 			expect(res).to.have.status(200);
 		});
 		it('should follow a podcast feed', async () => {
 			const res = await withLogin(
-				request(api).post(`/follows?type=rss&podcast=${podcast._id}`),
+				request(api).post(`/follows?type=podcast&podcast=${podcast._id}`),
 			);
 			expect(res).to.have.status(200);
 		});
@@ -125,7 +127,9 @@ describe('Follow controller', () => {
 		});
 		it('should fail to follow a non existing podcast feed', async () => {
 			const res = await withLogin(
-				request(api).post(`/follows?type=rss&podcast=5b3084e0000000000000000b`),
+				request(api).post(
+					`/follows?type=podcast&podcast=5b3084e0000000000000000b`,
+				),
 			);
 			expect(res).to.have.status(404);
 		});

@@ -111,6 +111,7 @@ FollowSchema.methods.removeFromStream = async function remove(follows) {
 	]);
 	return results;
 };
+
 FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 	// validate
 	for (let f of follows) {

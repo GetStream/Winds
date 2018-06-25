@@ -3,231 +3,79 @@ import async from 'async';
 
 import Follow from '../models/follow';
 import User from '../models/user';
+import Podcast from '../models/podcast';
+import RSS from '../models/rss';
 
 import config from '../config';
 import logger from '../utils/logger';
 import { getStreamClient } from '../utils/stream';
 
-exports.list = (req, res) => {
+exports.list = async (req, res) => {
+	const lookup = { user: req.user.sub };
+
 	if (req.query.type === 'rss') {
-		Follow.find({ user: req.user.sub })
-			.where('rss')
-			.exists()
-			.then(results => {
-				res.json(results);
-			});
+		lookup['rss'] = { $exists: true };
 	} else if (req.query.type === 'podcast') {
-		Follow.find({ user: req.user.sub })
-			.where('podcast')
-			.exists()
-			.then(results => {
-				res.json(results);
-			});
+		lookup['podcast'] = { $exists: true };
+	} else if (req.query.rss) {
+		lookup['rss'] = req.query.rss;
+	} else if (req.query.podcast) {
+		lookup['podcast'] = req.query.podcast;
 	} else {
-		Follow.apiQuery(req.query)
-			.then(follows => {
-				res.json(follows);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(422).send(err.errors);
-			});
-	}
-};
-
-exports.get = (req, res) => {
-	if (req.params.followId === 'undefined') {
-		return res.sendStatus(404);
+		throw new Error('Invalid parameter passed to follow list endpoint.');
 	}
 
-	Follow.findById(req.params.followId)
-		.then(follow => {
-			if (!follow) {
-				return res.sendStatus(404);
-			}
-			res.json(follow);
-		})
-		.catch(err => {
-			logger.error(err);
-			res.status(422).send(err.errors);
-		});
+	const follows = await Follow.find(lookup);
+
+	return res.json(follows);
 };
 
-exports.post = (req, res) => {
+exports.post = async (req, res) => {
 	const query = req.query || {};
-	const data = Object.assign({}, req.body, { user: req.user.sub }) || {};
+	const user = req.user.sub;
 
-	if (!query.type) {
+	let follow;
+
+	if (!query.type || (!query.podcast && !query.rss)) {
 		return res.status(422).send('Missing required type query parameter.');
 	}
 
-	if (query.type === 'user') {
-		let obj = { followee: data.followee, user: data.user };
-
-		async.waterfall(
-			[
-				cb => {
-					Follow.findOne(obj)
-						.then(exists => {
-							if (exists) {
-								return res.sendStatus(409);
-							}
-							cb(null);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				cb => {
-					Follow.create(obj)
-						.then(follow => {
-							cb(null, follow);
-						})
-						.catch(() => {
-							cb(null);
-						});
-				},
-				(follow, cb) => {
-					getStreamClient()
-						.feed('timeline', data.user)
-						.follow('user', data.followee)
-						.then(follow => {
-							cb(null, follow);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(follow, cb) => {
-					User.findById(data.followee)
-						.then(followee => {
-							cb(null, follow, followee);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(follow, followee, cb) => {
-					User.findById(data.user)
-						.then(follower => {
-							cb(null, follow, followee, follower);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-				(follow, followee, follower, cb) => {
-					email({
-						email: followee.email,
-						follower: follower.username,
-						followerId: follower._id,
-						type: 'followee',
-					})
-						.then(() => {
-							cb(null, follow, followee, follower);
-						})
-						.catch(err => {
-							cb(err);
-						});
-				},
-			],
-			err => {
-				if (err) {
-					logger.error(err);
-					return res.status(422).send(err.errors);
-				}
-				res.sendStatus(200);
-			},
-		);
-	} else if (query.type === 'podcast') {
-		Follow.getOrCreate('podcast', data.user, query.podcast)
-			.then(followRelationship => {
-				res.json(followRelationship);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(500).send(err);
-			});
+	if (query.type === 'podcast') {
+		let podcast = await Podcast.findById(query.podcast);
+		if (!podcast) {
+			return res.status(404).json({ error: 'Resource not found.' });
+		}
+		follow = await Follow.getOrCreate('podcast', user, query.podcast);
 	} else if (query.type === 'rss') {
-		Follow.getOrCreate('rss', data.user, query.rss)
-			.then(followRelationship => {
-				res.json(followRelationship);
-			})
-			.catch(err => {
-				logger.error(err);
-				res.status(500).send(err);
-			});
+		let rss = await RSS.findById(query.rss);
+		if (!rss) {
+			return res.status(404).json({ error: 'Resource not found.' });
+		}
+		follow = await Follow.getOrCreate('rss', user, query.rss);
+	} else {
+		throw new Error('Invalid parameter passed to follow post endpoint.');
 	}
+
+	return res.json(follow);
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
 	const query = req.query || {};
-	const data = Object.assign({}, req.body, { user: req.user.sub }) || {};
+	const lookup = { user: req.user.sub };
 
-	if (query.type === 'podcast') {
-		Follow.remove({
-			podcast: query.podcast,
-			user: data.user,
-		})
-			.then(() => {
-				return Promise.all([
-					getStreamClient()
-						.feed('user_episode', data.user)
-						.unfollow('podcast', query.podcast),
-					getStreamClient()
-						.feed('timeline', data.user)
-						.unfollow('podcast', query.podcast),
-				]);
-			})
-			.then(() => {
-				res.status(204).send();
-			})
-			.catch(err => {
-				logger.error(err);
-				return res.status(422).send(err);
-			});
-	} else if (query.type === 'rss') {
-		Follow.remove({
-			rss: query.rss,
-			user: data.user,
-		})
-			.then(() => {
-				return Promise.all([
-					getStreamClient()
-						.feed('user_article', data.user)
-						.unfollow('rss', query.rss),
-					getStreamClient()
-						.feed('timeline', data.user)
-						.unfollow('rss', query.rss),
-				]);
-			})
-			.then(() => {
-				res.status(204).send();
-			})
-			.catch(err => {
-				logger.error('test', { err });
-				return res.status(422).send(err);
-			});
-	} else if (query.type === 'user') {
-		Follow.remove({
-			followee: query.followee,
-			user: data.user,
-		})
-			.then(() => {
-				return getStreamClient()
-					.feed('timeline', data.user)
-					.unfollow('user', query.followee);
-			})
-			.then(() => {
-				res.status(204).send(); // 204 is no content, so not sending a response body.
-			})
-			.catch(err => {
-				if (err) {
-					logger.error(err);
-					return res.status(422).send(err.errors);
-				}
-			});
+	if (query.rss) {
+		lookup['rss'] = query.rss;
+	} else if (query.podcast) {
+		lookup['podcast'] = query.podcast;
 	} else {
-		res.sendStatus(422);
+		throw new Error('shouldnt happen');
 	}
+
+	const follow = await Follow.findOne(lookup);
+	if (follow) {
+		await follow.removeFromStream();
+		await follow.remove();
+	}
+
+	return res.status(204).send();
 };
