@@ -6,6 +6,7 @@ import User from '../models/user';
 
 import config from '../config';
 import logger from '../utils/logger';
+import { getStreamClient } from '../utils/stream';
 
 exports.list = (req, res) => {
 	if (req.query.type === 'rss') {
@@ -204,7 +205,7 @@ exports.delete = (req, res) => {
 				res.status(204).send();
 			})
 			.catch(err => {
-				logger.error(err);
+				logger.error('test', { err });
 				return res.status(422).send(err);
 			});
 	} else if (query.type === 'user') {
