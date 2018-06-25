@@ -147,7 +147,7 @@ ArticleSchema.plugin(autopopulate);
 ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
 
 ArticleSchema.methods.getUrl = function() {
-	return getUrl('article_detail', this.rss._id, this._id)
+	return getUrl('article_detail', this.rss._id, this._id);
 };
 
 ArticleSchema.methods.getParsedArticle = async function() {
@@ -156,7 +156,12 @@ ArticleSchema.methods.getParsedArticle = async function() {
 		return cached;
 	}
 
-	let response = await ParseArticle(this.url);
+	let response;
+	try {
+		response = await ParseArticle(this.url);
+	} catch (e) {
+		throw new Error(`Mercury API call failed for ${this.url}`);
+	}
 	let parsed = response.data;
 	let content = parsed.content;
 
