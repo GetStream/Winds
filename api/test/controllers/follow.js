@@ -7,7 +7,7 @@ import Podcast from '../../src/models/podcast';
 import User from '../../src/models/user';
 import { loadFixture, withLogin, dropDBs } from '../utils';
 
-describe.only('Follow controller', () => {
+describe('Follow controller', () => {
 	let followRSS;
 	let followPodcast;
 	let rss;

@@ -10,14 +10,6 @@
 				"__v": 0
 			},
 			{
-				"_id":"5ad512c5e5e00b0e3efb8330",
-				"podcast":"5acfe14d8125f655c1fe4dad",
-				"user":"5ad512bbe5e00b0e3efb8326",
-				"updatedAt":"2018-04-16T21:16:53.801Z",
-				"createdAt":"2018-04-16T21:16:53.801Z",
-				"__v": 0
-			},
-			{
 				"_id":"5ad68877383ed22fb766e913",
 				"podcast":"5acfe1a18125f655c1fe688c",
 				"user":"5ad68876383ed22fb766e910",
