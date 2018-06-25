@@ -1,0 +1,70 @@
+[
+	{
+		"Follow": [
+			{
+				"_id":"5ad68877383ed22fb766e913",
+				"podcast":"5afb7fedfe7430d35996d66e",
+				"user":"5b0f306d8e147f10f16aceaf",
+				"updatedAt":"2018-04-17T23:51:19.634Z",
+				"createdAt":"2018-04-17T23:51:19.634Z",
+				"__v":0
+			},
+			{
+				"_id":"5ad68877383ed22fb766e912",
+				"podcast":"5afb7f68fe7430d35996cc62",
+				"user":"5b0f306d8e147f10f16aceaf",
+				"updatedAt":"2018-04-17T23:51:19.620Z",
+				"createdAt":"2018-04-17T23:51:19.620Z",
+				"__v":0
+			}
+		],
+		"RSS": [
+			{
+				"_id": "6b0ad0baf6f89574a638887a",
+				"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
+				"description": "Follow test fake feed",
+				"categories": "RSS",
+				"featured": false,
+				"public": true,
+				"valid": true,
+				"likes": 0,
+				"summary": "",
+				"interest": "",
+				"isParsing": true,
+				"language": "eng",
+				"feedUrl": "http://dorkly.com/comics/rss?a=bcd",
+				"lastScraped": "2018-06-01T17:52:10.655Z",
+				"publicationDate": "2018-05-27T15:37:30.011Z",
+				"title": "Dorkly: Comics",
+				"url": "http://dorkly.com/comics",
+				"updatedAt": "2018-06-01T18:07:31.230Z",
+				"createdAt": "2018-05-27T15:37:30.017Z",
+				"__v": 0
+			}
+		],
+		"Podcast": [
+			{
+				"_id": "6afb7fedfe7430d35996d66e",
+				"feedUrl": "http://mbmbam.libsyn.com/rss?hello=world",
+				"__v": 0,
+				"categories": "podcast",
+				"createdAt": "2018-05-16T00:48:45.264Z",
+				"description":
+					"Free advice, from three of the world's most qualified experts.",
+				"featured": false,
+				"images": {
+					"favicon": null,
+					"og":
+						"http://static.libsyn.com/p/assets/6/d/7/d/6d7d36d6929db515/MBMBAM_Update.jpg"
+				},
+				"lastScraped": "2018-06-01T21:39:47.827Z",
+				"title": "My Brother, My Brother And Me",
+				"updatedAt": "2018-06-01T21:39:47.827Z",
+				"url": "http://mbmbam.com",
+				"valid": true,
+				"isParsing": false,
+				"language": "eng"
+			}
+		]
+	}
+]
