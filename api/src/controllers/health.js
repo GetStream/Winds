@@ -15,6 +15,7 @@ const ogQueue = new Queue('og', config.cache.uri);
 const podcastQueue = new Queue('podcast', config.cache.uri);
 
 const tooOld = 3 * 60 * 60 * 1000;
+
 const queues = {
 	'RSS Queue': rssQueue,
 	'OG Queue': ogQueue,
@@ -30,8 +31,8 @@ exports.status = async (req, res) => {
 	let output = { version, code: 200 };
 
 	// verify that we've recently parsed either an article and an episode
-	let latestArticle = await Article.findOne({}, {}, { sort: { _id: -1 } });
-	let latestEpisode = await Episode.findOne({}, {}, { sort: { _id: -1 } });
+	const latestArticle = await Article.find({}).sort({ _id: -1 });
+	const latestEpisode = await Episode.find({}).sort({ _id: -1 });
 
 	let now = new Date();
 
@@ -46,8 +47,8 @@ exports.status = async (req, res) => {
 		output.code = 500;
 		output.error =
 			now - latestArticle.createdAt > tooOld
-				? 'The most recent article is too old'
-				: 'The most recent episode is too old';
+				? 'The most recent article is too old.'
+				: 'The most recent episode is too old.';
 	}
 
 	// check for publications stuck in the isParsing state
