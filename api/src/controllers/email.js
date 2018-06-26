@@ -8,7 +8,7 @@ exports.list = async (req, res) => {
 
 exports.get = async (req, res) => {
 	if (req.params.emailName === 'weekly') {
-		let user = await User.findOne({ admin: true });
+		let user = await User.findOne({ _id: req.query.user, admin: true });
 		let context = Object.assign(
 			{},
 			await weeklyContextGlobal(),
