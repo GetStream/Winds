@@ -10,6 +10,26 @@ program
 	.option('--all', 'Rescrape articles for which we already have a favicon image')
 	.parse(process.argv);
 
+async function rescrapeFavicon(instance, schema, counts) {
+	try {
+		let foundRSS = await discoverRSS(instance.url);
+
+		if (foundRSS && foundRSS.site && foundRSS.site.favicon) {
+			let site = foundRSS.site;
+			const images = instance.images || {};
+			images.favicon = site.favicon;
+			let updated = await schema.update({ _id: instance._id }, { images });
+			counts.fixed += 1;
+			return updated;
+		} else {
+			counts.notfound += 1;
+			return;
+		}
+	} catch (err) {
+		logger.warn(`rescraping failed with error`, { err });
+	}
+}
+
 async function main() {
 	let schemas = { rss: RSS, podcast: Podcast };
 	logger.info(`program.all is set to ${program.all}`);
@@ -39,21 +59,7 @@ async function main() {
 			for (const instance of chunk) {
 				let missingImage = !instance.images || !instance.images.favicon;
 				if (missingImage || program.all) {
-					let promise = discoverRSS(instance.url).then(foundRSS => {
-						if (foundRSS && foundRSS.site && foundRSS.site.favicon) {
-							let site = foundRSS.site;
-							const images = instance.images || {};
-							images.favicon = site.favicon;
-							let updated = schema.update(
-								{ _id: instance._id },
-								{ images },
-							);
-							counts.fixed += 1;
-							return updated;
-						} else {
-							counts.notfound += 1;
-						}
-					});
+					let promise = rescrapeFavicon(instance, schema, counts);
 					promises.push(promise);
 				} else {
 					counts.hasimage += 1;
@@ -73,5 +79,5 @@ main()
 		logger.info('completed it all');
 	})
 	.catch(err => {
-		logger.info(`failed with err ${err}`);
+		logger.warn(`failed with err ${err}`);
 	});
