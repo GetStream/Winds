@@ -72,10 +72,12 @@ createWindow = () => {
 };
 
 registerProtocol = () => {
+	app.setAsDefaultProtocolClient(['winds']);
+
 	protocol.registerFileProtocol(
 		'winds',
 		(request, callback) => {
-			const url = request.url.substr(8);
+			const url = request.url.substr(7);
 			callback({ path: path.normalize(`${__dirname}/${url}`) });
 		},
 		error => {
@@ -90,10 +92,7 @@ generateMenu = () => {
 	const template = [
 		{
 			label: 'File',
-			submenu: [
-				{ role: 'about' },
-				{ role: 'quit' }
-			],
+			submenu: [{ role: 'about' }, { role: 'quit' }],
 		},
 		{
 			label: 'Edit',
@@ -205,8 +204,11 @@ mediaControls = (event, args) => {
 app.on('ready', () => {
 	createWindow();
 	generateMenu();
+	registerProtocol();
 
-	app.setAsDefaultProtocolClient('winds');
+	protocol.registerHttpProtocol('winds', function() {
+		console.log('hammer time');
+	});
 });
 
 app.on('window-all-closed', () => {

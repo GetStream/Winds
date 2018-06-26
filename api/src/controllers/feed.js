@@ -1,4 +1,3 @@
-import stream from 'getstream';
 import async from 'async';
 
 import Article from '../models/article';
