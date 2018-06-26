@@ -17,7 +17,7 @@ async function main() {
 	let counts = { hasimage: 0, fixed: 0, notfound: 0 };
 	let lookup = {};
 	if (!program.all) {
-		lookup['images.favicon'] = { $exists: false };
+		lookup['images.favicon'] = { $in: [null, ''] };
 	}
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
