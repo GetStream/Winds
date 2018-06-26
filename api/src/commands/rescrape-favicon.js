@@ -3,9 +3,6 @@ import '../utils/db';
 import program from 'commander';
 import logger from '../utils/logger';
 import Podcast from '../models/podcast';
-import Article from '../models/article';
-import Episode from '../models/episode';
-
 import RSS from '../models/rss';
 import { discoverRSS } from '../parsers/discovery';
 
