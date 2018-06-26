@@ -26,11 +26,13 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	if (!mongoose.Types.ObjectId.isValid(req.params.rssId)) {
-		return res.status(422).json({ error: `RSS ID ${req.params.rssId} is invalid.` });
+	const rssId = req.params.rssId;
+
+	if (!mongoose.Types.ObjectId.isValid(rssId)) {
+		return res.status(422).json({ error: `RSS ID ${rssId} is invalid.` });
 	}
 
-	let rss = await RSS.findById(req.params.rssId).exec();
+	let rss = await RSS.findById(rssId).exec();
 	if (!rss) {
 		return res.sendStatus(404);
 	}
