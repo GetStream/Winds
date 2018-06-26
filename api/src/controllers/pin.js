@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Pin from '../models/pin';
 import config from '../config';
 import { trackEngagement } from '../utils/analytics';
@@ -19,15 +20,15 @@ exports.list = async (req, res) => {
 
 exports.get = async (req, res) => {
 	if (!mongoose.Types.ObjectId.isValid(req.params.pinId)) {
-		return res
-			.status(400)
-			.json({ error: `Resource ID ${req.params.pinId} is an invalid ObjectId.` });
+		return res.status(400).json({
+			error: `Resource pinId (${req.params.pinId}) is an invalid ObjectId.`,
+		});
 	}
 
 	let pin = await Pin.findById(req.params.pinId);
 
 	if (!pin) {
-		return res.status(404).json({ error: 'Pin does not exist.' });
+		return res.status(404).json({ error: 'Resource does not exist.' });
 	}
 
 	res.json(pin);
@@ -67,10 +68,10 @@ exports.post = async (req, res) => {
 		});
 
 	const label = pin.article ? 'pin_article' : 'pin_episode';
-	const foreignID = pin.article ? `article:${pin.article}` : `episode:${pin.episode}`;
+	const foreignId = pin.article ? `article:${pin.article}` : `episode:${pin.episode}`;
 	await trackEngagement(req.User, {
 		label: label,
-		content: { foreign_id: foreignID },
+		content: { foreign_id: foreignId },
 	});
 
 	res.json(await Pin.findOne({ _id: pin._id }));

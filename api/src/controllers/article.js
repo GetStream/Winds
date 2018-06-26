@@ -29,7 +29,7 @@ exports.get = async (req, res) => {
 	if (!mongoose.Types.ObjectId.isValid(articleId)) {
 		return res
 			.status(400)
-			.json({ error: `Resource ID ${articleId} is an invalid ObjectId.` });
+			.json({ error: `Resource articleId (${articleId}) is an invalid ObjectId.` });
 	}
 
 	let article = await Article.findById(articleId);
