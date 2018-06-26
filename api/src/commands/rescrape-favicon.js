@@ -20,7 +20,7 @@ async function main() {
 	let counts = { hasimage: 0, fixed: 0, notfound: 0 };
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
-		let total = await schema.count({});
+		let total = await schema.count({ 'images.favicon': { $exists: false } });
 		let completed = 0;
 		let chunkSize = 1000;
 
@@ -28,7 +28,7 @@ async function main() {
 
 		for (let i = 0, j = total; i < j; i += chunkSize) {
 			let chunk = await schema
-				.find({})
+				.find({ 'images.favicon': { $exists: false } })
 				.skip(i)
 				.limit(chunkSize)
 				.lean();
