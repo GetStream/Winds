@@ -2509,21 +2509,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-getstream@^3.17.0:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.17.0.tgz#69868691acca92b30cbbc0f320624f70ff7e1c08"
-  dependencies:
-    Base64 "^1.0.1"
-    faye "^1.2.4"
-    http-signature "~1.2.0"
-    jsonwebtoken "^8.2.0"
-    qs "^6.5.1"
-    request "^2.85.0"
-    xmlhttp-request "~0.4.1"
-
-"getstream@https://github.com/GetStream/stream-js.git":
-  version "3.17.0"
-  resolved "https://github.com/GetStream/stream-js.git#5dbe09baad44d58a8afe3aff744dec1eb023e251"
+getstream@3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.18.0.tgz#2971dbe4b177c7bad45182a951a82ef2ac0d182a"
   dependencies:
     Base64 "^1.0.1"
     faye "^1.2.4"
@@ -3560,7 +3548,7 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
 
-jsonwebtoken@^8.1.0, jsonwebtoken@^8.2.0, jsonwebtoken@^8.3.0:
+jsonwebtoken@^8.1.0, jsonwebtoken@^8.3.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.3.0.tgz#056c90eee9a65ed6e6c72ddb0a1d325109aaf643"
   dependencies:
@@ -5194,7 +5182,7 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@2.x.x, request@^2.79.0, request@^2.81.0, request@^2.85.0, request@^2.86.0, request@^2.87.0:
+request@2.x.x, request@^2.79.0, request@^2.81.0, request@^2.86.0, request@^2.87.0:
   version "2.87.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.87.0.tgz#32f00235cd08d482b4d0d68db93a829c0ed5756e"
   dependencies:
@@ -6233,13 +6221,9 @@ xml@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
 
-"xmlhttp-request@https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd":
+"xmlhttp-request@git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd":
   version "0.4.0"
-  resolved "https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd"
-
-xmlhttp-request@~0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/xmlhttp-request/-/xmlhttp-request-0.4.1.tgz#636d99355a91e1865b38ea039099ddc59af6a7a7"
+  resolved "git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd"
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"
