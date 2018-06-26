@@ -33,6 +33,7 @@ async function main() {
 				.limit(chunkSize)
 				.lean();
 			completed += chunkSize;
+
 			let promises = [];
 			for (const instance of chunk) {
 				let missingImage = !instance.images || !instance.images.favicon;
@@ -58,6 +59,7 @@ async function main() {
 				}
 			}
 			let results = await Promise.all(promises);
+			console.log(completed);
 		}
 
 		console.log(counts);
