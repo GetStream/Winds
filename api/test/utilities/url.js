@@ -5,7 +5,7 @@ import RSS from '../../src/models/rss';
 import Podcast from '../../src/models/podcast';
 import { loadFixture, dropDBs } from '../utils';
 
-describe.only('URLs utility', () => {
+describe('URLs utility', () => {
 	before(async () => {
 		await dropDBs();
 		await loadFixture('initial-data');
