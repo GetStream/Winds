@@ -27,7 +27,7 @@ exports.list = async (req, res) => {
 
 exports.get = async (req, res) => {
 	if (!mongoose.Types.ObjectId.isValid(req.params.rssId)) {
-		return res.status(422).json({ error: `RSS ID ${rssId} is invalid.` });
+		return res.status(422).json({ error: `RSS ID ${req.params.rssId} is invalid.` });
 	}
 
 	let rss = await RSS.findById(req.params.rssId).exec();
