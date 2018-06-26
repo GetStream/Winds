@@ -5,7 +5,7 @@ import Article from '../../src/models/article';
 import { mergeFeeds } from '../../src/utils/merge';
 import { loadFixture, dropDBs } from '../utils';
 
-describe('Merge *WIP*', () => {
+describe('Merge utility', () => {
 	it.skip('should merge two feeds', async () => {
 		await dropDBs();
 		await loadFixture('initial-data');

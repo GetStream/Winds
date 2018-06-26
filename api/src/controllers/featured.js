@@ -14,14 +14,14 @@ exports.list = async (req, res) => {
 	let data = JSON.parse(str);
 
 	if (!data) {
-		const rss = await RSS.find({ featured: true }).lean();
+		const rss = await RSS.find({ featured: true });
 		data = [];
 		rss.map(feed => {
 			feed.type = 'rss';
 			data.push(feed);
 		});
 
-		const podcasts = await Podcast.find({ featured: true }).lean();
+		const podcasts = await Podcast.find({ featured: true });
 		podcasts.map(podcast => {
 			podcast.type = 'podcast';
 			data.push(podcast);
