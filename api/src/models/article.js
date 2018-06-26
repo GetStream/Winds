@@ -32,6 +32,7 @@ export const ArticleSchema = new Schema(
 					'featured',
 				],
 			},
+			index: true,
 		},
 		url: {
 			type: String,
