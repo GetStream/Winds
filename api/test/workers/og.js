@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { ogQueue } from '../../src/asyncTasks'
+import { ogQueue } from '../../src/asyncTasks';
 import RSS from '../../src/models/rss';
 import Episode from '../../src/models/episode';
 import Article from '../../src/models/article';
@@ -44,14 +44,15 @@ describe('OG worker', () => {
 
 			const data = {
 				type: 'article',
-				url: 'http://dorkly.com/post/86418/4-questions-i-still-have-about-avengers-infinity-war'
+				url:
+					'http://dorkly.com/post/86418/4-questions-i-still-have-about-avengers-infinity-war',
 			};
 			const beforeUpdate = await Article.create({
 				rss: rss._id,
 				title: 'Hey now',
 				description: 'Donkey!',
 				url: data.url,
-				fingerprint: "test:workers-og.js"
+				fingerprint: 'test:workers-og.js',
 			});
 
 			await ogQueue.add(data);
@@ -69,8 +70,9 @@ describe('OG worker', () => {
 
 			const data = {
 				type: 'article',
-				url: 'http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/',
-				update: true
+				url:
+					'http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/',
+				update: true,
 			};
 
 			const beforeUpdate = await Article.findOne({ url: data.url });
@@ -86,12 +88,13 @@ describe('OG worker', () => {
 			expect(afterUpdate.images.og).to.be.equal(image);
 		});
 
-		it('shouldn\'t update article with image if update not requested', async () => {
+		it("shouldn't update article with image if update not requested", async () => {
 			setupHandler();
 
 			const data = {
 				type: 'article',
-				url: 'http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/'
+				url:
+					'http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/',
 			};
 
 			await ogQueue.add(data);
@@ -100,12 +103,12 @@ describe('OG worker', () => {
 			expect(ParseOG.called).to.be.false;
 		});
 
-		it('shouldn\'t update article if no image is found', async () => {
+		it("shouldn't update article if no image is found", async () => {
 			setupHandler();
 
 			const data = {
 				type: 'article',
-				url: 'http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk'
+				url: 'http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk',
 			};
 
 			await ogQueue.add(data);
@@ -132,7 +135,7 @@ describe('OG worker', () => {
 				{ type: 'article', url: undefined },
 				{ type: 'episode', url: undefined, update: true },
 				{ type: 'article', url: undefined, update: true },
-				{ type: 'cucumber', url: 'http://mbmbam.libsyn.com/rssss'},
+				{ type: 'cucumber', url: 'http://mbmbam.libsyn.com/rssss' },
 				{ type: 'cucumber', url: 'http://mbmbam.libsyn.com/rssss', update: true },
 			];
 

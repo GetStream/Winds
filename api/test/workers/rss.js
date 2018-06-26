@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { expect } from 'chai';
 
-import { rssQueue, OgQueueAdd } from '../../src/asyncTasks'
+import { rssQueue, OgQueueAdd } from '../../src/asyncTasks';
 import RSS from '../../src/models/rss';
 import Article from '../../src/models/article';
 import { ParseFeed } from '../../src/parsers/feed';
@@ -59,7 +59,10 @@ describe('RSS worker', () => {
 			it(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
 				setupHandler();
 
-				await rssQueue.add({ rss: '5b0ad0baf6f89574a638887a', url: testCases[i] });
+				await rssQueue.add({
+					rss: '5b0ad0baf6f89574a638887a',
+					url: testCases[i],
+				});
 				await handler;
 			});
 		}
@@ -68,20 +71,26 @@ describe('RSS worker', () => {
 			const testCases = [
 				{ rss: '5b0ad0baf6f89574a638887a', url: undefined },
 				{ rss: '5b0ad0baf6f89574a638887a', url: '' },
-				{ rss: '5b0ad0baf6f89574a638887a', url: 'http://mbmbam.libsyn.com/rssss' },
+				{
+					rss: '5b0ad0baf6f89574a638887a',
+					url: 'http://mbmbam.libsyn.com/rssss',
+				},
 			];
 
 			for (let i = 0; i < testCases.length; ++i) {
 				setupHandler();
 
 				const data = testCases[i];
+
 				await rssQueue.add(data);
+
 				let error = null;
 				try {
 					await handler;
 				} catch (err) {
 					error = err;
 				}
+
 				expect(error).to.be.an.instanceOf(Error);
 				const rss = await RSS.findById(data.rss);
 				expect(rss.consecutiveScrapeFailures).to.be.an.equal(i + 1);
@@ -92,7 +101,7 @@ describe('RSS worker', () => {
 	describe('worker', () => {
 		const data = {
 			rss: '5b0ad0baf6f89574a638887a',
-			url: 'http://dorkly.com/comics/rss'
+			url: 'http://dorkly.com/comics/rss',
 		};
 		let initialArticles;
 
@@ -114,9 +123,11 @@ describe('RSS worker', () => {
 			});
 
 			it('should fail to parse malformed feed', async () => {
-				nock(data.url).get('').reply(200, () => {
-					return getTestFeed('malformed-hackernews');
-				});
+				nock(data.url)
+					.get('')
+					.reply(200, () => {
+						return getTestFeed('malformed-hackernews');
+					});
 
 				await rssQueue.add(data);
 				await handler;
@@ -126,9 +137,11 @@ describe('RSS worker', () => {
 			});
 
 			it('should fail to parse empty feed', async () => {
-				nock(data.url).get('').reply(200, () => {
-					return getTestFeed('empty');
-				});
+				nock(data.url)
+					.get('')
+					.reply(200, () => {
+						return getTestFeed('empty');
+					});
 
 				await rssQueue.add(data);
 				let error = null;
@@ -158,9 +171,11 @@ describe('RSS worker', () => {
 				OgQueueAdd.resetHistory();
 				setupHandler();
 
-				nock(data.url).get('').reply(200, () => {
-					return getTestFeed('hackernews');
-				});
+				nock(data.url)
+					.get('')
+					.reply(200, () => {
+						return getTestFeed('hackernews');
+					});
 
 				await rssQueue.add(data);
 				await handler;
@@ -181,7 +196,9 @@ describe('RSS worker', () => {
 
 			it('should update feed data', async () => {
 				const rss = await RSS.findById(data.rss);
-				expect(rss.postCount).to.be.equal(initialArticles.length + newArticleCount);
+				expect(rss.postCount).to.be.equal(
+					initialArticles.length + newArticleCount,
+				);
 			});
 
 			it('should add article data to Stream feed', async () => {
@@ -198,9 +215,12 @@ describe('RSS worker', () => {
 				let matchedActivities = 0;
 				for (let i = 0; i < batchCount; ++i) {
 					const batchSize = Math.min(100, articles.length - i * 100);
-					const args = feed.addActivities.getCall(i).args[0].map(a => a.foreign_id);
+					const args = feed.addActivities
+						.getCall(i)
+						.args[0].map(a => a.foreign_id);
 					expect(args).to.have.length(batchSize);
-					matchedActivities += args.filter(arg => foreignIds.includes(arg)).length;
+					matchedActivities += args.filter(arg => foreignIds.includes(arg))
+						.length;
 				}
 				expect(matchedActivities).to.equal(articles.length);
 			});
@@ -215,10 +235,12 @@ describe('RSS worker', () => {
 				const opts = { removeOnComplete: true, removeOnFail: true };
 				for (const article of articles) {
 					const args = { type: 'article', url: article.url };
-					expect(OgQueueAdd.calledWith(args, opts), `Adding ${args.url} to OG queue`).to.be.true;
+					expect(
+						OgQueueAdd.calledWith(args, opts),
+						`Adding ${args.url} to OG queue`,
+					).to.be.true;
 				}
 			});
 		});
 	});
 });
-

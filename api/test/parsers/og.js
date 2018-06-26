@@ -19,22 +19,23 @@ describe('OG parsing', () => {
 		const tc = getTestPage('techcrunch.html');
 		const result = await ParseOGStream(tc);
 		const ogImage =
-		    'https://techcrunch.com/wp-content/uploads/2018/06/wwdc-2018-logo.jpg?w=585';
+			'https://techcrunch.com/wp-content/uploads/2018/06/wwdc-2018-logo.jpg?w=585';
 		expect(result).to.equal(ogImage);
 	});
 
 	it('should detect og image from techcrunch part 2', async () => {
 		const result = await ParseOGStream(getTestPage('techcrunch_instagram.html'));
-		const ogImage = 'https://techcrunch.com/wp-content/uploads/2018/06/instagram-algorithm.png?w=753';
+		const ogImage =
+			'https://techcrunch.com/wp-content/uploads/2018/06/instagram-algorithm.png?w=753';
 		expect(result).to.equal(ogImage);
 	});
 
 	it('kotaku', async () => {
 		const result = await ParseOGStream(getTestPage('kotaku.html'));
-		const ogImage = 'https://i.kinja-img.com/gawker-media/image/upload/s--G9Y4stcm--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/jhvo3paz6ikemi81uklc.bmp';
+		const ogImage =
+			'https://i.kinja-img.com/gawker-media/image/upload/s--G9Y4stcm--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/jhvo3paz6ikemi81uklc.bmp';
 		expect(result).to.equal(ogImage);
 	});
-
 
 	it('should not detect og image from broken techcrunch', async () => {
 		const tc = getTestPage('techcrunch_broken.html');

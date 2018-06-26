@@ -6,7 +6,12 @@ import Article from '../../src/models/article';
 import Episode from '../../src/models/episode';
 
 import { normalizedDiff, upsertManyPosts } from '../../src/utils/upsert';
-import { ReadFeedStream, ParseFeedPosts, ParsePodcastPosts, CreateFingerPrints } from '../../src/parsers/feed';
+import {
+	ReadFeedStream,
+	ParseFeedPosts,
+	ParsePodcastPosts,
+	CreateFingerPrints,
+} from '../../src/parsers/feed';
 import { loadFixture, dropDBs, getTestFeed, getTestPodcast } from '../utils';
 
 const duplicateKeyError = 11000;
@@ -34,8 +39,12 @@ describe('Upsert', () => {
 			expect(operationMap.new).to.be.empty;
 		});
 
-		it('publicationDate change shouldn\'t result in an update', async () => {
-			const article3 = new Article(Object.assign(objectifyAndStripId(article1), { publicationDate: new Date() }));
+		it("publicationDate change shouldn't result in an update", async () => {
+			const article3 = new Article(
+				Object.assign(objectifyAndStripId(article1), {
+					publicationDate: new Date(),
+				}),
+			);
 			CreateFingerPrints([article3]);
 
 			const operationMap = await upsertManyPosts(article1.rss, [article3], 'rss');
@@ -44,35 +53,59 @@ describe('Upsert', () => {
 		});
 
 		it('link change should result in an update', async () => {
-			const article3 = new Article(Object.assign(objectifyAndStripId(article1), { link: 'https://google.com/test' }));
+			const article3 = new Article(
+				Object.assign(objectifyAndStripId(article1), {
+					link: 'https://google.com/test',
+				}),
+			);
 			CreateFingerPrints([article3]);
 
 			const operationMap = await upsertManyPosts(article1.rss, [article3], 'rss');
 			expect(operationMap.changed).to.have.length(1);
 			expect(operationMap.new).to.be.empty;
-			expect(await Article.findOne({_id: operationMap.changed[0]._id})).to.not.be.null
+			expect(await Article.findOne({ _id: operationMap.changed[0]._id })).to.not.be
+				.null;
 		});
 
 		it('a new article should be inserted', async () => {
-			const article3 = new Article({fingerprint: "hello world", url: "https://google.com/testhelloworld", rss: article1.rss, title: "hi"});
+			const article3 = new Article({
+				fingerprint: 'hello world',
+				url: 'https://google.com/testhelloworld',
+				rss: article1.rss,
+				title: 'hi',
+			});
 
 			let operationMap = await upsertManyPosts(article1.rss, [article3], 'rss');
 			expect(operationMap.new).to.have.length(1);
-			expect(await Article.findOne({ _id: operationMap.new[0]._id })).to.not.be.null
+			expect(await Article.findOne({ _id: operationMap.new[0]._id })).to.not.be
+				.null;
 		});
 	});
 
 	describe('Episode upsertManyPosts', () => {
 		it('the same episode shouldnt trigger an update', async () => {
-			let operationMap = await upsertManyPosts(episode1.podcast, [episode1], 'podcast');
+			let operationMap = await upsertManyPosts(
+				episode1.podcast,
+				[episode1],
+				'podcast',
+			);
 			expect(operationMap.changed).to.be.empty;
 			expect(operationMap.new).to.be.empty;
 		});
 
 		it('a new episode should be inserted', async () => {
-			let episode3 = new Episode({fingerprint: "hello world 2", url: "hi", title: "hi2", podcast: episode1.podcast});
+			let episode3 = new Episode({
+				fingerprint: 'hello world 2',
+				url: 'hi',
+				title: 'hi2',
+				podcast: episode1.podcast,
+			});
 
-			let operationMap = await upsertManyPosts(episode1.podcast, [episode3], 'podcast');
+			let operationMap = await upsertManyPosts(
+				episode1.podcast,
+				[episode3],
+				'podcast',
+			);
 			expect(operationMap.new).to.have.length(1);
 		});
 	});
@@ -128,15 +161,15 @@ describe('Upsert', () => {
 		});
 
 		it(`bulkwrite errors`, async () => {
-			const data = (new Article({
+			const data = new Article({
 				fingerprint: 'hihi3',
 				url: 'https://google.com/',
 				rss: '5b0ad37226dc3db38194e5ef',
 				title: 123,
-			})).toObject();
+			}).toObject();
 			const operations = [
 				{ insertOne: { document: data } },
-				{ insertOne: { document: data } }
+				{ insertOne: { document: data } },
 			];
 
 			let error;
@@ -145,7 +178,9 @@ describe('Upsert', () => {
 			} catch (e) {
 				error = e;
 			}
-			expect(error).to.be.an.instanceOf(Error).with.property('code', duplicateKeyError);
+			expect(error)
+				.to.be.an.instanceOf(Error)
+				.with.property('code', duplicateKeyError);
 		});
 	});
 
@@ -162,7 +197,11 @@ describe('Upsert', () => {
 					e['podcast'] = '5b0ad37226dc3db38194e5ef';
 				}
 				await upsertManyPosts('5b0ad37226dc3db38194e5ef', episodes, 'podcast');
-				const operationMap = await upsertManyPosts('5b0ad37226dc3db38194e5ef', episodes, 'podcast');
+				const operationMap = await upsertManyPosts(
+					'5b0ad37226dc3db38194e5ef',
+					episodes,
+					'podcast',
+				);
 				expect(operationMap.new).to.be.empty;
 				expect(operationMap.changed).to.be.empty;
 			});
@@ -179,13 +218,17 @@ describe('Upsert', () => {
 			expect(changes).to.be.empty;
 		});
 		it('test if we ignore publication date', async () => {
-			const article3 = Object.assign(objectifyAndStripId(article1), { publicationDate: new Date() });
+			const article3 = Object.assign(objectifyAndStripId(article1), {
+				publicationDate: new Date(),
+			});
 
 			const changes = normalizedDiff(article1, article3);
 			expect(changes).to.be.empty;
 		});
 		it('ensure we dont ignore other fields', async () => {
-			const article3 = Object.assign(objectifyAndStripId(article1), { link: '123' });
+			const article3 = Object.assign(objectifyAndStripId(article1), {
+				link: '123',
+			});
 
 			const changes = normalizedDiff(article1, article3);
 			expect(changes).to.have.length(1);
@@ -202,23 +245,25 @@ describe('upsertManyPosts', () => {
 		await RSS.create({
 			_id: rssID,
 			title: 'RSS',
-			feedUrl: 'http://amazon.com'
+			feedUrl: 'http://amazon.com',
 		});
 
 		let insertedArticles = await Article.find({ rss: rssID }).sort('fingerprint');
 		expect(insertedArticles).to.be.empty;
-		articles = CreateFingerPrints(Array.from(Array(5).keys()).map(i => {
-			const article = new Article({
-				rss: rssID,
-				title: `Article #${i}`,
-				description: 'Article about life the universe and everything',
-				url: `http://google.com/${i}`,
-				link: `http://google.com/${i}`,
-				guid: `http://google.com/${i}`,
-			});
-			article.enclosures = [];
-			return article;
-		}));
+		articles = CreateFingerPrints(
+			Array.from(Array(5).keys()).map(i => {
+				const article = new Article({
+					rss: rssID,
+					title: `Article #${i}`,
+					description: 'Article about life the universe and everything',
+					url: `http://google.com/${i}`,
+					link: `http://google.com/${i}`,
+					guid: `http://google.com/${i}`,
+				});
+				article.enclosures = [];
+				return article;
+			}),
+		);
 		insertedArticles = await Article.find({ rss: rssID }).sort('fingerprint');
 		expect(insertedArticles).to.be.empty;
 	});
@@ -289,7 +334,10 @@ describe('upsertManyPosts', () => {
 		const insertResult = await upsertManyPosts(rssID, articles, 'rss');
 		expect(insertResult.new).to.not.be.empty;
 		expect(insertResult.changed).to.be.empty;
-		const newArticles = await Article.find({ rss: rssID, _id: { $nin: existingArticles.map(a => String(a._id)) } }).sort('fingerprint');
+		const newArticles = await Article.find({
+			rss: rssID,
+			_id: { $nin: existingArticles.map(a => String(a._id)) },
+		}).sort('fingerprint');
 		expect(newArticles).to.have.length(articles.length);
 		for (let i in articles) {
 			expect(newArticles[i].url).to.be.equal(articles[i].url);

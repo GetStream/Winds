@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { expect } from 'chai';
 
-import { podcastQueue, OgQueueAdd } from '../../src/asyncTasks'
+import { podcastQueue, OgQueueAdd } from '../../src/asyncTasks';
 import Podcast from '../../src/models/podcast';
 import Episode from '../../src/models/episode';
 import { ParsePodcast } from '../../src/parsers/feed';
@@ -11,7 +11,7 @@ import { loadFixture, dropDBs, getTestPodcast, getMockFeed } from '../utils';
 describe('Podcast worker', () => {
 	const data = {
 		podcast: '5afb7fedfe7430d35996d66e',
-		url: 'https://anchor.fm/s/1f47f58/podcast/rss'
+		url: 'https://anchor.fm/s/1f47f58/podcast/rss',
 	};
 
 	let handler;
@@ -51,7 +51,10 @@ describe('Podcast worker', () => {
 			const testCases = [
 				{ podcast: '5afb7fedfe7430d35996d66e', url: undefined },
 				{ podcast: '5afb7fedfe7430d35996d66e', url: '' },
-				{ podcast: '5afb7fedfe7430d35996d66e', url: 'http://dorkly.com/comics/rssss' },
+				{
+					podcast: '5afb7fedfe7430d35996d66e',
+					url: 'http://dorkly.com/comics/rssss',
+				},
 			];
 
 			for (let i = 0; i < testCases.length; ++i) {
@@ -77,9 +80,11 @@ describe('Podcast worker', () => {
 
 			initialEpisodes = await Episode.find({ podcast: data.podcast });
 
-			nock(data.url).get('').reply(200, () => {
-				return getTestPodcast('giant-bombcast');
-			});
+			nock(data.url)
+				.get('')
+				.reply(200, () => {
+					return getTestPodcast('giant-bombcast');
+				});
 
 			getMockFeed('podcast', data.podcast).addActivities.resetHistory();
 			ParsePodcast.resetHistory();
@@ -139,7 +144,10 @@ describe('Podcast worker', () => {
 			const opts = { removeOnComplete: true, removeOnFail: true };
 			for (const episode of episodes) {
 				const args = { type: 'episode', url: episode.link };
-				expect(OgQueueAdd.calledWith(args, opts), `Adding ${args.url} to OG queue`).to.be.true;
+				expect(
+					OgQueueAdd.calledWith(args, opts),
+					`Adding ${args.url} to OG queue`,
+				).to.be.true;
 			}
 		});
 	});

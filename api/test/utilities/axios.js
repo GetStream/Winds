@@ -1,8 +1,11 @@
 import http from 'http';
-import axios from  'axios';
+import axios from 'axios';
 import { expect } from 'chai';
 
-import { setupAxiosRedirectInterceptor, cleanupAxiosRedirectInterceptor } from '../../src/utils/axios';
+import {
+	setupAxiosRedirectInterceptor,
+	cleanupAxiosRedirectInterceptor,
+} from '../../src/utils/axios';
 
 describe('axios', () => {
 	let redirectCount;
@@ -20,7 +23,10 @@ describe('axios', () => {
 		http.createServer((req, res) => {
 			++redirectCount;
 			const code = 302 + redirectCount;
-			res.socket.end(`HTTP/1.1 ${code} Redirect\r\nContent-length: 0\r\nLocation: http://localhost:34568/愛とは何か？/\r\nConnection: close\r\n\r\n`, 'latin1');
+			res.socket.end(
+				`HTTP/1.1 ${code} Redirect\r\nContent-length: 0\r\nLocation: http://localhost:34568/愛とは何か？/\r\nConnection: close\r\n\r\n`,
+				'latin1',
+			);
 			res.connection.destroy();
 		}).listen(34568);
 	});
@@ -41,7 +47,7 @@ describe('axios', () => {
 		after(() => {
 			process.removeAllListeners('uncaughtException');
 			// resume normal Mocha handling of uncaughtExceptions.
-			uncaughtExceptionListeners.forEach((listener) => {
+			uncaughtExceptionListeners.forEach(listener => {
 				process.on('uncaughtException', listener);
 			});
 		});
@@ -52,15 +58,22 @@ describe('axios', () => {
 					url: 'http://localhost:34567',
 					maxRedirects: 9,
 				});
-			} catch(err) {
-				expect(err).to.be.an.instanceOf(Error).with.property('message', 'Max redirects exceeded.');
+			} catch (err) {
+				expect(err)
+					.to.be.an.instanceOf(Error)
+					.with.property('message', 'Max redirects exceeded.');
 			}
 			expect(redirectCount).to.equal(10);
 		});
 
 		it('should fail in unhandleable way for malformed redirects', done => {
 			process.on('uncaughtException', err => {
-				expect(err).to.be.an.instanceOf(TypeError).with.property('message', 'Request path contains unescaped characters');
+				expect(err)
+					.to.be.an.instanceOf(TypeError)
+					.with.property(
+						'message',
+						'Request path contains unescaped characters',
+					);
 				expect(redirectCount).to.equal(1);
 				done();
 			});
@@ -89,8 +102,10 @@ describe('axios', () => {
 					url: 'http://localhost:34567',
 					maxRedirects: 9,
 				});
-			} catch(err) {
-				expect(err).to.be.an.instanceOf(Error).with.property('message', 'Max redirects exceeded.');
+			} catch (err) {
+				expect(err)
+					.to.be.an.instanceOf(Error)
+					.with.property('message', 'Max redirects exceeded.');
 			}
 			expect(redirectCount).to.equal(10);
 		});
@@ -101,8 +116,13 @@ describe('axios', () => {
 					url: 'http://localhost:34568',
 					maxRedirects: 9,
 				});
-			} catch(err) {
-				expect(err).to.be.an.instanceOf(TypeError).with.property('message', 'Request path contains unescaped characters');
+			} catch (err) {
+				expect(err)
+					.to.be.an.instanceOf(TypeError)
+					.with.property(
+						'message',
+						'Request path contains unescaped characters',
+					);
 			}
 			expect(redirectCount).to.equal(1);
 		});
