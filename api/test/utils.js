@@ -40,15 +40,11 @@ function setupMocks() {
 	mockClient.collections = {
 		upsert: sinon.spy(sinon.stub().returns(Promise.resolve({ results: [] }))),
 	};
-	console.log('mocking', mockClient.collections);
 	mockClient.feed.callsFake((group, id) => {
 		return mockFeeds[group + ':' + id] || createMockFeed(group, id);
 	});
 }
-console.log('what?');
 export function getMockClient() {
-	console.log('wtf');
-
 	if (mockClient == null) {
 		setupMocks();
 	}
