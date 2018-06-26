@@ -19,10 +19,9 @@ import search from '../utils/search';
 import { isURL } from '../utils/validation';
 
 exports.get = async (req, res) => {
-	let userID = req.user.sub;
-	let follows = await Follow.find({ user: userID });
+	let follows = await Follow.find({ user: req.user.sub });
 
-	let user = await User.find({ userID });
+	let user = await User.find({ _id: req.user.sub });
 	if (!user) {
 		return res.status(404).json({ error: 'User does not exist.' });
 	}
@@ -56,7 +55,6 @@ exports.get = async (req, res) => {
 };
 
 exports.post = async (req, res) => {
-	const userID = req.user.sub;
 	const upload = Buffer.from(req.file.buffer).toString('utf8');
 
 	if (!upload) {
@@ -64,6 +62,7 @@ exports.post = async (req, res) => {
 	}
 
 	let feeds;
+
 	try {
 		feeds = await util.promisify(opmlParser)(upload);
 	} catch (e) {
@@ -90,12 +89,14 @@ exports.post = async (req, res) => {
 		}
 	}
 
-	const results = await Promise.all(feeds.map(feed => followOPMLFeed(feed, userID)));
+	const results = await Promise.all(
+		feeds.map(feed => followOPMLFeed(feed, req.user.sub)),
+	);
 
 	return res.json(results);
 };
 
-async function followOPMLFeed(feed, userID) {
+async function followOPMLFeed(feed, userId) {
 	let schema;
 	let publicationType;
 	let isPodcast;
@@ -161,9 +162,10 @@ async function followOPMLFeed(feed, userID) {
 
 		await search(instance.searchDocument());
 	}
+
 	// always create the follow
 	let publicationID = instance._id;
-	let follow = await Follow.getOrCreate(publicationType, userID, publicationID);
+	let follow = await Follow.getOrCreate(publicationType, userId, publicationID);
 
 	result.follow = follow;
 

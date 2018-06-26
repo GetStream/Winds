@@ -64,11 +64,21 @@ exports.delete = async (req, res) => {
 	const lookup = { user: req.user.sub };
 
 	if (query.rss) {
+		if (!mongoose.Types.ObjectId.isValid(query.rss)) {
+			return res
+				.status(400)
+				.json({ error: `Resource ID ${query.rss} is an invalid ObjectId.` });
+		}
 		lookup['rss'] = query.rss;
 	} else if (query.podcast) {
+		if (!mongoose.Types.ObjectId.isValid(query.podcast)) {
+			return res
+				.status(400)
+				.json({ error: `Resource ID ${query.podcast} is an invalid ObjectId.` });
+		}
 		lookup['podcast'] = query.podcast;
 	} else {
-		throw new Error('shouldnt happen');
+		throw new Error('Invalid parameter passed to delete method.');
 	}
 
 	const follow = await Follow.findOne(lookup);
