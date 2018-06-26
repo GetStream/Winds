@@ -13,7 +13,10 @@ describe('Merge *WIP*', () => {
 		let articleCount = await Article.count({ rss: '5b0ad0baf6f89574a638887a' });
 		let followCount = await Follow.count({ rss: '5b0ad0baf6f89574a638887a' });
 
-		let results = await mergeFeeds('5b0ad0baf6f89574a638887b', '5b0ad0baf6f89574a638887a');
+		let results = await mergeFeeds(
+			'5b0ad0baf6f89574a638887b',
+			'5b0ad0baf6f89574a638887a',
+		);
 		//TODO: verify we now follow and pin stuff from feed A
 	});
 });

@@ -10,27 +10,27 @@ const cache = new Redis(config.cache.uri);
 exports.list = async (req, res) => {
 	const cacheKey = `featured:v${packageInfo.version.replace(/\./g, ':')}`;
 
-	let resultString = await cache.get(cacheKey);
-	let results = JSON.parse(resultString);
+	let str = await cache.get(cacheKey);
+	let data = JSON.parse(str);
 
-	if (!results) {
+	if (!data) {
 		const rss = await RSS.find({ featured: true }).lean();
-		results = [];
+		data = [];
 		rss.map(feed => {
 			feed.type = 'rss';
-			results.push(feed);
+			data.push(feed);
 		});
 
 		const podcasts = await Podcast.find({ featured: true }).lean();
 		podcasts.map(podcast => {
 			podcast.type = 'podcast';
-			results.push(podcast);
+			data.push(podcast);
 		});
 
-		await cache.set(cacheKey, JSON.stringify(results), 'EX', 60 * 30);
+		await cache.set(cacheKey, JSON.stringify(data), 'EX', 60 * 30);
 	}
 
-	let shuffled = results
+	let shuffled = data
 		.map(a => [Math.random(), a])
 		.sort((a, b) => a[0] - b[0])
 		.map(a => a[1]);

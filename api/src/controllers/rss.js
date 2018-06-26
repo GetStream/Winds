@@ -26,13 +26,11 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	let rssID = req.params.rssId;
-
-	if (!mongoose.Types.ObjectId.isValid(rssID)) {
-		return res.status(422).json({ error: `RSS ID ${rssID} is invalid.` });
+	if (!mongoose.Types.ObjectId.isValid(req.params.rssId)) {
+		return res.status(422).json({ error: `RSS ID ${rssId} is invalid.` });
 	}
 
-	let rss = await RSS.findById(rssID).exec();
+	let rss = await RSS.findById(req.params.rssId).exec();
 	if (!rss) {
 		return res.sendStatus(404);
 	}
@@ -69,13 +67,16 @@ exports.post = async (req, res) => {
 		if (!feedTitle) {
 			continue;
 		}
+
 		if (feedTitle.toLowerCase() === 'rss') {
 			feedTitle = foundRSS.site.title;
 		}
+
 		let feedUrl = normalizeUrl(feed.url);
 		if (!isURL(feedUrl)) {
 			continue;
 		}
+
 		let rss;
 		rss = await RSS.findOne({ feedUrl: feedUrl });
 		// don't update featured RSS feeds since that ends up removing images etc
