@@ -5,7 +5,6 @@ const {
 	ipcMain,
 	Menu,
 	TouchBar,
-	protocol,
 } = require('electron');
 const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 
@@ -69,23 +68,6 @@ createWindow = () => {
 			mediaControls(event, args);
 		});
 	});
-};
-
-registerProtocol = () => {
-	app.setAsDefaultProtocolClient(['winds']);
-
-	protocol.registerFileProtocol(
-		'winds',
-		(request, callback) => {
-			const url = request.url.substr(7);
-			callback({ path: path.normalize(`${__dirname}/${url}`) });
-		},
-		error => {
-			if (error) {
-				console.error('Failed to register protocol');
-			}
-		},
-	);
 };
 
 generateMenu = () => {
@@ -204,11 +186,6 @@ mediaControls = (event, args) => {
 app.on('ready', () => {
 	createWindow();
 	generateMenu();
-	registerProtocol();
-
-	protocol.registerHttpProtocol('winds', function() {
-		console.log('hammer time');
-	});
 });
 
 app.on('window-all-closed', () => {
