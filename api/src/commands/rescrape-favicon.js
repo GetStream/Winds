@@ -18,17 +18,21 @@ async function main() {
 	logger.info(`program.all is set to ${program.all}`);
 
 	let counts = { hasimage: 0, fixed: 0, notfound: 0 };
+	let lookup = {};
+	if (!program.all) {
+		lookup['images.favicon'] = { $exists: false };
+	}
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
-		let total = await schema.count({ 'images.favicon': { $exists: false } });
+		let total = await schema.count(lookup);
 		let completed = 0;
-		let chunkSize = 1000;
+		let chunkSize = 100;
 
 		logger.info(`Found ${total} for ${contentType}`);
 
 		for (let i = 0, j = total; i < j; i += chunkSize) {
 			let chunk = await schema
-				.find({ 'images.favicon': { $exists: false } })
+				.find(lookup)
 				.skip(i)
 				.limit(chunkSize)
 				.lean();
