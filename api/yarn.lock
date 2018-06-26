@@ -2521,6 +2521,18 @@ getstream@^3.17.0:
     request "^2.85.0"
     xmlhttp-request "~0.4.1"
 
+"getstream@https://github.com/GetStream/stream-js.git":
+  version "3.17.0"
+  resolved "https://github.com/GetStream/stream-js.git#5dbe09baad44d58a8afe3aff744dec1eb023e251"
+  dependencies:
+    Base64 "^1.0.1"
+    faye "^1.2.4"
+    http-signature "~1.2.0"
+    jsonwebtoken "^8.3.0"
+    qs "^6.5.1"
+    request "^2.86.0"
+    xmlhttp-request "https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd"
+
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -5182,7 +5194,7 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@2.x.x, request@^2.79.0, request@^2.81.0, request@^2.85.0, request@^2.87.0:
+request@2.x.x, request@^2.79.0, request@^2.81.0, request@^2.85.0, request@^2.86.0, request@^2.87.0:
   version "2.87.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.87.0.tgz#32f00235cd08d482b4d0d68db93a829c0ed5756e"
   dependencies:
@@ -5875,8 +5887,8 @@ touch@^3.1.0:
     nopt "~1.0.10"
 
 tough-cookie@*:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.4.2.tgz#aa9133154518b494efab98a58247bfc38818c00c"
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.4.3.tgz#53f36da3f47783b0925afa06ff9f3b165280f781"
   dependencies:
     psl "^1.1.24"
     punycode "^1.4.1"
@@ -6220,6 +6232,10 @@ xdg-basedir@^3.0.0:
 xml@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
+
+"xmlhttp-request@https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd":
+  version "0.4.0"
+  resolved "https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd"
 
 xmlhttp-request@~0.4.1:
   version "0.4.1"

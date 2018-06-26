@@ -61,7 +61,7 @@
 				"favicon": "^0.0.2",
 				"feedparser": "^2.2.9",
 				"franc-min": "^4.0.0",
-				"getstream": "^3.17.0",
+				"getstream": "https://github.com/GetStream/stream-js.git",
 				"gravatar": "^1.6.0",
 				"iconv": "^2.3.0",
 				"iconv-js": "^0.3.5",

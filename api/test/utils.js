@@ -23,10 +23,10 @@ export function createMockFeed(group, id) {
 		userId: id,
 		id: group + ':' + id,
 	};
-	for (const method of ['follow', 'addActivity', 'addActivities', 'get', 'unfollow', ]) {
+	for (const method of ['follow', 'addActivity', 'addActivities', 'get', 'unfollow']) {
 		mock[method] = sinon.spy(sinon.stub().returns(Promise.resolve({ results: [] })));
 	}
-	mock['getReadOnlyToken'] = sinon.spy(sinon.stub().returns("faketoken"));
+	mock['getReadOnlyToken'] = sinon.spy(sinon.stub().returns('faketoken'));
 	mockFeeds[group + ':' + id] = mock;
 	return mock;
 }
@@ -37,12 +37,18 @@ export function getMockFeed(group, id) {
 
 function setupMocks() {
 	mockClient = sinon.createStubInstance(StreamClient);
+	mockClient.collections = {
+		upsert: sinon.spy(sinon.stub().returns(Promise.resolve({ results: [] }))),
+	};
+	console.log('mocking', mockClient.collections);
 	mockClient.feed.callsFake((group, id) => {
 		return mockFeeds[group + ':' + id] || createMockFeed(group, id);
 	});
 }
-
+console.log('what?');
 export function getMockClient() {
+	console.log('wtf');
+
 	if (mockClient == null) {
 		setupMocks();
 	}
@@ -92,7 +98,10 @@ export async function loadFixture(...fixtures) {
 					//     instances to enable mongo references
 					for (const key in data) {
 						//XXX: reject number attributes (see bug: https://jira.mongodb.org/browse/NODE-1146)
-						if (typeof data[key] !== 'number' && mongoose.Types.ObjectId.isValid(data[key])) {
+						if (
+							typeof data[key] !== 'number' &&
+							mongoose.Types.ObjectId.isValid(data[key])
+						) {
 							data[key] = mongoose.Types.ObjectId(data[key]);
 						}
 					}
@@ -108,16 +117,23 @@ export async function loadFixture(...fixtures) {
 				//     causes double-registration of mongoose models
 				const cachedModule = require.cache[require.resolve(modulePath)];
 				const model = cachedModule ? cachedModule.exports : require(modulePath);
-				await Promise.all(filteredData.map(f => { return model.create(f); }));
+				await Promise.all(
+					filteredData.map(f => {
+						return model.create(f);
+					}),
+				);
 			}
 		}
 	}
 }
 
-export function withLogin(req, user={
-	email: 'valid@email.com',
-	sub: '5b0f306d8e147f10f16aceaf',
-}) {
+export function withLogin(
+	req,
+	user = {
+		email: 'valid@email.com',
+		sub: '5b0f306d8e147f10f16aceaf',
+	},
+) {
 	const authToken = jwt.sign(user, config.jwt.secret);
 	return req.set('Authorization', `Bearer ${authToken}`);
 }
