@@ -1288,6 +1288,10 @@ chai-http@^4.0.0:
     qs "^6.5.1"
     superagent "^3.7.0"
 
+chai-url@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/chai-url/-/chai-url-1.0.4.tgz#827e0fd7835c848b8ab8e2ce1d65d40521e62026"
+
 chai@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chai/-/chai-4.1.2.tgz#0f64584ba642f0f2ace2806279f4f06ca23ad73c"
@@ -2509,17 +2513,17 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-getstream@^3.17.0:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.17.0.tgz#69868691acca92b30cbbc0f320624f70ff7e1c08"
+getstream@^3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.18.0.tgz#2971dbe4b177c7bad45182a951a82ef2ac0d182a"
   dependencies:
     Base64 "^1.0.1"
     faye "^1.2.4"
     http-signature "~1.2.0"
-    jsonwebtoken "^8.2.0"
+    jsonwebtoken "^8.3.0"
     qs "^6.5.1"
-    request "^2.85.0"
-    xmlhttp-request "~0.4.1"
+    request "^2.86.0"
+    xmlhttp-request "https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd"
 
 glob-base@^0.3.0:
   version "0.3.0"
@@ -3548,7 +3552,7 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
 
-jsonwebtoken@^8.1.0, jsonwebtoken@^8.2.0, jsonwebtoken@^8.3.0:
+jsonwebtoken@^8.1.0, jsonwebtoken@^8.3.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.3.0.tgz#056c90eee9a65ed6e6c72ddb0a1d325109aaf643"
   dependencies:
@@ -3824,6 +3828,16 @@ log-driver@^1.2.5:
 logform@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/logform/-/logform-1.9.0.tgz#7e02f7d6b7f70dcc8ae56fcd2d060f9547afbac2"
+  dependencies:
+    colors "^1.2.1"
+    fast-safe-stringify "^2.0.4"
+    fecha "^2.3.3"
+    ms "^2.1.1"
+    triple-beam "^1.2.0"
+
+logform@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/logform/-/logform-1.9.1.tgz#58b29d7b11c332456d7a217e17b48a13ad69d60a"
   dependencies:
     colors "^1.2.1"
     fast-safe-stringify "^2.0.4"
@@ -5182,7 +5196,7 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@2.x.x, request@^2.79.0, request@^2.81.0, request@^2.85.0, request@^2.87.0:
+request@2.x.x, request@^2.79.0, request@^2.81.0, request@^2.86.0, request@^2.87.0:
   version "2.87.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.87.0.tgz#32f00235cd08d482b4d0d68db93a829c0ed5756e"
   dependencies:
@@ -6075,6 +6089,10 @@ uuid@^3.0.0, uuid@^3.1.0, uuid@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
 
+uuid@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.0.tgz#b237147804881d7b86f40a7ff8f590f15c37de32"
+
 v8flags@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-2.1.1.tgz#aab1a1fa30d45f88dd321148875ac02c0b55e5b4"
@@ -6221,9 +6239,9 @@ xml@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
 
-xmlhttp-request@~0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/xmlhttp-request/-/xmlhttp-request-0.4.1.tgz#636d99355a91e1865b38ea039099ddc59af6a7a7"
+"xmlhttp-request@git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd":
+  version "0.4.0"
+  resolved "git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd"
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"
