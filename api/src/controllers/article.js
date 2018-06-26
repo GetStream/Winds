@@ -7,13 +7,16 @@ import logger from '../utils/logger';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
+
 	let articles = [];
+
 	if (query.type === 'recommended') {
 		articles = await getArticleRecommendations(req.User);
 	} else {
 		if (query.rss && !mongoose.Types.ObjectId.isValid(query.rss)) {
 			return res.status(400).json({ error: `Invalid RSS id ${query.rss}` });
 		}
+
 		articles = await Article.apiQuery(req.query);
 	}
 
@@ -21,26 +24,28 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	let articleID = req.params.articleId;
+	let articleId = req.params.articleId;
 
-	if (!mongoose.Types.ObjectId.isValid(articleID)) {
-		return res.status(400).json({ error: `Article ID ${articleID} is invalid` });
+	if (!mongoose.Types.ObjectId.isValid(articleId)) {
+		return res
+			.status(400)
+			.json({ error: `Resource articleId (${articleId}) is an invalid ObjectId.` });
 	}
 
-	let article = await Article.findById(articleID);
+	let article = await Article.findById(articleId);
 	if (!article) {
-		return res.status(404).json({ error: `Can't find article with id ${articleID}` });
+		return res.status(404).json({ error: 'Resource not found.' });
 	}
 
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
 		await trackEngagement(req.User, {
 			label: 'open_article',
-			content: { foreign_id: `article:${articleID}` },
+			content: { foreign_id: `article:${articleId}` },
 		});
 
-		res.json(parsed);
-	} else {
-		res.json(article);
+		return res.json(parsed);
 	}
+
+	res.json(article);
 };

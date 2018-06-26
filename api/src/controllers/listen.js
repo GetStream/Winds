@@ -16,7 +16,7 @@ exports.post = async (req, res, _) => {
 	);
 
 	const duration = data.duration;
-	if ((Math.floor(duration/15)) % 4 == 0) {
+	if (Math.floor(duration / 15) % 4 == 0) {
 		const foreign_id = `episode:${data.episode}`;
 		await trackEngagement(req.User, {
 			label: 'listen_progress',

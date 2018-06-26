@@ -12,6 +12,7 @@ import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
 
 async function followInterest(userId, interest) {
 	const interestRssFeeds = await RSS.find(interest);
+
 	await Promise.all(
 		interestRssFeeds.map(interestRssFeed => {
 			return Follow.getOrCreate('rss', userId, interestRssFeed._id);
@@ -100,11 +101,10 @@ exports.login = async (req, res, _) => {
 };
 
 exports.forgotPassword = async (req, res, _) => {
-	const data = req.body || {};
 	const opts = { new: true };
 	const recoveryCode = uuidv4();
 
-	let email = data.email.toLowerCase();
+	let email = req.body.email.toLowerCase();
 
 	const user = await User.findOneAndUpdate(
 		{ email: email },
@@ -122,13 +122,10 @@ exports.forgotPassword = async (req, res, _) => {
 };
 
 exports.resetPassword = async (req, res, _) => {
-	const data = req.body || {};
-	const opts = { new: true };
-
 	const user = await User.findOneAndUpdate(
-		{ email: data.email.toLowerCase(), recoveryCode: data.recoveryCode },
-		{ password: data.password },
-		opts,
+		{ email: req.body.email.toLowerCase(), recoveryCode: req.body.recoveryCode },
+		{ password: req.body.password },
+		{ new: true },
 	);
 
 	if (!user) {

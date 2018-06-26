@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Pin from '../models/pin';
 import config from '../config';
 import { trackEngagement } from '../utils/analytics';
@@ -11,17 +12,23 @@ exports.list = async (req, res) => {
 		obj[query.type] = { $exists: true };
 		obj['user'] = req.user.sub; // can only list pins for the
 
-		res.json(await Pin.find(obj).sort({_id: -1}));
-	} else {
-		res.json(await Pin.apiQuery(req.query));
+		return res.json(await Pin.find(obj).sort({ _id: -1 }));
 	}
+
+	res.json(await Pin.apiQuery(req.query));
 };
 
 exports.get = async (req, res) => {
+	if (!mongoose.Types.ObjectId.isValid(req.params.pinId)) {
+		return res.status(400).json({
+			error: `Resource pinId (${req.params.pinId}) is an invalid ObjectId.`,
+		});
+	}
+
 	let pin = await Pin.findById(req.params.pinId);
 
 	if (!pin) {
-		return res.status(404).json({ error: 'Pin does not exist.' });
+		return res.status(404).json({ error: 'Resource does not exist.' });
 	}
 
 	res.json(pin);
@@ -44,7 +51,7 @@ exports.post = async (req, res) => {
 
 	const obj = { user: data.user, [type]: data[type] };
 
-	if (!!await Pin.findOne(obj)) {
+	if (!!(await Pin.findOne(obj))) {
 		return res.status(409).json({ error: 'Resource already exists.' });
 	}
 
@@ -61,10 +68,10 @@ exports.post = async (req, res) => {
 		});
 
 	const label = pin.article ? 'pin_article' : 'pin_episode';
-	const foreignID = pin.article ? `article:${pin.article}` : `episode:${pin.episode}`;
+	const foreignId = pin.article ? `article:${pin.article}` : `episode:${pin.episode}`;
 	await trackEngagement(req.User, {
 		label: label,
-		content: { foreign_id: foreignID },
+		content: { foreign_id: foreignId },
 	});
 
 	res.json(await Pin.findOne({ _id: pin._id }));
