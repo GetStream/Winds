@@ -5,7 +5,6 @@ import { ArticleSchema } from './article';
 import { getStreamClient } from '../utils/stream';
 import { getUrl } from '../utils/urls';
 
-
 export const RSSSchema = new Schema(
 	{
 		url: {
@@ -76,6 +75,7 @@ export const RSSSchema = new Schema(
 		valid: {
 			type: Boolean,
 			default: true,
+			index: true,
 		},
 		lastScraped: {
 			type: Date,
@@ -167,7 +167,7 @@ RSSSchema.statics.resetScrapeFailures = async function(id) {
 };
 
 RSSSchema.methods.getUrl = function() {
-	return getUrl('rss_detail', this._id)
+	return getUrl('rss_detail', this._id);
 };
 
 RSSSchema.methods.searchDocument = function() {
