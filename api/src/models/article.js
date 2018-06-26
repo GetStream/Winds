@@ -171,12 +171,19 @@ ArticleSchema.methods.getParsedArticle = async function() {
 		content = this.content;
 	}
 
+	const excerpt = parsed.excerpt || parsed.title || this.description;
+	const title = parsed.title || this.title;
+
+	if (!title) {
+		return null;
+	}
+
 	cached = await Cache.create({
 		content: content,
-		excerpt: parsed.excerpt || parsed.title,
+		excerpt: excerpt,
 		image: parsed.lead_image_url || '',
 		publicationDate: parsed.date_published || this.publicationDate,
-		title: parsed.title,
+		title: title,
 		url: this.url,
 		commentUrl: this.commentUrl,
 		enclosures: this.enclosures,
