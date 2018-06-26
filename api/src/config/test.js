@@ -21,6 +21,6 @@ module.exports = {
 			secret: process.env.EMAIL_SENDGRID_SECRET,
 		},
 	},
-	analyticsDisabled: true,
-	url: 'https://winds.gestream.io'
+	analyticsDisabled: false,
+	url: 'https://winds.gestream.io',
 };

@@ -37,11 +37,13 @@ export function getMockFeed(group, id) {
 
 function setupMocks() {
 	mockClient = sinon.createStubInstance(StreamClient);
+	mockClient.collections = {
+		upsert: sinon.spy(sinon.stub().returns(Promise.resolve({ results: [] }))),
+	};
 	mockClient.feed.callsFake((group, id) => {
 		return mockFeeds[group + ':' + id] || createMockFeed(group, id);
 	});
 }
-
 export function getMockClient() {
 	if (mockClient == null) {
 		setupMocks();

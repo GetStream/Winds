@@ -1,22 +1,24 @@
 require('babel-register')({
 	presets: [
-		['env', {
-			targets: {
-				node: 'current'
-			}
-		}]
+		[
+			'env',
+			{
+				targets: {
+					node: 'current',
+				},
+			},
+		],
 	],
 	plugins: [
 		'shebang',
 		'transform-async-generator-functions',
-		['istanbul', {
-			'exclude': [
-				'test',
-				'setup-tests.js',
-				'test-entry.js',
-			]
-		}]
-	]
+		[
+			'istanbul',
+			{
+				exclude: ['test', 'setup-tests.js', 'test-entry.js'],
+			},
+		],
+	],
 });
 
 //XXX: mocking modules before anything else is loaded

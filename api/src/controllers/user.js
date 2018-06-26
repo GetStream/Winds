@@ -9,10 +9,9 @@ import logger from '../utils/logger';
 import personalization from '../utils/personalization';
 
 exports.list = async (req, res) => {
-	const query = req.query || {};
 	let users = [];
 
-	if (query.type === 'recommended') {
+	if (req.query.type === 'recommended') {
 		let recommendedUserIds = await personalization({
 			endpoint: '/winds_user_recommendations',
 			userId: req.user.sub,
@@ -27,11 +26,12 @@ exports.list = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-	// Only permit access to the authenticated user's own model
 	if (req.params.userId !== req.user.sub) {
 		return res.sendStatus(403);
 	}
+
 	await req.User.remove();
+
 	res.sendStatus(204);
 };
 
@@ -52,11 +52,11 @@ exports.get = async (req, res) => {
 	if (user._id.toString() === req.user.sub) {
 		serialized = user.serializeAuthenticatedUser();
 	}
+
 	res.json(serialized);
 };
 
 exports.put = async (req, res) => {
-	// Only permit access to the authenticated user's own model
 	if (req.params.userId !== req.user.sub) {
 		res.status(403).json({ error: 'Access denied.' });
 		return;
@@ -82,13 +82,13 @@ exports.put = async (req, res) => {
 	}
 
 	if (data.username) {
-		// check for existing username
 		let userByUsername = await User.findOne({ username: data.username });
 		if (userByUsername && userByUsername.id != user.id) {
 			res.status(409).json({ error: 'User with this username already exists' });
 			return;
 		}
 	}
+
 	if (data.email) {
 		// check for existing email
 		let userByEmail = await User.findOne({ email: data.email });
@@ -97,19 +97,6 @@ exports.put = async (req, res) => {
 			return;
 		}
 	}
-
-	// TODO: we don't allow you to edit this... so what's up?
-	/*
-	if (data.interests) {
-		const promises = data.interests.flatMap(async (interest) => {
-			// find all rss feeds and podcasts for that interest, and follow them
-			return [
-				RSS.find({interest}).then(rssFeeds => rssFeeds.map(rssFeed => followRssFeed(req.params.userId, rssFeed._id))),
-				Podcast.find({interest}).then(podcasts => podcasts.map(podcast => followPodcast(req.params.userId, podcast._id))),
-			];
-		});
-		await Promise.all(promises);
-	}*/
 
 	const whitelist = Object.assign(
 		{},

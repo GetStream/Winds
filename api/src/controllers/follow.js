@@ -1,5 +1,6 @@
 import stream from 'getstream';
 import async from 'async';
+import mongoose from 'mongoose';
 
 import Follow from '../models/follow';
 import User from '../models/user';
@@ -41,19 +42,35 @@ exports.post = async (req, res) => {
 	}
 
 	if (query.type === 'podcast') {
+		if (!mongoose.Types.ObjectId.isValid(query.podcast)) {
+			return res.status(400).json({
+				error: `Parameter podcast (${query.podcast}) is an invalid ObjectId.`,
+			});
+		}
+
 		let podcast = await Podcast.findById(query.podcast);
+
 		if (!podcast) {
 			return res.status(404).json({ error: 'Resource not found.' });
 		}
+
 		follow = await Follow.getOrCreate('podcast', user, query.podcast);
 	} else if (query.type === 'rss') {
+		if (!mongoose.Types.ObjectId.isValid(query.rss)) {
+			return res.status(400).json({
+				error: `Parameter rss (${query.rss}) is an invalid ObjectId.`,
+			});
+		}
+
 		let rss = await RSS.findById(query.rss);
+
 		if (!rss) {
 			return res.status(404).json({ error: 'Resource not found.' });
 		}
+
 		follow = await Follow.getOrCreate('rss', user, query.rss);
 	} else {
-		throw new Error('Invalid parameter passed to follow post endpoint.');
+		return res.status(400).json({ error: 'Missing required parameter.' });
 	}
 
 	return res.json(follow);
@@ -68,7 +85,9 @@ exports.delete = async (req, res) => {
 	} else if (query.podcast) {
 		lookup['podcast'] = query.podcast;
 	} else {
-		throw new Error('shouldnt happen');
+		return res
+			.send(400)
+			.json({ error: 'Invalid parameter passed to delete method.' });
 	}
 
 	const follow = await Follow.findOne(lookup);

@@ -29,21 +29,21 @@ exports.get = async (req, res, _) => {
 	if (!playlist) {
 		return res.sendStatus(404);
 	}
+
 	if (playlist.user._id != req.User.id) {
 		return res.sendStatus(403);
 	}
-
 
 	res.json(playlist);
 };
 
 exports.post = async (req, res, _) => {
 	const data = Object.assign({}, req.body, { user: req.user.sub });
-	//XXX: create isn't autopopulating the `user` field
-	//     so we have to retrieve the enriched object after creation
-	let playlist = await Playlist.create(data);
+
+	let playlist;
+	playlist = await Playlist.create(data);
 	playlist = await Playlist.findById(playlist._id);
-	// add to algolia
+
 	await search({
 		_id: playlist._id,
 		episodes: playlist.episodes,
@@ -51,32 +51,38 @@ exports.post = async (req, res, _) => {
 		type: 'playlist',
 		user: playlist.user,
 	});
+
 	res.json(playlist);
 };
 
 exports.put = async (req, res, _) => {
-	const data = req.body || {};
 	const playlist = await Playlist.findById(req.params.playlistId);
+
 	if (!playlist) {
 		return res.sendStatus(404);
 	}
+
 	if (playlist.user._id != req.User.id) {
 		return res.sendStatus(403);
 	}
-	//XXX: findByIdAndUpdate isn't autopopulating the `user` field
-	//     so we have to retrieve the enriched object after update
-	await Playlist.update({ _id: req.params.playlistId }, data, { new: true });
+
+	await Playlist.update({ _id: req.params.playlistId }, req.body, { new: true });
+
 	res.json(await Playlist.findOne({ _id: req.params.playlistId }));
 };
 
 exports.delete = async (req, res, _) => {
 	const playlist = await Playlist.findById(req.params.playlistId);
+
 	if (!playlist) {
 		return res.sendStatus(404);
 	}
+
 	if (playlist.user._id != req.User.id) {
 		return res.sendStatus(403);
 	}
+
 	await Playlist.remove({ _id: req.params.playlistId });
+
 	res.sendStatus(204);
 };

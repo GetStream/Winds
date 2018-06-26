@@ -26,11 +26,9 @@ exports.health = async (req, res) => {
 	res.status(200).send({ version, healthy: '100%' });
 };
 
-// Check the server health more extensively...
 exports.status = async (req, res) => {
 	let output = { version, code: 200 };
 
-	// verify that we've recently parsed either an article and an episode
 	const latestArticle = await Article.find({}).sort({ _id: -1 });
 	const latestEpisode = await Episode.find({}).sort({ _id: -1 });
 
@@ -51,7 +49,6 @@ exports.status = async (req, res) => {
 				: 'The most recent episode is too old.';
 	}
 
-	// check for publications stuck in the isParsing state
 	output.rssCurrentlyParsing = await RSS.count({ isParsing: true });
 	output.podcastCurrentlyParsing = await Podcast.count({ isParsing: true });
 
@@ -69,15 +66,12 @@ exports.status = async (req, res) => {
 		}`;
 	}
 
-	// send the response
 	res.status(output.code).send(output);
 };
 
-// Check the server health more extensively...
 exports.queue = async (req, res) => {
 	let output = { version, code: 200 };
 
-	// check the queue status
 	for (const [key, queue] of Object.entries(queues)) {
 		let queueStatus = await queue.getJobCounts();
 		output[key] = queueStatus;
@@ -89,7 +83,6 @@ exports.queue = async (req, res) => {
 		}
 	}
 
-	// send the response
 	res.status(output.code).send(output);
 };
 
@@ -112,7 +105,9 @@ exports.sentryLog = async (req, res) => {
 	} catch (err) {
 		logger.error({ err });
 	}
+
 	logger.error('0');
 	logger.error('1');
+
 	res.status(200).send('{}');
 };

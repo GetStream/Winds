@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 
 exports.list = async (req, res) => {
 	let query = req.query || {};
+
 	let podcasts;
 
 	if (query.type === 'recommended') {
@@ -23,17 +24,15 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	let podcastID = req.params.podcastId;
-
-	if (!mongoose.Types.ObjectId.isValid(podcastID)) {
-		return res.status(422).json({ error: `Podcast ID ${podcastID} is invalid.` });
+	if (!mongoose.Types.ObjectId.isValid(req.params.podcastId)) {
+		return res
+			.status(422)
+			.json({ error: `Podcast ID ${podcastId} is an invalid ObjectId.` });
 	}
 
-	let podcast = await Podcast.findById(podcastID).exec();
+	let podcast = await Podcast.findById(req.params.podcastId).exec();
 	if (!podcast) {
-		return res
-			.status(404)
-			.json({ error: `Can't find podcast with id ${podcastID}.` });
+		return res.status(404).json({ error: `Resource not found.` });
 	}
 
 	res.json(podcast.serialize());
@@ -44,6 +43,7 @@ exports.post = async (req, res) => {
 
 	// todo refactor this check for validating partial urls like google.com
 	let url;
+
 	try {
 		url = normalizeUrl(data.feedUrl);
 	} catch (e) {
@@ -150,7 +150,6 @@ exports.post = async (req, res) => {
 			);
 		}
 
-		// schedule search index
 		promises.push(search(p.searchDocument()));
 	});
 

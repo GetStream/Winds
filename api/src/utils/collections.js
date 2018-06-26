@@ -3,42 +3,29 @@ import RSS from '../models/rss';
 import Article from '../models/article';
 import Episode from '../models/episode';
 import { DetectLanguage } from '../parsers/detect-language';
+import { getStreamClient } from '../utils/stream';
+
 import config from '../config';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
 // replaces TrackMetadata and events() calls
-export async function upsertCollections(collections) {
-	// Collection in the format {'user:1': {userdatahere}}
-	// TODO: this should be part of the stream-js library
-	if (Object.keys(collections).length && !config.analyticsDisabled) {
-		const token = jwt.sign(
-			{
-				action: '*',
-				resource: '*',
-				user_id: '*',
-			},
-			config.stream.apiSecret,
-			{ algorithm: 'HS256', noTimestamp: true },
-		);
-		let result;
+export async function upsertCollections(collectionType, publications) {
+	if (publications.length && !config.analyticsDisabled) {
+		let response;
+		let streamClient = getStreamClient();
+
 		try {
-			result = await axios({
-				data: collections,
-				headers: {
-					Authorization: token,
-					'stream-auth-type': 'jwt',
-				},
-				method: 'POST',
-				params: {
-					api_key: config.stream.apiKey,
-				},
-				url: `${config.stream.baseUrl}/winds_meta/`,
+			response = await streamClient.collections.upsert(
+				collectionType,
+				publications,
+			);
+		} catch (err) {
+			logger.error(`failed to update collections with type ${collectionType}`, {
+				err,
 			});
-		} catch (e) {
-			throw new Error(`failed to update the collection`);
 		}
-		return result;
+		return response;
 	}
 }
 
@@ -62,17 +49,18 @@ export async function sendPodcastToCollections(podcast) {
 		mostRecentPublicationDate = episodes[0].publicationDate;
 	}
 
-	let collections = {
-		[`podcast:${podcast.id}`]: {
+	let collections = [
+		{
+			id: podcast.id,
 			articleCount: episodes.length,
 			description: podcast.description,
 			language: podcast.language,
 			mostRecentPublicationDate: mostRecentPublicationDate,
 			title: podcast.title,
 		},
-	};
+	];
 
-	await upsertCollections(collections);
+	await upsertCollections('podcast', collections);
 }
 
 export async function sendRssFeedToCollections(rssFeed) {
@@ -95,15 +83,16 @@ export async function sendRssFeedToCollections(rssFeed) {
 		mostRecentPublicationDate = articles[0].publicationDate;
 	}
 
-	let collections = {
-		[`rss:${rssFeed.id}`]: {
+	let collections = [
+		{
+			id: rssFeed.id,
 			articleCount: articles.length,
 			description: rssFeed.description,
 			language: rssFeed.language,
 			mostRecentPublicationDate: mostRecentPublicationDate,
 			title: rssFeed.title,
 		},
-	};
+	];
 
-	await upsertCollections(collections);
+	await upsertCollections('rss', collections);
 }

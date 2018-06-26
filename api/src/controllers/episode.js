@@ -22,7 +22,7 @@ exports.list = async (req, res) => {
 
 exports.get = async (req, res) => {
 	if (req.params.episodeId === 'undefined') {
-		return res.status(404).json({ error: 'An Episode ID is required.' });
+		return res.status(404).json({ error: 'Missing required field episodeId.' });
 	}
 
 	let episode = await Episode.findById(req.params.episodeId);
