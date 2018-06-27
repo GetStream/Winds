@@ -46,6 +46,7 @@ const _default = {
 		index: process.env.ALGOLIA_INDEX,
 	},
 	logger: {
+		level: process.env.LOGGER_LEVEL || 'warn',
 		host: process.env.LOGGER_HOST,
 		port: process.env.LOGGER_PORT,
 	},
