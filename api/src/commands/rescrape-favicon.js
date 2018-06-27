@@ -8,6 +8,7 @@ import { discoverRSS } from '../parsers/discovery';
 
 program
 	.option('--all', 'Rescrape articles for which we already have a favicon image')
+	.option('-c, --concurrency <n>', 'The number of concurrent scraping updates', 100)
 	.parse(process.argv);
 
 async function rescrapeFavicon(instance, schema, counts) {
@@ -40,17 +41,20 @@ async function main() {
 	logger.info(`program.all is set to ${program.all}`);
 
 	let counts = { hasimage: 0, fixed: 0, notfound: 0 };
-	let lookup = {};
+	let lookup = { url: { $nin: [null, ''] } };
 	if (!program.all) {
 		lookup['images.favicon'] = { $in: [null, ''] };
 	}
+	let chunkSize = parseInt(program.concurrency, 10);
+	console.log(typeof chunkSize, chunkSize);
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
 		let total = await schema.count(lookup);
 		let completed = 0;
-		let chunkSize = 100;
 
-		logger.info(`Found ${total} for ${contentType}`);
+		logger.info(
+			`Found ${total} for ${contentType}, processing in chunks of ${chunkSize}`,
+		);
 
 		for (let i = 0, j = total; i < j; i += chunkSize) {
 			let chunk = await schema
@@ -58,7 +62,7 @@ async function main() {
 				.skip(i)
 				.limit(chunkSize)
 				.lean();
-			completed += chunkSize;
+			completed = completed + chunkSize;
 
 			let promises = [];
 			for (const instance of chunk) {
@@ -71,10 +75,10 @@ async function main() {
 				}
 			}
 			let results = await Promise.all(promises);
-			console.log(completed);
+			console.log('completed', completed);
 		}
 
-		console.log(counts);
+		console.log('counts', counts);
 		logger.info(`Completed for type ${contentType}`);
 	}
 }
