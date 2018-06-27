@@ -14,17 +14,20 @@ exports.list = async (req, res) => {
 	let data = JSON.parse(str);
 
 	if (!data) {
-		const rss = await RSS.find({ featured: true });
 		data = [];
-		rss.map(feed => {
-			feed.type = 'rss';
-			data.push(feed);
+
+		const rss = await RSS.find({ featured: true });
+		rss.map(doc => {
+			let r = doc.toObject();
+			r.type = 'rss';
+			data.push(r);
 		});
 
 		const podcasts = await Podcast.find({ featured: true });
-		podcasts.map(podcast => {
-			podcast.type = 'podcast';
-			data.push(podcast);
+		podcasts.map(doc => {
+			let p = doc.toObject();
+			p.type = 'podcast';
+			data.push(p);
 		});
 
 		await cache.set(cacheKey, JSON.stringify(data), 'EX', 60 * 30);
