@@ -26,7 +26,12 @@ async function rescrapeFavicon(instance, schema, counts) {
 			return;
 		}
 	} catch (err) {
-		logger.warn(`rescraping failed with error`, { err });
+		logger.warn(
+			`rescraping failed with error for url ${instance.url} with instance id ${
+				instance._id
+			}`,
+			{ err },
+		);
 	}
 }
 
