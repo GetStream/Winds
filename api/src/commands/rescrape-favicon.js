@@ -11,7 +11,8 @@ program
 	.option('-c, --concurrency <n>', 'The number of concurrent scraping updates', 100)
 	.parse(process.argv);
 
-async function rescrapeRSSFavicon(instance) {
+async function rescrapeFavicon(publicationType, instance) {
+	const schema = publicationType == 'rss' ? RSS : Podcast;
 	try {
 		let foundRSS = await discoverRSS(instance.url);
 
@@ -20,28 +21,7 @@ async function rescrapeRSSFavicon(instance) {
 			const images = instance.images || {};
 			images.favicon = site.favicon;
 			let updated = await RSS.update({ _id: instance._id }, { images });
-			return updated._id;
-		}
-	} catch (err) {
-		logger.warn(
-			`rescraping failed with error for url ${instance.url} with instance id ${
-				instance._id
-			}`,
-			{ err },
-		);
-	}
-}
-
-async function rescrapePodcastFavicon(instance) {
-	try {
-		let foundRSS = await discoverRSS(instance.url);
-
-		if (foundRSS && foundRSS.site && foundRSS.site.favicon) {
-			let site = foundRSS.site;
-			const images = instance.images || {};
-			images.favicon = site.favicon;
-			let updated = await Podcast.update({ _id: instance._id }, { images });
-			return updated._id;
+			return updated;
 		}
 	} catch (err) {
 		logger.warn(
@@ -63,7 +43,6 @@ async function main() {
 		lookup['images.favicon'] = { $in: [null, ''] };
 	}
 	let chunkSize = parseInt(program.concurrency, 10);
-	console.log(typeof chunkSize, chunkSize);
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
 		let total = await schema.count(lookup);
@@ -85,12 +64,7 @@ async function main() {
 			for (const instance of chunk) {
 				let missingImage = !instance.images || !instance.images.favicon;
 				if (missingImage || program.all) {
-					let promise;
-					if (contentType == 'rss') {
-						promise = rescrapeRSSFavicon(instance);
-					} else {
-						promise = rescrapePodcastFavicon(instance);
-					}
+					let promise = rescrapeFavicon(contentType, instance);
 					promises.push(promise);
 				} else {
 					counts.hasimage += 1;
