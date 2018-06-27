@@ -50,6 +50,7 @@
     "electron-is": "^2.4.1",
     "electron-is-dev": "^0.3.0",
     "electron-log": "^2.2.14",
+    "electron-notifications": "^1.0.0",
     "electron-open-link-in-browser": "^1.0.2",
     "electron-publisher-s3": "^20.14.0",
     "electron-remote": "^1.2.0",

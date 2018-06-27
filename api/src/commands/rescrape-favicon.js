@@ -10,6 +10,7 @@ import { isURL } from '../utils/validation';
 program
 	.option('--all', 'Rescrape articles for which we already have a favicon image')
 	.option('-c, --concurrency <n>', 'The number of concurrent scraping updates', 100)
+	.option('--publication <s>', 'ID of the publication to scrape')
 	.parse(process.argv);
 
 async function rescrapeFavicon(publicationType, instance) {
@@ -45,7 +46,9 @@ async function main() {
 
 	let counts = { hasimage: 0, fixed: 0, notfound: 0 };
 	let lookup = { url: { $nin: [null, ''] } };
-	if (!program.all) {
+	if (program.publication) {
+		lookup['_id'] = program.publication;
+	} else if (!program.all) {
 		lookup['images.favicon'] = { $in: [null, ''] };
 	}
 	let chunkSize = parseInt(program.concurrency, 10);
@@ -61,6 +64,7 @@ async function main() {
 		for (let i = 0, j = total; i < j; i += chunkSize) {
 			let chunk = await schema
 				.find(lookup)
+				.sort({ followerCount: -1 })
 				.skip(i)
 				.limit(chunkSize)
 				.lean();
