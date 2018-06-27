@@ -15,10 +15,6 @@ describe('Featured', () => {
 			const response = await withLogin(request(api).get('/featured'));
 			expect(response).to.have.status(200);
 			expect(response.body).to.be.a('Array');
-			let types = response.body.map(r => {
-				return r.type;
-			});
-			expect(types).to.include('rss', 'podcast');
 		});
 	});
 });

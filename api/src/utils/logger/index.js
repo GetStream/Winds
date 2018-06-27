@@ -33,7 +33,7 @@ const sillyWinstonConsoleFormatter = format(info => {
 });
 
 const logger = winston.createLogger({
-	level: 'warn',
+	level: config.logger.level,
 	format: warnAboutWinston(),
 	transports: [
 		new winston.transports.Console({

@@ -1,13 +1,6 @@
-const {
-	app,
-	BrowserWindow,
-	shell,
-	ipcMain,
-	Menu,
-	TouchBar,
-	protocol,
-} = require('electron');
+const { app, BrowserWindow, shell, ipcMain, Menu, TouchBar } = require('electron');
 const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
+const notifier = require('electron-notifications');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -71,29 +64,11 @@ createWindow = () => {
 	});
 };
 
-registerProtocol = () => {
-	protocol.registerFileProtocol(
-		'winds',
-		(request, callback) => {
-			const url = request.url.substr(8);
-			callback({ path: path.normalize(`${__dirname}/${url}`) });
-		},
-		error => {
-			if (error) {
-				console.error('Failed to register protocol');
-			}
-		},
-	);
-};
-
 generateMenu = () => {
 	const template = [
 		{
 			label: 'File',
-			submenu: [
-				{ role: 'about' },
-				{ role: 'quit' }
-			],
+			submenu: [{ role: 'about' }, { role: 'quit' }],
 		},
 		{
 			label: 'Edit',
@@ -186,6 +161,14 @@ mediaControls = (event, args) => {
 	if (args.type === 'play') {
 		playPause.icon = `${__dirname}/static/pause.png`;
 		info.label = args.title;
+
+		notifier.notify('Currently Playing', {
+			message: args.title.substr(0, 30) + '...',
+			icon: 'https://i.imgur.com/3f9SScr.png',
+			buttons: ['Dismiss'],
+			duration: 8000,
+			flat: true,
+		});
 	} else {
 		playPause.icon = `${__dirname}/static/play.png`;
 	}
@@ -205,8 +188,6 @@ mediaControls = (event, args) => {
 app.on('ready', () => {
 	createWindow();
 	generateMenu();
-
-	app.setAsDefaultProtocolClient('winds');
 });
 
 app.on('window-all-closed', () => {

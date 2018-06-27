@@ -39,6 +39,9 @@ exports.get = async (req, res) => {
 
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
+		if (!parsed) {
+			return res.status(400).json({ error: 'Failed to parse the article.' });
+		}
 		await trackEngagement(req.User, {
 			label: 'open_article',
 			content: { foreign_id: `article:${articleId}` },

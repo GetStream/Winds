@@ -35,13 +35,11 @@ Winds is a beautiful open-source RSS and Podcast app created using React/Redux/N
 
 Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/GetStream/Winds/issues/191)
 
-*   [ ] Mark Read (partially implemented)
+*   [ ] Search detail screen
 *   [ ] Playlist support (partially implemented)
 *   [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
 *   [ ] Mobile application powered by React Native
-*   [ ] SSO (Google & Twitter)
 *   [ ] Folder Support
-*   [ ] Listen to feed changes in realtime
 
 ## Powered By
 
