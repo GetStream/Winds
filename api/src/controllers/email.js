@@ -8,10 +8,10 @@ exports.list = async (req, res) => {
 
 exports.get = async (req, res) => {
 	if (req.params.emailName === 'weekly') {
-		const user = req.query.user;
+		const userId = req.query.user;
 
-		if (!query.rss && !mongoose.Types.ObjectId.isValid(user)) {
-			return res.status(400).json({ error: `Invalid user id ${user}.` });
+		if (!query.rss && !mongoose.Types.ObjectId.isValid(userId)) {
+			return res.status(400).json({ error: `Invalid user id ${userId}.` });
 		}
 
 		let user = await User.findOne({ _id: user, admin: true });
