@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import User from '../models/user';
 import { weeklyContextGlobal, weeklyContextUser } from '../utils/email/context';
 import { SendWeeklyEmail, CreateWeeklyEmail } from '../utils/email/send';
@@ -10,11 +12,11 @@ exports.get = async (req, res) => {
 	if (req.params.emailName === 'weekly') {
 		const userId = req.query.user;
 
-		if (!query.rss && !mongoose.Types.ObjectId.isValid(userId)) {
+		if (!mongoose.Types.ObjectId.isValid(userId)) {
 			return res.status(400).json({ error: `Invalid user id ${userId}.` });
 		}
 
-		let user = await User.findOne({ _id: user, admin: true });
+		const user = await User.findOne({ _id: userId, admin: true });
 		let context = Object.assign(
 			{},
 			await weeklyContextGlobal(),
