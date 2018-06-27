@@ -1,12 +1,6 @@
-const {
-	app,
-	BrowserWindow,
-	shell,
-	ipcMain,
-	Menu,
-	TouchBar,
-} = require('electron');
+const { app, BrowserWindow, shell, ipcMain, Menu, TouchBar } = require('electron');
 const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
+const notifier = require('electron-notifications');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -167,6 +161,14 @@ mediaControls = (event, args) => {
 	if (args.type === 'play') {
 		playPause.icon = `${__dirname}/static/pause.png`;
 		info.label = args.title;
+
+		notifier.notify('Currently Playing', {
+			message: args.title.substr(0, 30) + '...',
+			icon: 'https://i.imgur.com/3f9SScr.png',
+			buttons: ['Dismiss'],
+			duration: 8000,
+			flat: true,
+		});
 	} else {
 		playPause.icon = `${__dirname}/static/play.png`;
 	}
