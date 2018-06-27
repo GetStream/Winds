@@ -5,6 +5,7 @@ import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import { discoverRSS } from '../parsers/discovery';
+import { isURL } from '../utils/validation';
 
 program
 	.option('--all', 'Rescrape articles for which we already have a favicon image')
@@ -13,15 +14,20 @@ program
 
 async function rescrapeFavicon(publicationType, instance) {
 	const schema = publicationType == 'rss' ? RSS : Podcast;
+	if (!isURL(instance.url)) {
+		return;
+	}
 	try {
 		let foundRSS = await discoverRSS(instance.url);
 
 		if (foundRSS && foundRSS.site && foundRSS.site.favicon) {
 			let site = foundRSS.site;
 			const images = instance.images || {};
-			images.favicon = site.favicon;
-			let updated = await RSS.update({ _id: instance._id }, { images });
-			return updated;
+			if (images.favicon != site.favicon) {
+				images.favicon = site.favicon;
+				let updated = await RSS.update({ _id: instance._id }, { images });
+				return updated;
+			}
 		}
 	} catch (err) {
 		logger.warn(
