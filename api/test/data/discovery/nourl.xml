@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title><![CDATA[Index - 24óra]]></title>
+        <image>
+            <url>http://index.hu/assets/images/rss_logo.gif</url>
+            <title>Index</title>
+            <link>http://index.hu/</link>
+            <width>144</width>
+            <height>35</height>
+        </image>
+        <link>http://index.hu/24ora/</link>
+        <description></description>
+        <language>hu-HU</language>
+        <docs>http://backend.userland.com/rss</docs>
+        <lastBuildDate>Thu, 24 Dec 2015 12:19:00 +0100</lastBuildDate>
+        <item>
+            <title><![CDATA[Támogatást kaphatnak a bölcsődék a dolgozók fizetéséhez]]></title>
+            <link>http://index.hu/gazdasag/2015/12/24/tamogatast_kaphatnak_a_bolcsodek_a_dolgozok_fizetesehez/</link>
+            <pubDate>Thu, 24 Dec 2015 12:19:00 +0100</pubDate>
+            <guid>http://index.hu/gazdasag/2015/12/24/tamogatast_kaphatnak_a_bolcsodek_a_dolgozok_fizetesehez/</guid>
+            <category domain="main"><![CDATA[Gazdaság]]></category>
+            <description><![CDATA[A felsőfokú végzettségű kisgyermeknevelők bérét támogatják, de az egységes óvoda-bölcsődék kimaradnak a körből.]]></description>
+            <content:encoded><![CDATA[A felsőfokú végzettségű kisgyermeknevelők bérét támogatják, de az egységes óvoda-bölcsődék kimaradnak a körből.]]></content:encoded>
+        </item>
+    </channel>
+</rss>
