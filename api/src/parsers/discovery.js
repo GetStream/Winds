@@ -12,26 +12,24 @@ import got from 'got';
 * By @ggkovacs
 */
 
-const rssTypes = [
-	'application/rss+xml',
-	'application/atom+xml',
-	'application/rdf+xml',
-	'application/rss',
-	'application/atom',
-	'application/rdf',
-	'text/rss+xml',
-	'text/atom+xml',
-	'text/rdf+xml',
-	'text/rss',
-	'text/atom',
-	'text/rdf',
-];
-const rssMap = {};
-for (const r of rssTypes) {
-	rssMap[r] = true;
-}
+const rssMap = {
+	'application/rss+xml': 1,
+	'application/atom+xml': 1,
+	'application/rdf+xml': 1,
+	'application/rss': 1,
+	'application/atom': 1,
+	'application/rdf': 1,
+	'text/rss+xml': 1,
+	'text/atom+xml': 1,
+	'text/rdf+xml': 1,
+	'text/rss': 1,
+	'text/atom': 1,
+	'text/rdf': 1,
+};
+const iconRels = { icon: 1, 'shortcut icon': 1 };
+
+// request settings
 const maxContentLengthBytes = 1024 * 1024 * 5;
-const iconRels = ['icon', 'shortcut icon'];
 const WindsUserAgent =
 	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
 
@@ -85,11 +83,13 @@ export function discoverFromHTML(body) {
 					});
 				}
 
-				if (
-					name === 'link' &&
-					(iconRels.indexOf(attr.rel) !== -1 || attr.type === 'image/x-icon')
-				) {
-					favicon = attr.href;
+				if (name === 'link') {
+					let a = attr.rel && attr.rel.toLowerCase();
+					let t = attr.type && attr.type.toLowerCase();
+
+					if (a in iconRels || t === 'image/x-icon') {
+						favicon = attr.href;
+					}
 				}
 
 				if (name === 'title') {
