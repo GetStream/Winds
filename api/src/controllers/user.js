@@ -67,7 +67,7 @@ exports.put = async (req, res) => {
 		return res.status(400).json({ error: 'Invalid or malformed email address.' });
 	}
 
-	const regex = /^([a-z\d]+-)*[a-z\d]+$/i;
+	const regex = /^[\w-]+$/;
 	if (data.username && !regex.test(data.username)) {
 		return res.status(400).json({
 			error: 'Usernames must be alphanumeric but can only contain _, . or -.',
