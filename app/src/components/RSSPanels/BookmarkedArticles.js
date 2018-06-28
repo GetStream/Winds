@@ -8,15 +8,20 @@ import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import { getPinnedArticles } from '../../util/pins';
 import Img from 'react-image';
 import TimeAgo from '../TimeAgo';
+import moment from 'moment';
 
 class BookmarkedArticles extends React.Component {
 	componentDidMount() {
 		getPinnedArticles(this.props.dispatch);
 	}
 	render() {
+		let sortedBookmarks = [...this.props.bookmarks].sort((a, b) => {
+			return moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf();
+		});
+
 		return (
 			<Panel headerText="Bookmarks">
-				{this.props.bookmarks.map(bookmark => {
+				{sortedBookmarks.map(bookmark => {
 					return (
 						<Link
 							key={bookmark._id}
@@ -58,9 +63,15 @@ const mapStateToProps = (state, ownProps) => {
 	for (var articleID in state.pinnedArticles) {
 		if (state.pinnedArticles.hasOwnProperty(articleID)) {
 			if (state.pinnedArticles[articleID]) {
-				let pin = { ...state.pinnedArticles[articleID] };
-				pin.article = { ...state.articles[articleID] };
-				pin.article.rss = { ...state.rssFeeds[pin.article.rss] };
+				let pin = {
+					...state.pinnedArticles[articleID],
+				};
+				pin.article = {
+					...state.articles[articleID],
+				};
+				pin.article.rss = {
+					...state.rssFeeds[pin.article.rss],
+				};
 				bookmarks.push(pin);
 			}
 		}
