@@ -24,12 +24,13 @@ async function rescrapeFavicon(publicationType, instance) {
 		if (foundRSS && foundRSS.site && foundRSS.site.favicon) {
 			let site = foundRSS.site;
 			const images = instance.images || {};
+			let updated;
 			if (images.favicon != site.favicon) {
 				images.favicon = site.favicon;
-				let updated = await RSS.update({ _id: instance._id }, { images });
-				return updated;
+				updated = await schema.update({ _id: instance._id }, { images });
 			}
 			logger.info(`updated ${instance._id} to url ${site.favicon}`);
+			return updated;
 		}
 	} catch (err) {
 		logger.warn(
