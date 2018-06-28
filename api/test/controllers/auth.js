@@ -176,7 +176,7 @@ describe('Auth controller', () => {
 				}
 			});
 
-			it('should return 422 for invalid email', async () => {
+			it('should return 400 for invalid email', async () => {
 				const bodies = [
 					{
 						email: 'invalid.email.com',
@@ -203,7 +203,7 @@ describe('Auth controller', () => {
 						.send(body),
 				);
 				for (const response of await Promise.all(requests)) {
-					expect(response).to.have.status(422);
+					expect(response).to.have.status(400);
 				}
 			});
 
@@ -212,7 +212,7 @@ describe('Auth controller', () => {
 					.post('/auth/signup')
 					.send({
 						email: 'valid@email.com',
-						username: 'invalid-username',
+						username: 'invalid username',
 						name: 'Valid Name',
 						password: 'valid_password',
 					});

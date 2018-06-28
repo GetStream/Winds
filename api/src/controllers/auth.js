@@ -1,6 +1,5 @@
 import uuidv4 from 'uuid/v4';
 import validator from 'validator';
-import regex from 'regex-username';
 
 import User from '../models/user';
 import Podcast from '../models/podcast';
@@ -40,11 +39,14 @@ exports.signup = async (req, res, _) => {
 	}
 
 	if (data.email && !validator.isEmail(data.email)) {
-		return res.status(422).json({ error: 'Invalid or malformed email address.' });
+		return res.status(400).json({ error: 'Invalid or malformed email address.' });
 	}
 
+	const regex = /^[a-zA-Z0-9.\-_$@*!]{3,30}$/;
 	if (data.username && !regex.test(data.username)) {
-		return res.status(400).json({ error: 'Usernames must be alphanumeric.' });
+		return res.status(400).json({
+			error: 'Usernames must be alphanumeric but can only contain _, . or -.',
+		});
 	}
 
 	data.username = cleanString(data.username);
@@ -55,8 +57,9 @@ exports.signup = async (req, res, _) => {
 	});
 
 	if (exists) {
-		res.status(409).send('A user already exists with that username or email.');
-		return;
+		return res.status(409).json({
+			error: 'A resource already exists with that username or email.',
+		});
 	}
 
 	const whitelist = Object.assign(
@@ -114,7 +117,7 @@ exports.forgotPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.status(404).json({ error: 'User could not be found.' });
+		return res.status(404).json({ error: 'Resource could not be found.' });
 	}
 
 	await SendPasswordResetEmail({ email: user.email, recoveryCode: user.recoveryCode });
@@ -130,7 +133,7 @@ exports.resetPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.status(404).json({ error: 'User could not be found.' });
+		return res.status(404).json({ error: 'Resource could not be found.' });
 	}
 
 	res.status(200).send(user.serializeAuthenticatedUser());

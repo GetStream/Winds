@@ -99,7 +99,9 @@ describe('OPML', () => {
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
 				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
-				expect(response.body[1].error).to.equal('Error opening https://kotaku.com/rss404');
+				expect(response.body[1].error).to.equal(
+					'Error opening https://kotaku.com/rss404',
+				);
 			});
 
 			it('should return 200', async () => {
@@ -112,7 +114,9 @@ describe('OPML', () => {
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
 				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
-				expect(response.body[1].error).to.equal('Invalid feedUrl https://kotaku/rss404');
+				expect(response.body[1].error).to.equal(
+					'Invalid feedUrl https://kotaku/rss404',
+				);
 			});
 		});
 	});
@@ -122,7 +126,13 @@ describe('OPML', () => {
 			let isPodcast;
 
 			before(async () => {
-				let p = path.join(__dirname, '..', 'data', 'podcast-feed', 'giant-bombcast');
+				let p = path.join(
+					__dirname,
+					'..',
+					'data',
+					'podcast-feed',
+					'giant-bombcast',
+				);
 				let feedStream = fs.createReadStream(p);
 				isPodcast = await IsPodcastStream(
 					feedStream,
@@ -135,7 +145,13 @@ describe('OPML', () => {
 			});
 
 			it('design details should be a podcast', async () => {
-				let p = path.join(__dirname, '..', 'data', 'podcast-feed', 'design-details');
+				let p = path.join(
+					__dirname,
+					'..',
+					'data',
+					'podcast-feed',
+					'design-details',
+				);
 				let feedStream = fs.createReadStream(p);
 				isPodcast = await IsPodcastStream(
 					feedStream,

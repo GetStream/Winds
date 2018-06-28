@@ -58,43 +58,41 @@ exports.get = async (req, res) => {
 
 exports.put = async (req, res) => {
 	if (req.params.userId !== req.user.sub) {
-		res.status(403).json({ error: 'Access denied.' });
-		return;
+		return res.status(403).json({ error: 'Access denied.' });
 	}
 
 	const data = req.body || {};
 
 	if (data.email && !validator.isEmail(data.email)) {
-		res.status(422).send('Invalid email address.');
-		return;
+		return res.status(400).json({ error: 'Invalid or malformed email address.' });
 	}
 
-	if (data.username && !validator.isAlphanumeric(data.username)) {
-		res.status(422).json({ error: 'Usernames must be alphanumeric.' });
-		return;
+	const regex = /^[a-zA-Z0-9.\-_$@*!]{3,30}$/;
+	if (data.username && !regex.test(data.username)) {
+		return res.status(400).json({
+			error: 'Usernames must be alphanumeric but can only contain _, . or -.',
+		});
 	}
 
 	let user = await User.findById(req.params.userId);
 
 	if (!user) {
-		res.sendStatus(404);
-		return;
+		return res.sendStatus(404);
 	}
 
 	if (data.username) {
 		let userByUsername = await User.findOne({ username: data.username });
 		if (userByUsername && userByUsername.id != user.id) {
-			res.status(409).json({ error: 'User with this username already exists' });
-			return;
+			return res
+				.status(409)
+				.json({ error: 'A resource with this username already exists' });
 		}
 	}
 
 	if (data.email) {
-		// check for existing email
 		let userByEmail = await User.findOne({ email: data.email });
 		if (userByEmail && userByEmail.email != user.email) {
-			res.status(409).send('User with this email already exists');
-			return;
+			return res.status(409).send('User with this email already exists');
 		}
 	}
 
