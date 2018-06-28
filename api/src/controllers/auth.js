@@ -1,6 +1,5 @@
 import uuidv4 from 'uuid/v4';
 import validator from 'validator';
-import regex from 'regex-username';
 
 import User from '../models/user';
 import Podcast from '../models/podcast';
@@ -40,11 +39,14 @@ exports.signup = async (req, res, _) => {
 	}
 
 	if (data.email && !validator.isEmail(data.email)) {
-		return res.status(422).json({ error: 'Invalid or malformed email address.' });
+		return res.status(400).json({ error: 'Invalid or malformed email address.' });
 	}
 
+	const regex = /^[a-zA-Z0-9.\-_$@*!]{3,30}$/;
 	if (data.username && !regex.test(data.username)) {
-		return res.status(400).json({ error: 'Usernames must be alphanumeric.' });
+		return res.status(400).json({
+			error: 'Usernames must be alphanumeric but can only contain _, . or -.',
+		});
 	}
 
 	data.username = cleanString(data.username);
