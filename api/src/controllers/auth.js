@@ -1,5 +1,6 @@
 import uuidv4 from 'uuid/v4';
 import validator from 'validator';
+import regex from 'regex-username';
 
 import User from '../models/user';
 import Podcast from '../models/podcast';
@@ -42,7 +43,7 @@ exports.signup = async (req, res, _) => {
 		return res.status(422).json({ error: 'Invalid or malformed email address.' });
 	}
 
-	if (data.username && !validator.isAlphanumeric(data.username)) {
+	if (data.username && !regex.test(data.username)) {
 		return res.status(400).json({ error: 'Usernames must be alphanumeric.' });
 	}
 
