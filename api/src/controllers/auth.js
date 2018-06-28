@@ -57,8 +57,9 @@ exports.signup = async (req, res, _) => {
 	});
 
 	if (exists) {
-		res.status(409).send('A user already exists with that username or email.');
-		return;
+		return res.status(409).json({
+			error: 'A resource already exists with that username or email.',
+		});
 	}
 
 	const whitelist = Object.assign(
@@ -116,7 +117,7 @@ exports.forgotPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.status(404).json({ error: 'User could not be found.' });
+		return res.status(404).json({ error: 'Resource could not be found.' });
 	}
 
 	await SendPasswordResetEmail({ email: user.email, recoveryCode: user.recoveryCode });
@@ -132,7 +133,7 @@ exports.resetPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.status(404).json({ error: 'User could not be found.' });
+		return res.status(404).json({ error: 'Resource could not be found.' });
 	}
 
 	res.status(200).send(user.serializeAuthenticatedUser());

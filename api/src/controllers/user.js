@@ -83,16 +83,16 @@ exports.put = async (req, res) => {
 	if (data.username) {
 		let userByUsername = await User.findOne({ username: data.username });
 		if (userByUsername && userByUsername.id != user.id) {
-			res.status(409).json({ error: 'User with this username already exists' });
-			return;
+			return res
+				.status(409)
+				.json({ error: 'A resource with this username already exists' });
 		}
 	}
 
 	if (data.email) {
 		let userByEmail = await User.findOne({ email: data.email });
 		if (userByEmail && userByEmail.email != user.email) {
-			res.status(409).send('User with this email already exists');
-			return;
+			return res.status(409).send('User with this email already exists');
 		}
 	}
 

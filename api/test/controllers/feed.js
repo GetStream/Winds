@@ -57,7 +57,6 @@ describe('Feed controller', () => {
 		});
 	});
 
-
 	const feeds = { article: Article, episode: Episode };
 	for (const type in feeds) {
 		describe(`${type} feed`, () => {

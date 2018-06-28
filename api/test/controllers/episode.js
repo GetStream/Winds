@@ -20,7 +20,7 @@ describe('Episode controller', () => {
 	describe('get', () => {
 		it('should return the right article via /episodes/:episodeId', async () => {
 			const response = await withLogin(
-				request(api).get(`/episodes/${episode._id}`)
+				request(api).get(`/episodes/${episode._id}`),
 			);
 			expect(response).to.have.status(200);
 			expect(response.body._id).to.eq(`${episode._id}`);
@@ -29,29 +29,33 @@ describe('Episode controller', () => {
 
 	describe('list', () => {
 		it('should return the list of episodes', async () => {
-			const response = await withLogin(
-				request(api).get('/episodes')
-			);
+			const response = await withLogin(request(api).get('/episodes'));
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.at.least(1);
 		});
 	});
 
 	describe('list with recommendations', () => {
-		after(function () {
+		after(function() {
 			nock.cleanAll();
 		});
 
 		it('should return the list of episodes', async () => {
 			nock(config.stream.baseUrl)
 				.get(/winds_episode_recommendations/)
-				.reply(200, { results: [
-					{foreign_id:`episode:${episode.id}`}, {foreign_id:'episode:5ae0c71a0e7cbc4ee14a7c81'}] });
+				.reply(200, {
+					results: [
+						{ foreign_id: `episode:${episode.id}` },
+						{ foreign_id: 'episode:5ae0c71a0e7cbc4ee14a7c81' },
+					],
+				});
 
 			const response = await withLogin(
-				request(api).get('/episodes').query({
-					type: 'recommended',
-				})
+				request(api)
+					.get('/episodes')
+					.query({
+						type: 'recommended',
+					}),
 			);
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.at.least(1);

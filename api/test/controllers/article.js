@@ -27,7 +27,9 @@ describe('Article controller', () => {
 	describe('get parsed article', () => {
 		it('should return the parsed version of the article', async () => {
 			const response = await withLogin(
-				request(api).get(`/articles/${article.id}`).query({ type: 'parsed' })
+				request(api)
+					.get(`/articles/${article.id}`)
+					.query({ type: 'parsed' }),
 			);
 			expect(response).to.have.status(200);
 		});
@@ -41,19 +43,21 @@ describe('Article controller', () => {
 	});
 
 	describe('list from personalization', () => {
-		after(function () {
+		after(function() {
 			nock.cleanAll();
 		});
 
 		it('should return the list of articles', async () => {
 			nock(config.stream.baseUrl)
 				.get(/winds_article_recommendations/)
-				.reply(200, { results: [{foreign_id:`article:${article.id}`}] });
+				.reply(200, { results: [{ foreign_id: `article:${article.id}` }] });
 
 			const response = await withLogin(
-				request(api).get('/articles').query({
-					type: 'recommended',
-				})
+				request(api)
+					.get('/articles')
+					.query({
+						type: 'recommended',
+					}),
 			);
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.at.least(1);
