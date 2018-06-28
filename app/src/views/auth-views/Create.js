@@ -263,6 +263,14 @@ class AccountDetailsForm extends React.Component {
 	}
 
 	submit(username, email, password, name) {
+		if (!this.state.valid || this.state.submitting) {
+			return;
+		}
+
+		this.setState({
+			submitting: true,
+		});
+
 		axios
 			.post(config.api.url + '/auth/signup', {
 				username,
@@ -276,14 +284,14 @@ class AccountDetailsForm extends React.Component {
 			})
 			.catch(err => {
 				let errorMessage;
-				
+
 				if (
 					err.response &&
 					err.response.status > 399 &&
 					err.response.status < 500 &&
 					err.response.data
 				) {
-					errorMessage = err.response.data;
+					errorMessage = err.response.data.error;
 				} else {
 					errorMessage =
 						'There was an error when attempting to create your account. Please try again later.';
@@ -291,6 +299,11 @@ class AccountDetailsForm extends React.Component {
 
 				this.setState({
 					errorMessage,
+				});
+			})
+			.finally(() => {
+				this.setState({
+					submitting: false,
 				});
 			});
 	}
@@ -361,9 +374,9 @@ class AccountDetailsForm extends React.Component {
 						tabIndex="5"
 						type="submit"
 						className="btn primary"
-						disabled={!this.state.valid}
+						disabled={!this.state.valid || this.state.submitting}
 					>
-						Continue
+						{this.state.submitting ? 'Submitting...' : 'Continue'}
 					</button>
 					<div className="error">{this.state.errorMessage}</div>
 				</form>
