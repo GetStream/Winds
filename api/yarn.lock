@@ -5060,6 +5060,10 @@ regex-not@^1.0.0, regex-not@^1.0.2:
     extend-shallow "^3.0.2"
     safe-regex "^1.1.0"
 
+regex-username@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/regex-username/-/regex-username-2.0.0.tgz#8c9ed9f7e03b06ba09411367dc049478f6b64537"
+
 regexp-clone@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/regexp-clone/-/regexp-clone-0.0.1.tgz#a7c2e09891fdbf38fbb10d376fb73003e68ac589"
