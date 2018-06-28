@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+import axios from 'axios';
+
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import Article from '../models/article';
@@ -6,8 +9,7 @@ import { DetectLanguage } from '../parsers/detect-language';
 import { getStreamClient } from '../utils/stream';
 
 import config from '../config';
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
+import logger from './logger';
 
 // replaces TrackMetadata and events() calls
 export async function upsertCollections(collectionType, publications) {
