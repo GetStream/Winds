@@ -69,8 +69,8 @@ describe('RSS controller', () => {
 			);
 			expect(response).to.have.status(201);
 			expect(response.body).to.have.length(3);
-			expect(response.body[0].url).to.eq('https://www.roadtovr.com');
-			rss = await RSS.find({ url: 'https://www.roadtovr.com' });
+			expect(response.body[0].url).to.eq('https://roadtovr.com');
+			rss = await RSS.find({ url: 'https://roadtovr.com' });
 		});
 	});
 

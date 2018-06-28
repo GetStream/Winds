@@ -3,6 +3,7 @@ import rssFinder from 'rss-finder';
 import FeedParser from 'feedparser';
 import axios from 'axios';
 import url from 'url';
+import normalize from 'normalize-url';
 import htmlparser from 'htmlparser2';
 import got from 'got';
 
@@ -128,14 +129,6 @@ function isRelativeUrl(str) {
 	return /^https?:\/\//i.test(str);
 }
 
-function cleanUrl(uri) {
-	if (uri[uri.length - 1] === '/') {
-		return uri.substr(0, uri.length - 1);
-	}
-
-	return uri;
-}
-
 function getFaviconUrl(uri) {
 	let parsedUrl = url.parse(uri);
 
@@ -151,15 +144,15 @@ async function fixData(res, uri) {
 	for (const feed of res.feedUrls) {
 		if (feed.url) {
 			if (!isRelativeUrl(feed.url)) {
-				feed.url = url.resolve(uri, feed.url);
+				feed.url = normalize(url.resolve(uri, feed.url));
 			}
 		} else {
-			feed.url = uri;
+			feed.url = normalize(uri);
 		}
 	}
 
 	if (!res.site.url) {
-		res.site.url = cleanUrl(uri);
+		res.site.url = normalize(uri);
 	}
 
 	if (res.site.favicon) {
