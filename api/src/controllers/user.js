@@ -5,7 +5,6 @@ import User from '../models/user';
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
-import logger from '../utils/logger';
 import personalization from '../utils/personalization';
 
 exports.list = async (req, res) => {

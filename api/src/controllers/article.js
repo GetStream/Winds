@@ -1,9 +1,8 @@
+import mongoose from 'mongoose';
+
 import Article from '../models/article';
 import { getArticleRecommendations } from '../utils/personalization';
 import { trackEngagement } from '../utils/analytics';
-
-import mongoose from 'mongoose';
-import logger from '../utils/logger';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};

@@ -3,7 +3,6 @@ import async from 'async';
 import Playlist from '../models/playlist';
 
 import config from '../config';
-import logger from '../utils/logger';
 import search from '../utils/search';
 
 async function listFilter(req, res) {

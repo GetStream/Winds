@@ -1,13 +1,15 @@
+import mongoose from 'mongoose';
 import normalizeUrl from 'normalize-url';
+
+import Podcast from '../models/podcast';
+
 import { isURL } from '../utils/validation';
 import { discoverRSS } from '../parsers/discovery';
-import Podcast from '../models/podcast';
 import { getPodcastRecommendations } from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
 import { PodcastQueueAdd, OgQueueAdd } from '../asyncTasks';
-import mongoose from 'mongoose';
 
 exports.list = async (req, res) => {
 	let query = req.query || {};

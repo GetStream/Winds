@@ -3,7 +3,6 @@ import User from '../models/user';
 import { trackEngagement } from '../utils/analytics';
 
 import config from '../config';
-import logger from '../utils/logger';
 
 exports.post = async (req, res, _) => {
 	const data = Object.assign({}, req.body, { user: req.user.sub });

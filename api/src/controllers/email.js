@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import User from '../models/user';
+
 import { weeklyContextGlobal, weeklyContextUser } from '../utils/email/context';
 import { SendWeeklyEmail, CreateWeeklyEmail } from '../utils/email/send';
 
