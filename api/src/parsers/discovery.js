@@ -137,16 +137,14 @@ async function fixData(res, uri) {
 	let feedUrl;
 	let favicon;
 	let i = res.feedUrls.length;
-
-	while (i--) {
-		feedUrl = res.feedUrls[i];
-
-		if (feedUrl.url) {
-			if (!isRelativeUrl(feedUrl.url)) {
-				feedUrl.url = url.resolve(uri, feedUrl.url);
+	// make the urls unique
+	for (const feed of res.feedUrls) {
+		if (feed.url) {
+			if (!isRelativeUrl(feed.url)) {
+				feed.url = url.resolve(uri, feed.url);
 			}
 		} else {
-			feedUrl.url = uri;
+			feed.url = uri;
 		}
 	}
 
@@ -161,15 +159,23 @@ async function fixData(res, uri) {
 
 		return res;
 	} else {
+		// see if mysite.com/favicon.ico works :)
 		favicon = getFaviconUrl(res.site.url);
 
 		try {
+			let headers = {
+				'User-Agent': WindsUserAgent,
+				accept:
+					'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+				'accept-encoding': 'gzip, deflate, br',
+			};
 			let response = await axios({
 				method: 'get',
 				url: favicon,
 				maxContentLength: maxContentLengthBytes,
 				timeout: 12 * 1000,
 				maxRedirects: 20,
+				headers,
 			});
 			res.site.favicon = favicon;
 			return res;

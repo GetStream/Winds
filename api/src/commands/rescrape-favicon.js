@@ -29,13 +29,13 @@ async function rescrapeFavicon(publicationType, instance) {
 				let updated = await RSS.update({ _id: instance._id }, { images });
 				return updated;
 			}
+			logger.info(`updated ${instance._id} to url ${site.favicon}`);
 		}
 	} catch (err) {
 		logger.warn(
 			`rescraping failed with error for url ${instance.url} with instance id ${
 				instance._id
 			}`,
-			{ err },
 		);
 	}
 }
