@@ -164,8 +164,12 @@ async function fixData(res, uri) {
 		favicon = getFaviconUrl(res.site.url);
 
 		try {
-			let response = await got(favicon, {
-				retries: 0,
+			let response = await axios({
+				method: 'get',
+				url: favicon,
+				maxContentLength: maxContentLengthBytes,
+				timeout: 12 * 1000,
+				maxRedirects: 20,
 			});
 			res.site.favicon = favicon;
 			return res;
