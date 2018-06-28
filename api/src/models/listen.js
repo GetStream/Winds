@@ -49,7 +49,6 @@ export const ListenSchema = new Schema(
 
 ListenSchema.index({ user: 1, episode: 1 }, { unique: true });
 
-
 ListenSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },

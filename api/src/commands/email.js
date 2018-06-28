@@ -20,13 +20,11 @@ import * as personalization from '../utils/personalization';
 
 program.option('--send', 'Actually send the email').parse(process.argv);
 
-
-
 async function main() {
 	logger.info(`time to send article recommendations, \\0/`);
 
 	// prep the data we need for everyone
-	let globalContext = await weeklyContextGlobal()
+	let globalContext = await weeklyContextGlobal();
 
 	let users = await User.find({});
 	let enabledUsers = users.filter(u => {
@@ -34,8 +32,8 @@ async function main() {
 	});
 	logger.info(`going to email ${enabledUsers.length} users`);
 	for (const u of enabledUsers) {
-		let userContext = await weeklyContextUser(u)
-		let context = Object.assign({}, userContext, globalContext)
+		let userContext = await weeklyContextUser(u);
+		let context = Object.assign({}, userContext, globalContext);
 		let obj = CreateWeeklyEmail(context);
 		logger.info(`email ${obj.html}`);
 		if (program.send) {
