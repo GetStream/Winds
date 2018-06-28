@@ -87,7 +87,6 @@
 				"normalize-url": "^3.0.1",
 				"opml-generator": "^1.1.1",
 				"raven": "^2.6.3",
-				"regex-username": "^2.0.0",
 				"request": "^2.87.0",
 				"require-all": "^2.2.0",
 				"require-directory": "^2.1.1",
