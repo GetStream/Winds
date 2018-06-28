@@ -34,6 +34,8 @@ describe('Discovery', async () => {
 
 	server.on('/html', event('../data/discovery/index.html', 'text/html'));
 	server.on('/html/', event('../data/discovery/index.html', 'text/html'));
+	server.on('/case/', event('../data/discovery/case.html', 'text/html'));
+
 	server.on('/rss', event('../data/discovery/rss.xml', 'text/xml'));
 	server.on('/nofavicon', event('../data/discovery/nofavicon.html', 'text/html'));
 	server.on('/nourl', event('../data/discovery/nourl.xml', 'text/xml'));
@@ -75,6 +77,16 @@ function getTestCases(server) {
 				title: 'RSSFinder',
 				favicon: `${server.url}/favicon.ico`,
 				url: `${server.url}/html`,
+			},
+			feedUrls: [{ title: 'RSS', url: `${server.url}/rssfinder.xml` }],
+		},
+		{
+			title: 'html request case',
+			url: `${server.url}/case/`,
+			site: {
+				title: 'RSSFinder',
+				favicon: `${server.url}/favicon.ico`,
+				url: `${server.url}/case`,
 			},
 			feedUrls: [{ title: 'RSS', url: `${server.url}/rssfinder.xml` }],
 		},

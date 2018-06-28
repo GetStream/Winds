@@ -6,6 +6,12 @@ import url from 'url';
 import htmlparser from 'htmlparser2';
 import got from 'got';
 
+/*
+* Based on the awesome work of rssfinder
+* https://github.com/ggkovacs/rss-finder
+* By @ggkovacs
+*/
+
 const rssTypes = [
 	'application/rss+xml',
 	'application/atom+xml',
@@ -20,6 +26,10 @@ const rssTypes = [
 	'text/atom',
 	'text/rdf',
 ];
+const rssMap = {};
+for (const r of rssTypes) {
+	rssMap[r] = true;
+}
 const maxContentLengthBytes = 1024 * 1024 * 5;
 const iconRels = ['icon', 'shortcut icon'];
 const WindsUserAgent =
@@ -68,7 +78,7 @@ export function discoverFromHTML(body) {
 	parser = new htmlparser.Parser(
 		{
 			onopentag: function(name, attr) {
-				if (name === 'link' && rssTypes.indexOf(attr.type) !== -1) {
+				if (name === 'link' && attr.type && attr.type.toLowerCase() in rssMap) {
 					feeds.push({
 						title: attr.title || null,
 						url: attr.href || null,
@@ -165,8 +175,6 @@ async function fixData(res, uri) {
 		try {
 			let headers = {
 				'User-Agent': WindsUserAgent,
-				accept:
-					'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 				'accept-encoding': 'gzip, deflate, br',
 			};
 			let response = await axios({
