@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns="http://purl.org/rss/1.0/"
+ xmlns:enc="http://purl.oclc.org/net/rss_2.0/enc#"
+ xmlns:ev="http://purl.org/rss/1.0/modules/event/"
+ xmlns:content="http://purl.org/rss/1.0/modules/content/"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/"
+ xmlns:admin="http://webns.net/mvcb/"
+>
+
+<channel rdf:about="https://seattle.craigslist.org/search/act?format=rss">
+<title>craigslist seattle | activity partners search </title>
+<link>https://seattle.craigslist.org/search/act</link>
+<description></description>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:publisher>robot@craigslist.org</dc:publisher>
+<dc:creator>robot@craigslist.org</dc:creator>
+<dc:source>https://seattle.craigslist.org/search/act?format=rss</dc:source>
+<dc:title>craigslist seattle | activity partners search </dc:title>
+<dc:type>Collection</dc:type>
+<syn:updateBase>2018-07-02T09:44:19-07:00</syn:updateBase>
+<syn:updateFrequency>6</syn:updateFrequency>
+<syn:updatePeriod>hourly</syn:updatePeriod>
+<items>
+ <rdf:Seq>
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/lets-meet-and-go-on-random/6632393171.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/sno/act/d/male-workout-buddy-july-4th/6630739006.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/running/6632215524.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/sno/act/d/24-hr-fitness-workout-partner/6620418628.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/oly/act/d/work-out-animal/6632331043.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/est/act/d/cars-and-coffee-burgers/6632151788.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/sno/act/d/female-golfing-partner-wanted/6628002707.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/tac/act/d/activity-partners-this-summer/6632253974.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/looking-for-buddy-around-my/6632242163.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/sno/act/d/seeking-femalefor-activities/6631827941.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/sailing-aboard-v-solution/6614152909.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/tac/act/d/alpha-west-walk-about/6631768469.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/sno/act/d/wine-vineyard-wine-making/6614322262.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/hiking-partner-to-enjoy-nature/6631782735.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/skc/act/d/mature-activity-partner-for/6631727661.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/tac/act/d/kayaking-in-and-around-tacoma/6631750260.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/tac/act/d/mens-golf-group/6631736202.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/oly/act/d/female-walking-partner/6626343462.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/old-and-chubby-on-bike/6631712347.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/activity-partner-to-travel/6631467649.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/looking-for-texas-holdem/6631422180.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/see/act/d/meditation-practice-for-men/6631387220.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/skc/act/d/attack-on-titan-season-3/6631327800.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/est/act/d/july-4-th-lake-boren/6631166975.html" />
+  <rdf:li rdf:resource="https://seattle.craigslist.org/est/act/d/looking-for-tennis-partner-or/6631167810.html" />
+ </rdf:Seq>
+</items>
+</channel>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/lets-meet-and-go-on-random/6632393171.html">
+<title><![CDATA[Lets meet and go on Random day trips]]></title>
+<link>https://seattle.craigslist.org/see/act/d/lets-meet-and-go-on-random/6632393171.html</link>
+<description><![CDATA[I'm looking for an attractive man , lets meet and go on Random day trips around the valley on my motorcycle , overnight trips to check out some]]></description>
+<dc:date>2018-07-01T22:46:51-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/lets-meet-and-go-on-random/6632393171.html</dc:source>
+<dc:title><![CDATA[Lets meet and go on Random day trips]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T22:46:51-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/sno/act/d/male-workout-buddy-july-4th/6630739006.html">
+<title><![CDATA[Male Workout Buddy;  July 4th, 5th, 6th,7th and 8th (Mill Creek/Evt Mall, The Gym, LA fit)]]></title>
+<link>https://seattle.craigslist.org/sno/act/d/male-workout-buddy-july-4th/6630739006.html</link>
+<description><![CDATA[Male Workout Buddy Mill Creek or Evt Mall location, LA fit - (18-30) 
+July 4th at 8AM - Then July 5th, 6th, 7th and 8th at 6AM each day. 
+Have a membership or get a visitors pass? Be a morning person (I workout first thing in the morning) Plan for 90 ...]]></description>
+<dc:date>2018-07-01T22:00:23-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/sno/act/d/male-workout-buddy-july-4th/6630739006.html</dc:source>
+<dc:title><![CDATA[Male Workout Buddy;  July 4th, 5th, 6th,7th and 8th (Mill Creek/Evt Mall, The Gym, LA fit)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T22:00:23-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/running/6632215524.html">
+<title><![CDATA[Running (Seattle)]]></title>
+<link>https://seattle.craigslist.org/see/act/d/running/6632215524.html</link>
+<description><![CDATA[Looking for a regular running partner that can 9-10 minute mile. I sometimes run greenlake and other trails mid day during the week. If this sounds like fun send me an email.]]></description>
+<dc:date>2018-07-01T18:12:25-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/running/6632215524.html</dc:source>
+<dc:title><![CDATA[Running (Seattle)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T18:12:25-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/sno/act/d/24-hr-fitness-workout-partner/6620418628.html">
+<title><![CDATA[24 hr fitness workout partner (Everett)]]></title>
+<link>https://seattle.craigslist.org/sno/act/d/24-hr-fitness-workout-partner/6620418628.html</link>
+<description><![CDATA[Looking for someone who is down to workout together as I just moved here from out of state. Going to the gym along is starting to feel dull and would help to have a workout partner with to stay motivated. I attend 24 hour fitness around Everett and L ...]]></description>
+<dc:date>2018-07-01T16:51:08-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/sno/act/d/24-hr-fitness-workout-partner/6620418628.html</dc:source>
+<dc:title><![CDATA[24 hr fitness workout partner (Everett)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T16:51:08-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/oly/act/d/work-out-animal/6632331043.html">
+<title><![CDATA[Work out Animal. (Olympia)]]></title>
+<link>https://seattle.craigslist.org/oly/act/d/work-out-animal/6632331043.html</link>
+<description><![CDATA[I was walking my dog today about 3:00 on the chehalis trail between Herman and 14th in lacey. I had a amazing little lady nod at me and smile, and I'd love to work out walk or just talk with her. She was dressed in blue with a French braid and head p ...]]></description>
+<dc:date>2018-07-01T16:34:44-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/oly/act/d/work-out-animal/6632331043.html</dc:source>
+<dc:title><![CDATA[Work out Animal. (Olympia)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T16:34:44-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/est/act/d/cars-and-coffee-burgers/6632151788.html">
+<title><![CDATA[CARS AND COFFEE & BURGERS? (KIRKLAND)]]></title>
+<link>https://seattle.craigslist.org/est/act/d/cars-and-coffee-burgers/6632151788.html</link>
+<description><![CDATA[Hi This is a shout out to all car guys and gals that want get together to share their passion for their cars and are Car Crazy. 
+All makes and models as long as you treat your car not as an appliance but as something very special. 
+Lets get together ]]></description>
+<dc:date>2018-07-01T16:28:42-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/est/act/d/cars-and-coffee-burgers/6632151788.html</dc:source>
+<dc:title><![CDATA[CARS AND COFFEE & BURGERS? (KIRKLAND)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T16:28:42-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/sno/act/d/female-golfing-partner-wanted/6628002707.html">
+<title><![CDATA[Female golfing partner wanted (lynnwood)]]></title>
+<link>https://seattle.craigslist.org/sno/act/d/female-golfing-partner-wanted/6628002707.html</link>
+<description><![CDATA[I'm posting this in activity partner, because I'm looking for an activity partner!! Stop deleting my post!! 
+I'm looking for a lady that want to play in some upcoming couple golf tournaments. 
+Hi, 
+I'm in my late 50's and enjoy playing golf and easy  ...]]></description>
+<dc:date>2018-07-01T14:03:25-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/sno/act/d/female-golfing-partner-wanted/6628002707.html</dc:source>
+<dc:title><![CDATA[Female golfing partner wanted (lynnwood)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T14:03:25-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/tac/act/d/activity-partners-this-summer/6632253974.html">
+<title><![CDATA[Activity partners this summer (Tacoma)]]></title>
+<link>https://seattle.craigslist.org/tac/act/d/activity-partners-this-summer/6632253974.html</link>
+<description><![CDATA[Hi, I'm looking for ladies that would like to go do different things this Summer. No relationship pressures of any kind, just hang out. Go for drives, walks, lunch, dinner, drinks, farmers markets, beaches or whatever... Just an FYI, I'm a male in my ...]]></description>
+<dc:date>2018-07-01T12:24:14-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/tac/act/d/activity-partners-this-summer/6632253974.html</dc:source>
+<dc:title><![CDATA[Activity partners this summer (Tacoma)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T12:24:14-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/looking-for-buddy-around-my/6632242163.html">
+<title><![CDATA[Looking for a buddy around my age]]></title>
+<link>https://seattle.craigslist.org/see/act/d/looking-for-buddy-around-my/6632242163.html</link>
+<description><![CDATA[Looking for a buddy around my age 28 to hang with once or twice a month during the day. Play some sports. Indoors or out. Let me know if interested?]]></description>
+<dc:date>2018-07-01T12:11:36-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/looking-for-buddy-around-my/6632242163.html</dc:source>
+<dc:title><![CDATA[Looking for a buddy around my age]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T12:11:36-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/sno/act/d/seeking-femalefor-activities/6631827941.html">
+<title><![CDATA[Seeking female 35-45 for activities (Lynnwood)]]></title>
+<link>https://seattle.craigslist.org/sno/act/d/seeking-femalefor-activities/6631827941.html</link>
+<description><![CDATA[First time posting here. So after being single since divorcing over 2 years ago ive decided to try this. 
+Trying to meet a decent lady who would enjoy some conpanionship and doing things together. Im tall, consider myself very dateable, very well man ...]]></description>
+<dc:date>2018-07-01T09:50:02-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/sno/act/d/seeking-femalefor-activities/6631827941.html</dc:source>
+<dc:title><![CDATA[Seeking female 35-45 for activities (Lynnwood)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T09:50:02-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/sailing-aboard-v-solution/6614152909.html">
+<title><![CDATA[Sailing aboard S/V Solution (Elliott Bay, Seattle)]]></title>
+<link>https://seattle.craigslist.org/see/act/d/sailing-aboard-v-solution/6614152909.html</link>
+<description><![CDATA[S/V Solution is a local J/35 sail yacht that participates in about 40 local regattas per year. This opportunity is come out with us on a practice day, enjoy the water, participate in working of the boat, learn something and maybe get your foot in the ...]]></description>
+<dc:date>2018-07-01T09:35:22-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/sailing-aboard-v-solution/6614152909.html</dc:source>
+<dc:title><![CDATA[Sailing aboard S/V Solution (Elliott Bay, Seattle)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T09:35:22-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/tac/act/d/alpha-west-walk-about/6631768469.html">
+<title><![CDATA[alpha west walk about.. (steil/dupont road)]]></title>
+<link>https://seattle.craigslist.org/tac/act/d/alpha-west-walk-about/6631768469.html</link>
+<description><![CDATA[I am seeking an african american partner to go do a walk about. I'll be parked in the first turn out on the right as you leave the town of Steilacoom on the steil/dupont road. 
+if you would like to go for a walk in the woods and see what happens then ...]]></description>
+<dc:date>2018-07-01T09:19:48-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/tac/act/d/alpha-west-walk-about/6631768469.html</dc:source>
+<dc:title><![CDATA[alpha west walk about.. (steil/dupont road)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T09:19:48-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/sno/act/d/wine-vineyard-wine-making/6614322262.html">
+<title><![CDATA[Wine / Vineyard - Wine Making Grape Growing (Snohomish County)]]></title>
+<link>https://seattle.craigslist.org/sno/act/d/wine-vineyard-wine-making/6614322262.html</link>
+<description><![CDATA[Hello - I have been interested in growing some wine grapes and also starting to make wine, mainly for fun, but I wouldn't be opposed to trying to make it into some sort of a business some day. I have 5 acres of agricultural land which I think would b ...]]></description>
+<dc:date>2018-07-01T08:58:12-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/sno/act/d/wine-vineyard-wine-making/6614322262.html</dc:source>
+<dc:title><![CDATA[Wine / Vineyard - Wine Making Grape Growing (Snohomish County)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T08:58:12-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/hiking-partner-to-enjoy-nature/6631782735.html">
+<title><![CDATA[Hiking partner : To enjoy nature]]></title>
+<link>https://seattle.craigslist.org/see/act/d/hiking-partner-to-enjoy-nature/6631782735.html</link>
+<description><![CDATA[Hiking is fun but it's more fun to do it with a partner. Looking for anyone male/female to go on a hike nearby seattle area. Tiger mountain, Rainier etc]]></description>
+<dc:date>2018-07-01T08:56:17-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/hiking-partner-to-enjoy-nature/6631782735.html</dc:source>
+<dc:title><![CDATA[Hiking partner : To enjoy nature]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T08:56:17-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/skc/act/d/mature-activity-partner-for/6631727661.html">
+<title><![CDATA[mature m activity partner for the same (auburn)]]></title>
+<link>https://seattle.craigslist.org/skc/act/d/mature-activity-partner-for/6631727661.html</link>
+<description><![CDATA[hi, I am a white male in my 60s and looking for a guy to do stuff with. 
+I do ride a cruiser motorcycle and i do have a rv for camping. hiking, golf of which I'm not so good and other things 
+I am more on the bottom of the activities so im looking fo ...]]></description>
+<dc:date>2018-07-01T08:21:46-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/skc/act/d/mature-activity-partner-for/6631727661.html</dc:source>
+<dc:title><![CDATA[mature m activity partner for the same (auburn)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T08:21:46-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/tac/act/d/kayaking-in-and-around-tacoma/6631750260.html">
+<title><![CDATA[Kayaking in and around Tacoma (Tacoma)]]></title>
+<link>https://seattle.craigslist.org/tac/act/d/kayaking-in-and-around-tacoma/6631750260.html</link>
+<description><![CDATA[I am a kayaker in Tacoma looking for other paddlers to kayak with. 
+In addition to day trips around the area, I'd like to get out to the Foss Waterway at least one afternoon/evening a week after work for fresh air and exercise. 
+I paddle a Perception ...]]></description>
+<dc:date>2018-07-01T08:16:06-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/tac/act/d/kayaking-in-and-around-tacoma/6631750260.html</dc:source>
+<dc:title><![CDATA[Kayaking in and around Tacoma (Tacoma)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T08:16:06-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/tac/act/d/mens-golf-group/6631736202.html">
+<title><![CDATA[Mens Golf Group (Puget Sound)]]></title>
+<link>https://seattle.craigslist.org/tac/act/d/mens-golf-group/6631736202.html</link>
+<description><![CDATA[Looking for additional golfers for our group. 
+Looking for PART TIME players to fill in when we have openings on either Saturday or Wednesday. 
+Easy going group of golfers that enjoy playing many different courses between Everett and Olympia. 
+The gr ...]]></description>
+<dc:date>2018-07-01T07:57:27-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/tac/act/d/mens-golf-group/6631736202.html</dc:source>
+<dc:title><![CDATA[Mens Golf Group (Puget Sound)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T07:57:27-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/oly/act/d/female-walking-partner/6626343462.html">
+<title><![CDATA[Female walking partner (Olympia)]]></title>
+<link>https://seattle.craigslist.org/oly/act/d/female-walking-partner/6626343462.html</link>
+<description><![CDATA[Male (65) looking for female walking partner ages 55 to 75 meet at Capitol lake 
+single or married walking partner]]></description>
+<dc:date>2018-07-01T06:04:49-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/oly/act/d/female-walking-partner/6626343462.html</dc:source>
+<dc:title><![CDATA[Female walking partner (Olympia)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T06:04:49-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/old-and-chubby-on-bike/6631712347.html">
+<title><![CDATA[old and chubby on a bike (n.seattle/ shoreline)]]></title>
+<link>https://seattle.craigslist.org/see/act/d/old-and-chubby-on-bike/6631712347.html</link>
+<description><![CDATA[Hi, I'd like to meet a few older chubby types to get together and do short rides and enjoy some company when not on the bike 
+mostly in the n. of seattle areas. 
+i'm 60's thick build that could use some exercise]]></description>
+<dc:date>2018-07-01T00:21:23-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/old-and-chubby-on-bike/6631712347.html</dc:source>
+<dc:title><![CDATA[old and chubby on a bike (n.seattle/ shoreline)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-07-01T00:21:23-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/activity-partner-to-travel/6631467649.html">
+<title><![CDATA[Activity Partner to Travel Vegas, Hike Zion Bryce]]></title>
+<link>https://seattle.craigslist.org/see/act/d/activity-partner-to-travel/6631467649.html</link>
+<description><![CDATA[There are a few adventures I want to take this summer. Need a travel and hiking buddy. I'm not a climber nor mountaineer. 
+My first trip is Vegas, mid August. I already have flights, hotel, rental car booked. We don't have to stay in the same place.  ...]]></description>
+<dc:date>2018-06-30T17:02:10-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/activity-partner-to-travel/6631467649.html</dc:source>
+<dc:title><![CDATA[Activity Partner to Travel Vegas, Hike Zion Bryce]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-06-30T17:02:10-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/looking-for-texas-holdem/6631422180.html">
+<title><![CDATA[Looking for Texas holdem players for League. (Online)]]></title>
+<link>https://seattle.craigslist.org/see/act/d/looking-for-texas-holdem/6631422180.html</link>
+<description><![CDATA[Looking for top class Texas holdem players to join a poker League with a growing community. There will be daily opportunities to earn real money in the League from sponsored advertisements if you place well in tournament's. 
+For more Information plea ...]]></description>
+<dc:date>2018-06-30T16:02:20-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/looking-for-texas-holdem/6631422180.html</dc:source>
+<dc:title><![CDATA[Looking for Texas holdem players for League. (Online)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-06-30T16:02:20-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/see/act/d/meditation-practice-for-men/6631387220.html">
+<title><![CDATA[Meditation Practice for Men]]></title>
+<link>https://seattle.craigslist.org/see/act/d/meditation-practice-for-men/6631387220.html</link>
+<description><![CDATA[Meditation of course is something which is only enjoyed by new age enlightened individuals. The average guy simply cannot wrap his head around the point to this practice, and views it as a waste of time. Therefore, if you are a 'new age' or 'enlighte ...]]></description>
+<dc:date>2018-06-30T14:59:54-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/see/act/d/meditation-practice-for-men/6631387220.html</dc:source>
+<dc:title><![CDATA[Meditation Practice for Men]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-06-30T14:59:54-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/skc/act/d/attack-on-titan-season-3/6631327800.html">
+<title><![CDATA[Attack on Titan Season 3 Viewing Party (Federal Way)]]></title>
+<link>https://seattle.craigslist.org/skc/act/d/attack-on-titan-season-3/6631327800.html</link>
+<description><![CDATA[Attack on Titan season 3 is premiering 7/22 in Japan! I thought it'd be fun to meet up with other fans and marathon all of the 2nd season and then watch the new episode of season 3 on 7/23 (if you can wait that long!). I'm not sure where to do this y ...]]></description>
+<dc:date>2018-06-30T14:09:33-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/skc/act/d/attack-on-titan-season-3/6631327800.html</dc:source>
+<dc:title><![CDATA[Attack on Titan Season 3 Viewing Party (Federal Way)]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-06-30T14:09:33-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/est/act/d/july-4-th-lake-boren/6631166975.html">
+<title><![CDATA[july 4 th Lake Boren companionship]]></title>
+<link>https://seattle.craigslist.org/est/act/d/july-4-th-lake-boren/6631166975.html</link>
+<description><![CDATA[.Someone who enjoys tennis ,walks. hikes ,bike, chess, scooter, dinner ,movies, traveling long/short distances ........etc..I prefer that person to be closer to lake Boren or around ( Newcastle ) . I am a male 60 years old looking for a activity spor ...]]></description>
+<dc:date>2018-06-30T11:15:27-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/est/act/d/july-4-th-lake-boren/6631166975.html</dc:source>
+<dc:title><![CDATA[july 4 th Lake Boren companionship]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-06-30T11:15:27-07:00</dcterms:issued>
+</item>
+<item rdf:about="https://seattle.craigslist.org/est/act/d/looking-for-tennis-partner-or/6631167810.html">
+<title><![CDATA[looking for tennis partner or more sport activity]]></title>
+<link>https://seattle.craigslist.org/est/act/d/looking-for-tennis-partner-or/6631167810.html</link>
+<description><![CDATA[........activity partner close to my age .....Some one who enjoys tennis ,walks. hikes ,bike, chess, scooter, dinner ,movies, traveling long/short distances ........etc......I prefer that person to be closer to lake Boren ( Newcastle ) or live around ...]]></description>
+<dc:date>2018-06-30T11:12:18-07:00</dc:date>
+<dc:language>en-us</dc:language>
+<dc:rights>copyright 2018 craigslist</dc:rights>
+<dc:source>https://seattle.craigslist.org/est/act/d/looking-for-tennis-partner-or/6631167810.html</dc:source>
+<dc:title><![CDATA[looking for tennis partner or more sport activity]]></dc:title>
+<dc:type>text</dc:type>
+<dcterms:issued>2018-06-30T11:12:18-07:00</dcterms:issued>
+</item>
+</rdf:RDF>

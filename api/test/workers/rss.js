@@ -1,3 +1,4 @@
+import { parse } from 'url';
 import nock from 'nock';
 import { expect } from 'chai';
 
@@ -57,13 +58,26 @@ describe('RSS worker', () => {
 
 		for (let i = 0; i < testCases.length; ++i) {
 			it(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
-				setupHandler();
+				async function queue(url) {
+					setupHandler();
+					await rssQueue.add({ rss: '5b0ad0baf6f89574a638887a', url });
+					await handler;
+				}
 
-				await rssQueue.add({
-					rss: '5b0ad0baf6f89574a638887a',
-					url: testCases[i],
-				});
-				await handler;
+				try {
+					await queue(testCases[i]);
+				} catch (_) {
+					//XXX: fetching data from the net failed, falling back to mocking
+					const url = parse(testCases[i]);
+					nock(url.host)
+						.get(url.path)
+						.query(url.query)
+						.reply(200, () => {
+							return getTestFeed(url.host);
+						});
+					await queue(testCases[i]);
+					nock.cleanAll();
+				}
 			});
 		}
 
