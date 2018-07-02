@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>九零创新实验室</title>
+	<atom:link href="https://www.90.cx/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.90.cx</link>
+	<description>Hostker LLC</description>
+	<lastBuildDate>Wed, 06 Jun 2018 18:34:55 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.6</generator>
+	<item>
+		<title>【安全公告】Intel 处理器安全漏洞公告</title>
+		<link>https://www.90.cx/intel-bug/</link>
+		<comments>https://www.90.cx/intel-bug/#comments</comments>
+		<pubDate>Mon, 08 Jan 2018 18:44:19 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[云服务器]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=236</guid>
+		<description><![CDATA[最近 Intel 被爆出芯片硬件设计层面的漏洞，可能导致系统信息泄露、应用跨界访问内核数据等问题。由于涉及到的 &#8230; <a href="https://www.90.cx/intel-bug/" class="more-link">继续阅读<span class="screen-reader-text">【安全公告】Intel 处理器安全漏洞公告</span></a>]]></description>
+				<content:encoded><![CDATA[<p>最近 Intel 被爆出芯片硬件设计层面的漏洞，可能导致系统信息泄露、应用跨界访问内核数据等问题。由于涉及到的 CPU 产品线涵盖 1995 年出厂的几乎所有 Intel CPU 芯片，不可能进行全球召回处理，因此只能在系统层打补丁修复这一问题。针对本次安全事件我们已经安排好运算节点修复日程表，具体时间细节请阅读近期群发的短信、邮件通知。本文将对漏洞补丁做汇总方便用户更新虚拟机系统。<span id="more-236"></span></p>
+<h4>漏洞编号</h4>
+<ul>
+<li>CVE-2017-5753</li>
+<li>CVE-2017-5715</li>
+<li>CVE-2017-5754</li>
+</ul>
+<h4>漏洞描述</h4>
+<p>现代 CPU 通常使用「预测执行」（Speculative Execution）和「分支预测」（Indirect Branch Prediction）技术实现对处理器计算资源的最大化利用。但由于这两种技术在实现上存在安全缺陷，无法通过正确判断将低权限的应用程序访存与内核高权限的访问分开，使得攻击者可以绕过内存访问的安全隔离边界，在内核中读取操作系统和其他程序的内存数据，造成敏感信息泄露，根据获取到的数据，可能会导致用户的数据隐私泄露、登陆凭证被攻击者窃取。具体信息如下：</p>
+<ol>
+<li>Meltdown漏洞利用破坏了用户程序和操作系统之间的基本隔离，允许攻击者未授权访问其他程序和操作系统的内存，获取其他程序和操作系统的敏感信息。</li>
+<li>Spectre 漏洞利用破坏了不同应用程序之间的安全隔离，允许攻击者借助于无错程序（Error-Free）来获取敏感信息。</li>
+</ol>
+<h4>修复方法</h4>
+<p>运算节点我们会按照时间表逐步测试和安装补丁，<del>预计 IO 性能会下降 5%-30%</del>根据我们的业务场景实测计算性能不存在变化，IO 性能同比下降大约 0.1%。由于本次漏洞利用要求条件较高，需要首先持有本地用户权限进行内存操作才有可能产生问题。因此虚拟机用户可根据业务场景自行判断是否需要安装补丁。以下为目前我们平台提供的系统对应的补丁列表供参考（最后更新 2 月 7 日 22:00）：</p>
+<h5>LInux 补丁</h5>
+<ul>
+<li>CentOS 6 x86_64 已修复所有漏洞，yum update 重启后 kenel 版本 &gt;= 2.6.32-696.18.7.el6 即可修复；</li>
+<li>CentOS 7 x86_64 已修复所有漏洞，yum update 重启后 kenel 版本 &gt;= 3.10.0-693.11.6.el7 即可修复；</li>
+<li>Debian 8 x86_64 仅修复 CVE-2017-5754，apt-get update &amp;&amp; apt-get upgrade 重启后 kernel 版本 &gt;= 3.16.51-3+deb8u1 即可修复；</li>
+<li>Ubuntu 16 x86_64 已修复所有漏洞，apt-get update &amp;&amp; apt-get upgrade &amp;&amp; apt-get dist-upgrade 重启后 kernel 版本 &gt;= 4.4.0-112 即可修复。</li>
+</ul>
+<p>※ 以上版本为我们所有机房更新源的同步情况，将会每天更新直到全部发布。</p>
+<h5>Windows 补丁</h5>
+<ul>
+<li>windows server 2003 凉透了，建议丢掉升级到 2008。</li>
+<li>windows server 2008 R2 需要手工安装不能自动升级，<a href="https://www.catalog.update.microsoft.com/Search.aspx?q=KB4056897" target="_blank" rel="noopener">补丁下载地址</a></li>
+<li>windows server 2012 R2 需要手工安装不能自动升级，<a href="https://www.catalog.update.microsoft.com/Search.aspx?q=KB4056898" target="_blank" rel="noopener">补丁下载地址</a></li>
+<li>本次微软还发布了其它补丁，可通过自动更新安装其它补丁。<strong>但是上述补丁需要手工安装。</strong>并且补丁可能与某些反病毒软件冲突。</li>
+</ul>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/intel-bug/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Hostker 香港区域开源镜像站上线啦</title>
+		<link>https://www.90.cx/hostker-hk-mirrors/</link>
+		<comments>https://www.90.cx/hostker-hk-mirrors/#comments</comments>
+		<pubDate>Fri, 25 Nov 2016 13:52:57 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[云服务器]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=207</guid>
+		<description><![CDATA[现在起新开的运算型云服务器将会默认启用我们的香港区域内网开源镜像站进行更新，目前我们已经同步 CentOS 6 &#8230; <a href="https://www.90.cx/hostker-hk-mirrors/" class="more-link">继续阅读<span class="screen-reader-text">Hostker 香港区域开源镜像站上线啦</span></a>]]></description>
+				<content:encoded><![CDATA[<p>现在起新开的运算型云服务器将会默认启用我们的香港区域内网开源镜像站进行更新，目前我们已经同步 CentOS 6 / 7 ，Ubuntu 16，Debian 8 这几个系统的主要更新源。每日凌晨 1 时与上游同步。</p>
+<p>老用户可通过以下命令使用内网更新源：<span id="more-207"></span></p>
+<p>CentOS 6</p>
+<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup<br />
+wget http://mirrors-hk.hostker.net/.help/CentOS6-Base-Hostker.repo -O/etc/yum.repos.d/CentOS6-Base-Hostker.repo</p>
+<p>CentOS 7</p>
+<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup<br />
+wget http://mirrors-hk.hostker.net/.help/CentOS7-Base-Hostker.repo -O/etc/yum.repos.d/CentOS7-Base-Hostker.repo</p>
+<p>Ubuntu 16</p>
+<p>mv /etc/apt/sources.list /etc/apt/sources.list.backup<br />
+cat&gt;/etc/apt/sources.list&lt;&lt;EOF<br />
+deb http://mirrors-hk.hostker.net/ubuntu/ xenial main restricted universe multiverse<br />
+deb http://mirrors-hk.hostker.net/ubuntu/ xenial-security main restricted universe multiverse<br />
+deb http://mirrors-hk.hostker.net/ubuntu/ xenial-updates main restricted universe multiverse<br />
+deb http://mirrors-hk.hostker.net/ubuntu/ xenial-proposed main restricted universe multiverse<br />
+deb http://mirrors-hk.hostker.net/ubuntu/ xenial-backports main restricted universe multiverse<br />
+deb-src http://mirrors-hk.hostker.net/ubuntu/ xenial main restricted universe multiverse<br />
+deb-src http://mirrors-hk.hostker.net/ubuntu/ xenial-security main restricted universe multiverse<br />
+deb-src http://mirrors-hk.hostker.net/ubuntu/ xenial-updates main restricted universe multiverse<br />
+deb-src http://mirrors-hk.hostker.net/ubuntu/ xenial-proposed main restricted universe multiverse<br />
+deb-src http://mirrors-hk.hostker.net/ubuntu/ xenial-backports main restricted universe multiverse<br />
+EOF</p>
+<p>Debian 8</p>
+<p>mv /etc/apt/sources.list /etc/apt/sources.list.backup<br />
+cat&gt;/etc/apt/sources.list&lt;&lt;EOF<br />
+deb http://mirrors-hk.hostker.net/debian/ jessie main non-free contrib<br />
+deb http://mirrors-hk.hostker.net/debian/ jessie-updates main non-free contrib<br />
+deb http://mirrors-hk.hostker.net/debian/ jessie-backports main non-free contrib<br />
+deb http://mirrors-hk.hostker.net/debian-security/ jessie/updates main non-free contrib<br />
+deb-src http://mirrors-hk.hostker.net/debian/ jessie main non-free contrib<br />
+deb-src http://mirrors-hk.hostker.net/debian/ jessie-updates main non-free contrib<br />
+deb-src http://mirrors-hk.hostker.net/debian/ jessie-backports main non-free contrib<br />
+deb-src http://mirrors-hk.hostker.net/debian-security/ jessie/updates main non-free contrib<br />
+EOF</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/hostker-hk-mirrors/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>用 PHP 实现 WebSocket 服务</title>
+		<link>https://www.90.cx/php-websocket/</link>
+		<comments>https://www.90.cx/php-websocket/#comments</comments>
+		<pubDate>Tue, 19 Jul 2016 08:07:04 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=162</guid>
+		<description><![CDATA[聊天室、游戏等场景躲避不了服务器主动下发消息。通常 PHP 的生命周期都是在一个 HTTP 请求结束之后就会跟 &#8230; <a href="https://www.90.cx/php-websocket/" class="more-link">继续阅读<span class="screen-reader-text">用 PHP 实现 WebSocket 服务</span></a>]]></description>
+				<content:encoded><![CDATA[<p>聊天室、游戏等场景躲避不了服务器主动下发消息。通常 PHP 的生命周期都是在一个 HTTP 请求结束之后就会跟着结束，在连接没有断开的情况下，一个请求就会咬住一个进程不放开。这种情况用阻塞 HTTP 请求来等待服务器下发消息就显得很蠢。<del>不过作为世界上最好的语言，</del>PHP 当然是有解的，Hostker 为开发者实现了 WebSocket 服务。<span id="more-162"></span></p>
+<p>WebSocket 是基于 HTTP 的一个协议，用于双向的实时通讯，以下简称 WS 服务。由于需要启动进程监听一个特定的端口，还需要高性能的服务支撑，我们选择了 Swoole 扩展进行开发。Swoole 是一个 Server 框架，实现了多进程、事件驱动、异步、Task 等功能。</p>
+<p>启动 WS 服务之后，主进程会读取 Hostker 上面所有开通了 WS 服务的 APP 对应配置并保存在可共享的内存中，同时派生出一定数量的 Worker 进程和 Task 进程。</p>
+<p>当 PHP 需要主动推送消息时，会通过一个内部接口将消息发给 WS 主进程，主进程会根据 Worker 的繁忙程度投递到最闲的 Worker 进程，Worker 会对这一请求进行分析，单发、群发、鉴权等，没有问题的话异步投递给 Task 任务进行消息推送。</p>
+<p>当用户连接或者断开 WS 时，主进程同样会根据繁忙程度选择 Worker 进程进行绑定，并异步投递给 Task 任务通知给 PHP。</p>
+<p>有开发者申请开通或者关闭 WS 服务的时候，内部会通过一个接口更新到共享内存中，供 Task 任务和 Worker 进程鉴权使用。</p>
+<p>Task 任务作用就是上面提到的两个，下发消息和回报上下线状态，在接到新任务之后会立即执行。</p>
+<p>至此，本博客的主线内容全部更新完毕。今后会根据情况不定期更新一些技术内容。</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/php-websocket/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+		</item>
+		<item>
+		<title>httpoxy 漏洞在 PHP 环境的说明</title>
+		<link>https://www.90.cx/httpoxy/</link>
+		<comments>https://www.90.cx/httpoxy/#respond</comments>
+		<pubDate>Tue, 19 Jul 2016 05:28:22 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=163</guid>
+		<description><![CDATA[这两天一直有小伙伴询问这个漏洞的问题，在这里用团队博客解释一下。这个漏洞对中国大陆的 PHP 用户几乎不存在影 &#8230; <a href="https://www.90.cx/httpoxy/" class="more-link">继续阅读<span class="screen-reader-text">httpoxy 漏洞在 PHP 环境的说明</span></a>]]></description>
+				<content:encoded><![CDATA[<p>这两天一直有小伙伴询问这个漏洞的问题，在这里用团队博客解释一下。这个漏洞对中国大陆的 PHP 用户几乎不存在影响。</p>
+<p>在 PHP 环境，HTTP 请求的 Header 会加上 HTTP_ 前缀并放到环境变量和 $_SERVER、$_ENV 中。因此如果发出 Porxy 头部，就会变成 HTTP_PROXY 增加到 PHP 的环境变量中。</p>
+<p>极个别的 HTTP 客户端实现有可能会直接读取环境变量的 HTTP_PROXY 头部作为代理，从而导致 PHP 在访问外部 HTTP 的时候数据被绕到这个指定的代理上。目前已知的受影响的库有 Guzzle （已在 4 天前修复）、Artax（本文发布的 13 小时前修复），直接在 PHP 中使用 curl、file_get_contents 并没有任何影响。</p>
+<p>以上，就是这个漏洞对 PHP 造成的问题。可以说在中国大陆除了 Composer 依赖（Laravel 等）之外应该没什么人使用那两个库，即使有问题及时升级也可以解决，因此对主流开源程序影响几乎为0。</p>
+<p>※ 关于 Python、Golang，内置的 HTTP Client 就有影响，具体参考<a href="https://httpoxy.org/" target="_blank" rel="noopener">漏洞官方说明</a></p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/httpoxy/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>PHP 沙箱环境介绍</title>
+		<link>https://www.90.cx/hostker-php-sandbox/</link>
+		<comments>https://www.90.cx/hostker-php-sandbox/#respond</comments>
+		<pubDate>Mon, 18 Jul 2016 16:36:30 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=137</guid>
+		<description><![CDATA[沙箱是我们的命根子，用户之间需要有一套比较完善的隔离方案。因此我们的沙箱做了这些事： 文件权限隔离 数据库沙箱 &#8230; <a href="https://www.90.cx/hostker-php-sandbox/" class="more-link">继续阅读<span class="screen-reader-text">PHP 沙箱环境介绍</span></a>]]></description>
+				<content:encoded><![CDATA[<p>沙箱是我们的命根子，用户之间需要有一套比较完善的隔离方案。因此我们的沙箱做了这些事：</p>
+<ul>
+<li>文件权限隔离</li>
+<li>数据库沙箱</li>
+<li>CPU 时间统计</li>
+<li>网络访问沙箱</li>
+<li>缓冲区调整</li>
+<li>危险函数拦截</li>
+</ul>
+<p><span id="more-137"></span>下面来分别说说。</p>
+<h4>文件权限隔离</h4>
+<p>不同的虚拟主机之间的数据，原则上是无法互访的。大多数情况下我们可以用 open_basedir 进行隔离，而 PHP 在某些情况下会绕过这一隔离，因此我们的沙箱环境覆盖到了 open_basedir 无法保护到的部分。</p>
+<h4>数据库沙箱</h4>
+<p>拿到了用户名密码，再买个同网络的主机，是不是就能随便黑人家数据库了？在其他家可以，在Hostker&amp;主机壳是行不通的。我们将数据库的权限精确匹配到每个用户开通的主机上，相同用户名下的主机才可互访数据库，不同用户之间即使持有正确用户名密码也无法连上数据库。</p>
+<p>既然做了沙箱，就顺便把数据库查询次数和时间统计上，放在 HTTP Header 中，有兴趣的读者可以根据这些数据进行程序优化。</p>
+<h4>CPU 时间统计</h4>
+<p>如何确认一个用户所占用的计算资源？按运行时间？大多数情况下，时间有可能是消耗在网络 IO 上，因此对用户按请求时间计费并不公平。我们在沙箱上完成了系统态和用户态的 CPU 时间统计，并放在 HTTP Header 中供开发者参考。</p>
+<h4>网络访问沙箱</h4>
+<p>使用过 DEDEcms 的用户应该对 PHPDDOS 不陌生，这程序漏洞太多了，黑客都有一套自动化扫描入侵的程序，插一个 PHPDDOS 文件，死循环对某个攻击目标发送 HTTP 请求。这就非常危险了，很容易把服务器出口带宽吃光。</p>
+<p>另外，黑客有可能手痒痒希望扫描我们的内网窥探 CDN 的分布情况。</p>
+<p>针对这些问题我们的沙箱对全部的网络访问进行了一次过滤，对于有问题的请求会直接拦截掉，确保不会消耗大量出口带宽，并保证内网的节点安全。</p>
+<h4>缓冲区调整</h4>
+<p>上面提到的东西都需要在 Header 中出现，那么万一用户提前 flush 了数据怎么处理？我们的沙箱会拦截用户的输出行为，全部重定向到缓冲区中，直到一个请求彻底完成，才发送带有 CPU 时间、数据库时间、数据库查询次数的 Header，再将缓冲区的数据作为 Body 发出。</p>
+<h4>危险函数拦截</h4>
+<p>PHP 并不适合长时间运行，因此我们对 PHP 的运行时间有所限制。可是万一用户使用 set_timeout_limit() 进行调整怎么办？直接禁用函数？甩一脸错误？</p>
+<p>针对比较危险的函数行为，我们会首先判断这一行为的合法性，例如 sleep、usleep 函数，对于小于 5 秒的相对合理的暂停是没问题的，如果超过 5 秒才会返回异常。而对于 set_timeout_limit() 我们判断是超过 60 秒就拒绝这一修改行为，小于 60 秒则放行。</p>
+<p>但是对于大多数使用开源程序的用户，他们最害怕见到的就是错误，如果修改失败就会产生 Warning，因此我们函数返回的是 true，看起来是成功了，实际上配额还是我们给用户分配的默认配额。这样用户体验就会稍微好一点。</p>
+<p>以上就是我们 PHP 沙箱的主要功能，还有更多细节这里不方便展开说明。</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/hostker-php-sandbox/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>对比 PHP 各种运行模式</title>
+		<link>https://www.90.cx/php-mode/</link>
+		<comments>https://www.90.cx/php-mode/#comments</comments>
+		<pubDate>Mon, 18 Jul 2016 07:36:45 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=132</guid>
+		<description><![CDATA[比较主流的 PHP 运行模式有三种，分别是： Apache + mod_php 直接挂载模块运行代码，无进程通 &#8230; <a href="https://www.90.cx/php-mode/" class="more-link">继续阅读<span class="screen-reader-text">对比 PHP 各种运行模式</span></a>]]></description>
+				<content:encoded><![CDATA[<p>比较主流的 PHP 运行模式有三种，分别是：</p>
+<ol>
+<li>Apache + mod_php 直接挂载模块运行代码，无进程通讯；</li>
+<li>Nginx + php-fpm 通过 FastCGI 处理进程间通讯；</li>
+<li>Cpanel、DirectAdmin 所使用的 suPHP 相当于 CGI 模式。</li>
+</ol>
+<p><span id="more-132"></span>Hostker&amp;主机壳选择的是第一种，使用服务器、VPS 的团队通常选择第二种，虚拟主机厂商基本上都是第三种。我们先了解他们的运行原理，再对比一下优点和缺点，最后看性能。想直接查看性能对比可以直接拉到本文最下面。</p>
+<h4>Apache + mod_php</h4>
+<p>几年前 LAMP（Linux Apache MySQL PHP）非常火爆，然而现在使用 Apache 似乎有一点非主流的味道。大众对 Apache 的印象是速度慢，配置难。不过到了 Apache 2.4，性能已经基本和 Nginx 相当。</p>
+<p>我们选择 Apache 的主要原因是他可以直接将 PHP 当作一个模块挂载在进程中运行，选择 Prefork 预派生进程模式，Apache 会维护一个进程池，提前启动一群 httpd 进程等待请求进来，可以直接在进程中运行 PHP 并返回处理结果。处理完成后进程不会退出，而是继续等待下一个请求。</p>
+<p>结合 Apache 的 .htaccess 可以实现无需重启即可重载绝大多数配置，可以让用户非常自由的定制各项配置参数。因此这是性能最好、配置最灵活的方案。</p>
+<p>不过这样运行的进程全部的系统用户都是同一个，安全方面就需要十分谨慎，其它虚拟主机厂商无法使用的原因是用户可以非常轻松的跨到其它虚拟主机去读数据，非常危险。因此我们在 PHP 层面开发了一套沙箱解决这一问题，具体细节移步《<a href="/hostker-php-sandbox/">Hostker 沙箱环境介绍</a>》阅读。</p>
+<h4>Nginx + php-fpm</h4>
+<p>在大多数人眼中，Nginx 和 Apache 扮演的角色是一样的。其实不是，Nginx 是一个<strong>反向代理服务</strong>，而 Apache 是一个<strong>可以直接运行 PHP 的 HTTP 服务</strong>。也就是说，除了 PHP 之外，NodeJS、Golang 等语言在运行的时候，都是需要自行处理 HTTP 或者 FastCGI 协议的，Nginx 只管将 HTTP 请求或者是 FastCGI 转发给其它进程。而 Apache 则是直接在自己进程内部完成 PHP 的运行并直接返回结果。</p>
+<p>因此 Nginx 在运行 PHP 时，需要 PHP 自己启动 php-fpm 管理一个进程池，并监听在一个 TCP 端口（最常见的 9000 / 9001）或者 Unix Socket 等待 Nginx 通过 FastCGI 转发请求过来。所以性能方面无论如何都躲避不了进程通讯的 IO 性能消耗，这点不如 Apache 性能好。</p>
+<p>不过鉴于大多数运维都比较熟悉 Nginx 的配置文件，配置项相比 Apache 也稍微简单一些，因此一些自己维护服务器的运维会选择这个模式。</p>
+<h4><del></del>suPHP（类似 CGI）</h4>
+<p>大概 20 年前，CGI 是最流行的运行动态网站所使用的接口标准。在一个请求到达 HTTP 服务（Apache）之后，HTTP 服务会根据 CGI 配置通过命令启动一个进程处理这一请求，处理完成之后再关闭进程。</p>
+<p>相信读到这里，我不需要做性能对比，读者就明白这肯定是性能最差的方案。那么虚拟主机厂商为什么都喜欢这个模式？因为使用 Cpanel、DirectAdmin 等方案的他们没有比较好的用户隔离方法，只能通过新建不同的 Linux 系统用户运行 PHP 来隔开用户。</p>
+<p>suPHP 模块可以实现当请求到达 Apache 之后，判断这个虚拟主机归属哪个用户，通过对应用户启动一个 PHP 进程来处理，并在处理完成之后关闭这个进程。因此是市面上虚拟主机最常用的模式。</p>
+<h3>性能对比</h3>
+<p>以下对比使用的配置是单核 768M 内存 512M Swap 的虚拟机，测试使用的是 phpinfo() 函数返回的结果有 80 KB 长度，这一函数在运行过程中会扫描 PHP 的所有环境配置项，因此能比较直观的看出初始化和进程通讯所产生的性能影响。</p>
+<p>PHP 版本是 7.0.8，Apache 和 Nginx 版本在截图中。进程配置（Apache 和 php-fpm）是统一初始化 15 个进程，最大限制 100 个进程。</p>
+<p>使用测试工具是 ab，发起 100 并发，总计 1000 次请求。</p>
+<p>Apache + mod_php 测试结果是<strong>每秒完成 412 次请求</strong>。</p>
+<p><img class="alignnone size-full wp-image-133" src="https://www.90.cx/wp-content/uploads/2016/07/apache_mod.png" alt="apache_mod" width="548" height="551" srcset="https://www.90.cx/wp-content/uploads/2016/07/apache_mod.png 548w, https://www.90.cx/wp-content/uploads/2016/07/apache_mod-150x150.png 150w, https://www.90.cx/wp-content/uploads/2016/07/apache_mod-298x300.png 298w" sizes="(max-width: 548px) 100vw, 548px" /></p>
+<p>Nginx + php-fpm 测试结果是<strong>每秒完成 352 次请求</strong>。FastCGI 的进程间通讯还是拉低了性能。</p>
+<p><img class="alignnone size-full wp-image-134" src="https://www.90.cx/wp-content/uploads/2016/07/nginx_fpm.png" alt="nginx_fpm" width="521" height="553" srcset="https://www.90.cx/wp-content/uploads/2016/07/nginx_fpm.png 521w, https://www.90.cx/wp-content/uploads/2016/07/nginx_fpm-283x300.png 283w" sizes="(max-width: 521px) 100vw, 521px" /></p>
+<p>最后是同行所使用的 suPHP ，<strong>每秒完成 41 次请求</strong>。</p>
+<p><img class="alignnone size-full wp-image-136" src="https://www.90.cx/wp-content/uploads/2016/07/apache_cgi.png" alt="apache_cgi" width="525" height="548" srcset="https://www.90.cx/wp-content/uploads/2016/07/apache_cgi.png 525w, https://www.90.cx/wp-content/uploads/2016/07/apache_cgi-287x300.png 287w" sizes="(max-width: 525px) 100vw, 525px" /></p>
+<p>每次启动和关闭进程造成的性能影响惨不忍睹，我们的性能是同行的 10 倍！</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/php-mode/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>解密Hostker&#038;主机壳CDN——Squid篇</title>
+		<link>https://www.90.cx/hostker-cdn-squid/</link>
+		<comments>https://www.90.cx/hostker-cdn-squid/#respond</comments>
+		<pubDate>Fri, 15 Jul 2016 12:08:10 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[CDN]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=110</guid>
+		<description><![CDATA[没有阅读过《解密Hostker&#38;主机壳CDN——Nginx篇》的读者，需要看一遍我们 CDN 的流程图 &#8230; <a href="https://www.90.cx/hostker-cdn-squid/" class="more-link">继续阅读<span class="screen-reader-text">解密Hostker&#038;主机壳CDN——Squid篇</span></a>]]></description>
+				<content:encoded><![CDATA[<p>没有阅读过《<a href="/hostker-cdn-nginx/">解密Hostker&amp;主机壳CDN——Nginx篇</a>》的读者，需要看一遍我们 CDN 的流程图：<span id="more-110"></span><a href="https://www.90.cx/wp-content/uploads/2016/07/cdn2.jpg" target="_blank"><img class="alignnone wp-image-128 size-full" src="https://www.90.cx/wp-content/uploads/2016/07/cdn2.jpg" alt="cdn2" width="900" height="921" srcset="https://www.90.cx/wp-content/uploads/2016/07/cdn2.jpg 900w, https://www.90.cx/wp-content/uploads/2016/07/cdn2-293x300.jpg 293w, https://www.90.cx/wp-content/uploads/2016/07/cdn2-768x786.jpg 768w" sizes="(max-width: 900px) 100vw, 900px" /></a><br />
+在完成 Nginx 部分之后，请求移交到 Squid 手中。</p>
+<p>Squid 会根据这个 URL 访问的频繁程度，决定放置于我们 CDN 节点的内存还是硬盘中进行缓存，访问越频繁越有可能进入内存缓存，其次是硬盘，在硬盘塞满后，访问最少的 URL 将会被删除缓存。</p>
+<p>我们的 Squid 默认会把全部请求转发后端确认是否更新，如果后端返回了 Expires 头或者 max-age，将会根据用户自定义的时间进行缓存。缓存期间不会到后端确认是否更新，直接 HIT 命中缓存。客户端浏览器也会根据这两个头进行缓存而不会向 CDN 发出请求，从而加快访问速度。</p>
+<p>用户只需要在 .htaccess 写好相应规则，我们的 CDN 和客户端浏览器就能同时收到该缓存规则并依照规则执行。具体规则示例：</p>
+<blockquote><p>ExpiresActive On<br />
+ExpiresByType application/x-javascript &#8220;access plus 1 month&#8221;<br />
+ExpiresByType text/html M604800<br />
+&lt;FilesMatch &#8220;\.(xls|ppt|doc)$&#8221;&gt;<br />
+ExpiresDefault A9030400<br />
+&lt;/FilesMatch&gt;</p></blockquote>
+<ul>
+<li>ExpiresActive On 表示开启缓存模块；</li>
+<li>ExpiresByType [type] [rule]  其中 ExpiresByType 表示根据 MIME 类型执行缓存规则，type 表示 MIME 类型，rule 表示缓存规则；</li>
+<li>ExpiresDefault [rule] 其中 ExpiresDefault 表示默认的缓存规则，rule 表示缓存规则。细分如下：</li>
+</ul>
+<ul>
+<li>&#8220;access plus 1 month&#8221; 其中 access 表示从用户访问的时间（CDN 节点是根据 CDN 访问后端的时间）算起，plus 表示增加，1 month 表示 1 个月。<br />
+同理可以使用 3 days 表示 3 天，1 hours 表示 1 小时，2 minutes 表示 2 分钟。可以连着用 &#8220;access plus 1 month 2 days 5 hours 9 minutes&#8221; 表示从用户访问后的 1 个月 2 天 5 小时 9 秒内缓存有效，无需找后端确认修改时间；</li>
+<li>M604800 表示从文件的修改时间开始缓存 604800 秒（一周）；</li>
+<li>A9030400 是 access plus 的另一个用法，同理 M604800 可以写为 &#8220;modification plus 7 days&#8221;。</li>
+</ul>
+<p>※ 多说一点 Apache 和 HTTP 相关的小知识：</p>
+<ul>
+<li>FilesMatch 是根据文件名制定相应规则，双引号内的内容为正则表达式，上面示例是匹配文件名后缀为 xls 或者 ppt 或者 doc 的文件。关于正则表达式有兴趣的用户可以去网上寻找相关资料学习。</li>
+<li>Expires 头和 max-age 可以用 PHP 的 header() 函数模拟发送，靠 .htaccess 主要是为了让静态文件得到缓存。</li>
+<li>Expires 头内容缓存的过期时间，格式示例：Tue, 19 Feb 2013 15:34:21 GMT</li>
+<li>max-age 位于 Cache-Control 头里面，单位是秒，比如 300 秒过期示例：Cache-Control: max-age=300</li>
+</ul>
+<p>这样一来，我们就无需专门为 CDN 开发缓存控制面板，用户可以使用 .htaccess 或者 PHP 灵活控制所有的文件的 CDN 缓存规则。</p>
+<p>至此，CDN 相关的技术大概介绍完毕，接下来是运算节点的介绍。</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/hostker-cdn-squid/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>解密Hostker&#038;主机壳CDN——Nginx篇</title>
+		<link>https://www.90.cx/hostker-cdn-nginx/</link>
+		<comments>https://www.90.cx/hostker-cdn-nginx/#respond</comments>
+		<pubDate>Fri, 15 Jul 2016 10:27:33 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[CDN]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=106</guid>
+		<description><![CDATA[上一篇我们说到《HTTPS 握手过程》，现在进入主线 CDN。来看一张图了解用户的访问过程：从图上我们可以看到 &#8230; <a href="https://www.90.cx/hostker-cdn-nginx/" class="more-link">继续阅读<span class="screen-reader-text">解密Hostker&#038;主机壳CDN——Nginx篇</span></a>]]></description>
+				<content:encoded><![CDATA[<p>上一篇我们说到《<a href="/https-init/">HTTPS 握手过程</a>》，现在进入主线 CDN。来看一张图了解用户的访问过程：<a href="https://www.90.cx/wp-content/uploads/2016/07/cdn2.jpg" target="_blank"><img class="alignnone wp-image-128 size-full" src="https://www.90.cx/wp-content/uploads/2016/07/cdn2.jpg" alt="cdn2" width="900" height="921" srcset="https://www.90.cx/wp-content/uploads/2016/07/cdn2.jpg 900w, https://www.90.cx/wp-content/uploads/2016/07/cdn2-293x300.jpg 293w, https://www.90.cx/wp-content/uploads/2016/07/cdn2-768x786.jpg 768w" sizes="(max-width: 900px) 100vw, 900px" /></a><span id="more-106"></span>从图上我们可以看到进入 CDN 之后第一个步骤是判断 HTTP 请求头的 Host 值，系统会从内存中读取 Host 对应的数据，包括域名所属主机、用户自定义的 UA、IP 安全策略等。前面的文章有提到，我们没有使用 Nginx 的配置文件保存这些数据，而是直接写入内存，因此省去了每次修改都扫描整个配置文件的过程。</p>
+<p>拿到了配置之后，我们在 Nginx 层有一些系统统一给用户准备好的保护规则，例如恶意 IP、UA 全局屏蔽。首先进行全局的规则判断，然后进行用户自定义的黑名单规则判断。没有问题的话，进入到危险行为判断。</p>
+<p>危险行为包括 CC 攻击、WordPress 后台爆破、论坛密码爆破、垃圾评论等。针对这些问题我们在 Nginx 层开发了 AntiCC 模块和 AntiSPAM 模块。</p>
+<h4>AntiCC 模块</h4>
+<p><img class="alignnone size-full wp-image-108" src="https://www.90.cx/wp-content/uploads/2016/07/anticc.jpg" alt="anticc" width="912" height="493" srcset="https://www.90.cx/wp-content/uploads/2016/07/anticc.jpg 912w, https://www.90.cx/wp-content/uploads/2016/07/anticc-300x162.jpg 300w, https://www.90.cx/wp-content/uploads/2016/07/anticc-768x415.jpg 768w" sizes="(max-width: 912px) 100vw, 912px" /></p>
+<p>在用户遇到 CC 攻击时，我们会临时启动 AntiCC 模块进行过滤。首次访问的访客将会重定向到 anticc.smartgslb.com 并出现这个界面。用户点击「继续访问」按钮后，浏览器将会运行一段 js 进行计算得到正确的令牌，并重定向回 CDN 节点，继续之前的访问。确保不影响其它网站的正常使用。</p>
+<p><strong>※ 对于引来流量洪水攻击的网站，我们将会直接清退！这一模块仅用于紧急自保使用。已知自己被人攻击的用户不要试图使用我们的 CDN！</strong></p>
+<h4>AntiSPAM 模块</h4>
+<p>顾名思义，这个模块就是防垃圾。除了前面提到的根据 UA 和 IP 进行黑名单防御之外，我们针对比较常见的 WP、DZ 密码爆破等行为开发了这个模块。</p>
+<p>原理非常简单，在 POST 请求到特定 URL 的时候，CDN 会进行一个判断，访客需要首先访问过网页，得到一个 token 在浏览器中，然后再进行 POST 行为，我们的 CDN 才会放行。目前这一模块每天都会拦截上万次 WordPress 后台密码爆破攻击。</p>
+<h4>静态资源处理</h4>
+<p>说到静态资源，防盗链必不可少。由于有 CDN 的存在，我们无法直接在运算节点 Apache 层面写 .htaccess 进行防盗链，而是需要在控制面板中进行配置。这一点不难理解，几句话带过。</p>
+<p>我们一直强调自己独有的静态资源加速，这一功能原理也不复杂，针对未备案的域名，将访客的图片、附件请求 302 重定向至我们的域名，例如 www.90.cx 重定向到 www-90-cx-static.smartgslb.com 域名，这样可以在不干扰网页的情况下，提供中国大陆最近最快的 CDN 带宽供用户访问。</p>
+<p>重定向也有非常多的讲究，不能一股脑儿全部重定向过去，js 和 css 这两个流量不大而且和网页渲染密切相关的东西肯定不能进行重定向。字体方面，我们在重定向之后增加了跨域许可头（CORS），确保浏览器可以正确载入字体。这些都是在静态资源处理模块中完成的动作。</p>
+<h4>数据统计</h4>
+<p>我们自己实现了一个 UDP 协议，Nginx 在处理完请求之后会将请求情况实时汇报给我们一个节点，我们进行汇总处理并展示在 <a href="http://status.hostker.com/" target="_blank">http://status.hostker.com/</a></p>
+<p>至此 Nginx 部分的任务就结束了。</p>
+<p>接下来轮到《<a href="/hostker-cdn-squid/">解密Hostker&amp;主机壳CDN——Squid篇</a>》</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/hostker-cdn-nginx/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>HTTPS 握手过程</title>
+		<link>https://www.90.cx/https-init/</link>
+		<comments>https://www.90.cx/https-init/#respond</comments>
+		<pubDate>Fri, 15 Jul 2016 08:43:01 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[CDN]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=94</guid>
+		<description><![CDATA[在讨论 CDN 之前，我们需要先完成 HTTP 请求的握手。如果一个请求发往 443 端口，那么我们就需要按  &#8230; <a href="https://www.90.cx/https-init/" class="more-link">继续阅读<span class="screen-reader-text">HTTPS 握手过程</span></a>]]></description>
+				<content:encoded><![CDATA[<p>在讨论 CDN 之前，我们需要先完成 HTTP 请求的握手。如果一个请求发往 443 端口，那么我们就需要按 HTTPS 协议进行握手。这时就涉及到一个问题，如何识别这个请求对应的主机？<span id="more-94"></span>在 HTTP 请求中，客户端发起 GET 或者 POST 请求，在头部会有一个 Host 字段，对应值就是访客输入的域名。例如访问 http://90.cx/ 的请求头是这样：</p>
+<blockquote><p>GET / HTTP/1.1<br />
+Host: 90.cx<br />
+User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36</p></blockquote>
+<p>我们都知道 HTTPS 的作用就是加密数据，加密的过程是这样的：</p>
+<ol>
+<li>客户端发起 HTTPS 连接；</li>
+<li>服务器返回<strong>证书（公钥）</strong>；</li>
+<li>客户端产生随机密码并使用公钥加密；</li>
+<li>以下省略……</li>
+</ol>
+<p>涉及到密码学的知识这里不多讲，只说涉及到我们开发的技术细节。在发起 HTTPS 请求的时候，上面那一串 GET 数据也是要保护的，因此服务器必需先给证书。这时问题就来了，我们还不知道用户访问的是哪个域名，如何提供对应的证书？在以前，主机商要求使用 HTTPS 的网站都必需购买独立 IP，就是这个原因。</p>
+<p>可是我们是 CDN 厂商啊，节点是分散的啊，这怎么能忍？因此有了 SNI（Server Name Indication 服务器名称指示）。从 Windows Vista 开始的系统，都已经支持 SNI 了。而 XP 环境下，许多用户使用的是 360、猎豹等国产多核浏览器，非 IE 内核也是支持 SNI 的。</p>
+<p>有了 SNI 扩展，在第一步发起 HTTPS 连接的时候，客户端将会发送对应的域名给服务器的 443 端口。服务器收到之后检查对应域名的证书返回给客户端完成支持。</p>
+<p>在标准 Nginx 中，都是通过配置文件的方式实现的证书载入和更新。但是作为 CDN 厂商我们是无法容忍 reload 的。因此我们二次开发 Nginx 完成动态证书支持，将证书和私钥全部存放到 CDN 节点的内存中，当用户请求 Hostker&amp;主机壳 的 CDN 时，我们不需要查询配置文件，直接读取域名并在内存中找到对应的证书和私钥完成握手过程。</p>
+<p>用户对某个域名进行增加、删除证书和私钥操作时，我们会直接把对应操作下发到全网 CDN 节点，直接操作内存进行修改。同样不需要接触 Nginx 的配置文件，节省的 reload 过程可以让操作生效时间非常短，通常在 1 分钟内就可以完成全网部署。</p>
+<p>完成 HTTPS 握手之后，就可以进入 CDN 处理了。</p>
+<p>下一篇《<a href="/hostker-cdn-nginx/">解密 Hostker&amp;主机壳 CDN——Nginx篇</a>》</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/https-init/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>CDN 厂商都爱自架 DNS？</title>
+		<link>https://www.90.cx/cname-mx-clash/</link>
+		<comments>https://www.90.cx/cname-mx-clash/#comments</comments>
+		<pubDate>Fri, 01 Jul 2016 08:33:25 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[DNS]]></category>
+
+		<guid isPermaLink="false">https://www.90.cx/?p=80</guid>
+		<description><![CDATA[不知道你有没有发现一个规律，基本上所有的 CDN 厂商都会选择自架 DNS 而不是只提供 CNAME 方式解析 &#8230; <a href="https://www.90.cx/cname-mx-clash/" class="more-link">继续阅读<span class="screen-reader-text">CDN 厂商都爱自架 DNS？</span></a>]]></description>
+				<content:encoded><![CDATA[<p>不知道你有没有发现一个规律，基本上所有的 CDN 厂商都会选择自架 DNS 而不是只提供 CNAME 方式解析。这个原因说起来非常之奇葩。<span id="more-80"></span></p>
+<p>抬头看域名，这个博客的域名是 www.90.cx。当然也可以是 90.cx，但是为什么大多数网站都会选择 www 二级域名呢？因为当初设计 DNS 时是这样考虑的：</p>
+<ul>
+<li>www.90.cx：提供万维网服务，也就是网页浏览，通过 A 记录解析；</li>
+<li>smtp.90.cx/pop3.90.cx：提供邮箱服务器，也是 A 记录解析到IP；</li>
+<li>mail.90.cx：提供邮箱服务，使用 MX 记录，这样全部邮箱就都是 @mail.90.cx 后缀；</li>
+<li>ftp.90.cx：提供 FTP 服务，还是 A 记录；</li>
+<li>90.cx：顶级域名是啥能吃么？</li>
+</ul>
+<p><img class="alignnone size-full wp-image-81" src="https://www.90.cx/wp-content/uploads/2016/07/gg.jpg" alt="gg" width="141" height="121" />我们选这个域名就是短小好记啊！@90.cx 看着多高大上！</p>
+<p>按照 RFC 1034 标准，如果设置有 CNAME 记录，为了避免混淆，不可出现其它记录（MX 中枪）。如果用户的域名是类似我们这种比较有意义后缀的，当然不希望 @ 后面跟着 mail 咯。因此 CDN 厂商不得不自架 DNS，并自定义一个智能解析类型，像 Hostker&amp;主机壳 自定义了 CDN 类型解析。返回的结果就是权威服务器进行智能解析后的 A 记录，这样就可以与 MX 共存，并且不使用 CNAME 还能省去一次解析时间，加快访问速度。</p>
+<p>所以关于标题的疑问，并不是 CDN 厂商爱架设 DNS 。</p>
+<p>这都是被迫的啊(╯‵□′)╯︵┻━┻</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.90.cx/cname-mx-clash/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		</item>
+	</channel>
+</rss>

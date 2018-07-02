@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>月与灯依旧</title>
+	<atom:link href="https://www.zhukun.net/feed" rel="self" type="application/rss+xml" />
+	<link>https://www.zhukun.net</link>
+	<description>不见去年人， 泪湿春衫袖。</description>
+	<lastBuildDate>Wed, 20 Jun 2018 10:47:42 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.6</generator>
+	<item>
+		<title>godaddy的.app域名申请一年的免费SSL</title>
+		<link>https://www.zhukun.net/archives/8256</link>
+		<comments>https://www.zhukun.net/archives/8256#comments</comments>
+		<pubDate>Wed, 20 Jun 2018 10:44:45 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[Linux运维]]></category>
+		<category><![CDATA[centos]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8256</guid>
+		<description><![CDATA[.app域名是谷歌推出的自带免费SSL证书的域名, 如果你在Godaddy购买了 &#8230; <a href="https://www.zhukun.net/archives/8256">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>.app域名是谷歌推出的自带免费SSL证书的域名, 如果你在Godaddy购买了.app域名, 那么你的域名会自动带有一年的免费SSL证书(需要在Godaddy申请), 本文简单写一下申请方法.</p>
+<p>假设你申请到的域名是example.app</p>
+<p><strong>1, 生成csr</strong><br />
+参考Godaddy帮助文档里的<a href="https://hk.godaddy.com/en/help/nginx-generate-csrs-certificate-signing-requests-3601" rel="noopener" target="_blank">这篇文章</a></p>
+<pre class="brush: bash; title: ; notranslate">
+$ openssl req -new -newkey rsa:2048 -nodes -keyout example.app.key -out example.app.csr
+</pre>
+<p>回车以后会问你一些信息,例如国家,城市等,在询问到Common Name (e.g. server FQDN or YOUR name)时建议填写你的域名信息,例如example.app</p>
+<p>然后就会生成下面2个文件<br />
+example.app.csr<br />
+example.app.key</p>
+<p>去Godaddy页面上申请SSL证书, 当然, 需要.csr文件中的内容</p>
+<p>只需要几分钟, Godaddy会为你准备好证书, Download之. Download的时候, 由于&#8221;Server type&#8221;没有&#8221;Nginx&#8221;, 因此我选择了&#8221;Other&#8221;</p>
+<p><strong>2, 准备SSL证书</strong><br />
+参考Godaddy帮助文档里的<a href="https://hk.godaddy.com/en/help/nginx-on-centos-7-install-a-certificate-27192" rel="noopener" target="_blank">这篇文章</a></p>
+<pre class="brush: bash; title: ; notranslate">
+$ unzip example.app.zip
+
+$ ls    #会解压出来2个文件
+8a982df92de94106.crt  gd_bundle-g2-g1.crt  example.app.zip
+</pre>
+<p><strong>生成example.app.crt文件</strong></p>
+<pre class="brush: bash; title: ; notranslate">
+cat 8a982df92de94106.crt gd_bundle-g2-g1.crt &gt;&gt; example.app.crt
+</pre>
+<p><span id="more-8256"></span></p>
+<p><strong>3, 配置nginx</strong><br />
+把上面的example.app.key和example.app.crt加入到nginx的配置中即可, 这部分不再多说.</p>
+<pre class="brush: bash; title: ; notranslate">
+$ sudo vim /etc/nginx/sites-available/example.app
+</pre>
+<pre class="brush: plain; title: ; notranslate">
+server {
+        listen 80;
+        server_name example.app www.example.app;
+        return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+
+    server_name example.app www.example.app;
+    ssl_certificate     /etc/nginx/ssl/example.app.crt;
+    ssl_certificate_key /etc/nginx/ssl/example.app.key;
+
+    root /usr/www/example.app/;
+    index index.php  index.html index.htm;
+
+}
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8256/feed</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>VMware性能优化</title>
+		<link>https://www.zhukun.net/archives/8251</link>
+		<comments>https://www.zhukun.net/archives/8251#comments</comments>
+		<pubDate>Sat, 12 May 2018 06:47:48 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[Linux运维]]></category>
+		<category><![CDATA[ubuntu]]></category>
+		<category><![CDATA[VMWare]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8251</guid>
+		<description><![CDATA[VMware Player里安装的虚拟机一般都特别卡(即使你的物理机配置很高), &#8230; <a href="https://www.zhukun.net/archives/8251">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>VMware Player里安装的虚拟机一般都特别卡(即使你的物理机配置很高), 原因是VMware默认设定在本地生成一个swap文件来当作虚拟机的内存(这能不卡吗??), 本文介绍一些优化参数.</p>
+<p>将以下选择写入到你的.vmx文件中(仅适用Windows物理机)</p>
+<pre class="brush: plain; title: ; notranslate">
+MemTrimRate = &quot;0&quot; 
+mainMem.useNamedFile = &quot;FALSE&quot;
+sched.mem.pshare.enable = &quot;FALSE&quot; 
+prefvmx.useRecommendedLockedMemSize = &quot;TRUE&quot;
+</pre>
+<p>如果你的物理机是Linux而不是Windows则需要用如下选项代替上面的mainMem.useNamedFile = &#8220;FALSE&#8221;</p>
+<pre class="brush: plain; title: ; notranslate">mainmem.backing = &quot;swap&quot;</pre>
+<p>参考文档<br />
+<a href="https://superuser.com/questions/306655/windows-7-kills-vmware-performance-by-disk-caching" rel="noopener" target="_blank">Windows 7 kills VMWare performance by disk caching?</a></p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8251/feed</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>交叉编译golang程序</title>
+		<link>https://www.zhukun.net/archives/8250</link>
+		<comments>https://www.zhukun.net/archives/8250#respond</comments>
+		<pubDate>Sat, 12 May 2018 04:26:26 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[编程学习]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8250</guid>
+		<description><![CDATA[本文演示了在ubuntu16.04上交叉编译golang程序的过程 配置本地go &#8230; <a href="https://www.zhukun.net/archives/8250">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>本文演示了在ubuntu16.04上交叉编译golang程序的过程</p>
+<p><strong>配置本地golang环境</strong></p>
+<pre class="brush: bash; title: ; notranslate">
+$ wget https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz
+
+$ tar zxvf go1.10.2.linux-amd64.tar.gz
+
+$ sudo mv go /usr/local/
+
+$ echo 'export PATH=$PATH:/usr/local/go/bin' &gt;&gt; ~/.profile
+$ echo 'export GOROOT=/usr/local/go' &gt;&gt; ~/.profile
+$ echo 'export GOPATH=~/go' &gt;&gt; ~/.profile      #v2ray的工作目录,down下来的源码和编译生成的文件均在这里
+
+$ source ~/.profile &amp;&amp; echo $GOPATH
+
+$ go version
+go version go1.10.2 linux/amd64
+</pre>
+<p><strong>交叉编译golang程序</strong></p>
+<pre class="brush: bash; title: ; notranslate">
+$ go get -u v2ray.com/core/...
+$ go get -u v2ray.com/ext/...
+
+$ go install v2ray.com/ext/tools/build/vbuild
+
+$ $GOPATH/bin/vbuild -os=linux -arch=arm
+</pre>
+<p>编译完成的程序位于$GOPATH目录下.<span id="more-8250"></span></p>
+<p>参考文档<br />
+<a href="https://steemit.com/cn/@v2ray/meemg-v2ray" rel="noopener" target="_blank">V2Ray 的模块化</a></p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8250/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>NGINX on CentOS 7: Install a SSL Certificate(from Godaddy )</title>
+		<link>https://www.zhukun.net/archives/8248</link>
+		<comments>https://www.zhukun.net/archives/8248#respond</comments>
+		<pubDate>Thu, 10 May 2018 05:32:41 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[Linux运维]]></category>
+		<category><![CDATA[centos]]></category>
+		<category><![CDATA[Linux]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8248</guid>
+		<description><![CDATA[https://www.godaddy.com/help/nginx-on-ce &#8230; <a href="https://www.zhukun.net/archives/8248">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>https://www.godaddy.com/help/nginx-on-centos-7-install-a-certificate-27192</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8248/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>我要出家当和尚去&#8230;&#8230;&#8230;</title>
+		<link>https://www.zhukun.net/archives/8247</link>
+		<comments>https://www.zhukun.net/archives/8247#comments</comments>
+		<pubDate>Fri, 04 May 2018 05:03:45 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[胡说八道]]></category>
+		<category><![CDATA[搞笑]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8247</guid>
+		<description><![CDATA[我要出家当和尚去 某个大雨倾盆的夜晚 你会偷偷来看我吗 唉，还是别来吧 我会拒绝 &#8230; <a href="https://www.zhukun.net/archives/8247">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>我要出家当和尚去<br />
+某个大雨倾盆的夜晚<br />
+你会偷偷来看我吗<br />
+唉，还是别来吧<br />
+我会拒绝与你相认 </p>
+<p>不要在山门静坐<br />
+不要和方丈软磨硬泡<br />
+不要伪装虔诚的香客<br />
+我拒绝与你相认<br />
+我在禅房看竖排繁体的肉蒲团 </p>
+<p>我再也不相信爱情了<br />
+猪肉都吃不起<br />
+还留在滚滚红尘干啥<br />
+如果你非要找我再续前缘<br />
+那就——带上一斤绝味鸭脖吧 </p>
+<p>鸳鸯偎，蝴蝶双飞<br />
+小雨在烟雾里盘着腿<br />
+你知道在哪里能找到我<br />
+女道观的隔壁，墙根下面 </p>
+<p>——南无阿弥陀佛，在吗？<br />
+——急急如律令，快进来！ </p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8247/feed</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>remove pCloud Drive on Ubuntu/Debian</title>
+		<link>https://www.zhukun.net/archives/8245</link>
+		<comments>https://www.zhukun.net/archives/8245#respond</comments>
+		<pubDate>Tue, 24 Apr 2018 15:58:09 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[Linux运维]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8245</guid>
+		<description><![CDATA[Remove pCloud Drive on Ubuntu/Debian sys &#8230; <a href="https://www.zhukun.net/archives/8245">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>Remove pCloud Drive on Ubuntu/Debian system.</p>
+<p>1, remove autostart from Tweaks Tool<br />
+2, run command </p>
+<pre class="brush: bash; title: ; notranslate">
+killall pcloud
+\rm -rf ~/.pcloud
+\rm -rf ~/.local/share/applications/appimagekit-pcloud.desktop
+\rm -rf /tmp/.mount_pcloud*
+\rm -rf /tmp/pcloud_unix_soc.sock
+</pre>
+<p>3, reboot.</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8245/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Django parse a json/dictionary reminder on template</title>
+		<link>https://www.zhukun.net/archives/8242</link>
+		<comments>https://www.zhukun.net/archives/8242#respond</comments>
+		<pubDate>Fri, 20 Apr 2018 03:16:43 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[编程学习]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8242</guid>
+		<description><![CDATA[如果想在一个Django template里引入json, 正确的templat &#8230; <a href="https://www.zhukun.net/archives/8242">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>如果想在一个Django template里引入json, 正确的template写法为</p>
+<p>python的<strong>views.py</strong>的写法</p>
+<pre class="brush: plain; title: ; notranslate">
+# -*- coding: utf-8 -*-
+from django.shortcuts import render
+from django.http import Http404, HttpResponse
+
+def get_product(request):
+    context1 = {}
+    context1['env'] = 'production'
+    context1['mydict'] = {&quot;key1&quot;:&quot;value1&quot;, &quot;key2&quot;:&quot;value2&quot;, &quot;key3&quot;:&quot;value3&quot;, &quot;key4&quot;:&quot;value4&quot;}
+    context1['days'] = [1,2,3]
+
+    if request.GET.get(&quot;item&quot;) == &quot;ec2&quot; or not request.GET.get(&quot;item&quot;):
+        return render(request, 'main_content.html', context1)
+    else:
+        raise Http404()
+</pre>
+<p><strong>main_content.html</strong>使用extends引入index.html</p>
+<pre class="brush: plain; title: ; notranslate">
+{% extends 'index.html' %}
+    {% block content %}
+        {% for day in days %}
+        &lt;li&gt;day: {{ day }}&lt;/li&gt;
+        {% endfor %}
+    {% endblock %}
+</pre>
+<p><strong>index.html</strong>使用include引入sidebar.html</p>
+<pre class="brush: plain; title: ; notranslate">
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;header&quot;&gt;My page&lt;/div&gt;
+    &lt;div class=&quot;content&quot;&gt;
+        &lt;div class=&quot;sidebar&quot;&gt;
+
+            &lt;ul&gt;
+                {% if env == 'production' %}
+                    {% include 'production.sidebar.html' %}
+                {% elif env == 'development' %}
+                    {% include 'development.sidebar.html' %}
+                {% elif env == 'staging' %}
+                    {% include 'staging.sidebar.html' %}
+                {% elif env == 'legacy' %}
+                    {% include 'legacy.sidebar.html' %}
+                {% endif %}
+            &lt;/ul&gt;
+
+        &lt;/div&gt;
+        &lt;div class=&quot;maincontent&quot;&gt;
+
+            {% block content %} {% endblock %}
+
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p><span id="more-8242"></span></p>
+<p><strong>production.sidebar.html</strong>的写法, 注意, 在django template里面是使用.items去遍历所有的key:value的</p>
+<pre class="brush: plain; title: ; notranslate">
+&lt;li&gt;&lt;a href=&quot;/api/production/?item=10&quot;&gt;production.sub1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/api/production/?item=11&quot;&gt;production.sub2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/api/production/?item=12&quot;&gt;Production.sub3&lt;/a&gt;&lt;/li&gt;
+
+{% for id, name in mydict.items %}
+&lt;li&gt;&lt;a href=&quot;/api/production/?item=13&amp;id={{ id }}&quot;&gt;production.sub{{ name }}&lt;/a&gt;&lt;/li&gt;
+{% endfor %}
+</pre>
+<p>参考: <a href="https://stackoverflow.com/questions/1275735/how-to-access-dictionary-element-in-django-template" rel="noopener" target="_blank">how to access dictionary element in django template?</a></p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8242/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>iptables delete some rules form a chain</title>
+		<link>https://www.zhukun.net/archives/8239</link>
+		<comments>https://www.zhukun.net/archives/8239#respond</comments>
+		<pubDate>Sun, 18 Mar 2018 16:49:07 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[Linux运维]]></category>
+		<category><![CDATA[centos]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8239</guid>
+		<description><![CDATA[以下两条命令均可用]]></description>
+				<content:encoded><![CDATA[<p>以下两条命令均可用</p>
+<pre class="brush: bash; title: ; notranslate">
+iptables -t nat -L PREROUTING --line-numbers | grep RULE_NAME | cut -d&quot; &quot; -f 1 | xargs iptables -t nat -D PREROUTING
+
+for i in $(iptables -t nat -nvL PREROUTING --line-numbers | grep RULE_NAME | grep ^[0-9] | awk '{ print $1 }' | tac); do iptables -t nat -D PREROUTING $i; done
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8239/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>How to run a crontab job every X seconds</title>
+		<link>https://www.zhukun.net/archives/8235</link>
+		<comments>https://www.zhukun.net/archives/8235#respond</comments>
+		<pubDate>Mon, 26 Feb 2018 02:49:47 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[Linux运维]]></category>
+		<category><![CDATA[centos]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8235</guid>
+		<description><![CDATA[如果你有一个job, 需要每隔5秒运行一次. 以下写法是错误的 如果使用这种写法 &#8230; <a href="https://www.zhukun.net/archives/8235">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>如果你有一个job, 需要每隔5秒运行一次.</p>
+<p>以下写法是错误的</p>
+<pre class="brush: bash; title: ; notranslate">
+* * * * * sleep 5; /bin/cmd
+</pre>
+<p>如果使用这种写法, 会导致在每分钟的第0秒开始, sleep 5秒以后, 再运行/bin/cmd, 然尔运行完就结束了, 不会每隔5秒运行一次.</p>
+<p>正确写法1</p>
+<pre class="brush: bash; title: ; notranslate">
+* * * * * for i in {1..12}; do /bin/cmd; sleep 5; done
+</pre>
+<p>正确写法2</p>
+<pre class="brush: bash; title: ; notranslate">
+* * * * * REMAIN=60 INC=5 ; while ; do /bin/cmd; sleep $INC; REMAIN=$(($REMAIN - $INC)); done
+</pre>
+<p>正确写法3</p>
+<pre class="brush: bash; title: ; notranslate">
+* * * * * /bin/cmd
+* * * * * sleep 5; /bin/cmd
+* * * * * sleep 10; /bin/cmd
+* * * * * sleep 15; /bin/cmd
+......
+* * * * * sleep 55; /bin/cmd
+</pre>
+<p>可以使用systemctl status cron.service -l命令看看cron服务的状态以及最新日志.</p>
+<p>参考: <a href="http://tech.saigonist.com/b/server/how-run-cronjob-every-x-seconds-cron" rel="noopener" target="_blank">How to run a cronjob every X seconds in cron</a></p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8235/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Ubuntu change password in one command line</title>
+		<link>https://www.zhukun.net/archives/8234</link>
+		<comments>https://www.zhukun.net/archives/8234#comments</comments>
+		<pubDate>Wed, 21 Feb 2018 15:50:41 +0000</pubDate>
+		<dc:creator><![CDATA[bear]]></dc:creator>
+				<category><![CDATA[Linux运维]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">https://www.zhukun.net/?p=8234</guid>
+		<description><![CDATA[according to https://serverfault.com/que &#8230; <a href="https://www.zhukun.net/archives/8234">继续阅读 <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<pre class="brush: bash; title: ; notranslate">
+echo user:pass | /usr/sbin/chpasswd
+</pre>
+<p>according to https://serverfault.com/questions/336298/can-i-change-a-user-password-in-linux-from-the-command-line-with-no-interactivit</p>
+]]></content:encoded>
+			<wfw:commentRss>https://www.zhukun.net/archives/8234/feed</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>
