@@ -172,7 +172,7 @@
       }
     },
     "linux": {
-      "icon": "assets/icon.png",
+      "icon": "assets/icon-256x256.png",
       "target": [
         "snap",
         "AppImage"
