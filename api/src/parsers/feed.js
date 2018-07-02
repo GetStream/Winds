@@ -217,27 +217,36 @@ export async function ReadURL(url) {
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadPageURL(url) {
-	let response = await ReadURL(url);
+export async function ReadPageURL(url, retries = 3) {
+	for (;;) {
+		try {
+			const response = await ReadURL(url);
+			const contentType = response.headers['content-type'].toLowerCase();
+			if (!contentType.includes('html')) {
+				logger.warn(`Invalid content type ${contentType} for url ${url}`);
+				return null;
+			}
 
-	let headers = response.headers;
-	let contentType = headers['content-type'].toLowerCase();
-	if (contentType.indexOf('html') === -1) {
-		logger.warn(`Doesn't look like anything to me... ${contentType} for url ${url}`);
-		return false;
+			return response.data;
+		} catch (err) {
+			logger.warn(`Failed to read feed url ${url}. Retrying`);
+			--retries;
+			if (!retries) {
+				throw err;
+			}
+		}
 	}
 
-	return response.data;
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadFeedURL(feedURL, retries = 2) {
+export async function ReadFeedURL(feedURL, retries = 3) {
 	for (;;) {
 		try {
 			const response = await ReadURL(feedURL);
 			return response.data;
 		} catch (err) {
-			logger.info(`Failed to read feed url ${feedURL}. Retrying`);
+			logger.warn(`Failed to read feed url ${feedURL}. Retrying`);
 			--retries;
 			if (!retries) {
 				throw err;
