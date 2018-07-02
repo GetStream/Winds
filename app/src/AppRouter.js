@@ -8,7 +8,6 @@ import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
 import { Router, Switch, Route } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
-import analytics from './util/tracking';
 import config from './config';
 import { createHashHistory, createBrowserHistory } from 'history';
 import fetch from './util/fetch';
@@ -26,10 +25,6 @@ if (isElectron) {
 } else {
 	history = createBrowserHistory();
 }
-
-history.listen(location => {
-	return analytics.pageview(`http://localhost:${config.port}`, location.pathname);
-});
 
 class AppRouter extends Component {
 	componentDidMount() {
