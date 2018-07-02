@@ -231,10 +231,18 @@ export async function ReadPageURL(url) {
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadFeedURL(feedURL) {
-	let response = await ReadURL(feedURL);
-
-	return response.data;
+export async function ReadFeedURL(feedURL, retries = 2) {
+	for (;;) {
+		try {
+			const response = await ReadURL(feedURL);
+			return response.data;
+		} catch (err) {
+			--retries;
+			if (!retries) {
+				throw err;
+			}
+		}
+	}
 }
 
 // Turn the feed Stream into a list of posts
