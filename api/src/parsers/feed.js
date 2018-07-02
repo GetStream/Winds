@@ -237,6 +237,7 @@ export async function ReadFeedURL(feedURL, retries = 2) {
 			const response = await ReadURL(feedURL);
 			return response.data;
 		} catch (err) {
+			logger.info(`Failed to read feed url ${feedURL}. Retrying`);
 			--retries;
 			if (!retries) {
 				throw err;
