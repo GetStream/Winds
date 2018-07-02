@@ -17,20 +17,7 @@
 				"sourceMap": false,
 				"instrument": false
 		},
-		"author": [
-				{
-						"name": "Nick Parsons",
-						"email": "nick@getstream.io"
-				},
-				{
-						"name": "Ken Hoff",
-						"email": "ken@getstream.io"
-				},
-				{
-						"name": "Thierry Schellenbach",
-						"email": "thierry@getstream.io"
-				}
-		],
+		"author": "Winds Team <winds@getstream.io>",
 		"license": "BSD-3-Clause",
 		"keywords": [
 				"Winds",
