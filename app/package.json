@@ -27,7 +27,7 @@
     "build": "node scripts/build.js",
     "start": "concurrently \"cross-env BROWSER=none yarn node scripts/start.js\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
+    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=public/electron.js -p always"
   },
   "dependencies": {
     "algoliasearch": "^3.27.1",
