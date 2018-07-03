@@ -186,6 +186,11 @@
       }
     }
   },
+  "files": [
+      "*.js",
+      "build",
+      "node_modules"
+  ],
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
