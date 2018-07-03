@@ -99,7 +99,7 @@ To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/
 
 Commands:
 
-*   `brew install pkg-config cairo redis mongodb`
+*   `brew install redis mongodb`
 *   `brew services start mongodb`
 *   `brew services start redis`
 *   `cd winds/api`
