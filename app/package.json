@@ -1,6 +1,6 @@
 {
   "name": "Winds",
-  "version": "2.1.38",
+  "version": "2.1.44",
   "description": "Winds is a beatiful open source RSS Reader and Podcast app. Wind 2.0 was created using React/Redux/Node.\nFor more information, visit https://getstream.io/winds/.\nTo contribute or run your own version head over to Github: https://github.com/getstream/winds",
   "private": true,
   "author": "Winds Team <winds@getstream.io>",
@@ -23,28 +23,20 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "dev": "yarn node scripts/start.js",
-    "build": "node scripts/build.js",
-    "start": "concurrently \"cross-env BROWSER=none yarn node scripts/start.js\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "yarn react-scripts start",
+    "build": "react-scripts build",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=public/electron.js -p always"
+    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
   },
   "dependencies": {
     "algoliasearch": "^3.27.1",
-    "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.5",
     "babel-jest": "23.2.0",
     "babel-loader": "7.1.4",
     "babel-plugin-inline-dotenv": "^1.1.2",
-    "babel-preset-react-app": "^3.1.1",
-    "babel-runtime": "6.26.0",
-    "case-sensitive-paths-webpack-plugin": "2.1.1",
-    "chalk": "1.1.3",
-    "css-loader": "0.28.7",
-    "dotenv": "4.0.0",
-    "dotenv-expand": "4.2.0",
     "electron-boilerplate": "^1.1.1",
     "electron-google-analytics": "^0.1.0",
     "electron-is": "^2.4.1",
@@ -69,27 +61,19 @@
     "github-buttons": "^0.0.1-security",
     "global": "^4.3.2",
     "history": "^4.7.2",
-    "html-webpack-plugin": "2.29.0",
     "install": "^0.11.0",
     "is-electron": "^2.1.0",
     "is-windows": "^1.0.2",
-    "jest": "20.0.4",
     "md5": "^2.2.1",
     "moment": "^2.22.1",
     "moment-duration-format": "^2.2.2",
     "node-notifier": "^5.2.1",
     "node-sass-chokidar": "^1.3.0",
-    "object-assign": "4.1.1",
     "opn": "^5.3.0",
-    "postcss-flexbugs-fixes": "3.2.0",
-    "postcss-loader": "2.0.8",
-    "promise": "8.0.1",
-    "raf": "3.4.0",
     "raven-js": "^3.25.2",
     "rc-slider": "^8.6.1",
     "react": "^16.3.2",
     "react-audio-player": "^0.9.0",
-    "react-dev-utils": "^5.0.1",
     "react-dom": "^16.3.2",
     "react-dropzone": "^4.2.9",
     "react-github-button": "^0.1.11",
@@ -102,15 +86,7 @@
     "react-router-dom": "^4.2.2",
     "react-waypoint": "^8.0.1",
     "redux": "^4.0.0",
-    "resolve": "1.6.0",
-    "style-loader": "0.19.0",
-    "sw-precache-webpack-plugin": "0.11.4",
-    "url-loader": "0.6.2",
-    "video-react": "^0.11.2",
-    "webpack": "3.8.1",
-    "webpack-dev-server": "2.9.4",
-    "webpack-manifest-plugin": "1.3.2",
-    "whatwg-fetch": "2.0.3"
+    "video-react": "^0.11.2"
   },
   "devDependencies": {
     "assert": "^1.4.1",
@@ -127,6 +103,7 @@
     "json": "^9.0.6",
     "prettier": "^1.12.1",
     "prettierrc": "^0.0.0-5",
+    "react-scripts": "^1.1.4",
     "stylelint": "^9.2.1",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-order": "^0.8.1",
@@ -186,6 +163,11 @@
       }
     }
   },
+  "files": [
+    "*.js",
+    "build",
+    "node_modules"
+  ],
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"

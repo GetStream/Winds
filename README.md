@@ -87,6 +87,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 10. Deploying to the macOS store
 11. Electron gotchas
 12. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
+13. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
 
 ## Download
 
@@ -98,7 +99,7 @@ To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/
 
 Commands:
 
-*   `brew install pkg-config cairo redis mongodb`
+*   `brew install redis mongodb`
 *   `brew services start mongodb`
 *   `brew services start redis`
 *   `cd winds/api`
