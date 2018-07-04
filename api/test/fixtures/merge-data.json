@@ -1,0 +1,203 @@
+[{
+	"User": [{
+		"_id": "5b0f306d8e147f10f16aceaf",
+		"preferences": {
+			"notifications": { "daily": false, "weekly": true, "follows": true }
+		},
+		"bio": "",
+		"url": "",
+		"twitter": "",
+		"background": 1,
+		"recoveryCode": "",
+		"active": true,
+		"admin": false,
+		"interests": [
+			"UI/UX",
+			"Startups & VC",
+			"Programming",
+			"News",
+			"Machine Learning & AI",
+			"Gaming",
+			"VR",
+			"Lifehacks",
+			"Marketing"
+		],
+		"email": "valid@email.com",
+		"name": "Valid Name",
+		"username": "valid",
+		"password": "valid_password"
+	}, {
+		"_id": "5b0f306d8e147f10f16aceb0",
+		"preferences": {
+			"notifications": { "daily": false, "weekly": true, "follows": true }
+		},
+		"bio": "",
+		"url": "",
+		"twitter": "",
+		"background": 1,
+		"recoveryCode": "",
+		"active": true,
+		"admin": false,
+		"interests": [
+			"UI/UX",
+			"Startups & VC",
+			"Programming",
+			"News",
+			"Machine Learning & AI",
+			"Gaming",
+			"VR",
+			"Lifehacks",
+			"Marketing"
+		],
+		"email": "valid+1@email.com",
+		"name": "Valid Name",
+		"username": "valid1",
+		"password": "valid_password"
+	}, {
+		"_id": "5b0f306d8e147f10f16aceb1",
+		"preferences": {
+			"notifications": { "daily": false, "weekly": true, "follows": true }
+		},
+		"bio": "",
+		"url": "",
+		"twitter": "",
+		"background": 1,
+		"recoveryCode": "",
+		"active": true,
+		"admin": false,
+		"interests": [
+			"UI/UX",
+			"Startups & VC",
+			"Programming",
+			"News",
+			"Machine Learning & AI",
+			"Gaming",
+			"VR",
+			"Lifehacks",
+			"Marketing"
+		],
+		"email": "valid+2@email.com",
+		"name": "Valid Name",
+		"username": "valid2",
+		"password": "valid_password"
+	}]
+}, {
+	"RSS": [{
+		"_id": "5b0ad0baf6f89574f638880a",
+		"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
+		"description": "Dorkly: Comics",
+		"categories": "RSS",
+		"featured": true,
+		"public": true,
+		"valid": true,
+		"likes": 0,
+		"summary": "",
+		"interest": "",
+		"isParsing": true,
+		"language": "eng",
+		"feedUrl": "http://dorkly.com/comics/rss/original",
+		"lastScraped": "2018-06-01T17:52:10.655Z",
+		"publicationDate": "2018-05-27T15:37:30.011Z",
+		"title": "Dorkly: Comics",
+		"url": "http://dorkly.com/comics/original",
+		"updatedAt": "2018-06-01T18:07:31.230Z",
+		"createdAt": "2018-05-27T15:37:30.017Z",
+		"__v": 0
+	}, {
+		"_id": "5b0ad0baf6f89574f638880b",
+		"images": { "featured": "", "banner": "", "favicon": "", "og": "" },
+		"description": "Dorkly: Comics",
+		"categories": "RSS",
+		"featured": true,
+		"public": true,
+		"valid": true,
+		"likes": 0,
+		"summary": "",
+		"interest": "",
+		"isParsing": true,
+		"language": "eng",
+		"feedUrl": "https://dorkly.com/comics/rss/original",
+		"lastScraped": "2018-06-01T17:52:10.655Z",
+		"publicationDate": "2018-05-27T15:37:30.011Z",
+		"title": "Dorkly: Comics",
+		"url": "http://dorkly.com/comics/original",
+		"updatedAt": "2018-06-01T18:07:31.230Z",
+		"createdAt": "2018-05-27T15:37:30.017Z",
+		"__v": 0
+	}]
+}, {
+	"Article": [{
+		"_id": "5b0ad37226dc3db38194e5ec",
+		"rss": "5b0ad0baf6f89574f638880a",
+		"guid": "test:11",
+		"url": "http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war",
+		"title": "What If Deadpool Was In Avengers: Infinity War"
+	}, {
+		"_id": "5b0ad37226dc3db38194e5ed",
+		"rss": "5b0ad0baf6f89574f638880a",
+		"guid": "test:12",
+		"url": "http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/",
+		"title": "What If Deadpool Was In Avengers: Infinity War"
+	}, {
+		"_id": "5b0ad37226dc3db38194e5ee",
+		"rss": "5b0ad0baf6f89574f638880b",
+		"guid": "test:11",
+		"url": "http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war/",
+		"title": "What If Deadpool Was In Avengers: Infinity War"
+	}, {
+		"_id": "5b0ad37226dc3db38194e5ef",
+		"rss": "5b0ad0baf6f89574f638880b",
+		"guid": "test:12",
+		"url": "http://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war2/",
+		"title": "What If Deadpool Was In Avengers: Infinity War"
+	}, {
+		"_id": "5b0ad37226dc3db38194e5d0",
+		"rss": "5b0ad0baf6f89574f638880b",
+		"guid": "test:13",
+		"url": "https://dorkly.com/post/86517/what-if-deadpool-was-in-avengers-infinity-war/",
+		"title": "What If Deadpool Was In Avengers: Infinity War"
+	}]
+}, {
+	"Pin": [{
+		"_id": "5b0ad37226dc3db38194e600",
+		"article": "5b0ad37226dc3db38194e5ec",
+		"user": "5b0f306d8e147f10f16aceaf"
+	}, {
+		"_id": "5b0ad37226dc3db38194e601",
+		"article": "5b0ad37226dc3db38194e5ed",
+		"user": "5b0f306d8e147f10f16aceaf"
+	}, {
+		"_id": "5b0ad37226dc3db38194e602",
+		"article": "5b0ad37226dc3db38194e5ec",
+		"user": "5b0f306d8e147f10f16aceb0"
+	}, {
+		"_id": "5b0ad37226dc3db38194e603",
+		"article": "5b0ad37226dc3db38194e5ee",
+		"user": "5b0f306d8e147f10f16aceb0"
+	}, {
+		"_id": "5b0ad37226dc3db38194e604",
+		"article": "5b0ad37226dc3db38194e5d0",
+		"user": "5b0f306d8e147f10f16aceb1"
+	}],
+	"Follow": [{
+		"_id": "5b0ad37226dc3db38194e700",
+		"rss": "5b0ad0baf6f89574f638880b",
+		"user": "5b0f306d8e147f10f16aceaf"
+	}, {
+		"_id": "5b0ad37226dc3db38194e701",
+		"rss": "5b0ad0baf6f89574f638880a",
+		"user": "5b0f306d8e147f10f16aceb0"
+	}, {
+		"_id": "5b0ad37226dc3db38194e702",
+		"rss": "5b0ad0baf6f89574f638880b",
+		"user": "5b0f306d8e147f10f16aceb0"
+	}, {
+		"_id": "5b0ad37226dc3db38194e703",
+		"rss": "5b0ad0baf6f89574f638880a",
+		"user": "5b0f306d8e147f10f16aceb1"
+	}, {
+		"_id": "5b0ad37226dc3db38194e704",
+		"rss": "5b0ad0baf6f89574f638880b",
+		"user": "5b0f306d8e147f10f16aceb1"
+	}]
+}]

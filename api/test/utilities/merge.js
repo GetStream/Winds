@@ -1,22 +1,74 @@
 import { expect } from 'chai';
 
+import RSS from '../../src/models/rss';
+import Pin from '../../src/models/pin';
 import Follow from '../../src/models/follow';
 import Article from '../../src/models/article';
 import { mergeFeeds } from '../../src/utils/merge';
 import { loadFixture, dropDBs } from '../utils';
 
-describe('Merge utility', () => {
-	it.skip('should merge two feeds', async () => {
-		await dropDBs();
-		await loadFixture('initial-data');
-		//TODO: verify we follow and pin stuff from feed B
-		let articleCount = await Article.count({ rss: '5b0ad0baf6f89574a638887a' });
-		let followCount = await Follow.count({ rss: '5b0ad0baf6f89574a638887a' });
+const feedA = '5b0ad0baf6f89574f638880a';
+const feedB = '5b0ad0baf6f89574f638880b';
 
-		let results = await mergeFeeds(
-			'5b0ad0baf6f89574a638887b',
-			'5b0ad0baf6f89574a638887a',
-		);
-		//TODO: verify we now follow and pin stuff from feed A
+describe('Merge utility', () => {
+	beforeEach(async () => {
+		await dropDBs();
+		await loadFixture('merge-data');
+	});
+
+	it('should remove one of the input feeds', async () => {
+		expect(await RSS.findById(feedA)).to.not.be.null;
+		expect(await RSS.findById(feedB)).to.not.be.null;
+
+		await mergeFeeds(feedA, feedB);
+
+		expect(await RSS.findById(feedA)).to.not.be.null;
+		expect(await RSS.findById(feedB)).to.be.null;
+	});
+
+	it('should move articles from one feed to another', async () => {
+		await mergeFeeds(feedA, feedB);
+
+		expect(await Article.count({ rss: feedA })).to.be.equal(3);
+		expect(await Article.count({ rss: feedB })).to.be.equal(0);
+	});
+
+	it('shouldn\'t produce duplicate articles', async () => {
+		await mergeFeeds(feedA, feedB);
+
+		expect(await Article.count()).to.be.equal(3);
+		expect(await Article.findById('5b0ad37226dc3db38194e5ee')).to.be.null;
+		expect(await Article.findById('5b0ad37226dc3db38194e5ef')).to.be.null;
+	});
+
+	it('should move pins from one feed to another', async () => {
+		await mergeFeeds(feedA, feedB);
+
+		const aArticles = await Article.find({ rss: feedA });
+		const bArticles = await Article.find({ rss: feedB });
+		expect(await Pin.count({ article: { $in: aArticles.map(a => a._id) } })).to.be.equal(4);
+		expect(await Pin.count({ article: { $in: bArticles.map(a => a._id) } })).to.be.equal(0);
+	});
+
+	it('shouldn\'t produce duplicate pins', async () => {
+		await mergeFeeds(feedA, feedB);
+
+		expect(await Pin.count()).to.be.equal(4);
+		expect(await Pin.findById('5b0ad37226dc3db38194e603')).to.be.null;
+	});
+
+	it('should move followers from one feed to another', async () => {
+		await mergeFeeds(feedA, feedB);
+
+		expect(await Follow.count({ rss: feedA })).to.be.equal(3);
+		expect(await Follow.count({ rss: feedB })).to.be.equal(0);
+	});
+
+	it('shouldn\'t produce duplicate follows', async () => {
+		await mergeFeeds(feedA, feedB);
+
+		expect(await Follow.count()).to.be.equal(3);
+		expect(await Follow.findById('5b0ad37226dc3db38194e702')).to.be.null;
+		expect(await Follow.findById('5b0ad37226dc3db38194e704')).to.be.null;
 	});
 });
