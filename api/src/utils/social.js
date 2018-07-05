@@ -20,6 +20,11 @@ export function extractRedditPostID(article) {
 	return 't3_' + id;
 }
 
+export function extractHackernewsPostID(article) {
+	const url = new URL(article.commentUrl);
+	return url.searchParams.get('id');
+}
+
 const userAgent = 'web:winds:v2.2';
 let accessToken;
 
@@ -72,7 +77,24 @@ async function tryRedditAPI(path, retries=3) {
 	throw new Error(`Failed to perform call to '${path}'`);
 }
 
+async function tryHackernewsAPI(path, retries=3) {
+	const url = 'https://hacker-news.firebaseio.com/v0' + path;
+	while (retries) {
+		try {
+			return await axios.get(url);
+		} catch (_) {
+			--retries;
+		}
+	}
+	throw new Error(`Failed to perform call to '${path}'`);
+}
+
 export async function redditScore(postID) {
 	const response = await tryRedditAPI(`/info?id=${postID}`);
 	return response.data.data.children[0].data.score;
+}
+
+export async function hackernewsScore(postID) {
+    const response = await tryHackernewsAPI(`/item/${postID}.json`);
+    return response.data.score;
 }
