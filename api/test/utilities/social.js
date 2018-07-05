@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+import config from '../../src/config';
 import * as social from '../../src/utils/social';
 
 describe('Reddit score', () => {
@@ -8,7 +9,10 @@ describe('Reddit score', () => {
 		expect(social.extractRedditPostID({ link: url })).to.be.equal('t3_8vfdgt');
 	});
 
-	it('should return score for existing post', async () => {
+	it('should return score for existing post', async function() {
+		if (!config.social.reddit.secret || !config.social.reddit.password) {
+			this.skip();
+		}
 		const score = await social.redditScore('t3_7mjw12');
 		//XXX: reddit is fuzzing upvote count returned by the API to mess with bots
 		expect(score).to.be.closeTo(307864, 50);
