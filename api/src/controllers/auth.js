@@ -62,39 +62,22 @@ exports.signup = async (req, res) => {
 		let str = await cache.get(cacheKey);
 		let interestMap = JSON.parse(str);
 
-		if (!interestMap || true) {
+		if (!interestMap) {
 			interestMap = {};
 
-			const query = [
-				{ featured: true },
-				{ interest: 'UI/UX' },
-				{ interest: 'Startups & VC' },
-				{ interest: 'Programming' },
-				{ interest: 'Gaming' },
-				{ interest: 'Machine Learning & AI' },
-				{ interest: 'News' },
-				{ interest: 'VR' },
-				{ interest: 'Lifehacks' },
-				{ interest: 'Marketing' },
-			];
+			const rss = await RSS.findFeatured();
+			const podcast = await Podcast.findFeatured();
 
-			const docs = {
-				rss: await RSS.find({
-					$or: query,
-				}),
-				podcast: await Podcast.find({
-					$or: query,
-				}),
-			};
-
-			for (let p of [...docs.rss, ...docs.podcast]) {
+			for (let p of [...rss, ...podcast]) {
 				let k = p.interest || 'featured';
+				let d = p.toObject();
+				d.type = p.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
 
 				if (!(k in interestMap)) {
 					interestMap[k] = [];
 				}
 
-				interestMap[p.interest || 'featured'].push(p);
+				interestMap[k].push(d);
 			}
 
 			let cached = await cache.set(
@@ -103,25 +86,31 @@ exports.signup = async (req, res) => {
 				'EX',
 				60 * 30,
 			);
-
-			return cached;
 		}
 
 		return interestMap;
 	}
 
 	let interestMap = await getInterestMap();
-	let interestFollow = [];
+	let interestFollow = interestMap['featured'] || [];
 
-	for (let i of interestMap) {
+	for (let i of data.interests) {
 		let publications = interestMap[i];
-		interestFollow.concat(publications);
-		// TODO: syntax
-		// TODO: get or create many expects a different structure
-		// TODO: reenable cache
+
+		if (publications) {
+			interestFollow.push(...publications);
+		}
 	}
 
-	await Follow.getOrCreateMany(interestFollow);
+	let followCommands = interestFollow.map(interest => {
+		return {
+			type: interest.type,
+			publicationID: interest._id,
+			userID: user._id.toString(),
+		};
+	});
+
+	await Follow.getOrCreateMany(followCommands);
 
 	res.json(user.serializeAuthenticatedUser());
 };

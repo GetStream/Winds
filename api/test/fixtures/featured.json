@@ -9,6 +9,12 @@
             "featured": true,
             "title"   : "Featured RSS feed #2",
             "feedUrl" : "http://bing.com"
+        },
+        {
+            "featured": false,
+            "title"   : "Interest RSS #3",
+            "feedUrl" : "http://bbb.com",
+            "interest": "VC"
         }
     ],
     "Podcast": [
@@ -24,7 +30,7 @@
         },
         {
             "featured": false,
-            "title"   : "Interest Podcast #3",
+            "title"   : "Interest Podcast #1",
             "feedUrl" : "http://aaa.com",
             "interest": "VR"
         }
