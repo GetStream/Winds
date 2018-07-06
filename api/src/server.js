@@ -57,7 +57,7 @@ api.use(
 	}),
 );
 
-api.use(async (req, res, next) => {
+api.use(async function addUser(req, res, next) {
 	// XXX: req.user is attached by JWT when a valid token is provided with the request
 	// and the route requires authentication
 	if (!req.user) {
@@ -74,13 +74,13 @@ api.use(async (req, res, next) => {
 	next();
 });
 
-api.use((err, req, res, next) => {
+api.use(function catchAuthErrors(err, req, res, next) {
 	if (err.name === 'UnauthorizedError') {
 		res.status(401).send('Missing authentication credentials.');
 	}
 });
 
-api.use((req, res, next) => {
+api.use(function setPoweredByHeaders(req, res, next) {
 	res.setHeader('X-Powered-By', 'Winds - Powered by GetStream.io');
 	next();
 });

@@ -147,7 +147,10 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 		});
 	}
 
-	let response = await getStreamClient().followMany(feedRelations);
+	let response;
+	if (feedRelations.length) {
+		response = await getStreamClient().followMany(feedRelations);
+	}
 
 	// update the counts
 	for (let f of follows) {
