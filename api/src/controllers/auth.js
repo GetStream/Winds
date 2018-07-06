@@ -2,36 +2,24 @@ import uuidv4 from 'uuid/v4';
 import validator from 'validator';
 
 import User from '../models/user';
-import Podcast from '../models/podcast';
 import RSS from '../models/rss';
+import Podcast from '../models/podcast';
 import Follow from '../models/follow';
 
 import config from '../config';
+import packageInfo from '../../../app/package.json';
+
+import Redis from 'ioredis';
+console.log(config.cache.uri);
+const cache = new Redis(config.cache.uri);
 
 import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
-
-async function followInterest(userId, interest) {
-	const interestRssFeeds = await RSS.find(interest);
-
-	await Promise.all(
-		interestRssFeeds.map(interestRssFeed => {
-			return Follow.getOrCreate('rss', userId, interestRssFeed._id);
-		}),
-	);
-
-	const interestPodcasts = await Podcast.find(interest);
-	await Promise.all(
-		interestPodcasts.map(interestPodcast => {
-			return Follow.getOrCreate('podcast', userId, interestPodcast._id);
-		}),
-	);
-}
 
 function cleanString(s) {
 	return s.toLowerCase().trim();
 }
 
-exports.signup = async (req, res, _) => {
+exports.signup = async (req, res) => {
 	const data = Object.assign({}, { interests: [] }, req.body);
 
 	if (!data.name || !data.email || !data.username || !data.password) {
@@ -72,18 +60,63 @@ exports.signup = async (req, res, _) => {
 	const user = await User.create(whitelist);
 
 	await SendWelcomeEmail({ email: user.email });
-	await followInterest(user._id, { featured: true });
+
+	async function interests() {
+		const cacheKey = `interests:v${packageInfo.version.replace(/\./g, ':')}`;
+
+		let str = await cache.get(cacheKey);
+		let cached = JSON.parse(str);
+
+		if (!cached) {
+			let cached = [];
+
+			const query = [
+				{ featured: true },
+				{ interest: 'UI/UX' },
+				{ interest: 'Startups & VC' },
+				{ interest: 'Programming' },
+				{ interest: 'Gaming' },
+				{ interest: 'Machine Learning & AI' },
+				{ interest: 'News' },
+				{ interest: 'VR' },
+				{ interest: 'Lifehacks' },
+				{ interest: 'Marketing' },
+			];
+
+			const docs = {
+				rss: await RSS.find({
+					$or: query,
+				}),
+				podcast: await Podcast.find({
+					$or: query,
+				}),
+			};
+
+			cached = await cache.set(
+				cacheKey,
+				JSON.stringify([...docs.rss, ...docs.podcast]),
+				'EX',
+				60 * 30,
+			);
+
+			return cached;
+		}
+
+		return cached;
+	}
+
+	const objs = await interests();
 
 	await Promise.all(
-		data.interests.map(interest => {
-			return followInterest(user._id, { interest });
+		objs.map(obj => {
+			return Follow.getOrCreate(obj.categories.toLowerCase(), user._id, obj._id);
 		}),
 	);
 
 	res.json(user.serializeAuthenticatedUser());
 };
 
-exports.login = async (req, res, _) => {
+exports.login = async (req, res) => {
 	const data = req.body || {};
 
 	if (!data.email || !data.password) {
@@ -104,7 +137,7 @@ exports.login = async (req, res, _) => {
 	res.status(200).send(user.serializeAuthenticatedUser());
 };
 
-exports.forgotPassword = async (req, res, _) => {
+exports.forgotPassword = async (req, res) => {
 	const opts = { new: true };
 	const recoveryCode = uuidv4();
 
@@ -125,7 +158,7 @@ exports.forgotPassword = async (req, res, _) => {
 	res.sendStatus(200);
 };
 
-exports.resetPassword = async (req, res, _) => {
+exports.resetPassword = async (req, res) => {
 	const user = await User.findOneAndUpdate(
 		{ email: req.body.email.toLowerCase(), recoveryCode: req.body.recoveryCode },
 		{ password: req.body.password },
