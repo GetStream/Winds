@@ -36,6 +36,10 @@ exports.get = async (req, res) => {
 		return res.status(404).json({ error: 'Resource not found.' });
 	}
 
+	if (!!article.duplicateOf) {
+		return res.redirect(`/articles/${article.duplicateOf}`);
+	}
+
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
 		if (!parsed) {

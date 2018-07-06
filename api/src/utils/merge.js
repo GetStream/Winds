@@ -54,10 +54,14 @@ async function mergeArticlesAndPins(lhsID, rhsID) {
 		const article = lhsArticlesWithMatchingFingerprints.filter(a => a.fingerprint == p.article.fingerprint)[0];
 		return Pin.updateOne({ _id: p._id }, { article });
 	});
+	const articleUpdates = remove.map(r => {
+		const article = lhsArticlesWithMatchingFingerprints.filter(a => a.fingerprint == r.fingerprint)[0];
+		return Article.updateOne({ _id: r._id }, { duplicateOf: article._id });
+	});
 	await Promise.all([
 		Article.updateMany({ _id: { $in: update.map(f => f._id) } }, { rss: lhsID }),
 		...pinUpdates,
-		Article.remove({ _id: { $in: remove.map(f => f._id) } }),
+		...articleUpdates,
 		Pin.remove({ _id: { $in: duplicatePins.map(f => f._id) } })
 	]);
 }
@@ -80,5 +84,5 @@ export async function mergeFeeds(lhsID, rhsID) {
 		mergeArticlesAndPins(lhsID, rhsID),
 		mergeFeedUrls(lhsID, rhsID)
 	]);
-    await RSS.remove({ _id: rhsID });
+	await RSS.updateOne({ _id: rhsID }, { duplicateOf: lhsID });
 }

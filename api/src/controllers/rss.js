@@ -37,6 +37,10 @@ exports.get = async (req, res) => {
 		return res.sendStatus(404);
 	}
 
+	if (!!rss.duplicateOf) {
+		return res.redirect(`/rss/${rss.duplicateOf}`);
+	}
+
 	res.json(rss.serialize());
 };
 

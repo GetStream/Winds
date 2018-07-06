@@ -7,6 +7,11 @@ import { getUrl } from '../utils/urls';
 
 export const RSSSchema = new Schema(
 	{
+		duplicateOf: {
+			type: Schema.Types.ObjectId,
+			ref: 'RSS',
+			required: false,
+		},
 		url: {
 			type: String,
 			trim: true,

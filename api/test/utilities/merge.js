@@ -16,29 +16,32 @@ describe('Merge utility', () => {
 		await loadFixture('merge-data');
 	});
 
-	it('should remove one of the input feeds', async () => {
+	it('should mark one of the input feeds as duplicate', async () => {
 		expect(await RSS.findById(feedA)).to.not.be.null;
 		expect(await RSS.findById(feedB)).to.not.be.null;
 
 		await mergeFeeds(feedA, feedB);
 
 		expect(await RSS.findById(feedA)).to.not.be.null;
-		expect(await RSS.findById(feedB)).to.be.null;
+		const feed = await RSS.findById(feedB);
+		expect(String(feed.duplicateOf)).to.be.equal(feedA);
 	});
 
 	it('should move articles from one feed to another', async () => {
 		await mergeFeeds(feedA, feedB);
 
 		expect(await Article.count({ rss: feedA })).to.be.equal(3);
-		expect(await Article.count({ rss: feedB })).to.be.equal(0);
+		expect(await Article.count({ rss: feedB })).to.be.equal(2);
 	});
 
 	it('shouldn\'t produce duplicate articles', async () => {
 		await mergeFeeds(feedA, feedB);
 
-		expect(await Article.count()).to.be.equal(3);
-		expect(await Article.findById('5b0ad37226dc3db38194e5ee')).to.be.null;
-		expect(await Article.findById('5b0ad37226dc3db38194e5ef')).to.be.null;
+		expect(await Article.count()).to.be.equal(5);
+		const article1 = await Article.findById('5b0ad37226dc3db38194e5ee');
+		expect(String(article1.duplicateOf)).to.be.equal('5b0ad37226dc3db38194e5ec');
+		const article2 = await Article.findById('5b0ad37226dc3db38194e5ef');
+		expect(String(article2.duplicateOf)).to.be.equal('5b0ad37226dc3db38194e5ed');
 	});
 
 	it('should move pins from one feed to another', async () => {
