@@ -1434,12 +1434,13 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-codecov@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/codecov/-/codecov-3.0.2.tgz#aea43843a5cd2fb6b7e488b2eff25d367ab70b12"
+codecov@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/codecov/-/codecov-3.0.3.tgz#e6a209f1674f3e3a8ff6d889ab7ac0b4a8895fa2"
   dependencies:
     argv "0.0.2"
-    request "^2.81.0"
+    ignore-walk "3.0.0"
+    request "2.81.0"
     urlgrey "0.4.4"
 
 collapse-white-space@^1.0.3:
@@ -2992,6 +2993,12 @@ iconv@^2.3.0:
 ignore-by-default@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ignore-by-default/-/ignore-by-default-1.0.1.tgz#48ca6d72f6c6a3af00a9ad4ae6876be3889e2b09"
+
+ignore-walk@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ignore-walk/-/ignore-walk-3.0.0.tgz#e407919edee5c47c63473b319bfe3ea4a771a57e"
+  dependencies:
+    minimatch "^3.0.4"
 
 ignore-walk@^3.0.1:
   version "3.0.1"
@@ -5462,9 +5469,9 @@ signal-exit@^3.0.0, signal-exit@^3.0.1, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-sinon@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/sinon/-/sinon-6.1.0.tgz#9ee3d3900616333078464aa3969ba5688456fea3"
+sinon@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-6.1.2.tgz#bb21d99e3ca7c9cf2913dd4f09f546e6876d343b"
   dependencies:
     "@sinonjs/formatio" "^2.0.0"
     diff "^3.5.0"
