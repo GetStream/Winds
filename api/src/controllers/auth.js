@@ -10,14 +10,9 @@ import config from '../config';
 import packageInfo from '../../../app/package.json';
 
 import Redis from 'ioredis';
-console.log(config.cache.uri);
 const cache = new Redis(config.cache.uri);
 
 import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
-
-function cleanString(s) {
-	return s.toLowerCase().trim();
-}
 
 exports.signup = async (req, res) => {
 	const data = Object.assign({}, { interests: [] }, req.body);
@@ -37,8 +32,8 @@ exports.signup = async (req, res) => {
 		});
 	}
 
-	data.username = cleanString(data.username);
-	data.email = cleanString(data.email);
+	data.username = data.username.trim();
+	data.email = data.email.trim();
 
 	const exists = await User.findOne({
 		$or: [{ email: data.email }, { username: data.username }],
@@ -106,7 +101,6 @@ exports.signup = async (req, res) => {
 	}
 
 	const objs = await interests();
-
 	await Promise.all(
 		objs.map(obj => {
 			return Follow.getOrCreate(obj.categories.toLowerCase(), user._id, obj._id);
@@ -123,7 +117,7 @@ exports.login = async (req, res) => {
 		return res.status(400).json({ error: 'Missing required fields.' });
 	}
 
-	const email = cleanString(data.email.toLowerCase());
+	const email = data.email.toLowerCase().trim();
 	const user = await User.findOne({ email: email });
 
 	if (!user) {
