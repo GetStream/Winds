@@ -13,6 +13,37 @@ describe('Auth controller', () => {
 	describe('signup', () => {
 		before(dropDBs);
 
+		describe.only('empty state', () => {
+			let response;
+			let user;
+
+			before(async () => {
+				expect(await User.findOne({ email: 'valid@email.com' })).to.be.null;
+
+				response = await request(api)
+					.post('/auth/signup')
+					.send({
+						email: 'valid@email.com',
+						username: 'valid',
+						name: 'Valid Name',
+						password: 'valid_password',
+					});
+
+				user = await User.findOne({ email: 'valid@email.com' });
+			});
+
+			after(async () => {
+				await RSS.remove().exec();
+				await Podcast.remove().exec();
+			});
+
+			it('should return 200', () => {
+				const mockClient = getMockClient();
+				expect(response).to.have.status(200);
+				expect(mockClient.followMany.firstCall).to.be.null;
+			});
+		});
+
 		describe('valid request', () => {
 			let response;
 			let user;

@@ -148,7 +148,7 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 	}
 
 	let response;
-	if (feedRelations.length) {
+	if (feedRelations.length > 0) {
 		response = await getStreamClient().followMany(feedRelations);
 	}
 
