@@ -21,6 +21,12 @@
             "featured": true,
             "title"   : "Featured Podcast #2",
             "feedUrl" : "http://bing.com"
+        },
+        {
+            "featured": false,
+            "title"   : "Interest Podcast #3",
+            "feedUrl" : "http://aaa.com",
+            "interest": "VR"
         }
     ]
 }]

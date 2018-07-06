@@ -56,14 +56,14 @@ exports.signup = async (req, res) => {
 
 	await SendWelcomeEmail({ email: user.email });
 
-	async function interests() {
+	async function getInterestMap() {
 		const cacheKey = `interests:v${packageInfo.version.replace(/\./g, ':')}`;
 
 		let str = await cache.get(cacheKey);
-		let cached = JSON.parse(str);
+		let interestMap = JSON.parse(str);
 
-		if (!cached) {
-			let cached = [];
+		if (!interestMap || true) {
+			interestMap = {};
 
 			const query = [
 				{ featured: true },
@@ -87,9 +87,19 @@ exports.signup = async (req, res) => {
 				}),
 			};
 
-			cached = await cache.set(
+			for (let p of [...docs.rss, ...docs.podcast]) {
+				let k = p.interest || 'featured';
+
+				if (!(k in interestMap)) {
+					interestMap[k] = [];
+				}
+
+				interestMap[p.interest || 'featured'].push(p);
+			}
+
+			let cached = await cache.set(
 				cacheKey,
-				JSON.stringify([...docs.rss, ...docs.podcast]),
+				JSON.stringify(interestMap),
 				'EX',
 				60 * 30,
 			);
@@ -97,15 +107,21 @@ exports.signup = async (req, res) => {
 			return cached;
 		}
 
-		return cached;
+		return interestMap;
 	}
 
-	const objs = await interests();
-	await Promise.all(
-		objs.map(obj => {
-			return Follow.getOrCreate(obj.categories.toLowerCase(), user._id, obj._id);
-		}),
-	);
+	let interestMap = await getInterestMap();
+	let interestFollow = [];
+
+	for (let i of interestMap) {
+		let publications = interestMap[i];
+		interestFollow.concat(publications);
+		// TODO: syntax
+		// TODO: get or create many expects a different structure
+		// TODO: reenable cache
+	}
+
+	await Follow.getOrCreateMany(interestFollow);
 
 	res.json(user.serializeAuthenticatedUser());
 };
