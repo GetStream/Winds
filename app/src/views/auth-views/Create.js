@@ -281,6 +281,10 @@ class AccountDetailsForm extends React.Component {
 			})
 			.then(res => {
 				this.props.done(res.data._id, res.data.jwt);
+
+				this.setState({
+					submitting: false,
+				});
 			})
 			.catch(err => {
 				let errorMessage;
@@ -299,10 +303,6 @@ class AccountDetailsForm extends React.Component {
 
 				this.setState({
 					errorMessage,
-				});
-			})
-			.finally(() => {
-				this.setState({
 					submitting: false,
 				});
 			});

@@ -190,4 +190,23 @@ PodcastSchema.methods.serialize = function serialize() {
 	return serialized;
 };
 
+PodcastSchema.statics.findFeatured = function() {
+	const query = [
+		{ featured: true },
+		{ interest: 'UI/UX' },
+		{ interest: 'Startups & VC' },
+		{ interest: 'Programming' },
+		{ interest: 'Gaming' },
+		{ interest: 'Machine Learning & AI' },
+		{ interest: 'News' },
+		{ interest: 'VR' },
+		{ interest: 'Lifehacks' },
+		{ interest: 'Marketing' },
+	];
+
+	return this.find({
+		$or: query,
+	});
+};
+
 module.exports = exports = mongoose.model('Podcast', PodcastSchema);

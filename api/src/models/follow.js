@@ -119,6 +119,7 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 			throw new Error(`invalid follow type ${f.type}`);
 		}
 	}
+
 	// batch create the follow relationships
 	let followInstances = [];
 	for (let f of follows) {
@@ -145,6 +146,7 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 			target: `${f.type}:${f.publicationID}`,
 		});
 	}
+
 	let response = await getStreamClient().followMany(feedRelations);
 
 	// update the counts

@@ -75,37 +75,35 @@ describe('Auth controller', () => {
 			});
 
 			it('should follow featured podcasts and RSS feeds', async () => {
-				const content = [
-					{
-						sourceModel: Podcast,
-						userFeed: 'user_episode',
-						contentFeed: 'podcast',
-					},
-					{ sourceModel: RSS, userFeed: 'user_article', contentFeed: 'rss' },
-				];
 				const mockClient = getMockClient();
 
-				for (const contentType of content) {
-					const entries = await contentType.sourceModel.find({
-						featured: true,
-					});
+				const podcastEntries = await Podcast.find({
+					featured: true,
+				});
 
-					for (const data of entries) {
-						let type =
-							data.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
-						let correct = [
-							{
-								source: `timeline:${user._id}`,
-								target: `${type}:${data._id}`,
-							},
-							{
-								source: `${contentType.userFeed}:${user._id}`,
-								target: `${type}:${data._id}`,
-							},
-						];
-						expect(mockClient.followMany.calledWith(correct)).to.be.true;
-					}
+				const rssEntries = await RSS.find({
+					featured: true,
+				});
+
+				const merged = [...podcastEntries, ...rssEntries];
+				let correct = [];
+
+				for (const data of merged) {
+					let type = data.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
+					let userFeed = type == 'rss' ? 'user_article' : 'user_episode';
+					correct.push(
+						{
+							source: `timeline:${user._id}`,
+							target: `${type}:${data._id}`,
+						},
+						{
+							source: `${userFeed}:${user._id}`,
+							target: `${type}:${data._id}`,
+						},
+					);
 				}
+				const actual = mockClient.followMany.firstCall.args[0];
+				expect(actual).to.deep.have.same.members(correct);
 			});
 
 			it('should send welcome email to user', async () => {
