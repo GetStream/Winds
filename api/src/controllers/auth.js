@@ -125,7 +125,7 @@ exports.login = async (req, res) => {
 	}
 
 	if (!(await user.verifyPassword(data.password))) {
-		return res.status(403).json({ error: 'Invalid password.' });
+		return res.status(403).json({ error: 'Invalid username or password.' });
 	}
 
 	res.status(200).send(user.serializeAuthenticatedUser());
