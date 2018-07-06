@@ -83,6 +83,14 @@ const _default = {
 		prefix: process.env.STATSD_PREFIX || '',
 	},
 	newrelic: false,
+	social: {
+		reddit: {
+			username: process.env.REDDIT_USERNAME,
+			password: process.env.REDDIT_PASSWORD,
+			key: process.env.REDDIT_APP_ID,
+			secret: process.env.REDDIT_APP_SECRET,
+		},
+	},
 };
 
 const config = require(`./${configs[currentEnvironment].config}`);
