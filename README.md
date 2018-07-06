@@ -411,6 +411,7 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 *   [Tommaso Barbugli](https://github.com/tbarbugli)
 *   [Dwight Gunning](https://github.com/dwightgunning)
 *   [Matt Gauger](https://github.com/mathias)
+*   [Max Klyga](https://github.com/nekuromento)
 *   [Zhomart Mukhamejanov](https://github.com/Zhomart)
 *   [Julian Xhokaxhiu](https://github.com/julianxhokaxhiu)
 *   [Jonathon Belotti](https://github.com/thundergolfer)
