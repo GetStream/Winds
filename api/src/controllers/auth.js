@@ -14,6 +14,42 @@ const cache = new Redis(config.cache.uri);
 
 import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
 
+async function getInterestMap() {
+	const cacheKey = `interests:3:v${packageInfo.version.replace(/\./g, ':')}`;
+	console.log(cacheKey);
+
+	let str = await cache.get(cacheKey);
+	let interestMap = JSON.parse(str);
+
+	if (!interestMap) {
+		interestMap = {};
+
+		const rss = await RSS.findFeatured();
+		const podcast = await Podcast.findFeatured();
+
+		for (let p of [...rss, ...podcast]) {
+			let k = p.interest || 'featured';
+			let d = p.toObject();
+			d.type = p.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
+
+			if (!(k in interestMap)) {
+				interestMap[k] = [];
+			}
+
+			interestMap[k].push(d);
+		}
+
+		let cached = await cache.set(
+			cacheKey,
+			JSON.stringify(interestMap),
+			'EX',
+			60 * 30,
+		);
+	}
+
+	return interestMap;
+}
+
 exports.signup = async (req, res) => {
 	const data = Object.assign({}, { interests: [] }, req.body);
 
@@ -55,41 +91,6 @@ exports.signup = async (req, res) => {
 	const user = await User.create(whitelist);
 
 	await SendWelcomeEmail({ email: user.email });
-
-	async function getInterestMap() {
-		const cacheKey = `interests:v${packageInfo.version.replace(/\./g, ':')}`;
-
-		let str = await cache.get(cacheKey);
-		let interestMap = JSON.parse(str);
-
-		if (!interestMap) {
-			interestMap = {};
-
-			const rss = await RSS.findFeatured();
-			const podcast = await Podcast.findFeatured();
-
-			for (let p of [...rss, ...podcast]) {
-				let k = p.interest || 'featured';
-				let d = p.toObject();
-				d.type = p.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
-
-				if (!(k in interestMap)) {
-					interestMap[k] = [];
-				}
-
-				interestMap[k].push(d);
-			}
-
-			let cached = await cache.set(
-				cacheKey,
-				JSON.stringify(interestMap),
-				'EX',
-				60 * 30,
-			);
-		}
-
-		return interestMap;
-	}
 
 	let interestMap = await getInterestMap();
 	let interestFollow = interestMap['featured'] || [];
