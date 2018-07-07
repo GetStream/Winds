@@ -35,7 +35,6 @@ async function getInterestMap() {
 			if (!(k in interestMap)) {
 				interestMap[k] = [];
 			}
-
 			interestMap[k].push(d);
 		}
 
@@ -90,8 +89,6 @@ exports.signup = async (req, res) => {
 
 	const user = await User.create(whitelist);
 
-	await SendWelcomeEmail({ email: user.email });
-
 	let interestMap = await getInterestMap();
 	let interestFollow = interestMap['featured'] || [];
 
@@ -111,7 +108,10 @@ exports.signup = async (req, res) => {
 		};
 	});
 
-	await Follow.getOrCreateMany(followCommands);
+	await Promise.all([
+		Follow.getOrCreateMany(followCommands),
+		SendWelcomeEmail({ email: user.email }),
+	]);
 
 	res.json(user.serializeAuthenticatedUser());
 };

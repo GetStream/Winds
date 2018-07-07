@@ -8,17 +8,22 @@ import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
 import { DummyEmailTransport } from '../../src/utils/email/send';
 import { loadFixture, getMockClient, getMockFeed, dropDBs } from '../utils';
+import Redis from 'ioredis';
+
+const cache = new Redis(config.cache.uri);
 
 describe('Auth controller', () => {
 	describe('signup', () => {
 		before(dropDBs);
 
-		describe.only('empty state', () => {
+		describe('empty state', () => {
 			let response;
 			let user;
 
 			before(async () => {
 				expect(await User.findOne({ email: 'valid@email.com' })).to.be.null;
+
+				await cache.flushall();
 
 				response = await request(api)
 					.post('/auth/signup')
@@ -35,12 +40,16 @@ describe('Auth controller', () => {
 			after(async () => {
 				await RSS.remove().exec();
 				await Podcast.remove().exec();
+				await User.findOneAndDelete({ email: 'valid@email.com' });
 			});
 
 			it('should return 200', () => {
 				const mockClient = getMockClient();
 				expect(response).to.have.status(200);
-				expect(mockClient.followMany.firstCall).to.be.null;
+				expect(
+					mockClient.followMany.firstCall &&
+						mockClient.followMany.firstCall.args,
+				).to.be.null;
 			});
 		});
 
@@ -50,6 +59,8 @@ describe('Auth controller', () => {
 
 			before(async () => {
 				expect(await User.findOne({ email: 'valid@email.com' })).to.be.null;
+
+				await cache.flushall();
 
 				await loadFixture('featured');
 
