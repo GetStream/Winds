@@ -45,14 +45,25 @@ class AllEpisodesList extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getEpisodes();
-		this.subscription = window.streamClient
-			.feed('user_episode', this.props.userID, this.props.userEpisodeStreamToken)
-			.subscribe(() => {
-				this.setState({
-					newEpisodesAvailable: true,
-				});
-			});
+		this.setState(
+			{
+				cursor: Math.floor(this.props.episodes.length / 10),
+			},
+			() => {
+				this.getEpisodes();
+				this.subscription = window.streamClient
+					.feed(
+						'user_episode',
+						this.props.userID,
+						this.props.userEpisodeStreamToken,
+					)
+					.subscribe(() => {
+						this.setState({
+							newEpisodesAvailable: true,
+						});
+					});
+			},
+		);
 	}
 	getEpisodes() {
 		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);

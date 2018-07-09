@@ -21,15 +21,26 @@ class AllArticles extends React.Component {
 		this.contentsEl = React.createRef();
 	}
 	componentDidMount() {
-		this.getArticleFeed();
-		getPinnedArticles(this.props.dispatch);
-		this.subscription = window.streamClient
-			.feed('user_article', this.props.userID, this.props.userArticleStreamToken)
-			.subscribe(() => {
-				this.setState({
-					newArticlesAvailable: true,
-				});
-			});
+		this.setState(
+			{
+				cursor: Math.floor(this.props.articles.length / 10),
+			},
+			() => {
+				this.getArticleFeed();
+				getPinnedArticles(this.props.dispatch);
+				this.subscription = window.streamClient
+					.feed(
+						'user_article',
+						this.props.userID,
+						this.props.userArticleStreamToken,
+					)
+					.subscribe(() => {
+						this.setState({
+							newArticlesAvailable: true,
+						});
+					});
+			},
+		);
 	}
 	componentWillReceiveProps() {
 		// scroll down to last saved position, then delete from localStorage
