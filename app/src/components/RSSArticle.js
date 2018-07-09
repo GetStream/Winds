@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import TimeAgo from './TimeAgo';
 import ReactPlayer from 'react-player';
+import isElectron from 'is-electron';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -17,6 +18,7 @@ class RSSArticle extends React.Component {
 			loadingContent: true,
 		};
 	}
+
 	componentDidMount() {
 		getPinnedArticles(this.props.dispatch);
 		this.getArticle(this.props.match.params.articleID);
@@ -24,6 +26,7 @@ class RSSArticle extends React.Component {
 			this.getRSSContent(this.props._id);
 		}
 	}
+
 	componentWillReceiveProps(nextProps) {
 		if (nextProps._id !== this.props._id) {
 			getPinnedArticles(this.props.dispatch);
@@ -31,6 +34,31 @@ class RSSArticle extends React.Component {
 			this.getRSSContent(nextProps._id);
 		}
 	}
+
+	tweet() {
+		const getWindowOptions = function() {
+			const width = 500;
+			const height = 350;
+			const left = window.innerWidth / 2 - width / 2;
+			const top = window.innerHeight / 2 - height / 2;
+
+			return [
+				'resizable,scrollbars,status',
+				'height=' + height,
+				'width=' + width,
+				'left=' + left,
+				'top=' + top,
+			].join();
+		};
+
+		const shareUrl = `https://twitter.com/intent/tweet?url=${
+			window.location.href
+		}&text=${this.props.rss.title} - ${this.props.description}`;
+
+		const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
+		win.opener = null;
+	}
+
 	getArticle(articleID) {
 		fetch('GET', `/articles/${articleID}`)
 			.then(res => {
@@ -43,6 +71,7 @@ class RSSArticle extends React.Component {
 				console.log(err); // eslint-disable-line no-console
 			});
 	}
+
 	getRSSContent(articleId) {
 		this.setState({
 			loadingContent: true,
@@ -63,8 +92,10 @@ class RSSArticle extends React.Component {
 				});
 			});
 	}
+
 	render() {
 		let articleContents;
+
 		if (this.props.loading || this.state.loadingContent) {
 			articleContents = <Loader />;
 		} else if (this.state.error) {
@@ -86,6 +117,7 @@ class RSSArticle extends React.Component {
 				</div>
 			);
 		}
+
 		return (
 			<React.Fragment>
 				<div className="content-header">
@@ -113,6 +145,20 @@ class RSSArticle extends React.Component {
 								<i className="far fa-bookmark" />
 							)}
 						</span>{' '}
+						{!isElectron() ? (
+							<span>
+								<a
+									onClick={e => {
+										e.preventDefault();
+										e.stopPropagation();
+
+										this.tweet();
+									}}
+								>
+									<i className="fab fa-twitter" />
+								</a>
+							</span>
+						) : null}
 						<div>
 							<i className="fas fa-external-link-alt" />
 							<a href={this.props.url}>{this.props.rss.title}</a>
