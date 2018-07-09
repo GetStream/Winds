@@ -159,11 +159,11 @@ For testing purposes, you will want to use the test data located [here](https://
 
 Use `mongoimport` or `mongorestore` to import the data. There are two username and password combinations for testing:
 
-**Username**: admin@admin.com
-**Password**: admin
-
-**Username**: test@test.com
-**Password**: test
+**Username**: `admin@admin.com`<br/>
+**Password**: `admin`
+<br/><br/>
+**Username**: `test@test.com`<br/>
+**Password**: `test`
 
 You will need to run the `FLUSHALL` command in Redis to ensure that the new content is picked up.
 
