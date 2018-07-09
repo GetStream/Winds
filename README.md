@@ -88,6 +88,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 11. Electron gotchas
 12. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
 13. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
+14. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
 
 ## Download
 
