@@ -155,7 +155,7 @@ The following instructions are geared towards Mac users who can use `brew` ([Hom
 
 ### Loading Test Data
 
-For testing purposes, you will want to use the test data located [Here](https://s3.amazonaws.com/winds-hosted/static/export/WINDS.zip).
+For testing purposes, you will want to use the test data located [here](https://s3.amazonaws.com/winds-hosted/static/export/WINDS.zip).
 
 Use `mongoimport` or `mongorestore` to import the data. There are two username and password combinations for testing:
 
