@@ -60,7 +60,7 @@ export async function getRecommendations(userID, type, limit) {
 
 export async function getRSSRecommendations(userID, limit = 20) {
 	try {
-		const ids = await getRecommendations(userID, 'rss', limit);
+		let ids = await getRecommendations(userID, 'rss', limit);
 		return RSS.find({ _id: { $in: ids } });
 	} catch (e) {
 		return [];
@@ -69,7 +69,7 @@ export async function getRSSRecommendations(userID, limit = 20) {
 
 export async function getPodcastRecommendations(userID, limit = 20) {
 	try {
-		const ids = await getRecommendations(userID, 'podcast', limit);
+		let ids = await getRecommendations(userID, 'podcast', limit);
 		return Podcast.find({ _id: { $in: ids } });
 	} catch (e) {
 		return [];
