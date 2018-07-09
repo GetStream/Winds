@@ -153,21 +153,21 @@ The following instructions are geared towards Mac users who can use `brew` ([Hom
 *   `cd ../api`
 *   `yarn`
 
-### Create a dotenv file
+### Loading Test Data
 
-A `.env` file contains all configuration and connection strings for Winds.
+For testing purposes, you will want to use the test data located [Here](https://s3.amazonaws.com/winds-hosted/static/export/WINDS.zip).
 
-Create a new file titled `.env` inside the `app` folder, and add the following:
+Use `mongoimport` or `mongorestore` to import the data. There are two username and password combinations for testing:
 
-```
-DATABASE_URI=mongodb://localhost/WINDS
-CACHE_URI=redis://localhost:6379
-JWT_SECRET=some-super-secret-arbitrary-jwt-string
-API_PORT=8080
-REACT_APP_API_ENDPOINT=http://localhost:8080
-STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
-MERCURY_KEY=YOUR_API_KEY_HERE
-```
+**Username**: admin@admin.com
+**Password**: admin
+
+**Username**: test@test.com
+**Password**: test
+
+You will need to run the `FLUSHALL` command in Redis to ensure that the new content is picked up.
+
+> Note: This will override any local data that you may have. Please be cautious!
 
 ### Start MongoDB Locally
 
