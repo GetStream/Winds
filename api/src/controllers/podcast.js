@@ -13,16 +13,19 @@ import { PodcastQueueAdd, OgQueueAdd } from '../asyncTasks';
 
 exports.list = async (req, res) => {
 	let query = req.query || {};
-
 	let podcasts;
 
 	if (query.type === 'recommended') {
 		podcasts = await getPodcastRecommendations(req.User._id.toString(), 7);
+
+		if (!podcasts.length) {
+			return res.json([]);
+		}
 	} else {
 		podcasts = await Podcast.apiQuery(req.query);
 	}
 
-	res.json(podcasts);
+	res.sendStatus(podcasts);
 };
 
 exports.get = async (req, res) => {
