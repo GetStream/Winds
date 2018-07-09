@@ -131,6 +131,8 @@ ALGOLIA_WRITE_KEY=YOUR_ALGOLIA_ADMIN_API_KEY
 MERCURY_KEY=YOUR_KEY_HERE
 ```
 
+> Note: If you are running the test suite, you will need to have a test version of the `.env` file inside of the `api/test` directory.
+
 Then run:
 
 *   `pm2 start process_dev.json`
