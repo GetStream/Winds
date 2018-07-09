@@ -44,7 +44,6 @@ api.use(
 			'/',
 			'/health',
 			'/email/weekly',
-			'/featured',
 			'/status',
 			'/queue',
 			'/sentry/log',
