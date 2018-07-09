@@ -59,6 +59,14 @@ class RSSArticle extends React.Component {
 		win.opener = null;
 	}
 
+	reddit() {
+		alert('reddit');
+	}
+
+	hn() {
+		alert('hn');
+	}
+
 	getArticle(articleID) {
 		fetch('GET', `/articles/${articleID}`)
 			.then(res => {
@@ -148,6 +156,7 @@ class RSSArticle extends React.Component {
 						{!isElectron() ? (
 							<span>
 								<a
+									href="tweet"
 									onClick={e => {
 										e.preventDefault();
 										e.stopPropagation();
@@ -159,14 +168,26 @@ class RSSArticle extends React.Component {
 								</a>
 							</span>
 						) : null}
+						{!isElectron() ? (
+							<span>
+								<a href={`https://reddit.com/r/programming`} target="_blank">
+									<i className="fab fa-reddit-alien" />
+								</a>
+							</span>
+						) : null}
+						{!isElectron() ? (
+							<span>
+								<a href={this.props.rss.url} target="_blank">
+									<i className="fab fa-hacker-news-square" />
+								</a>
+							</span>
+						) : null}
 						<div>
-							<i className="fas fa-external-link-alt" />
 							<a href={this.props.url}>{this.props.rss.title}</a>
 						</div>
 						{this.props.commentUrl ? (
 							<div>
-								<i className="fas fa-comment-alt" />
-
+								<i className="fas fa-comment" />
 								<a href={this.props.commentUrl}>Comments</a>
 							</div>
 						) : null}
