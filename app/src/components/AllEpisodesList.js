@@ -66,7 +66,7 @@ class AllEpisodesList extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="list-view-header content-header">
-					<h1>All Episodes</h1>
+					<h1>Episodes</h1>
 				</div>
 				<div className="list content">
 					{this.state.newEpisodesAvailable ? (

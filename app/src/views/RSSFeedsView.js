@@ -11,7 +11,6 @@ import RssFeedList from '../components/RSSPanels/RssFeedList';
 import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
 import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
 import AllArticlesList from '../components/AllArticlesList';
-import RecentArticlesList from '../components/RecentArticlesList';
 
 class RSSFeedsView extends React.Component {
 	constructor(props) {
@@ -24,10 +23,7 @@ class RSSFeedsView extends React.Component {
 	}
 
 	componentDidMount() {
-		if (
-			this.props.match.params.rssFeedID &&
-			this.props.match.params.rssFeedID !== 'recent'
-		) {
+		if (this.props.match.params.rssFeedID) {
 			fetch('get', `/rss/${this.props.match.params.rssFeedID}`).then(response => {
 				this.props.dispatch({
 					rssFeed: response.data,
@@ -38,10 +34,7 @@ class RSSFeedsView extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (
-			this.props.match.params.rssFeedID !== nextProps.match.params.rssFeedID &&
-			nextProps.match.params.rssFeedID !== 'recent'
-		) {
+		if (this.props.match.params.rssFeedID !== nextProps.match.params.rssFeedID) {
 			fetch('get', `/rss/${nextProps.match.params.rssFeedID}`).then(response => {
 				this.props.dispatch({
 					rssFeed: response.data,
@@ -124,7 +117,6 @@ class RSSFeedsView extends React.Component {
 						component={RSSArticle}
 						path="/rss/:rssFeedID/articles/:articleID"
 					/>
-					<Route component={RecentArticlesList} path="/rss/recent" />
 					<Route component={RSSArticleList} path="/rss/:rssFeedID" />
 					<Route component={AllArticlesList} path="/rss" />
 				</Switch>
@@ -169,8 +161,4 @@ const mapStateToProps = (state, ownProps) => {
 	}
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return { ...ownProps, dispatch };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RSSFeedsView);
+export default connect(mapStateToProps)(RSSFeedsView);

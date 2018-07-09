@@ -50,7 +50,7 @@ class AllArticles extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="list-view-header content-header">
-					<h1>All Articles</h1>
+					<h1>Articles</h1>
 				</div>
 
 				<div className="list content" ref={this.contentsEl}>
