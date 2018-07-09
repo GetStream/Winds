@@ -18,10 +18,6 @@ exports.list = async (req, res) => {
 
 	if (query.type === 'recommended') {
 		rss = await getRSSRecommendations(req.User._id.toString(), 7);
-
-		if (!rss.length) {
-			return res.json([]);
-		}
 	} else {
 		rss = await RSS.apiQuery(req.query);
 	}

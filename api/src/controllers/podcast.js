@@ -17,15 +17,11 @@ exports.list = async (req, res) => {
 
 	if (query.type === 'recommended') {
 		podcasts = await getPodcastRecommendations(req.User._id.toString(), 7);
-
-		if (!podcasts.length) {
-			return res.json([]);
-		}
 	} else {
 		podcasts = await Podcast.apiQuery(req.query);
 	}
 
-	res.sendStatus(podcasts);
+	res.json(podcasts);
 };
 
 exports.get = async (req, res) => {
