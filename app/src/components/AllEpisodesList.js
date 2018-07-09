@@ -45,14 +45,25 @@ class AllEpisodesList extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getEpisodes();
-		this.subscription = window.streamClient
-			.feed('user_episode', this.props.userID, this.props.userEpisodeStreamToken)
-			.subscribe(() => {
-				this.setState({
-					newEpisodesAvailable: true,
-				});
-			});
+		this.setState(
+			{
+				cursor: Math.floor(this.props.episodes.length / 10),
+			},
+			() => {
+				this.getEpisodes();
+				this.subscription = window.streamClient
+					.feed(
+						'user_episode',
+						this.props.userID,
+						this.props.userEpisodeStreamToken,
+					)
+					.subscribe(() => {
+						this.setState({
+							newEpisodesAvailable: true,
+						});
+					});
+			},
+		);
 	}
 	getEpisodes() {
 		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
@@ -100,10 +111,10 @@ class AllEpisodesList extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{'That\'s it! No more episodes here.'}</p>
+							<p>{"That's it! No more episodes here."}</p>
 							<p>
 								{
-									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 								}
 							</p>
 						</div>
