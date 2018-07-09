@@ -153,22 +153,6 @@ The following instructions are geared towards Mac users who can use `brew` ([Hom
 *   `cd ../api`
 *   `yarn`
 
-### Loading Test Data
-
-For testing purposes, you will want to use the test data located [here](https://s3.amazonaws.com/winds-hosted/static/export/WINDS.zip).
-
-Use [`mongoimport`](https://docs.mongodb.com/manual/reference/program/mongoimport/) or [`mongorestore`](https://docs.mongodb.com/manual/reference/program/mongorestore/) to import the data. There are two username and password combinations for testing:
-
-**Username**: `admin@admin.com`<br/>
-**Password**: `admin`
-<br/><br/>
-**Username**: `test@test.com`<br/>
-**Password**: `test`
-
-You will need to run the `FLUSHALL` command in Redis to ensure that the new content is picked up.
-
-> Note: This will override any local data that you may have. Please be cautious!
-
 ### Start MongoDB Locally
 
 Winds uses MongoDB as the main datastore - it contains all users, rss feeds, podcasts, episodes, articles, and shares.
@@ -212,6 +196,22 @@ You can also run Redis in the background by running:
 ```
 brew services start redis
 ```
+
+### Loading Test Data
+
+For testing purposes, you will want to use the test data located [here](https://s3.amazonaws.com/winds-hosted/static/export/WINDS.zip).
+
+Use [`mongoimport`](https://docs.mongodb.com/manual/reference/program/mongoimport/) or [`mongorestore`](https://docs.mongodb.com/manual/reference/program/mongorestore/) to import the data. There are two username and password combinations for testing:
+
+**Username**: `admin@admin.com`<br/>
+**Password**: `admin`
+<br/><br/>
+**Username**: `test@test.com`<br/>
+**Password**: `test`
+
+You will need to run the `FLUSHALL` command in Redis to ensure that the new content is picked up.
+
+> Note: This will override any local data that you may have. Please be cautious! Also, this will not create Stream follows – please followo feeds manually to generate them.
 
 ### Stream
 
