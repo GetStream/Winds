@@ -157,7 +157,7 @@ The following instructions are geared towards Mac users who can use `brew` ([Hom
 
 For testing purposes, you will want to use the test data located [here](https://s3.amazonaws.com/winds-hosted/static/export/WINDS.zip).
 
-Use `mongoimport` or `mongorestore` to import the data. There are two username and password combinations for testing:
+Use [`mongoimport`](https://docs.mongodb.com/manual/reference/program/mongoimport/) or [`mongorestore`](https://docs.mongodb.com/manual/reference/program/mongorestore/) to import the data. There are two username and password combinations for testing:
 
 **Username**: `admin@admin.com`<br/>
 **Password**: `admin`
