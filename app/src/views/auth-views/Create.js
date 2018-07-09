@@ -29,8 +29,13 @@ class Create extends Component {
 		} else {
 			return (
 				<AccountDetailsForm
-					done={(userID, jwt) => {
-						localStorage['authedUser'] = userID;
+					done={({ _id, email, jwt }) => {
+						// set user for stream analytics
+						window.streamAnalyticsClient.setUser({
+							id: _id,
+							alias: email,
+						});
+						localStorage['authedUser'] = _id;
 						localStorage['jwt'] = jwt;
 						this.props.history.push('/');
 					}}
@@ -280,7 +285,7 @@ class AccountDetailsForm extends React.Component {
 				interests: this.props.interests,
 			})
 			.then(res => {
-				this.props.done(res.data._id, res.data.jwt);
+				this.props.done(res.data);
 
 				this.setState({
 					submitting: false,

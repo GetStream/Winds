@@ -31,6 +31,11 @@ class AppRouter extends Component {
 		if (localStorage['authedUser']) {
 			fetch('GET', `/users/${localStorage['authedUser']}`)
 				.then(res => {
+					// set user for stream analytics
+					window.streamAnalyticsClient.setUser({
+						id: res.data._id,
+						alias: res.data.email,
+					});
 					this.props.dispatch({
 						type: 'UPDATE_USER',
 						user: res.data,
