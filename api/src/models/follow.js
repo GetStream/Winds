@@ -119,6 +119,7 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 			throw new Error(`invalid follow type ${f.type}`);
 		}
 	}
+
 	// batch create the follow relationships
 	const followInstances = await Promise.all(follows.map(async f => {
 		const query = { [f.type]: f.publicationID, user: f.userID };
@@ -144,7 +145,9 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 		};
 	});
 	const feedRelations = feedRelationsTimeline.concat(feedRelationsGroup);
-	await getStreamClient().followMany(feedRelations);
+	if (feedRelations.length > 0) {
+		await getStreamClient().followMany(feedRelations);
+	}
 
 	// update the counts
 	await Promise.all(follows.map(async f => {

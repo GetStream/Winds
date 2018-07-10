@@ -197,6 +197,25 @@ RSSSchema.methods.serialize = function serialize() {
 	return serialized;
 };
 
+RSSSchema.statics.findFeatured = function() {
+	const query = [
+		{ featured: true },
+		{ interest: 'UI/UX' },
+		{ interest: 'Startups & VC' },
+		{ interest: 'Programming' },
+		{ interest: 'Gaming' },
+		{ interest: 'Machine Learning & AI' },
+		{ interest: 'News' },
+		{ interest: 'VR' },
+		{ interest: 'Lifehacks' },
+		{ interest: 'Marketing' },
+	];
+
+	return this.find({
+		$or: query,
+	});
+};
+
 RSSSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });
 
 RSSSchema.plugin(mongooseStringQuery);

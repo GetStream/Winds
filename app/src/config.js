@@ -9,9 +9,6 @@ export default {
 	api: {
 		url: process.env.REACT_APP_API_ENDPOINT,
 	},
-	google: {
-		analytics: process.env.REACT_APP_GOOGLE_ANALYTICS,
-	},
 	stream: {
 		appID: process.env.REACT_APP_STREAM_APP_ID,
 	},

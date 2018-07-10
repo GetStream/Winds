@@ -14,15 +14,15 @@ import { getRSSRecommendations } from '../utils/personalization';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
-	let feeds = [];
+	let rss;
 
 	if (query.type === 'recommended') {
-		feeds = await getRSSRecommendations(req.User._id.toString(), 7);
+		rss = await getRSSRecommendations(req.User._id.toString(), 7);
 	} else {
-		feeds = await RSS.apiQuery(req.query);
+		rss = await RSS.apiQuery(req.query);
 	}
 
-	res.json(feeds);
+	res.json(rss);
 };
 
 exports.get = async (req, res) => {

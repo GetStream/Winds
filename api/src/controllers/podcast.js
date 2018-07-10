@@ -13,7 +13,6 @@ import { PodcastQueueAdd, OgQueueAdd } from '../asyncTasks';
 
 exports.list = async (req, res) => {
 	let query = req.query || {};
-
 	let podcasts;
 
 	if (query.type === 'recommended') {

@@ -10,7 +10,6 @@ import fetch from '../util/fetch';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import AllEpisodesList from '../components/AllEpisodesList';
-import RecentEpisodesList from '../components/RecentEpisodesList';
 
 class PodcastsView extends React.Component {
 	constructor(props) {
@@ -23,10 +22,7 @@ class PodcastsView extends React.Component {
 	}
 	componentDidMount() {
 		// fetch new podcast
-		if (
-			this.props.match.params.podcastID &&
-			this.props.match.params.podcastID !== 'recent'
-		) {
+		if (this.props.match.params.podcastID) {
 			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(
 				response => {
 					this.props.dispatch({
@@ -38,10 +34,7 @@ class PodcastsView extends React.Component {
 		}
 	}
 	componentWillReceiveProps(nextProps) {
-		if (
-			this.props.match.params.podcastID !== nextProps.match.params.podcastID &&
-			nextProps.match.params.podcastID !== 'recent'
-		) {
+		if (this.props.match.params.podcastID !== nextProps.match.params.podcastID) {
 			fetch('get', `/podcasts/${nextProps.match.params.podcastID}`).then(
 				response => {
 					this.props.dispatch({
@@ -123,7 +116,6 @@ class PodcastsView extends React.Component {
 				{leftColumn}
 				<div className="border" />
 				<Switch>
-					<Route component={RecentEpisodesList} path="/podcasts/recent" />
 					<Route component={PodcastEpisodesView} path="/podcasts/:podcastID" />
 					<Route component={AllEpisodesList} path="/podcasts" />
 				</Switch>
@@ -168,8 +160,4 @@ const mapStateToProps = (state, ownProps) => {
 	}
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return { ...ownProps, dispatch };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PodcastsView);
+export default connect(mapStateToProps)(PodcastsView);
