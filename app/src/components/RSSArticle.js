@@ -20,18 +20,28 @@ class RSSArticle extends React.Component {
 	}
 
 	componentDidMount() {
+		window.streamAnalyticsClient.trackEngagement({
+			label: 'article_open',
+			content: {
+				foreign_id: `articles:${this.props.match.params.articleID}`,
+			},
+		});
 		getPinnedArticles(this.props.dispatch);
 		this.getArticle(this.props.match.params.articleID);
-		if (this.props.url) {
-			this.getRSSContent(this.props._id);
-		}
+		this.getRSSContent(this.props.match.params.articleID);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps._id !== this.props._id) {
+		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'article_open',
+				content: {
+					foreign_id: `articles:${nextProps.match.params.articleID}`,
+				},
+			});
 			getPinnedArticles(this.props.dispatch);
 			this.getArticle(nextProps.match.params.articleID);
-			this.getRSSContent(nextProps._id);
+			this.getRSSContent(nextProps.match.params.articleID);
 		}
 	}
 
