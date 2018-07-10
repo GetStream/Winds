@@ -16,7 +16,10 @@ class RSSArticle extends React.Component {
 		this.state = {
 			error: false,
 			loadingContent: true,
+			sentArticleReadCompleteAnalyticsEvent: false,
 		};
+
+		this.contentRef = React.createRef();
 	}
 
 	componentDidMount() {
@@ -29,10 +32,36 @@ class RSSArticle extends React.Component {
 		getPinnedArticles(this.props.dispatch);
 		this.getArticle(this.props.match.params.articleID);
 		this.getRSSContent(this.props.match.params.articleID);
+		this.contentRef.current.onscroll = e => {
+			let scrollPercentage =
+				this.contentRef.current.scrollTop /
+				(this.contentRef.current.scrollHeight -
+					this.contentRef.current.clientHeight);
+			if (
+				!this.state.sentArticleReadCompleteAnalyticsEvent &&
+				scrollPercentage > 0.8
+			) {
+				console.log('firing analytics event');
+				window.streamAnalyticsClient.trackEngagement({
+					label: 'article_read_complete',
+					content: {
+						foreign_id: `articles:${this.props.match.params.articleID}`,
+					},
+				});
+
+				this.setState({
+					sentArticleReadCompleteAnalyticsEvent: true,
+				});
+			}
+		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
+			// resetting analytics event sent state - **do not** need to recent onscroll listener, because the ref is still mounted
+			this.setState({
+				sentArticleReadCompleteAnalyticsEvent: false,
+			});
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'article_open',
 				content: {
@@ -187,7 +216,7 @@ class RSSArticle extends React.Component {
 					</div>
 				</div>
 
-				<div className="content">
+				<div className="content" ref={this.contentRef}>
 					<div className="enclosures">
 						{this.props.enclosures.map(
 							enclosure =>
