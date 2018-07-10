@@ -8,7 +8,6 @@ import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
 import { Router, Switch, Route } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
-import config from './config';
 import { createHashHistory, createBrowserHistory } from 'history';
 import fetch from './util/fetch';
 import AdminView from './views/AdminView';

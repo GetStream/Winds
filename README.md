@@ -78,16 +78,16 @@ The following tutorials will not only help you start contributing to Winds, but 
 1.  Architecting a large React/Redux codebase
 2.  Building activity streams and newsfeeds on top of Stream
 3.  Implementing search with Algolia
-4.  Deploying to AWS ECS
-5.  MongoDB database schema design
-6.  Design thought process for Winds 2.0
-7.  PM2 in production environments
-8.  Creating a RESTful API design with Express.js
-9.  Preparing an Electron app for deployment to the macOS store
-10. Deploying to the macOS store
-11. Electron gotchas
-12. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
-13. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
+4.  MongoDB database schema design
+5.  Design thought process for Winds 2.0
+6.  PM2 in production environments
+7.  Creating a RESTful API design with Express.js
+8.  Preparing an Electron app for deployment to the macOS store
+9. Deploying to the macOS store
+10. Electron gotchas
+11. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
+12. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
+13. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
 
 ## Download
 
