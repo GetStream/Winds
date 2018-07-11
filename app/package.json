@@ -34,7 +34,7 @@
     "axios": "^0.18.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.5",
-    "babel-jest": "23.2.0",
+    "babel-jest": "23.4.0",
     "babel-loader": "7.1.5",
     "babel-plugin-inline-dotenv": "^1.1.2",
     "electron-boilerplate": "^1.1.1",
@@ -50,7 +50,7 @@
     "eslint": "5.0.1",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "2.0.0",
-    "eslint-plugin-flowtype": "2.49.3",
+    "eslint-plugin-flowtype": "2.50.0",
     "eslint-plugin-import": "2.13.0",
     "eslint-plugin-react": "7.10.0",
     "extract-text-webpack-plugin": "3.0.2",
@@ -86,7 +86,7 @@
     "react-waypoint": "^8.0.2",
     "redux": "^4.0.0",
     "stream-analytics": "^2.7.0",
-    "video-react": "^0.11.2"
+    "video-react": "^0.13.0"
   },
   "devDependencies": {
     "assert": "^1.4.1",
@@ -98,8 +98,8 @@
     "electron-builder": "^20.19.2",
     "electron-devtools-installer": "^2.2.4",
     "electron-osx-sign": "^0.4.10",
-    "eslint": "^5.0.1",
     "eslint-plugin-jsx-a11y": "^6.1.0",
+    "eslint": "^5.1.0",
     "eslint-plugin-react": "^7.10.0",
     "json": "^9.0.6",
     "prettier": "^1.13.7",
