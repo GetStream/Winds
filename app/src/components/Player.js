@@ -20,6 +20,7 @@ class Player extends Component {
 		super(props);
 
 		this.state = {
+			episodeListenAnalyticsEventSent: false,
 			playbackSpeed: 1,
 			playing: false,
 			progress: 0,
@@ -62,6 +63,14 @@ class Player extends Component {
 			return;
 		} else if (!prevProps.playing && this.props.playing) {
 			if (!prevProps.episode) {
+				window.streamAnalyticsClient.trackEngagement({
+					label: 'episode_listen_start',
+					content: {
+						foreign_id: `episodes:${this.props.episode._id}`,
+					},
+				});
+
+				// just started a new episode - send "listen" engagement
 				// make a request to get the played progress
 				fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
 					response => {
@@ -83,6 +92,20 @@ class Player extends Component {
 		} else if (prevProps.playing && !this.props.playing) {
 			this.audioPlayerElement.audioEl.pause();
 		} else if (this.props.episode._id !== prevProps.episode._id) {
+			// reset analytics event sent state
+
+			this.setState({
+				episodeListenAnalyticsEventSent: false,
+			});
+
+			// transitioned from previous episode to new episode - send "listen" engagement
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'episode_listen_start',
+				content: {
+					foreign_id: `episodes:${this.props.episode._id}`,
+				},
+			});
+
 			// check and get the latest listen data for the podcast - set the "duration" field
 			fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
 				response => {
@@ -151,7 +174,7 @@ class Player extends Component {
 	}
 
 	updateProgress(seconds) {
-		let progress = seconds / this.audioPlayerElement.audioEl.duration * 100;
+		let progress = (seconds / this.audioPlayerElement.audioEl.duration) * 100;
 		this.setState({
 			currentTime: seconds,
 			duration: this.audioPlayerElement.audioEl.duration,
@@ -302,6 +325,24 @@ class Player extends Component {
 					onListen={seconds => {
 						this.updateProgress(seconds);
 
+						// check to see if we should send the analytics event
+						if (
+							!this.state.episodeListenAnalyticsEventSent *
+							(seconds / this.audioPlayerElement.audioEl.duration > 0.8)
+						) {
+							console.log('sending analytics event');
+							window.streamAnalyticsClient.trackEngagement({
+								label: 'episode_listen_complete',
+								content: {
+									foreign_id: `episodes:${this.props.episode._id}`,
+								},
+							});
+
+							this.setState({
+								episodeListenAnalyticsEventSent: true,
+							});
+						}
+
 						// check last sent
 						let currentTime = new Date().valueOf();
 						if (currentTime - this.lastSent >= 15000) {
@@ -404,4 +445,7 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Player);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(Player);
