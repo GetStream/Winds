@@ -99,6 +99,7 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-osx-sign": "^0.4.10",
     "eslint": "^5.0.1",
+    "eslint-plugin-jsx-a11y": "^6.1.0",
     "eslint-plugin-react": "^7.10.0",
     "json": "^9.0.6",
     "prettier": "^1.13.7",

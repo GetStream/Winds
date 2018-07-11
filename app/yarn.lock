@@ -337,6 +337,13 @@ aria-query@^0.7.0:
     ast-types-flow "0.0.7"
     commander "^2.11.0"
 
+aria-query@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-3.0.0.tgz#65b3fcc1ca1155a8c9ae64d6eee297f15d5133cc"
+  dependencies:
+    ast-types-flow "0.0.7"
+    commander "^2.11.0"
+
 arr-diff@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-1.1.0.tgz#687c32758163588fef7de7b36fabe495eb1a399a"
@@ -461,7 +468,7 @@ assign-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
 
-ast-types-flow@0.0.7:
+ast-types-flow@0.0.7, ast-types-flow@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz#f70b735c6bca1a5c9c22d982c3e39e7feba3bdad"
 
@@ -570,6 +577,12 @@ axios@^0.18.0:
 axobject-query@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-0.1.0.tgz#62f59dbc59c9f9242759ca349960e7a2fe3c36c0"
+  dependencies:
+    ast-types-flow "0.0.7"
+
+axobject-query@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-2.0.1.tgz#05dfa705ada8ad9db993fa6896f22d395b0b0a07"
   dependencies:
     ast-types-flow "0.0.7"
 
@@ -1465,9 +1478,9 @@ brorand@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
 
-"browser-request@git://github.com/matthisk/browser-request.git":
+"browser-request@git://github.com/matthisk/browser-request":
   version "0.3.2"
-  resolved "git://github.com/matthisk/browser-request.git#253fa31d99bbb4d03bb72e11a5a1c73ccc85ac71"
+  resolved "git://github.com/matthisk/browser-request#253fa31d99bbb4d03bb72e11a5a1c73ccc85ac71"
 
 browser-resolve@^1.11.2:
   version "1.11.3"
@@ -2411,7 +2424,7 @@ d@1:
   dependencies:
     es5-ext "^0.10.9"
 
-damerau-levenshtein@^1.0.0:
+damerau-levenshtein@^1.0.0, damerau-levenshtein@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.4.tgz#03191c432cb6eea168bb77f3a55ffdccb8978514"
 
@@ -2999,7 +3012,7 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emoji-regex@^6.1.0:
+emoji-regex@^6.1.0, emoji-regex@^6.5.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-6.5.1.tgz#9baea929b155565c11ea41c6626eaa65cef992c2"
 
@@ -3251,6 +3264,19 @@ eslint-plugin-jsx-a11y@5.1.1:
     damerau-levenshtein "^1.0.0"
     emoji-regex "^6.1.0"
     jsx-ast-utils "^1.4.0"
+
+eslint-plugin-jsx-a11y@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.1.0.tgz#569f6f2d29546cab82cedaa077ec829693b0c42d"
+  dependencies:
+    aria-query "^3.0.0"
+    array-includes "^3.0.3"
+    ast-types-flow "^0.0.7"
+    axobject-query "^2.0.1"
+    damerau-levenshtein "^1.0.4"
+    emoji-regex "^6.5.1"
+    has "^1.0.3"
+    jsx-ast-utils "^2.0.1"
 
 eslint-plugin-react@7.10.0:
   version "7.10.0"
@@ -6150,7 +6176,7 @@ micromatch@^3.1.10, micromatch@^3.1.4, micromatch@^3.1.8:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-"micromatch@github:jonschlinkert/micromatch#2.2.0":
+micromatch@jonschlinkert/micromatch#2.2.0:
   version "2.2.0"
   resolved "https://codeload.github.com/jonschlinkert/micromatch/tar.gz/5017fd78202e04c684cc31d3c2fb1f469ea222ff"
   dependencies:
@@ -10050,9 +10076,9 @@ xmldom@0.1.x:
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
 
-"xmlhttp-request@git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd":
+"xmlhttp-request@https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd":
   version "0.4.0"
-  resolved "git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd"
+  resolved "https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd"
 
 xmlhttprequest@^1.8.0:
   version "1.8.0"
