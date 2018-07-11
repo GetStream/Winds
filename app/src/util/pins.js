@@ -14,6 +14,14 @@ const unpinArticle = (pinID, articleID, dispatch) => {
 };
 
 const pinArticle = (articleID, dispatch) => {
+	// send pin analytic event
+	window.streamAnalyticsClient.trackEngagement({
+		label: 'pinned_article',
+		content: {
+			foreign_id: `articles:${articleID}`,
+		},
+	});
+
 	fetch('POST', '/pins', {
 		article: articleID,
 	})
