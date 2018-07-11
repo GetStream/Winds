@@ -364,7 +364,7 @@ class RSSArticleList extends React.Component {
 									});
 								}}
 							>
-								New episodes available - click to refresh
+								New articles available - click to refresh
 							</div>
 						) : null}
 						{rightContents}
