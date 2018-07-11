@@ -36,6 +36,42 @@ const pinArticle = (articleID, dispatch) => {
 		});
 };
 
+const pinEpisode = (episodeID, dispatch) => {
+	// send pin analytic event
+	window.streamAnalyticsClient.trackEngagement({
+		label: 'pinned_episode',
+		content: {
+			foreign_id: `episodes:${episodeID}`,
+		},
+	});
+
+	fetch('POST', '/pins', {
+		episode: episodeID,
+	})
+		.then(response => {
+			dispatch({
+				pin: response.data,
+				type: 'PIN_EPISODE',
+			});
+		})
+		.catch(err => {
+			console.log(err); // eslint-disable-line no-console
+		});
+};
+
+const unpinEpisode = (pinID, episodeID, dispatch) => {
+	fetch('DELETE', `/pins/${pinID}`)
+		.then(() => {
+			dispatch({
+				episodeID,
+				type: 'UNPIN_EPISODE',
+			});
+		})
+		.catch(err => {
+			console.log(err); // eslint-disable-line no-console
+		});
+};
+
 const getPinnedArticles = dispatch => {
 	fetch('GET', '/pins', null, {
 		type: 'article',
@@ -87,4 +123,11 @@ const getPinnedEpisodes = dispatch => {
 	});
 };
 
-export { pinArticle, unpinArticle, getPinnedArticles, getPinnedEpisodes };
+export {
+	pinArticle,
+	pinEpisode,
+	unpinEpisode,
+	unpinArticle,
+	getPinnedArticles,
+	getPinnedEpisodes,
+};

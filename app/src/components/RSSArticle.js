@@ -41,7 +41,6 @@ class RSSArticle extends React.Component {
 				!this.state.sentArticleReadCompleteAnalyticsEvent &&
 				scrollPercentage > 0.8
 			) {
-				console.log('firing analytics event');
 				window.streamAnalyticsClient.trackEngagement({
 					label: 'article_read_complete',
 					content: {
