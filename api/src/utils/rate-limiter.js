@@ -15,11 +15,7 @@ function tick() {
 		return Promise.resolve();
 	}
 	return new Promise((resolve, _) => {
-		console.log(timeUntilRefil);
-		console.log(this.value);
-		setTimeout(() => {
-			this.tick().then(resolve);
-		}, timeUntilRefil);
+		setTimeout(() => this.tick().then(resolve), timeUntilRefil);
 	});
 }
 
