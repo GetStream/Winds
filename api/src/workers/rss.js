@@ -47,7 +47,6 @@ export async function rssProcessor(job) {
 
 // Handle Podcast scrapes the podcast and updates the episodes
 export async function handleRSS(job) {
-    logger.warn('test-test-test');
 	let rssID = job.data.rss;
 
 	await timeIt('winds.handle_rss.ack', () => {

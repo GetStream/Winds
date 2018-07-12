@@ -4,19 +4,23 @@ import moment from 'moment';
 import entities from 'entities';
 import normalizeUrl from 'normalize-url';
 import stream from 'getstream';
+import util from 'util';
 
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
 import Follow from '../models/follow';
 import User from '../models/user';
-import util from 'util';
 
 import config from '../config';
+import { rateLimiter } from '../utils/rate-limiter';
 import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
 import { IsPodcastURL } from '../parsers/detect-type';
 import search from '../utils/search';
 import { isURL } from '../utils/validation';
+
+const requestsPerMinute = 500;
+const rateLimit = rateLimiter(requestsPerMinute);
 
 exports.get = async (req, res) => {
 	let follows = await Follow.find({ user: req.user.sub });
@@ -89,7 +93,11 @@ exports.post = async (req, res) => {
 	}
 
 	const results = await Promise.all(
-		feeds.map(feed => followOPMLFeed(feed, req.user.sub)),
+		feeds.map(async feed => {
+			//XXX: ensuring we process opml at most at 500 per minute rate
+			await rateLimit.tick();
+			return await followOPMLFeed(feed, req.user.sub);
+		}),
 	);
 
 	return res.json(results);
