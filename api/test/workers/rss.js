@@ -66,8 +66,7 @@ describe('RSS worker', () => {
 
 				try {
 					await queue(testCases[i]);
-				} catch (err) {
-                    console.error(err.stack);
+				} catch (_) {
 					//XXX: fetching data from the net failed, falling back to mocking
 					const url = parse(testCases[i]);
 					nock(url.host)
