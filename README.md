@@ -140,7 +140,7 @@ Then run:
 ### Clone the Repo
 
 ```bash
-git clone git@github.com:GetStream/winds.git
+git clone git@github.com:GetStream/Winds.git
 ```
 
 ### Install dependencies
