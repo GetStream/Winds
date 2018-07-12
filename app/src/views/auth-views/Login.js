@@ -1,9 +1,8 @@
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import config from '../../config';
-import { connect } from 'react-redux';
 
 class Login extends Component {
 	constructor(props) {
@@ -30,6 +29,12 @@ class Login extends Component {
 				password: this.state.password,
 			})
 			.then(res => {
+				// set user for stream analytics
+				window.streamAnalyticsClient.setUser({
+					id: res.data._id,
+					alias: res.data.email,
+				});
+
 				window.localStorage.setItem('jwt', res.data.jwt);
 				window.localStorage.setItem('authedUser', res.data._id);
 
@@ -115,15 +120,4 @@ Login.propTypes = {
 	signin: PropTypes.func,
 };
 
-const mapDispatchToProps = dispatch => {
-	return {
-		updateUser: user => {
-			dispatch({
-				type: 'UPDATE_USER',
-				user,
-			});
-		},
-	};
-};
-
-export default connect(null, mapDispatchToProps)(withRouter(Login));
+export default Login;
