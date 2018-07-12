@@ -295,18 +295,27 @@ export default (previousState = {}, action) => {
 			episodes: { ...previousEpisodes },
 		};
 	} else if (action.type === 'BATCH_UPDATE_ARTICLES') {
-		// convert rss feed IDs
-		let previousArticles = { ...previousState.articles };
+		let newArticles = {};
+
 		for (let article of action.articles) {
-			previousArticles[article._id] = {
+			newArticles[article._id] = {
 				...article,
 				rss: article.rss._id,
 			};
 		}
+		for (let article of action.articles) {
+			if (!article.duplicateOf) {
+				continue;
+			}
+			let previous = previousState.articles && previousState.articles[article.duplicateOf];
+			let next = newArticles[article.duplicateOf];
+			newArticles[article._id] = next || previous || article;
+		}
 		return {
 			...previousState,
 			articles: {
-				...previousArticles,
+				...previousState.articles,
+				...newArticles,
 			},
 		};
 	} else if (action.type === 'UPDATE_PODCAST_SHOW') {
@@ -396,17 +405,26 @@ export default (previousState = {}, action) => {
 		// if there isn't a next track, just delete player.
 		return { ...existingState };
 	} else if (action.type === 'UPDATE_RSS_FEED') {
+		let original = action.rssFeed.duplicateOf && previousState.rssFeeds && previousState.rssFeeds[action.rssFeed.duplicateOf];
 		return {
 			...previousState,
 			rssFeeds: {
 				...previousState.rssFeeds,
-				[action.rssFeed._id]: { ...action.rssFeed },
+				[action.rssFeed._id]: original || action.rssFeed,
 			},
 		};
 	} else if (action.type === 'BATCH_UPDATE_RSS_FEEDS') {
 		let newRssFeeds = {};
 		for (let rssFeed of action.rssFeeds) {
 			newRssFeeds[rssFeed._id] = rssFeed;
+		}
+		for (let rssFeed of action.rssFeeds) {
+			if (!rssFeed.duplicateOf) {
+				continue;
+			}
+			let previous = previousState.rssFeeds && previousState.rssFeeds[rssFeed.duplicateOf];
+			let next = newRssFeeds[rssFeed.duplicateOf];
+			newRssFeeds[rssFeed._id] = next || previous || rssFeed;
 		}
 		return {
 			...previousState,

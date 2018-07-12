@@ -51,16 +51,10 @@ class RssFeedList extends React.Component {
 				headerText="Feeds"
 			>
 				{this.props.rssFeeds.map(rssFeed => {
+					let rssId = rssFeed.duplicateOf || rssFeed._id;
+					let clazz = this.props.match.params.rssFeedID === rssFeed._id ? 'highlighted' : '';
 					return (
-						<Link
-							className={
-								this.props.match.params.rssFeedID === rssFeed._id
-									? 'highlighted'
-									: ''
-							}
-							key={rssFeed._id}
-							to={`/rss/${rssFeed._id}`}
-						>
+						<Link className={clazz} key={rssId} to={`/rss/${rssId}`} >
 							<Img
 								src={[
 									rssFeed.images.favicon,

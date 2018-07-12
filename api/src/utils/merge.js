@@ -71,7 +71,7 @@ async function mergeFeedUrls(lhsID, rhsID) {
 		RSS.findById(lhsID).lean(),
 		RSS.findById(rhsID).lean()
 	]);
-	const feedUrls = new Set([lhs.feedUrl, rhs.feedUrl, ...lhs.feedUrls, ...rhs.feedUrls]);
+	const feedUrls = new Set([lhs.feedUrl, rhs.feedUrl, ...(lhs.feedUrls || []), ...(rhs.feedUrls || [])].filter(a => a));
 	await RSS.updateOne({ _id: lhsID }, { feedUrls: [...feedUrls] });
 }
 

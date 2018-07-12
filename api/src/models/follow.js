@@ -78,6 +78,7 @@ export const FollowSchema = new Schema(
 					'featured',
 					'images',
 					'feedUrl',
+					'duplicateOf',
 				],
 			},
 			index: true,

@@ -23,31 +23,32 @@ class RSSFeedsView extends React.Component {
 	}
 
 	componentDidMount() {
-		if (this.props.match.params.rssFeedID) {
-			fetch('get', `/rss/${this.props.match.params.rssFeedID}`).then(response => {
-				this.props.dispatch({
-					rssFeed: response.data,
-					type: 'UPDATE_RSS_FEED',
-				});
-			});
+		if (!this.props.match.params.rssFeedID) {
+			return;
 		}
+		this.fetchRSS(this.props);
+	}
+
+	fetchRSS(props) {
+		return fetch('get', `/rss/${props.match.params.rssFeedID}`).then(res => {
+			if (res.data.duplicateOf) {
+				return fetch('GET', `/rss/${res.data.duplicateOf}`);
+			}
+			return res;
+		}).then(response => {
+			this.props.dispatch({ rssFeed: response.data, type: 'UPDATE_RSS_FEED' });
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.match.params.rssFeedID !== nextProps.match.params.rssFeedID) {
-			fetch('get', `/rss/${nextProps.match.params.rssFeedID}`).then(response => {
-				this.props.dispatch({
-					rssFeed: response.data,
-					type: 'UPDATE_RSS_FEED',
-				});
-			});
+		if (this.props.match.params.rssFeedID === nextProps.match.params.rssFeedID) {
+			return;
 		}
+		this.fetchRSS(nextProps);
 	}
 
 	toggleNewRSSModal() {
-		this.setState({
-			newRSSModalIsOpen: !this.state.newRSSModalIsOpen,
-		});
+		this.setState({ newRSSModalIsOpen: !this.state.newRSSModalIsOpen });
 	}
 
 	render() {
@@ -140,6 +141,7 @@ RSSFeedsView.propTypes = {
 	}).isRequired,
 	rssFeed: PropTypes.shape({
 		_id: PropTypes.string,
+		duplicateOf: PropTypes.string,
 		description: PropTypes.string,
 		featured: PropTypes.boolean,
 		images: PropTypes.shape({

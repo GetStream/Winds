@@ -22,9 +22,6 @@ class RSSArticleList extends React.Component {
 			sortBy: 'latest',
 			newArticlesAvailable: false,
 		};
-		this.getRSSFeed = this.getRSSFeed.bind(this);
-		this.getRSSArticles = this.getRSSArticles.bind(this);
-		this.getFollowState = this.getFollowState.bind(this);
 		this.toggleMenu = this.toggleMenu.bind(this);
 
 		this.contentsEl = React.createRef();
@@ -58,10 +55,6 @@ class RSSArticleList extends React.Component {
 		});
 
 		this.getRSSFeed(this.props.match.params.rssFeedID);
-		this.getFollowState(this.props.match.params.rssFeedID);
-		this.getRSSArticles(this.props.match.params.rssFeedID);
-		getPinnedArticles(this.props.dispatch);
-		getFeed(this.props.dispatch, 'article', 0, 20);
 		// subscribe to feed updates
 		if (this.props.rssFeed) {
 			this.subscribeToStreamFeed(
@@ -78,18 +71,9 @@ class RSSArticleList extends React.Component {
 			});
 
 			// if navigating between rss feeds
-			this.setState(
-				{
-					articleCursor: 1,
-				},
-				() => {
-					this.getRSSFeed(nextProps.match.params.rssFeedID);
-					this.getFollowState(nextProps.match.params.rssFeedID);
-					this.getRSSArticles(nextProps.match.params.rssFeedID);
-					getPinnedArticles(this.props.dispatch);
-					getFeed(this.props.dispatch, 'article', 0, 20);
-				},
-			);
+			this.setState({ articleCursor: 1 }, () => {
+				this.getRSSFeed(nextProps.match.params.rssFeedID);
+			});
 			// if we're switching rss feeds, unsubscribe from the old rss feed, and subscribe to the new rss feed
 			this.unsubscribeFromStreamFeed();
 			this.subscribeToStreamFeed(
@@ -120,10 +104,17 @@ class RSSArticleList extends React.Component {
 	getRSSFeed(rssFeedID) {
 		return fetch('GET', `/rss/${rssFeedID}`)
 			.then(res => {
-				this.props.dispatch({
-					rssFeed: res.data,
-					type: 'UPDATE_RSS_FEED',
-				});
+				if (res.data.duplicateOf) {
+					return fetch('GET', `/rss/${res.data.duplicateOf}`);
+				}
+				return res;
+			})
+			.then(res => {
+				this.props.dispatch({ rssFeed: res.data, type: 'UPDATE_RSS_FEED' });
+				this.getRSSArticles(res.data._id);
+				this.getFollowState(res.data._id);
+				getPinnedArticles(this.props.dispatch);
+				getFeed(this.props.dispatch, 'article', 0, 20);
 			})
 			.catch(err => {
 				console.log(err); // eslint-disable-line no-console
@@ -351,17 +342,7 @@ class RSSArticleList extends React.Component {
 								className="toast"
 								onClick={() => {
 									this.getRSSFeed(this.props.match.params.rssFeedID);
-									this.getFollowState(
-										this.props.match.params.rssFeedID,
-									);
-									this.getRSSArticles(
-										this.props.match.params.rssFeedID,
-									);
-									getPinnedArticles(this.props.dispatch);
-									getFeed(this.props.dispatch, 'article', 0, 20);
-									this.setState({
-										newArticlesAvailable: false,
-									});
+									this.setState({ newArticlesAvailable: false });
 								}}
 							>
 								New articles available - click to refresh
@@ -393,6 +374,7 @@ RSSArticleList.propTypes = {
 	loading: PropTypes.bool,
 	rssFeed: PropTypes.shape({
 		_id: PropTypes.string,
+		duplicateOf: PropTypes.string,
 		images: PropTypes.shape({
 			featured: PropTypes.string,
 			og: PropTypes.string,
@@ -475,7 +457,14 @@ const mapStateToProps = (state, ownProps) => {
 
 	// last, sort the articles, because the IDs might not be in chronological order
 	articles.sort((a, b) => {
-		return moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
+		let diff = moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
+		if (diff === 0) {
+			diff = moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf();
+		}
+		if (diff === 0) {
+			return a._id.localeCompare(b._id);
+		}
+		return diff;
 	});
 
 	return {
