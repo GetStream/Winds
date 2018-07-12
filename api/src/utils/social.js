@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as urlParser from 'url';
 import querystring from 'querystring';
 
 import config from '../config';
@@ -21,8 +22,8 @@ export function extractRedditPostID(article) {
 }
 
 export function extractHackernewsPostID(article) {
-	const url = new URL(article.commentUrl);
-	return url.searchParams.get('id');
+	const url = urlParser.parse(article.commentUrl, true);
+	return url.query.id;
 }
 
 const userAgent = 'web:winds:v2.2';
