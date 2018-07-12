@@ -84,7 +84,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 7.  Creating a RESTful API design with Express.js
 8.  Preparing an Electron app for deployment to the macOS store
 9. Deploying to the macOS store
-10. Electron gotchas
+10. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
 11. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
 12. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
 13. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
