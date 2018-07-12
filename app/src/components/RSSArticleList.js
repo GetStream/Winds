@@ -51,6 +51,12 @@ class RSSArticleList extends React.Component {
 	}
 
 	componentDidMount() {
+		// send analytic event that they viewed a feed
+		window.streamAnalyticsClient.trackEngagement({
+			label: 'viewed_rss_feed',
+			content: `rss:${this.props.match.params.rssFeedID}`,
+		});
+
 		this.getRSSFeed(this.props.match.params.rssFeedID);
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
@@ -66,6 +72,11 @@ class RSSArticleList extends React.Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'viewed_rss_feed',
+				content: `rss:${nextProps.match.params.rssFeedID}`,
+			});
+
 			// if navigating between rss feeds
 			this.setState(
 				{
@@ -238,15 +249,15 @@ class RSSArticleList extends React.Component {
 			if (this.props.articles.length === 0) {
 				rightContents = (
 					<div>
-						<p>{'We haven\'t found any articles for this RSS feed yet :('}</p>
+						<p>{"We haven't found any articles for this RSS feed yet :("}</p>
 						<p>
 							{
-								'It might be because the RSS feed doesn\'t have any articles, or because it just got added and we\'re still parsing them. Come check back in a few minutes?'
+								"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
 							}
 						</p>
 						<p>
 							{
-								'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
+								"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
 							}
 							<a href="https://github.com/getstream/winds/issues">
 								GitHub Issue
@@ -273,10 +284,10 @@ class RSSArticleList extends React.Component {
 
 						{this.state.reachedEndOfFeed ? (
 							<div className="end">
-								<p>{'That\'s it! No more articles here.'}</p>
+								<p>{"That's it! No more articles here."}</p>
 								<p>
 									{
-										'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+										"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 									}
 								</p>
 							</div>
@@ -353,7 +364,7 @@ class RSSArticleList extends React.Component {
 									});
 								}}
 							>
-								New episodes available - click to refresh
+								New articles available - click to refresh
 							</div>
 						) : null}
 						{rightContents}

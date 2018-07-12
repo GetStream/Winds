@@ -7,11 +7,11 @@
 	position: relative;
 }
 
-// only allow hover state for link headers
-a.column-header:hover {
+a.column-header:hover, .column-header:hover {
 	background-color: $background-lightishgray;
 	border-radius: $border-radius;
 	transition: all 0.22s ease-in-out;
+	cursor: pointer;
 }
 
 .column-header {
