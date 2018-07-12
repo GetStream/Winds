@@ -69,8 +69,7 @@ export async function handleRSS(job) {
 	try {
 		rssContent = await ParseFeed(job.data.url);
 		await RSS.resetScrapeFailures(rssID);
-	} catch (err) {
-        console.log(err);
+	} catch (_) {
 		await RSS.incrScrapeFailures(rssID);
 		throw new Error(`http request failed for url ${job.data.url}`);
 	}
