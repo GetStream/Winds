@@ -11,7 +11,7 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 
-import { sendRssFeedToCollections } from '../utils/collections';
+import { sendFeedToCollections } from '../utils/collections';
 import { ParseFeed } from '../parsers/feed';
 
 import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
@@ -147,7 +147,7 @@ export async function handleRSS(job) {
 			});
 			await rssFeed.addActivities(streamArticles);
 		}
-		await sendRssFeedToCollections(rss);
+		await sendFeedToCollections('rss', rss);
 	}
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
 }

@@ -31,70 +31,33 @@ export async function upsertCollections(collectionType, publications) {
 	}
 }
 
-export async function sendPodcastToCollections(podcast) {
-	if (!podcast.language) {
-		podcast.language = await DetectLanguage(podcast.feedUrl);
-		await Podcast.findByIdAndUpdate(
-			podcast.id,
-			{ language: podcast.language },
-			{ new: true },
-		);
+const feedModels = {
+    rss: { feed: RSS, content: Article },
+    podcast: { feed: Podcast, content: Episode }
+};
+
+export async function sendFeedToCollections(type, feed) {
+	const model = feedModels[type];
+
+	if (!feed.language) {
+		feed.language = await DetectLanguage(feed.feedUrl);
+		await model.feed.findByIdAndUpdate(feed.id, { language: feed.language }, { new: true });
 	}
-	let episodes = await Episode.find({
-		podcast: podcast.id,
-	})
+	const content = await model.content.find({ [type]: feed.id })
 		.sort({ publicationDate: -1 })
 		.limit(1000);
 
 	let mostRecentPublicationDate;
-	if (episodes.length) {
-		mostRecentPublicationDate = episodes[0].publicationDate;
+	if (content.length) {
+		mostRecentPublicationDate = content[0].publicationDate;
 	}
 
-	let collections = [
-		{
-			id: podcast.id,
-			articleCount: episodes.length,
-			description: podcast.description,
-			language: podcast.language,
-			mostRecentPublicationDate: mostRecentPublicationDate,
-			title: podcast.title,
-		},
-	];
-
-	await upsertCollections('podcast', collections);
-}
-
-export async function sendRssFeedToCollections(rssFeed) {
-	if (!rssFeed.language) {
-		rssFeed.language = await DetectLanguage(rssFeed.feedUrl);
-		await RSS.findByIdAndUpdate(
-			rssFeed.id,
-			{ language: rssFeed.language },
-			{ new: true },
-		);
-	}
-
-	let articles = await Article.find({
-		rss: rssFeed.id,
-	})
-		.sort({ publicationDate: -1 })
-		.limit(1000);
-	let mostRecentPublicationDate;
-	if (articles.length) {
-		mostRecentPublicationDate = articles[0].publicationDate;
-	}
-
-	let collections = [
-		{
-			id: rssFeed.id,
-			articleCount: articles.length,
-			description: rssFeed.description,
-			language: rssFeed.language,
-			mostRecentPublicationDate: mostRecentPublicationDate,
-			title: rssFeed.title,
-		},
-	];
-
-	await upsertCollections('rss', collections);
+	await upsertCollections(type, [{
+		id: feed.id,
+		title: feed.title,
+		language: feed.language,
+		description: feed.description,
+		articleCount: content.length,
+		mostRecentPublicationDate
+	}]);
 }
