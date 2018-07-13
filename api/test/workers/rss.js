@@ -72,13 +72,11 @@ describe('RSS worker', () => {
 					nock(url.host)
 						.get(url.path)
 						.query(url.query)
-						.reply(200, () => {
-							return getTestFeed(url.host);
-						});
+						.reply(200, () => getTestFeed(url.host));
 					await queue(testCases[i]);
 					nock.cleanAll();
 				}
-			});
+			}).timeout(30000);
 		}
 
 		it('should fail for invalid job', async () => {

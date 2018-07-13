@@ -18,6 +18,7 @@ import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
+import { fetchSocialScore } from '../utils/social';
 
 const duplicateKeyError = 11000;
 
@@ -129,26 +130,41 @@ export async function handleRSS(job) {
 		);
 	});
 
-	let t0 = new Date();
-	let rssFeed = getStreamClient().feed('rss', rssID);
+	updatedArticles = await timeIt('winds.handle_rss.update_social_score', () => {
+		return Promise.all(updatedArticles.filter(a => !!a.url).map(async article => {
+			const socialScore = await fetchSocialScore(article);
+			if (!socialScore.size) {
+				return article;
+			}
+			return await Article.findByIdAndUpdate(article._id, { socialScore }, { new: true });
+		}));
+	});
+
+	const t0 = new Date();
+
+	const rssFeed = getStreamClient().feed('rss', rssID);
 	logger.debug(`Syncing ${updatedArticles.length} articles to Stream`);
+
+	const chunkSize = 100;
+	for (let offset = 0; offset < updatedArticles.length; offset += chunkSize) {
+		const limit = offset + chunkSize;
+		const chunk = updatedArticles.slice(offset, limit);
+		const streamArticles = chunk.map(article => {
+			return {
+				actor: article.rss,
+				foreign_id: `articles:${article._id}`,
+				object: article._id,
+				time: article.publicationDate,
+				verb: 'rss_article',
+			};
+		});
+		await rssFeed.addActivities(streamArticles);
+	}
+
 	if (updatedArticles.length > 0) {
-		let chunkSize = 100;
-		for (let i = 0, j = updatedArticles.length; i < j; i += chunkSize) {
-			let chunk = updatedArticles.slice(i, i + chunkSize);
-			let streamArticles = chunk.map(article => {
-				return {
-					actor: article.rss,
-					foreign_id: `articles:${article._id}`,
-					object: article._id,
-					time: article.publicationDate,
-					verb: 'rss_article',
-				};
-			});
-			await rssFeed.addActivities(streamArticles);
-		}
 		await sendFeedToCollections('rss', rss);
 	}
+
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
 }
 
