@@ -12,22 +12,17 @@ import config from '../config';
 import logger from './logger';
 
 // replaces TrackMetadata and events() calls
-export async function upsertCollections(collectionType, publications) {
-	if (publications.length && !config.analyticsDisabled) {
-		let response;
-		let streamClient = getStreamClient();
+export async function upsertCollections(type, content) {
+	if (!content.length || config.analyticsDisabled) {
+		return;
+	}
 
-		try {
-			response = await streamClient.collections.upsert(
-				collectionType,
-				publications,
-			);
-		} catch (err) {
-			logger.error(`failed to update collections with type ${collectionType}`, {
-				err,
-			});
-		}
-		return response;
+	const streamClient = getStreamClient();
+
+	try {
+		return await streamClient.collections.upsert(type, content);
+	} catch (err) {
+		logger.error(`failed to update collections with type ${type}`, { err });
 	}
 }
 
@@ -60,4 +55,24 @@ export async function sendFeedToCollections(type, feed) {
 		articleCount: content.length,
 		mostRecentPublicationDate
 	}]);
+
+	const contentModelName = model.content.collection.collectionName;
+	const chunkSize = 1000;
+
+	for (let offset = 0; offset < content.length; offset += chunkSize) {
+		const limit = Math.min(content.length, offset + chunkSize);
+		const data = content.slice(offset, limit).map(c => {
+			return {
+				id: c.id,
+				title: c.title,
+				likes: c.likes,
+				socialScore: c.socialScore,
+				description: c.description,
+				publicationDate: c.publicationDate,
+				[type]: feed.id,
+			};
+		});
+
+		await upsertCollections(contentModelName, data);
+	}
 }

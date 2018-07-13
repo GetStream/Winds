@@ -101,6 +101,11 @@ export const EpisodeSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		socialScore: {
+			type: Map,
+			of: Number,
+			required: false
+		},
 		valid: {
 			type: Boolean,
 			default: true,
