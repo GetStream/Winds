@@ -9,7 +9,7 @@
 
 ## What's New
 
-In addition to the desktop apps there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)**
+In addition to the desktop apps for macOS, Linux, and Windows, there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)
 
 ## Jobs
 
