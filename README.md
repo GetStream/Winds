@@ -82,11 +82,10 @@ The following tutorials will not only help you start contributing to Winds, but 
 5.  Design thought process for Winds 2.0
 6.  PM2 in production environments
 7.  Creating a RESTful API design with Express.js
-8. Deploying to the macOS store
-9. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
-10. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
-11. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
-12. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
+8. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
+9. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
+10. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
+11. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
 
 ## Download
 
