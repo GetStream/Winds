@@ -1,3 +1,4 @@
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -14,9 +15,13 @@ class BookmarkedEpisodes extends React.Component {
 		getPinnedEpisodes(this.props.dispatch);
 	}
 	render() {
+		let sortedBookmarks = [...this.props.bookmarks].sort((a, b) => {
+			return moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf();
+		});
+
 		return (
 			<Panel headerText="Bookmarks">
-				{this.props.bookmarks.map(bookmark => {
+				{sortedBookmarks.map(bookmark => {
 					return (
 						<Link
 							key={bookmark._id}

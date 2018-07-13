@@ -46,6 +46,7 @@ const _default = {
 		index: process.env.ALGOLIA_INDEX,
 	},
 	logger: {
+		level: process.env.LOGGER_LEVEL || 'warn',
 		host: process.env.LOGGER_HOST,
 		port: process.env.LOGGER_PORT,
 	},
@@ -82,6 +83,14 @@ const _default = {
 		prefix: process.env.STATSD_PREFIX || '',
 	},
 	newrelic: false,
+	social: {
+		reddit: {
+			username: process.env.REDDIT_USERNAME,
+			password: process.env.REDDIT_PASSWORD,
+			key: process.env.REDDIT_APP_ID,
+			secret: process.env.REDDIT_APP_SECRET,
+		},
+	},
 };
 
 const config = require(`./${configs[currentEnvironment].config}`);

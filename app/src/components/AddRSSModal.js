@@ -296,7 +296,7 @@ class AddRSSModal extends React.Component {
 					</div>
 					<div className="info">
 						{
-							'We found a few feeds with that URL. Once your selection has been made, we will begin to process the feeds. They will be ready shortly after.'
+							'Once your selection has been made, we will begin to process the feeds. They will be ready shortly after.'
 						}
 					</div>
 					{this.state.feedsToFollow.map(feedToFollow => {

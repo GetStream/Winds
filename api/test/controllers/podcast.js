@@ -1,10 +1,9 @@
-import nock from 'nock';
 import { expect, request } from 'chai';
 
 import api from '../../src/server';
 import Podcast from '../../src/models/podcast';
 import config from '../../src/config';
-import { loadFixture, dropDBs, withLogin } from '../utils.js';
+import { loadFixture, dropDBs, withLogin, getMockClient } from '../utils.js';
 
 describe('Podcast controller', () => {
 	let podcast;
@@ -25,14 +24,12 @@ describe('Podcast controller', () => {
 	});
 
 	describe('get podcast list from personalization', () => {
-		after(function() {
-			nock.cleanAll();
-		});
-
 		it('should return the right podcast feed from /podcasts?type=recommended', async () => {
-			nock(config.stream.baseUrl)
-				.get(/winds_podcast_recommendations/)
-				.reply(200, { results: [{ foreign_id: `episode:${podcast.id}` }] });
+			const mock = getMockClient();
+			const opts = { user_id: '5b0f306d8e147f10f16aceaf', limit: 7 };
+			const result = { results: [{ foreign_id: `episode:${podcast.id}` }] };
+
+			mock.personalization.get.withArgs('winds_podcast_recommendations', opts).returns({ data: result });
 
 			const response = await withLogin(
 				request(api)
@@ -44,6 +41,8 @@ describe('Podcast controller', () => {
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.at.least(1);
 			expect(response.body[0].url).to.eq(podcast.url);
+
+			mock.personalization.get.reset();
 		});
 	});
 

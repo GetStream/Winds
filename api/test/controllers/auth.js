@@ -8,10 +8,50 @@ import RSS from '../../src/models/rss';
 import User from '../../src/models/user';
 import { DummyEmailTransport } from '../../src/utils/email/send';
 import { loadFixture, getMockClient, getMockFeed, dropDBs } from '../utils';
+import Redis from 'ioredis';
+
+const cache = new Redis(config.cache.uri);
 
 describe('Auth controller', () => {
 	describe('signup', () => {
 		before(dropDBs);
+
+		describe('empty state', () => {
+			let response;
+			let user;
+
+			before(async () => {
+				expect(await User.findOne({ email: 'valid@email.com' })).to.be.null;
+
+				await cache.flushall();
+
+				response = await request(api)
+					.post('/auth/signup')
+					.send({
+						email: 'valid@email.com',
+						username: 'valid',
+						name: 'Valid Name',
+						password: 'valid_password',
+					});
+
+				user = await User.findOne({ email: 'valid@email.com' });
+			});
+
+			after(async () => {
+				await RSS.remove().exec();
+				await Podcast.remove().exec();
+				await User.findOneAndDelete({ email: 'valid@email.com' });
+			});
+
+			it('should return 200', () => {
+				const mockClient = getMockClient();
+				expect(response).to.have.status(200);
+				expect(
+					mockClient.followMany.firstCall &&
+						mockClient.followMany.firstCall.args,
+				).to.be.null;
+			});
+		});
 
 		describe('valid request', () => {
 			let response;
@@ -19,6 +59,8 @@ describe('Auth controller', () => {
 
 			before(async () => {
 				expect(await User.findOne({ email: 'valid@email.com' })).to.be.null;
+
+				await cache.flushall();
 
 				await loadFixture('featured');
 
@@ -75,37 +117,35 @@ describe('Auth controller', () => {
 			});
 
 			it('should follow featured podcasts and RSS feeds', async () => {
-				const content = [
-					{
-						sourceModel: Podcast,
-						userFeed: 'user_episode',
-						contentFeed: 'podcast',
-					},
-					{ sourceModel: RSS, userFeed: 'user_article', contentFeed: 'rss' },
-				];
 				const mockClient = getMockClient();
 
-				for (const contentType of content) {
-					const entries = await contentType.sourceModel.find({
-						featured: true,
-					});
+				const podcastEntries = await Podcast.find({
+					featured: true,
+				});
 
-					for (const data of entries) {
-						let type =
-							data.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
-						let correct = [
-							{
-								source: `timeline:${user._id}`,
-								target: `${type}:${data._id}`,
-							},
-							{
-								source: `${contentType.userFeed}:${user._id}`,
-								target: `${type}:${data._id}`,
-							},
-						];
-						expect(mockClient.followMany.calledWith(correct)).to.be.true;
-					}
+				const rssEntries = await RSS.find({
+					featured: true,
+				});
+
+				const merged = [...podcastEntries, ...rssEntries];
+				let correct = [];
+
+				for (const data of merged) {
+					let type = data.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
+					let userFeed = type == 'rss' ? 'user_article' : 'user_episode';
+					correct.push(
+						{
+							source: `timeline:${user._id}`,
+							target: `${type}:${data._id}`,
+						},
+						{
+							source: `${userFeed}:${user._id}`,
+							target: `${type}:${data._id}`,
+						},
+					);
 				}
+				const actual = mockClient.followMany.firstCall.args[0];
+				expect(actual).to.deep.have.same.members(correct);
 			});
 
 			it('should send welcome email to user', async () => {
@@ -176,7 +216,7 @@ describe('Auth controller', () => {
 				}
 			});
 
-			it('should return 422 for invalid email', async () => {
+			it('should return 400 for invalid email', async () => {
 				const bodies = [
 					{
 						email: 'invalid.email.com',
@@ -203,7 +243,7 @@ describe('Auth controller', () => {
 						.send(body),
 				);
 				for (const response of await Promise.all(requests)) {
-					expect(response).to.have.status(422);
+					expect(response).to.have.status(400);
 				}
 			});
 
@@ -212,7 +252,7 @@ describe('Auth controller', () => {
 					.post('/auth/signup')
 					.send({
 						email: 'valid@email.com',
-						username: 'invalid-username',
+						username: 'invalid username',
 						name: 'Valid Name',
 						password: 'valid_password',
 					});

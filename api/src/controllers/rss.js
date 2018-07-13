@@ -1,36 +1,38 @@
+import mongoose from 'mongoose';
+import moment from 'moment';
 import normalizeUrl from 'normalize-url';
 import entities from 'entities';
-import { isURL } from '../utils/validation';
 
 import RSS from '../models/rss';
 
-import { getRSSRecommendations } from '../utils/personalization';
 import { discoverRSS } from '../parsers/discovery';
 
-import moment from 'moment';
 import search from '../utils/search';
+import { isURL } from '../utils/validation';
 import { RssQueueAdd, OgQueueAdd } from '../asyncTasks';
-import mongoose from 'mongoose';
+import { getRSSRecommendations } from '../utils/personalization';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
-	let feeds = [];
+	let rss;
 
 	if (query.type === 'recommended') {
-		feeds = await getRSSRecommendations(req.User._id.toString(), 7);
+		rss = await getRSSRecommendations(req.User._id.toString(), 7);
 	} else {
-		feeds = await RSS.apiQuery(req.query);
+		rss = await RSS.apiQuery(req.query);
 	}
 
-	res.json(feeds);
+	res.json(rss);
 };
 
 exports.get = async (req, res) => {
-	if (!mongoose.Types.ObjectId.isValid(req.params.rssId)) {
+	const rssId = req.params.rssId;
+
+	if (!mongoose.Types.ObjectId.isValid(rssId)) {
 		return res.status(422).json({ error: `RSS ID ${rssId} is invalid.` });
 	}
 
-	let rss = await RSS.findById(req.params.rssId).exec();
+	let rss = await RSS.findById(rssId).exec();
 	if (!rss) {
 		return res.sendStatus(404);
 	}

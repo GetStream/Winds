@@ -40,6 +40,10 @@ class PodcastEpisodesView extends React.Component {
 	}
 
 	componentDidMount() {
+		window.streamAnalyticsClient.trackEngagement({
+			label: 'viewed_podcast',
+			content: `podcast:${this.props.match.params.podcastID}`,
+		});
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.getEpisodes(this.props.match.params.podcastID);
 		getPinnedEpisodes(this.props.dispatch);
@@ -55,6 +59,10 @@ class PodcastEpisodesView extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
 			// essentially, if we've just switched views from one podcast to another
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'viewed_podcast',
+				content: `podcast:${nextProps.match.params.podcastID}`,
+			});
 			this.setState(
 				{
 					episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
@@ -164,15 +172,15 @@ class PodcastEpisodesView extends React.Component {
 		if (sortedEpisodes.length === 0) {
 			rightColumn = (
 				<div>
-					<p>{'We haven\'t found any episodes for this podcast feed yet :('}</p>
+					<p>{"We haven't found any episodes for this podcast feed yet :("}</p>
 					<p>
 						{
-							'It might be because the podcast feed doesn\'t have any episodes, or because it just got added and we\'re still parsing them. Come check back in a few minutes.'
+							"It might be because the podcast feed doesn't have any episodes, or because it just got added and we're still parsing them. Come check back in a few minutes."
 						}
 					</p>
 					<p>
 						{
-							'If you\'re pretty sure there\'s supposed to be some episodes here, and they aren\'t showing up, please file a '
+							"If you're pretty sure there's supposed to be some episodes here, and they aren't showing up, please file a "
 						}
 						<a href="https://github.com/getstream/winds/issues">
 							GitHub Issue
@@ -196,9 +204,6 @@ class PodcastEpisodesView extends React.Component {
 							<EpisodeListItem
 								active={active}
 								key={episode._id}
-								pinEpisode={() => {
-									this.props.pinEpisode(episode._id);
-								}}
 								playOrPauseEpisode={() => {
 									if (active && this.props.context.playing) {
 										this.props.pauseEpisode();
@@ -220,10 +225,10 @@ class PodcastEpisodesView extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{'That\'s it! No more episodes here.'}</p>
+							<p>{"That's it! No more episodes here."}</p>
 							<p>
 								{
-									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 								}
 							</p>
 						</div>
@@ -514,4 +519,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PodcastEpisodesView);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(PodcastEpisodesView);

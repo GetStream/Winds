@@ -3,9 +3,21 @@ import User from '../models/user';
 import { trackEngagement } from '../utils/analytics';
 
 import config from '../config';
-import logger from '../utils/logger';
 
-exports.post = async (req, res, _) => {
+exports.list = async (req, res) => {
+	if (req.query.user && req.query.user != req.User.id) {
+		return res.sendStatus(403);
+	}
+
+	const listens = await Listen.find({
+		user: req.query.user,
+		episode: req.query.episode,
+	});
+
+	res.json(listens);
+};
+
+exports.post = async (req, res) => {
 	const data = Object.assign({}, req.body, { user: req.user.sub });
 	const { _id, id, ...cleanedData } = data;
 

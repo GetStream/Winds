@@ -823,10 +823,11 @@ body {
   padding: 0 20px;
   position: relative; }
 
-a.column-header:hover {
+a.column-header:hover, .column-header:hover {
   background-color: #efefef;
   border-radius: 8px;
-  transition: all 0.22s ease-in-out; }
+  transition: all 0.22s ease-in-out;
+  cursor: pointer; }
 
 .column-header {
   align-items: center;

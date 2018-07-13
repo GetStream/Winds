@@ -15,9 +15,15 @@ describe('Pin controller', () => {
 		await dropDBs();
 		await loadFixture('initial-data', 'pins');
 
-		pin = (await Pin.find().sort('_id').limit(1))[0];
-		article = (await Article.find().sort('_id').limit(1))[0];
-		episode = (await Episode.find().sort('_id').limit(1))[0];
+		pin = (await Pin.find()
+			.sort('_id')
+			.limit(1))[0];
+		article = (await Article.find()
+			.sort('_id')
+			.limit(1))[0];
+		episode = (await Episode.find()
+			.sort('_id')
+			.limit(1))[0];
 	});
 
 	describe('get', () => {

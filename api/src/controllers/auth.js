@@ -2,36 +2,54 @@ import uuidv4 from 'uuid/v4';
 import validator from 'validator';
 
 import User from '../models/user';
-import Podcast from '../models/podcast';
 import RSS from '../models/rss';
+import Podcast from '../models/podcast';
 import Follow from '../models/follow';
 
 import config from '../config';
+import packageInfo from '../../../app/package.json';
+
+import Redis from 'ioredis';
+const cache = new Redis(config.cache.uri);
 
 import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
 
-async function followInterest(userId, interest) {
-	const interestRssFeeds = await RSS.find(interest);
+async function getInterestMap() {
+	const cacheKey = `interests:3:v${packageInfo.version.replace(/\./g, ':')}`;
+	console.log(cacheKey);
 
-	await Promise.all(
-		interestRssFeeds.map(interestRssFeed => {
-			return Follow.getOrCreate('rss', userId, interestRssFeed._id);
-		}),
-	);
+	let str = await cache.get(cacheKey);
+	let interestMap = JSON.parse(str);
 
-	const interestPodcasts = await Podcast.find(interest);
-	await Promise.all(
-		interestPodcasts.map(interestPodcast => {
-			return Follow.getOrCreate('podcast', userId, interestPodcast._id);
-		}),
-	);
+	if (!interestMap) {
+		interestMap = {};
+
+		const rss = await RSS.findFeatured();
+		const podcast = await Podcast.findFeatured();
+
+		for (let p of [...rss, ...podcast]) {
+			let k = p.interest || 'featured';
+			let d = p.toObject();
+			d.type = p.constructor.modelName == 'RSS' ? 'rss' : 'podcast';
+
+			if (!(k in interestMap)) {
+				interestMap[k] = [];
+			}
+			interestMap[k].push(d);
+		}
+
+		let cached = await cache.set(
+			cacheKey,
+			JSON.stringify(interestMap),
+			'EX',
+			60 * 30,
+		);
+	}
+
+	return interestMap;
 }
 
-function cleanString(s) {
-	return s.toLowerCase().trim();
-}
-
-exports.signup = async (req, res, _) => {
+exports.signup = async (req, res) => {
 	const data = Object.assign({}, { interests: [] }, req.body);
 
 	if (!data.name || !data.email || !data.username || !data.password) {
@@ -39,23 +57,27 @@ exports.signup = async (req, res, _) => {
 	}
 
 	if (data.email && !validator.isEmail(data.email)) {
-		return res.status(422).json({ error: 'Invalid or malformed email address.' });
+		return res.status(400).json({ error: 'Invalid or malformed email address.' });
 	}
 
-	if (data.username && !validator.isAlphanumeric(data.username)) {
-		return res.status(400).json({ error: 'Usernames must be alphanumeric.' });
+	const regex = /^[\w-]+$/;
+	if (data.username && !regex.test(data.username)) {
+		return res.status(400).json({
+			error: 'Usernames must be alphanumeric but can only contain _, . or -.',
+		});
 	}
 
-	data.username = cleanString(data.username);
-	data.email = cleanString(data.email);
+	data.username = data.username.trim();
+	data.email = data.email.trim();
 
 	const exists = await User.findOne({
 		$or: [{ email: data.email }, { username: data.username }],
 	});
 
 	if (exists) {
-		res.status(409).send('A user already exists with that username or email.');
-		return;
+		return res.status(409).json({
+			error: 'A resource already exists with that username or email.',
+		});
 	}
 
 	const whitelist = Object.assign(
@@ -67,26 +89,41 @@ exports.signup = async (req, res, _) => {
 
 	const user = await User.create(whitelist);
 
-	await SendWelcomeEmail({ email: user.email });
-	await followInterest(user._id, { featured: true });
+	let interestMap = await getInterestMap();
+	let interestFollow = interestMap['featured'] || [];
 
-	await Promise.all(
-		data.interests.map(interest => {
-			return followInterest(user._id, { interest });
-		}),
-	);
+	for (let i of data.interests) {
+		let publications = interestMap[i];
+
+		if (publications) {
+			interestFollow.push(...publications);
+		}
+	}
+
+	let followCommands = interestFollow.map(interest => {
+		return {
+			type: interest.type,
+			publicationID: interest._id,
+			userID: user._id.toString(),
+		};
+	});
+
+	await Promise.all([
+		Follow.getOrCreateMany(followCommands),
+		SendWelcomeEmail({ email: user.email }),
+	]);
 
 	res.json(user.serializeAuthenticatedUser());
 };
 
-exports.login = async (req, res, _) => {
+exports.login = async (req, res) => {
 	const data = req.body || {};
 
 	if (!data.email || !data.password) {
 		return res.status(400).json({ error: 'Missing required fields.' });
 	}
 
-	const email = cleanString(data.email.toLowerCase());
+	const email = data.email.toLowerCase().trim();
 	const user = await User.findOne({ email: email });
 
 	if (!user) {
@@ -94,13 +131,13 @@ exports.login = async (req, res, _) => {
 	}
 
 	if (!(await user.verifyPassword(data.password))) {
-		return res.status(403).json({ error: 'Invalid password.' });
+		return res.status(403).json({ error: 'Invalid username or password.' });
 	}
 
 	res.status(200).send(user.serializeAuthenticatedUser());
 };
 
-exports.forgotPassword = async (req, res, _) => {
+exports.forgotPassword = async (req, res) => {
 	const opts = { new: true };
 	const recoveryCode = uuidv4();
 
@@ -113,7 +150,7 @@ exports.forgotPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.status(404).json({ error: 'User could not be found.' });
+		return res.status(404).json({ error: 'Resource could not be found.' });
 	}
 
 	await SendPasswordResetEmail({ email: user.email, recoveryCode: user.recoveryCode });
@@ -121,7 +158,7 @@ exports.forgotPassword = async (req, res, _) => {
 	res.sendStatus(200);
 };
 
-exports.resetPassword = async (req, res, _) => {
+exports.resetPassword = async (req, res) => {
 	const user = await User.findOneAndUpdate(
 		{ email: req.body.email.toLowerCase(), recoveryCode: req.body.recoveryCode },
 		{ password: req.body.password },
@@ -129,7 +166,7 @@ exports.resetPassword = async (req, res, _) => {
 	);
 
 	if (!user) {
-		return res.status(404).json({ error: 'User could not be found.' });
+		return res.status(404).json({ error: 'Resource could not be found.' });
 	}
 
 	res.status(200).send(user.serializeAuthenticatedUser());

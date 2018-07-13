@@ -66,7 +66,7 @@ exports.status = async (req, res) => {
 		}`;
 	}
 
-	res.status(output.code).send(output);
+	res.status(output.code).json(output);
 };
 
 exports.queue = async (req, res) => {

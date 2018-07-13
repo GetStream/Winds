@@ -17,7 +17,7 @@ class RecentEpisodesPanel extends React.Component {
 		return (
 			<Panel
 				expandable={true}
-				headerLink="/podcasts/recent"
+				headerLink="/podcasts"
 				headerText="Recent Episodes"
 			>
 				{this.props.episodes.slice(0, 20).map(episode => {

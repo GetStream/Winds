@@ -1,9 +1,8 @@
+import mongoose from 'mongoose';
+
 import Article from '../models/article';
 import { getArticleRecommendations } from '../utils/personalization';
 import { trackEngagement } from '../utils/analytics';
-
-import mongoose from 'mongoose';
-import logger from '../utils/logger';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
@@ -11,7 +10,7 @@ exports.list = async (req, res) => {
 	let articles = [];
 
 	if (query.type === 'recommended') {
-		articles = await getArticleRecommendations(req.User);
+		articles = await getArticleRecommendations(req.User._id.toString());
 	} else {
 		if (query.rss && !mongoose.Types.ObjectId.isValid(query.rss)) {
 			return res.status(400).json({ error: `Invalid RSS id ${query.rss}` });
@@ -39,6 +38,9 @@ exports.get = async (req, res) => {
 
 	if (req.query && req.query.type === 'parsed') {
 		let parsed = await article.getParsedArticle();
+		if (!parsed) {
+			return res.status(400).json({ error: 'Failed to parse the article.' });
+		}
 		await trackEngagement(req.User, {
 			label: 'open_article',
 			content: { foreign_id: `article:${articleId}` },

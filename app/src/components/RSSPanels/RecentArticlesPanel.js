@@ -17,7 +17,7 @@ class RecentArticlesPanel extends React.Component {
 		return (
 			<Panel
 				expandable={true}
-				headerLink="/rss/recent"
+				headerLink="/rss"
 				headerText="Recent Articles"
 			>
 				{this.props.articles.slice(0, 20).map(article => {

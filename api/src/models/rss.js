@@ -5,7 +5,6 @@ import { ArticleSchema } from './article';
 import { getStreamClient } from '../utils/stream';
 import { getUrl } from '../utils/urls';
 
-
 export const RSSSchema = new Schema(
 	{
 		url: {
@@ -76,6 +75,7 @@ export const RSSSchema = new Schema(
 		valid: {
 			type: Boolean,
 			default: true,
+			index: true,
 		},
 		lastScraped: {
 			type: Date,
@@ -167,7 +167,7 @@ RSSSchema.statics.resetScrapeFailures = async function(id) {
 };
 
 RSSSchema.methods.getUrl = function() {
-	return getUrl('rss_detail', this._id)
+	return getUrl('rss_detail', this._id);
 };
 
 RSSSchema.methods.searchDocument = function() {
@@ -190,6 +190,25 @@ RSSSchema.methods.serialize = function serialize() {
 		.feed('rss', this._id)
 		.getReadOnlyToken();
 	return serialized;
+};
+
+RSSSchema.statics.findFeatured = function() {
+	const query = [
+		{ featured: true },
+		{ interest: 'UI/UX' },
+		{ interest: 'Startups & VC' },
+		{ interest: 'Programming' },
+		{ interest: 'Gaming' },
+		{ interest: 'Machine Learning & AI' },
+		{ interest: 'News' },
+		{ interest: 'VR' },
+		{ interest: 'Lifehacks' },
+		{ interest: 'Marketing' },
+	];
+
+	return this.find({
+		$or: query,
+	});
 };
 
 RSSSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });

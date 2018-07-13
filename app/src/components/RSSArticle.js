@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import TimeAgo from './TimeAgo';
 import ReactPlayer from 'react-player';
+import isElectron from 'is-electron';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -15,22 +16,87 @@ class RSSArticle extends React.Component {
 		this.state = {
 			error: false,
 			loadingContent: true,
+			sentArticleReadCompleteAnalyticsEvent: false,
 		};
+
+		this.contentRef = React.createRef();
 	}
+
 	componentDidMount() {
+		window.streamAnalyticsClient.trackEngagement({
+			label: 'article_open',
+			content: {
+				foreign_id: `articles:${this.props.match.params.articleID}`,
+			},
+		});
 		getPinnedArticles(this.props.dispatch);
 		this.getArticle(this.props.match.params.articleID);
-		if (this.props.url) {
-			this.getRSSContent(this.props._id);
-		}
+		this.getRSSContent(this.props.match.params.articleID);
+		this.contentRef.current.onscroll = e => {
+			let scrollPercentage =
+				this.contentRef.current.scrollTop /
+				(this.contentRef.current.scrollHeight -
+					this.contentRef.current.clientHeight);
+			if (
+				!this.state.sentArticleReadCompleteAnalyticsEvent &&
+				scrollPercentage > 0.8
+			) {
+				window.streamAnalyticsClient.trackEngagement({
+					label: 'article_read_complete',
+					content: {
+						foreign_id: `articles:${this.props.match.params.articleID}`,
+					},
+				});
+
+				this.setState({
+					sentArticleReadCompleteAnalyticsEvent: true,
+				});
+			}
+		};
 	}
+
 	componentWillReceiveProps(nextProps) {
-		if (nextProps._id !== this.props._id) {
+		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
+			// resetting analytics event sent state - **do not** need to recent onscroll listener, because the ref is still mounted
+			this.setState({
+				sentArticleReadCompleteAnalyticsEvent: false,
+			});
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'article_open',
+				content: {
+					foreign_id: `articles:${nextProps.match.params.articleID}`,
+				},
+			});
 			getPinnedArticles(this.props.dispatch);
 			this.getArticle(nextProps.match.params.articleID);
-			this.getRSSContent(nextProps._id);
+			this.getRSSContent(nextProps.match.params.articleID);
 		}
 	}
+
+	tweet() {
+		const getWindowOptions = function() {
+			const width = 500;
+			const height = 350;
+			const left = window.innerWidth / 2 - width / 2;
+			const top = window.innerHeight / 2 - height / 2;
+
+			return [
+				'resizable,scrollbars,status',
+				'height=' + height,
+				'width=' + width,
+				'left=' + left,
+				'top=' + top,
+			].join();
+		};
+
+		const shareUrl = `https://twitter.com/intent/tweet?url=${
+			window.location.href
+		}&text=${this.props.rss.title} - ${this.props.description}&hashtags=Winds,RSS`;
+
+		const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
+		win.opener = null;
+	}
+
 	getArticle(articleID) {
 		fetch('GET', `/articles/${articleID}`)
 			.then(res => {
@@ -43,6 +109,7 @@ class RSSArticle extends React.Component {
 				console.log(err); // eslint-disable-line no-console
 			});
 	}
+
 	getRSSContent(articleId) {
 		this.setState({
 			loadingContent: true,
@@ -63,8 +130,10 @@ class RSSArticle extends React.Component {
 				});
 			});
 	}
+
 	render() {
 		let articleContents;
+
 		if (this.props.loading || this.state.loadingContent) {
 			articleContents = <Loader />;
 		} else if (this.state.error) {
@@ -86,6 +155,7 @@ class RSSArticle extends React.Component {
 				</div>
 			);
 		}
+
 		return (
 			<React.Fragment>
 				<div className="content-header">
@@ -113,6 +183,20 @@ class RSSArticle extends React.Component {
 								<i className="far fa-bookmark" />
 							)}
 						</span>{' '}
+						{!isElectron() ? (
+							<span>
+								<a
+									onClick={e => {
+										e.preventDefault();
+										e.stopPropagation();
+
+										this.tweet();
+									}}
+								>
+									<i className="fab fa-twitter" />
+								</a>
+							</span>
+						) : null}
 						<div>
 							<i className="fas fa-external-link-alt" />
 							<a href={this.props.url}>{this.props.rss.title}</a>
@@ -131,7 +215,7 @@ class RSSArticle extends React.Component {
 					</div>
 				</div>
 
-				<div className="content">
+				<div className="content" ref={this.contentRef}>
 					<div className="enclosures">
 						{this.props.enclosures.map(
 							enclosure =>

@@ -1,6 +1,7 @@
 # Winds 2.0 - A Beautiful Open Source RSS & Podcast App
 
 [![Slack Community](https://img.shields.io/badge/Slack%20Community-Get%20Invite-green.svg)](https://communityinviter.com/apps/winds-community-hq/winds-2-0)
+[![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
@@ -35,13 +36,11 @@ Winds is a beautiful open-source RSS and Podcast app created using React/Redux/N
 
 Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/GetStream/Winds/issues/191)
 
-*   [ ] Mark Read (partially implemented)
+*   [ ] Search detail screen
 *   [ ] Playlist support (partially implemented)
 *   [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
 *   [ ] Mobile application powered by React Native
-*   [ ] SSO (Google & Twitter)
 *   [ ] Folder Support
-*   [ ] Listen to feed changes in realtime
 
 ## Powered By
 
@@ -79,15 +78,15 @@ The following tutorials will not only help you start contributing to Winds, but 
 1.  Architecting a large React/Redux codebase
 2.  Building activity streams and newsfeeds on top of Stream
 3.  Implementing search with Algolia
-4.  Deploying to AWS ECS
-5.  MongoDB database schema design
-6.  Design thought process for Winds 2.0
-7.  PM2 in production environments
-8.  Creating a RESTful API design with Express.js
-9.  Preparing an Electron app for deployment to the macOS store
-10. Deploying to the macOS store
-11. Electron gotchas
-12. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
+4.  MongoDB database schema design
+5.  Design thought process for Winds 2.0
+6.  PM2 in production environments
+7.  Creating a RESTful API design with Express.js
+8. Deploying to the macOS store
+9. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
+10. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
+11. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
+12. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
 
 ## Download
 
@@ -99,7 +98,7 @@ To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/
 
 Commands:
 
-*   `brew install pkg-config cairo redis mongodb`
+*   `brew install redis mongodb`
 *   `brew services start mongodb`
 *   `brew services start redis`
 *   `cd winds/api`
@@ -120,6 +119,7 @@ REACT_APP_API_ENDPOINT=http://localhost:8080
 STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 
 STREAM_APP_ID=YOUR_STREAM_APP_ID
+REACT_APP_STREAM_APP_ID=YOUR_STREAM_APP_ID #(this needs to be included twice, once for the backend, and once for the frontend to make realtime connections directly to Stream)
 STREAM_API_KEY=YOUR_STREAM_API_KEY
 STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 
@@ -130,6 +130,8 @@ ALGOLIA_WRITE_KEY=YOUR_ALGOLIA_ADMIN_API_KEY
 MERCURY_KEY=YOUR_KEY_HERE
 ```
 
+> Note: If you are running the test suite, you will need to have a test version of the `.env` file inside of the `api/test` directory.
+
 Then run:
 
 *   `pm2 start process_dev.json`
@@ -138,7 +140,7 @@ Then run:
 ### Clone the Repo
 
 ```bash
-git clone git@github.com:GetStream/winds.git
+git clone git@github.com:GetStream/Winds.git
 ```
 
 ### Install dependencies
@@ -149,22 +151,6 @@ The following instructions are geared towards Mac users who can use `brew` ([Hom
 *   `yarn`
 *   `cd ../api`
 *   `yarn`
-
-### Create a dotenv file
-
-A `.env` file contains all configuration and connection strings for Winds.
-
-Create a new file titled `.env` inside the `app` folder, and add the following:
-
-```
-DATABASE_URI=mongodb://localhost/WINDS
-CACHE_URI=redis://localhost:6379
-JWT_SECRET=some-super-secret-arbitrary-jwt-string
-API_PORT=8080
-REACT_APP_API_ENDPOINT=http://localhost:8080
-STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
-MERCURY_KEY=YOUR_API_KEY_HERE
-```
 
 ### Start MongoDB Locally
 
@@ -209,6 +195,22 @@ You can also run Redis in the background by running:
 ```
 brew services start redis
 ```
+
+### Loading Test Data
+
+For testing purposes, you will want to use the test data located [here](https://s3.amazonaws.com/winds-hosted/static/export/WINDS.zip).
+
+Use [`mongoimport`](https://docs.mongodb.com/manual/reference/program/mongoimport/) or [`mongorestore`](https://docs.mongodb.com/manual/reference/program/mongorestore/) to import the data. There are two username and password combinations for testing:
+
+**Username**: `admin@admin.com`<br/>
+**Password**: `admin`
+<br/><br/>
+**Username**: `test@test.com`<br/>
+**Password**: `test`
+
+You will need to run the `FLUSHALL` command in Redis to ensure that the new content is picked up.
+
+> Note: This will override any local data that you may have. Please be cautious! Also, this will not create Stream follows – please followo feeds manually to generate them.
 
 ### Stream
 
@@ -410,6 +412,7 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 *   [Tommaso Barbugli](https://github.com/tbarbugli)
 *   [Dwight Gunning](https://github.com/dwightgunning)
 *   [Matt Gauger](https://github.com/mathias)
+*   [Max Klyga](https://github.com/nekuromento)
 *   [Zhomart Mukhamejanov](https://github.com/Zhomart)
 *   [Julian Xhokaxhiu](https://github.com/julianxhokaxhiu)
 *   [Jonathon Belotti](https://github.com/thundergolfer)

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import Pin from '../models/pin';
 import config from '../config';
 import { trackEngagement } from '../utils/analytics';

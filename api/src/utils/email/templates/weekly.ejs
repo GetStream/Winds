@@ -11,8 +11,8 @@
         <h3>top episodes for you</h3>
 
         <ol>
-        <% for(const e of episodes) { %>
-            <li><a href="<%= e.link %>"><%= e.title %></a></li>
+        <% for(const episode of episodes) { %>
+            <li><a href="<%= episode.trackingUrl %>"><%= episode.title %></a></li>
         <% } %>
         </ol>
 
@@ -20,7 +20,7 @@
 
         <ol>
         <% for(const article of articles) { %>
-            <li><a href="<%= article.getUrl() %>"><%= article.title %></a></li>
+            <li><a href="<%= article.trackingUrl %>"><%= article.title %></a></li>
         <% } %>
         </ol>
 
@@ -31,11 +31,11 @@
         <% } %>
         </ol>
         <h3>follow suggestions rss</h3>
-<ol>
+        <ol>
         <% for(const r of rss) { %>
             <li><a href="<%= r.getUrl() %>"><%= r.title %></a></li>
         <% } %>
-</ol>
+        </ol>
 
         <h3>stats about winds</h3>
         <ol>
@@ -45,8 +45,6 @@
             <li>RSS feeds: <%= counts.rss %></li>
             <li>Podcast feeds: <%= counts.podcast %></li>
         </ol>
-
-
 
         Happy Procrastination,<br />
         <a href="https://twitter.com/nickparsons" target="_blank">@nickparsons</a>, <a href="https://twitter.com/ken_hoff" target="_blank">@kenhoff</a>, <a href="https://twitter.com/uijudo" target="_blank">@joshtilton</a> and <a href="https://twitter.com/tschellenbach" target="_blank">@tschellenbach</a>

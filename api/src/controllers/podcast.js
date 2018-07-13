@@ -1,17 +1,18 @@
+import mongoose from 'mongoose';
 import normalizeUrl from 'normalize-url';
+
+import Podcast from '../models/podcast';
+
 import { isURL } from '../utils/validation';
 import { discoverRSS } from '../parsers/discovery';
-import Podcast from '../models/podcast';
 import { getPodcastRecommendations } from '../utils/personalization';
 import { ParsePodcast } from '../parsers/feed';
 import strip from 'strip';
 import search from '../utils/search';
 import { PodcastQueueAdd, OgQueueAdd } from '../asyncTasks';
-import mongoose from 'mongoose';
 
 exports.list = async (req, res) => {
 	let query = req.query || {};
-
 	let podcasts;
 
 	if (query.type === 'recommended') {
@@ -24,13 +25,15 @@ exports.list = async (req, res) => {
 };
 
 exports.get = async (req, res) => {
-	if (!mongoose.Types.ObjectId.isValid(req.params.podcastId)) {
+	const podcastId = req.params.podcastId;
+
+	if (!mongoose.Types.ObjectId.isValid(podcastId)) {
 		return res
 			.status(422)
 			.json({ error: `Podcast ID ${podcastId} is an invalid ObjectId.` });
 	}
 
-	let podcast = await Podcast.findById(req.params.podcastId).exec();
+	let podcast = await Podcast.findById(podcastId).exec();
 	if (!podcast) {
 		return res.status(404).json({ error: `Resource not found.` });
 	}
@@ -163,19 +166,25 @@ exports.post = async (req, res) => {
 };
 
 exports.put = async (req, res) => {
+	const podcastId = req.params.podcastId;
+
+	if (!mongoose.Types.ObjectId.isValid(podcastId)) {
+		return res
+			.status(422)
+			.json({ error: `Podcast ID ${podcastId} is an invalid ObjectId.` });
+	}
+
 	if (!req.User.admin) {
 		return res.status(403).send();
 	}
 
-	if (!req.params.podcastId) {
+	if (!podcastId) {
 		return res.status(401).json({ error: 'Missing required Podcast ID.' });
 	}
 
-	let podcast = await Podcast.findByIdAndUpdate(
-		{ _id: req.params.podcastId },
-		req.body,
-		{ new: true },
-	);
+	let podcast = await Podcast.findByIdAndUpdate({ _id: podcastId }, req.body, {
+		new: true,
+	});
 
 	if (!podcast) {
 		return res.status(404).json({ error: 'Podcast could not be found.' });

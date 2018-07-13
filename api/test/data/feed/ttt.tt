@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>烧饼博客</title>
+    <link>https://sb.sb/</link>
+    <description>Recent content on 烧饼博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>sb@sb.sb (Showfom)</managingEditor>
+    <webMaster>sb@sb.sb (Showfom)</webMaster>
+    <copyright>&amp;copy; Showfom</copyright>
+    <lastBuildDate>Wed, 04 Apr 2018 22:17:06 +0800</lastBuildDate>
+    
+	<atom:link href="https://sb.sb/rss.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Debian 9 安装 LEMP &#43; WHMCS 7.5 教程</title>
+      <link>https://sb.sb/blog/debian-install-whmcs/</link>
+      <pubDate>Wed, 04 Apr 2018 22:17:06 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-install-whmcs/</guid>
+      <description>WHMCS 7.5 终于发布了，这货开始支持 PHP 7.2，这里就写个简单的教程记录一下安装方式
+1、准备工作 首先，按照《Debian 9 / Debian 8 使用源安装 LEMP 教程》安装好 LEMP 环境，可以选一些需要用到的 PHP 7.2 软件包</description>
+    </item>
+    
+    <item>
+      <title>我们做出了一个艰难的决定</title>
+      <link>https://sb.sb/blog/april-fools-2018/</link>
+      <pubDate>Sun, 01 Apr 2018 17:05:30 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/april-fools-2018/</guid>
+      <description>由于烧饼博客经营不善，博主带着小姨子跑路了，整个组织濒临破产边缘。经第一届金枪鱼全体代表大会讨论研究决定，烧饼博客名下的 Telegram 群组站将启用免费使用+付费增值模式。具体收费标准如下：
+   项目 普通用户 青铜会员 白银会员 黄金会员 铂金会员 钻石会员 大师会员 王者 备注     收费标准 免费 $9/mo $19/mo $29/mo $39/mo $49/mo $59/mo $99/mo n/a   Telegram 发言 5 条/周 10 条/周 15 条/周 20 条/周 25 条/周 30 条/周 35 条/周 无限条/周 除王者外超出部分 $1/条   Telegram 发言置顶 无 1 条/月 2 条/月 3 条/月 4 条/月 5 条/月 10 条/月 无限条/月 除王者外超出部分 $10/条   其他特权 无 无 无 无 无 Telegram 群红名 上线提醒 享受管理员特权 n/a    此标准发布即日起不执行，本文修改并抄袭自 Tuna</description>
+    </item>
+    
+    <item>
+      <title>Debian 9 安装 rTorrent &#43; ruTorrent &#43; Nginx 搭建自己的 PT / BT 盒子</title>
+      <link>https://sb.sb/blog/debian-install-rtorrent-rutorrent-nginx/</link>
+      <pubDate>Wed, 28 Mar 2018 01:56:33 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-install-rtorrent-rutorrent-nginx/</guid>
+      <description>在阅读本文前，请先了解什么是 Private Tracker (简称 PT)
+ Private Tracker，简称 PT，即私用种子服务器。Private Tracker 可以统计用户的上传和下载量，计算用户的分享率。你可以简单将它理解为 BT 的升级版，在拥有 BT 所有功能的同时，需要达到一定的分享率才能不被删除帐号。PT 下载其实也是 BT 下载的一种，但有两个明显的改进：一是私密的小范围下载，二是进行流量统计，根据上载量决定你的权限。
+ 相关介绍请摸这儿、这儿、这儿</description>
+    </item>
+    
+    <item>
+      <title>Linux 下使用 acme.sh 和 NS 代管申请 Let&#39;s Encrypt 免费通配符证书</title>
+      <link>https://sb.sb/blog/linux-lets-encrypt-wildcard-ssl/</link>
+      <pubDate>Mon, 26 Mar 2018 19:55:34 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/linux-lets-encrypt-wildcard-ssl/</guid>
+      <description>作者： @msg7086
+1、简介 在《Linux 下使用 acme.sh 配置 Let&amp;rsquo;s Encrypt 免费 SSL 证书 + 通配符证书》一文中，我们介绍了如何使用 acme.sh 生成 Let&amp;rsquo;s Encrypt 通配符证书，而 DNS 认证签发证书一直是一个麻烦事。例如需要将 API Key 甚至是账号密码与签发脚本保存在一起，会有潜在的安全隐患；有些 DNS 服务商不提供 API，只能每三个月手工修改等等。</description>
+    </item>
+    
+    <item>
+      <title>Linux 下使用 acme.sh 配置 Let&#39;s Encrypt 免费 SSL 证书 &#43; 通配符证书</title>
+      <link>https://sb.sb/blog/linux-acme-sh-lets-encrypt-ssl/</link>
+      <pubDate>Tue, 20 Mar 2018 15:20:57 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/linux-acme-sh-lets-encrypt-ssl/</guid>
+      <description>1、什么是 SSL 证书？ SSL 是保护用户数据和防止身份被盗用的最佳方式。拥有 SSL 证书的网站可以告诉用户，他们可以放心的浏览，SSL 可以保护他们的数据安全。不同的 SSL 证书提供不同级别的验证。了解更多 &amp;gt;
+目前比较火的适合个人用户的证书就是 Let&amp;rsquo;s Encrypt，这货是免费的，下面我们就介绍一下如何在 Linux 服务器上配置 SSL 证书
+2、使用 acme.</description>
+    </item>
+    
+    <item>
+      <title>使用 Hugo 生成静态博客教程</title>
+      <link>https://sb.sb/blog/migrate-to-hugo/</link>
+      <pubDate>Mon, 19 Mar 2018 23:02:58 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/migrate-to-hugo/</guid>
+      <description>由于 Ghost 这个博客系统依赖 Nodejs，并且这货更新实在是太频繁，隔几天就得去服务器上 ghost update 一次，并不是很适合正式环境使用
+并且由于国内众所周知的政策原因，本站域名 sb.sb 已主动申请注销备案，趁着服务器迁移到海外的功夫，顺便我就把烧饼博客更换成了 Hugo，以下为 Hugo 安装和使用教程
+Hugo 是一款开源的使用 go 语言写的静态网站生成器，很适合数据量不大的个人博客使用
+1、安装 Hugo 使用 Go 语言开发编译后的二进制文件并不需要任何依赖，直接在官方 Github 上下载最新的文件后解压即可运行，参考官网的安装教程</description>
+    </item>
+    
+    <item>
+      <title>Debian / Ubuntu 搭建 Isso 评论系统教程</title>
+      <link>https://sb.sb/blog/debian-ubuntu-install-isso/</link>
+      <pubDate>Mon, 19 Mar 2018 22:55:31 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-ubuntu-install-isso/</guid>
+      <description>由于某说要关闭，某言对 HTTPS 支持不友好，某易必须登陆才可以且在国外访问卡出翔，剩下国产的服务都一般，而国外服务 Disqus 是个不存在的网站并且会加载一大堆追踪的 JS，对于有洁癖的博主来说，全世界第三方评论系统基本没有一个好用，所以我们可以考虑自己搭建 Isso 评论系统
+Isso 是基于 Python 写的一套评论系统，用途就是代替以上说的第三方不靠谱平台，而官网的教程坑很多，新手没有接触过运维工作安装起来难度较大，所以我就整理一下基本的教程，尽量可以让所有用户都能自行搭建评论系统
+本文所有操作均在 root 用户下进行，请自行切换
+首先，更新系统
+apt-get update &amp;amp;&amp;amp; apt-get upgrade 如果您用的 Debian 9.</description>
+    </item>
+    
+    <item>
+      <title>Debian 9 / Ubuntu 16.04 搭建 Ghost 1.x 教程</title>
+      <link>https://sb.sb/blog/debian-ubuntu-install-upgrade-ghost/</link>
+      <pubDate>Mon, 19 Mar 2018 22:51:30 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-ubuntu-install-upgrade-ghost/</guid>
+      <description>PS：强烈不推荐使用这个博客系统
+1、更新系统并安装必要软件 这个就不需要我多讲了，首先用 root 用户登陆系统，如果不是的话先切换到 root
+Debian 9.x 下
+apt-get update &amp;amp;&amp;amp; apt-get upgrade apt-get -t stretch-backports update &amp;amp;&amp;amp; apt-get -t stretch-backports upgrade Ubuntu 16.</description>
+    </item>
+    
+    <item>
+      <title>Debian 使用 gdnsd 自建 DNS 服务并分区解析</title>
+      <link>https://sb.sb/blog/debian-install-gdnsd/</link>
+      <pubDate>Mon, 19 Mar 2018 22:33:47 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-install-gdnsd/</guid>
+      <description>gdnsd 是一款权威 DNS (Authoritative-only DNS)服务器软件，因为自带 GeoIP 插件，所以很适合自建 CDN 做分区解析，著名的喂鸡百科就是使用 gdnsd 进行全球 CDN 分区解析
+众所周知，天朝的网络环境，国内访问国外慢，同理国外访问国内也慢，所以我们很有必要搭建 CDN 并且使用 DNS 进行分区解析
+而国内比较知名的权威 DNS 服务商如 CloudXNS, DNSpod 他们免费版的 DNS 服务器都在国内，这样会造成国外的用户解析你的域名很慢，同理，如果使用国外的权威 DNS 服务商如 Cloudflare, AWS Route53 他们的 DNS 服务器都部属在国外，国内访问基本要走美国节点，这样会造成国内的用户解析你的域名很慢</description>
+    </item>
+    
+    <item>
+      <title>前端 CDNJS 库及 Google Fonts、Ajax 和 Gravatar 国内加速服务</title>
+      <link>https://sb.sb/blog/css-cdn/</link>
+      <pubDate>Mon, 19 Mar 2018 22:32:23 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/css-cdn/</guid>
+      <description>由于某些众所周知的原因，好多开源的 JS 库采用的国外 CDN 托管方式在国内访问速度不如人意。所以我们特意制作了这个公益项目，托管了 CDNJS 的所有开源 JS 库以及反代了 Google Fonts、Ajax 和 Gravatar，并且全部支持 http 和 https
+1、CDNJS 开源 JS 库 我们采用的方法是每天定时同步 CDNJS 的 Github</description>
+    </item>
+    
+    <item>
+      <title>IP.SB - 在线 IPv4 / IPv6 信息查询</title>
+      <link>https://sb.sb/blog/ip-sb/</link>
+      <pubDate>Mon, 19 Mar 2018 22:31:10 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/ip-sb/</guid>
+      <description>1、IP.SB 的由来 IP.SB 前身是 IP.GS ，一个专门用于查询本地出口 IP 的网站，初衷是为了让用户更方便地知道自己的本地出口 IP，使用的数据库是 IPIP.NET 提供的商业版
+随着访问量增加，并且全世界 IPv6 渐渐普及，我们发现仅仅使用 IPIP.NET 的数据库已经无法满足需求，比如他们没有提供 IPv6 数据库，而国外的 Maxmind 的 IPv4 数据库准确性又没有 IPIP.</description>
+    </item>
+    
+    <item>
+      <title>Linux 下编译安装最新版本 Nginx</title>
+      <link>https://sb.sb/blog/linux-install-nginx/</link>
+      <pubDate>Mon, 19 Mar 2018 22:26:34 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/linux-install-nginx/</guid>
+      <description>之前介绍过《CentOS / RHEL 7.x 使用 EPEL 安装最新版本 LEMP / LNMP》，其中有两种使用源安装的方法，但是无论是 EPEL 方式或 Nginx 官方源方式，自带的 OpenSSL 版本实在过低，所以本文介绍如何在 CentOS 7.x / RHEL 7.</description>
+    </item>
+    
+    <item>
+      <title>Debian / Ubuntu 更新内核并开启 TCP BBR 拥塞控制算法</title>
+      <link>https://sb.sb/blog/debian-ubuntu-tcp-bbr/</link>
+      <pubDate>Mon, 19 Mar 2018 22:22:23 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-ubuntu-tcp-bbr/</guid>
+      <description>BBR (Bottleneck Bandwidth and RTT) 是 Google 提供的 TCP 拥塞控制算法，适用于复杂网络环境下的 TCP 加速。由于众所周知的原因，天朝的网络情况在全世界都排得上号，很多情况下我们不得不进行一些细小的优化才能达到满意的效果。
+话不多说了，首先需要准备的条件
+ Debian 8.x 或者 Debian 9.x 系统，当然以下教程也适合 Ubuntu 14.</description>
+    </item>
+    
+    <item>
+      <title>Debian 9 / Debian 8 安装 vnStat 统计服务器流量</title>
+      <link>https://sb.sb/blog/debian-install-vnstat/</link>
+      <pubDate>Mon, 19 Mar 2018 22:05:51 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-install-vnstat/</guid>
+      <description>vnStat 是一款开源的 Linux 下统计网卡流量的软件，可以很方便地查看当前、当天、当月的流量统计报告，下面我们介绍下在 Debian 9.x 下安装 vnstat 的简单方法，本文同样适用于 Debian 8.x
+首先，使用 ip a 命令查看你机器的网卡名称，如果是全新的 iso 安装的 Debian 9，那么默认的网卡名称应该为 ens3 或 ens4</description>
+    </item>
+    
+    <item>
+      <title>Debian 9 Stretch 解决 /etc/rc.local 开机启动问题</title>
+      <link>https://sb.sb/blog/debian-9-rc-local/</link>
+      <pubDate>Mon, 19 Mar 2018 22:03:33 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-9-rc-local/</guid>
+      <description>由于某些软件并没有增加开启启动的服务，很多时候需要手工添加，一般我们都是推荐添加命令到 /etc/rc.local 文件，但是 Debian 9 默认不带 /etc/rc.local 文件，而 rc.local 服务却还是自带的
+root@debian9 ~ # cat /lib/systemd/system/rc.local.service # This file is part of systemd.</description>
+    </item>
+    
+    <item>
+      <title>阿里云通过网络安装全新 Debian 9 Stretch</title>
+      <link>https://sb.sb/blog/install-debian-alibabacloud/</link>
+      <pubDate>Mon, 19 Mar 2018 22:01:46 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/install-debian-alibabacloud/</guid>
+      <description>由于众多云主机商家的系统模板总是让人不满意，不是多装了软件就是瞎 JB 写了一些配置，而且 Debian 9.x 都发布一个多月了，国内云主机商能跟上步伐的很少，美团云甚至还停留在 Debian 7.0 时代，而且发了几次工单都没得到任何反应，这是绝对不能忍的
+作为一只有洁癖的人，我决定亲自动手重新安装阿里云和美团云的系统，这里我们以阿里云为例，希望安装的操作系统是最新版本 Debian 9.x Stretch
+1、准备工作和必要条件 准备工作
+ 账号一枚 开通一个云主机并且选择操作系统选择 Debian 8 泡一杯茶静下心，按照我的教程一步一步来  必要条件</description>
+    </item>
+    
+    <item>
+      <title>Debian 8 Jessie 升级至 Debian 9 Stretch 教程</title>
+      <link>https://sb.sb/blog/debian-8-upgrade-to-debian-9/</link>
+      <pubDate>Mon, 19 Mar 2018 21:59:49 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-8-upgrade-to-debian-9/</guid>
+      <description>Debian 9 Stretch 已经在 2017 年 6 月 17 号发布，而很多商家的步伐并未那么快，比如某千万云，所以我们可以选择自己升级
+本教程会指导你如何在 Debian 8 Jessie 的机器上快速升级到 Debian 9 Stretch
+以下安装步骤都在 root 用户下完成，请自行使用 su 命令切换到 root 用户</description>
+    </item>
+    
+    <item>
+      <title>CentOS / RHEL 7 升级 OpenSSL 教程</title>
+      <link>https://sb.sb/blog/centos-upgrade-openssl/</link>
+      <pubDate>Mon, 19 Mar 2018 21:56:44 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/centos-upgrade-openssl/</guid>
+      <description>CentOS 7.x 的 OpenSSL 软件版本实在是低，2017 年了还在用人家 2013 年的版本，而且 1.0.1 版本对 ALPN 不支持，已经没法跟上大环境的节奏了
+可以看一下默认自带的版本
+[root@centos]# openssl version OpenSSL 1.0.1e-fips 11 Feb 2013 所以我们有必要升级 CentOS 7.</description>
+    </item>
+    
+    <item>
+      <title>CentOS / RHEL 7 使用 EPEL 安装 LEMP 教程</title>
+      <link>https://sb.sb/blog/centos-install-nginx-php-mysql/</link>
+      <pubDate>Mon, 19 Mar 2018 21:52:47 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/centos-install-nginx-php-mysql/</guid>
+      <description>CentOS 是 RHEL (Red Hat Enterprise Linux) 的免费版，由于红帽的大力推广，在国内外很是流行。因为众多企业和开发者使用，首先要求的是保证稳定，所以 CentOS 下的软件从不追求最新版本。
+而很多时候我们不得不用到最新的版本进行一些操作，本文就介绍在 CentOS / RHEL 7.x 下使用 EPEL 以及官网仓库安装最新版本的 LEMP</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>https://sb.sb/projects/</link>
+      <pubDate>Mon, 19 Mar 2018 21:44:51 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/projects/</guid>
+      <description>本博客团队目前提供以下免费公益服务
+ SM.MS 图床 | 官网
+ U.NU 短网址 | 官网
+ IP 地址查询 | 官网 | 详细介绍
+ CSS / JS 前端资源国内加速服务 | 官网 | 详细介绍</description>
+    </item>
+    
+    <item>
+      <title>Disclaimer / 免责申明</title>
+      <link>https://sb.sb/disclaimer/</link>
+      <pubDate>Mon, 19 Mar 2018 21:44:33 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/disclaimer/</guid>
+      <description>烧饼博客提供的所有内容仅供学习、分享与交流，我们不保证内容的正确性。通过使用本站内容随之而来的风险与本站无关。当使用本站时，代表你已接受本站的免费声明和隐私原则等条款。
+隐私原则 烧饼博客目前涉及到浏览者隐私的只有一个地方，就是留言区（文章评论）。当你留言时，你的电子邮箱、Cookies 信息和 IPv4 / IPv6 地址都会被记录。这些信息仅为了改进我们的网站质量和可能的交流沟通。我们不会将这些信息进行展示、出租或出售给任何人。但以下情况除外：
+ 只有透露您的个人资料，才能提供您所要求的产品和服务； 我们需要听从法庭传票、法律命令或遵循法律程序； 我们发现您违反了烧饼博客已发布的条款或声明。  其他声明 烧饼博客所有文章、图片等均为键盘自动生成，包括以上所有文字，由业内高级人工智能自动筛选并记录，谢绝所有人肉和跨省。
+烧饼博客的域名 sb.sb 目前暂时不出售。</description>
+    </item>
+    
+    <item>
+      <title>RSS Subscription / 订阅</title>
+      <link>https://sb.sb/rss-feed/</link>
+      <pubDate>Mon, 19 Mar 2018 21:44:23 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/rss-feed/</guid>
+      <description>如果您想订阅本站，有如下方法：
+1、RSS 本站默认的 RSS 订阅地址是 https://sb.sb/atom.xml 或者 https://sb.sb/rss.xml
+为了避免本站更换域名的影响，您也可以使用 Google FeedBurner 烧录好的地址
+http://feeds.feedburner.com/showfom
+2、Telegram 频道 您可以订阅本站 Telegram 频道 @sbDOTsb 获取更新</description>
+    </item>
+    
+    <item>
+      <title>Links / 友情链接</title>
+      <link>https://sb.sb/links/</link>
+      <pubDate>Mon, 19 Mar 2018 21:44:14 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/links/</guid>
+      <description>友链需要满足以下条件：
+ 独立博客，独立域名 全站 HTTPS  以及，这只是基本要求，但是本站不接受友链申请，如果您的博客或者您和我很熟悉，我会自己加上作为收藏备份，主动要求加友链的一律拒绝。
+以下排名不分先后
+ 徒弟小成 垃圾荣荣 死B凤凰卷 可爱的 Jixun 前男友 fdb713 蛇皮肥猫 Ben Wang HJC JerryQu lwl12 DIYgod 暮光博客 超能小紫 stneng joyqi 灰姑娘 呼呼 NBA 2K 中文网  </description>
+    </item>
+    
+    <item>
+      <title>Debian 9 / Debian 8 使用源安装 LEMP 教程</title>
+      <link>https://sb.sb/blog/debian-install-nginx-php-mysql/</link>
+      <pubDate>Mon, 19 Mar 2018 21:18:51 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/debian-install-nginx-php-mysql/</guid>
+      <description>Debian 9 代号 Stretch 在 2017 年 6 月 18 号正式发布，由于是最新的系统，原来基于 Dotdeb 安装最新 LEMP 的教程已经过时，本文将介绍使用官方源和第三方源在 Debian 9.x Stretch 安装最新版 LEMP 的教程，并且可以自行选择 PHP 版本。</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu 16.04 / Ubuntu 14.04 使用源安装 LEMP 教程</title>
+      <link>https://sb.sb/blog/ubuntu-install-nginx-php-mysql/</link>
+      <pubDate>Mon, 19 Mar 2018 21:11:31 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/blog/ubuntu-install-nginx-php-mysql/</guid>
+      <description>LEMP 指的是 Linux + Nginx (发音 engine x 所以这里是 E 而不是 N) + MySQL + PHP 的简称，国内有些地方叫做 LNMP (因为 LNMP 没法读出来，而 LEMP 可以直接发音，所以今后本站教程一律都会写 LEMP)</description>
+    </item>
+    
+    <item>
+      <title>Contact / 联系</title>
+      <link>https://sb.sb/contact/</link>
+      <pubDate>Mon, 19 Mar 2018 20:14:26 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/contact/</guid>
+      <description>一般情况下，各路兄弟姐妹们可以通过以下方式联系我
+ QQ / QQ 群 235701 (好友快满，基本不加人，加群需要收费) WeChat 同上，好友快满，基本不能再加人了 Telegram @Showfom Email showfom at gmail dot com Hangouts 同上 SMS / Google Project Fi +1 (217)288-8888 Twitter @Showfom Facebook Messenger @Showfom Skype Showfom  把我放入您手机的联系人 +1 (217)288-8888 基本绑定手机号码的服务就会出现我</description>
+    </item>
+    
+    <item>
+      <title>About / 关于</title>
+      <link>https://sb.sb/about/</link>
+      <pubDate>Mon, 19 Mar 2018 20:13:02 +0800</pubDate>
+      <author>sb@sb.sb (Showfom)</author>
+      <guid>https://sb.sb/about/</guid>
+      <description>如无特殊声明，本站所有内容均在 WTFPL 许可下发布</description>
+    </item>
+    
+  </channel>
+</rss>

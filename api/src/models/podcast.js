@@ -4,7 +4,6 @@ import mongooseStringQuery from 'mongoose-string-query';
 import { getStreamClient } from '../utils/stream';
 import { getUrl } from '../utils/urls';
 
-
 export const PodcastSchema = new Schema(
 	{
 		url: {
@@ -158,8 +157,6 @@ PodcastSchema.statics.incrScrapeFailures = async function(id) {
 	).exec();
 };
 
-
-
 PodcastSchema.statics.resetScrapeFailures = async function(id) {
 	await this.findOneAndUpdate(
 		{ _id: id },
@@ -182,7 +179,7 @@ PodcastSchema.methods.searchDocument = function() {
 };
 
 PodcastSchema.methods.getUrl = function() {
-	return getUrl('podcast_detail', this._id)
+	return getUrl('podcast_detail', this._id);
 };
 
 PodcastSchema.methods.serialize = function serialize() {
@@ -191,6 +188,25 @@ PodcastSchema.methods.serialize = function serialize() {
 		.feed('podcast', this._id)
 		.getReadOnlyToken();
 	return serialized;
+};
+
+PodcastSchema.statics.findFeatured = function() {
+	const query = [
+		{ featured: true },
+		{ interest: 'UI/UX' },
+		{ interest: 'Startups & VC' },
+		{ interest: 'Programming' },
+		{ interest: 'Gaming' },
+		{ interest: 'Machine Learning & AI' },
+		{ interest: 'News' },
+		{ interest: 'VR' },
+		{ interest: 'Lifehacks' },
+		{ interest: 'Marketing' },
+	];
+
+	return this.find({
+		$or: query,
+	});
 };
 
 module.exports = exports = mongoose.model('Podcast', PodcastSchema);

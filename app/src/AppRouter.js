@@ -8,8 +8,6 @@ import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
 import { Router, Switch, Route } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
-import analytics from './util/tracking';
-import config from './config';
 import { createHashHistory, createBrowserHistory } from 'history';
 import fetch from './util/fetch';
 import AdminView from './views/AdminView';
@@ -27,15 +25,16 @@ if (isElectron) {
 	history = createBrowserHistory();
 }
 
-history.listen(location => {
-	return analytics.pageview(`http://localhost:${config.port}`, location.pathname);
-});
-
 class AppRouter extends Component {
 	componentDidMount() {
 		if (localStorage['authedUser']) {
 			fetch('GET', `/users/${localStorage['authedUser']}`)
 				.then(res => {
+					// set user for stream analytics
+					window.streamAnalyticsClient.setUser({
+						id: res.data._id,
+						alias: res.data.email,
+					});
 					this.props.dispatch({
 						type: 'UPDATE_USER',
 						user: res.data,

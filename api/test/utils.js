@@ -7,6 +7,8 @@ import redis from 'redis';
 import sinon from 'sinon';
 import { expect, request } from 'chai';
 import StreamClient from 'getstream/src/lib/client';
+import Personalization from 'getstream/src/lib/personalization';
+import Collections from 'getstream/src/lib/collections';
 
 import api from '../src/server';
 import config from '../src/config';
@@ -37,13 +39,13 @@ export function getMockFeed(group, id) {
 
 function setupMocks() {
 	mockClient = sinon.createStubInstance(StreamClient);
-	mockClient.collections = {
-		upsert: sinon.spy(sinon.stub().returns(Promise.resolve({ results: [] }))),
-	};
+	mockClient.collections = sinon.createStubInstance(Collections);
+	mockClient.personalization = sinon.createStubInstance(Personalization);
 	mockClient.feed.callsFake((group, id) => {
 		return mockFeeds[group + ':' + id] || createMockFeed(group, id);
 	});
 }
+
 export function getMockClient() {
 	if (mockClient == null) {
 		setupMocks();

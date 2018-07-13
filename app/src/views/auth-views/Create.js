@@ -29,8 +29,13 @@ class Create extends Component {
 		} else {
 			return (
 				<AccountDetailsForm
-					done={(userID, jwt) => {
-						localStorage['authedUser'] = userID;
+					done={({ _id, email, jwt }) => {
+						// set user for stream analytics
+						window.streamAnalyticsClient.setUser({
+							id: _id,
+							alias: email,
+						});
+						localStorage['authedUser'] = _id;
 						localStorage['jwt'] = jwt;
 						this.props.history.push('/');
 					}}
@@ -263,6 +268,14 @@ class AccountDetailsForm extends React.Component {
 	}
 
 	submit(username, email, password, name) {
+		if (!this.state.valid || this.state.submitting) {
+			return;
+		}
+
+		this.setState({
+			submitting: true,
+		});
+
 		axios
 			.post(config.api.url + '/auth/signup', {
 				username,
@@ -272,18 +285,22 @@ class AccountDetailsForm extends React.Component {
 				interests: this.props.interests,
 			})
 			.then(res => {
-				this.props.done(res.data._id, res.data.jwt);
+				this.props.done(res.data);
+
+				this.setState({
+					submitting: false,
+				});
 			})
 			.catch(err => {
 				let errorMessage;
-				
+
 				if (
 					err.response &&
 					err.response.status > 399 &&
 					err.response.status < 500 &&
 					err.response.data
 				) {
-					errorMessage = err.response.data;
+					errorMessage = err.response.data.error;
 				} else {
 					errorMessage =
 						'There was an error when attempting to create your account. Please try again later.';
@@ -291,6 +308,7 @@ class AccountDetailsForm extends React.Component {
 
 				this.setState({
 					errorMessage,
+					submitting: false,
 				});
 			});
 	}
@@ -361,9 +379,9 @@ class AccountDetailsForm extends React.Component {
 						tabIndex="5"
 						type="submit"
 						className="btn primary"
-						disabled={!this.state.valid}
+						disabled={!this.state.valid || this.state.submitting}
 					>
-						Continue
+						{this.state.submitting ? 'Submitting...' : 'Continue'}
 					</button>
 					<div className="error">{this.state.errorMessage}</div>
 				</form>

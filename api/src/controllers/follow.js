@@ -8,7 +8,6 @@ import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 
 import config from '../config';
-import logger from '../utils/logger';
 import { getStreamClient } from '../utils/stream';
 
 exports.list = async (req, res) => {

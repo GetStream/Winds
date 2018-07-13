@@ -56,6 +56,7 @@ class SuggestedPodcasts extends React.Component {
 				console.log(err); // eslint-disable-line no-console
 			});
 	}
+
 	followPodcast(podcastID) {
 		this.props.dispatch({
 			podcastID,
