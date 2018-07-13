@@ -130,15 +130,22 @@ export async function handleRSS(job) {
 		);
 	});
 
+	const socialBatch = Article.collection.initializeUnorderedBulkOp();
+	let updatingSocialScore = false;
 	updatedArticles = await timeIt('winds.handle_rss.update_social_score', () => {
 		return Promise.all(updatedArticles.filter(a => !!a.url).map(async article => {
 			const socialScore = await fetchSocialScore(article);
-			if (!socialScore.size) {
-				return article;
+			if (socialScore) {
+				updatingSocialScore = true;
+				article.socialScore = socialScore;
+				socialBatch.find({ _id: article._id }).updateOne({$set: { socialScore }});
 			}
-			return await Article.findByIdAndUpdate(article._id, { socialScore }, { new: true });
+			return article;
 		}));
 	});
+	if (updatingSocialScore) {
+		await socialBatch.execute();
+	}
 
 	const t0 = new Date();
 

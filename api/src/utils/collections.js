@@ -63,7 +63,12 @@ export async function sendFeedToCollections(type, feed) {
 		const limit = Math.min(content.length, offset + chunkSize);
 		const data = content.slice(offset, limit).map(c => {
 			//XXX: converting from Map to Object to allow correct JSON serialization
-			const socialScore = c.socialScore ? Object.assign(...[...c.socialScore].map(([k, v]) => ({ [k]: v }))) : {};
+			const socialScore = {};
+			if (c.socialScore) {
+				for (const [k, v] of c.socialScore.entries()) {
+					socialScore[k] = v;
+				}
+			}
 			return {
 				id: c.id,
 				title: c.title,
