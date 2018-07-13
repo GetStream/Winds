@@ -7,6 +7,13 @@
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
 
+## Description
+
+Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact, we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
+
+## Getting Started
+To get started with Winds, please visit [https://getstream.io/winds/](https://getstream.io/winds/)
+
 ## What's New
 
 In addition to the desktop apps for macOS, Linux, and Windows, there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)
@@ -14,13 +21,6 @@ In addition to the desktop apps for macOS, Linux, and Windows, there's now a web
 ## Jobs
 
 Stream is sponsoring 1 person to work full time on Winds. The job posting is available on [AngelList](https://angel.co/stream/jobs/376455-senior-javascript-frontend-engineer).
-
-## Description
-
-Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact, we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
-
-## Getting Started
-To get started with Winds, please visit [https://getstream.io/winds/](https://getstream.io/winds/)
 
 # Features at a Glance
 Winds is packed full of awesome features behind a beautiful user interface and user experience. Here's a quick look at what the project has to offer:
