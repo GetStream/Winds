@@ -16,7 +16,7 @@ To get started with Winds, please visit [https://getstream.io/winds/](https://ge
 
 ## What's New
 
-In addition to the desktop apps for macOS, Linux, and Windows, there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)
+In addition to the desktop apps for [macOS](https://s3.amazonaws.com/winds-2.0-releases/latest.html), [Linux](https://s3.amazonaws.com/winds-2.0-releases/latest.html), and [Windows](https://s3.amazonaws.com/winds-2.0-releases/latest.html), there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)
 
 ## Jobs
 
