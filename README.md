@@ -1,4 +1,4 @@
-# Winds 2.0 - A Beautiful Open Source RSS & Podcast App
+# Winds - A Beautiful Open Source RSS & Podcast App Powered by GetStream.io
 
 [![Slack Community](https://img.shields.io/badge/Slack%20Community-Get%20Invite-green.svg)](https://communityinviter.com/apps/winds-community-hq/winds-2-0)
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
@@ -7,15 +7,39 @@
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
 
-**What's new: In addition to the desktop apps there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)**
+## What's New
 
-**Stream is sponsoring 1 person to work full time on Winds: https://angel.co/stream/jobs/376455-senior-javascript-frontend-engineer**
+In addition to the desktop apps there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)**
+
+## Jobs
+
+Stream is sponsoring 1 person to work full time on Winds. The job posting is available on [AngelList](https://angel.co/stream/jobs/376455-senior-javascript-frontend-engineer).
+
+## Description
 
 Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact, we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
-### **To get started with Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/)**
+## Getting Started
+To get started with Winds, please visit [https://getstream.io/winds/](https://getstream.io/winds/)
 
-![Winds 2.0](https://i.imgur.com/ihPvkJU.png)
+# Features at a Glance
+Winds is packed full of awesome features behind a beautiful user interface and user experience. Here's a quick look at what the project has to offer:
+
+## Beautiful UI
+![Winds UI](https://i.imgur.com/W1fpowV.png)
+
+## RSS & Podcast Recommendations
+![Winds RSS & Podcast Recommendations](https://i.imgur.com/AlVgDTg.png)
+
+## Integrated Search
+![Winds Search](https://i.imgur.com/zaWtNfV.png)
+
+## Podcast Player
+![Winds Podcast Player](https://i.imgur.com/th247rA.png)
+
+## RSS Reader
+![Winds RSS Reader](https://i.imgur.com/D3wt7W3.png)
+
 
 ## TOCd
 
@@ -79,7 +103,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 2.  Building activity streams and newsfeeds on top of Stream
 3.  Implementing search with Algolia
 4.  MongoDB database schema design
-5.  Design thought process for Winds 2.0
+5.  Design thought process for Winds
 6.  PM2 in production environments
 7.  Creating a RESTful API design with Express.js
 8. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
@@ -89,7 +113,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 ## Download
 
-To download Winds 2.0, visit [https://getstream.io/winds/](https://getstream.io/winds/).
+To download Winds, visit [https://getstream.io/winds/](https://getstream.io/winds/).
 
 ## Contributing to Winds
 
