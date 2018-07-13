@@ -15,7 +15,7 @@ Winds is a beautiful open-source RSS and Podcast app created using React/Redux/N
 
 ### **To get started with Winds 2.0, please visit [https://getstream.io/winds/](https://getstream.io/winds/)**
 
-![Winds 2.0](https://i.imgur.com/n2eKwPf.gif)
+![Winds 2.0](https://i.imgur.com/ihPvkJU.png)
 
 ## TOCd
 
