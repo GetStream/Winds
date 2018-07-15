@@ -11,13 +11,14 @@ import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
 
-import { sendRssFeedToCollections } from '../utils/collections';
+import { sendFeedToCollections } from '../utils/collections';
 import { ParseFeed } from '../parsers/feed';
 
 import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
+import { fetchSocialScore } from '../utils/social';
 
 const duplicateKeyError = 11000;
 
@@ -129,26 +130,48 @@ export async function handleRSS(job) {
 		);
 	});
 
-	let t0 = new Date();
-	let rssFeed = getStreamClient().feed('rss', rssID);
-	logger.debug(`Syncing ${updatedArticles.length} articles to Stream`);
-	if (updatedArticles.length > 0) {
-		let chunkSize = 100;
-		for (let i = 0, j = updatedArticles.length; i < j; i += chunkSize) {
-			let chunk = updatedArticles.slice(i, i + chunkSize);
-			let streamArticles = chunk.map(article => {
-				return {
-					actor: article.rss,
-					foreign_id: `articles:${article._id}`,
-					object: article._id,
-					time: article.publicationDate,
-					verb: 'rss_article',
-				};
-			});
-			await rssFeed.addActivities(streamArticles);
-		}
-		await sendRssFeedToCollections(rss);
+	const socialBatch = Article.collection.initializeUnorderedBulkOp();
+	let updatingSocialScore = false;
+	updatedArticles = await timeIt('winds.handle_rss.update_social_score', () => {
+		return Promise.all(updatedArticles.filter(a => !!a.url).map(async article => {
+			const socialScore = await fetchSocialScore(article);
+			if (socialScore) {
+				updatingSocialScore = true;
+				article.socialScore = socialScore;
+				socialBatch.find({ _id: article._id }).updateOne({$set: { socialScore }});
+			}
+			return article;
+		}));
+	});
+	if (updatingSocialScore) {
+		await socialBatch.execute();
 	}
+
+	const t0 = new Date();
+
+	const rssFeed = getStreamClient().feed('rss', rssID);
+	logger.debug(`Syncing ${updatedArticles.length} articles to Stream`);
+
+	const chunkSize = 100;
+	for (let offset = 0; offset < updatedArticles.length; offset += chunkSize) {
+		const limit = offset + chunkSize;
+		const chunk = updatedArticles.slice(offset, limit);
+		const streamArticles = chunk.map(article => {
+			return {
+				actor: article.rss,
+				foreign_id: `articles:${article._id}`,
+				object: article._id,
+				time: article.publicationDate,
+				verb: 'rss_article',
+			};
+		});
+		await rssFeed.addActivities(streamArticles);
+	}
+
+	if (updatedArticles.length > 0) {
+		await sendFeedToCollections('rss', rss);
+	}
+
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
 }
 

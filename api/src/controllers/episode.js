@@ -9,7 +9,7 @@ exports.list = async (req, res) => {
 	let episodes = [];
 
 	if (query.type === 'recommended') {
-		episodes = await getEpisodeRecommendations(req.User);
+		episodes = await getEpisodeRecommendations(req.User._id.toString());
 	} else {
 		if (query.podcast && !mongoose.Types.ObjectId.isValid(query.podcast)) {
 			return res.status(400).json({ error: `Invalid Podcast id ${query.podcast}` });
