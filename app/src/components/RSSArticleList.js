@@ -11,7 +11,6 @@ import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
 import Waypoint from 'react-waypoint';
 import Img from 'react-image';
-import Popover from 'react-popover';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {

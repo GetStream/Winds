@@ -3,7 +3,6 @@ import Waypoint from 'react-waypoint';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import EpisodeListItem from './EpisodeListItem';
 import Img from 'react-image';
-import Popover from 'react-popover';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
