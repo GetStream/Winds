@@ -13,14 +13,11 @@ import Follow from '../models/follow';
 import User from '../models/user';
 
 import config from '../config';
-import { rateLimiter } from '../utils/rate-limiter';
+import * as rateLimit from '../utils/rate-limiter';
 import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
 import { IsPodcastURL } from '../parsers/detect-type';
 import search from '../utils/search';
 import { isURL } from '../utils/validation';
-
-const requestsPerMinute = 500;
-const rateLimit = rateLimiter(requestsPerMinute);
 
 exports.get = async (req, res) => {
 	let follows = await Follow.find({ user: req.user.sub });
@@ -94,8 +91,8 @@ exports.post = async (req, res) => {
 
 	const results = await Promise.all(
 		feeds.map(async feed => {
-			//XXX: ensuring we process opml at most at 500 per minute rate
-			await rateLimit.tick();
+			//XXX: ensuring we process opml at most at 3k per user per day rate
+			await rateLimit.tick(req.user.sub);
 			return await followOPMLFeed(feed, req.user.sub);
 		}),
 	);
