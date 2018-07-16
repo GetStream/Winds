@@ -55,6 +55,96 @@ exports.get = async (req, res) => {
 	res.end(opml);
 };
 
+function partitionBy(collection, selector) {
+	const partitions = [[collection[0]]];
+	let currentPartition = 0;
+	let lastElement = selector(collection[0]);
+	for (let i = 1; i < collection.length; ++i) {
+		const element = selector(collection[i]);
+		if (element !== lastElement) {
+			partitions.push([]);
+			++currentPartition;
+		}
+		partitions[currentPartition].push(collection[i]);
+		lastElement = element;
+	}
+	return partitions;
+}
+
+async function identifyFeedType(feed) {
+	let schema;
+	let publicationType;
+	let isPodcast;
+
+	if (!feed.valid) {
+		throw new Error(`Invalid feedUrl ${feed.feedUrl}`);
+	}
+
+	try {
+		isPodcast = await IsPodcastURL(feed.feedUrl);
+	} catch (_) {
+		throw new Error(`Error opening ${feed.feedUrl}`);
+	}
+
+	if (isPodcast) {
+		schema = Podcast;
+		publicationType = 'podcast';
+	} else {
+		schema = RSS;
+		publicationType = 'rss';
+	}
+
+	const feedUrl = normalizeUrl(feed.feedUrl);
+	if (!isURL(feedUrl)) {
+		throw new Error(`Invalid URL for OPML import ${feedUrl}`);
+	}
+
+	return {feed, schema, publicationType, url: feedUrl};
+}
+
+async function getOrCreateManyPublications(feeds) {
+	if (!feeds.length) {
+		return [];
+	}
+
+	const feedUrls = feeds.map(p => p.url);
+	const instances = await feeds[0].schema.find({ feedUrl: { $in: feedUrls } });
+
+	const existingFeedUrls = new Set(instances.map(i => i.feedUrl));
+	const newPublications = feeds.filter(p => !existingFeedUrls.has(p.url));
+
+	if (!newPublications.length) {
+		return instances;
+	}
+
+	const newInstanceData = newPublications.map(p => {
+		const title = entities.decodeHTML(p.feed.title);
+		return {
+			categories: p.publicationType,
+			description: title,
+			favicon: p.feed.favicon,
+			feedUrl: p.url,
+			lastScraped: moment().subtract(12, 'hours'),
+			public: true,
+			publicationDate: moment().toISOString(),
+			title,
+			url: p.feed.url,
+		};
+	});
+
+	const newInstances = await feeds[0].schema.insertMany(newInstanceData);
+
+	const queue = feeds[0].publicationType == 'rss' ? RssQueueAdd : PodcastQueueAdd;
+	const queueData = newInstances.map(i => ({ [i.categories]: i._id, url: i.feedUrl }));
+
+	const enqueues = queueData.map(d => queue(d, { priority: 1, removeOnComplete: true, removeOnFail: true }));
+	const indexing = newInstances.map(i => search(i.searchDocument()));
+
+	await Promise.all(enqueues.concat(indexing));
+
+	return instances.concat(newInstances);
+}
+
 exports.post = async (req, res) => {
 	const upload = Buffer.from(req.file.buffer).toString('utf8');
 
@@ -89,89 +179,46 @@ exports.post = async (req, res) => {
 		}
 	}
 
-	const results = await Promise.all(
-		feeds.map(async feed => {
-			//XXX: ensuring we process opml at most at 3k per user per day rate
-			await rateLimit.tick(req.user.sub);
-			return await followOPMLFeed(feed, req.user.sub);
-		}),
-	);
+	const feedIdentities = await Promise.all(feeds.map(async f => {
+		try {
+			return { result: await identifyFeedType(f) };
+		} catch (err) {
+			return { feedUrl: f.feedUrl, error: err.message };
+		}
+	}));
 
-	return res.json(results);
+	const failedFeeds = feedIdentities.filter(f => !!f.error);
+	const feedSchemas = feedIdentities.filter(f => !!f.result).map(f => f.result);
+
+	feedSchemas.sort((lhs, rhs) => lhs.publicationType.localeCompare(rhs.publicationType));
+
+	//XXX: process podcasts first, then rss to allow bulk operations
+	const partitions = partitionBy(feedSchemas, p => p.schema);
+
+	let publications = [];
+	const chunkSize = 1000;
+	for (const feeds of partitions) {
+		for (let offset = 0; offset < feeds.length; offset += chunkSize) {
+			const limit = offset + chunkSize;
+			const chunk = feeds.slice(offset, limit);
+
+			publications = publications.concat(await getOrCreateManyPublications(chunk));
+		}
+	}
+
+	let follows = [];
+	for (let offset = 0; offset < publications.length; offset += chunkSize) {
+		const limit = offset + chunkSize;
+		const chunk = publications.slice(offset, limit);
+
+		await rateLimit.tick(req.user.sub);
+
+		const followInstructions = chunk.map(p => ({ type: p.categories, userID: req.user.sub, publicationID: p._id }));
+		const newFollows = await Follow.getOrCreateMany(followInstructions);
+		follows = follows.concat(newFollows.map((f, i) => ({ feedUrl: chunk[i].url, follow: f })));
+	}
+
+	const errors = failedFeeds.map(f => ({ ...f, follow: {} }));
+
+	return res.json(follows.concat(errors));
 };
-
-async function followOPMLFeed(feed, userId) {
-	let schema;
-	let publicationType;
-	let isPodcast;
-
-	let result = {
-		feedUrl: feed.feedUrl,
-		follow: {},
-	};
-
-	if (!feed.valid) {
-		result.error = `Invalid feedUrl ${feed.feedUrl}`;
-		return result;
-	}
-
-	try {
-		isPodcast = await IsPodcastURL(feed.feedUrl);
-	} catch (e) {
-		result.error = `Error opening ${feed.feedUrl}`;
-		return result;
-	}
-
-	if (isPodcast) {
-		schema = Podcast;
-		publicationType = 'podcast';
-	} else {
-		schema = RSS;
-		publicationType = 'rss';
-	}
-
-	let feedUrl = normalizeUrl(feed.feedUrl);
-	if (!isURL(feedUrl)) {
-		result.error = `Invalid URL for OPML import ${feedUrl}`;
-		return result;
-	}
-
-	let instance = await schema.findOne({ feedUrl: feedUrl });
-
-	if (!instance) {
-		let data = {
-			categories: publicationType,
-			description: entities.decodeHTML(feed.title),
-			favicon: feed.favicon,
-			feedUrl: feedUrl,
-			lastScraped: moment().subtract(12, 'hours'),
-			public: true,
-			publicationDate: moment().toISOString(),
-			title: entities.decodeHTML(feed.title),
-			url: feed.url,
-		};
-
-		instance = await schema.create(data);
-
-		let queueData = { url: feedUrl };
-		queueData[publicationType] = instance._id;
-
-		let queue = publicationType == 'rss' ? RssQueueAdd : PodcastQueueAdd;
-
-		await queue(queueData, {
-			priority: 1,
-			removeOnComplete: true,
-			removeOnFail: true,
-		});
-
-		await search(instance.searchDocument());
-	}
-
-	// always create the follow
-	let publicationID = instance._id;
-	let follow = await Follow.getOrCreate(publicationType, userId, publicationID);
-
-	result.follow = follow;
-
-	return result;
-}

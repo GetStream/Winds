@@ -6,14 +6,14 @@ import * as limiter from '../../src/utils/rate-limiter';
 describe('Rate limiter', () => {
     let originalSetTimeout;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        await limiter.reset('fake-id');
         originalSetTimeout = global.setTimeout;
         global.setTimeout = sinon.spy(originalSetTimeout);
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         global.setTimeout = originalSetTimeout;
-        await limiter.reset('fake-id');
     });
 
     it('shouldn\'t block until max capacity is reached', async () => {
