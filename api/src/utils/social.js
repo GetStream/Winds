@@ -90,12 +90,61 @@ async function tryHackernewsAPI(path, retries=3) {
 	throw new Error(`Failed to perform call to '${path}'`);
 }
 
+async function tryHackernewsSearch(query, retries=3) {
+	const url = 'https://hn.algolia.com/api/v1/search';
+	while (retries) {
+		try {
+			return await axios.get(url).query({
+				restrictSearchableAttributes: 'url',
+				tags: 'story',
+				query
+			});
+		} catch (_) {
+			--retries;
+		}
+	}
+	throw new Error(`Failed to perform call to '${path}'`);
+}
+
+export async function redditPost(article) {
+	const response = await tryRedditAPI(`/info?url=${article.url}`);
+	const postScores = response.data.data.children.map(c => c.data.score);
+	return postScores.reduce((max, n) => Math.max(max, n), 0);
+}
+
+export async function hackernewsPost(article) {
+	const response = await tryHackernewsSearch(article.url);
+	const postScores = response.data.hits.map(c => c.points);
+	return postScores.reduce((max, n) => Math.max(max, n), 0);
+}
+
 export async function redditScore(postID) {
 	const response = await tryRedditAPI(`/info?id=${postID}`);
 	return response.data.data.children[0].data.score;
 }
 
 export async function hackernewsScore(postID) {
-    const response = await tryHackernewsAPI(`/item/${postID}.json`);
-    return response.data.score;
+	const response = await tryHackernewsAPI(`/item/${postID}.json`);
+	return response.data.score;
+}
+
+const socialSources = {
+	reddit: { extractID: extractRedditPostID, search: redditPost, score: redditScore },
+	hackernews: { extractID: extractHackernewsPostID, search: hackernewsPost, score: hackernewsScore }
+};
+
+export async function fetchSocialScore(article) {
+	const entries = await Promise.all(Object.entries(socialSources).map(async ([source, { extractID, search, score }]) => {
+		try {
+			const id = extractID(article);
+			if (id) {
+				return [source, await score(id)];
+			}
+			return [source, await search(article)];
+		} catch (_) {
+			return [source, 0];
+		}
+	}));
+
+	return new Map(entries.filter(([_, score]) => score));
 }

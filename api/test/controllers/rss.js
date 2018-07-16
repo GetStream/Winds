@@ -1,10 +1,9 @@
-import nock from 'nock';
 import { expect, request } from 'chai';
 
 import api from '../../src/server';
 import RSS from '../../src/models/rss';
 import config from '../../src/config';
-import { loadFixture, withLogin, dropDBs } from '../utils';
+import { loadFixture, withLogin, dropDBs, getMockClient } from '../utils';
 
 describe('RSS controller', () => {
 	let rss;
@@ -25,10 +24,6 @@ describe('RSS controller', () => {
 	});
 
 	describe('get RSS list', () => {
-		after(function() {
-			nock.cleanAll();
-		});
-
 		it('should return the right rss feed from /rss', async () => {
 			const response = await withLogin(request(api).get('/rss'));
 			expect(response).to.have.status(200);
@@ -36,14 +31,16 @@ describe('RSS controller', () => {
 		});
 
 		it('should return the right rss feed from /podcasts?type=recommended', async () => {
-			nock(config.stream.baseUrl)
-				.get(/winds_rss_recommendations/)
-				.reply(200, {
-					results: [
-						{ foreign_id: `rss:${rss.id}` },
-						{ foreign_id: 'rss:5ae0c71a0e7cbc4ee14a7c81' },
-					],
-				});
+			const mock = getMockClient();
+			const opts = { user_id: '5b0f306d8e147f10f16aceaf', limit: 7 };
+			const result = {
+				results: [
+					{ foreign_id: `rss:${rss.id}` },
+					{ foreign_id: 'rss:5ae0c71a0e7cbc4ee14a7c81' },
+				],
+			};
+
+			mock.personalization.get.withArgs('winds_rss_recommendations', opts).returns({ data: result });
 
 			const response = await withLogin(
 				request(api)
@@ -55,6 +52,8 @@ describe('RSS controller', () => {
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.at.least(1);
 			expect(response.body[0].url).to.eq(rss.url);
+
+			mock.personalization.get.reset();
 		});
 	});
 

@@ -64,21 +64,15 @@ describe('RSS worker', () => {
 					await handler;
 				}
 
-				try {
-					await queue(testCases[i]);
-				} catch (_) {
-					//XXX: fetching data from the net failed, falling back to mocking
-					const url = parse(testCases[i]);
-					nock(url.host)
-						.get(url.path)
-						.query(url.query)
-						.reply(200, () => {
-							return getTestFeed(url.host);
-						});
-					await queue(testCases[i]);
-					nock.cleanAll();
-				}
-			});
+				//XXX: fetching data from the net failed, falling back to mocking
+				const url = parse(testCases[i]);
+				nock(url.host)
+					.get(url.path)
+					.query(url.query)
+					.reply(200, () => getTestFeed(url.host));
+				await queue(testCases[i]);
+				nock.cleanAll();
+			})
 		}
 
 		it('should fail for invalid job', async () => {

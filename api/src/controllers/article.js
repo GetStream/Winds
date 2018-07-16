@@ -10,7 +10,7 @@ exports.list = async (req, res) => {
 	let articles = [];
 
 	if (query.type === 'recommended') {
-		articles = await getArticleRecommendations(req.User);
+		articles = await getArticleRecommendations(req.User._id.toString());
 	} else {
 		if (query.rss && !mongoose.Types.ObjectId.isValid(query.rss)) {
 			return res.status(400).json({ error: `Invalid RSS id ${query.rss}` });

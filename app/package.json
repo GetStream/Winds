@@ -1,6 +1,6 @@
 {
   "name": "Winds",
-  "version": "2.1.48",
+  "version": "2.1.49",
   "description": "Winds is a beatiful open source RSS Reader and Podcast app. Wind 2.0 was created using React/Redux/Node.\nFor more information, visit https://getstream.io/winds/.\nTo contribute or run your own version head over to Github: https://github.com/getstream/winds",
   "private": true,
   "author": "Winds Team <winds@getstream.io>",
@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/getstream/winds/issues"
   },
-  "homepage": "https://winds.getstream.io",
+  "homepage": "./",
   "main": "public/electron.js",
   "keywords": [
     "Winds",
@@ -33,7 +33,7 @@
     "algoliasearch": "^3.29.0",
     "axios": "^0.18.0",
     "babel-core": "6.26.3",
-    "babel-eslint": "8.2.5",
+    "babel-eslint": "8.2.6",
     "babel-jest": "23.4.0",
     "babel-loader": "7.1.5",
     "babel-plugin-inline-dotenv": "^1.1.2",
@@ -47,7 +47,7 @@
     "electron-publisher-s3": "^20.17.2",
     "electron-remote": "^1.3.0",
     "electron-updater": "^2.23.3",
-    "eslint": "5.0.1",
+    "eslint": "5.1.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "2.0.0",
     "eslint-plugin-flowtype": "2.50.0",
@@ -95,11 +95,11 @@
     "concurrently": "^3.6.0",
     "cross-env": "^5.2.0",
     "electron": "^2.0.4",
-    "electron-builder": "^20.19.2",
+    "electron-builder": "^20.20.4",
     "electron-devtools-installer": "^2.2.4",
     "electron-osx-sign": "^0.4.10",
-    "eslint-plugin-jsx-a11y": "^6.1.0",
     "eslint": "^5.1.0",
+    "eslint-plugin-jsx-a11y": "^6.1.0",
     "eslint-plugin-react": "^7.10.0",
     "json": "^9.0.6",
     "prettier": "^1.13.7",

@@ -10,7 +10,7 @@ import Episode from '../models/episode';
 import '../utils/db';
 import config from '../config';
 import logger from '../utils/logger';
-import { sendPodcastToCollections } from '../utils/collections';
+import { sendFeedToCollections } from '../utils/collections';
 import { ParsePodcast } from '../parsers/feed';
 
 import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
@@ -117,7 +117,7 @@ export async function handlePodcast(job) {
 			await podcastFeed.addActivities(streamEpisodes);
 		}
 		// update the collection information for follow suggestions
-		await sendPodcastToCollections(podcast);
+		await sendFeedToCollections('podcast', podcast);
 	}
 }
 
