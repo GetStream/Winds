@@ -9,22 +9,34 @@ import { getStreamClient } from '../../utils/stream';
 
 import config from '../../config';
 
+function createGlobalToken() {
+	const token = jwt.sign(
+		{
+			action: '*',
+			feed_id: '*',
+			resource: '*',
+			user_id: '*',
+		},
+		config.stream.apiSecret,
+		{ algorithm: 'HS256', noTimestamp: true },
+	);
+	return token;
+}
+
 export async function getRecommendations(userID, type, limit) {
 	if (!userID) {
 		throw Error('missing user id');
 	}
 	const streamClient = getStreamClient();
+	streamClient.personalizationToken = createGlobalToken();
+
 	const path = `winds_${type}_recommendations`;
-	const queryParams = {
-		user_id: userID,
-		limit: limit,
-	};
-	let response = await streamClient.personalization.get(path, queryParams);
-	let objectIDs = response.data.results.map(result => {
+	const queryParams = { user_id: userID, limit: limit };
+	const response = await streamClient.personalization.get(path, queryParams);
+
+	return response.results.map(result => {
 		return result.foreign_id.split(':')[1];
 	});
-
-	return objectIDs;
 }
 
 export async function getRSSRecommendations(userID, limit = 20) {
