@@ -101,7 +101,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 1.  Architecting a large React/Redux codebase
 2.  Building activity streams and newsfeeds on top of Stream
-3.  Implementing search with Algolia
+3.  [Implementing search with Algolia](https://hackernoon.com/integrating-algolia-search-in-winds-a-beautiful-rss-podcast-application-f231e49cdab5)
 4.  MongoDB database schema design
 5.  Design thought process for Winds
 6.  PM2 in production environments
