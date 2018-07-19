@@ -107,7 +107,7 @@ export const ArticleSchema = new Schema(
 			default: 0,
 		},
 		socialScore: {
-			type: Map,
+			type: Schema.Types.Map,
 			of: Number,
 			required: false
 		},
