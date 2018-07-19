@@ -7,6 +7,7 @@ export const CacheSchema = new Schema(
 		url: {
 			type: String,
 			trim: true,
+			index: true,
 			required: true,
 		},
 		title: {
