@@ -141,10 +141,8 @@ export const PodcastSchema = new Schema(
 	},
 );
 
-PodcastSchema.index(
-	{ featured: 1, valid: 1, followerCount: -1 },
-	{ partialFilterExpression: { featured: true } },
-);
+PodcastSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });
+PodcastSchema.index({ valid: 1, followerCount: -1 });
 
 PodcastSchema.plugin(timestamps, {
 	createdAt: { index: true },

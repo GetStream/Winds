@@ -38,6 +38,8 @@ export const CacheSchema = new Schema(
 	{ collection: 'cache' },
 );
 
+CacheSchema.index({ url: 1 });
+
 CacheSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },
