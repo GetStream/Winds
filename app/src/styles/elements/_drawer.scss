@@ -88,7 +88,6 @@
 			bottom: 0;
 			box-shadow: $box-shadow;
 			display: flex;
-			// flex-direction: row-reverse;
 			height: 60px;
 			left: 0;
 			padding: 1em 4em 1em 2em;
@@ -114,7 +113,8 @@
 	z-index: 100000;
 }
 
-.delete-account-confirmation-popover {
+.delete-account-confirmation-popover,
+.save-account-error-popover {
 
 		h3 {
 

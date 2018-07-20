@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+imzRport mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
@@ -40,7 +40,6 @@ export const ArticleSchema = new Schema(
 			required: true,
 			index: { type: 'hashed' },
 		},
-		// fingerprint stores the best uniqueness field we have for the given article
 		fingerprint: {
 			type: String,
 			trim: true,
@@ -107,9 +106,9 @@ export const ArticleSchema = new Schema(
 			default: 0,
 		},
 		socialScore: {
-			type: Map,
+			type: Map || Schema.Types.Mixed,
 			of: Number,
-			required: false
+			required: false,
 		},
 		valid: {
 			type: Boolean,
@@ -151,6 +150,7 @@ ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
+ArticleSchema.index({ rss: 1, publicationDate: -1 });
 
 ArticleSchema.methods.getUrl = function() {
 	return getUrl('article_detail', this.rss._id, this._id);

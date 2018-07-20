@@ -15,7 +15,7 @@ const cache = new Redis(config.cache.uri);
 import { SendPasswordResetEmail, SendWelcomeEmail } from '../utils/email/send';
 
 async function getInterestMap() {
-	const cacheKey = `interests:3:v${packageInfo.version.replace(/\./g, ':')}`;
+	const cacheKey = `interests:v${packageInfo.version.replace(/\./g, ':')}`;
 
 	let str = await cache.get(cacheKey);
 	let interestMap = JSON.parse(str);

@@ -15,6 +15,7 @@ class UserProfileSettingsDrawer extends React.Component {
 		let dailyNotifications = false;
 		let weeklyNotifications = false;
 		let followNotifications = false;
+
 		if (props.preferences && props.preferences.notifications) {
 			dailyNotifications = props.preferences.notifications.daily;
 			weeklyNotifications = props.preferences.notifications.weekly;
@@ -32,6 +33,7 @@ class UserProfileSettingsDrawer extends React.Component {
 			password: '',
 			weeklyNotifications,
 		};
+
 		this.toggleDeleteAccountPopover = this.toggleDeleteAccountPopover.bind(this);
 		this.handleDeleteAccountConfirmationClick = this.handleDeleteAccountConfirmationClick.bind(
 			this,
@@ -39,13 +41,16 @@ class UserProfileSettingsDrawer extends React.Component {
 		this.handleAccountFormSubmit = this.handleAccountFormSubmit.bind(this);
 		this.handlePasswordFormSubmit = this.handlePasswordFormSubmit.bind(this);
 	}
+
 	componentDidMount() {
 		this.props.getUserInfo();
 	}
+
 	componentWillReceiveProps(nextProps) {
 		let dailyNotifications = false;
 		let weeklyNotifications = false;
 		let followNotifications = false;
+
 		if (nextProps.preferences && nextProps.preferences.notifications) {
 			dailyNotifications = nextProps.preferences.notifications.daily;
 			weeklyNotifications = nextProps.preferences.notifications.weekly;
@@ -60,15 +65,19 @@ class UserProfileSettingsDrawer extends React.Component {
 			weeklyNotifications,
 		});
 	}
+
 	toggleDeleteAccountPopover(e) {
 		e.preventDefault();
+
 		this.setState({
 			deleteAccountPopoverIsOpen: !this.state.deleteAccountPopoverIsOpen,
 		});
 	}
+
 	handleDeleteAccountConfirmationClick(e) {
 		e.preventDefault();
 		e.stopPropagation();
+
 		fetch('DELETE', `/users/${this.props._id}`)
 			.then(() => {
 				this.props.closeDrawer();
@@ -79,11 +88,12 @@ class UserProfileSettingsDrawer extends React.Component {
 				console.log(err); // eslint-disable-line no-console
 			});
 	}
+
 	handleAccountFormSubmit(e) {
 		e.preventDefault();
 		e.stopPropagation();
 
-		let {
+		const {
 			background,
 			email,
 			username,
@@ -95,6 +105,7 @@ class UserProfileSettingsDrawer extends React.Component {
 			followNotifications,
 			weeklyNotifications,
 		} = this.state;
+
 		fetch('PUT', `/users/${this.props._id}`, {
 			background,
 			bio,
@@ -111,18 +122,26 @@ class UserProfileSettingsDrawer extends React.Component {
 			url,
 			username,
 		})
-			.then(response => {
-				this.props.updateUser(response.data);
+			.then(res => {
+				this.props.updateUser(res.data);
 				this.props.closeDrawer();
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				this.props.closeDrawer();
 			});
 	}
+
+	passwordIsValid() {
+		return (
+			this.state.password === this.state.confirmPassword &&
+			this.state.password.trim() !== ''
+		);
+	}
+
 	handlePasswordFormSubmit(e) {
 		e.preventDefault();
+
 		if (this.passwordIsValid()) {
-			// submit form
 			fetch('PUT', `/users/${this.props._id}`, {
 				password: this.state.password,
 			})
@@ -131,18 +150,13 @@ class UserProfileSettingsDrawer extends React.Component {
 					this.props.closeDrawer();
 				})
 				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
+					this.props.closeDrawer();
 				});
 		}
 	}
-	passwordIsValid() {
-		return (
-			this.state.password === this.state.confirmPassword &&
-			this.state.password.trim() !== ''
-		);
-	}
+
 	render() {
-		let deleteAccountPopover = (
+		const deleteAccountPopover = (
 			<div className="popover-panel delete-account-confirmation-popover">
 				<div className="panel-element">
 					<div className="header">
@@ -167,7 +181,7 @@ class UserProfileSettingsDrawer extends React.Component {
 			</div>
 		);
 
-		let accountTab = (
+		const accountTab = (
 			<form id="settings-account-form" onSubmit={this.handleAccountFormSubmit}>
 				<a
 					className="change-avatar"
@@ -220,7 +234,7 @@ class UserProfileSettingsDrawer extends React.Component {
 								bio: e.target.value,
 							});
 						}}
-						placeholder="Your Bio (240 character max)"
+						placeholder="Your Bio (280 character max)"
 						value={this.state.bio}
 					/>
 				</div>
@@ -313,7 +327,7 @@ class UserProfileSettingsDrawer extends React.Component {
 			</form>
 		);
 
-		let passwordTab = (
+		const passwordTab = (
 			<form id="settings-password-form" onSubmit={this.handlePasswordFormSubmit}>
 				<div className="form-section">
 					<h2>Change Password</h2>
@@ -452,4 +466,7 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfileSettingsDrawer);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(UserProfileSettingsDrawer);
