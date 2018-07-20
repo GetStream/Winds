@@ -91,7 +91,7 @@ class RSSArticle extends React.Component {
 
 		const shareUrl = `https://twitter.com/intent/tweet?url=${
 			window.location.href
-		}&text=${this.props.rss.title} - ${this.props.description}&hashtags=Winds,RSS`;
+		}&text=${this.props.title}&hashtags=Winds,RSS`;
 
 		const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
 		win.opener = null;
