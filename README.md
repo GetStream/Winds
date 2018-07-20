@@ -105,7 +105,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 4.  MongoDB database schema design
 5.  Design thought process for Winds
 6.  PM2 in production environments
-7.  Creating a RESTful API design with Express.js
+7.  [Creating a RESTful API design with Express.js](https://hackernoon.com/building-a-node-js-powered-api-with-express-mongoose-mongodb-19b14fd4b51e)
 8. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
 9. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
 10. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
