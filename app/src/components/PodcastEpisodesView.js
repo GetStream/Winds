@@ -3,7 +3,6 @@ import Waypoint from 'react-waypoint';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import EpisodeListItem from './EpisodeListItem';
 import Img from 'react-image';
-import Popover from 'react-popover';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -17,10 +16,8 @@ class PodcastEpisodesView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggleFollowPodcast = this.toggleFollowPodcast.bind(this);
-		this.toggleMenu = this.toggleMenu.bind(this);
 		this.state = {
 			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
-			menuIsOpen: false,
 			sortBy: 'latest',
 			newEpisodesAvailable: false,
 		};
@@ -148,25 +145,6 @@ class PodcastEpisodesView extends React.Component {
 			);
 		});
 
-		let menuContent = (
-			<div className="podcast-episode-list-view-popover">
-				<div className="panel">
-					<div
-						className="panel-element"
-						onClick={() => {
-							if (this.props.isFollowing) {
-								this.props.unfollowPodcast();
-							} else {
-								this.props.followPodcast();
-							}
-						}}
-					>
-						{this.props.isFollowing ? 'Unfollow' : 'Follow'}
-					</div>
-				</div>
-			</div>
-		);
-
 		let rightColumn;
 
 		if (sortedEpisodes.length === 0) {
@@ -274,17 +252,18 @@ class PodcastEpisodesView extends React.Component {
 							<h1>{this.props.podcast.title}</h1>
 						</div>
 						<div className="menu">
-							<Popover
-								body={menuContent}
-								isOpen={this.state.menuIsOpen}
-								onOuterAction={this.toggleMenu}
-								place="below"
-								tipSize={0.1}
+							<div
+								className="panel-element"
+								onClick={() => {
+									if (this.props.isFollowing) {
+										this.props.unfollowPodcast();
+									} else {
+										this.props.followPodcast();
+									}
+								}}
 							>
-								<div onClick={this.toggleMenu}>
-									<i className="fa fa-ellipsis-h fa-2x" />
-								</div>
-							</Popover>
+								{this.props.isFollowing ? 'Unfollow' : 'Follow'}
+							</div>
 						</div>
 					</div>
 				</div>

@@ -11,21 +11,18 @@ import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
 import Waypoint from 'react-waypoint';
 import Img from 'react-image';
-import Popover from 'react-popover';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			articleCursor: 1,
-			menuIsOpen: false,
 			sortBy: 'latest',
 			newArticlesAvailable: false,
 		};
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
 		this.getFollowState = this.getFollowState.bind(this);
-		this.toggleMenu = this.toggleMenu.bind(this);
 
 		this.contentsEl = React.createRef();
 	}
@@ -223,25 +220,6 @@ class RSSArticleList extends React.Component {
 			);
 		});
 
-		let menuContent = (
-			<div className="podcast-episode-list-view-popover">
-				<div className="panel">
-					<div
-						className="panel-element"
-						onClick={() => {
-							if (this.props.following) {
-								this.unfollow();
-							} else {
-								this.follow();
-							}
-						}}
-					>
-						{this.props.following ? 'Unfollow' : 'Follow'}
-					</div>
-				</div>
-			</div>
-		);
-
 		if (this.props.loading) {
 			return <Loader />;
 		} else {
@@ -331,17 +309,17 @@ class RSSArticleList extends React.Component {
 							</div>
 							<h1>{this.props.rssFeed.title}</h1>
 							<div className="menu">
-								<Popover
-									body={menuContent}
-									isOpen={this.state.menuIsOpen}
-									onOuterAction={this.toggleMenu}
-									place="below"
-									tipSize={0.1}
+								<div
+									onClick={() => {
+										if (this.props.following) {
+											this.unfollow();
+										} else {
+											this.follow();
+										}
+									}}
 								>
-									<div onClick={this.toggleMenu}>
-										<i className="fa fa-ellipsis-h fa-2x" />
-									</div>
-								</Popover>
+									{this.props.following ? 'Unfollow' : 'Follow'}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -364,7 +342,7 @@ class RSSArticleList extends React.Component {
 									});
 								}}
 							>
-								New articles available - click to refresh
+								New Articles Available – Click to Refresh
 							</div>
 						) : null}
 						{rightContents}

@@ -101,7 +101,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 1.  Architecting a large React/Redux codebase
 2.  Building activity streams and newsfeeds on top of Stream
-3.  Implementing search with Algolia
+3.  [Implementing search with Algolia](https://hackernoon.com/integrating-algolia-search-in-winds-a-beautiful-rss-podcast-application-f231e49cdab5)
 4.  MongoDB database schema design
 5.  Design thought process for Winds
 6.  PM2 in production environments
@@ -142,7 +142,7 @@ REACT_APP_API_ENDPOINT=http://localhost:8080
 STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 
 STREAM_APP_ID=YOUR_STREAM_APP_ID
-REACT_APP_STREAM_APP_ID=YOUR_STREAM_APP_ID #(this needs to be included twice, once for the backend, and once for the frontend to make realtime connections directly to Stream)
+REACT_APP_STREAM_APP_ID=YOUR_STREAM_APP_ID # this needs to be included twice, once for the backend, and once for the frontend to make realtime connections directly to Stream
 STREAM_API_KEY=YOUR_STREAM_API_KEY
 STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 
@@ -233,7 +233,7 @@ Use [`mongoimport`](https://docs.mongodb.com/manual/reference/program/mongoimpor
 
 You will need to run the `FLUSHALL` command in Redis to ensure that the new content is picked up.
 
-> Note: This will override any local data that you may have. Please be cautious! Also, this will not create Stream follows – please followo feeds manually to generate them.
+> Note: This will override any local data that you may have. Please be cautious! Also, this will not create Stream follows – please follow feeds manually to generate them.
 
 ### Stream
 

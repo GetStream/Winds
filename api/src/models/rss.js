@@ -212,6 +212,7 @@ RSSSchema.statics.findFeatured = function() {
 };
 
 RSSSchema.index({ featured: 1 }, { partialFilterExpression: { featured: true } });
+RSSSchema.index({ valid: 1, followerCount: -1 });
 
 RSSSchema.plugin(mongooseStringQuery);
 
