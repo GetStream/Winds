@@ -110,6 +110,7 @@ The following tutorials will not only help you start contributing to Winds, but 
 9. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
 10. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
 11. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
+12. [Simple Steps to Optimize Your App Performance with MongoDB, Redis, and Node.js](https://hackernoon.com/simple-steps-to-optimize-your-app-performance-5700d8b58f58)
 
 ## Download
 
