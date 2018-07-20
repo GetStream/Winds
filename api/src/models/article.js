@@ -107,7 +107,7 @@ export const ArticleSchema = new Schema(
 			default: 0,
 		},
 		socialScore: {
-			type: Schema.Types.Map || Schema.Types.Mixed,
+			type: Map || Schema.Types.Mixed,
 			of: Number,
 			required: false
 		},
