@@ -19,7 +19,7 @@ import { getStreamClient } from '../utils/stream';
 
 logger.info('Starting to process podcasts....');
 
-ProcessPodcastQueue(50, podcastProcessor);
+ProcessPodcastQueue(100, podcastProcessor);
 
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);

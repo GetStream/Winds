@@ -16,7 +16,7 @@ import { ProcessOgQueue } from '../asyncTasks';
 logger.info('Starting the OG worker');
 const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podcast };
 
-ProcessOgQueue(50, ogProcessor);
+ProcessOgQueue(100, ogProcessor);
 logger.info(`Starting to process the og queue...`);
 
 export async function ogProcessor(job) {
