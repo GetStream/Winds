@@ -16,12 +16,12 @@ import { ProcessOgQueue } from '../asyncTasks';
 logger.info('Starting the OG worker');
 const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podcast };
 
-const concurrency = 30;
-ProcessOgQueue(concurrency, ogProcessor);
-logger.info(`Start the og queue, concurrency ${concurrency}`);
+ProcessOgQueue(50, ogProcessor);
+logger.info(`Starting to process the og queue...`);
 
 export async function ogProcessor(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);
+
 	try {
 		await handleOg(job);
 	} catch (err) {
@@ -92,6 +92,7 @@ export async function handleOg(job) {
 		// err object is huge, dont log it
 		return logger.debug(`OGS scraping broke for URL ${url}`);
 	}
+
 	let normalized;
 	try {
 		normalized = normalize(ogImage);
@@ -104,5 +105,6 @@ export async function handleOg(job) {
 		images.og = normalized;
 		await mongoSchema.update({ _id: instance._id }, { images });
 	}
+
 	logger.info(`Stored ${normalized} image for ${url}`);
 }

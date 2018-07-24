@@ -17,11 +17,10 @@ import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
 
-// TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-ProcessPodcastQueue(15, podcastProcessor);
 
-// the top level handlePodcast just handles error handling
+ProcessPodcastQueue(50, podcastProcessor);
+
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
 	try {
@@ -36,7 +35,6 @@ export async function podcastProcessor(job) {
 	}
 }
 
-// Handle Podcast scrapes the podcast and updates the episodes
 export async function handlePodcast(job) {
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
@@ -123,14 +121,11 @@ export async function handlePodcast(job) {
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
-	/*
-	Set the last scraped for the given rssID
-	*/
-	let now = moment().toISOString();
+	// Set the last scraped for the given rssID
 	let updated = await Podcast.update(
 		{ _id: podcastID },
 		{
-			lastScraped: now,
+			lastScraped: moment().toISOString(),
 			isParsing: false,
 		},
 	);

@@ -22,17 +22,14 @@ import { fetchSocialScore } from '../utils/social';
 
 const duplicateKeyError = 11000;
 
-// connect the handler to the queue
 logger.info('Starting the RSS worker');
 
-//TODO: move this to a separate main.js
-ProcessRssQueue(100, rssProcessor);
+ProcessRssQueue(50, rssProcessor);
 
 const statsd = getStatsDClient();
 
 export async function rssProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
-	// just intercept error handling before it goes to Bull
 	try {
 		await handleRSS(job);
 	} catch (err) {
@@ -41,14 +38,14 @@ export async function rssProcessor(job) {
 			JobRSS: job.data.rss,
 			JobURL: job.data.url,
 		};
+
 		logger.error('RSS job encountered an error', { err, tags, extra });
 	}
+
 	logger.info(`Completed scraping for ${job.data.url}`);
 }
 
-// Handle Podcast scrapes the podcast and updates the episodes
 export async function handleRSS(job) {
-    logger.warn('test-test-test');
 	let rssID = job.data.rss;
 
 	await timeIt('winds.handle_rss.ack', () => {
@@ -72,7 +69,7 @@ export async function handleRSS(job) {
 		rssContent = await ParseFeed(job.data.url);
 		await RSS.resetScrapeFailures(rssID);
 	} catch (err) {
-        console.log(err);
+		console.log(err);
 		await RSS.incrScrapeFailures(rssID);
 		throw new Error(`http request failed for url ${job.data.url}`);
 	}
@@ -81,9 +78,7 @@ export async function handleRSS(job) {
 		return;
 	}
 
-	// update the articles
 	logger.debug(`Updating ${rssContent.articles.length} articles for feed ${rssID}`);
-
 	if (rssContent.articles.length === 0) {
 		return;
 	}
@@ -102,7 +97,6 @@ export async function handleRSS(job) {
 		`Finished updating. ${updatedArticles.length} out of ${articles.length} changed`,
 	);
 
-	// update the count
 	await RSS.update(
 		{ _id: rssID },
 		{
@@ -131,18 +125,24 @@ export async function handleRSS(job) {
 	});
 
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
+
 	let updatingSocialScore = false;
 	updatedArticles = await timeIt('winds.handle_rss.update_social_score', () => {
-		return Promise.all(updatedArticles.filter(a => !!a.url).map(async article => {
-			const socialScore = await fetchSocialScore(article);
-			if (socialScore) {
-				updatingSocialScore = true;
-				article.socialScore = socialScore;
-				socialBatch.find({ _id: article._id }).updateOne({$set: { socialScore }});
-			}
-			return article;
-		}));
+		return Promise.all(
+			updatedArticles.filter(a => !!a.url).map(async article => {
+				const socialScore = await fetchSocialScore(article);
+				if (socialScore) {
+					updatingSocialScore = true;
+					article.socialScore = socialScore;
+					socialBatch
+						.find({ _id: article._id })
+						.updateOne({ $set: { socialScore } });
+				}
+				return article;
+			}),
+		);
 	});
+
 	if (updatingSocialScore) {
 		await socialBatch.execute();
 	}
@@ -175,8 +175,9 @@ export async function handleRSS(job) {
 	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
 }
 
-// markDone sets lastScraped to now and isParsing to false
 async function markDone(rssID) {
-	const now = moment().toISOString();
-	return await RSS.update({ _id: rssID }, { lastScraped: now, isParsing: false });
+	return await RSS.update(
+		{ _id: rssID },
+		{ lastScraped: moment().toISOString(), isParsing: false },
+	);
 }
