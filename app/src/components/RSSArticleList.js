@@ -114,6 +114,7 @@ class RSSArticleList extends React.Component {
 	componentWillUnmount() {
 		this.unsubscribeFromStreamFeed();
 	}
+
 	getRSSFeed(rssFeedID) {
 		return fetch('GET', `/rss/${rssFeedID}`)
 			.then(res => {
@@ -126,6 +127,7 @@ class RSSArticleList extends React.Component {
 				console.log(err); // eslint-disable-line no-console
 			});
 	}
+
 	getFollowState(rssFeedID) {
 		return fetch(
 			'get',
@@ -145,6 +147,7 @@ class RSSArticleList extends React.Component {
 			}
 		});
 	}
+
 	getRSSArticles(rssFeedID) {
 		// get rss articles
 		return fetch(
@@ -174,6 +177,7 @@ class RSSArticleList extends React.Component {
 				console.log(err); // eslint-disable-line no-console
 			});
 	}
+
 	follow() {
 		// if not currently following, optimistic dispatch follow, make post call, then handle error
 		this.props.dispatch({
@@ -193,6 +197,7 @@ class RSSArticleList extends React.Component {
 			});
 		});
 	}
+
 	unfollow() {
 		// if currently following, optimistic dispatch unfollow, make delete call, then handle error
 		this.props.dispatch({
@@ -212,6 +217,7 @@ class RSSArticleList extends React.Component {
 			});
 		});
 	}
+
 	render() {
 		let sortedArticles = [...this.props.articles];
 		sortedArticles.sort((a, b) => {

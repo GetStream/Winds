@@ -418,6 +418,25 @@ const mapStateToProps = state => {
 		}
 	}
 
+	if (context.playing) {
+		if ('Notification' in window) {
+			if (
+				Notification.permission !== 'denied' ||
+				Notification.permission === 'default'
+			) {
+				Notification.requestPermission();
+			}
+
+			if (Notification.permission === 'granted') {
+				new Notification('Corrently Playing on Winds', {
+					body: episode.title,
+					icon: episode.podcast.image,
+					silent: true,
+				});
+			}
+		}
+	}
+
 	let currentUserID = localStorage['authedUser'];
 
 	return {

@@ -20,6 +20,7 @@ class AllArticles extends React.Component {
 
 		this.contentsEl = React.createRef();
 	}
+
 	componentDidMount() {
 		this.setState(
 			{
@@ -42,6 +43,7 @@ class AllArticles extends React.Component {
 			},
 		);
 	}
+
 	componentWillReceiveProps() {
 		// scroll down to last saved position, then delete from localStorage
 		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
@@ -93,10 +95,10 @@ class AllArticles extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{'That\'s it! No more articles here.'}</p>
+							<p>{"That's it! No more articles here."}</p>
 							<p>
 								{
-									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 								}
 							</p>
 						</div>
