@@ -40,15 +40,15 @@ describe('axios', () => {
 
 		before(() => {
 			// stop Mocha from handling uncaughtExceptions.
-			uncaughtExceptionListeners = process.listeners('uncaughtException');
-			process.removeAllListeners('uncaughtException');
+			uncaughtExceptionListeners = process.listeners('unhandledRejection');
+			process.removeAllListeners('unhandledRejection');
 		});
 
 		after(() => {
-			process.removeAllListeners('uncaughtException');
+			process.removeAllListeners('unhandledRejection');
 			// resume normal Mocha handling of uncaughtExceptions.
 			uncaughtExceptionListeners.forEach(listener => {
-				process.on('uncaughtException', listener);
+				process.on('unhandledRejection', listener);
 			});
 		});
 
@@ -67,7 +67,7 @@ describe('axios', () => {
 		});
 
 		it('should fail in unhandleable way for malformed redirects', done => {
-			process.on('uncaughtException', err => {
+			process.on('unhandledRejection', err => {
 				expect(err)
 					.to.be.an.instanceOf(TypeError)
 					.with.property(

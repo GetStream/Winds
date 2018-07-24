@@ -15,6 +15,20 @@
 			"watch": true
 		},
 		{
+			"name": "stream",
+			"cwd": "api/src/workers",
+			"interpreter": "babel-node",
+			"script": "./stream.js",
+			"watch": true
+		},
+		{
+			"name": "social",
+			"cwd": "api/src/workers",
+			"interpreter": "babel-node",
+			"script": "./social.js",
+			"watch": true
+		},
+		{
 			"name": "rss",
 			"cwd": "api/src/workers",
 			"interpreter": "babel-node",

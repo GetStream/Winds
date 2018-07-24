@@ -1,14 +1,11 @@
-// this should be the first import
-import '../loadenv';
-
-import normalize from 'normalize-url';
+import axios from 'axios';
 import moment from 'moment';
+
+import db from '../utils/db';
 
 import Podcast from '../models/podcast';
 import Episode from '../models/episode';
 
-import '../utils/db';
-import config from '../config';
 import logger from '../utils/logger';
 import { sendFeedToCollections } from '../utils/collections';
 import { ParsePodcast } from '../parsers/feed';
@@ -16,6 +13,9 @@ import { ParsePodcast } from '../parsers/feed';
 import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
+import { setupAxiosRedirectInterceptor } from '../utils/axios';
+
+setupAxiosRedirectInterceptor(axios);
 
 logger.info('Starting to process podcasts....');
 

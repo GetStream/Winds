@@ -14,9 +14,9 @@ import limit from 'express-rate-limit';
 import logger from './utils/logger';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
 import User from './models/user';
-// import { setupAxiosRedirectInterceptor } from './utils/axios';
+import { setupAxiosRedirectInterceptor } from './utils/axios';
 
-// setupAxiosRedirectInterceptor(axios);
+setupAxiosRedirectInterceptor(axios);
 
 const api = express();
 
