@@ -48,7 +48,7 @@ export async function rssProcessor(job) {
 
 // Handle Podcast scrapes the podcast and updates the episodes
 export async function handleRSS(job) {
-    logger.warn('test-test-test');
+	logger.warn('test-test-test');
 	let rssID = job.data.rss;
 
 	await timeIt('winds.handle_rss.ack', () => {
@@ -72,7 +72,7 @@ export async function handleRSS(job) {
 		rssContent = await ParseFeed(job.data.url);
 		await RSS.resetScrapeFailures(rssID);
 	} catch (err) {
-        console.log(err);
+		console.log(err);
 		await RSS.incrScrapeFailures(rssID);
 		throw new Error(`http request failed for url ${job.data.url}`);
 	}
@@ -133,15 +133,19 @@ export async function handleRSS(job) {
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
 	let updatingSocialScore = false;
 	updatedArticles = await timeIt('winds.handle_rss.update_social_score', () => {
-		return Promise.all(updatedArticles.filter(a => !!a.url).map(async article => {
-			const socialScore = await fetchSocialScore(article);
-			if (socialScore) {
-				updatingSocialScore = true;
-				article.socialScore = socialScore;
-				socialBatch.find({ _id: article._id }).updateOne({$set: { socialScore }});
-			}
-			return article;
-		}));
+		return Promise.all(
+			updatedArticles.filter(a => !!a.url).map(async article => {
+				const socialScore = await fetchSocialScore(article);
+				if (socialScore) {
+					updatingSocialScore = true;
+					article.socialScore = socialScore;
+					socialBatch
+						.find({ _id: article._id })
+						.updateOne({ $set: { socialScore } });
+				}
+				return article;
+			}),
+		);
 	});
 	if (updatingSocialScore) {
 		await socialBatch.execute();

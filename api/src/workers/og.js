@@ -16,8 +16,10 @@ import { ProcessOgQueue } from '../asyncTasks';
 logger.info('Starting the OG worker');
 const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podcast };
 
-const concurrency = 30;
+const concurrency = 50;
+
 ProcessOgQueue(concurrency, ogProcessor);
+
 logger.info(`Start the og queue, concurrency ${concurrency}`);
 
 export async function ogProcessor(job) {
@@ -43,6 +45,7 @@ export async function handleOg(job) {
 	if (!['episode', 'article', 'rss', 'podcast'].includes(jobType)) {
 		return logger.error(`couldnt find schema for jobtype ${jobType}`);
 	}
+
 	if (!url) {
 		return logger.error(`URL is missing for jobtype ${jobType}`);
 	}
@@ -92,6 +95,7 @@ export async function handleOg(job) {
 		// err object is huge, dont log it
 		return logger.debug(`OGS scraping broke for URL ${url}`);
 	}
+
 	let normalized;
 	try {
 		normalized = normalize(ogImage);
@@ -104,5 +108,6 @@ export async function handleOg(job) {
 		images.og = normalized;
 		await mongoSchema.update({ _id: instance._id }, { images });
 	}
+
 	logger.info(`Stored ${normalized} image for ${url}`);
 }

@@ -19,11 +19,12 @@ import { getStreamClient } from '../utils/stream';
 
 // TODO: move this to separate main.js
 logger.info('Starting to process podcasts....');
-ProcessPodcastQueue(15, podcastProcessor);
+ProcessPodcastQueue(25, podcastProcessor);
 
 // the top level handlePodcast just handles error handling
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
+
 	try {
 		await handlePodcast(job);
 	} catch (err) {
@@ -40,6 +41,7 @@ export async function podcastProcessor(job) {
 export async function handlePodcast(job) {
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
+
 	if (!podcast) {
 		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
 		return;
@@ -123,9 +125,7 @@ export async function handlePodcast(job) {
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
-	/*
-	Set the last scraped for the given rssID
-	*/
+	// Set the last scraped for the given rssID
 	let now = moment().toISOString();
 	let updated = await Podcast.update(
 		{ _id: podcastID },
@@ -134,5 +134,6 @@ async function markDone(podcastID) {
 			isParsing: false,
 		},
 	);
+
 	return updated;
 }
