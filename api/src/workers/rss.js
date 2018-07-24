@@ -69,9 +69,8 @@ export async function handleRSS(job) {
 		rssContent = await ParseFeed(job.data.url);
 		await RSS.resetScrapeFailures(rssID);
 	} catch (err) {
-		console.log(err);
 		await RSS.incrScrapeFailures(rssID);
-		throw new Error(`http request failed for url ${job.data.url}`);
+		logger.debug(`http request failed for url ${job.data.url}`);
 	}
 
 	if (!rssContent) {
@@ -90,6 +89,7 @@ export async function handleRSS(job) {
 	for (let a of articles) {
 		a.rss = rssID;
 	}
+
 	logger.debug(`starting the upsertManyPosts for ${rssID}`);
 	let operationMap = await upsertManyPosts(rssID, articles, 'rss');
 	let updatedArticles = operationMap.new.concat(operationMap.changed);
@@ -165,6 +165,7 @@ export async function handleRSS(job) {
 				verb: 'rss_article',
 			};
 		});
+
 		await rssFeed.addActivities(streamArticles);
 	}
 

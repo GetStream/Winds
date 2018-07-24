@@ -31,6 +31,7 @@ export async function podcastProcessor(job) {
 			JobPodcast: job.data.podcast,
 			JobURL: job.data.url,
 		};
+
 		logger.error('Podcast job encountered an error', { err, tags, extra });
 	}
 }
