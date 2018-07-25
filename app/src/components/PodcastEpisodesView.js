@@ -115,7 +115,9 @@ class PodcastEpisodesView extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
@@ -150,16 +152,12 @@ class PodcastEpisodesView extends React.Component {
 		if (sortedEpisodes.length === 0) {
 			rightColumn = (
 				<div>
-					<p>{"We haven't found any episodes for this podcast feed yet :("}</p>
+					<p>{`We haven't found any episodes for this podcast feed yet :(`}</p>
 					<p>
-						{
-							"It might be because the podcast feed doesn't have any episodes, or because it just got added and we're still parsing them. Come check back in a few minutes."
-						}
+						{`It might be because the podcast feed doesn't have any episodes, or because it just got added and we're still parsing them. Come check back in a few minutes.`}
 					</p>
 					<p>
-						{
-							"If you're pretty sure there's supposed to be some episodes here, and they aren't showing up, please file a "
-						}
+						{`If you're pretty sure there's supposed to be some episodes here, and they aren't showing up, please file a `}
 						<a href="https://github.com/getstream/winds/issues">
 							GitHub Issue
 						</a>.
@@ -282,7 +280,7 @@ class PodcastEpisodesView extends React.Component {
 								});
 							}}
 						>
-							New episodes available - click to refresh
+							New Episodes Available - Click to Refresh
 						</div>
 					) : null}
 					{rightColumn}
@@ -412,7 +410,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 					type: 'podcast',
 				},
 			).catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
+
 				dispatch({
 					podcastID,
 					type: 'UNFOLLOW_PODCAST',
@@ -439,14 +440,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 			fetch('POST', '/pins', {
 				episode: episodeID,
 			})
-				.then(response => {
+				.then(res => {
 					dispatch({
-						pin: response.data,
+						pin: res.data,
 						type: 'PIN_EPISODE',
 					});
 				})
 				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
+					if (window.console) {
+						console.log(err); // eslint-disable-line no-console
+					}
 				});
 		},
 		playEpisode: (episodeID, position) => {
@@ -463,8 +466,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 			dispatch({ type: 'RESUME_EPISODE' });
 		},
 		unfollowPodcast: () => {
-			// optimistic dispatch
-			// dispatch updated follow relationship
 			dispatch({
 				podcastID,
 				type: 'UNFOLLOW_PODCAST',
@@ -475,7 +476,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 				podcast: podcastID,
 				type: 'podcast',
 			}).catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
+
 				dispatch({
 					podcastID,
 					type: 'FOLLOW_PODCAST',
@@ -492,7 +496,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 					});
 				})
 				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
+					if (window.console) {
+						console.log(err); // eslint-disable-line no-console
+					}
 				});
 		},
 	};

@@ -6,8 +6,8 @@ class Drawer extends React.Component {
 		super(props);
 		this.state = {};
 	}
+
 	render() {
-		// also needs to include click catcher
 		if (this.props.isOpen) {
 			return (
 				<div>

@@ -29,7 +29,9 @@ class RSSArticle extends React.Component {
 				foreign_id: `articles:${this.props.match.params.articleID}`,
 			},
 		});
+
 		getPinnedArticles(this.props.dispatch);
+
 		this.getArticle(this.props.match.params.articleID);
 		this.getRSSContent(this.props.match.params.articleID);
 		this.contentRef.current.onscroll = e => {
@@ -57,17 +59,19 @@ class RSSArticle extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
-			// resetting analytics event sent state - **do not** need to recent onscroll listener, because the ref is still mounted
 			this.setState({
 				sentArticleReadCompleteAnalyticsEvent: false,
 			});
+
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'article_open',
 				content: {
 					foreign_id: `articles:${nextProps.match.params.articleID}`,
 				},
 			});
+
 			getPinnedArticles(this.props.dispatch);
+
 			this.getArticle(nextProps.match.params.articleID);
 			this.getRSSContent(nextProps.match.params.articleID);
 		}
@@ -94,6 +98,7 @@ class RSSArticle extends React.Component {
 		}&text=${this.props.title}&hashtags=Winds,RSS`;
 
 		const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
+
 		win.opener = null;
 	}
 
@@ -106,7 +111,9 @@ class RSSArticle extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
@@ -298,7 +305,6 @@ const mapStateToProps = (state, ownProps) => {
 		article.pinned = false;
 	}
 
-	// get article's rss feed
 	return {
 		loading,
 		...article,

@@ -15,16 +15,17 @@ class DiscoverSection extends React.Component {
 					type: 'BATCH_UPDATE_PODCASTS',
 				});
 
-				// set "recommendedPodcasts" value in state
-				// map podcasts to IDs, dispatch
 				this.props.dispatch({
 					podcasts: res.data,
 					type: 'UPDATE_SUGGESTED_PODCASTS',
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
+
 		fetch('GET', '/rss', {}, { type: 'recommended' })
 			.then(res => {
 				this.props.dispatch({
@@ -32,21 +33,22 @@ class DiscoverSection extends React.Component {
 					type: 'BATCH_UPDATE_RSS_FEEDS',
 				});
 
-				// map rssFeeds to IDs, dispatch
 				this.props.dispatch({
 					rssFeeds: res.data,
 					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 	render() {
-		// grab the first 3 episodes
 		let podcastGrid = this.props.suggestedPodcasts.slice(0, 3);
 		let restOfPodcasts = this.props.suggestedPodcasts.slice(3);
 		let allSuggestions = [...restOfPodcasts, ...this.props.suggestedRssFeeds];
+
 		return (
 			<div>
 				<div className="shows-grid">

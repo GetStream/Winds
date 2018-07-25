@@ -167,9 +167,7 @@ class Header extends Component {
 			</div>
 		);
 
-		// for the time being, setting up two github popovers - one for electron and one for web, to handle URLs correctly. will refactor later - <3, @kenhoff
-
-		var userAgent = navigator.userAgent.toLowerCase();
+		let userAgent = navigator.userAgent.toLowerCase();
 		let isElectron = userAgent.indexOf(' electron/') > -1;
 		let githubPopover;
 

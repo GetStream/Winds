@@ -24,7 +24,6 @@ class AddOPMLModal extends React.Component {
 			success: false,
 		};
 
-		// this.submitFeedSelections = this.submitFeedSelections.bind(this);
 		this.resetModal = this.resetModal.bind(this);
 		this.sendOMPLFileToAPI = this.sendOMPLFileToAPI.bind(this);
 		this.handleStageOneFormSubmit = this.handleStageOneFormSubmit.bind(this);
