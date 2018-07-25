@@ -112,6 +112,10 @@ export async function handleRSS(job) {
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 
+	if (!updatedArticles.length) {
+		return;
+	}
+
 	await Promise.all([
 		await OgQueueAdd({
 			type: 'article',
