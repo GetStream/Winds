@@ -20,7 +20,7 @@ setupAxiosRedirectInterceptor(axios);
 
 logger.info('Starting to process podcasts....');
 
-ProcessPodcastQueue(50, podcastProcessor);
+ProcessPodcastQueue(100, podcastProcessor);
 
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
@@ -32,6 +32,7 @@ export async function podcastProcessor(job) {
 			JobPodcast: job.data.podcast,
 			JobURL: job.data.url,
 		};
+
 		logger.error('Podcast job encountered an error', { err, tags, extra });
 	}
 }

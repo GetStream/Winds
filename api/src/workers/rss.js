@@ -21,7 +21,7 @@ const duplicateKeyError = 11000;
 
 logger.info('Starting the RSS worker');
 
-ProcessRssQueue(50, rssProcessor);
+ProcessRssQueue(100, rssProcessor);
 
 const statsd = getStatsDClient();
 
