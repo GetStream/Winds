@@ -1,3 +1,4 @@
+import joi from 'joi';
 import axios from 'axios';
 import normalize from 'normalize-url';
 
@@ -36,18 +37,27 @@ export async function ogProcessor(job) {
 	}
 }
 
+const validTypes = ['episode', 'article', 'rss', 'podcast'];
+
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'] });
+const schema = joi.object().keys({
+	update: joi.boolean().default(false),
+	type: joi.string().valid(validTypes).required(),
+	url: joiUrl,
+	urls: joi.array().min(1),
+}).xor('url', 'urls');
+
 // Run the OG scraping job
 export async function handleOg(job) {
+	joi.assert(job.data, schema);
+
 	const update = job.data.update;
 	const jobType = job.data.type;
-	if (!['episode', 'article', 'rss', 'podcast'].includes(jobType)) {
-		return logger.error(`couldnt find schema for jobtype ${jobType}`);
-	}
 
 	const urls = job.data.urls || [job.data.url];
 	for (const url of urls) {
-		if (!url) {
-			logger.error(`URL is missing for jobtype ${jobType}`);
+		if (!!joi.validate(url, joiUrl).error) {
+			logger.error(`invalid URL '${url}' for jobtype ${jobType}`);
 			continue;
 		}
 
@@ -58,7 +68,7 @@ export async function handleOg(job) {
 		// if the instance hasn't been created yet, or it already has an OG image, ignore
 		const instances = await mongoSchema.find({ [field]: url }).lean().limit(10);
 		if (!instances.length) {
-			logger.warn(`instance not found for type ${jobType} with lookup ${field}: ${url}`);
+			logger.warn(`instance not found for type ${jobType} with lookup ${field}: '${url}'`);
 			continue;
 		}
 
@@ -67,7 +77,7 @@ export async function handleOg(job) {
 		const needUpdate = instances.filter(i => !i.images.og);
 		if (!needUpdate.length && !update) {
 			for (const instance of instances.filter(i => !!i.images.og)) {
-				logger.debug(`instance already has an image ${instance.images.og}: ${jobType} with lookup ${field}: ${url}`);
+				logger.debug(`instance already has an image '${instance.images.og}': ${jobType} with lookup ${field}: '${url}'`);
 			}
 			continue;
 		}
@@ -85,14 +95,15 @@ export async function handleOg(job) {
 			}
 		} catch (err) {
 			//XXX: err object is huge, dont log it
-			logger.debug(`OGS scraping broke for URL ${url}`);
+			const message = err.message.length > 256 ? err.message.substr(0, 253) + '...' : err.message;
+			logger.debug(`OGS scraping broke for URL '${url}': ${message}`);
 			continue;
 		}
 		let normalized;
 		try {
 			normalized = normalize(ogImage);
 		} catch (err) {
-			logger.debug(`Bad OG Image URL ${ogImage}`, { err });
+			logger.debug(`Bad OG Image URL '${ogImage}'`, { err });
 			continue;
 		}
 
@@ -100,6 +111,6 @@ export async function handleOg(job) {
 			const images = Object.assign(instance.images || {}, { og: normalized });
 			await mongoSchema.update({ _id: instance._id }, { images });
 		}
-		logger.info(`Stored ${normalized} image for ${url}`);
+		logger.info(`Stored ${normalized} image for '${url}'`);
 	}
 }

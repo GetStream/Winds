@@ -27,6 +27,7 @@ const joiObjectId = joi.alternatives().try(
 	joi.string().length(12),
 	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
 );
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'] });
 
 const schema = joi.object().keys({
 	rss: joiObjectId.required(),
@@ -34,8 +35,8 @@ const schema = joi.object().keys({
 });
 const itemSchema = joi.object().keys({
 	id: joiObjectId.required(),
-	link: joi.string().uri({ scheme: ['http', 'https'] }),
-	commentUrl: joi.string().uri({ scheme: ['http', 'https'] }),
+	link: joiUrl,
+	commentUrl: joiUrl.allow('').allow(null),
 });
 
 export async function socialProcessor(job) {

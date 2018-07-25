@@ -141,6 +141,7 @@ export async function fetchSocialScore(article) {
 		try {
 			id = extractID(article);
 		} catch (_) {
+			//XXX: ignore error
 		}
 
 		let result;
@@ -148,6 +149,7 @@ export async function fetchSocialScore(article) {
 			try {
 				result = [source, await score(id)];
 			} catch (_) {
+				//XXX: ignore error
 			}
 		}
 		if (!result) {
@@ -160,5 +162,6 @@ export async function fetchSocialScore(article) {
 		return result;
 	}));
 
-	return entries.filter(([_, score]) => score).reduce((obj, [source, score]) => Object.assign(obj, { [source]: score }), {});
+	// assemble entries w/ positive score into an object
+	return entries.filter(([_, score]) => !!score).reduce((obj, [source, score]) => Object.assign(obj, { [source]: score }), {});
 }
