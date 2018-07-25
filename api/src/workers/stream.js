@@ -62,7 +62,7 @@ export async function handleStream(job) {
 		throw new Error(`No article passed validation: ${articles.map(a => joi.validate(a, itemSchema).error)}`);
 	}
 
-	const chunkSize = 100;
+	const chunkSize = 50;
 	for (let offset = 0; offset < articles.length; offset += chunkSize) {
 		const limit = offset + chunkSize;
 		const chunk = articles.slice(offset, limit);
