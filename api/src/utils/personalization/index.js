@@ -34,7 +34,8 @@ export async function getRecommendations(userID, type, limit) {
 	const queryParams = { user_id: userID, limit: limit };
 	const response = await streamClient.personalization.get(path, queryParams);
 
-	return response.data.results.map(result => {
+	const data = response.data ? response.data.results : response.results;
+	return data.map(result => {
 		return result.foreign_id.split(':')[1];
 	});
 }
