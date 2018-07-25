@@ -61,17 +61,18 @@ export async function handleRSS(job) {
 	} catch (_) {
 		//XXX: ignore error
 	}
-	const validation = joi.validate(job.data, schema);
-	if (!!validation.error) {
-		logger.warn(`RSS job validation failed: ${validation.error.message}`);
-		return;
-	}
 
 	const rssID = job.data.rss;
 
 	await timeIt('winds.handle_rss.ack', () => {
 		return markDone(rssID);
 	});
+
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(`RSS job validation failed: ${validation.error.message}`);
+		await RSS.incrScrapeFailures(rssID);
+	}
 
 	const rss = await timeIt('winds.handle_rss.get_rss', () => {
 		return RSS.findOne({ _id: rssID });

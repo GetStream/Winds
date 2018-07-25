@@ -62,15 +62,14 @@ describe('Discovery', () => {
 			feedUrls: [{ title: 'RSS', url: `${host}/rssfinder.xml` }],
 		},
 		{
-			title: 'rss request kotaku',
+			title: 'rss request cnn',
 			url: `${host}/rss`,
 			site: {
-				title: 'Kotaku',
-				favicon: `${host}/favicon.ico`,
-				// favicon: `http://kotaku.com/favicon.ico`,
-				url: `http://kotaku.com`,
+				title: 'CNN.com - RSS Channel - App International Edition',
+				favicon: `https://www.cnn.com/favicon.ico`,
+				url: `https://www.cnn.com/app-international-edition/index.html`,
 			},
-			feedUrls: [{ title: 'Kotaku', url: `${host}/rss` }],
+			feedUrls: [{ title: 'CNN.com - RSS Channel - App International Edition', url: `http://rss.cnn.com/rss/edition` }],
 		},
 		{
 			title: 'no favicon',

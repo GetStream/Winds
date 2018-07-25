@@ -88,16 +88,14 @@ describe('RSS worker', () => {
 				const data = testCases[i];
 
 				await rssQueue.add(data);
-
-				let error = null;
 				try {
 					await handler;
-				} catch (err) {
-					error = err;
+				} catch (_) {
+					//XXX: ignore error
 				}
 
-				expect(error, `test case #${i}`).to.be.an.instanceOf(Error);
 				const rss = await RSS.findById(data.rss);
+				expect(rss.consecutiveScrapeFailures, `test case #${i + 1}`).to.be.an.equal(i + 1);
 			}
 		});
 	});
@@ -150,13 +148,14 @@ describe('RSS worker', () => {
 					});
 
 				await rssQueue.add(data);
-				let error = null;
 				try {
 					await handler;
 				} catch (err) {
-					error = err;
+					//XXX: ignore error
 				}
-				expect(error).to.be.an.instanceOf(Error);
+
+				const rss = await RSS.findById(data.rss);
+				expect(rss.consecutiveScrapeFailures).to.be.an.equal(1);
 
 				const articles = await Article.find({ rss: data.rss });
 				expect(articles).to.have.length(initialArticles.length);

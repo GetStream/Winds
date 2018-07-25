@@ -171,13 +171,11 @@ async function fixData(res, uri) {
 		};
 
 		//XXX: ensure favicon url is reachable
-		await axios({
-			method: 'get',
-			url: favicon,
-			maxContentLength: maxContentLengthBytes,
-			timeout: 12 * 1000,
-			maxRedirects: 20,
+		await axios.get(favicon, {
 			headers,
+			maxRedirects: 20,
+			timeout: 12 * 1000,
+			maxContentLength: maxContentLengthBytes,
 		});
 		res.site.favicon = favicon;
 	} catch (_) {

@@ -16,6 +16,7 @@ import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import { ensureEncoded } from '../utils/urls';
+import { timeIt } from '../utils/statsd';
 
 setupAxiosRedirectInterceptor(axios);
 
@@ -56,22 +57,25 @@ export async function handlePodcast(job) {
 	} catch (_) {
 		//XXX: ignore error
 	}
+
+	let podcastID = job.data.podcast;
+
+	await timeIt('winds.handle_podcast.ack', () => {
+		return markDone(podcastID);
+	});
+
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
 		logger.warn(`Podcast job validation failed: ${validation.error.message}`);
+		await Podcast.incrScrapeFailures(podcastID);
 		return;
 	}
 
-	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
 		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
 		return;
 	}
-
-	// mark as done, will be schedule again in 15 min from now
-	// we do this early so a temporary failure doesnt leave things in a broken state
-	await markDone(podcastID);
 
 	let podcastContent;
 	try {

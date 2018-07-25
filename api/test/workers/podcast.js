@@ -59,15 +59,14 @@ describe('Podcast worker', () => {
 
 				const data = testCases[i];
 				await podcastQueue.add(data);
-
-				let error = null;
 				try {
 					await handler;
-				} catch (err) {
-					error = err;
+				} catch (_) {
+					//XXX: ignore error
 				}
 
-				expect(error, `test case #${i + 1}`).to.be.an.instanceOf(Error);
+				const podcast = await Podcast.findById(data.podcast);
+				expect(podcast.consecutiveScrapeFailures, `test case #${i + 1}`).to.be.an.equal(i + 1);
 			}
 		});
 	});
