@@ -36,7 +36,7 @@ const schema = joi.object().keys({
 const itemSchema = joi.object().keys({
 	id: joiObjectId.required(),
 	link: joiUrl,
-	commentUrl: joiUrl.allow('').allow(null),
+	commentUrl: joi.any(),
 });
 
 export async function socialProcessor(job) {

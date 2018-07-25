@@ -5,6 +5,9 @@ import querystring from 'querystring';
 import config from '../config';
 
 export function extractRedditPostID(article) {
+	if (!article.link.includes('reddit')) {
+		return;
+	}
 	const parts = article.link.split('/');
 	if (parts.includes('comments')) {
 		return 't3_' + parts[parts.indexOf('comments') + 1]
@@ -22,6 +25,9 @@ export function extractRedditPostID(article) {
 }
 
 export function extractHackernewsPostID(article) {
+	if (!article.commentUrl.includes('hackernews')) {
+		return;
+	}
 	const url = urlParser.parse(article.commentUrl, true);
 	return url.query.id;
 }
