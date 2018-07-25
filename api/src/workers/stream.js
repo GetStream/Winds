@@ -51,7 +51,7 @@ const itemSchema = joi.object().keys({
 export async function handleStream(job) {
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(validation.error);
+		logger.warn(`Stream job validation failed: ${validation.error.message}`);
 		return;
 	}
 
@@ -62,7 +62,7 @@ export async function handleStream(job) {
 		throw new Error(`No article passed validation: ${articles.map(a => joi.validate(a, itemSchema).error)}`);
 	}
 
-	const chunkSize = 50;
+	const chunkSize = 100;
 	for (let offset = 0; offset < articles.length; offset += chunkSize) {
 		const limit = offset + chunkSize;
 		const chunk = articles.slice(offset, limit);

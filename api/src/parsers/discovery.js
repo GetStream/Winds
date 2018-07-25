@@ -159,29 +159,31 @@ async function fixData(res, uri) {
 		}
 
 		return res;
-	} else {
-		// see if mysite.com/favicon.ico works :)
-		favicon = getFaviconUrl(res.site.url);
-
-		try {
-			let headers = {
-				'User-Agent': WindsUserAgent,
-				'accept-encoding': 'gzip, deflate, br',
-			};
-			let response = await axios({
-				method: 'get',
-				url: favicon,
-				maxContentLength: maxContentLengthBytes,
-				timeout: 12 * 1000,
-				maxRedirects: 20,
-				headers,
-			});
-			res.site.favicon = favicon;
-			return res;
-		} catch (e) {
-			return res;
-		}
 	}
+
+	// see if mysite.com/favicon.ico works :)
+	favicon = getFaviconUrl(res.site.url);
+
+	try {
+		const headers = {
+			'User-Agent': WindsUserAgent,
+			'accept-encoding': 'gzip, deflate, br',
+		};
+
+		//XXX: ensure favicon url is reachable
+		await axios({
+			method: 'get',
+			url: favicon,
+			maxContentLength: maxContentLengthBytes,
+			timeout: 12 * 1000,
+			maxRedirects: 20,
+			headers,
+		});
+		res.site.favicon = favicon;
+	} catch (_) {
+		//XXX: ignore error
+	}
+	return res;
 }
 
 export function discoverFromFeed(body) {

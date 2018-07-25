@@ -25,7 +25,7 @@ export function extractRedditPostID(article) {
 }
 
 export function extractHackernewsPostID(article) {
-	if (!article.commentUrl.includes('hackernews')) {
+	if (!article.commentUrl.includes('ycombinator')) {
 		return;
 	}
 	const url = urlParser.parse(article.commentUrl, true);

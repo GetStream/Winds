@@ -11,6 +11,7 @@ import { ProcessSocialQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { fetchSocialScore } from '../utils/social';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
+import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
@@ -53,9 +54,18 @@ export async function socialProcessor(job) {
 }
 
 export async function handleSocial(job) {
+	try {
+		// best effort at escaping urls found in the wild
+		for (const article of job.data.articles) {
+			article.link = ensureEncoded(article.link);
+		}
+	} catch (_) {
+		//XXX: ignore error
+	}
+
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(validation.error);
+		logger.warn(`Social job validation failed: ${validation.error.message}`);
 		return;
 	}
 
