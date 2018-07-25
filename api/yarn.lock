@@ -3838,7 +3838,7 @@ lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@~4.17.5:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
-logform@^1.9.0, logform@^1.9.1:
+logform@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/logform/-/logform-1.9.1.tgz#58b29d7b11c332456d7a217e17b48a13ad69d60a"
   dependencies:
