@@ -59,7 +59,8 @@ export async function handleStream(job) {
 	logger.debug(`Syncing ${job.data.articles.length} articles to Stream`);
 	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
 	if (!articles.length) {
-		throw new Error(`No article passed validation: ${articles.map(a => joi.validate(a, itemSchema).error)}`);
+		logger.warn(`No article passed validation: ${job.data.articles.map(a => joi.validate(a, itemSchema).error)}`);
+		return;
 	}
 
 	const chunkSize = 100;

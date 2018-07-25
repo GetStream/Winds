@@ -76,26 +76,24 @@ describe('RSS worker', () => {
 		}
 
 		it('should fail for invalid job', async () => {
+			const rssID = '5b0ad0baf6f89574a638887a';
 			const testCases = [
-				{ rss: '5b0ad0baf6f89574a638887a', url: undefined },
-				{ rss: '5b0ad0baf6f89574a638887a', url: '' },
-				{ rss: '5b0ad0baf6f89574a638887a', url: 'http://mbmbam.libsyn.com/rssss' },
+				{ rss: rssID, url: undefined },
+				{ rss: rssID, url: '' },
+				{ rss: rssID, url: 'http://mbmbam.libsyn.com/rssss' },
 			];
 
+			const before = await RSS.findById(rssID);
 			for (let i = 0; i < testCases.length; ++i) {
 				setupHandler();
 
 				const data = testCases[i];
 
 				await rssQueue.add(data);
-				try {
-					await handler;
-				} catch (_) {
-					//XXX: ignore error
-				}
+				await handler;
 
-				const rss = await RSS.findById(data.rss);
-				expect(rss.consecutiveScrapeFailures, `test case #${i + 1}`).to.be.an.equal(i + 1);
+				const after = await RSS.findById(data.rss);
+				expect(after.consecutiveScrapeFailures, `test case #${i + 1}`).to.be.an.equal(before.consecutiveScrapeFailures + i + 1);
 			}
 		});
 	});
@@ -148,14 +146,7 @@ describe('RSS worker', () => {
 					});
 
 				await rssQueue.add(data);
-				try {
-					await handler;
-				} catch (err) {
-					//XXX: ignore error
-				}
-
-				const rss = await RSS.findById(data.rss);
-				expect(rss.consecutiveScrapeFailures).to.be.an.equal(1);
+				await handler;
 
 				const articles = await Article.find({ rss: data.rss });
 				expect(articles).to.have.length(initialArticles.length);

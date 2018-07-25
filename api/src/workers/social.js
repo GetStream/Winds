@@ -72,7 +72,8 @@ export async function handleSocial(job) {
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
 	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
 	if (!articles.length) {
-		throw new Error(`No article passed validation: ${articles.map(a => joi.validate(a, itemSchema).error)}`);
+		logger.warn(`No article passed validation: ${articles.map(a => joi.validate(a, itemSchema).error)}`);
+		return;
 	}
 	let updatingSocialScore = false;
 	await timeIt('winds.handle_social.update_social_score', () => {

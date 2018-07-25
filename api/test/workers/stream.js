@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { streamQueue } from '../../src/asyncTasks';
 import RSS from '../../src/models/rss';
 import Article from '../../src/models/article';
+import { sendFeedToCollections } from '../../src/utils/collections';
 import { streamProcessor, handleStream } from '../../src/workers/stream';
 import { loadFixture, dropDBs, createMockFeed, getMockFeed } from '../utils';
 
@@ -47,22 +48,22 @@ describe('Stream worker', () => {
 				publicationDate: '2018-05-25T06:54:35.000Z'
 			}];
 			const testCases = [
-				{ rss: '5b0ad0baf6f89574a638887a', articles: undefined },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: null },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: 0 },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: '' },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: [] },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: {} },
-				{ rss: undefined, articles },
-				{ rss: null, articles },
-				{ rss: 0, articles },
-				{ rss: '5b0ad0baf6f89574a638887', articles },
 				{ rss: '5b0ad0baf6f-9574a638887a', articles },
+				{ rss: '5b0ad0baf6f89574a638887', articles },
+				{ rss: '5b0ad0baf6f89574a638887a', articles: '' },
+				{ rss: '5b0ad0baf6f89574a638887a', articles: 0 },
+				{ rss: '5b0ad0baf6f89574a638887a', articles: [] },
+				{ rss: '5b0ad0baf6f89574a638887a', articles: null },
+				{ rss: '5b0ad0baf6f89574a638887a', articles: undefined },
+				{ rss: '5b0ad0baf6f89574a638887a', articles: {} },
 				{ rss: '5b0ad0baf6f89574a638887aa', articles },
-				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{}] },
 				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{ id: '', publicationDate: '' }] },
 				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{ id: '5b0ad0baf6fb9574a638887a', publicationDate: '' }] },
 				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{ id: '5b0ad0baf6fb9574a638887a', publicationDate: '2018/25/05 13:00:00' }] },
+				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{}] },
+				{ rss: 0, articles },
+				{ rss: null, articles },
+				{ rss: undefined, articles },
 			];
 
 			for (let i = 0; i < testCases.length; ++i) {
@@ -71,15 +72,11 @@ describe('Stream worker', () => {
 				const data = testCases[i];
 
 				await streamQueue.add(data);
+				await handler;
 
-				let error = null;
-				try {
-					await handler;
-				} catch (err) {
-					error = err;
-				}
-
-				expect(error, `test case #${i + 1}`).to.be.an.instanceOf(Error);
+				const rssFeed = getMockFeed('rss', data.rss);
+				expect(rssFeed.addActivities.called, `test case #${i + 1}`).to.be.false;
+				expect(sendFeedToCollections.called, `test case #${i + 1}`).to.be.false;
 			}
 		});
 	});

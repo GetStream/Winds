@@ -72,6 +72,7 @@ export async function handleRSS(job) {
 	if (!!validation.error) {
 		logger.warn(`RSS job validation failed: ${validation.error.message}`);
 		await RSS.incrScrapeFailures(rssID);
+		return;
 	}
 
 	const rss = await timeIt('winds.handle_rss.get_rss', () => {
