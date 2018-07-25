@@ -13,13 +13,10 @@ class RecentArticlesPanel extends React.Component {
 	componentDidMount() {
 		getFeed(this.props.dispatch, 'article', 0, 20);
 	}
+
 	render() {
 		return (
-			<Panel
-				expandable={true}
-				headerLink="/rss"
-				headerText="Recent Articles"
-			>
+			<Panel expandable={true} headerLink="/rss" headerText="Recent Articles">
 				{this.props.articles.slice(0, 20).map(article => {
 					return (
 						<Link
@@ -54,11 +51,12 @@ RecentArticlesPanel.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let articles = [];
 	let userArticleFeed = [];
+
 	if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
 		userArticleFeed = state.feeds[`user_article:${localStorage['authedUser']}`];
 	}
+
 	for (let articleID of userArticleFeed) {
-		// need to trim the `episode:` from the episode ID
 		articles.push(getArticle(state, articleID.replace('article:', '')));
 	}
 

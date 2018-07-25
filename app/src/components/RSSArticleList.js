@@ -15,11 +15,13 @@ import Img from 'react-image';
 class RSSArticleList extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			articleCursor: 1,
 			sortBy: 'latest',
 			newArticlesAvailable: false,
 		};
+
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
 		this.getFollowState = this.getFollowState.bind(this);
@@ -48,7 +50,6 @@ class RSSArticleList extends React.Component {
 	}
 
 	componentDidMount() {
-		// send analytic event that they viewed a feed
 		window.streamAnalyticsClient.trackEngagement({
 			label: 'viewed_rss_feed',
 			content: `rss:${this.props.match.params.rssFeedID}`,
@@ -57,9 +58,10 @@ class RSSArticleList extends React.Component {
 		this.getRSSFeed(this.props.match.params.rssFeedID);
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
+
 		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
-		// subscribe to feed updates
+
 		if (this.props.rssFeed) {
 			this.subscribeToStreamFeed(
 				this.props.rssFeed._id,
@@ -74,7 +76,6 @@ class RSSArticleList extends React.Component {
 				content: `rss:${nextProps.match.params.rssFeedID}`,
 			});
 
-			// if navigating between rss feeds
 			this.setState(
 				{
 					articleCursor: 1,
@@ -87,7 +88,7 @@ class RSSArticleList extends React.Component {
 					getFeed(this.props.dispatch, 'article', 0, 20);
 				},
 			);
-			// if we're switching rss feeds, unsubscribe from the old rss feed, and subscribe to the new rss feed
+
 			this.unsubscribeFromStreamFeed();
 			this.subscribeToStreamFeed(
 				nextProps.rssFeed._id,
@@ -95,7 +96,6 @@ class RSSArticleList extends React.Component {
 			);
 		}
 
-		// if we didn't have a rss feed before, subscribe to the new rss feed
 		if (!this.props.rssFeed && nextProps.rssFeed) {
 			this.subscribeToStreamFeed(
 				nextProps.rssFeed._id,
@@ -103,8 +103,6 @@ class RSSArticleList extends React.Component {
 			);
 		}
 
-		// scroll down to last saved position, then delete from localStorage
-		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
 		if (this.contentsEl.current && localStorage['rss-article-list-scroll-position']) {
 			this.contentsEl.current.scrollTop =
 				localStorage['rss-article-list-scroll-position'];
@@ -124,7 +122,9 @@ class RSSArticleList extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
@@ -137,8 +137,8 @@ class RSSArticleList extends React.Component {
 				rss: rssFeedID,
 				user: localStorage['authedUser'],
 			},
-		).then(response => {
-			for (let followRelationship of response.data) {
+		).then(res => {
+			for (let followRelationship of res.data) {
 				this.props.dispatch({
 					rssFeedID: followRelationship.rss._id,
 					type: 'FOLLOW_RSS_FEED',
@@ -149,7 +149,6 @@ class RSSArticleList extends React.Component {
 	}
 
 	getRSSArticles(rssFeedID) {
-		// get rss articles
 		return fetch(
 			'GET',
 			'/articles',
@@ -174,22 +173,27 @@ class RSSArticleList extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
 	follow() {
-		// if not currently following, optimistic dispatch follow, make post call, then handle error
 		this.props.dispatch({
 			rssFeedID: this.props.match.params.rssFeedID,
 			type: 'FOLLOW_RSS_FEED',
 			userID: localStorage['authedUser'],
 		});
+
 		fetch('post', '/follows', null, {
 			rss: this.props.match.params.rssFeedID,
 			type: 'rss',
-		}).catch(error => {
-			console.log(error); // eslint-disable-line no-console
+		}).catch(err => {
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+
 			this.props.dispatch({
 				rssFeedID: this.props.match.params.rssFeedID,
 				type: 'UNFOLLOW_RSS_FEED',
@@ -199,17 +203,20 @@ class RSSArticleList extends React.Component {
 	}
 
 	unfollow() {
-		// if currently following, optimistic dispatch unfollow, make delete call, then handle error
 		this.props.dispatch({
 			rssFeedID: this.props.match.params.rssFeedID,
 			type: 'UNFOLLOW_RSS_FEED',
 			userID: localStorage['authedUser'],
 		});
+
 		fetch('delete', '/follows', null, {
 			rss: this.props.match.params.rssFeedID,
 			type: 'rss',
-		}).catch(error => {
-			console.log(error); // eslint-disable-line no-console
+		}).catch(err => {
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+
 			this.props.dispatch({
 				rssFeedID: this.props.match.params.rssFeedID,
 				type: 'FOLLOW_RSS_FEED',
@@ -389,8 +396,6 @@ RSSArticleList.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let rssFeed = { images: {} };
 
-	// first, check to see if the RSS feed has been loaded into redux state. if not, return ownProps + loading.
-
 	if ('rssFeeds' in state && ownProps.match.params.rssFeedID in state.rssFeeds) {
 		rssFeed = { ...state.rssFeeds[ownProps.match.params.rssFeedID] };
 	} else {
@@ -400,7 +405,6 @@ const mapStateToProps = (state, ownProps) => {
 		};
 	}
 
-	// then, attach "follow" state to rss feed
 	let following = false;
 	if (
 		state.followedRssFeeds &&
@@ -412,7 +416,6 @@ const mapStateToProps = (state, ownProps) => {
 		following = true;
 	}
 
-	// then, check to see if articles have been loaded into redux state yet. if not, return ownProps + loading.
 	let articles = [];
 	if (state.articles) {
 		for (let articleID of Object.keys(state.articles)) {
@@ -427,9 +430,7 @@ const mapStateToProps = (state, ownProps) => {
 		};
 	}
 
-	// then, attach pin state, "recent" state, and rss parent to all articles
 	for (let article of articles) {
-		// attach pinned state
 		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
 			article.pinned = true;
 			article.pinID = state.pinnedArticles[article._id]._id;
@@ -437,7 +438,6 @@ const mapStateToProps = (state, ownProps) => {
 			article.pinned = false;
 		}
 
-		// attach "recent" state
 		if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
 			if (
 				state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
@@ -453,11 +453,9 @@ const mapStateToProps = (state, ownProps) => {
 			}
 		}
 
-		// attach rss feed
 		article.rss = { ...rssFeed };
 	}
 
-	// last, sort the articles, because the IDs might not be in chronological order
 	articles.sort((a, b) => {
 		return moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
 	});
