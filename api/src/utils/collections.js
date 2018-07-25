@@ -57,7 +57,7 @@ export async function sendFeedToCollections(type, feed) {
 	}]);
 
 	const contentModelName = model.content.collection.collectionName;
-	const chunkSize = 100;
+	const chunkSize = 50;
 
 	for (let offset = 0; offset < content.length; offset += chunkSize) {
 		const limit = Math.min(content.length, offset + chunkSize);
