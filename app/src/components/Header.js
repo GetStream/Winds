@@ -170,7 +170,7 @@ class Header extends Component {
 
 		let githubPopover;
 
-		if (isElectron) {
+		if (isElectron()) {
 			githubPopover = (
 				<div className="popover-panel github-popover">
 					<div
