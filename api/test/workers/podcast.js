@@ -51,10 +51,7 @@ describe('Podcast worker', () => {
 			const testCases = [
 				{ podcast: '5afb7fedfe7430d35996d66e', url: undefined },
 				{ podcast: '5afb7fedfe7430d35996d66e', url: '' },
-				{
-					podcast: '5afb7fedfe7430d35996d66e',
-					url: 'http://dorkly.com/comics/rssss',
-				},
+				{ podcast: '5afb7fedfe7430d35996d66e', url: 'http://dorkly.com/comics/rssss' },
 			];
 
 			for (let i = 0; i < testCases.length; ++i) {
@@ -62,13 +59,15 @@ describe('Podcast worker', () => {
 
 				const data = testCases[i];
 				await podcastQueue.add(data);
+
+				let error = null;
 				try {
 					await handler;
 				} catch (err) {
-					// ignore error
+					error = err;
 				}
-				const podcast = await Podcast.findById(data.podcast);
-				expect(podcast.consecutiveScrapeFailures).to.be.an.equal(i + 1);
+
+				expect(error, `test case #${i + 1}`).to.be.an.instanceOf(Error);
 			}
 		});
 	});

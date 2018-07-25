@@ -94,16 +94,18 @@ async function tryHackernewsSearch(query, retries=3) {
 	const url = 'https://hn.algolia.com/api/v1/search';
 	while (retries) {
 		try {
-			return await axios.get(url).query({
-				restrictSearchableAttributes: 'url',
-				tags: 'story',
-				query
+			return await axios.get(url, {
+				params: {
+					restrictSearchableAttributes: 'url',
+					tags: 'story',
+					query
+				},
 			});
 		} catch (_) {
 			--retries;
 		}
 	}
-	throw new Error(`Failed to perform call to '${path}'`);
+	throw new Error(`Failed to perform call to '${url}'`);
 }
 
 export async function redditPost(article) {
@@ -135,16 +137,31 @@ const socialSources = {
 
 export async function fetchSocialScore(article) {
 	const entries = await Promise.all(Object.entries(socialSources).map(async ([source, { extractID, search, score }]) => {
+		let id;
 		try {
-			const id = extractID(article);
-			if (id) {
-				return [source, await score(id)];
-			}
-			return [source, await search(article)];
+			id = extractID(article);
 		} catch (_) {
-			return [source, 0];
+			//XXX: ignore error
 		}
+
+		let result;
+		if (id) {
+			try {
+				result = [source, await score(id)];
+			} catch (_) {
+				//XXX: ignore error
+			}
+		}
+		if (!result) {
+			try {
+				result = [source, await search(article)];
+			} catch (_) {
+				result = [source, 0];
+			}
+		}
+		return result;
 	}));
 
-	return new Map(entries.filter(([_, score]) => score));
+	// assemble entries w/ positive score into an object
+	return entries.filter(([_, score]) => !!score).reduce((obj, [source, score]) => Object.assign(obj, { [source]: score }), {});
 }

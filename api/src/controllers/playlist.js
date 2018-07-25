@@ -1,5 +1,3 @@
-import async from 'async';
-
 import Playlist from '../models/playlist';
 
 import config from '../config';

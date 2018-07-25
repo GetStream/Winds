@@ -1,14 +1,12 @@
-// this should be the first import
-import '../loadenv';
-
-import normalize from 'normalize-url';
+import joi from 'joi';
+import axios from 'axios';
 import moment from 'moment';
+
+import db from '../utils/db';
 
 import Podcast from '../models/podcast';
 import Episode from '../models/episode';
 
-import '../utils/db';
-import config from '../config';
 import logger from '../utils/logger';
 import { sendFeedToCollections } from '../utils/collections';
 import { ParsePodcast } from '../parsers/feed';
@@ -16,6 +14,9 @@ import { ParsePodcast } from '../parsers/feed';
 import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
+import { setupAxiosRedirectInterceptor } from '../utils/axios';
+
+setupAxiosRedirectInterceptor(axios);
 
 logger.info('Starting to process podcasts....');
 
@@ -36,7 +37,20 @@ export async function podcastProcessor(job) {
 	}
 }
 
+const joiObjectId = joi.alternatives().try(
+	joi.string().length(12),
+	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+);
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'] });
+
+const schema = joi.object().keys({
+	podcast: joiObjectId.required(),
+	url: joiUrl.required(),
+});
+
 export async function handlePodcast(job) {
+	joi.assert(job.data, schema);
+
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
@@ -48,14 +62,16 @@ export async function handlePodcast(job) {
 	// we do this early so a temporary failure doesnt leave things in a broken state
 	await markDone(podcastID);
 
-	// parse the episodes
 	let podcastContent;
 	try {
 		podcastContent = await ParsePodcast(job.data.url);
 		await Podcast.resetScrapeFailures(podcastID);
-	} catch (e) {
-		logger.info(`podcast scraping broke for url ${job.data.url}`);
+	} catch (err) {
 		await Podcast.incrScrapeFailures(podcastID);
+		throw new Error(`http request failed for url ${job.data.url}: ${err.message}`);
+	}
+
+	if (!podcastContent) {
 		return;
 	}
 

@@ -1,4 +1,3 @@
-import async from 'async';
 import validator from 'validator';
 
 import User from '../models/user';
