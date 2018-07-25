@@ -2894,12 +2894,19 @@ electron-is-dev@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.3.0.tgz#14e6fda5c68e9e4ecbeff9ccf037cbd7c05c5afe"
 
-electron-is@^2.3.0, electron-is@^2.4.1:
+electron-is@^2.3.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/electron-is/-/electron-is-2.4.1.tgz#eb2de19b30179c3ba21658ee9dccdf0564d35d65"
   dependencies:
     electron-is-dev "^0.3.0"
     semver "^5.3.0"
+
+electron-is@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/electron-is/-/electron-is-3.0.0.tgz#bd4c27651fbe03f243f3607c2a098be884f9ed50"
+  dependencies:
+    electron-is-dev "^0.3.0"
+    semver "^5.5.0"
 
 electron-log@^2.2.16:
   version "2.2.16"

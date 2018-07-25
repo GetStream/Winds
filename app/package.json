@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/getstream/winds/issues"
   },
-  "homepage": "https://winds.getstream.io",
+  "homepage": "./",
   "main": "public/electron.js",
   "keywords": [
     "Winds",
@@ -39,7 +39,7 @@
     "babel-plugin-inline-dotenv": "^1.1.2",
     "electron-boilerplate": "^1.1.1",
     "electron-google-analytics": "^0.1.0",
-    "electron-is": "^2.4.1",
+    "electron-is": "^3.0.0",
     "electron-is-dev": "^0.3.0",
     "electron-log": "^2.2.16",
     "electron-notifications": "^1.0.0",
