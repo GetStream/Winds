@@ -15,10 +15,12 @@ import AllArticlesList from '../components/AllArticlesList';
 class RSSFeedsView extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			newRSSModalIsOpen: false,
 			selectedTab: localStorage['selectedRSSTab'] || 'all',
 		};
+
 		this.toggleNewRSSModal = this.toggleNewRSSModal.bind(this);
 	}
 

@@ -26,8 +26,6 @@ class Dashboard extends React.Component {
 					type: 'BATCH_UPDATE_PODCASTS',
 				});
 
-				// set "recommendedPodcasts" value in state
-				// map podcasts to IDs, dispatch
 				this.props.dispatch({
 					podcasts: res.data,
 					type: 'UPDATE_SUGGESTED_PODCASTS',
@@ -43,14 +41,15 @@ class Dashboard extends React.Component {
 					type: 'BATCH_UPDATE_RSS_FEEDS',
 				});
 
-				// map rssFeeds to IDs, dispatch
 				this.props.dispatch({
 					rssFeeds: res.data,
 					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
@@ -122,6 +121,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => {
 	let user = state.users[localStorage['authedUser']];
+
 	if (!user) {
 		return { loading: true };
 	}

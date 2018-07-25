@@ -14,14 +14,16 @@ import AllEpisodesList from '../components/AllEpisodesList';
 class PodcastsView extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			newPodcastModalIsOpen: false,
 			selectedTab: localStorage['selectedPodcastTab'] || 'all',
 		};
+
 		this.toggleNewPodcastModal = this.toggleNewPodcastModal.bind(this);
 	}
+
 	componentDidMount() {
-		// fetch new podcast
 		if (this.props.match.params.podcastID) {
 			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(
 				response => {
@@ -33,6 +35,7 @@ class PodcastsView extends React.Component {
 			);
 		}
 	}
+
 	componentWillReceiveProps(nextProps) {
 		if (this.props.match.params.podcastID !== nextProps.match.params.podcastID) {
 			fetch('get', `/podcasts/${nextProps.match.params.podcastID}`).then(
@@ -45,6 +48,7 @@ class PodcastsView extends React.Component {
 			);
 		}
 	}
+
 	toggleNewPodcastModal() {
 		this.setState({
 			newPodcastModalIsOpen: !this.state.newPodcastModalIsOpen,
@@ -54,7 +58,7 @@ class PodcastsView extends React.Component {
 	render() {
 		let headerComponent = <h1>Podcasts</h1>;
 		let leftColumn;
-		// console.log(new URLSearchParams(this.props.location.search));
+
 		if (new URLSearchParams(this.props.location.search).get('featured') === 'true') {
 			leftColumn = (
 				<React.Fragment>

@@ -13,10 +13,10 @@ class AdminView extends React.Component {
 		};
 	}
 	componentDidMount() {
-		// get a list of all rss feeds and podcasts
 		this.getRssFeeds();
 		this.getPodcasts();
 	}
+
 	getRssFeeds() {
 		fetch('get', '/rss').then(response => {
 			this.setState({
@@ -30,6 +30,7 @@ class AdminView extends React.Component {
 			});
 		});
 	}
+
 	getPodcasts() {
 		fetch('get', '/podcasts').then(response => {
 			this.setState({
@@ -43,6 +44,7 @@ class AdminView extends React.Component {
 			});
 		});
 	}
+
 	render() {
 		return (
 			<div>
@@ -124,6 +126,7 @@ class PodcastRow extends React.Component {
 			summaryText: props.summary,
 		};
 	}
+
 	render() {
 		return (
 			<tr>
@@ -274,6 +277,7 @@ class RssRow extends React.Component {
 			summaryText: props.summary,
 		};
 	}
+
 	render() {
 		return (
 			<tr>
