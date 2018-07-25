@@ -49,9 +49,19 @@ const schema = joi.object().keys({
 
 // Run the OG scraping job
 export async function handleOg(job) {
+	try {
+		// best effort at escaping urls found in the wild
+		if (!!job.data.urls) {
+			job.data.urls = job.data.urls.map(u => ensureEncoded(u));
+		} else {
+			job.data.url = ensureEncoded(job.data.url);
+		}
+	} catch (_) {
+		//XXX: ignore error
+	}
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(validation.error);
+		logger.warn(`OG job validation failed: ${validation.error.message}`);
 		return;
 	}
 

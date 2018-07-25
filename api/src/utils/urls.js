@@ -32,3 +32,10 @@ export function extractHostname(request) {
 	}
 	return canonicalUrl;
 }
+
+export function ensureEncoded(url) {
+	if (url == decodeURI(url)) {
+		return encodeURI(url);
+	}
+	return url;
+}

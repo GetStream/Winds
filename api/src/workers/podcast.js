@@ -15,6 +15,7 @@ import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
+import { ensureEncoded } from '../utils/urls';
 
 setupAxiosRedirectInterceptor(axios);
 
@@ -49,9 +50,15 @@ const schema = joi.object().keys({
 });
 
 export async function handlePodcast(job) {
+	try {
+		// best effort at escaping urls found in the wild
+		job.data.url = ensureEncoded(job.data.url);
+	} catch (_) {
+		//XXX: ignore error
+	}
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(validation.error);
+		logger.warn(`Podcast job validation failed: ${validation.error.message}`);
 		return;
 	}
 

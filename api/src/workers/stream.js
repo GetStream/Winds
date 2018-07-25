@@ -51,7 +51,7 @@ const itemSchema = joi.object().keys({
 export async function handleStream(job) {
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(validation.error);
+		logger.warn(`Stream job validation failed: ${validation.error.message}`);
 		return;
 	}
 

@@ -66,7 +66,8 @@ describe('Discovery', () => {
 			url: `${host}/rss`,
 			site: {
 				title: 'Kotaku',
-				favicon: `http://kotaku.com/favicon.ico`,
+				favicon: `${host}/favicon.ico`,
+				// favicon: `http://kotaku.com/favicon.ico`,
 				url: `http://kotaku.com`,
 			},
 			feedUrls: [{ title: 'Kotaku', url: `${host}/rss` }],
