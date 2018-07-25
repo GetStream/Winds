@@ -70,7 +70,7 @@ export async function handleStream(job) {
 			return {
 				actor: job.data.rss,
 				foreign_id: `articles:${article.id}`,
-				object: article._id,
+				object: article.id,
 				time: article.publicationDate,
 				verb: 'rss_article',
 			};
