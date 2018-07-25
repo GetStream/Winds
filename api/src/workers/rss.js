@@ -1,3 +1,4 @@
+import joi from 'joi';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -41,7 +42,20 @@ export async function rssProcessor(job) {
 	logger.info(`Completed scraping for ${job.data.url}`);
 }
 
+const joiObjectId = joi.alternatives().try(
+	joi.string().length(12),
+	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+);
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'] });
+
+const schema = joi.object().keys({
+	rss: joiObjectId.required(),
+	url: joiUrl.required(),
+});
+
 export async function handleRSS(job) {
+	joi.assert(job.data, schema);
+
 	const rssID = job.data.rss;
 
 	await timeIt('winds.handle_rss.ack', () => {

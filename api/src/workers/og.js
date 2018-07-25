@@ -30,7 +30,7 @@ export async function ogProcessor(job) {
 	} catch (err) {
 		const tags = { queue: 'og' };
 		const extra = {
-			JobURL: job.data.url,
+			JobURL: job.data.url || job.data.urls ,
 			JobType: job.data.type,
 		};
 		logger.error('OG job encountered an error', { err, tags, extra });

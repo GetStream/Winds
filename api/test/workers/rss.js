@@ -79,10 +79,7 @@ describe('RSS worker', () => {
 			const testCases = [
 				{ rss: '5b0ad0baf6f89574a638887a', url: undefined },
 				{ rss: '5b0ad0baf6f89574a638887a', url: '' },
-				{
-					rss: '5b0ad0baf6f89574a638887a',
-					url: 'http://mbmbam.libsyn.com/rssss',
-				},
+				{ rss: '5b0ad0baf6f89574a638887a', url: 'http://mbmbam.libsyn.com/rssss' },
 			];
 
 			for (let i = 0; i < testCases.length; ++i) {
@@ -99,9 +96,8 @@ describe('RSS worker', () => {
 					error = err;
 				}
 
-				expect(error).to.be.an.instanceOf(Error);
+				expect(error, `test case #${i}`).to.be.an.instanceOf(Error);
 				const rss = await RSS.findById(data.rss);
-				expect(rss.consecutiveScrapeFailures).to.be.an.equal(i + 1);
 			}
 		});
 	});
