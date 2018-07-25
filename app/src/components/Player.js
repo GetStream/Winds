@@ -70,35 +70,27 @@ class Player extends Component {
 					},
 				});
 
-				// just started a new episode - send "listen" engagement
-				// make a request to get the played progress
 				fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-					response => {
-						if (response.data.length !== 0) {
-							this.setInitialPlaybackTime(response.data[0].duration).then(
-								() => {
-									this.audioPlayerElement.audioEl.play();
-								},
-							);
+					res => {
+						if (res.data.length !== 0) {
+							this.setInitialPlaybackTime(res.data[0].duration).then(() => {
+								this.audioPlayerElement.audioEl.play();
+							});
 						} else {
 							this.audioPlayerElement.audioEl.play();
 						}
 					},
 				);
 			} else {
-				// just play (unpause)
 				this.audioPlayerElement.audioEl.play();
 			}
 		} else if (prevProps.playing && !this.props.playing) {
 			this.audioPlayerElement.audioEl.pause();
 		} else if (this.props.episode._id !== prevProps.episode._id) {
-			// reset analytics event sent state
-
 			this.setState({
 				episodeListenAnalyticsEventSent: false,
 			});
 
-			// transitioned from previous episode to new episode - send "listen" engagement
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'episode_listen_start',
 				content: {
@@ -106,15 +98,12 @@ class Player extends Component {
 				},
 			});
 
-			// check and get the latest listen data for the podcast - set the "duration" field
 			fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-				response => {
-					if (response.data.length !== 0) {
-						this.setInitialPlaybackTime(response.data[0].duration).then(
-							() => {
-								this.audioPlayerElement.audioEl.play();
-							},
-						);
+				res => {
+					if (res.data.length !== 0) {
+						this.setInitialPlaybackTime(res.data[0].duration).then(() => {
+							this.audioPlayerElement.audioEl.play();
+						});
 					} else {
 						this.audioPlayerElement.audioEl.play();
 					}
@@ -132,23 +121,18 @@ class Player extends Component {
 	}
 
 	skipAhead() {
-		// get current position of audio
 		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
-		// fastseek to next position of audio
 		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition + 30;
 		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
 	}
 
 	skipBack() {
-		// get current position of audio
 		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
-		// fastseek to next position of audio
 		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition - 30;
 		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
 	}
 
 	cyclePlaybackSpeed() {
-		// only two hard problems in computer science, right?
 		let nextSpeed = this.playbackSpeedOptions[
 			(this.playbackSpeedOptions.indexOf(this.state.playbackSpeed) + 1) %
 				this.playbackSpeedOptions.length
@@ -319,18 +303,16 @@ class Player extends Component {
 						this.setState({
 							playing: false,
 						});
-						// dispatch event to switch to next podcast
+
 						this.props.nextTrack();
 					}}
 					onListen={seconds => {
 						this.updateProgress(seconds);
 
-						// check to see if we should send the analytics event
 						if (
 							!this.state.episodeListenAnalyticsEventSent *
 							(seconds / this.audioPlayerElement.audioEl.duration > 0.8)
 						) {
-							console.log('sending analytics event');
 							window.streamAnalyticsClient.trackEngagement({
 								label: 'episode_listen_complete',
 								content: {

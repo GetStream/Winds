@@ -1,4 +1,3 @@
-import logger from '../utils/logger';
 import rssFinder from 'rss-finder';
 import FeedParser from 'feedparser';
 import axios from 'axios';
@@ -6,6 +5,9 @@ import url from 'url';
 import normalize from 'normalize-url';
 import htmlparser from 'htmlparser2';
 import got from 'got';
+
+import logger from '../utils/logger';
+import { extractHostname } from '../utils/urls';
 
 /*
 * Based on the awesome work of rssfinder
@@ -31,8 +33,7 @@ const iconRels = { icon: 1, 'shortcut icon': 1 };
 
 // request settings
 const maxContentLengthBytes = 1024 * 1024 * 5;
-const WindsUserAgent =
-	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
+const WindsUserAgent = 'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
 
 // small wrapper around rssFinder that helps out with some common sites
 export async function discoverRSSOld(url) {
@@ -40,28 +41,25 @@ export async function discoverRSSOld(url) {
 
 	return foundRSS;
 }
-export async function discoverRSS(url) {
-	let headers = {
-		'User-Agent': WindsUserAgent,
-	};
-	// timeout and max content length
-	let response = await axios({
-		method: 'get',
-		url: url,
-		maxContentLength: maxContentLengthBytes,
-		timeout: 12 * 1000,
-		headers: headers,
+
+export async function discoverRSS(uri) {
+	const headers = { 'User-Agent': WindsUserAgent };
+	const response = await axios.get(uri, {
+		headers,
 		maxRedirects: 20,
+		timeout: 12 * 1000,
+		maxContentLength: maxContentLengthBytes,
 	});
+
 	let discovered;
 	try {
 		discovered = await discoverFromFeed(response.data);
 	} catch (e) {
 		discovered = discoverFromHTML(response.data);
 	}
-	const canonicalUrl = response.request.res.responseUrl;
-	let cleaned = fixData(discovered, canonicalUrl);
-	return cleaned;
+
+	const canonicalUrl = url.resolve(extractHostname(response.request), response.request.path);
+	return fixData(discovered, canonicalUrl);
 }
 
 export function discoverFromHTML(body) {
@@ -187,45 +185,38 @@ async function fixData(res, uri) {
 }
 
 export function discoverFromFeed(body) {
-	let end = new Promise(function(resolve, reject) {
-		let rs = {};
+	return new Promise(function(resolve, reject) {
 		const feedParser = new FeedParser();
-
-		const feeds = [];
 
 		feedParser.on('error', function(err) {
 			reject(err);
 		});
 
+		let feedMeta;
 		feedParser.on('readable', function() {
-			let data;
-
-			if (feeds.length === 0) {
-				data = this.meta;
-				feeds.push(data);
+			if (!feedMeta) {
+				feedMeta = this.meta;
 			}
 		});
 
 		feedParser.write(body);
 
 		feedParser.end(function() {
-			if (feeds.length !== 0) {
-				rs.site = {
-					title: feeds[0].title || null,
-					favicon: feeds[0].favicon || null,
-					url: feeds[0].link || null,
-				};
-
-				rs.feedUrls = [
-					{
-						title: feeds[0].title || null,
-						url: feeds[0].xmlUrl || null,
+			if (feedMeta) {
+				return resolve({
+					site: {
+						title: feedMeta.title || null,
+						favicon: feedMeta.favicon || null,
+						url: feedMeta.link || null,
 					},
-				];
+					feedUrls: [{
+						title: feedMeta.title || null,
+						url: feedMeta.xmlUrl || null,
+					}]
+				});
 			}
 
-			resolve(rs);
+			resolve({});
 		});
 	});
-	return end;
 }

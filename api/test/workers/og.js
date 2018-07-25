@@ -145,8 +145,15 @@ describe('OG worker', () => {
 				setupHandler();
 
 				await ogQueue.add(data);
-				await handler;
+				let error = null;
+				try {
+					await handler;
+				} catch (err) {
+					error = err;
+				}
+
 				expect(ParseOG.called).to.be.false;
+				expect(error).to.be.an.instanceOf(Error);
 			}
 		});
 	});

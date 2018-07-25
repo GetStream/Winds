@@ -8,12 +8,11 @@ import { Link } from 'react-router-dom';
 class FeaturedItems extends React.Component {
 	componentDidMount() {
 		if (this.props.featuredItems.length === 0) {
-			fetch('GET', '/featured').then(response => {
-				// split responses into rss feeds and podcasts
+			fetch('GET', '/featured').then(res => {
 				let rssFeeds = [];
 				let podcasts = [];
-				// first, go through and update each item
-				for (let item of response.data) {
+
+				for (let item of res.data) {
 					if (item.type === 'rss') {
 						rssFeeds.push(item);
 					} else if (item.type === 'podcast') {
@@ -31,11 +30,10 @@ class FeaturedItems extends React.Component {
 					type: 'BATCH_UPDATE_PODCASTS',
 				});
 
-				let featuredItemIDs = response.data.map(item => {
+				let featuredItemIDs = res.data.map(item => {
 					return `${item.type}:${item._id}`;
 				});
 
-				// then, update the list of featured items
 				this.props.dispatch({
 					featuredItemIDs,
 					type: 'UPDATE_FEATURED_ITEMS',
@@ -43,6 +41,7 @@ class FeaturedItems extends React.Component {
 			});
 		}
 	}
+
 	render() {
 		return (
 			<div className="featured-items-section">

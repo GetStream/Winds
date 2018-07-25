@@ -1,3 +1,4 @@
+import isElectron from 'is-electron';
 import UserProfileSettingsDrawer from './UserProfileSettingsDrawer';
 import octocatDarkIcon from '../images/logos/octocat-dark.svg';
 import backIcon from '../images/icons/back.svg';
@@ -167,7 +168,6 @@ class Header extends Component {
 			</div>
 		);
 
-		// for the time being, setting up two github popovers - one for electron and one for web, to handle URLs correctly. will refactor later - <3, @kenhoff
 		let githubPopover;
 
 		if (isElectron) {

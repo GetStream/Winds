@@ -118,7 +118,9 @@ class ResetPassword extends Component {
 				});
 			})
 			.catch(err => {
-				console.log(err);
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 

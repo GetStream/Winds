@@ -1,24 +1,21 @@
-import '../loadenv';
-
-import stream from 'getstream';
+import joi from 'joi';
+import axios from 'axios';
 import moment from 'moment';
-import normalize from 'normalize-url';
+
+import db from '../utils/db';
 
 import RSS from '../models/rss';
 import Article from '../models/article';
-
-import '../utils/db';
-import config from '../config';
 import logger from '../utils/logger';
-
-import { sendFeedToCollections } from '../utils/collections';
 import { ParseFeed } from '../parsers/feed';
-
-import { ProcessRssQueue, OgQueueAdd } from '../asyncTasks';
+import { ProcessRssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { upsertManyPosts } from '../utils/upsert';
-import { getStreamClient } from '../utils/stream';
-import { fetchSocialScore } from '../utils/social';
+import { setupAxiosRedirectInterceptor } from '../utils/axios';
+
+if (require.main === module) {
+	setupAxiosRedirectInterceptor(axios);
+}
 
 const duplicateKeyError = 11000;
 
@@ -45,14 +42,31 @@ export async function rssProcessor(job) {
 	logger.info(`Completed scraping for ${job.data.url}`);
 }
 
+const joiObjectId = joi.alternatives().try(
+	joi.string().length(12),
+	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+);
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
+
+const schema = joi.object().keys({
+	rss: joiObjectId.required(),
+	url: joiUrl.required(),
+});
+
 export async function handleRSS(job) {
-	let rssID = job.data.rss;
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(validation.error);
+		return;
+	}
+
+	const rssID = job.data.rss;
 
 	await timeIt('winds.handle_rss.ack', () => {
 		return markDone(rssID);
 	});
 
-	let rss = await timeIt('winds.handle_rss.get_rss', () => {
+	const rss = await timeIt('winds.handle_rss.get_rss', () => {
 		return RSS.findOne({ _id: rssID });
 	});
 
@@ -70,7 +84,7 @@ export async function handleRSS(job) {
 		await RSS.resetScrapeFailures(rssID);
 	} catch (err) {
 		await RSS.incrScrapeFailures(rssID);
-		logger.debug(`http request failed for url ${job.data.url}`);
+		logger.warn(`http request failed for url ${job.data.url}: ${err.message}`);
 	}
 
 	if (!rssContent) {
@@ -85,95 +99,48 @@ export async function handleRSS(job) {
 	statsd.increment('winds.handle_rss.articles.parsed', rssContent.articles.length);
 	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
 
-	let articles = rssContent.articles;
-	for (let a of articles) {
-		a.rss = rssID;
+	for (const article of rssContent.articles) {
+		article.rss = rssID;
 	}
 
 	logger.debug(`starting the upsertManyPosts for ${rssID}`);
-	let operationMap = await upsertManyPosts(rssID, articles, 'rss');
-	let updatedArticles = operationMap.new.concat(operationMap.changed);
-	logger.info(
-		`Finished updating. ${updatedArticles.length} out of ${articles.length} changed`,
-	);
+	const operationMap = await upsertManyPosts(rssID, rssContent.articles, 'rss');
+	const updatedArticles = operationMap.new.concat(operationMap.changed).filter(a => !!a.url);
+	logger.info(`Finished updating. ${updatedArticles.length} out of ${rssContent.articles.length} changed`);
 
-	await RSS.update(
-		{ _id: rssID },
-		{
-			postCount: await Article.count({ rss: rssID }),
-			fingerprint: rssContent.fingerprint,
-		},
-	);
+	await RSS.update({ _id: rssID }, {
+		postCount: await Article.count({ rss: rssID }),
+		fingerprint: rssContent.fingerprint,
+	});
 
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);
+	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 
-	await timeIt('winds.handle_rss.OgQueueAdd', () => {
-		return Promise.all(
-			updatedArticles.filter(a => !!a.url).map(article => {
-				OgQueueAdd(
-					{
-						type: 'article',
-						url: article.url,
-					},
-					{
-						removeOnComplete: true,
-						removeOnFail: true,
-					},
-				);
-			}),
-		);
-	});
-
-	const socialBatch = Article.collection.initializeUnorderedBulkOp();
-
-	let updatingSocialScore = false;
-	updatedArticles = await timeIt('winds.handle_rss.update_social_score', () => {
-		return Promise.all(
-			updatedArticles.filter(a => !!a.url).map(async article => {
-				const socialScore = await fetchSocialScore(article);
-				if (socialScore) {
-					updatingSocialScore = true;
-					article.socialScore = socialScore;
-					socialBatch
-						.find({ _id: article._id })
-						.updateOne({ $set: { socialScore } });
-				}
-				return article;
-			}),
-		);
-	});
-
-	if (updatingSocialScore) {
-		await socialBatch.execute();
+	if (!updatedArticles.length) {
+		return;
 	}
 
-	const t0 = new Date();
-
-	const rssFeed = getStreamClient().feed('rss', rssID);
-	logger.debug(`Syncing ${updatedArticles.length} articles to Stream`);
-
-	const chunkSize = 100;
-	for (let offset = 0; offset < updatedArticles.length; offset += chunkSize) {
-		const limit = offset + chunkSize;
-		const chunk = updatedArticles.slice(offset, limit);
-		const streamArticles = chunk.map(article => {
-			return {
-				actor: article.rss,
-				foreign_id: `articles:${article._id}`,
-				object: article._id,
-				time: article.publicationDate,
-				verb: 'rss_article',
-			};
-		});
-
-		await rssFeed.addActivities(streamArticles);
-	}
-
-	if (updatedArticles.length > 0) {
-		await sendFeedToCollections('rss', rss);
-	}
-
-	statsd.timing('winds.handle_rss.send_to_stream', new Date() - t0);
+	await Promise.all([
+		await OgQueueAdd({
+			type: 'article',
+			urls: updatedArticles.map(a => a.url),
+		}, queueOpts),
+		await SocialQueueAdd({
+			rss: rssID,
+			articles: updatedArticles.map(a => ({
+				id: a._id,
+				link: a.link,
+				commentUrl: a.commentUrl,
+			})),
+		}, queueOpts),
+		await StreamQueueAdd({
+			rss: rssID,
+			articles: updatedArticles.map(a => ({
+				id: a._id,
+				publicationDate: a.publicationDate,
+			})),
+		}, queueOpts),
+	]);
 }
 
 async function markDone(rssID) {

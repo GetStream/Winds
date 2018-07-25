@@ -1,5 +1,3 @@
-import async from 'async';
-
 import Article from '../models/article';
 import Episode from '../models/episode';
 

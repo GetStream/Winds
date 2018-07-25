@@ -25,27 +25,23 @@ class PodcastsView extends React.Component {
 
 	componentDidMount() {
 		if (this.props.match.params.podcastID) {
-			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(
-				response => {
-					this.props.dispatch({
-						podcast: response.data,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-				},
-			);
+			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(res => {
+				this.props.dispatch({
+					podcast: res.data,
+					type: 'UPDATE_PODCAST_SHOW',
+				});
+			});
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.match.params.podcastID !== nextProps.match.params.podcastID) {
-			fetch('get', `/podcasts/${nextProps.match.params.podcastID}`).then(
-				response => {
-					this.props.dispatch({
-						podcast: response.data,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-				},
-			);
+			fetch('get', `/podcasts/${nextProps.match.params.podcastID}`).then(res => {
+				this.props.dispatch({
+					podcast: res.data,
+					type: 'UPDATE_PODCAST_SHOW',
+				});
+			});
 		}
 	}
 

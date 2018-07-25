@@ -32,7 +32,9 @@ class Dashboard extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 		fetch('GET', '/rss', {}, { type: 'recommended' })
 			.then(res => {

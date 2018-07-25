@@ -57,26 +57,19 @@ export async function sendFeedToCollections(type, feed) {
 	}]);
 
 	const contentModelName = model.content.collection.collectionName;
-	const chunkSize = 1000;
+	const chunkSize = 250;
 
 	for (let offset = 0; offset < content.length; offset += chunkSize) {
 		const limit = Math.min(content.length, offset + chunkSize);
 		const data = content.slice(offset, limit).map(c => {
-			//XXX: converting from Map to Object to allow correct JSON serialization
-			const socialScore = {};
-			if (c.socialScore) {
-				for (const [k, v] of c.socialScore.entries()) {
-					socialScore[k] = v;
-				}
-			}
 			return {
 				id: c.id,
 				title: c.title,
 				likes: c.likes,
+				socialScore: c.socialScore,
 				description: c.description,
 				publicationDate: c.publicationDate,
 				[type]: feed.id,
-				socialScore
 			};
 		});
 

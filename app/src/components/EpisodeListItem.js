@@ -15,13 +15,16 @@ class EpisodeListItem extends React.Component {
 		this.state = { addToPlaylistPopoverIsOpen: false };
 		this.toggleAddToPlaylistPopover = this.toggleAddToPlaylistPopover.bind(this);
 	}
+
 	toggleAddToPlaylistPopover() {
 		this.setState({
 			addToPlaylistPopoverIsOpen: !this.state.addToPlaylistPopoverIsOpen,
 		});
 	}
+
 	render() {
 		let icon;
+
 		if (this.props.active) {
 			icon = (
 				<div className="pause-icon">
@@ -58,12 +61,12 @@ class EpisodeListItem extends React.Component {
 				<div className="left">
 					<Img
 						height="100"
+						width="100"
 						src={[
 							this.props.images.og,
 							this.props.podcast.images.featured,
 							getPlaceholderImageURL(this.props.podcast._id),
 						]}
-						width="100"
 					/>
 					{this.props.playable ? icon : null}
 					{this.props.recent ? <div className="recent-indicator" /> : null}

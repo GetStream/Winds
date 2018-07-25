@@ -14,6 +14,7 @@ class BookmarkedArticles extends React.Component {
 	componentDidMount() {
 		getPinnedArticles(this.props.dispatch);
 	}
+
 	render() {
 		let sortedBookmarks = [...this.props.bookmarks].sort((a, b) => {
 			return moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf();
@@ -60,6 +61,7 @@ BookmarkedArticles.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
 	let bookmarks = [];
+
 	for (var articleID in state.pinnedArticles) {
 		if (state.pinnedArticles.hasOwnProperty(articleID)) {
 			if (state.pinnedArticles[articleID]) {

@@ -43,7 +43,7 @@ class AddPodcastModal extends React.Component {
 			baseURL: config.api.url,
 			data: { feedUrl: this.state.podcastInputValue },
 			headers: {
-				'Authorization': `Bearer ${localStorage['jwt']}`,
+				Authorization: `Bearer ${localStorage['jwt']}`,
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
@@ -86,13 +86,13 @@ class AddPodcastModal extends React.Component {
 				return fetch('post', '/follows', null, {
 					podcast: checkedPodcastToFollow,
 					type: 'podcast',
-				}).then(response => {
+				}).then(res => {
 					this.props.dispatch({
-						podcastID: response.data.podcast,
+						podcastID: res.data.podcast,
 						type: 'FOLLOW_PODCAST',
-						userID: response.data.user,
+						userID: res.data.user,
 					});
-					return response.data.podcast;
+					return res.data.podcast;
 				});
 			}),
 		).then(podcastIDs => {
@@ -150,7 +150,7 @@ class AddPodcastModal extends React.Component {
 						/>
 					</div>
 					<div className="info">
-						{'Enter a valid podcast URL and we\'ll add it to Winds.'}
+						{"Enter a valid podcast URL and we'll add it to Winds."}
 					</div>
 					<div className="error-message">{this.state.errorMessage}</div>
 					<div className="buttons">
@@ -199,10 +199,10 @@ class AddPodcastModal extends React.Component {
 											podcastToFollow._id,
 										)}
 										onChange={() => {
-											// if podcasts to follow already includes feedUrl, remove feedUrl
 											let newPodcastsToFollow = [
 												...this.state.checkedPodcastsToFollow,
 											];
+
 											let index = newPodcastsToFollow.findIndex(
 												element => {
 													return (
@@ -210,15 +210,15 @@ class AddPodcastModal extends React.Component {
 													);
 												},
 											);
+
 											if (index === -1) {
-												// add to podcastsToFollow
 												newPodcastsToFollow.push(
 													podcastToFollow._id,
 												);
 											} else {
-												// splice out index
 												newPodcastsToFollow.splice(index, 1);
 											}
+
 											this.setState({
 												checkedPodcastsToFollow: newPodcastsToFollow,
 											});

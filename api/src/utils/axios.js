@@ -1,6 +1,6 @@
 import url from 'url';
 
-const INVALID_PATH_REGEX = /[^\u0021-\u00ff]/;
+import { extractHostname } from './urls';
 
 export function setupAxiosRedirectInterceptor(axios) {
 	// Disable built-in following of redirects and instead manually intercept and fix
@@ -21,8 +21,16 @@ export function setupAxiosRedirectInterceptor(axios) {
 			if (!err.config._maxRedirects) {
 				return Promise.reject(new Error('Max redirects exceeded.'));
 			}
+			let location = err.response.headers['location'];
+			try {
+				if (!url.parse(location).hostname) {
+					location = url.resolve(extractHostname(err.response.request), location);
+				}
+			} catch (_) {
+				//XXX: ignore error
+			}
 			const config = Object.assign({}, err.config, {
-				url: err.response.headers['location'],
+				url: location,
 				maxRedirects: 0,
 				_maxRedirects: err.config._maxRedirects - 1,
 			});
