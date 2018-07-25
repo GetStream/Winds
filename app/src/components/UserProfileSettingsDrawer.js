@@ -85,7 +85,9 @@ class UserProfileSettingsDrawer extends React.Component {
 				window.location.reload();
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
@@ -145,8 +147,8 @@ class UserProfileSettingsDrawer extends React.Component {
 			fetch('PUT', `/users/${this.props._id}`, {
 				password: this.state.password,
 			})
-				.then(response => {
-					this.props.updateUser(response.data);
+				.then(res => {
+					this.props.updateUser(res.data);
 					this.props.closeDrawer();
 				})
 				.catch(err => {
@@ -453,11 +455,13 @@ const mapDispatchToProps = dispatch => {
 	return {
 		getUserInfo: () => {
 			fetch('GET', `/users/${localStorage['authedUser']}`)
-				.then(response => {
-					dispatch({ type: 'UPDATE_USER_SETTINGS', user: response.data });
+				.then(res => {
+					dispatch({ type: 'UPDATE_USER_SETTINGS', user: res.data });
 				})
 				.catch(err => {
-					console.log(err); // eslint-disable-line no-console
+					if (window.console) {
+						console.log(err); // eslint-disable-line no-console
+					}
 				});
 		},
 		updateUser: user => {

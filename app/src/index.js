@@ -12,7 +12,6 @@ Raven.config(process.env.REACT_APP_SENTRY_DSN, {
 	release: packageInfo.version,
 }).install();
 
-// set up single instance of stream client
 window.streamClient = stream.connect(
 	process.env.REACT_APP_STREAM_API_KEY,
 	null,

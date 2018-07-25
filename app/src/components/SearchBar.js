@@ -26,7 +26,9 @@ const getResourceUrl = resource => {
 	} else if (resource.type === 'playlist') {
 		return `/playlists/${resource._id}`;
 	} else {
-		console.log(resource); // eslint-disable-line no-console
+		if (window.console) {
+			console.log(resource); // eslint-disable-line no-console
+		}
 	}
 };
 
@@ -63,7 +65,10 @@ class SearchBar extends React.Component {
 			},
 			(err, results) => {
 				if (err) {
-					console.log(err); // eslint-disable-line no-console
+					if (window.console) {
+						console.log(err); // eslint-disable-line no-console
+					}
+
 					return;
 				}
 

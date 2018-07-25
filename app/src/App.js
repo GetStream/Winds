@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import fetch from './util/fetch';
 import reducer from './reducers';
+import isElectron from 'is-electron';
 
 let initialState = {};
 
@@ -31,9 +32,6 @@ if (localStorage['dismissedIntroBanner'] === 'true') {
 	initialState['showIntroBanner'] = false;
 }
 
-var userAgent = navigator.userAgent.toLowerCase();
-let isElectron = userAgent.indexOf(' electron/') > -1;
-
 let store;
 
 if (isElectron) {
@@ -48,7 +46,6 @@ if (isElectron) {
 
 const crawlUpDomForAnchorTag = (node, e) => {
 	if (!node) {
-		// if we've reached the top of the DOM
 		return;
 	} else if (node.nodeName === 'A') {
 		const href = node.getAttribute('href');
@@ -64,7 +61,6 @@ const crawlUpDomForAnchorTag = (node, e) => {
 };
 
 if (isElectron) {
-	// Electron-specific code
 	document.body.addEventListener('click', e => {
 		crawlUpDomForAnchorTag(e.target, e);
 	});
