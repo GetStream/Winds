@@ -18,7 +18,7 @@ import NotFound from './views/404View';
 
 let history;
 
-if (isElectron) {
+if (isElectron()) {
 	history = createHashHistory();
 } else {
 	history = createBrowserHistory();

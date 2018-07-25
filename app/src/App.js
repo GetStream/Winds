@@ -34,7 +34,7 @@ if (localStorage['dismissedIntroBanner'] === 'true') {
 
 let store;
 
-if (isElectron) {
+if (isElectron()) {
 	store = createStore(reducer, initialState);
 } else {
 	store = createStore(
@@ -49,14 +49,15 @@ const crawlUpDomForAnchorTag = (node, e) => {
 		return;
 	} else if (node.nodeName === 'A') {
 		const href = node.getAttribute('href');
-		if (href && !href.includes('#/')) {
+		if (href && !href.includes('#/') && isElectron()) {
 			e.preventDefault();
 			window.ipcRenderer.send('open-external-window', href);
 		} else {
 			return;
 		}
 	} else {
-		return crawlUpDomForAnchorTag(node.parentNode, e); // need to pass the click event down through the recursive calls so we can preventDefault if needed
+		// need to pass the click event down through the recursive calls so we can preventDefault if needed
+		return crawlUpDomForAnchorTag(node.parentNode, e);
 	}
 };
 
