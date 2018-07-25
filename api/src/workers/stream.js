@@ -19,7 +19,7 @@ if (require.main === module) {
 // connect the handler to the queue
 logger.info('Starting the Stream worker');
 
-ProcessStreamQueue(100, streamProcessor);
+ProcessStreamQueue(1, streamProcessor);
 
 export async function streamProcessor(job) {
 	logger.info(`Processing Stream feeds for feed ${job.data.rss}`);
@@ -61,22 +61,6 @@ export async function handleStream(job) {
 	if (!articles.length) {
 		logger.warn(`No article passed validation: ${job.data.articles.map(a => joi.validate(a, itemSchema).error)}`);
 		return;
-	}
-
-	const chunkSize = 100;
-	for (let offset = 0; offset < articles.length; offset += chunkSize) {
-		const limit = offset + chunkSize;
-		const chunk = articles.slice(offset, limit);
-		const streamArticles = chunk.map(article => {
-			return {
-				actor: job.data.rss,
-				foreign_id: `articles:${article.id}`,
-				object: article.id,
-				time: article.publicationDate,
-				verb: 'rss_article',
-			};
-		});
-		await timeIt('winds.handle_stream.send_to_collections', () => rssFeed.addActivities(streamArticles));
 	}
 
 	if (articles.length > 0) {

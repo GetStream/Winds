@@ -10,6 +10,7 @@ import logger from '../utils/logger';
 import { ParseFeed } from '../parsers/feed';
 import { ProcessRssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
+import { getStreamClient } from '../utils/stream';
 import { upsertManyPosts } from '../utils/upsert';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import { ensureEncoded } from '../utils/urls';
@@ -127,6 +128,23 @@ export async function handleRSS(job) {
 
 	if (!updatedArticles.length) {
 		return;
+	}
+
+	const rssFeed = getStreamClient().feed('rss', rssID);
+	const chunkSize = 100;
+	for (let offset = 0; offset < updatedArticles.length; offset += chunkSize) {
+		const limit = offset + chunkSize;
+		const chunk = updatedArticles.slice(offset, limit);
+		const streamArticles = chunk.map(article => {
+			return {
+				actor: rssID,
+				foreign_id: `articles:${article._id}`,
+				object: article._id,
+				time: article.publicationDate,
+				verb: 'rss_article',
+			};
+		});
+		await timeIt('winds.handle_rss.send_to_collections', () => rssFeed.addActivities(streamArticles));
 	}
 
 	await Promise.all([

@@ -20,7 +20,7 @@ if (require.main === module) {
 // connect the handler to the queue
 logger.info('Starting the Social worker');
 
-ProcessSocialQueue(100, socialProcessor);
+ProcessSocialQueue(25, socialProcessor);
 
 const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };
 

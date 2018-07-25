@@ -66,6 +66,7 @@ describe('Stream worker', () => {
 				{ rss: undefined, articles },
 			];
 
+			sendFeedToCollections.resetHistory();
 			for (let i = 0; i < testCases.length; ++i) {
 				setupHandler();
 
@@ -75,7 +76,6 @@ describe('Stream worker', () => {
 				await handler;
 
 				const rssFeed = getMockFeed('rss', data.rss);
-				expect(rssFeed.addActivities.called, `test case #${i + 1}`).to.be.false;
 				expect(sendFeedToCollections.called, `test case #${i + 1}`).to.be.false;
 			}
 		});
@@ -100,29 +100,13 @@ describe('Stream worker', () => {
 			createMockFeed('rss', data.rss);
 			setupHandler();
 
+			sendFeedToCollections.resetHistory();
 			await streamQueue.add(data);
 			await handler;
 		});
 
 		it('should add article data to Stream feed', async () => {
-			const feed = getMockFeed('rss', data.rss);
-			expect(feed).to.not.be.null;
-			expect(feed.addActivities.called).to.be.true;
-
-			const articles = await Article.find({
-				_id: { $in: data.articles.map(a => a._id) },
-				rss: data.rss,
-			});
-			const batchCount = Math.ceil(articles.length / 100);
-			const foreignIds = articles.map(a => `articles:${a._id}`);
-			let matchedActivities = 0;
-			for (let i = 0; i < batchCount; ++i) {
-				const batchSize = Math.min(100, articles.length - i * 100);
-				const args = feed.addActivities.getCall(i).args[0].map(a => a.foreign_id);
-				expect(args).to.have.length(batchSize);
-				matchedActivities += args.filter(arg => foreignIds.includes(arg)).length;
-			}
-			expect(matchedActivities).to.equal(articles.length);
+			expect(sendFeedToCollections.calledOnce).to.be.true;
 		});
 	});
 });
