@@ -53,7 +53,11 @@ export async function socialProcessor(job) {
 }
 
 export async function handleSocial(job) {
-	joi.assert(job.data, schema);
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(validation.error);
+		return;
+	}
 
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
 	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);

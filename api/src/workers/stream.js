@@ -49,7 +49,11 @@ const itemSchema = joi.object().keys({
 });
 
 export async function handleStream(job) {
-	joi.assert(job.data, schema);
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(validation.error);
+		return;
+	}
 
 	const rssFeed = getStreamClient().feed('rss', job.data.rss);
 	logger.debug(`Syncing ${job.data.articles.length} articles to Stream`);

@@ -54,7 +54,11 @@ const schema = joi.object().keys({
 });
 
 export async function handleRSS(job) {
-	joi.assert(job.data, schema);
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(validation.error);
+		return;
+	}
 
 	const rssID = job.data.rss;
 
@@ -80,7 +84,7 @@ export async function handleRSS(job) {
 		await RSS.resetScrapeFailures(rssID);
 	} catch (err) {
 		await RSS.incrScrapeFailures(rssID);
-		throw new Error(`http request failed for url ${job.data.url}: ${err.message}`);
+		logger.warn(`http request failed for url ${job.data.url}: ${err.message}`);
 	}
 
 	if (!rssContent) {

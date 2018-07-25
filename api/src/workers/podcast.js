@@ -49,7 +49,11 @@ const schema = joi.object().keys({
 });
 
 export async function handlePodcast(job) {
-	joi.assert(job.data, schema);
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(validation.error);
+		return;
+	}
 
 	let podcastID = job.data.podcast;
 	let podcast = await Podcast.findOne({ _id: podcastID });
@@ -68,7 +72,7 @@ export async function handlePodcast(job) {
 		await Podcast.resetScrapeFailures(podcastID);
 	} catch (err) {
 		await Podcast.incrScrapeFailures(podcastID);
-		throw new Error(`http request failed for url ${job.data.url}: ${err.message}`);
+		logger.warn(`http request failed for url ${job.data.url}: ${err.message}`);
 	}
 
 	if (!podcastContent) {

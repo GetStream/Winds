@@ -49,7 +49,11 @@ const schema = joi.object().keys({
 
 // Run the OG scraping job
 export async function handleOg(job) {
-	joi.assert(job.data, schema);
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(validation.error);
+		return;
+	}
 
 	const update = job.data.update;
 	const jobType = job.data.type;
