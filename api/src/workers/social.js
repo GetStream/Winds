@@ -27,7 +27,7 @@ const joiObjectId = joi.alternatives().try(
 	joi.string().length(12),
 	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
 );
-const joiUrl = joi.string().uri({ scheme: ['http', 'https'] });
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
 
 const schema = joi.object().keys({
 	rss: joiObjectId.required(),

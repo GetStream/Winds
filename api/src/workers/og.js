@@ -39,7 +39,7 @@ export async function ogProcessor(job) {
 
 const validTypes = ['episode', 'article', 'rss', 'podcast'];
 
-const joiUrl = joi.string().uri({ scheme: ['http', 'https'] });
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
 const schema = joi.object().keys({
 	update: joi.boolean().default(false),
 	type: joi.string().valid(validTypes).required(),
