@@ -268,7 +268,7 @@ Once you've signed in, create "feed groups" for your Stream app.
 
 A "feed group" defines a certain type of feed within your application. Use the "Add Feed Group" button to create the following feeds:
 
-| feed group name | feed group type |
+| Feed Group Name | Feed Group Type |
 | --------------- | --------------- |
 | `podcast`       | flat            |
 | `rss`           | flat            |
