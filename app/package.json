@@ -105,7 +105,7 @@
     "prettier": "^1.13.7",
     "prettierrc": "^0.0.0-5",
     "react-scripts": "^1.1.4",
-    "stylelint": "^9.3.0",
+    "stylelint": "^9.4.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-order": "^0.8.1",
     "version-bump-prompt": "^4.1.0",
