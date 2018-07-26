@@ -12,7 +12,12 @@
 
 Winds is a beautiful open-source RSS and Podcast app created using React & Redux on the fronte end and Express.js on the backend. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions in form of pull reqeusts are always appreciated. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
+## Patreon
+
+With Winds being an open-source application, we rely heavily on community members to both help build our platform, in addition to fund the resources required to keep it alive (servers, services, etc.). On that note, we've created a [Patreon](https://www.patreon.com/winds_2) page where you can donate an amount of your choice to help Winds out. With the help of YOU, we will be able to continue building what we feel is the best RSS and Podcast application available – free for all to use.
+
 ## Getting Started
+
 To get started with Winds, please visit [https://getstream.io/winds/](https://getstream.io/winds/)
 
 ## What's New
