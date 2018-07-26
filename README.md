@@ -5,8 +5,8 @@
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
-[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
-<a href="https://www.patreon.com/winds_rss_podcast" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-green.svg" alt="Patreon" /></a>
+[![StackShare](https://img.shields.io/badge/Tech-Stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
+<a href="https://www.patreon.com/winds_rss_podcast" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/Patreon-Donate-green.svg" alt="Patreon" /></a>
 
 ## Description
 
