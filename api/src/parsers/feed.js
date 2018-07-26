@@ -215,10 +215,16 @@ export async function ReadURL(url) {
 	return response;
 }
 
+function sleep(time) {
+	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
+}
+
 // Read the given feed URL and return a Stream
-export async function ReadPageURL(url, retries = 3) {
+export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
+	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
+			await sleep(currentDelay);
 			const response = await ReadURL(url);
 			const contentType = response.headers['content-type'].toLowerCase();
 			if (!contentType.includes('html')) {
@@ -230,23 +236,26 @@ export async function ReadPageURL(url, retries = 3) {
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
 			--retries;
+			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
 				throw err;
 			}
 		}
 	}
-
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadFeedURL(feedURL, retries = 3) {
+export async function ReadFeedURL(feedURL, retries = 3, backoffDelay = 20) {
+	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
+			await sleep(currentDelay);
 			const response = await ReadURL(feedURL);
 			return response.data;
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${feedURL}. Retrying`);
 			--retries;
+			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
 				throw err;
 			}

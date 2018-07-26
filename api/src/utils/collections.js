@@ -31,6 +31,20 @@ const feedModels = {
     podcast: { feed: Podcast, content: Episode }
 };
 
+function sizeInBytes(s) {
+	return ~-encodeURI(String(s)).split(/%..|./).length;
+}
+
+function estimateSize(content) {
+	let size = 2; // {}
+	for (const [key, value] of Object.entries(content)) {
+		size += sizeInBytes(key);
+		size += sizeInBytes(value);
+		size += 2; // :,
+	}
+	return size;
+}
+
 export async function sendFeedToCollections(type, feed) {
 	const model = feedModels[type];
 
@@ -57,21 +71,32 @@ export async function sendFeedToCollections(type, feed) {
 	}]);
 
 	const contentModelName = model.content.collection.collectionName;
-	const chunkSize = 50;
-
-	for (let offset = 0; offset < content.length; offset += chunkSize) {
+	const chunkSize = 1000;
+	const sizeLimit = 128 * 1024 * 1024;
+	for (let offset = 0; offset < content.length;) {
+		const data = [];
 		const limit = Math.min(content.length, offset + chunkSize);
-		const data = content.slice(offset, limit).map(c => {
-			return {
-				id: c.id,
-				title: c.title,
-				likes: c.likes,
-				socialScore: c.socialScore,
-				description: c.description,
-				publicationDate: c.publicationDate,
+		let currentSize = 0;
+		for (; offset < limit; ++offset) {
+			const source = content[offset];
+			const item = {
+				id: source.id,
+				title: source.title,
+				likes: source.likes,
+				socialScore: source.socialScore,
+				description: source.description,
+				publicationDate: source.publicationDate,
 				[type]: feed.id,
 			};
-		});
+			//XXX: we overestimate object size by 5-10%
+			const size = estimateSize(item);
+			if (currentSize + size > sizeLimit) {
+				break;
+			}
+
+			currentSize += size;
+			data.push(item);
+		}
 
 		await upsertCollections(contentModelName, data);
 	}

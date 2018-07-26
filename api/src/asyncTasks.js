@@ -6,7 +6,9 @@ import { getStatsDClient } from './utils/statsd';
 export const rssQueue = new Queue('rss', config.cache.uri);
 export const ogQueue = new Queue('og', config.cache.uri);
 export const podcastQueue = new Queue('podcast', config.cache.uri);
-export const streamQueue = new Queue('stream', config.cache.uri);
+export const streamQueue = new Queue('stream', config.cache.uri, {
+	limiter: { max: 7000, duration: 3600000 } // 7k per hour
+});
 export const socialQueue = new Queue('social', config.cache.uri);
 
 function makeMetricKey(queue, event) {

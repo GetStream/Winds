@@ -57,7 +57,11 @@ async function refreshAccessToken() {
 	accessToken = response.data.access_token;
 }
 
-async function tryRedditAPI(path, retries=3) {
+function sleep(time) {
+	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
+}
+
+async function tryRedditAPI(path, retries = 3, backoffDelay = 20) {
 	if (!accessToken) {
 		await refreshAccessToken();
 	}
@@ -69,8 +73,10 @@ async function tryRedditAPI(path, retries=3) {
 			Authorization: `bearer ${accessToken}`
 		}
 	};
+	let currentDelay = 0, nextDelay = backoffDelay;
 	while (retries) {
 		try {
+			await sleep(currentDelay);
 			return await axios.get(url, options);
 		} catch (err) {
 			if ([403, 401].includes(err.response.status)) {
@@ -79,27 +85,33 @@ async function tryRedditAPI(path, retries=3) {
 				continue;
 			}
 			--retries;
+			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 		}
 	}
 	throw new Error(`Failed to perform call to '${path}'`);
 }
 
-async function tryHackernewsAPI(path, retries=3) {
+async function tryHackernewsAPI(path, retries = 3, backoffDelay = 20) {
 	const url = 'https://hacker-news.firebaseio.com/v0' + path;
+	let currentDelay = 0, nextDelay = backoffDelay;
 	while (retries) {
 		try {
+			await sleep(currentDelay);
 			return await axios.get(url);
 		} catch (_) {
 			--retries;
+			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 		}
 	}
 	throw new Error(`Failed to perform call to '${path}'`);
 }
 
-async function tryHackernewsSearch(query, retries=3) {
+async function tryHackernewsSearch(query, retries = 3, backoffDelay = 20) {
 	const url = 'https://hn.algolia.com/api/v1/search';
+	let currentDelay = 0, nextDelay = backoffDelay;
 	while (retries) {
 		try {
+			await sleep(currentDelay);
 			return await axios.get(url, {
 				params: {
 					restrictSearchableAttributes: 'url',
@@ -109,6 +121,7 @@ async function tryHackernewsSearch(query, retries=3) {
 			});
 		} catch (_) {
 			--retries;
+			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 		}
 	}
 	throw new Error(`Failed to perform call to '${url}'`);
