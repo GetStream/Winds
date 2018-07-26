@@ -6,7 +6,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
-<a href="https://www.patreon.com/winds_2" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-green.svg" alt="Patreon" /></a>
+<a href="https://www.patreon.com/winds_rss_podcast" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-green.svg" alt="Patreon" /></a>
 
 ## Description
 
@@ -14,7 +14,7 @@ Winds is a beautiful open-source RSS and Podcast app created using React & Redux
 
 ## Patreon
 
-With Winds being an open-source application, we rely heavily on community members to both help build our platform, in addition to fund the resources required to keep it alive (servers, services, etc.). On that note, we've created a [Patreon](https://www.patreon.com/winds_2) page where you can donate an amount of your choice to help Winds out. With the help of YOU, we will be able to continue building what we feel is the best RSS and Podcast application available – free for all to use.
+With Winds being an open-source application, we rely heavily on community members to both help build our platform, in addition to fund the resources required to keep it alive (servers, services, etc.). On that note, we've created a [Patreon](https://www.patreon.com/winds_rss_podcast) page where you can donate an amount of your choice to help Winds out. With the help of YOU, we will be able to continue building what we feel is the best RSS and Podcast application available – free for all to use.
 
 ## Getting Started
 
