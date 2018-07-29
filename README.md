@@ -464,3 +464,5 @@ RSS is an amazing open standard. It is probably the most pleasant way to stay up
 * [Feedly](https://feedly.com/)
 * [NewsBlur](https://newsblur.com/)
 * [Feedity](https://feedity.com/)
+* [SaveRSS](https://mg.guelker.eu/saverss/)
+
