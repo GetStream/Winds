@@ -31,15 +31,11 @@ const feedModels = {
     podcast: { feed: Podcast, content: Episode }
 };
 
-function sizeInBytes(s) {
-	return ~-encodeURI(String(s)).split(/%..|./).length;
-}
-
 function estimateSize(content) {
 	let size = 2; // {}
 	for (const [key, value] of Object.entries(content)) {
-		size += sizeInBytes(key);
-		size += sizeInBytes(value);
+		size += Buffer.byteLength(String(key), 'utf8');
+		size += Buffer.byteLength(String(value), 'utf8');
 		size += 2; // :,
 	}
 	return size;
