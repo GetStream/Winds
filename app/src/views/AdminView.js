@@ -13,14 +13,14 @@ class AdminView extends React.Component {
 		};
 	}
 	componentDidMount() {
-		// get a list of all rss feeds and podcasts
 		this.getRssFeeds();
 		this.getPodcasts();
 	}
+
 	getRssFeeds() {
-		fetch('get', '/rss').then(response => {
+		fetch('get', '/rss').then(res => {
 			this.setState({
-				rssFeeds: response.data.sort((a, b) => {
+				rssFeeds: res.data.sort((a, b) => {
 					if (a.title.toLowerCase() > b.title.toLowerCase()) {
 						return 1;
 					} else {
@@ -30,10 +30,11 @@ class AdminView extends React.Component {
 			});
 		});
 	}
+
 	getPodcasts() {
-		fetch('get', '/podcasts').then(response => {
+		fetch('get', '/podcasts').then(res => {
 			this.setState({
-				podcasts: response.data.sort((a, b) => {
+				podcasts: res.data.sort((a, b) => {
 					if (a.title.toLowerCase() > b.title.toLowerCase()) {
 						return 1;
 					} else {
@@ -43,6 +44,7 @@ class AdminView extends React.Component {
 			});
 		});
 	}
+
 	render() {
 		return (
 			<div>
@@ -124,6 +126,7 @@ class PodcastRow extends React.Component {
 			summaryText: props.summary,
 		};
 	}
+
 	render() {
 		return (
 			<tr>
@@ -274,6 +277,7 @@ class RssRow extends React.Component {
 			summaryText: props.summary,
 		};
 	}
+
 	render() {
 		return (
 			<tr>

@@ -40,7 +40,6 @@ export const ArticleSchema = new Schema(
 			required: true,
 			index: { type: 'hashed' },
 		},
-		// fingerprint stores the best uniqueness field we have for the given article
 		fingerprint: {
 			type: String,
 			trim: true,
@@ -106,6 +105,14 @@ export const ArticleSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		socialScore: {
+			reddit: {
+				type: Number,
+			},
+			hackernews: {
+				type: Number,
+			},
+		},
 		valid: {
 			type: Boolean,
 			default: true,
@@ -146,6 +153,7 @@ ArticleSchema.plugin(mongooseStringQuery);
 ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
+ArticleSchema.index({ rss: 1, publicationDate: -1 });
 
 ArticleSchema.methods.getUrl = function() {
 	return getUrl('article_detail', this.rss._id, this._id);

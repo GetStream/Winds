@@ -11,21 +11,20 @@ import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
 import Waypoint from 'react-waypoint';
 import Img from 'react-image';
-import Popover from 'react-popover';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			articleCursor: 1,
-			menuIsOpen: false,
 			sortBy: 'latest',
 			newArticlesAvailable: false,
 		};
+
 		this.getRSSFeed = this.getRSSFeed.bind(this);
 		this.getRSSArticles = this.getRSSArticles.bind(this);
 		this.getFollowState = this.getFollowState.bind(this);
-		this.toggleMenu = this.toggleMenu.bind(this);
 
 		this.contentsEl = React.createRef();
 	}
@@ -51,12 +50,18 @@ class RSSArticleList extends React.Component {
 	}
 
 	componentDidMount() {
+		window.streamAnalyticsClient.trackEngagement({
+			label: 'viewed_rss_feed',
+			content: `rss:${this.props.match.params.rssFeedID}`,
+		});
+
 		this.getRSSFeed(this.props.match.params.rssFeedID);
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
+
 		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
-		// subscribe to feed updates
+
 		if (this.props.rssFeed) {
 			this.subscribeToStreamFeed(
 				this.props.rssFeed._id,
@@ -66,7 +71,11 @@ class RSSArticleList extends React.Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
-			// if navigating between rss feeds
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'viewed_rss_feed',
+				content: `rss:${nextProps.match.params.rssFeedID}`,
+			});
+
 			this.setState(
 				{
 					articleCursor: 1,
@@ -79,7 +88,7 @@ class RSSArticleList extends React.Component {
 					getFeed(this.props.dispatch, 'article', 0, 20);
 				},
 			);
-			// if we're switching rss feeds, unsubscribe from the old rss feed, and subscribe to the new rss feed
+
 			this.unsubscribeFromStreamFeed();
 			this.subscribeToStreamFeed(
 				nextProps.rssFeed._id,
@@ -87,7 +96,6 @@ class RSSArticleList extends React.Component {
 			);
 		}
 
-		// if we didn't have a rss feed before, subscribe to the new rss feed
 		if (!this.props.rssFeed && nextProps.rssFeed) {
 			this.subscribeToStreamFeed(
 				nextProps.rssFeed._id,
@@ -95,8 +103,6 @@ class RSSArticleList extends React.Component {
 			);
 		}
 
-		// scroll down to last saved position, then delete from localStorage
-		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
 		if (this.contentsEl.current && localStorage['rss-article-list-scroll-position']) {
 			this.contentsEl.current.scrollTop =
 				localStorage['rss-article-list-scroll-position'];
@@ -106,6 +112,7 @@ class RSSArticleList extends React.Component {
 	componentWillUnmount() {
 		this.unsubscribeFromStreamFeed();
 	}
+
 	getRSSFeed(rssFeedID) {
 		return fetch('GET', `/rss/${rssFeedID}`)
 			.then(res => {
@@ -115,9 +122,12 @@ class RSSArticleList extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
+
 	getFollowState(rssFeedID) {
 		return fetch(
 			'get',
@@ -127,8 +137,8 @@ class RSSArticleList extends React.Component {
 				rss: rssFeedID,
 				user: localStorage['authedUser'],
 			},
-		).then(response => {
-			for (let followRelationship of response.data) {
+		).then(res => {
+			for (let followRelationship of res.data) {
 				this.props.dispatch({
 					rssFeedID: followRelationship.rss._id,
 					type: 'FOLLOW_RSS_FEED',
@@ -137,8 +147,8 @@ class RSSArticleList extends React.Component {
 			}
 		});
 	}
+
 	getRSSArticles(rssFeedID) {
-		// get rss articles
 		return fetch(
 			'GET',
 			'/articles',
@@ -163,21 +173,27 @@ class RSSArticleList extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
+
 	follow() {
-		// if not currently following, optimistic dispatch follow, make post call, then handle error
 		this.props.dispatch({
 			rssFeedID: this.props.match.params.rssFeedID,
 			type: 'FOLLOW_RSS_FEED',
 			userID: localStorage['authedUser'],
 		});
+
 		fetch('post', '/follows', null, {
 			rss: this.props.match.params.rssFeedID,
 			type: 'rss',
-		}).catch(error => {
-			console.log(error); // eslint-disable-line no-console
+		}).catch(err => {
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+
 			this.props.dispatch({
 				rssFeedID: this.props.match.params.rssFeedID,
 				type: 'UNFOLLOW_RSS_FEED',
@@ -185,18 +201,22 @@ class RSSArticleList extends React.Component {
 			});
 		});
 	}
+
 	unfollow() {
-		// if currently following, optimistic dispatch unfollow, make delete call, then handle error
 		this.props.dispatch({
 			rssFeedID: this.props.match.params.rssFeedID,
 			type: 'UNFOLLOW_RSS_FEED',
 			userID: localStorage['authedUser'],
 		});
+
 		fetch('delete', '/follows', null, {
 			rss: this.props.match.params.rssFeedID,
 			type: 'rss',
-		}).catch(error => {
-			console.log(error); // eslint-disable-line no-console
+		}).catch(err => {
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+
 			this.props.dispatch({
 				rssFeedID: this.props.match.params.rssFeedID,
 				type: 'FOLLOW_RSS_FEED',
@@ -204,6 +224,7 @@ class RSSArticleList extends React.Component {
 			});
 		});
 	}
+
 	render() {
 		let sortedArticles = [...this.props.articles];
 		sortedArticles.sort((a, b) => {
@@ -212,25 +233,6 @@ class RSSArticleList extends React.Component {
 			);
 		});
 
-		let menuContent = (
-			<div className="podcast-episode-list-view-popover">
-				<div className="panel">
-					<div
-						className="panel-element"
-						onClick={() => {
-							if (this.props.following) {
-								this.unfollow();
-							} else {
-								this.follow();
-							}
-						}}
-					>
-						{this.props.following ? 'Unfollow' : 'Follow'}
-					</div>
-				</div>
-			</div>
-		);
-
 		if (this.props.loading) {
 			return <Loader />;
 		} else {
@@ -238,15 +240,15 @@ class RSSArticleList extends React.Component {
 			if (this.props.articles.length === 0) {
 				rightContents = (
 					<div>
-						<p>{'We haven\'t found any articles for this RSS feed yet :('}</p>
+						<p>{"We haven't found any articles for this RSS feed yet :("}</p>
 						<p>
 							{
-								'It might be because the RSS feed doesn\'t have any articles, or because it just got added and we\'re still parsing them. Come check back in a few minutes?'
+								"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
 							}
 						</p>
 						<p>
 							{
-								'If you\'re pretty sure there\'s supposed to be some articles here, and they aren\'t showing up, please file a '
+								"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
 							}
 							<a href="https://github.com/getstream/winds/issues">
 								GitHub Issue
@@ -273,10 +275,10 @@ class RSSArticleList extends React.Component {
 
 						{this.state.reachedEndOfFeed ? (
 							<div className="end">
-								<p>{'That\'s it! No more articles here.'}</p>
+								<p>{"That's it! No more articles here."}</p>
 								<p>
 									{
-										'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+										"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 									}
 								</p>
 							</div>
@@ -320,17 +322,17 @@ class RSSArticleList extends React.Component {
 							</div>
 							<h1>{this.props.rssFeed.title}</h1>
 							<div className="menu">
-								<Popover
-									body={menuContent}
-									isOpen={this.state.menuIsOpen}
-									onOuterAction={this.toggleMenu}
-									place="below"
-									tipSize={0.1}
+								<div
+									onClick={() => {
+										if (this.props.following) {
+											this.unfollow();
+										} else {
+											this.follow();
+										}
+									}}
 								>
-									<div onClick={this.toggleMenu}>
-										<i className="fa fa-ellipsis-h fa-2x" />
-									</div>
-								</Popover>
+									{this.props.following ? 'Unfollow' : 'Follow'}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -353,7 +355,7 @@ class RSSArticleList extends React.Component {
 									});
 								}}
 							>
-								New episodes available - click to refresh
+								New Articles Available – Click to Refresh
 							</div>
 						) : null}
 						{rightContents}
@@ -394,8 +396,6 @@ RSSArticleList.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let rssFeed = { images: {} };
 
-	// first, check to see if the RSS feed has been loaded into redux state. if not, return ownProps + loading.
-
 	if ('rssFeeds' in state && ownProps.match.params.rssFeedID in state.rssFeeds) {
 		rssFeed = { ...state.rssFeeds[ownProps.match.params.rssFeedID] };
 	} else {
@@ -405,7 +405,6 @@ const mapStateToProps = (state, ownProps) => {
 		};
 	}
 
-	// then, attach "follow" state to rss feed
 	let following = false;
 	if (
 		state.followedRssFeeds &&
@@ -417,7 +416,6 @@ const mapStateToProps = (state, ownProps) => {
 		following = true;
 	}
 
-	// then, check to see if articles have been loaded into redux state yet. if not, return ownProps + loading.
 	let articles = [];
 	if (state.articles) {
 		for (let articleID of Object.keys(state.articles)) {
@@ -432,9 +430,7 @@ const mapStateToProps = (state, ownProps) => {
 		};
 	}
 
-	// then, attach pin state, "recent" state, and rss parent to all articles
 	for (let article of articles) {
-		// attach pinned state
 		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
 			article.pinned = true;
 			article.pinID = state.pinnedArticles[article._id]._id;
@@ -442,7 +438,6 @@ const mapStateToProps = (state, ownProps) => {
 			article.pinned = false;
 		}
 
-		// attach "recent" state
 		if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
 			if (
 				state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
@@ -458,11 +453,9 @@ const mapStateToProps = (state, ownProps) => {
 			}
 		}
 
-		// attach rss feed
 		article.rss = { ...rssFeed };
 	}
 
-	// last, sort the articles, because the IDs might not be in chronological order
 	articles.sort((a, b) => {
 		return moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
 	});

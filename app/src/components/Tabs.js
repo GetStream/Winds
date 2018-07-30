@@ -8,10 +8,11 @@ class Tabs extends React.Component {
 			selectedTab: parseInt(localStorage[this.props.tabGroup], 10) || 0,
 		};
 	}
+
 	render() {
 		let selectedElement = this.props.children[this.state.selectedTab];
-		// clever key deletion with es7 destructuring
 		let { tabTitle, ...selectedElementProps } = selectedElement.props; // eslint-disable-line no-unused-vars
+
 		return (
 			<React.Fragment>
 				<div className={this.props.headerClass || ''}>
@@ -44,6 +45,7 @@ class Tabs extends React.Component {
 		);
 	}
 }
+
 Tabs.propTypes = {
 	children: PropTypes.arrayOf(PropTypes.element),
 	componentClass: PropTypes.string,

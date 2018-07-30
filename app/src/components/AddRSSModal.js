@@ -151,13 +151,13 @@ class AddRSSModal extends React.Component {
 				return fetch('post', '/follows', null, {
 					rss: checkedFeedToFollow,
 					type: 'rss',
-				}).then(response => {
+				}).then(res => {
 					this.props.dispatch({
-						rssFeedID: response.data.rss,
+						rssFeedID: res.data.rss,
 						type: 'FOLLOW_RSS_FEED',
-						userID: response.data.user,
+						userID: res.data.user,
 					});
-					return response.data.rss;
+					return res.data.rss;
 				});
 			}),
 		)
@@ -296,7 +296,7 @@ class AddRSSModal extends React.Component {
 					</div>
 					<div className="info">
 						{
-							'We found a few feeds with that URL. Once your selection has been made, we will begin to process the feeds. They will be ready shortly after.'
+							'Once your selection has been made, we will begin to process the feeds. They will be ready shortly after.'
 						}
 					</div>
 					{this.state.feedsToFollow.map(feedToFollow => {

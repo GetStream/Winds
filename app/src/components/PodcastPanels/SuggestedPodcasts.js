@@ -10,32 +10,34 @@ import Panel from '../Panel';
 class SuggestedPodcasts extends React.Component {
 	componentDidMount() {
 		fetch('GET', '/podcasts', {}, { type: 'recommended' })
-			.then(response => {
+			.then(res => {
 				this.props.dispatch({
-					podcasts: response.data,
+					podcasts: res.data,
 					type: 'BATCH_UPDATE_PODCASTS',
 				});
 
-				// dispatch follow suggestion updates
 				this.props.dispatch({
-					podcasts: response.data,
+					podcasts: res.data,
 					type: 'UPDATE_SUGGESTED_PODCASTS',
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 
 		fetch('GET', '/follows', null, { type: 'podcast' })
-			.then(response => {
-				// update the user
+			.then(res => {
 				this.props.dispatch({
 					type: 'UPDATE_USER',
-					user: response.data[0].user,
+					user: res.data[0].user,
 				});
+
 				let podcasts = [];
 				let podcastFollowRelationships = [];
-				for (let followRelationship of response.data) {
+
+				for (let followRelationship of res.data) {
 					podcasts.push(followRelationship.podcast);
 					podcastFollowRelationships.push({
 						podcastID: followRelationship.podcast._id,
@@ -47,22 +49,26 @@ class SuggestedPodcasts extends React.Component {
 					podcasts,
 					type: 'BATCH_UPDATE_PODCASTS',
 				});
+
 				this.props.dispatch({
 					podcastFollowRelationships,
 					type: 'BATCH_FOLLOW_PODCASTS',
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
+
 	followPodcast(podcastID) {
 		this.props.dispatch({
 			podcastID,
 			type: 'FOLLOW_PODCAST',
 			userID: localStorage['authedUser'],
 		});
-		// (dispatch is synchronous)
+
 		fetch('post', '/follows', null, {
 			podcast: podcastID,
 			type: 'podcast',
@@ -81,7 +87,7 @@ class SuggestedPodcasts extends React.Component {
 			type: 'UNFOLLOW_PODCAST',
 			userID: localStorage['authedUser'],
 		});
-		// (dispatch is synchronous)
+
 		fetch('delete', '/follows', null, {
 			podcast: podcastID,
 			type: 'podcast',
@@ -144,17 +150,19 @@ SuggestedPodcasts.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-	// just grab an object with all the follows, and return that
 	let podcasts = [];
 	let followedPodcasts = {};
+
 	if (state.followedPodcasts && state.followedPodcasts[localStorage['authedUser']]) {
 		followedPodcasts = { ...state.followedPodcasts[localStorage['authedUser']] };
 	}
+
 	if ('suggestedPodcasts' in state) {
 		for (let podcastID of state.suggestedPodcasts) {
 			podcasts.push(state.podcasts[podcastID]);
 		}
 	}
+
 	return { ...ownProps, followedPodcasts, podcasts };
 };
 

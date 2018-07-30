@@ -100,7 +100,11 @@ export const UserSchema = new Schema(
 			transform: function(doc, ret) {
 				delete ret.password;
 				if (ret.email) {
-					ret.gravatar = gravatar.url(ret.email, { s: '200', d: 'identicon' });
+					ret.gravatar = gravatar.url(ret.email, {
+						s: '200',
+						d: 'identicon',
+						protocol: 'https',
+					});
 				}
 				ret.streamTokens = {};
 				for (const k of ['timeline', 'user_article', 'user_episode']) {
@@ -115,7 +119,11 @@ export const UserSchema = new Schema(
 			transform: function(doc, ret) {
 				delete ret.password;
 				if (ret.email) {
-					ret.gravatar = gravatar.url(ret.email, { s: '200', d: 'identicon' });
+					ret.gravatar = gravatar.url(ret.email, {
+						s: '200',
+						d: 'identicon',
+						protocol: 'https',
+					});
 				}
 				ret.streamTokens = {};
 				for (const k of ['timeline', 'user_article', 'user_episode']) {
@@ -162,11 +170,15 @@ UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedU
 	serialized = {
 		_id: user._id,
 		email: user.email,
+		bio: user.bio,
+		url: user.url,
+		twitter: user.twitter,
 		interests: user.interests,
-		jwt: jwt.sign({ email: user.email, sub: user._id }, config.jwt.secret),
 		name: user.name,
 		username: user.username,
+		preferences: user.preferences,
 		streamTokens: streamTokens,
+		jwt: jwt.sign({ email: user.email, sub: user._id }, config.jwt.secret),
 	};
 	return serialized;
 };

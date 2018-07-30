@@ -43,10 +43,10 @@ describe('Listen controller', () => {
 			expect(newListen).to.not.be.null;
 
 			expect(response.body._id).to.be.equal(String(newListen._id));
-			expect(response.body.user).to.be.equal(String(data.user));
-			expect(response.body.user).to.be.equal(String(newListen.user._id));
-			expect(response.body.episode).to.be.equal(data.episode);
-			expect(response.body.episode).to.be.equal(String(newListen.episode._id));
+			expect(response.body.user._id).to.be.equal(String(data.user));
+			expect(response.body.user._id).to.be.equal(String(newListen.user._id));
+			expect(response.body.episode._id).to.be.equal(data.episode);
+			expect(response.body.episode._id).to.be.equal(String(newListen.episode._id));
 			expect(response.body.duration).to.be.equal(data.duration);
 			expect(response.body.duration).to.be.equal(newListen.duration);
 		});
@@ -71,10 +71,10 @@ describe('Listen controller', () => {
 			expect(Object.keys(response.body)).to.include.members(keys);
 
 			expect(response.body._id).to.be.equal(String(updatedListen._id));
-			expect(response.body.user).to.be.equal(String(data.user));
-			expect(response.body.user).to.be.equal(String(updatedListen.user._id));
-			expect(response.body.episode).to.be.equal(data.episode);
-			expect(response.body.episode).to.be.equal(String(updatedListen.episode._id));
+			expect(response.body.user._id).to.be.equal(String(data.user));
+			expect(response.body.user._id).to.be.equal(String(updatedListen.user._id));
+			expect(response.body.episode._id).to.be.equal(data.episode);
+			expect(response.body.episode._id).to.be.equal(String(updatedListen.episode._id));
 			expect(response.body.duration).to.be.equal(data.duration);
 			expect(response.body.duration).to.be.equal(updatedListen.duration);
 		});

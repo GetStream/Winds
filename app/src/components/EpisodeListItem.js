@@ -6,6 +6,8 @@ import pauseIcon from '../images/icons/pause.svg';
 import playIcon from '../images/icons/play.svg';
 import { withRouter } from 'react-router-dom';
 import TimeAgo from './TimeAgo';
+import { pinEpisode, unpinEpisode } from '../util/pins';
+import { connect } from 'react-redux';
 
 class EpisodeListItem extends React.Component {
 	constructor(props) {
@@ -13,13 +15,16 @@ class EpisodeListItem extends React.Component {
 		this.state = { addToPlaylistPopoverIsOpen: false };
 		this.toggleAddToPlaylistPopover = this.toggleAddToPlaylistPopover.bind(this);
 	}
+
 	toggleAddToPlaylistPopover() {
 		this.setState({
 			addToPlaylistPopoverIsOpen: !this.state.addToPlaylistPopoverIsOpen,
 		});
 	}
+
 	render() {
 		let icon;
+
 		if (this.props.active) {
 			icon = (
 				<div className="pause-icon">
@@ -56,12 +61,12 @@ class EpisodeListItem extends React.Component {
 				<div className="left">
 					<Img
 						height="100"
+						width="100"
 						src={[
 							this.props.images.og,
 							this.props.podcast.images.featured,
 							getPlaceholderImageURL(this.props.podcast._id),
 						]}
-						width="100"
 					/>
 					{this.props.playable ? icon : null}
 					{this.props.recent ? <div className="recent-indicator" /> : null}
@@ -74,9 +79,13 @@ class EpisodeListItem extends React.Component {
 								e.preventDefault();
 								e.stopPropagation();
 								if (this.props.pinned) {
-									this.props.unpinEpisode();
+									unpinEpisode(
+										this.props.pinID,
+										this.props._id,
+										this.props.dispatch,
+									);
 								} else {
-									this.props.pinEpisode();
+									pinEpisode(this.props._id, this.props.dispatch);
 								}
 							}}
 						>
@@ -123,7 +132,6 @@ EpisodeListItem.propTypes = {
 	images: PropTypes.shape({
 		og: PropTypes.string,
 	}),
-	pinEpisode: PropTypes.func.isRequired,
 	pinned: PropTypes.bool,
 	playOrPauseEpisode: PropTypes.func,
 	playable: PropTypes.bool,
@@ -139,7 +147,6 @@ EpisodeListItem.propTypes = {
 	publicationDate: PropTypes.string,
 	recent: PropTypes.bool,
 	title: PropTypes.string,
-	unpinEpisode: PropTypes.func.isRequired,
 };
 
-export default withRouter(EpisodeListItem);
+export default connect()(withRouter(EpisodeListItem));

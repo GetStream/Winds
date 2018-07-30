@@ -1,12 +1,12 @@
 import loaderIcon from '../images/loaders/default.svg';
 import Img from 'react-image';
-import fetch from '../util/fetch';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
 import Waypoint from 'react-waypoint';
 import { getFeed } from '../util/feeds';
+import { getPinnedEpisodes } from '../util/pins';
 
 class AllEpisodesList extends React.Component {
 	constructor(props) {
@@ -17,32 +17,6 @@ class AllEpisodesList extends React.Component {
 			reachedEndOfFeed: false,
 		};
 	}
-	pinEpisode(episodeID) {
-		fetch('POST', '/pins', {
-			episode: episodeID,
-		})
-			.then(response => {
-				this.props.dispatch({
-					pin: response.data,
-					type: 'PIN_EPISODE',
-				});
-			})
-			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
-			});
-	}
-	unpinEpisode(pinID, episodeID) {
-		fetch('DELETE', `/pins/${pinID}`)
-			.then(() => {
-				this.props.dispatch({
-					episodeID,
-					type: 'UNPIN_EPISODE',
-				});
-			})
-			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
-			});
-	}
 
 	componentDidMount() {
 		this.setState(
@@ -50,6 +24,7 @@ class AllEpisodesList extends React.Component {
 				cursor: Math.floor(this.props.episodes.length / 10),
 			},
 			() => {
+				getPinnedEpisodes(this.props.dispatch);
 				this.getEpisodes();
 				this.subscription = window.streamClient
 					.feed(
@@ -65,6 +40,7 @@ class AllEpisodesList extends React.Component {
 			},
 		);
 	}
+
 	getEpisodes() {
 		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
 	}
@@ -98,23 +74,17 @@ class AllEpisodesList extends React.Component {
 						return (
 							<EpisodeListItem
 								key={episode._id}
-								pinEpisode={() => {
-									this.pinEpisode(episode._id);
-								}}
 								playable={false}
-								unpinEpisode={() => {
-									this.unpinEpisode(episode.pinID, episode._id);
-								}}
 								{...episode}
 							/>
 						);
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{'That\'s it! No more episodes here.'}</p>
+							<p>{"That's it! No more episodes here."}</p>
 							<p>
 								{
-									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 								}
 							</p>
 						</div>

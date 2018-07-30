@@ -1,3 +1,4 @@
+import isElectron from 'is-electron';
 import UserProfileSettingsDrawer from './UserProfileSettingsDrawer';
 import octocatDarkIcon from '../images/logos/octocat-dark.svg';
 import backIcon from '../images/icons/back.svg';
@@ -167,13 +168,9 @@ class Header extends Component {
 			</div>
 		);
 
-		// for the time being, setting up two github popovers - one for electron and one for web, to handle URLs correctly. will refactor later - <3, @kenhoff
-
-		var userAgent = navigator.userAgent.toLowerCase();
-		let isElectron = userAgent.indexOf(' electron/') > -1;
 		let githubPopover;
 
-		if (isElectron) {
+		if (isElectron()) {
 			githubPopover = (
 				<div className="popover-panel github-popover">
 					<div
@@ -207,7 +204,7 @@ class Header extends Component {
 								>
 									<path d="M896 384l-313.5-40.781L448 64 313.469 343.219 0 384l230.469 208.875L171 895.938l277-148.812 277.062 148.812L665.5 592.875 896 384z" />
 								</svg>
-								<span className="gh-button__stat__text">5,325</span>
+								<span className="gh-button__stat__text">5,705</span>
 							</span>
 						</a>
 					</div>
@@ -251,7 +248,7 @@ class Header extends Component {
 								>
 									<path d="M896 384l-313.5-40.781L448 64 313.469 343.219 0 384l230.469 208.875L171 895.938l277-148.812 277.062 148.812L665.5 592.875 896 384z" />
 								</svg>
-								<span className="gh-button__stat__text">5,325</span>
+								<span className="gh-button__stat__text">5,705</span>
 							</span>
 						</a>
 					</div>

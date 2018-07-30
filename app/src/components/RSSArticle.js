@@ -16,22 +16,64 @@ class RSSArticle extends React.Component {
 		this.state = {
 			error: false,
 			loadingContent: true,
+			sentArticleReadCompleteAnalyticsEvent: false,
 		};
+
+		this.contentRef = React.createRef();
 	}
 
 	componentDidMount() {
+		window.streamAnalyticsClient.trackEngagement({
+			label: 'article_open',
+			content: {
+				foreign_id: `articles:${this.props.match.params.articleID}`,
+			},
+		});
+
 		getPinnedArticles(this.props.dispatch);
+
 		this.getArticle(this.props.match.params.articleID);
-		if (this.props.url) {
-			this.getRSSContent(this.props._id);
-		}
+		this.getRSSContent(this.props.match.params.articleID);
+		this.contentRef.current.onscroll = e => {
+			let scrollPercentage =
+				this.contentRef.current.scrollTop /
+				(this.contentRef.current.scrollHeight -
+					this.contentRef.current.clientHeight);
+			if (
+				!this.state.sentArticleReadCompleteAnalyticsEvent &&
+				scrollPercentage > 0.8
+			) {
+				window.streamAnalyticsClient.trackEngagement({
+					label: 'article_read_complete',
+					content: {
+						foreign_id: `articles:${this.props.match.params.articleID}`,
+					},
+				});
+
+				this.setState({
+					sentArticleReadCompleteAnalyticsEvent: true,
+				});
+			}
+		};
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps._id !== this.props._id) {
+		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
+			this.setState({
+				sentArticleReadCompleteAnalyticsEvent: false,
+			});
+
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'article_open',
+				content: {
+					foreign_id: `articles:${nextProps.match.params.articleID}`,
+				},
+			});
+
 			getPinnedArticles(this.props.dispatch);
+
 			this.getArticle(nextProps.match.params.articleID);
-			this.getRSSContent(nextProps._id);
+			this.getRSSContent(nextProps.match.params.articleID);
 		}
 	}
 
@@ -53,9 +95,10 @@ class RSSArticle extends React.Component {
 
 		const shareUrl = `https://twitter.com/intent/tweet?url=${
 			window.location.href
-		}&text=${this.props.rss.title} - ${this.props.description}&hashtags=Winds,RSS`;
+		}&text=${this.props.title}&hashtags=Winds,RSS`;
 
 		const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
+
 		win.opener = null;
 	}
 
@@ -76,7 +119,9 @@ class RSSArticle extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
@@ -198,7 +243,7 @@ class RSSArticle extends React.Component {
 					</div>
 				</div>
 
-				<div className="content">
+				<div className="content" ref={this.contentRef}>
 					<div className="enclosures">
 						{this.props.enclosures.map(
 							enclosure =>
@@ -281,7 +326,6 @@ const mapStateToProps = (state, ownProps) => {
 		article.pinned = false;
 	}
 
-	// get article's rss feed
 	return {
 		loading,
 		...article,

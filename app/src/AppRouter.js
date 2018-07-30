@@ -1,5 +1,6 @@
 import { Create, ForgotPassword, Login, ResetPassword } from './views/auth-views';
 import React, { Component } from 'react';
+import isElectron from 'is-electron';
 import AuthedRoute from './AuthedRoute';
 import Dashboard from './views/Dashboard';
 import Header from './components/Header';
@@ -8,7 +9,6 @@ import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
 import { Router, Switch, Route } from 'react-router-dom';
 import UnauthedRoute from './UnauthedRoute';
-import config from './config';
 import { createHashHistory, createBrowserHistory } from 'history';
 import fetch from './util/fetch';
 import AdminView from './views/AdminView';
@@ -16,11 +16,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import NotFound from './views/404View';
 
-var userAgent = navigator.userAgent.toLowerCase();
-let isElectron = userAgent.indexOf(' electron/') > -1;
-
 let history;
-if (isElectron) {
+
+if (isElectron()) {
 	history = createHashHistory();
 } else {
 	history = createBrowserHistory();
@@ -31,6 +29,11 @@ class AppRouter extends Component {
 		if (localStorage['authedUser']) {
 			fetch('GET', `/users/${localStorage['authedUser']}`)
 				.then(res => {
+					window.streamAnalyticsClient.setUser({
+						id: res.data._id,
+						alias: res.data.email,
+					});
+
 					this.props.dispatch({
 						type: 'UPDATE_USER',
 						user: res.data,

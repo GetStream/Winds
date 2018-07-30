@@ -1,27 +1,29 @@
-// this should be the first import
-import '../loadenv';
-
-import normalize from 'normalize-url';
+import joi from 'joi';
+import axios from 'axios';
 import moment from 'moment';
+
+import db from '../utils/db';
 
 import Podcast from '../models/podcast';
 import Episode from '../models/episode';
 
-import '../utils/db';
-import config from '../config';
 import logger from '../utils/logger';
-import { sendPodcastToCollections } from '../utils/collections';
+import { sendFeedToCollections } from '../utils/collections';
 import { ParsePodcast } from '../parsers/feed';
 
-import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
+import { ProcessPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
+import { setupAxiosRedirectInterceptor } from '../utils/axios';
+import { ensureEncoded } from '../utils/urls';
+import { timeIt } from '../utils/statsd';
 
-// TODO: move this to separate main.js
+setupAxiosRedirectInterceptor(axios);
+
 logger.info('Starting to process podcasts....');
-ProcessPodcastQueue(15, podcastProcessor);
 
-// the top level handlePodcast just handles error handling
+ProcessPodcastQueue(100, podcastProcessor);
+
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
 	try {
@@ -32,31 +34,59 @@ export async function podcastProcessor(job) {
 			JobPodcast: job.data.podcast,
 			JobURL: job.data.url,
 		};
+
 		logger.error('Podcast job encountered an error', { err, tags, extra });
 	}
 }
 
-// Handle Podcast scrapes the podcast and updates the episodes
+const joiObjectId = joi.alternatives().try(
+	joi.string().length(12),
+	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+);
+const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
+
+const schema = joi.object().keys({
+	podcast: joiObjectId.required(),
+	url: joiUrl.required(),
+});
+
 export async function handlePodcast(job) {
+	try {
+		// best effort at escaping urls found in the wild
+		job.data.url = ensureEncoded(job.data.url);
+	} catch (_) {
+		//XXX: ignore error
+	}
+
 	let podcastID = job.data.podcast;
+
+	await timeIt('winds.handle_podcast.ack', () => {
+		return markDone(podcastID);
+	});
+
+	const validation = joi.validate(job.data, schema);
+	if (!!validation.error) {
+		logger.warn(`Podcast job validation failed: ${validation.error.message}`);
+		await Podcast.incrScrapeFailures(podcastID);
+		return;
+	}
+
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
 		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
 		return;
 	}
 
-	// mark as done, will be schedule again in 15 min from now
-	// we do this early so a temporary failure doesnt leave things in a broken state
-	await markDone(podcastID);
-
-	// parse the episodes
 	let podcastContent;
 	try {
 		podcastContent = await ParsePodcast(job.data.url);
 		await Podcast.resetScrapeFailures(podcastID);
-	} catch (e) {
-		logger.info(`podcast scraping broke for url ${job.data.url}`);
+	} catch (err) {
 		await Podcast.incrScrapeFailures(podcastID);
+		logger.warn(`http request failed for url ${job.data.url}: ${err.message}`);
+	}
+
+	if (!podcastContent) {
 		return;
 	}
 
@@ -75,62 +105,49 @@ export async function handlePodcast(job) {
 		} changed`,
 	);
 
-	// update the count
-	await Podcast.update(
-		{ _id: podcastID },
-		{
-			postCount: await Episode.count({ podcast: podcastID }),
-		},
-	);
+	await Podcast.update({ _id: podcastID }, {
+		postCount: await Episode.count({ podcast: podcastID }),
+	});
 
-	await Promise.all(
-		updatedEpisodes.filter(e => !!e.link).map(episode => {
-			OgQueueAdd(
-				{
-					type: 'episode',
-					url: episode.link,
-				},
-				{
-					removeOnComplete: true,
-					removeOnFail: true,
-				},
-			);
-		}),
-	);
-
-	if (updatedEpisodes.length > 0) {
-		let chunkSize = 100;
-		let podcastFeed = getStreamClient().feed('podcast', podcastID);
-		for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
-			let chunk = updatedEpisodes.slice(i, i + chunkSize);
-			let streamEpisodes = chunk.map(episode => {
-				return {
-					actor: episode.podcast,
-					foreign_id: `episodes:${episode._id}`,
-					object: episode._id,
-					time: episode.publicationDate,
-					verb: 'podcast_episode',
-				};
-			});
-
-			// addActivities to Stream
-			await podcastFeed.addActivities(streamEpisodes);
-		}
-		// update the collection information for follow suggestions
-		await sendPodcastToCollections(podcast);
+	if (!updatedEpisodes.length) {
+		return;
 	}
+
+	const queueOpts = { removeOnComplete: true, removeOnFail: true };
+
+	const chunkSize = 100;
+	const podcastFeed = getStreamClient().feed('podcast', podcastID);
+	for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
+		const chunk = updatedEpisodes.slice(i, i + chunkSize);
+		const streamEpisodes = chunk.map(episode => {
+			return {
+				actor: episode.podcast,
+				foreign_id: `episodes:${episode._id}`,
+				object: episode._id,
+				time: episode.publicationDate,
+				verb: 'podcast_episode',
+			};
+		});
+
+		await podcastFeed.addActivities(streamEpisodes);
+	}
+
+	await Promise.all([
+		await OgQueueAdd({
+			type: 'episode',
+			urls: updatedEpisodes.map(e => e.link),
+		}, queueOpts),
+		await StreamQueueAdd({ podcast: podcastID }, queueOpts),
+	]);
 }
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
-	/*
-	Set the last scraped for the given rssID
-	*/
-	let now = moment().toISOString();
+	// Set the last scraped for the given rssID
 	let updated = await Podcast.update(
 		{ _id: podcastID },
 		{
-			lastScraped: now,
+			lastScraped: moment().toISOString(),
 			isParsing: false,
 		},
 	);

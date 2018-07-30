@@ -20,6 +20,7 @@ class Player extends Component {
 		super(props);
 
 		this.state = {
+			episodeListenAnalyticsEventSent: false,
 			playbackSpeed: 1,
 			playing: false,
 			progress: 0,
@@ -62,36 +63,47 @@ class Player extends Component {
 			return;
 		} else if (!prevProps.playing && this.props.playing) {
 			if (!prevProps.episode) {
-				// make a request to get the played progress
+				window.streamAnalyticsClient.trackEngagement({
+					label: 'episode_listen_start',
+					content: {
+						foreign_id: `episodes:${this.props.episode._id}`,
+					},
+				});
+
 				fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-					response => {
-						if (response.data.length !== 0) {
-							this.setInitialPlaybackTime(response.data[0].duration).then(
-								() => {
-									this.audioPlayerElement.audioEl.play();
-								},
-							);
+					res => {
+						if (res.data.length !== 0) {
+							this.setInitialPlaybackTime(res.data[0].duration).then(() => {
+								this.audioPlayerElement.audioEl.play();
+							});
 						} else {
 							this.audioPlayerElement.audioEl.play();
 						}
 					},
 				);
 			} else {
-				// just play (unpause)
 				this.audioPlayerElement.audioEl.play();
 			}
 		} else if (prevProps.playing && !this.props.playing) {
 			this.audioPlayerElement.audioEl.pause();
 		} else if (this.props.episode._id !== prevProps.episode._id) {
-			// check and get the latest listen data for the podcast - set the "duration" field
+			this.setState({
+				episodeListenAnalyticsEventSent: false,
+			});
+
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'episode_listen_start',
+				content: {
+					foreign_id: `episodes:${this.props.episode._id}`,
+				},
+			});
+
 			fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-				response => {
-					if (response.data.length !== 0) {
-						this.setInitialPlaybackTime(response.data[0].duration).then(
-							() => {
-								this.audioPlayerElement.audioEl.play();
-							},
-						);
+				res => {
+					if (res.data.length !== 0) {
+						this.setInitialPlaybackTime(res.data[0].duration).then(() => {
+							this.audioPlayerElement.audioEl.play();
+						});
 					} else {
 						this.audioPlayerElement.audioEl.play();
 					}
@@ -109,23 +121,18 @@ class Player extends Component {
 	}
 
 	skipAhead() {
-		// get current position of audio
 		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
-		// fastseek to next position of audio
 		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition + 30;
 		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
 	}
 
 	skipBack() {
-		// get current position of audio
 		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
-		// fastseek to next position of audio
 		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition - 30;
 		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
 	}
 
 	cyclePlaybackSpeed() {
-		// only two hard problems in computer science, right?
 		let nextSpeed = this.playbackSpeedOptions[
 			(this.playbackSpeedOptions.indexOf(this.state.playbackSpeed) + 1) %
 				this.playbackSpeedOptions.length
@@ -151,7 +158,7 @@ class Player extends Component {
 	}
 
 	updateProgress(seconds) {
-		let progress = seconds / this.audioPlayerElement.audioEl.duration * 100;
+		let progress = (seconds / this.audioPlayerElement.audioEl.duration) * 100;
 		this.setState({
 			currentTime: seconds,
 			duration: this.audioPlayerElement.audioEl.duration,
@@ -296,11 +303,27 @@ class Player extends Component {
 						this.setState({
 							playing: false,
 						});
-						// dispatch event to switch to next podcast
+
 						this.props.nextTrack();
 					}}
 					onListen={seconds => {
 						this.updateProgress(seconds);
+
+						if (
+							!this.state.episodeListenAnalyticsEventSent *
+							(seconds / this.audioPlayerElement.audioEl.duration > 0.8)
+						) {
+							window.streamAnalyticsClient.trackEngagement({
+								label: 'episode_listen_complete',
+								content: {
+									foreign_id: `episodes:${this.props.episode._id}`,
+								},
+							});
+
+							this.setState({
+								episodeListenAnalyticsEventSent: true,
+							});
+						}
 
 						// check last sent
 						let currentTime = new Date().valueOf();
@@ -377,6 +400,25 @@ const mapStateToProps = state => {
 		}
 	}
 
+	if (context.playing) {
+		if ('Notification' in window) {
+			if (
+				Notification.permission !== 'denied' ||
+				Notification.permission === 'default'
+			) {
+				Notification.requestPermission();
+			}
+
+			if (Notification.permission === 'granted') {
+				new Notification('Corrently Playing on Winds', {
+					body: episode.title,
+					icon: episode.podcast.image,
+					silent: true,
+				});
+			}
+		}
+	}
+
 	let currentUserID = localStorage['authedUser'];
 
 	return {
@@ -404,4 +446,7 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Player);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(Player);

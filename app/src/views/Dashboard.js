@@ -9,12 +9,57 @@ import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import DiscoverSection from '../components/DiscoverSection';
+import fetch from '../util/fetch';
 
 class Dashboard extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.refresh = this.refresh.bind(this);
+	}
+
+	refresh() {
+		fetch('GET', '/podcasts', {}, { type: 'recommended' })
+			.then(res => {
+				this.props.dispatch({
+					podcasts: res.data,
+					type: 'BATCH_UPDATE_PODCASTS',
+				});
+
+				this.props.dispatch({
+					podcasts: res.data,
+					type: 'UPDATE_SUGGESTED_PODCASTS',
+				});
+			})
+			.catch(err => {
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
+			});
+		fetch('GET', '/rss', {}, { type: 'recommended' })
+			.then(res => {
+				this.props.dispatch({
+					rssFeeds: res.data,
+					type: 'BATCH_UPDATE_RSS_FEEDS',
+				});
+
+				this.props.dispatch({
+					rssFeeds: res.data,
+					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
+				});
+			})
+			.catch(err => {
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
+			});
+	}
+
 	render() {
 		if (this.props.loading) {
 			return <Loader />;
 		}
+
 		return (
 			<div className="dashboard">
 				<FeaturedItems />
@@ -44,8 +89,12 @@ class Dashboard extends React.Component {
 						<RssFeedList />
 					</div>
 				</div>
-				<div className="column-header discover-header">
+				<div className="column-header discover-header" onClick={this.refresh}>
 					<h1>Discover</h1>
+					<div className="drilldown">
+						<div>Refresh</div>
+						<i className="fas fa-sync" />
+					</div>
 				</div>
 				<div className="discover-section ">
 					<div className="column-content">
@@ -74,6 +123,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => {
 	let user = state.users[localStorage['authedUser']];
+
 	if (!user) {
 		return { loading: true };
 	}

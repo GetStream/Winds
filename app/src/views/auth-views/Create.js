@@ -29,8 +29,12 @@ class Create extends Component {
 		} else {
 			return (
 				<AccountDetailsForm
-					done={(userID, jwt) => {
-						localStorage['authedUser'] = userID;
+					done={({ _id, email, jwt }) => {
+						window.streamAnalyticsClient.setUser({
+							id: _id,
+							alias: email,
+						});
+						localStorage['authedUser'] = _id;
 						localStorage['jwt'] = jwt;
 						this.props.history.push('/');
 					}}
@@ -54,7 +58,6 @@ class OnboardingGrid extends React.Component {
 	}
 
 	toggleInterest(interestName) {
-		// look through this.state.selectedInterests - if it's in there, pop and return
 		let foundInterestIndex = this.state.selectedInterests.findIndex(
 			selectedInterest => {
 				return selectedInterest === interestName;
@@ -68,7 +71,6 @@ class OnboardingGrid extends React.Component {
 				selectedInterests: newInterests,
 			});
 		} else {
-			// else, push the interest on
 			this.setState({
 				selectedInterests: [...this.state.selectedInterests, interestName],
 			});
@@ -280,7 +282,7 @@ class AccountDetailsForm extends React.Component {
 				interests: this.props.interests,
 			})
 			.then(res => {
-				this.props.done(res.data._id, res.data.jwt);
+				this.props.done(res.data);
 
 				this.setState({
 					submitting: false,

@@ -12,89 +12,88 @@ import config from '../config';
 import logger from './logger';
 
 // replaces TrackMetadata and events() calls
-export async function upsertCollections(collectionType, publications) {
-	if (publications.length && !config.analyticsDisabled) {
-		let response;
-		let streamClient = getStreamClient();
+export async function upsertCollections(type, content) {
+	if (!content.length || config.analyticsDisabled) {
+		return;
+	}
 
-		try {
-			response = await streamClient.collections.upsert(
-				collectionType,
-				publications,
-			);
-		} catch (err) {
-			logger.error(`failed to update collections with type ${collectionType}`, {
-				err,
-			});
+	const streamClient = getStreamClient();
+
+	try {
+		return await streamClient.collections.upsert(type, content);
+	} catch (err) {
+		logger.error(`failed to update collections with type ${type}`, { err });
+	}
+}
+
+const feedModels = {
+    rss: { feed: RSS, content: Article },
+    podcast: { feed: Podcast, content: Episode }
+};
+
+function estimateSize(content) {
+	let size = 2; // {}
+	for (const [key, value] of Object.entries(content)) {
+		size += Buffer.byteLength(String(key), 'utf8');
+		size += Buffer.byteLength(String(value), 'utf8');
+		size += 2; // :,
+	}
+	return size;
+}
+
+export async function sendFeedToCollections(type, feed) {
+	const model = feedModels[type];
+
+	if (!feed.language) {
+		feed.language = await DetectLanguage(feed.feedUrl);
+		await model.feed.findByIdAndUpdate(feed.id, { language: feed.language }, { new: true });
+	}
+	const content = await model.content.find({ [type]: feed.id })
+		.sort({ publicationDate: -1 })
+		.limit(1000);
+
+	let mostRecentPublicationDate;
+	if (content.length) {
+		mostRecentPublicationDate = content[0].publicationDate;
+	}
+
+	await upsertCollections(type, [{
+		id: feed.id,
+		title: feed.title,
+		language: feed.language,
+		description: feed.description,
+		articleCount: content.length,
+		mostRecentPublicationDate
+	}]);
+
+	const contentModelName = model.content.collection.collectionName;
+	const chunkSize = 1000;
+	const sizeLimit = 126 * 1024; // a bit less then 128Kb to lease some space for external data
+	for (let offset = 0; offset < content.length;) {
+		const data = [];
+		const limit = Math.min(content.length, offset + chunkSize);
+		let currentSize = 0;
+		for (; offset < limit; ++offset) {
+			const source = content[offset];
+			const item = {
+				id: source.id,
+				title: source.title,
+				likes: source.likes,
+				socialScore: source.socialScore,
+				description: source.description,
+				publicationDate: source.publicationDate,
+				[type]: feed.id,
+			};
+			//XXX: we overestimate object size by 5-10%
+			const size = estimateSize(item);
+			if (currentSize + size > sizeLimit) {
+				break;
+			}
+
+			currentSize += size;
+			data.push(item);
 		}
-		return response;
+
+		await upsertCollections(contentModelName, data);
 	}
-}
-
-export async function sendPodcastToCollections(podcast) {
-	if (!podcast.language) {
-		podcast.language = await DetectLanguage(podcast.feedUrl);
-		await Podcast.findByIdAndUpdate(
-			podcast.id,
-			{ language: podcast.language },
-			{ new: true },
-		);
-	}
-	let episodes = await Episode.find({
-		podcast: podcast.id,
-	})
-		.sort({ publicationDate: -1 })
-		.limit(1000);
-
-	let mostRecentPublicationDate;
-	if (episodes.length) {
-		mostRecentPublicationDate = episodes[0].publicationDate;
-	}
-
-	let collections = [
-		{
-			id: podcast.id,
-			articleCount: episodes.length,
-			description: podcast.description,
-			language: podcast.language,
-			mostRecentPublicationDate: mostRecentPublicationDate,
-			title: podcast.title,
-		},
-	];
-
-	await upsertCollections('podcast', collections);
-}
-
-export async function sendRssFeedToCollections(rssFeed) {
-	if (!rssFeed.language) {
-		rssFeed.language = await DetectLanguage(rssFeed.feedUrl);
-		await RSS.findByIdAndUpdate(
-			rssFeed.id,
-			{ language: rssFeed.language },
-			{ new: true },
-		);
-	}
-
-	let articles = await Article.find({
-		rss: rssFeed.id,
-	})
-		.sort({ publicationDate: -1 })
-		.limit(1000);
-	let mostRecentPublicationDate;
-	if (articles.length) {
-		mostRecentPublicationDate = articles[0].publicationDate;
-	}
-
-	let collections = [
-		{
-			id: rssFeed.id,
-			articleCount: articles.length,
-			description: rssFeed.description,
-			language: rssFeed.language,
-			mostRecentPublicationDate: mostRecentPublicationDate,
-			title: rssFeed.title,
-		},
-	];
-
-	await upsertCollections('rss', collections);
 }
