@@ -225,16 +225,8 @@ describe('RSS worker', () => {
 			});
 
 			it('should schedule Stream job', async () => {
-				const newArticles = await Article.find({
-					_id: { $nin: initialArticles.map(a => a._id) },
-					rss: data.rss,
-				});
-				const articles = newArticles.filter(a => !!a.url).map(a => ({
-					id: a._id,
-					publicationDate: a.publicationDate,
-				}));
 				const opts = { removeOnComplete: true, removeOnFail: true };
-				const args = { rss: data.rss, articles };
+				const args = { rss: data.rss };
 				expect(StreamQueueAdd.calledOnceWith(args, opts)).to.be.true;
 			});
 

@@ -40,30 +40,12 @@ describe('Stream worker', () => {
 		})
 
 		it('should fail for invalid job', async () => {
-			const articles = [{
-				id: '5b0ad37226dc3db38194e5ec',
-				publicationDate: '2018-05-25T13:00:00.000Z'
-			}, {
-				id: '5b0ad37226dc3db38194e69b',
-				publicationDate: '2018-05-25T06:54:35.000Z'
-			}];
 			const testCases = [
-				{ rss: '5b0ad0baf6f-9574a638887a', articles },
-				{ rss: '5b0ad0baf6f89574a638887', articles },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: '' },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: 0 },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: [] },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: null },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: undefined },
-				{ rss: '5b0ad0baf6f89574a638887a', articles: {} },
-				{ rss: '5b0ad0baf6f89574a638887aa', articles },
-				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{ id: '', publicationDate: '' }] },
-				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{ id: '5b0ad0baf6fb9574a638887a', publicationDate: '' }] },
-				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{ id: '5b0ad0baf6fb9574a638887a', publicationDate: '2018/25/05 13:00:00' }] },
-				{ rss: '5b0ad0baf6fb9574a638887a', articles: [{}] },
-				{ rss: 0, articles },
-				{ rss: null, articles },
-				{ rss: undefined, articles },
+				{ rss: '5b0ad0baf6f89574a638887' },
+				{ rss: '5b0ad0baf6f89574a638887aa' },
+				{ rss: 0 },
+				{ rss: null },
+				{ rss: undefined },
 			];
 
 			sendFeedToCollections.resetHistory();
@@ -82,16 +64,7 @@ describe('Stream worker', () => {
 	});
 
 	describe('worker', () => {
-		const data = {
-			rss: '5b0ad0baf6f89574a638887a',
-			articles: [{
-				id: '5b0ad37226dc3db38194e5ec',
-				publicationDate: '2018-05-25T13:00:00.000Z'
-			}, {
-				id: '5b0ad37226dc3db38194e69b',
-				publicationDate: '2018-05-25T06:54:35.000Z'
-			}],
-		};
+		const data = { rss: '5b0ad0baf6f89574a638887a' };
 
 		before(async () => {
 			await dropDBs();

@@ -4,11 +4,10 @@ import joi from 'joi';
 import db from '../utils/db';
 
 import RSS from '../models/rss';
-import Article from '../models/article';
+import Podcast from '../models/podcast';
 import logger from '../utils/logger';
 import { ProcessStreamQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
-import { getStreamClient } from '../utils/stream';
 import { sendFeedToCollections } from '../utils/collections';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
 
@@ -40,13 +39,9 @@ const joiObjectId = joi.alternatives().try(
 );
 
 const schema = joi.object().keys({
-	rss: joiObjectId.required(),
-	articles: joi.array().min(1).required(),
-});
-const itemSchema = joi.object().keys({
-	id: joiObjectId.required(),
-	publicationDate: joi.date().iso().required(),
-});
+	rss: joiObjectId,
+	podcast: joiObjectId,
+}).xor('rss', 'podcast');
 
 export async function handleStream(job) {
 	const validation = joi.validate(job.data, schema);
@@ -55,16 +50,9 @@ export async function handleStream(job) {
 		return;
 	}
 
-	const rssFeed = getStreamClient().feed('rss', job.data.rss);
-	logger.debug(`Syncing ${job.data.articles.length} articles to Stream`);
-	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
-	if (!articles.length) {
-		logger.warn(`No article passed validation: ${job.data.articles.map(a => joi.validate(a, itemSchema).error)}`);
-		return;
-	}
+	const type = 'rss' in job.data ? 'rss' : 'podcast';
+	const model = 'rss' in job.data ? RSS : Podcast;
 
-	if (articles.length > 0) {
-		const rss = await RSS.findById(job.data.rss);
-		await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections('rss', rss));
-	}
+	const feed = await model.findById(job.data[type]);
+	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed));
 }

@@ -124,7 +124,6 @@ export async function handleRSS(job) {
 	});
 
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);
-	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 
 	if (!updatedArticles.length) {
 		return;
@@ -147,6 +146,8 @@ export async function handleRSS(job) {
 		await timeIt('winds.handle_rss.send_to_collections', () => rssFeed.addActivities(streamArticles));
 	}
 
+	const queueOpts = { removeOnComplete: true, removeOnFail: true };
+
 	await Promise.all([
 		await OgQueueAdd({
 			type: 'article',
@@ -160,13 +161,7 @@ export async function handleRSS(job) {
 				commentUrl: a.commentUrl,
 			})),
 		}, queueOpts),
-		await StreamQueueAdd({
-			rss: rssID,
-			articles: updatedArticles.map(a => ({
-				id: a._id,
-				publicationDate: a.publicationDate,
-			})),
-		}, queueOpts),
+		await StreamQueueAdd({ rss: rssID }, queueOpts),
 	]);
 }
 

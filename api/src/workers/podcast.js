@@ -11,7 +11,7 @@ import logger from '../utils/logger';
 import { sendFeedToCollections } from '../utils/collections';
 import { ParsePodcast } from '../parsers/feed';
 
-import { ProcessPodcastQueue, OgQueueAdd } from '../asyncTasks';
+import { ProcessPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
@@ -105,50 +105,40 @@ export async function handlePodcast(job) {
 		} changed`,
 	);
 
-	// update the count
-	await Podcast.update(
-		{ _id: podcastID },
-		{
-			postCount: await Episode.count({ podcast: podcastID }),
-		},
-	);
+	await Podcast.update({ _id: podcastID }, {
+		postCount: await Episode.count({ podcast: podcastID }),
+	});
 
-	await Promise.all(
-		updatedEpisodes.filter(e => !!e.link).map(episode => {
-			OgQueueAdd(
-				{
-					type: 'episode',
-					url: episode.link,
-				},
-				{
-					removeOnComplete: true,
-					removeOnFail: true,
-				},
-			);
-		}),
-	);
-
-	if (updatedEpisodes.length > 0) {
-		let chunkSize = 100;
-		let podcastFeed = getStreamClient().feed('podcast', podcastID);
-		for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
-			let chunk = updatedEpisodes.slice(i, i + chunkSize);
-			let streamEpisodes = chunk.map(episode => {
-				return {
-					actor: episode.podcast,
-					foreign_id: `episodes:${episode._id}`,
-					object: episode._id,
-					time: episode.publicationDate,
-					verb: 'podcast_episode',
-				};
-			});
-
-			// addActivities to Stream
-			await podcastFeed.addActivities(streamEpisodes);
-		}
-		// update the collection information for follow suggestions
-		await sendFeedToCollections('podcast', podcast);
+	if (!updatedEpisodes.length) {
+		return;
 	}
+
+	const queueOpts = { removeOnComplete: true, removeOnFail: true };
+
+	const chunkSize = 100;
+	const podcastFeed = getStreamClient().feed('podcast', podcastID);
+	for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
+		const chunk = updatedEpisodes.slice(i, i + chunkSize);
+		const streamEpisodes = chunk.map(episode => {
+			return {
+				actor: episode.podcast,
+				foreign_id: `episodes:${episode._id}`,
+				object: episode._id,
+				time: episode.publicationDate,
+				verb: 'podcast_episode',
+			};
+		});
+
+		await podcastFeed.addActivities(streamEpisodes);
+	}
+
+	await Promise.all([
+		await OgQueueAdd({
+			type: 'episode',
+			urls: updatedEpisodes.map(e => e.link),
+		}, queueOpts),
+		await StreamQueueAdd({ podcast: podcastID }, queueOpts),
+	]);
 }
 
 // markDone sets lastScraped to now and isParsing to false
