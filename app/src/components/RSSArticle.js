@@ -105,14 +105,6 @@ class RSSArticle extends React.Component {
 		win.opener = null;
 	}
 
-	reddit() {
-		alert('reddit');
-	}
-
-	hn() {
-		alert('hn');
-	}
-
 	async getArticle(articleID) {
 		try {
 			const res = await fetch('GET', `/articles/${articleID}`);
