@@ -15,5 +15,13 @@ export default {
 	cache: {
 		uri: process.env.CACHE_URI,
 	},
+	social: {
+		reddit: {
+			username: process.env.REACT_APP_REDDIT_USERNAME,
+			password: process.env.REACT_APP_REDDIT_PASSWORD,
+			key: process.env.REACT_APP_REDDIT_APP_ID,
+			secret: process.env.REACT_APP_REDDIT_APP_SECRET,
+		},
+	},
 	url: process.env.BASE_URL,
 };

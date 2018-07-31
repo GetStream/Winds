@@ -10,7 +10,7 @@ export function extractRedditPostID(article) {
 	}
 	const parts = article.link.split('/');
 	if (parts.includes('comments')) {
-		return 't3_' + parts[parts.indexOf('comments') + 1]
+		return parts[parts.indexOf('comments') + 1]
 	}
 
 	if (parts.includes('r')) {
@@ -21,7 +21,7 @@ export function extractRedditPostID(article) {
 	if (!/^[a-z0-9]+$/i.test(id)) {
 		throw new Error(`Invalid URL: ${article.link}`)
 	}
-	return 't3_' + id;
+	return id;
 }
 
 export function extractHackernewsPostID(article) {
@@ -129,24 +129,26 @@ async function tryHackernewsSearch(query, retries = 3, backoffDelay = 20) {
 
 export async function redditPost(article) {
 	const response = await tryRedditAPI(`/info?url=${article.url}`);
-	const postScores = response.data.data.children.map(c => c.data.score);
-	return postScores.reduce((max, n) => Math.max(max, n), 0);
+	const postScores = response.data.data.children.map(c => [c.data.id, c.data.score]);
+	const [postID, score] = postScores.reduce((max, n) => max[1] > n[1] ? max : n, [undefined, 0]);
+	return postID && { url: `https://reddit.com/comments/${postID}`, score };
 }
 
 export async function hackernewsPost(article) {
 	const response = await tryHackernewsSearch(article.url);
-	const postScores = response.data.hits.map(c => c.points);
-	return postScores.reduce((max, n) => Math.max(max, n), 0);
+	const postScores = response.data.hits.map(c => [c.objectID, c.points]);
+	const [postID, score] = postScores.reduce((max, n) => max[1] > n[1] ? max : n, [undefined, 0]);
+	return postID && { url: `https://news.ycombinator.com/item?id=${postID}`, score };
 }
 
 export async function redditScore(postID) {
-	const response = await tryRedditAPI(`/info?id=${postID}`);
-	return response.data.data.children[0].data.score;
+	const response = await tryRedditAPI(`/info?id=t3_${postID}`);
+	return { url: `https://reddit.com/comments/${postID}`, score: response.data.data.children[0].data.score };
 }
 
 export async function hackernewsScore(postID) {
 	const response = await tryHackernewsAPI(`/item/${postID}.json`);
-	return response.data.score;
+	return { url: `https://news.ycombinator.com/item?id=${postID}`, score: response.data.score };
 }
 
 const socialSources = {
@@ -154,33 +156,32 @@ const socialSources = {
 	hackernews: { extractID: extractHackernewsPostID, search: hackernewsPost, score: hackernewsScore }
 };
 
-export async function fetchSocialScore(article) {
-	const entries = await Promise.all(Object.entries(socialSources).map(async ([source, { extractID, search, score }]) => {
-		let id;
+export async function fetchSocialScore(source, article) {
+	const { extractID, search, score } = socialSources[source];
+	let id;
+	try {
+		id = extractID(article);
+	} catch (_) {
+        console.log(_);
+		//XXX: ignore error
+	}
+
+	let result;
+	if (id) {
 		try {
-			id = extractID(article);
+			result = await score(id);
 		} catch (_) {
+        console.log(_);
 			//XXX: ignore error
 		}
-
-		let result;
-		if (id) {
-			try {
-				result = [source, await score(id)];
-			} catch (_) {
-				//XXX: ignore error
-			}
+	}
+	if (!result) {
+		try {
+			result = await search(article);
+		} catch (_) {
+        console.log(_);
+			//XXX: ignore error
 		}
-		if (!result) {
-			try {
-				result = [source, await search(article)];
-			} catch (_) {
-				result = [source, 0];
-			}
-		}
-		return result;
-	}));
-
-	// assemble entries w/ positive score into an object
-	return entries.filter(([_, score]) => !!score).reduce((obj, [source, score]) => Object.assign(obj, { [source]: score }), {});
+	}
+	return result;
 }

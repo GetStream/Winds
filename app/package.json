@@ -91,6 +91,7 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",

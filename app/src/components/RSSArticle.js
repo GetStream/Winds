@@ -1,13 +1,16 @@
-import { pinArticle, unpinArticle, getPinnedArticles } from '../util/pins';
-import Loader from './Loader';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ReactHtmlParser from 'react-html-parser';
-import { connect } from 'react-redux';
-import fetch from '../util/fetch';
-import TimeAgo from './TimeAgo';
+import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
+import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
+import { connect } from 'react-redux';
+
+import fetch from '../util/fetch';
+import { pinArticle, unpinArticle, getPinnedArticles } from '../util/pins';
+import { fetchSocialScore } from '../util/social';
+
+import Loader from './Loader';
+import TimeAgo from './TimeAgo';
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -110,19 +113,28 @@ class RSSArticle extends React.Component {
 		alert('hn');
 	}
 
-	getArticle(articleID) {
-		fetch('GET', `/articles/${articleID}`)
-			.then(res => {
-				this.props.dispatch({
-					rssArticle: res.data,
-					type: 'UPDATE_ARTICLE',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
+	async getArticle(articleID) {
+		try {
+			const res = await fetch('GET', `/articles/${articleID}`);
+			this.props.dispatch({
+				rssArticle: res.data,
+				type: 'UPDATE_ARTICLE',
 			});
+			const [reddit, hackernews] = await Promise.all([
+				fetchSocialScore('reddit', res.data),
+				fetchSocialScore('hackernews', res.data),
+			]);
+			const socialScore = { reddit, hackernews };
+            console.log(socialScore);
+			this.props.dispatch({
+				rssArticle: Object.assign(res.data, { socialScore }),
+				type: 'UPDATE_ARTICLE',
+			});
+		} catch(err) {
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+		}
 	}
 
 	getRSSContent(articleId) {
@@ -213,16 +225,18 @@ class RSSArticle extends React.Component {
 								</a>
 							</span>
 						) : null}
-						{!isElectron() ? (
+						{!isElectron() && this.props.socialScore && this.props.socialScore.reddit ? (
 							<span>
-								<a href={`https://reddit.com/r/programming`} target="_blank">
+								{this.props.socialScore.reddit.score}
+								<a href={this.props.socialScore.reddit.url} target="_blank">
 									<i className="fab fa-reddit-alien" />
 								</a>
 							</span>
 						) : null}
-						{!isElectron() ? (
+						{!isElectron() && this.props.socialScore && this.props.socialScore.hackernews ? (
 							<span>
-								<a href={this.props.rss.url} target="_blank">
+								{this.props.socialScore.hackernews.score}
+								<a href={this.props.socialScore.hackernews.url} target="_blank">
 									<i className="fab fa-hacker-news-square" />
 								</a>
 							</span>
@@ -290,6 +304,16 @@ RSSArticle.propTypes = {
 		params: PropTypes.shape({
 			articleID: PropTypes.string.isRequired,
 			rssFeedID: PropTypes.string.isRequired,
+		}),
+	}),
+	socialScore: PropTypes.shape({
+		reddit: PropTypes.shape({
+			url: PropTypes.string.isRequired,
+			score: PropTypes.number.isRequired,
+		}),
+		hackernews: PropTypes.shape({
+			url: PropTypes.string.isRequired,
+			score: PropTypes.number.isRequired,
 		}),
 	}),
 	pinID: PropTypes.string,
