@@ -43,7 +43,8 @@ describe('Stream worker', () => {
 			const testCases = [
 				{ rss: '5b0ad0baf6f89574a638887' },
 				{ rss: '5b0ad0baf6f89574a638887aa' },
-				{ rss: 0 },
+				{ rss: '' },
+				{ rss: 42 },
 				{ rss: null },
 				{ rss: undefined },
 			];
