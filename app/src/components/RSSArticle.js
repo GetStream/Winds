@@ -12,6 +12,14 @@ import { fetchSocialScore } from '../util/social';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
 
+function mergeSocialScore(article, socialScore) {
+	article.socialScore = article.socialScore || {};
+	for (const key of Object.keys(socialScore)) {
+		article.socialScore[key] = Object.assign({ score: article.socialScore[key] }, socialScore[key]);
+	}
+	return article;
+}
+
 class RSSArticle extends React.Component {
 	constructor(props) {
 		super(props);
@@ -116,10 +124,8 @@ class RSSArticle extends React.Component {
 				fetchSocialScore('reddit', res.data),
 				fetchSocialScore('hackernews', res.data),
 			]);
-			const socialScore = { reddit, hackernews };
-            console.log(socialScore);
 			this.props.dispatch({
-				rssArticle: Object.assign(res.data, { socialScore }),
+				rssArticle: mergeSocialScore(res.data, { reddit, hackernews }),
 				type: 'UPDATE_ARTICLE',
 			});
 		} catch(err) {
@@ -175,6 +181,13 @@ class RSSArticle extends React.Component {
 			);
 		}
 
+		const redditDataAvailable = this.props.socialScore &&
+			this.props.socialScore.reddit &&
+			this.props.socialScore.reddit.url;
+		const hackernewsDataAvailable = this.props.socialScore &&
+			this.props.socialScore.hackernews &&
+			this.props.socialScore.hackernews.url;
+
 		return (
 			<React.Fragment>
 				<div className="content-header">
@@ -217,7 +230,7 @@ class RSSArticle extends React.Component {
 								</a>
 							</span>
 						) : null}
-						{!isElectron() && this.props.socialScore && this.props.socialScore.reddit ? (
+						{!isElectron() && redditDataAvailable ? (
 							<span>
 								{this.props.socialScore.reddit.score}
 								<a href={this.props.socialScore.reddit.url} target="_blank">
@@ -225,7 +238,7 @@ class RSSArticle extends React.Component {
 								</a>
 							</span>
 						) : null}
-						{!isElectron() && this.props.socialScore && this.props.socialScore.hackernews ? (
+						{!isElectron() && hackernewsDataAvailable ? (
 							<span>
 								{this.props.socialScore.hackernews.score}
 								<a href={this.props.socialScore.hackernews.url} target="_blank">
@@ -300,12 +313,12 @@ RSSArticle.propTypes = {
 	}),
 	socialScore: PropTypes.shape({
 		reddit: PropTypes.shape({
-			url: PropTypes.string.isRequired,
-			score: PropTypes.number.isRequired,
+			url: PropTypes.string,
+			score: PropTypes.number,
 		}),
 		hackernews: PropTypes.shape({
-			url: PropTypes.string.isRequired,
-			score: PropTypes.number.isRequired,
+			url: PropTypes.string,
+			score: PropTypes.number,
 		}),
 	}),
 	pinID: PropTypes.string,
@@ -329,9 +342,7 @@ const mapStateToProps = (state, ownProps) => {
 	if (!('articles' in state) || !(articleID in state.articles)) {
 		loading = true;
 	} else {
-		article = {
-			...state.articles[articleID],
-		};
+		article = { ...state.articles[articleID] };
 		rss = { ...state.rssFeeds[article.rss] };
 	}
 
