@@ -14,3 +14,28 @@ export function getUrl(urlName, ...args) {
 
 	return url;
 }
+
+export function extractHostname(request) {
+	const protocol = (request.connection && request.connection.encrypted ? 'https' : 'http') + '://';
+	let canonicalUrl;
+	if (request.res) {
+		canonicalUrl = request.res.responseUrl;
+	}
+	if (!canonicalUrl && request.domain) {
+		canonicalUrl = protocol + request.domain;
+	}
+	if (!canonicalUrl) {
+		const host = request.headers ? request.headers['host'] : request.getHeader('Host');
+		canonicalUrl = protocol + host;
+	} else {
+		canonicalUrl = '';
+	}
+	return canonicalUrl;
+}
+
+export function ensureEncoded(url) {
+	if (url == decodeURI(url)) {
+		return encodeURI(url);
+	}
+	return url;
+}

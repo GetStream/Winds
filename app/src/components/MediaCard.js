@@ -4,6 +4,7 @@ import React from 'react';
 
 const MediaCard = props => {
 	let icon;
+
 	if (props.type === 'share') {
 		icon = 'retweet';
 	} else if (props.type === 'episode') {
@@ -11,6 +12,7 @@ const MediaCard = props => {
 	} else if (props.type === 'article') {
 		icon = 'rss';
 	}
+
 	return (
 		<Link className="media-card" to={props.link}>
 			<div className="image">

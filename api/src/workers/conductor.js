@@ -40,6 +40,7 @@ function getPublications(schema, followerMin, followerMax, interval, limit, excl
 	return schema.find({
 		_id: { $nin: exclude },
 		valid: true,
+		duplicateOf: { $exists : false },
 		isParsing: { $ne: true, },
 		lastScraped: { $lte: time, },
 		followerCount: { $gte: followerMin, $lte: followerMax },

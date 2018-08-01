@@ -1,15 +1,16 @@
 import moment from 'moment';
 
 export default (previousState = {}, action) => {
-	// hardcoded for now
-	// switched to if/else for scope separation.
 	if (action.type === 'DISMISS_INTRO_BANNER') {
 		return { ...previousState, showIntroBanner: false };
 	}
+
 	if (action.type === 'UPDATE_COMMENT') {
-		let serializedComment = { ...action.comment }; // make sure that we don't overwrite the request body
+		let serializedComment = { ...action.comment };
+
 		serializedComment.user = serializedComment.user._id;
 		serializedComment.share = serializedComment.share._id;
+
 		return {
 			...previousState,
 			comments: {
@@ -19,6 +20,7 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'LIKE') {
 		let reduxKey;
+
 		if (action.objectType === 'share') {
 			reduxKey = 'shares';
 		} else if (action.objectType === 'playlist') {
@@ -28,6 +30,7 @@ export default (previousState = {}, action) => {
 		} else if (action.objectType === 'article') {
 			reduxKey = 'articles';
 		}
+
 		return {
 			...previousState,
 			[reduxKey]: {
@@ -45,6 +48,7 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'UNLIKE') {
 		let reduxKey;
+
 		if (action.objectType === 'share') {
 			reduxKey = 'shares';
 		} else if (action.objectType === 'playlist') {
@@ -54,6 +58,7 @@ export default (previousState = {}, action) => {
 		} else if (action.objectType === 'article') {
 			reduxKey = 'articles';
 		}
+
 		return {
 			...previousState,
 			[reduxKey]: {
@@ -70,25 +75,20 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'NEW_SHARE') {
-		// 2. tack on the activity to the user's timeline feed
-
 		let newTimelineFeed;
 		if (previousState.feeds[`timeline:${action.activity.user._id}`]) {
 			newTimelineFeed = previousState.feeds[
 				`timeline:${action.activity.user._id}`
 			].slice();
-			// this creates a new instance of the array, without changing any of the original
 		} else {
 			newTimelineFeed = [];
 		}
+
 		newTimelineFeed.splice(0, 0, `share:${action.activity._id}`); // push the new foreign_id onto the front of the new timeline feed
-		// 3. tack on the activity to the user's profile feed
 
 		let newUserFeed;
 		if (previousState.feeds[`user:${action.activity.user._id}`]) {
 			newUserFeed = previousState.feeds[`user:${action.activity.user._id}`].slice();
-
-			// this creates a new instance of the array, without changing any of the original
 		} else {
 			newUserFeed = [];
 		}
@@ -105,11 +105,13 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'TOGGLE_LIKE_ON_CURRENT_TRACK') {
 		let userLikes;
+
 		if ('likes' in previousState.user) {
 			userLikes = previousState.user.likes;
 		} else {
 			userLikes = {};
 		}
+
 		if (previousState.currentlyPlaying.podcastEpisodeID in userLikes) {
 			userLikes[previousState.currentlyPlaying.podcastEpisodeID] = !userLikes[
 				previousState.currentlyPlaying.podcastEpisodeID
@@ -117,22 +119,27 @@ export default (previousState = {}, action) => {
 		} else {
 			userLikes[previousState.currentlyPlaying.podcastEpisodeID] = true;
 		}
+
 		let user = Object.assign({}, previousState.user, {
 			likes: userLikes,
 		});
+
 		saveUserToLocalStorage(user);
+
 		return Object.assign({}, previousState, { user });
 	} else if (action.type === 'UPDATE_FEED') {
-		// generate array of activity IDs (with types) for new feed
 		let feedItems = [];
+
 		if (previousState.feeds && previousState.feeds[action.feedID]) {
 			feedItems = [...previousState.feeds[action.feedID]] || [];
 		}
+
 		for (let newFeedItem of action.activities) {
 			if (!feedItems.includes(newFeedItem._id)) {
 				feedItems.push(newFeedItem._id);
 			}
 		}
+
 		return {
 			...previousState,
 			feeds: {
@@ -141,8 +148,6 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_SHARE') {
-		// serialize user on activity
-		// generate feed activities object
 		return {
 			...previousState,
 			shares: {
@@ -156,12 +161,14 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'UPDATE_USER') {
 		let users = { ...previousState.users };
 		users[action.user._id] = action.user;
+
 		return Object.assign({}, previousState, {
 			users,
 		});
 	} else if (action.type === 'UPDATE_FOLLOWING_USERS') {
 		let existingFollowRelationships = { ...previousState.follows };
 		let existingUsers = { ...previousState.users };
+
 		for (let relationship of action.relationships) {
 			let followingUserID = relationship.user._id;
 			let followedUserID = relationship.followee._id;
@@ -178,16 +185,15 @@ export default (previousState = {}, action) => {
 				...relationship.user,
 			};
 		}
+
 		return {
 			...previousState,
 			follows: existingFollowRelationships,
 			users: existingUsers,
 		};
 	} else if (action.type === 'UPDATE_FOLLOWING_USER') {
-		// followee [id] - the user that is being followed
-		// user [id] - the user that is doing the following
-
 		let allFollows;
+
 		if (previousState.follows) {
 			allFollows = previousState.follows;
 		} else {
@@ -212,7 +218,6 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'FOLLOW_USER') {
-		// fromUserID, toUserID
 		let existingFollowRelationships = { ...previousState.follows };
 		let followObject = { [action.toUserID]: true };
 		let followerObject = {
@@ -221,6 +226,7 @@ export default (previousState = {}, action) => {
 				...followObject,
 			},
 		};
+
 		return {
 			...previousState,
 			follows: {
@@ -229,7 +235,6 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UNFOLLOW_USER') {
-		// fromUserID, toUserID
 		let existingFollowRelationships = { ...previousState.follows };
 		let followObject = { [action.toUserID]: false };
 		let followerObject = {
@@ -238,6 +243,7 @@ export default (previousState = {}, action) => {
 				...followObject,
 			},
 		};
+
 		return {
 			...previousState,
 			follows: {
@@ -246,8 +252,6 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_PLAYLIST') {
-		// serialize user
-		// and convert episode IDs
 		return {
 			...previousState,
 			playlists: {
@@ -262,9 +266,6 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_PLAYLIST_ORDER') {
-		// TODO: @kenhoff - remove
-		// serialize user
-		// and convert episode IDs
 		return {
 			...previousState,
 			playlists: {
@@ -280,33 +281,45 @@ export default (previousState = {}, action) => {
 		episode.podcast = action.episode.podcast._id;
 		let episodes = { ...previousState.episodes };
 		episodes[episode._id] = episode;
+
 		return { ...previousState, episodes };
 	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
-		// convert podcast IDs
 		let previousEpisodes = { ...previousState.episodes };
+
 		for (let episode of action.episodes) {
 			previousEpisodes[episode._id] = {
 				...episode,
 				podcast: episode.podcast._id,
 			};
 		}
+
 		return {
 			...previousState,
 			episodes: { ...previousEpisodes },
 		};
 	} else if (action.type === 'BATCH_UPDATE_ARTICLES') {
-		// convert rss feed IDs
-		let previousArticles = { ...previousState.articles };
+		let newArticles = {};
+
 		for (let article of action.articles) {
-			previousArticles[article._id] = {
+			newArticles[article._id] = {
 				...article,
 				rss: article.rss._id,
 			};
 		}
+		for (let article of action.articles) {
+			if (!article.duplicateOf) {
+				continue;
+			}
+			let previous = previousState.articles && previousState.articles[article.duplicateOf];
+			let next = newArticles[article.duplicateOf];
+			newArticles[article._id] = next || previous || article;
+		}
+
 		return {
 			...previousState,
 			articles: {
-				...previousArticles,
+				...previousState.articles,
+				...newArticles,
 			},
 		};
 	} else if (action.type === 'UPDATE_PODCAST_SHOW') {
@@ -352,11 +365,10 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'NEXT_TRACK') {
-		// select next track from playlist context
 		let existingState = { ...previousState };
 		let player = { ...previousState.player };
+
 		if (existingState.player.contextType === 'playlist') {
-			// check to see if there's another ep at player.contextPosition + 1
 			if (
 				player.contextPosition + 1 >=
 				existingState.playlists[player.contextID].episodes.length
@@ -382,7 +394,7 @@ export default (previousState = {}, action) => {
 					moment(a.publicationDate).valueOf()
 				);
 			});
-			// then, check to see if there's another episode at player.contextPosition + 1
+
 			if (player.contextPosition + 1 >= episodes.length) {
 				delete existingState.player;
 			} else {
@@ -390,24 +402,33 @@ export default (previousState = {}, action) => {
 				player.contextPosition += 1;
 				existingState.player = player;
 			}
-			// if so, set the player to that
-			// if not, just delete the player
 		}
-		// if there isn't a next track, just delete player.
+
 		return { ...existingState };
 	} else if (action.type === 'UPDATE_RSS_FEED') {
+		let original = action.rssFeed.duplicateOf && previousState.rssFeeds && previousState.rssFeeds[action.rssFeed.duplicateOf];
 		return {
 			...previousState,
 			rssFeeds: {
 				...previousState.rssFeeds,
-				[action.rssFeed._id]: { ...action.rssFeed },
+				[action.rssFeed._id]: original || action.rssFeed,
 			},
 		};
 	} else if (action.type === 'BATCH_UPDATE_RSS_FEEDS') {
 		let newRssFeeds = {};
+
 		for (let rssFeed of action.rssFeeds) {
 			newRssFeeds[rssFeed._id] = rssFeed;
 		}
+		for (let rssFeed of action.rssFeeds) {
+			if (!rssFeed.duplicateOf) {
+				continue;
+			}
+			let previous = previousState.rssFeeds && previousState.rssFeeds[rssFeed.duplicateOf];
+			let next = newRssFeeds[rssFeed.duplicateOf];
+			newRssFeeds[rssFeed._id] = next || previous || rssFeed;
+		}
+
 		return {
 			...previousState,
 			rssFeeds: {
@@ -419,29 +440,30 @@ export default (previousState = {}, action) => {
 		let articles = { ...previousState.articles };
 		articles[action.rssArticle._id] = { ...action.rssArticle };
 		articles[action.rssArticle._id]['rss'] = action.rssArticle.rss._id;
+
 		return { ...previousState, articles };
 	} else if (action.type === 'SET_FEATURED_PLAYLIST') {
 		return { ...previousState, featuredPlaylist: action.playlistID };
 	} else if (action.type === 'UPDATE_SUGGESTED_USERS') {
-		// 1. update users
 		let users = { ...previousState.users };
 		for (let updatedUser of action.users) {
 			users[updatedUser._id] = updatedUser;
 		}
-		// 2. update suggestions w/ users
+
 		let suggestions = { ...previousState.suggestions };
 		suggestions.users = action.users.map(suggestedUser => {
 			return suggestedUser._id;
 		});
+
 		return Object.assign({}, previousState, {
 			suggestions,
 			users,
 		});
 	} else if (action.type === 'UPDATE_SUGGESTED_PODCASTS') {
-		// convert to pull podcast IDs out of podcasts
 		let podcastIDs = action.podcasts.map(podcast => {
 			return podcast._id;
 		});
+
 		return { ...previousState, suggestedPodcasts: podcastIDs };
 	} else if (action.type === 'UPDATE_SUGGESTED_PLAYLISTS') {
 		return { ...previousState, suggestedPlaylists: action.playlistIDs };
@@ -449,9 +471,11 @@ export default (previousState = {}, action) => {
 		let rssFeedIDs = action.rssFeeds.map(rssFeed => {
 			return rssFeed._id;
 		});
+
 		return { ...previousState, suggestedRssFeeds: rssFeedIDs };
 	} else if (action.type === 'UPDATE_PODCAST_FOLLOWER') {
 		let userFollows = {};
+
 		if (!previousState.followedPodcasts) {
 			userFollows = {
 				[action.followRelationship.podcast._id]: true,
@@ -462,6 +486,7 @@ export default (previousState = {}, action) => {
 				[action.followRelationship.podcast._id]: true,
 			};
 		}
+
 		return {
 			...previousState,
 			followedPodcasts: {
@@ -471,6 +496,7 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'FOLLOW_PODCAST') {
 		let userFollows = {};
+
 		if (!previousState.followedPodcasts) {
 			userFollows = {
 				[action.podcastID]: true,
@@ -481,6 +507,7 @@ export default (previousState = {}, action) => {
 				[action.podcastID]: true,
 			};
 		}
+
 		return {
 			...previousState,
 			followedPodcasts: {
@@ -490,6 +517,7 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'BATCH_FOLLOW_PODCASTS') {
 		let previousPodcastFollows = { ...(previousState.followedPodcasts || {}) };
+
 		for (let followRelationship of action.podcastFollowRelationships) {
 			// followRelationship.podcastID
 			// followRelationship.userID
@@ -505,6 +533,7 @@ export default (previousState = {}, action) => {
 				] = true;
 			}
 		}
+
 		return {
 			...previousState,
 			followedPodcasts: {
@@ -513,6 +542,7 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'BATCH_FOLLOW_RSS_FEEDS') {
 		let previousRssFeedFollows = { ...(previousState.followedRssFeeds || {}) };
+
 		for (let followRelationship of action.rssFeedFollowRelationships) {
 			if (!(followRelationship.userID in previousRssFeedFollows)) {
 				previousRssFeedFollows[followRelationship.userID] = {
@@ -524,9 +554,11 @@ export default (previousState = {}, action) => {
 				] = true;
 			}
 		}
+
 		return { ...previousState, followedRssFeeds: { ...previousRssFeedFollows } };
 	} else if (action.type === 'UNFOLLOW_PODCAST') {
 		let userFollows = {};
+
 		if (!previousState.followedPodcasts) {
 			userFollows = {
 				[action.podcastID]: false,
@@ -537,6 +569,7 @@ export default (previousState = {}, action) => {
 				[action.podcastID]: false,
 			};
 		}
+
 		return {
 			...previousState,
 			followedPodcasts: {
@@ -545,12 +578,12 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'PIN_EPISODE') {
-		// serialize episode and user on pin
 		let pin = {
 			...action.pin,
 			episode: action.pin.episode._id,
 			user: action.pin.user._id,
 		};
+
 		return {
 			...previousState,
 			pinnedEpisodes: {
@@ -560,6 +593,7 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'BATCH_PIN_EPISODES') {
 		let newPinnedEpisodes = {};
+
 		for (let pin of action.pins) {
 			newPinnedEpisodes[pin.episode._id] = {
 				...pin,
@@ -567,6 +601,7 @@ export default (previousState = {}, action) => {
 				user: pin.user._id,
 			};
 		}
+
 		return {
 			...previousState,
 			pinnedEpisodes: {
@@ -577,17 +612,18 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'UNPIN_EPISODE') {
 		let allPins = { ...previousState.pinnedEpisodes };
 		delete allPins[action.episodeID];
+
 		return {
 			...previousState,
 			pinnedEpisodes: allPins,
 		};
 	} else if (action.type === 'PIN_ARTICLE') {
-		// serialize episode and user on pin
 		let pin = {
 			...action.pin,
 			article: action.pin.article._id,
 			user: action.pin.user._id,
 		};
+
 		return {
 			...previousState,
 			pinnedArticles: {
@@ -597,6 +633,7 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'BATCH_PIN_ARTICLES') {
 		let newPinnedArticles = {};
+
 		for (let pin of action.pins) {
 			newPinnedArticles[pin.article._id] = {
 				...pin,
@@ -604,6 +641,7 @@ export default (previousState = {}, action) => {
 				user: pin.user._id,
 			};
 		}
+
 		return {
 			...previousState,
 			pinnedArticles: {
@@ -614,6 +652,7 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'UNPIN_ARTICLE') {
 		let allPins = { ...previousState.pinnedArticles };
 		delete allPins[action.articleID];
+
 		return {
 			...previousState,
 			pinnedArticles: allPins,
@@ -621,20 +660,25 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'DELETE_PLAYLIST') {
 		let playlists = { ...previousState.playlists };
 		delete playlists[action.playlistID];
+
 		return { ...previousState, playlists };
 	} else if (action.type === 'UPDATE_USER_SETTINGS') {
 		let userSettings = { ...previousState.userSettings };
 		userSettings.preferences = action.user.preferences;
+
 		return { ...previousState, userSettings };
 	} else if (action.type === 'FOLLOW_RSS_FEED') {
 		let userFollows = {};
+
 		if (
 			previousState.followedRssFeeds &&
 			previousState.followedRssFeeds[action.userID]
 		) {
 			userFollows = { ...previousState.followedRssFeeds[action.userID] };
 		}
+
 		userFollows[action.rssFeedID] = true;
+
 		return {
 			...previousState,
 			followedRssFeeds: {
@@ -644,13 +688,16 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'UNFOLLOW_RSS_FEED') {
 		let userFollows = {};
+
 		if (
 			previousState.followedRssFeeds &&
 			previousState.followedRssFeeds[action.userID]
 		) {
 			userFollows = { ...previousState.followedRssFeeds[action.userID] };
 		}
+
 		userFollows[action.rssFeedID] = false;
+
 		return {
 			...previousState,
 			followedRssFeeds: {

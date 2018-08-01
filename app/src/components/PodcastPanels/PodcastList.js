@@ -10,38 +10,41 @@ import { withRouter } from 'react-router-dom';
 
 class PodcastList extends React.Component {
 	componentDidMount() {
-		// get a list of all followed podcasts, then update podcasts + following relationships
 		fetch('GET', '/follows', null, { type: 'podcast' })
-			.then(response => {
-				// should only need to update this once - returns back follow relationships for just the user
-				// update user
+			.then(res => {
 				this.props.dispatch({
 					type: 'UPDATE_USER',
-					user: response.data[0].user,
+					user: res.data[0].user,
 				});
+
 				let podcasts = [];
 				let podcastFollowRelationships = [];
-				for (let followRelationship of response.data) {
+
+				for (let followRelationship of res.data) {
 					podcasts.push(followRelationship.podcast);
 					podcastFollowRelationships.push({
 						podcastID: followRelationship.podcast._id,
 						userID: followRelationship.user._id,
 					});
 				}
-				// batch update podcasts
+
 				this.props.dispatch({
 					podcasts,
 					type: 'BATCH_UPDATE_PODCASTS',
 				});
+
 				this.props.dispatch({
 					podcastFollowRelationships,
 					type: 'BATCH_FOLLOW_PODCASTS',
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
+
 	render() {
 		return (
 			<Panel
@@ -92,7 +95,7 @@ PodcastList.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
 	let podcastsUserFollows = [];
-	// get all the podcast IDs for podcasts that I follow
+
 	if (state.followedPodcasts && state.followedPodcasts[localStorage['authedUser']]) {
 		for (let podcastID of Object.keys(
 			state.followedPodcasts[localStorage['authedUser']],

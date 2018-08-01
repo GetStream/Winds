@@ -2,16 +2,23 @@
 
 [![Slack Community](https://img.shields.io/badge/Slack%20Community-Get%20Invite-green.svg)](https://communityinviter.com/apps/winds-community-hq/winds-2-0)
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
+[![codecov](https://codecov.io/gh/GetStream/Winds/branch/master/graph/badge.svg)](https://codecov.io/gh/GetStream/Winds)
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
-[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
+[![StackShare](https://img.shields.io/badge/Tech-Stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
+<a href="https://www.patreon.com/winds_rss_podcast" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/Patreon-Donate-green.svg" alt="Patreon" /></a>
 
 ## Description
 
-Winds is a beautiful open-source RSS and Podcast app created using React/Redux/Node. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions are always appreciated. In fact, we're planning a series of tutorials to help you get started. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
+Winds is a beautiful open-source RSS and Podcast app created using React & Redux on the fronte end and Express.js on the backend. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions in form of pull reqeusts are always appreciated. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
+
+## Patreon
+
+With Winds being an open-source application, we rely heavily on community members to both help build our platform, in addition to fund the resources required to keep it alive (servers, services, etc.). On that note, we've created a [Patreon](https://www.patreon.com/winds_rss_podcast) page where you can donate an amount of your choice to help Winds out. With the help of YOU, we will be able to continue building what we feel is the best RSS and Podcast application available – free for all to use.
 
 ## Getting Started
+
 To get started with Winds, please visit [https://getstream.io/winds/](https://getstream.io/winds/)
 
 ## What's New
@@ -21,6 +28,10 @@ In addition to the desktop apps for [macOS](https://s3.amazonaws.com/winds-2.0-r
 ## Jobs
 
 Stream is sponsoring 1 person to work full time on Winds. The job posting is available on [AngelList](https://angel.co/stream/jobs/376455-senior-javascript-frontend-engineer).
+
+## Featured RSS & Podcasts
+
+Have a popular RSS or Podcast and want to be featured? Reach out to winds@getstream.io. We reply to every message.
 
 # Features at a Glance
 Winds is packed full of awesome features behind a beautiful user interface and user experience. Here's a quick look at what the project has to offer:
@@ -105,11 +116,12 @@ The following tutorials will not only help you start contributing to Winds, but 
 4.  MongoDB database schema design
 5.  Design thought process for Winds
 6.  PM2 in production environments
-7.  Creating a RESTful API design with Express.js
+7.  [Creating a RESTful API design with Express.js](https://hackernoon.com/building-a-node-js-powered-api-with-express-mongoose-mongodb-19b14fd4b51e)
 8. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
 9. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
 10. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
 11. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
+12. [Simple Steps to Optimize Your App Performance with MongoDB, Redis, and Node.js](https://hackernoon.com/simple-steps-to-optimize-your-app-performance-5700d8b58f58)
 
 ## Download
 
@@ -263,7 +275,7 @@ Once you've signed in, create "feed groups" for your Stream app.
 
 A "feed group" defines a certain type of feed within your application. Use the "Add Feed Group" button to create the following feeds:
 
-| feed group name | feed group type |
+| Feed Group Name | Feed Group Type |
 | --------------- | --------------- |
 | `podcast`       | flat            |
 | `rss`           | flat            |
@@ -359,10 +371,10 @@ Various utility functions are provided in [`api/test/util.js`](https://github.co
 
 ### Building a Production Version
 
-Build a production version of Winds by running:
+Build a production version of Winds by running from root directory:
 
 ```
-./build.sh
+./api/build.sh
 ```
 
 This creates production-ready JS files in api/dist.
@@ -453,3 +465,5 @@ RSS is an amazing open standard. It is probably the most pleasant way to stay up
 * [Feedly](https://feedly.com/)
 * [NewsBlur](https://newsblur.com/)
 * [Feedity](https://feedity.com/)
+* [SaveRSS](https://mg.guelker.eu/saverss/)
+

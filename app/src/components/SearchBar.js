@@ -13,29 +13,30 @@ const client = Algolia(config.algolia.appId, config.algolia.searchKey);
 const index = client.initIndex(config.algolia.index);
 
 const getResourceUrl = resource => {
-	if (resource.type === 'user') {
+	switch (resource.type) {
+	case 'user':
 		return `/profile/${resource._id}`;
-	} else if (resource.type === 'article') {
+	case 'article':
 		return `/rss/${resource.rss}/articles/${resource._id}`;
-	} else if (resource.type === 'episode') {
+	case 'episode':
 		return `/podcasts/${resource.podcast}`;
-	} else if (resource.type === 'rss') {
-		return `/rss/${resource._id}`;
-	} else if (resource.type === 'podcast') {
+	case 'rss':
+		return `/rss/${resource.duplicateOf || resource._id}`;
+	case 'podcast':
 		return `/podcasts/${resource._id}`;
-	} else if (resource.type === 'playlist') {
+	case 'playlist':
 		return `/playlists/${resource._id}`;
-	} else {
+	default:
 		console.log(resource); // eslint-disable-line no-console
 	}
 };
 
 const getResourceTitle = resource => {
-	if (resource.type === 'user') {
+	switch (resource.type) {
+	case 'user':
+	case 'playlist':
 		return resource.name;
-	} else if (resource.type === 'playlist') {
-		return resource.name;
-	} else {
+	default:
 		return resource.title;
 	}
 };
@@ -63,7 +64,10 @@ class SearchBar extends React.Component {
 			},
 			(err, results) => {
 				if (err) {
-					console.log(err); // eslint-disable-line no-console
+					if (window.console) {
+						console.log(err); // eslint-disable-line no-console
+					}
+
 					return;
 				}
 

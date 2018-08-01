@@ -151,13 +151,13 @@ class AddRSSModal extends React.Component {
 				return fetch('post', '/follows', null, {
 					rss: checkedFeedToFollow,
 					type: 'rss',
-				}).then(response => {
+				}).then(res => {
 					this.props.dispatch({
-						rssFeedID: response.data.rss,
+						rssFeedID: res.data.rss,
 						type: 'FOLLOW_RSS_FEED',
-						userID: response.data.user,
+						userID: res.data.user,
 					});
-					return response.data.rss;
+					return res.data.rss;
 				});
 			}),
 		)

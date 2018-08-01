@@ -10,33 +10,36 @@ import Panel from '../Panel';
 class SuggestedFeeds extends React.Component {
 	componentDidMount() {
 		fetch('get', '/rss', {}, { type: 'recommended' })
-			.then(response => {
+			.then(res => {
 				this.props.dispatch({
-					rssFeeds: response.data,
+					rssFeeds: res.data,
 					type: 'BATCH_UPDATE_RSS_FEEDS',
 				});
 				this.props.dispatch({
-					rssFeeds: response.data,
+					rssFeeds: res.data,
 					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
+
 		fetch('get', '/follows', null, {
 			type: 'rss',
 			user: localStorage['authedUser'],
 		})
-			.then(response => {
+			.then(res => {
 				let rssFeeds = [];
 				let rssFeedFollowRelationships = [];
 
 				this.props.dispatch({
 					type: 'UPDATE_USER',
-					user: response.data[0].user,
+					user: res.data[0].user,
 				});
 
-				for (let followRelationship of response.data) {
+				for (let followRelationship of res.data) {
 					rssFeeds.push(followRelationship.rss);
 					rssFeedFollowRelationships.push({
 						rssFeedID: followRelationship.rss._id,
@@ -55,17 +58,19 @@ class SuggestedFeeds extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 
 	followRssFeed(rssFeedID) {
-		// optimistic dispatch
 		this.props.dispatch({
 			rssFeedID: rssFeedID,
 			type: 'FOLLOW_RSS_FEED',
 			userID: localStorage['authedUser'],
 		});
+
 		fetch(
 			'post',
 			'/follows',
@@ -75,7 +80,10 @@ class SuggestedFeeds extends React.Component {
 				type: 'rss',
 			},
 		).catch(err => {
-			console.log(err); // eslint-disable-line no-console
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+
 			this.props.dispatch({
 				rssFeedID: rssFeedID,
 				type: 'UNFOLLOW_RSS_FEED',
@@ -83,8 +91,8 @@ class SuggestedFeeds extends React.Component {
 			});
 		});
 	}
+
 	unfollowRssFeed(rssFeedID) {
-		// optimistic dispatch
 		this.props.dispatch({
 			rssFeedID: rssFeedID,
 			type: 'UNFOLLOW_RSS_FEED',
@@ -99,7 +107,10 @@ class SuggestedFeeds extends React.Component {
 				type: 'rss',
 			},
 		).catch(err => {
-			console.log(err); // eslint-disable-line no-console
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+
 			this.props.dispatch({
 				rssFeedID: rssFeedID,
 				type: 'FOLLOW_RSS_FEED',

@@ -34,6 +34,11 @@ export const ArticleSchema = new Schema(
 			},
 			index: true,
 		},
+		duplicateOf: {
+			type: Schema.Types.ObjectId,
+			ref: 'Article',
+			required: false,
+		},
 		url: {
 			type: String,
 			trim: true,
@@ -106,9 +111,12 @@ export const ArticleSchema = new Schema(
 			default: 0,
 		},
 		socialScore: {
-			type: Map || Schema.Types.Mixed,
-			of: Number,
-			required: false,
+			reddit: {
+				type: Number,
+			},
+			hackernews: {
+				type: Number,
+			},
 		},
 		valid: {
 			type: Boolean,

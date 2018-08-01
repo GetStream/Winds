@@ -1,7 +1,7 @@
 import nock from 'nock';
 import { expect } from 'chai';
 
-import { podcastQueue, OgQueueAdd } from '../../src/asyncTasks';
+import { podcastQueue, StreamQueueAdd, OgQueueAdd } from '../../src/asyncTasks';
 import Podcast from '../../src/models/podcast';
 import Episode from '../../src/models/episode';
 import { ParsePodcast } from '../../src/parsers/feed';
@@ -51,10 +51,7 @@ describe('Podcast worker', () => {
 			const testCases = [
 				{ podcast: '5afb7fedfe7430d35996d66e', url: undefined },
 				{ podcast: '5afb7fedfe7430d35996d66e', url: '' },
-				{
-					podcast: '5afb7fedfe7430d35996d66e',
-					url: 'http://dorkly.com/comics/rssss',
-				},
+				{ podcast: '5afb7fedfe7430d35996d66e', url: 'http://dorkly.com/comics/rssss' },
 			];
 
 			for (let i = 0; i < testCases.length; ++i) {
@@ -64,11 +61,12 @@ describe('Podcast worker', () => {
 				await podcastQueue.add(data);
 				try {
 					await handler;
-				} catch (err) {
-					// ignore error
+				} catch (_) {
+					//XXX: ignore error
 				}
+
 				const podcast = await Podcast.findById(data.podcast);
-				expect(podcast.consecutiveScrapeFailures).to.be.an.equal(i + 1);
+				expect(podcast.consecutiveScrapeFailures, `test case #${i + 1}`).to.be.an.equal(i + 1);
 			}
 		});
 	});
@@ -89,6 +87,7 @@ describe('Podcast worker', () => {
 			getMockFeed('podcast', data.podcast).addActivities.resetHistory();
 			ParsePodcast.resetHistory();
 			OgQueueAdd.resetHistory();
+			StreamQueueAdd.resetHistory();
 			setupHandler();
 
 			await podcastQueue.add(data);
@@ -139,16 +138,15 @@ describe('Podcast worker', () => {
 				_id: { $nin: initialEpisodes.map(a => a._id) },
 				podcast: data.podcast,
 			});
-			expect(OgQueueAdd.getCalls()).to.have.length(649);
-
 			const opts = { removeOnComplete: true, removeOnFail: true };
-			for (const episode of episodes) {
-				const args = { type: 'episode', url: episode.link };
-				expect(
-					OgQueueAdd.calledWith(args, opts),
-					`Adding ${args.url} to OG queue`,
-				).to.be.true;
-			}
+			const args = { type: 'episode', urls: episodes.filter(e => !!e.url).map(e => e.url) };
+			expect(OgQueueAdd.calledOnceWith(args, opts));
+		});
+
+		it('should schedule Stream job', async () => {
+			const opts = { removeOnComplete: true, removeOnFail: true };
+			const args = { podcast: data.podcast };
+			expect(StreamQueueAdd.calledOnceWith(args, opts)).to.be.true;
 		});
 	});
 });

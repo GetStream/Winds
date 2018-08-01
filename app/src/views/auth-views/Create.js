@@ -30,7 +30,6 @@ class Create extends Component {
 			return (
 				<AccountDetailsForm
 					done={({ _id, email, jwt }) => {
-						// set user for stream analytics
 						window.streamAnalyticsClient.setUser({
 							id: _id,
 							alias: email,
@@ -59,7 +58,6 @@ class OnboardingGrid extends React.Component {
 	}
 
 	toggleInterest(interestName) {
-		// look through this.state.selectedInterests - if it's in there, pop and return
 		let foundInterestIndex = this.state.selectedInterests.findIndex(
 			selectedInterest => {
 				return selectedInterest === interestName;
@@ -73,7 +71,6 @@ class OnboardingGrid extends React.Component {
 				selectedInterests: newInterests,
 			});
 		} else {
-			// else, push the interest on
 			this.setState({
 				selectedInterests: [...this.state.selectedInterests, interestName],
 			});

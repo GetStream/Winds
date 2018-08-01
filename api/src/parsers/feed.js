@@ -8,7 +8,6 @@ import FeedParser from 'feedparser';
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
 import Article from '../models/article';
-
 import RSS from '../models/rss';
 
 import config from '../config'; // eslint-disable-line
@@ -87,8 +86,8 @@ export function CreateFingerPrints(posts) {
 	// start by selecting the best strategy for uniqueness
 	let uniqueness = { guid: {}, link: {}, enclosure: {}, hash: {} };
 	for (let p of posts) {
-		uniqueness.guid[p.guid] = 1;
-		uniqueness.link[p.link] = 1;
+		uniqueness.guid[p.guid && p.guid.slice(0, 1019)] = 1;
+		uniqueness.link[p.link && p.link.slice(0, 1019)] = 1;
 		if (p.enclosures.length && p.enclosures[0].url) {
 			uniqueness.enclosure[p.enclosures[0].url] = 1;
 			p.enclosure = p.enclosures[0].url;
@@ -216,10 +215,16 @@ export async function ReadURL(url) {
 	return response;
 }
 
+function sleep(time) {
+	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
+}
+
 // Read the given feed URL and return a Stream
-export async function ReadPageURL(url, retries = 3) {
+export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
+	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
+			await sleep(currentDelay);
 			const response = await ReadURL(url);
 			const contentType = response.headers['content-type'].toLowerCase();
 			if (!contentType.includes('html')) {
@@ -229,25 +234,28 @@ export async function ReadPageURL(url, retries = 3) {
 
 			return response.data;
 		} catch (err) {
-			logger.warn(`Failed to read feed url ${url}. Retrying`);
+			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
 			--retries;
+			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
 				throw err;
 			}
 		}
 	}
-
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadFeedURL(feedURL, retries = 3) {
+export async function ReadFeedURL(feedURL, retries = 3, backoffDelay = 20) {
+	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
+			await sleep(currentDelay);
 			const response = await ReadURL(feedURL);
 			return response.data;
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${feedURL}. Retrying`);
 			--retries;
+			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
 				throw err;
 			}

@@ -1,13 +1,25 @@
-import { pinArticle, unpinArticle, getPinnedArticles } from '../util/pins';
-import Loader from './Loader';
-import PropTypes from 'prop-types';
+import url from 'url';
 import React from 'react';
-import ReactHtmlParser from 'react-html-parser';
-import { connect } from 'react-redux';
-import fetch from '../util/fetch';
-import TimeAgo from './TimeAgo';
+import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
+import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
+import { connect } from 'react-redux';
+
+import fetch from '../util/fetch';
+import { pinArticle, unpinArticle, getPinnedArticles } from '../util/pins';
+import { fetchSocialScore } from '../util/social';
+
+import Loader from './Loader';
+import TimeAgo from './TimeAgo';
+
+function mergeSocialScore(article, socialScore) {
+	article.socialScore = article.socialScore || {};
+	for (const key of Object.keys(socialScore)) {
+		article.socialScore[key] = Object.assign({ score: article.socialScore[key] }, socialScore[key]);
+	}
+	return article;
+}
 
 class RSSArticle extends React.Component {
 	constructor(props) {
@@ -29,7 +41,9 @@ class RSSArticle extends React.Component {
 				foreign_id: `articles:${this.props.match.params.articleID}`,
 			},
 		});
+
 		getPinnedArticles(this.props.dispatch);
+
 		this.getArticle(this.props.match.params.articleID);
 		this.getRSSContent(this.props.match.params.articleID);
 		this.contentRef.current.onscroll = e => {
@@ -57,57 +71,79 @@ class RSSArticle extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
-			// resetting analytics event sent state - **do not** need to recent onscroll listener, because the ref is still mounted
 			this.setState({
 				sentArticleReadCompleteAnalyticsEvent: false,
 			});
+
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'article_open',
 				content: {
 					foreign_id: `articles:${nextProps.match.params.articleID}`,
 				},
 			});
+
 			getPinnedArticles(this.props.dispatch);
+
 			this.getArticle(nextProps.match.params.articleID);
 			this.getRSSContent(nextProps.match.params.articleID);
 		}
 	}
 
 	tweet() {
-		const getWindowOptions = function() {
-			const width = 500;
-			const height = 350;
-			const left = window.innerWidth / 2 - width / 2;
-			const top = window.innerHeight / 2 - height / 2;
-
-			return [
-				'resizable,scrollbars,status',
-				'height=' + height,
-				'width=' + width,
-				'left=' + left,
-				'top=' + top,
-			].join();
+		const location = url.parse(window.location.href);
+		const link = {
+			protocol: 'https',
+			hostname: 'winds.getstream.io',
+			pathname: location.pathname,
 		};
+		if (location.pathname === '/' && location.hash) {
+			link.pathname = location.hash.slice(1);
+		}
+		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${this.props.title}&hashtags=Winds,RSS`;
 
-		const shareUrl = `https://twitter.com/intent/tweet?url=${
-			window.location.href
-		}&text=${this.props.rss.title} - ${this.props.description}&hashtags=Winds,RSS`;
+		if (isElectron()) {
+			window.ipcRenderer.send('open-external-window', shareUrl);
+		} else {
+			const getWindowOptions = function() {
+				const width = 500;
+				const height = 350;
+				const left = window.innerWidth / 2 - width / 2;
+				const top = window.innerHeight / 2 - height / 2;
 
-		const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
-		win.opener = null;
+				return [
+					'resizable,scrollbars,status',
+					'height=' + height,
+					'width=' + width,
+					'left=' + left,
+					'top=' + top,
+				].join();
+			};
+
+			const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
+			win.opener = null;
+		}
 	}
 
-	getArticle(articleID) {
-		fetch('GET', `/articles/${articleID}`)
-			.then(res => {
-				this.props.dispatch({
-					rssArticle: res.data,
-					type: 'UPDATE_ARTICLE',
-				});
-			})
-			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+	async getArticle(articleID) {
+		try {
+			const res = await fetch('GET', `/articles/${articleID}`);
+			this.props.dispatch({
+				rssArticle: res.data,
+				type: 'UPDATE_ARTICLE',
 			});
+			const [reddit, hackernews] = await Promise.all([
+				fetchSocialScore('reddit', res.data),
+				fetchSocialScore('hackernews', res.data),
+			]);
+			this.props.dispatch({
+				rssArticle: mergeSocialScore(res.data, { reddit, hackernews }),
+				type: 'UPDATE_ARTICLE',
+			});
+		} catch(err) {
+			if (window.console) {
+				console.log(err); // eslint-disable-line no-console
+			}
+		}
 	}
 
 	getRSSContent(articleId) {
@@ -156,6 +192,13 @@ class RSSArticle extends React.Component {
 			);
 		}
 
+		const redditDataAvailable = this.props.socialScore &&
+			this.props.socialScore.reddit &&
+			this.props.socialScore.reddit.url;
+		const hackernewsDataAvailable = this.props.socialScore &&
+			this.props.socialScore.hackernews &&
+			this.props.socialScore.hackernews.url;
+
 		return (
 			<React.Fragment>
 				<div className="content-header">
@@ -167,11 +210,7 @@ class RSSArticle extends React.Component {
 								e.preventDefault();
 								e.stopPropagation();
 								if (this.props.pinned) {
-									unpinArticle(
-										this.props.pinID,
-										this.props._id,
-										this.props.dispatch,
-									);
+									unpinArticle(this.props.pinID, this.props._id, this.props.dispatch);
 								} else {
 									pinArticle(this.props._id, this.props.dispatch);
 								}
@@ -183,28 +222,69 @@ class RSSArticle extends React.Component {
 								<i className="far fa-bookmark" />
 							)}
 						</span>{' '}
-						{!isElectron() ? (
-							<span>
-								<a
-									onClick={e => {
-										e.preventDefault();
-										e.stopPropagation();
+						<span>
+							<a
+								href="tweet"
+								onClick={e => {
+									e.preventDefault();
+									e.stopPropagation();
 
-										this.tweet();
-									}}
-								>
-									<i className="fab fa-twitter" />
-								</a>
+									this.tweet();
+								}}
+							>
+								<i className="fab fa-twitter" />
+							</a>
+						</span>
+						{redditDataAvailable ? (
+							<span>
+								{this.props.socialScore.reddit.score}
+								{isElectron() ? (
+									<a href={this.props.socialScore.reddit.url} target="_blank">
+										<i className="fab fa-reddit-alien" />
+									</a>
+								) : (
+									<a
+										href="tweet"
+										onClick={e => {
+											e.preventDefault();
+											e.stopPropagation();
+
+											window.ipcRenderer.send('open-external-window', this.props.socialScore.reddit.url);
+										}}
+									>
+										<i className="fab fa-reddit-alien" />
+									</a>
+								)}
+							</span>
+						) : null}
+						{hackernewsDataAvailable ? (
+							<span>
+								{this.props.socialScore.hackernews.score}
+								{isElectron() ? (
+									<a href={this.props.socialScore.hackernews.url} target="_blank">
+										<i className="fab fa-hacker-news-square" />
+									</a>
+								) : (
+									<a
+										href="tweet"
+										onClick={e => {
+											e.preventDefault();
+											e.stopPropagation();
+
+											window.ipcRenderer.send('open-external-window', this.props.socialScore.hackernews.url);
+										}}
+									>
+										<i className="fab fa-hacker-news-square" />
+									</a>
+								)}
 							</span>
 						) : null}
 						<div>
-							<i className="fas fa-external-link-alt" />
 							<a href={this.props.url}>{this.props.rss.title}</a>
 						</div>
 						{this.props.commentUrl ? (
 							<div>
-								<i className="fas fa-comment-alt" />
-
+								<i className="fas fa-comment" />
 								<a href={this.props.commentUrl}>Comments</a>
 							</div>
 						) : null}
@@ -243,6 +323,7 @@ RSSArticle.defaultProps = {
 
 RSSArticle.propTypes = {
 	_id: PropTypes.string,
+	duplicateOf: PropTypes.string,
 	commentUrl: PropTypes.string,
 	enclosures: PropTypes.arrayOf(
 		PropTypes.shape({
@@ -262,6 +343,16 @@ RSSArticle.propTypes = {
 		params: PropTypes.shape({
 			articleID: PropTypes.string.isRequired,
 			rssFeedID: PropTypes.string.isRequired,
+		}),
+	}),
+	socialScore: PropTypes.shape({
+		reddit: PropTypes.shape({
+			url: PropTypes.string,
+			score: PropTypes.number,
+		}),
+		hackernews: PropTypes.shape({
+			url: PropTypes.string,
+			score: PropTypes.number,
 		}),
 	}),
 	pinID: PropTypes.string,
@@ -285,9 +376,7 @@ const mapStateToProps = (state, ownProps) => {
 	if (!('articles' in state) || !(articleID in state.articles)) {
 		loading = true;
 	} else {
-		article = {
-			...state.articles[articleID],
-		};
+		article = { ...state.articles[articleID] };
 		rss = { ...state.rssFeeds[article.rss] };
 	}
 
@@ -298,7 +387,6 @@ const mapStateToProps = (state, ownProps) => {
 		article.pinned = false;
 	}
 
-	// get article's rss feed
 	return {
 		loading,
 		...article,

@@ -125,27 +125,43 @@ describe('OG worker', () => {
 			const testCases = [
 				{ type: '', url: '' },
 				{ type: '', url: '', update: true },
+				{ type: '', urls: [''] },
+				{ type: '', urls: [''], update: true },
+				{ type: 'article', url: '' },
+				{ type: 'article', url: '', update: true },
+				{ type: 'article', url: undefined },
+				{ type: 'article', url: undefined, update: true },
+				{ type: 'episode', url: '' },
+				{ type: 'episode', url: '', update: true },
+				{ type: 'episode', url: undefined },
+				{ type: 'episode', url: undefined, update: true },
+				{ type: 'xenomorph', urls: ['http://mbmbam.libsyn.com/rssss'] },
+				{ type: 'xenomorph', urls: ['http://mbmbam.libsyn.com/rssss'], update: true },
 				{ type: undefined, url: undefined },
 				{ type: undefined, url: undefined, update: true },
-				{ type: 'episode', url: '' },
-				{ type: 'article', url: '' },
-				{ type: 'episode', url: '', update: true },
-				{ type: 'article', url: '', update: true },
-				{ type: 'episode', url: undefined },
-				{ type: 'article', url: undefined },
-				{ type: 'episode', url: undefined, update: true },
-				{ type: 'article', url: undefined, update: true },
-				{ type: 'cucumber', url: 'http://mbmbam.libsyn.com/rssss' },
-				{ type: 'cucumber', url: 'http://mbmbam.libsyn.com/rssss', update: true },
+				{ type: undefined, urls: [undefined] },
+				{ type: undefined, urls: [undefined], update: true },
+				{ type: 'article', urls: [''] },
+				{ type: 'article', urls: [''], update: true },
+				{ type: 'article', urls: [undefined] },
+				{ type: 'article', urls: [undefined], update: true },
+				{ type: 'episode', urls: [''] },
+				{ type: 'episode', urls: [''], update: true },
+				{ type: 'episode', urls: [undefined] },
+				{ type: 'episode', urls: [undefined], update: true },
+				{ type: 'xenomorph', urls: ['http://mbmbam.libsyn.com/rssss'] },
+				{ type: 'xenomorph', urls: ['http://mbmbam.libsyn.com/rssss'], update: true },
 			];
 
 			ParseOG.resetHistory();
 
-			for (const data of testCases) {
+			for (let i in testCases) {
+				const data = testCases[i];
 				setupHandler();
 
 				await ogQueue.add(data);
 				await handler;
+
 				expect(ParseOG.called).to.be.false;
 			}
 		});

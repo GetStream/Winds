@@ -2,7 +2,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-// import fetch from '../../util/fetch';
 import Panel from '../Panel';
 import { Link } from 'react-router-dom';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
@@ -14,6 +13,7 @@ class BookmarkedEpisodes extends React.Component {
 	componentDidMount() {
 		getPinnedEpisodes(this.props.dispatch);
 	}
+
 	render() {
 		let sortedBookmarks = [...this.props.bookmarks].sort((a, b) => {
 			return moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf();

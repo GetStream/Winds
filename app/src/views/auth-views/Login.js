@@ -29,7 +29,6 @@ class Login extends Component {
 				password: this.state.password,
 			})
 			.then(res => {
-				// set user for stream analytics
 				window.streamAnalyticsClient.setUser({
 					id: res.data._id,
 					alias: res.data.email,

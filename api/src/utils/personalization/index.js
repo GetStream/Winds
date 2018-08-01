@@ -34,7 +34,8 @@ export async function getRecommendations(userID, type, limit) {
 	const queryParams = { user_id: userID, limit: limit };
 	const response = await streamClient.personalization.get(path, queryParams);
 
-	return response.results.map(result => {
+	const data = response.data ? response.data.results : response.results;
+	return data.map(result => {
 		return result.foreign_id.split(':')[1];
 	});
 }
@@ -44,7 +45,7 @@ export async function getRSSRecommendations(userID, limit = 20) {
 		let ids = await getRecommendations(userID, 'rss', limit);
 		return RSS.find({ _id: { $in: ids } });
 	} catch (err) {
-		logger.warn({ err });
+		logger.warn(`Failed to get RSS recomentations for user ${userID}`, { err });
 		return [];
 	}
 }
@@ -54,7 +55,7 @@ export async function getPodcastRecommendations(userID, limit = 20) {
 		let ids = await getRecommendations(userID, 'podcast', limit);
 		return Podcast.find({ _id: { $in: ids } });
 	} catch (err) {
-		logger.warn({ err });
+		logger.warn(`Failed to get Podcast recomentations for user ${userID}`, { err });
 		return [];
 	}
 }
@@ -68,7 +69,7 @@ export async function getEpisodeRecommendations(userID, limit = 20) {
 		}
 		return episodes;
 	} catch (err) {
-		logger.warn({ err });
+		logger.warn(`Failed to get Episode recomentations for user ${userID}`, { err });
 		return [];
 	}
 }
@@ -82,7 +83,7 @@ export async function getArticleRecommendations(userID, limit = 20) {
 		}
 		return articles;
 	} catch (err) {
-		logger.warn({ err });
+		logger.warn(`Failed to get Article recomentations for user ${userID}`, { err });
 		return [];
 	}
 }

@@ -20,6 +20,7 @@ class AllArticles extends React.Component {
 
 		this.contentsEl = React.createRef();
 	}
+
 	componentDidMount() {
 		this.setState(
 			{
@@ -42,21 +43,23 @@ class AllArticles extends React.Component {
 			},
 		);
 	}
+
 	componentWillReceiveProps() {
-		// scroll down to last saved position, then delete from localStorage
-		// note from Ken - this works because we've still got all the articles loaded into the frontend - no need to maintain pagination position
 		if (this.contentsEl.current && localStorage['all-article-list-scroll-position']) {
 			this.contentsEl.current.scrollTop =
 				localStorage['all-article-list-scroll-position'];
 			delete localStorage['all-article-list-scroll-position'];
 		}
 	}
+
 	getArticleFeed() {
 		getFeed(this.props.dispatch, 'article', this.state.cursor, 10);
 	}
+
 	componentWillUnmount() {
 		this.subscription.cancel();
 	}
+
 	render() {
 		return (
 			<React.Fragment>
@@ -93,10 +96,10 @@ class AllArticles extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{'That\'s it! No more articles here.'}</p>
+							<p>{"That's it! No more articles here."}</p>
 							<p>
 								{
-									'What, did you think that once you got all the way around, you\'d just be back at the same place that you started? Sounds like some real round-feed thinking to me.'
+									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
 								}
 							</p>
 						</div>
@@ -139,9 +142,11 @@ AllArticles.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let articles = [];
 	let userArticleFeed = [];
+
 	if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
 		userArticleFeed = state.feeds[`user_article:${localStorage['authedUser']}`];
 	}
+
 	for (let articleID of userArticleFeed) {
 		// need to trim the `episode:` from the episode ID
 		articles.push(getArticle(state, articleID.replace('article:', '')));

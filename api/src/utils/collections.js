@@ -31,6 +31,16 @@ const feedModels = {
     podcast: { feed: Podcast, content: Episode }
 };
 
+function estimateSize(content) {
+	let size = 2; // {}
+	for (const [key, value] of Object.entries(content)) {
+		size += Buffer.byteLength(String(key), 'utf8');
+		size += Buffer.byteLength(String(value), 'utf8');
+		size += 2; // :,
+	}
+	return size;
+}
+
 export async function sendFeedToCollections(type, feed) {
 	const model = feedModels[type];
 
@@ -58,27 +68,31 @@ export async function sendFeedToCollections(type, feed) {
 
 	const contentModelName = model.content.collection.collectionName;
 	const chunkSize = 1000;
-
-	for (let offset = 0; offset < content.length; offset += chunkSize) {
+	const sizeLimit = 126 * 1024; // a bit less then 128Kb to lease some space for external data
+	for (let offset = 0; offset < content.length;) {
+		const data = [];
 		const limit = Math.min(content.length, offset + chunkSize);
-		const data = content.slice(offset, limit).map(c => {
-			//XXX: converting from Map to Object to allow correct JSON serialization
-			const socialScore = {};
-			if (c.socialScore) {
-				for (const [k, v] of c.socialScore.entries()) {
-					socialScore[k] = v;
-				}
-			}
-			return {
-				id: c.id,
-				title: c.title,
-				likes: c.likes,
-				description: c.description,
-				publicationDate: c.publicationDate,
+		let currentSize = 0;
+		for (; offset < limit; ++offset) {
+			const source = content[offset];
+			const item = {
+				id: source.id,
+				title: source.title,
+				likes: source.likes,
+				socialScore: source.socialScore,
+				description: source.description,
+				publicationDate: source.publicationDate,
 				[type]: feed.id,
-				socialScore
 			};
-		});
+			//XXX: we overestimate object size by 5-10%
+			const size = estimateSize(item);
+			if (currentSize + size > sizeLimit) {
+				break;
+			}
+
+			currentSize += size;
+			data.push(item);
+		}
 
 		await upsertCollections(contentModelName, data);
 	}
