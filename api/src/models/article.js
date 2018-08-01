@@ -34,6 +34,11 @@ export const ArticleSchema = new Schema(
 			},
 			index: true,
 		},
+		duplicateOf: {
+			type: Schema.Types.ObjectId,
+			ref: 'Article',
+			required: false,
+		},
 		url: {
 			type: String,
 			trim: true,

@@ -1,92 +1,88 @@
-import RSS from '../models/rss';
-import Podcast from '../models/podcast';
-import Follow from '../models/follow';
+import mongoose from 'mongoose';
 
-import Pin from '../models/pin';
 import Article from '../models/article';
-
+import Follow from '../models/follow';
+import Pin from '../models/pin';
+import Podcast from '../models/podcast';
+import RSS from '../models/rss';
 import logger from '../utils/logger';
 
-export async function mergeFeeds(masterID, copyID) {
-	let master = await RSS.findById(masterID);
-	let copy = await RSS.findById(copyID);
-	logger.info(`Removing copy ${copy.feedUrl} and merging it with ${master.feedUrl}`);
-	// get the follow relationships
-	let follows = await Follow.find({ rss: copy });
-	// unfollow all of them
-	for (let f of follows) {
-		await f.removeFromStream();
-	}
-	// refollow all of them
-	let followInstructions = [];
-	for (let f of follows) {
-		followInstructions.push({
-			type: 'rss',
-			userID: f.user._id,
-			publicationID: master._id,
-		});
-	}
-	await Follow.getOrCreateMany(followInstructions);
-	logger.info(
-		`Removed ${follows.length} follow from stream and added them for the new feed`,
-	);
-	// update the follows
-	// TODO is there a better way to handle unique constrains with MongoDB
-	let existingFollows = await Follow.find({ rss: master });
-	let existingFollowIDs = existingFollows.map(f => f._id);
-	let result = await Follow.update(
-		{ $and: [{ rss: copy }, { id: { $nin: existingFollowIDs } }] },
-		{ rss: master },
-		{ multi: true },
-	);
-	logger.info(
-		`Updated the follow records, found ${existingFollows.length} existing follows, ${
-			result.nModified
-		} changed`,
-	);
+async function mergeFollows(lhsID, rhsID) {
+	const [lhsFollows, rhsFollows] = await Promise.all([
+		Follow.find({ rss: lhsID }).lean(),
+		Follow.find({ rss: rhsID })
+	]);
+	//XXX: converting IDs to string to allow equality checks in set
+	const lhsUsers = new Set(lhsFollows.map(f => String(f.user._id)));
 
-	// move the pins where possible
-	let articles = await Article.find({ rss: copy._id });
-	let articleIDs = articles.map(a => a._id);
-	logger.info(`Updating pin references for ${articles.length} articles`);
+	const update = rhsFollows.filter(f => !lhsUsers.has(String(f.user._id)));
+	const remove = rhsFollows.filter(f => lhsUsers.has(String(f.user._id)));
 
-	let pins = await Pin.find({ article: { $in: articleIDs } });
-	for (let pin of pins) {
-		let newArticle = await Article.findOne({ rss: master, url: pin.article.url });
-		if (newArticle) {
-			await Pin.create({
-				user: pin.user,
-				createdAt: pin.createdAt,
-				article: newArticle,
-			});
-		}
-		// always remove the old to prevent broken state
-		await pin.remove();
-	}
-	logger.info(`Updated all pins, removing old data now`);
-	// Remove the old articles
-	await Article.remove({ rss: copy._id });
-	// Remove the old feed
-	let feedUrl = copy.feedUrl;
-	await copy.remove();
+	await Promise.all([
+		...rhsFollows.map(f => f.removeFromStream()),
+		Follow.updateMany({ _id: { $in: update.map(f => f._id) } }, { rss: lhsID }),
+		Follow.remove({ _id: { $in: remove.map(f => f._id) } }),
+	]);
+	await Follow.getOrCreateMany(update.map(f => {
+		return { type: 'rss', userID: f.user._id, publicationID: lhsID };
+	}));
+}
 
-	// TODO: merge the feed url information
-	let feedUrls = [master.feedUrl].concat(
-		master.feedUrls,
-		[copy.feedUrl],
-		copy.feedUrls,
-	);
-	let uniqueUrls = {};
-	for (let url of feedUrls) {
-		uniqueUrls[url] = 1;
-	}
-	let newFeedUrls = Object.keys(uniqueUrls);
-	logger.info(`FeedUrls is now ${newFeedUrls}`);
-	master.feedUrls = newFeedUrls;
-	await master.save();
-	logger.info(
-		`Completed the merge. ${copy.feedUrl} is now merged with ${master.feedUrl}`,
-	);
+async function mergeArticlesAndPins(lhsID, rhsID) {
+	const rhsArticles = await Article.find({ rss: rhsID }).lean();
+	const rhsFingerprints = rhsArticles.map(a => a.fingerprint);
+	const lhsArticlesWithMatchingFingerprints = await Article.find({
+		rss: lhsID,
+		fingerprint: { $in: rhsFingerprints }
+	}).lean();
+	const lhsIDs = lhsArticlesWithMatchingFingerprints.map(a => a._id);
+	const lhsFingerprints = new Set(lhsArticlesWithMatchingFingerprints.map(a => a.fingerprint));
 
-	return master;
+	const update = rhsArticles.filter(a => !lhsFingerprints.has(a.fingerprint));
+	const remove = rhsArticles.filter(a => lhsFingerprints.has(a.fingerprint));
+
+	const [removePins, lhsPins] = await Promise.all([
+		Pin.find({ article: { $in: remove.map(a => a._id) } }),
+		Pin.find({ article: { $in: lhsIDs } })
+	]);
+
+	const lhsPinFingerprints = new Set(lhsPins.map(p => p.article.fingerprint));
+	const duplicatePins = removePins.filter(p => lhsPinFingerprints.has(p.article.fingerprint));
+	const newPins = removePins.filter(p => !lhsPinFingerprints.has(p.article.fingerprint));
+
+	const pinUpdates = newPins.map(p => {
+		const article = lhsArticlesWithMatchingFingerprints.filter(a => a.fingerprint == p.article.fingerprint)[0];
+		return Pin.updateOne({ _id: p._id }, { article });
+	});
+	const articleUpdates = remove.map(r => {
+		const article = lhsArticlesWithMatchingFingerprints.filter(a => a.fingerprint == r.fingerprint)[0];
+		return Article.updateOne({ _id: r._id }, { duplicateOf: article._id });
+	});
+	await Promise.all([
+		Article.updateMany({ _id: { $in: update.map(f => f._id) } }, { rss: lhsID }),
+		...pinUpdates,
+		...articleUpdates,
+		Pin.remove({ _id: { $in: duplicatePins.map(f => f._id) } })
+	]);
+}
+
+async function mergeFeedUrls(lhsID, rhsID) {
+	const [lhs, rhs] = await Promise.all([
+		RSS.findById(lhsID).lean(),
+		RSS.findById(rhsID).lean()
+	]);
+	const feedUrls = new Set([lhs.feedUrl, rhs.feedUrl, ...(lhs.feedUrls || []), ...(rhs.feedUrls || [])].filter(a => a));
+	await RSS.updateOne({ _id: lhsID }, { feedUrls: [...feedUrls] });
+}
+
+export async function mergeFeeds(lhsID, rhsID) {
+	lhsID = mongoose.Types.ObjectId(lhsID);
+	rhsID = mongoose.Types.ObjectId(rhsID);
+
+	await Promise.all([
+		mergeFollows(lhsID, rhsID),
+		mergeArticlesAndPins(lhsID, rhsID),
+		mergeFeedUrls(lhsID, rhsID)
+	]);
+	await RSS.updateOne({ _id: rhsID }, { duplicateOf: lhsID });
 }
