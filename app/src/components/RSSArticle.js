@@ -1,3 +1,4 @@
+import url from 'url';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
@@ -11,8 +12,6 @@ import { fetchSocialScore } from '../util/social';
 
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
-
-const shell = isElectron() && window.systemShell;
 
 function mergeSocialScore(article, socialScore) {
 	article.socialScore = article.socialScore || {};
@@ -91,10 +90,19 @@ class RSSArticle extends React.Component {
 	}
 
 	tweet() {
-		const shareUrl = `https://twitter.com/intent/tweet?url=${window.location.href}&text=${this.props.title}&hashtags=Winds,RSS`;
+		const location = url.parse(window.location.href);
+		const link = {
+			protocol: 'https',
+			hostname: 'winds.getstream.io',
+			pathname: location.pathname,
+		};
+		if (location.pathname === '/' && location.hash) {
+			link.pathname = location.hash.slice(1);
+		}
+		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${this.props.title}&hashtags=Winds,RSS`;
 
 		if (isElectron()) {
-			shell.openExtrernal(shareUrl);
+			window.ipcRenderer.send('open-external-window', shareUrl);
 		} else {
 			const getWindowOptions = function() {
 				const width = 500;
@@ -241,7 +249,7 @@ class RSSArticle extends React.Component {
 											e.preventDefault();
 											e.stopPropagation();
 
-											shell.openExtrernal(this.props.socialScore.reddit.url);
+											window.ipcRenderer.send('open-external-window', this.props.socialScore.reddit.url);
 										}}
 									>
 										<i className="fab fa-reddit-alien" />
@@ -263,7 +271,7 @@ class RSSArticle extends React.Component {
 											e.preventDefault();
 											e.stopPropagation();
 
-											shell.openExtrernal(this.props.socialScore.hackernews.url);
+											window.ipcRenderer.send('open-external-window', this.props.socialScore.hackernews.url);
 										}}
 									>
 										<i className="fab fa-hacker-news-square" />
