@@ -325,10 +325,8 @@ class Player extends Component {
 							});
 						}
 
-						// check last sent
 						let currentTime = new Date().valueOf();
 						if (currentTime - this.lastSent >= 15000) {
-							// greater than 15s ago
 							this.lastSent = currentTime;
 							fetch('POST', '/listens', {
 								duration: this.audioPlayerElement.audioEl.currentTime,
@@ -410,7 +408,7 @@ const mapStateToProps = state => {
 			}
 
 			if (Notification.permission === 'granted') {
-				new Notification('Corrently Playing on Winds', {
+				new Notification(episode.podcast.title, {
 					body: episode.title,
 					icon: episode.podcast.image,
 					silent: true,
