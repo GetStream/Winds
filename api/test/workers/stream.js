@@ -43,7 +43,8 @@ describe('Stream worker', () => {
 			const testCases = [
 				{ rss: '5b0ad0baf6f89574a638887' },
 				{ rss: '5b0ad0baf6f89574a638887aa' },
-				{ rss: 0 },
+				{ rss: '' },
+				{ rss: 42 },
 				{ rss: null },
 				{ rss: undefined },
 			];
@@ -60,7 +61,7 @@ describe('Stream worker', () => {
 				const rssFeed = getMockFeed('rss', data.rss);
 				expect(sendFeedToCollections.called, `test case #${i + 1}`).to.be.false;
 			}
-		});
+		}).timeout(60000); //XXX: node 8 and 9 seem to take their sweet time to finish
 	});
 
 	describe('worker', () => {

@@ -81,7 +81,7 @@ describe('Social worker', () => {
 
 				expect(fetchSocialScore.called, `test case #${i + 1}`).to.be.false;
 			}
-		});
+		}).timeout(60000); //XXX: node 8 and 9 seem to take their sweet time to finish
 	});
 
 	describe('worker', () => {

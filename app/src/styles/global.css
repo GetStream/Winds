@@ -1070,7 +1070,9 @@ a.column-header:hover, .column-header:hover {
     text-overflow: ellipsis;
     white-space: nowrap; }
   .item-info i {
-    color: #000; }
+    color: #000;
+    font-size: 1.5em;
+    font-weight: normal; }
   .item-info .muted {
     color: #aaa; }
   .item-info a {
