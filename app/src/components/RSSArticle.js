@@ -290,6 +290,7 @@ RSSArticle.defaultProps = {
 
 RSSArticle.propTypes = {
 	_id: PropTypes.string,
+	duplicateOf: PropTypes.string,
 	commentUrl: PropTypes.string,
 	enclosures: PropTypes.arrayOf(
 		PropTypes.shape({

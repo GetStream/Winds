@@ -2,6 +2,7 @@
 
 [![Slack Community](https://img.shields.io/badge/Slack%20Community-Get%20Invite-green.svg)](https://communityinviter.com/apps/winds-community-hq/winds-2-0)
 [![Build Status](https://travis-ci.org/GetStream/Winds.svg?branch=master)](https://travis-ci.org/GetStream/Winds)
+[![codecov](https://codecov.io/gh/GetStream/Winds/branch/master/graph/badge.svg)](https://codecov.io/gh/GetStream/Winds)
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-green.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
@@ -370,10 +371,10 @@ Various utility functions are provided in [`api/test/util.js`](https://github.co
 
 ### Building a Production Version
 
-Build a production version of Winds by running:
+Build a production version of Winds by running from root directory:
 
 ```
-./build.sh
+./api/build.sh
 ```
 
 This creates production-ready JS files in api/dist.

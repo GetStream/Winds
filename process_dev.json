@@ -3,7 +3,7 @@
 		{
 			"name": "api",
 			"cwd": "api/src",
-			"interpreter": "../node_modules/babel-cli/bin/babel-node.js",
+			"interpreter": "../../node_modules/babel-cli/bin/babel-node.js",
 			"script": "./server.js",
 			"watch": true
 		},

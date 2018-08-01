@@ -85,6 +85,11 @@ export async function handleRSS(job) {
 		return;
 	}
 
+	if (rss.duplicateOf) {
+		logger.warn(`RSS with ID ${rssID} is a duplicate of ${rss.duplicateOf}. Skipping`);
+		return;
+	}
+
 	logger.info(`Marked ${rssID} as done`);
 
 	// parse the articles
