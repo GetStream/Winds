@@ -371,10 +371,10 @@ Various utility functions are provided in [`api/test/util.js`](https://github.co
 
 ### Building a Production Version
 
-Build a production version of Winds by running:
+Build a production version of Winds by running from root directory:
 
 ```
-./build.sh
+./api/build.sh
 ```
 
 This creates production-ready JS files in api/dist.
