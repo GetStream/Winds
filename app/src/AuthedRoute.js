@@ -11,9 +11,11 @@ class AuthedRoute extends React.Component {
 			nextProps.getUser();
 		}
 	}
+
 	render() {
 		const { component, ...rest } = this.props;
 		const Component = component;
+
 		return (
 			<Route
 				{...rest}
@@ -75,4 +77,9 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AuthedRoute));
+export default withRouter(
+	connect(
+		mapStateToProps,
+		mapDispatchToProps,
+	)(AuthedRoute),
+);

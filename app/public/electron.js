@@ -64,7 +64,7 @@ createWindow = () => {
 };
 
 generateMenu = () => {
-	const template = [
+	let template = [
 		{
 			label: 'File',
 			submenu: [{ role: 'about' }, { role: 'quit' }],
@@ -124,6 +124,39 @@ generateMenu = () => {
 		},
 	];
 
+	if (process.platform === 'darwin') {
+		template.unshift({
+			label: app.getName(),
+			submenu: [
+				{ role: 'about' },
+				{ type: 'separator' },
+				{ role: 'services', submenu: [] },
+				{ type: 'separator' },
+				{ role: 'hide' },
+				{ role: 'hideothers' },
+				{ role: 'unhide' },
+				{ type: 'separator' },
+				{ role: 'quit' },
+			],
+		});
+	}
+
+	template[1].submenu.push(
+		{ type: 'separator' },
+		{
+			label: 'Speech',
+			submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }],
+		},
+	);
+
+	template[3].submenu = [
+		{ role: 'close' },
+		{ role: 'minimize' },
+		{ role: 'zoom' },
+		{ type: 'separator' },
+		{ role: 'front' },
+	];
+
 	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 };
 
@@ -181,8 +214,17 @@ app.on('ready', () => {
 	generateMenu();
 });
 
+app.on('close', event => {
+	event.preventDefault();
+	mainWindow.hide();
+});
+
 app.on('window-all-closed', () => {
-	app.quit();
+	if (process.platform !== 'darwin') {
+		app.quit();
+	} else {
+		mainWindow.hide();
+	}
 });
 
 app.on('activate', () => {
@@ -190,6 +232,8 @@ app.on('activate', () => {
 		createWindow();
 	}
 });
+
+app.on('activate', createWindow);
 
 ipcMain.on('load-page', (event, arg) => {
 	mainWindow.loadURL(arg);

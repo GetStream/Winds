@@ -15,11 +15,7 @@ class RecentEpisodesPanel extends React.Component {
 	}
 	render() {
 		return (
-			<Panel
-				expandable={true}
-				headerLink="/podcasts"
-				headerText="Recent Episodes"
-			>
+			<Panel expandable={true} headerLink="/podcasts" headerText="Recent Episodes">
 				{this.props.episodes.slice(0, 20).map(episode => {
 					return (
 						<Link key={episode._id} to={`/podcasts/${episode.podcast._id}`}>
@@ -55,13 +51,15 @@ RecentEpisodesPanel.propTypes = {
 const mapStateToProps = (state, ownProps) => {
 	let episodes = [];
 	let userEpisodeFeed = [];
+
 	if (state.feeds && state.feeds[`user_episode:${localStorage['authedUser']}`]) {
 		userEpisodeFeed = state.feeds[`user_episode:${localStorage['authedUser']}`];
 	}
+
 	for (let episodeID of userEpisodeFeed) {
-		// need to trim the `episode:` from the episode ID
 		episodes.push(getEpisode(state, episodeID.replace('episode:', '')));
 	}
+
 	return { ...ownProps, episodes };
 };
 

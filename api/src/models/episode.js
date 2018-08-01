@@ -139,5 +139,6 @@ EpisodeSchema.plugin(mongooseStringQuery);
 EpisodeSchema.plugin(autopopulate);
 
 EpisodeSchema.index({ podcast: 1, fingerprint: 1 }, { unique: true });
+EpisodeSchema.index({ podcast: 1, publicationDate: -1 });
 
 module.exports = exports = mongoose.model('Episode', EpisodeSchema);

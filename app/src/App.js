@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import fetch from './util/fetch';
 import reducer from './reducers';
+import isElectron from 'is-electron';
 
 let initialState = {};
 
@@ -31,12 +32,9 @@ if (localStorage['dismissedIntroBanner'] === 'true') {
 	initialState['showIntroBanner'] = false;
 }
 
-var userAgent = navigator.userAgent.toLowerCase();
-let isElectron = userAgent.indexOf(' electron/') > -1;
-
 let store;
 
-if (isElectron) {
+if (isElectron()) {
 	store = createStore(reducer, initialState);
 } else {
 	store = createStore(
@@ -48,23 +46,22 @@ if (isElectron) {
 
 const crawlUpDomForAnchorTag = (node, e) => {
 	if (!node) {
-		// if we've reached the top of the DOM
 		return;
 	} else if (node.nodeName === 'A') {
 		const href = node.getAttribute('href');
-		if (href && !href.includes('#/')) {
+		if (href && !href.includes('#/') && isElectron()) {
 			e.preventDefault();
 			window.ipcRenderer.send('open-external-window', href);
 		} else {
 			return;
 		}
 	} else {
-		return crawlUpDomForAnchorTag(node.parentNode, e); // need to pass the click event down through the recursive calls so we can preventDefault if needed
+		// need to pass the click event down through the recursive calls so we can preventDefault if needed
+		return crawlUpDomForAnchorTag(node.parentNode, e);
 	}
 };
 
 if (isElectron) {
-	// Electron-specific code
 	document.body.addEventListener('click', e => {
 		crawlUpDomForAnchorTag(e.target, e);
 	});

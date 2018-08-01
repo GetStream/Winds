@@ -15,6 +15,20 @@
 			"watch": true
 		},
 		{
+			"name": "stream",
+			"cwd": "api/src/workers",
+			"interpreter": "../../node_modules/babel-cli/bin/babel-node.js",
+			"script": "./stream.js",
+			"watch": true
+		},
+		{
+			"name": "social",
+			"cwd": "api/src/workers",
+			"interpreter": "../../node_modules/babel-cli/bin/babel-node.js",
+			"script": "./social.js",
+			"watch": true
+		},
+		{
 			"name": "rss",
 			"cwd": "api/src/workers",
 			"interpreter": "../../node_modules/babel-cli/bin/babel-node.js",

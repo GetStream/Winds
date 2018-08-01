@@ -2,12 +2,12 @@ import { parse } from 'url';
 import nock from 'nock';
 import { expect } from 'chai';
 
-import { rssQueue, OgQueueAdd } from '../../src/asyncTasks';
+import { rssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../../src/asyncTasks';
 import RSS from '../../src/models/rss';
 import Article from '../../src/models/article';
 import { ParseFeed } from '../../src/parsers/feed';
 import { rssProcessor, handleRSS, upsertManyArticles } from '../../src/workers/rss';
-import { loadFixture, dropDBs, getTestFeed, getMockFeed } from '../utils';
+import { loadFixture, dropDBs, getTestFeed, createMockFeed, getMockFeed } from '../utils';
 
 describe('RSS worker', () => {
 	let handler;
@@ -57,57 +57,43 @@ describe('RSS worker', () => {
 		];
 
 		for (let i = 0; i < testCases.length; ++i) {
-			it(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
+			it.skip(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
 				async function queue(url) {
 					setupHandler();
 					await rssQueue.add({ rss: '5b0ad0baf6f89574a638887a', url });
 					await handler;
 				}
 
-				try {
-					await queue(testCases[i]);
-				} catch (_) {
-					//XXX: fetching data from the net failed, falling back to mocking
-					const url = parse(testCases[i]);
-					nock(url.host)
-						.get(url.path)
-						.query(url.query)
-						.reply(200, () => {
-							return getTestFeed(url.host);
-						});
-					await queue(testCases[i]);
-					nock.cleanAll();
-				}
-			});
+				//XXX: fetching data from the net failed, falling back to mocking
+				const url = parse(testCases[i]);
+				nock(url.host)
+					.get(url.path)
+					.query(url.query)
+					.reply(200, () => getTestFeed(url.host));
+				await queue(testCases[i]);
+				nock.cleanAll();
+			})
 		}
 
 		it('should fail for invalid job', async () => {
+			const rssID = '5b0ad0baf6f89574a638887a';
 			const testCases = [
-				{ rss: '5b0ad0baf6f89574a638887a', url: undefined },
-				{ rss: '5b0ad0baf6f89574a638887a', url: '' },
-				{
-					rss: '5b0ad0baf6f89574a638887a',
-					url: 'http://mbmbam.libsyn.com/rssss',
-				},
+				{ rss: rssID, url: undefined },
+				{ rss: rssID, url: '' },
+				{ rss: rssID, url: 'http://mbmbam.libsyn.com/rssss' },
 			];
 
+			const before = await RSS.findById(rssID);
 			for (let i = 0; i < testCases.length; ++i) {
 				setupHandler();
 
 				const data = testCases[i];
 
 				await rssQueue.add(data);
+				await handler;
 
-				let error = null;
-				try {
-					await handler;
-				} catch (err) {
-					error = err;
-				}
-
-				expect(error).to.be.an.instanceOf(Error);
-				const rss = await RSS.findById(data.rss);
-				expect(rss.consecutiveScrapeFailures).to.be.an.equal(i + 1);
+				const after = await RSS.findById(data.rss);
+				expect(after.consecutiveScrapeFailures, `test case #${i + 1}`).to.be.an.equal(before.consecutiveScrapeFailures + i + 1);
 			}
 		});
 	});
@@ -126,9 +112,11 @@ describe('RSS worker', () => {
 
 				initialArticles = await Article.find({ rss: data.rss });
 
-				getMockFeed('rss', data.rss).addActivities.resetHistory();
+				createMockFeed('rss', data.rss);
 				ParseFeed.resetHistory();
 				OgQueueAdd.resetHistory();
+				SocialQueueAdd.resetHistory();
+				StreamQueueAdd.resetHistory();
 				setupHandler();
 			});
 
@@ -158,13 +146,7 @@ describe('RSS worker', () => {
 					});
 
 				await rssQueue.add(data);
-				let error = null;
-				try {
-					await handler;
-				} catch (err) {
-					error = err;
-				}
-				expect(error).to.be.an.instanceOf(Error);
+				await handler;
 
 				const articles = await Article.find({ rss: data.rss });
 				expect(articles).to.have.length(initialArticles.length);
@@ -180,9 +162,11 @@ describe('RSS worker', () => {
 
 				initialArticles = await Article.find({ rss: data.rss });
 
-				getMockFeed('rss', data.rss).addActivities.resetHistory();
+				createMockFeed('rss', data.rss);
 				ParseFeed.resetHistory();
 				OgQueueAdd.resetHistory();
+				SocialQueueAdd.resetHistory();
+				StreamQueueAdd.resetHistory();
 				setupHandler();
 
 				nock(data.url)
@@ -215,6 +199,37 @@ describe('RSS worker', () => {
 				);
 			});
 
+			it('should schedule OG job', async () => {
+				const articles = await Article.find({
+					_id: { $nin: initialArticles.map(a => a._id) },
+					rss: data.rss,
+				});
+				const opts = { removeOnComplete: true, removeOnFail: true };
+				const args = { type: 'article', urls: articles.filter(a => !!a.url).map(a => a.url) };
+				expect(OgQueueAdd.calledOnceWith(args, opts));
+			});
+
+			it('should schedule Social job', async () => {
+				const newArticles = await Article.find({
+					_id: { $nin: initialArticles.map(a => a._id) },
+					rss: data.rss,
+				});
+				const articles = newArticles.filter(a => !!a.url).map(a => ({
+					id: a._id,
+					link: a.link,
+					commentUrl: a.commentUrl,
+				}));
+				const opts = { removeOnComplete: true, removeOnFail: true };
+				const args = { rss: data.rss, articles };
+				expect(SocialQueueAdd.calledOnceWith(args, opts)).to.be.true;
+			});
+
+			it('should schedule Stream job', async () => {
+				const opts = { removeOnComplete: true, removeOnFail: true };
+				const args = { rss: data.rss };
+				expect(StreamQueueAdd.calledOnceWith(args, opts)).to.be.true;
+			});
+
 			it('should add article data to Stream feed', async () => {
 				const feed = getMockFeed('rss', data.rss);
 				expect(feed).to.not.be.null;
@@ -229,31 +244,11 @@ describe('RSS worker', () => {
 				let matchedActivities = 0;
 				for (let i = 0; i < batchCount; ++i) {
 					const batchSize = Math.min(100, articles.length - i * 100);
-					const args = feed.addActivities
-						.getCall(i)
-						.args[0].map(a => a.foreign_id);
+					const args = feed.addActivities.getCall(i).args[0].map(a => a.foreign_id);
 					expect(args).to.have.length(batchSize);
-					matchedActivities += args.filter(arg => foreignIds.includes(arg))
-						.length;
+					matchedActivities += args.filter(arg => foreignIds.includes(arg)).length;
 				}
 				expect(matchedActivities).to.equal(articles.length);
-			});
-
-			it('should schedule OG job', async () => {
-				const articles = await Article.find({
-					_id: { $nin: initialArticles.map(a => a._id) },
-					rss: data.rss,
-				});
-				expect(OgQueueAdd.getCalls()).to.have.length(newArticleCount);
-
-				const opts = { removeOnComplete: true, removeOnFail: true };
-				for (const article of articles) {
-					const args = { type: 'article', url: article.url };
-					expect(
-						OgQueueAdd.calledWith(args, opts),
-						`Adding ${args.url} to OG queue`,
-					).to.be.true;
-				}
 			});
 		});
 	});

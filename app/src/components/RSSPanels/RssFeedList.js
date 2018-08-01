@@ -11,23 +11,22 @@ import PropTypes from 'prop-types';
 class RssFeedList extends React.Component {
 	componentDidMount() {
 		fetch('GET', '/follows', null, { type: 'rss' })
-			.then(response => {
-				// update user - only needs to be done once
+			.then(res => {
 				this.props.dispatch({
 					type: 'UPDATE_USER',
-					user: response.data[0].user,
+					user: res.data[0].user,
 				});
+
 				let rssFeeds = [];
 				let rssFeedFollowRelationships = [];
-				for (let followRelationship of response.data) {
+				for (let followRelationship of res.data) {
 					rssFeeds.push(followRelationship.rss);
-					// set user to follow rss feed
 					rssFeedFollowRelationships.push({
 						rssFeedID: followRelationship.rss._id,
 						userID: followRelationship.user._id,
 					});
 				}
-				// update rss feed
+
 				this.props.dispatch({
 					rssFeeds,
 					type: 'BATCH_UPDATE_RSS_FEEDS',
@@ -38,7 +37,9 @@ class RssFeedList extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log(err); // eslint-disable-line no-console
+				if (window.console) {
+					console.log(err); // eslint-disable-line no-console
+				}
 			});
 	}
 	render() {
@@ -84,10 +85,8 @@ RssFeedList.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-	// convert rssFeeds object into array
-
 	let rssFeedsUserFollows = [];
-	// get all the podcast IDs for podcasts that I follow
+
 	if (state.followedRssFeeds && state.followedRssFeeds[localStorage['authedUser']]) {
 		for (let rssFeedID of Object.keys(
 			state.followedRssFeeds[localStorage['authedUser']],
@@ -105,6 +104,7 @@ const mapStateToProps = (state, ownProps) => {
 	rssFeeds.sort((a, b) => {
 		return a.title.localeCompare(b.title);
 	});
+
 	return {
 		...ownProps,
 		rssFeeds,

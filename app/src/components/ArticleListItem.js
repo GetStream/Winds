@@ -1,6 +1,7 @@
 import { withRouter } from 'react-router-dom';
 import TimeAgo from './TimeAgo';
 import React from 'react';
+import Img from 'react-image';
 import PropTypes from 'prop-types';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { pinArticle, unpinArticle } from '../util/pins';
@@ -21,12 +22,13 @@ class ArticleListItem extends React.Component {
 				}}
 			>
 				<div className="left">
-					<div
-						className="background-image"
-						style={{
-							backgroundImage: `url(${this.props.images.og ||
-								getPlaceholderImageURL(this.props._id)})`,
-						}}
+					<Img
+						height="100"
+						width="100"
+						src={[
+							this.props.images.og,
+							getPlaceholderImageURL(this.props._id),
+						]}
 					/>
 					{this.props.recent ? <div className="recent-indicator" /> : null}
 				</div>

@@ -7,6 +7,7 @@ export const CacheSchema = new Schema(
 		url: {
 			type: String,
 			trim: true,
+			index: true,
 			required: true,
 		},
 		title: {
@@ -36,6 +37,8 @@ export const CacheSchema = new Schema(
 	},
 	{ collection: 'cache' },
 );
+
+CacheSchema.index({ url: 1 });
 
 CacheSchema.plugin(timestamps, {
 	createdAt: { index: true },

@@ -17,13 +17,13 @@ class AllEpisodesList extends React.Component {
 			reachedEndOfFeed: false,
 		};
 	}
+
 	componentDidMount() {
 		this.setState(
 			{
 				cursor: Math.floor(this.props.episodes.length / 10),
 			},
 			() => {
-				// also get pinned episodes
 				getPinnedEpisodes(this.props.dispatch);
 				this.getEpisodes();
 				this.subscription = window.streamClient
@@ -40,6 +40,7 @@ class AllEpisodesList extends React.Component {
 			},
 		);
 	}
+
 	getEpisodes() {
 		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
 	}
