@@ -13,7 +13,7 @@ createWindow = () => {
 		show: false,
 		titleBarStyle: 'hidden',
 		webPreferences: {
-			nodeIntegration: false,
+			nodeIntegration: true,
 			preload: __dirname + '/preload.js',
 		},
 		height: 860,

@@ -12,6 +12,8 @@ import { fetchSocialScore } from '../util/social';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
 
+const shell = isElectron() && window.systemShell;
+
 function mergeSocialScore(article, socialScore) {
 	article.socialScore = article.socialScore || {};
 	for (const key of Object.keys(socialScore)) {
@@ -89,28 +91,29 @@ class RSSArticle extends React.Component {
 	}
 
 	tweet() {
-		const getWindowOptions = function() {
-			const width = 500;
-			const height = 350;
-			const left = window.innerWidth / 2 - width / 2;
-			const top = window.innerHeight / 2 - height / 2;
+		const shareUrl = `https://twitter.com/intent/tweet?url=${window.location.href}&text=${this.props.title}&hashtags=Winds,RSS`;
 
-			return [
-				'resizable,scrollbars,status',
-				'height=' + height,
-				'width=' + width,
-				'left=' + left,
-				'top=' + top,
-			].join();
-		};
+		if (isElectron()) {
+			shell.openExtrernal(shareUrl);
+		} else {
+			const getWindowOptions = function() {
+				const width = 500;
+				const height = 350;
+				const left = window.innerWidth / 2 - width / 2;
+				const top = window.innerHeight / 2 - height / 2;
 
-		const shareUrl = `https://twitter.com/intent/tweet?url=${
-			window.location.href
-		}&text=${this.props.title}&hashtags=Winds,RSS`;
+				return [
+					'resizable,scrollbars,status',
+					'height=' + height,
+					'width=' + width,
+					'left=' + left,
+					'top=' + top,
+				].join();
+			};
 
-		const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
-
-		win.opener = null;
+			const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
+			win.opener = null;
+		}
 	}
 
 	async getArticle(articleID) {
@@ -199,11 +202,7 @@ class RSSArticle extends React.Component {
 								e.preventDefault();
 								e.stopPropagation();
 								if (this.props.pinned) {
-									unpinArticle(
-										this.props.pinID,
-										this.props._id,
-										this.props.dispatch,
-									);
+									unpinArticle(this.props.pinID, this.props._id, this.props.dispatch);
 								} else {
 									pinArticle(this.props._id, this.props.dispatch);
 								}
@@ -215,35 +214,61 @@ class RSSArticle extends React.Component {
 								<i className="far fa-bookmark" />
 							)}
 						</span>{' '}
-						{!isElectron() ? (
-							<span>
-								<a
-									href="tweet"
-									onClick={e => {
-										e.preventDefault();
-										e.stopPropagation();
+						<span>
+							<a
+								href="tweet"
+								onClick={e => {
+									e.preventDefault();
+									e.stopPropagation();
 
-										this.tweet();
-									}}
-								>
-									<i className="fab fa-twitter" />
-								</a>
-							</span>
-						) : null}
-						{!isElectron() && redditDataAvailable ? (
+									this.tweet();
+								}}
+							>
+								<i className="fab fa-twitter" />
+							</a>
+						</span>
+						{redditDataAvailable ? (
 							<span>
 								{this.props.socialScore.reddit.score}
-								<a href={this.props.socialScore.reddit.url} target="_blank">
-									<i className="fab fa-reddit-alien" />
-								</a>
+								{isElectron() ? (
+									<a href={this.props.socialScore.reddit.url} target="_blank">
+										<i className="fab fa-reddit-alien" />
+									</a>
+								) : (
+									<a
+										href="tweet"
+										onClick={e => {
+											e.preventDefault();
+											e.stopPropagation();
+
+											shell.openExtrernal(this.props.socialScore.reddit.url);
+										}}
+									>
+										<i className="fab fa-reddit-alien" />
+									</a>
+								)}
 							</span>
 						) : null}
-						{!isElectron() && hackernewsDataAvailable ? (
+						{hackernewsDataAvailable ? (
 							<span>
 								{this.props.socialScore.hackernews.score}
-								<a href={this.props.socialScore.hackernews.url} target="_blank">
-									<i className="fab fa-hacker-news-square" />
-								</a>
+								{isElectron() ? (
+									<a href={this.props.socialScore.hackernews.url} target="_blank">
+										<i className="fab fa-hacker-news-square" />
+									</a>
+								) : (
+									<a
+										href="tweet"
+										onClick={e => {
+											e.preventDefault();
+											e.stopPropagation();
+
+											shell.openExtrernal(this.props.socialScore.hackernews.url);
+										}}
+									>
+										<i className="fab fa-hacker-news-square" />
+									</a>
+								)}
 							</span>
 						) : null}
 						<div>
