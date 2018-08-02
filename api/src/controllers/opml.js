@@ -134,7 +134,7 @@ async function getOrCreateManyPublications(feeds) {
 
 	const newInstances = await feeds[0].schema.insertMany(newInstanceData);
 
-	const queue = feeds[0].publicationType == 'rss' ? RssQueueAdd : PodcastQueueAdd;
+	const queue = feeds[0].publicationType.toLowerCase() == 'rss' ? RssQueueAdd : PodcastQueueAdd;
 	const queueData = newInstances.map(i => ({ [i.categories]: i._id, url: i.feedUrl }));
 
 	const enqueues = queueData.map(d => queue(d, { priority: 1, removeOnComplete: true, removeOnFail: true }));
@@ -213,7 +213,7 @@ exports.post = async (req, res) => {
 
 		await rateLimit.tick(req.user.sub);
 
-		const followInstructions = chunk.map(p => ({ type: p.categories, userID: req.user.sub, publicationID: p._id }));
+		const followInstructions = chunk.map(p => ({ type: p.categories.toLowerCase(), userID: req.user.sub, publicationID: p._id }));
 		const newFollows = await Follow.getOrCreateMany(followInstructions);
 		follows = follows.concat(newFollows.map((f, i) => ({ feedUrl: chunk[i].url, follow: f })));
 	}
