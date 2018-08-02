@@ -239,10 +239,6 @@ class RSSArticle extends React.Component {
 							<span>
 								{this.props.socialScore.reddit.score}
 								{isElectron() ? (
-									<a href={this.props.socialScore.reddit.url} target="_blank">
-										<i className="fab fa-reddit-alien" />
-									</a>
-								) : (
 									<a
 										href="tweet"
 										onClick={e => {
@@ -254,6 +250,10 @@ class RSSArticle extends React.Component {
 									>
 										<i className="fab fa-reddit-alien" />
 									</a>
+								) : (
+									<a href={this.props.socialScore.reddit.url} target="_blank">
+										<i className="fab fa-reddit-alien" />
+									</a>
 								)}
 							</span>
 						) : null}
@@ -261,10 +261,6 @@ class RSSArticle extends React.Component {
 							<span>
 								{this.props.socialScore.hackernews.score}
 								{isElectron() ? (
-									<a href={this.props.socialScore.hackernews.url} target="_blank">
-										<i className="fab fa-hacker-news-square" />
-									</a>
-								) : (
 									<a
 										href="tweet"
 										onClick={e => {
@@ -274,6 +270,10 @@ class RSSArticle extends React.Component {
 											window.ipcRenderer.send('open-external-window', this.props.socialScore.hackernews.url);
 										}}
 									>
+										<i className="fab fa-hacker-news-square" />
+									</a>
+								) : (
+									<a href={this.props.socialScore.hackernews.url} target="_blank">
 										<i className="fab fa-hacker-news-square" />
 									</a>
 								)}
