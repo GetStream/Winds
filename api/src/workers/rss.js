@@ -152,13 +152,12 @@ export async function handleRSS(job) {
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
-
-	await Promise.all([
-		await OgQueueAdd({
+	const tasks = [
+		OgQueueAdd({
 			type: 'article',
 			urls: updatedArticles.map(a => a.url),
 		}, queueOpts),
-		await SocialQueueAdd({
+		SocialQueueAdd({
 			rss: rssID,
 			articles: updatedArticles.map(a => ({
 				id: a._id,
@@ -166,8 +165,12 @@ export async function handleRSS(job) {
 				commentUrl: a.commentUrl,
 			})),
 		}, queueOpts),
-		await StreamQueueAdd({ rss: rssID }, queueOpts),
-	]);
+	];
+	if (!rss.isSynchronizing) {
+		await RSS.update({ _id: rssID }, { isSynchronizing: true });
+		tasks.push(StreamQueueAdd({ rss: rssID }, queueOpts));
+	}
+	await Promise.all(tasks);
 }
 
 async function markDone(rssID) {

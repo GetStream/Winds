@@ -53,6 +53,8 @@ export async function handleStream(job) {
 	const type = 'rss' in job.data ? 'rss' : 'podcast';
 	const model = 'rss' in job.data ? RSS : Podcast;
 
+	await model.update({ _id: job.data[type] }, { isSynchronizing: false });
+
 	const feed = await model.findById(job.data[type]);
 	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed));
 }

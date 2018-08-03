@@ -112,6 +112,10 @@ export const RSSSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		isSynchronizing: {
+			type: Boolean,
+			default: false,
+		},
 		language: {
 			type: String,
 			default: '',

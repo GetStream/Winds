@@ -50,6 +50,10 @@ export const PodcastSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		isSynchronizing: {
+			type: Boolean,
+			default: false,
+		},
 		images: {
 			featured: {
 				type: String,
