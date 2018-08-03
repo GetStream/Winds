@@ -11,7 +11,7 @@
 
 ## Description
 
-Winds is a beautiful open-source RSS and Podcast app created using React & Redux on the fronte end and Express.js on the backend. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions in form of pull reqeusts are always appreciated. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
+Winds is a beautiful open-source RSS and Podcast app created using React & Redux on the frontend and Express.js on the backend. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions in form of pull requests are always appreciated. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
 
 ## Patreon
 
@@ -368,7 +368,7 @@ Modules are mocked in [`api/test-entry.js`](https://github.com/GetStream/Winds/b
 
 Fixtures are loaded via [`loadFixture`](https://github.com/GetStream/Winds/blob/master/api/test/utils.js#L59L101) function from [`api/test/fixtures` folder](https://github.com/GetStream/Winds/tree/master/api/test/fixtures)
 
-Various utility functions are provided in [`api/test/util.js`](https://github.com/GetStream/Winds/blob/master/api/test/utils.js) (See other tests for expamles of usage).
+Various utility functions are provided in [`api/test/util.js`](https://github.com/GetStream/Winds/blob/master/api/test/utils.js) (See other tests for examples of usage).
 
 ### Building a Production Version
 
