@@ -71,7 +71,7 @@ export async function handleRSS(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`RSS job validation failed: ${validation.error.message}`);
+		logger.warn(`RSS job validation failed: ${validation.error.message} for '${job.data}'`);
 		await RSS.incrScrapeFailures(rssID);
 		return;
 	}

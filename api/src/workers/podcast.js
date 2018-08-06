@@ -66,7 +66,7 @@ export async function handlePodcast(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Podcast job validation failed: ${validation.error.message}`);
+		logger.warn(`Podcast job validation failed: ${validation.error.message} for '${job.data}'`);
 		await Podcast.incrScrapeFailures(podcastID);
 		return;
 	}

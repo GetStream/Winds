@@ -65,14 +65,14 @@ export async function handleSocial(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Social job validation failed: ${validation.error.message}`);
+		logger.warn(`Social job validation failed: ${validation.error.message} for '${job.data}''`);
 		return;
 	}
 
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
 	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
 	if (!articles.length) {
-		logger.warn(`No article passed validation: ${articles.map(a => joi.validate(a, itemSchema).error)}`);
+		logger.warn(`No article passed validation: ${job.data.map(a => joi.validate(a, itemSchema).error.message)} for '${job.data}'`);
 		return;
 	}
 	let updatingSocialScore = false;
