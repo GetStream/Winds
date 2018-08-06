@@ -61,7 +61,7 @@ export async function handleOg(job) {
 	}
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`OG job validation failed: ${validation.error.message} for '${job.data}'`);
+		logger.warn(`OG job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
 		return;
 	}
 
