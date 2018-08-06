@@ -68,7 +68,7 @@ export async function sendFeedToCollections(type, feed) {
 
 	const contentModelName = model.content.collection.collectionName;
 	const chunkSize = 1000;
-	const sizeLimit = 120 * 1024; // a bit less then 128Kb to lease some space for external data
+	const sizeLimit = 100 * 1024; // less then 128Kb to leave some space for external data
 	for (let offset = 0; offset < content.length;) {
 		const data = [];
 		const limit = Math.min(content.length, offset + chunkSize);
