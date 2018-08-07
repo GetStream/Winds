@@ -25,9 +25,9 @@ async function trackQueueSize(statsd, queue) {
 function AddQueueTracking(queue) {
 	var statsd = getStatsDClient();
 
-	queue.on('error', function(error) {
+	queue.on('error', function(err) {
 		statsd.increment(makeMetricKey(queue, 'error'));
-		logger.warn(`Queue ${queue.name} encountered an unexpected error: ${error.message}`);
+		logger.warn(`Queue ${queue.name} encountered an unexpected error: ${err.message}`);
 	});
 
 	queue.on('active', function(job, jobPromise) {
@@ -41,7 +41,7 @@ function AddQueueTracking(queue) {
 
 	queue.on('failed', function(job, err) {
 		statsd.increment(makeMetricKey(queue, 'failed'));
-		logger.warn(`Queue ${queue.name} failed to process job '${JSON.stringify(job)}': ${error.message}`);
+		logger.warn(`Queue ${queue.name} failed to process job '${JSON.stringify(job)}': ${err.message}`);
 	});
 
 	queue.on('paused', function() {

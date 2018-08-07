@@ -72,7 +72,8 @@ export async function handleSocial(job) {
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
 	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
 	if (!articles.length) {
-		logger.warn(`No article passed validation: ${job.data.articles.map(a => joi.validate(a, itemSchema).error.message)} for '${JSON.stringify(job.data)}'`);
+		const errors = job.data.articles.map(a => joi.validate(a, itemSchema)).filter(r => !!r.error);
+		logger.warn(`No article passed validation: ${errors.map(r => r.error.message)} for '${JSON.stringify(job.data)}'`);
 		return;
 	}
 	let updatingSocialScore = false;
