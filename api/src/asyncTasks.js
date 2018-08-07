@@ -1,4 +1,5 @@
 import config from './config';
+import logger from './utils/logger';
 
 import Queue from 'bull';
 import { getStatsDClient } from './utils/statsd';
@@ -26,6 +27,7 @@ function AddQueueTracking(queue) {
 
 	queue.on('error', function(error) {
 		statsd.increment(makeMetricKey(queue, 'error'));
+		logger.warn(`Queue ${queue.name} encountered an unexpected error: ${error.message}`);
 	});
 
 	queue.on('active', function(job, jobPromise) {
@@ -39,6 +41,7 @@ function AddQueueTracking(queue) {
 
 	queue.on('failed', function(job, err) {
 		statsd.increment(makeMetricKey(queue, 'failed'));
+		logger.warn(`Queue ${queue.name} failed to process job '${JSON.stringify(job)}': ${error.message}`);
 	});
 
 	queue.on('paused', function() {
