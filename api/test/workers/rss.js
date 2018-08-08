@@ -68,7 +68,7 @@ describe('RSS worker', () => {
 		];
 
 		for (let i = 0; i < testCases.length; ++i) {
-			it.skip(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
+			it(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
 				async function queue(url) {
 					setupHandler();
 					await rssQueue.add({ rss: '5b0ad0baf6f89574a638887a', url });
