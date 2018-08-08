@@ -15,7 +15,6 @@ describe('Podcast worker', () => {
 	};
 
 	let originalOgQueueAdd;
-	let processor;
 	let handler;
 	let initialEpisodes;
 
@@ -32,7 +31,7 @@ describe('Podcast worker', () => {
 		originalOgQueueAdd = OgQueueAdd._fn;
 		OgQueueAdd._fn = () => Promise.resolve();
 
-		processor = podcastQueue.process(podcastProcessor).catch(err => console.log(`PODCAST PROCESSING FAILURE: ${err.stack}`));
+		podcastQueue.process(podcastProcessor).catch(err => console.log(`PODCAST PROCESSING FAILURE: ${err.stack}`));
 
 		await dropDBs();
 		await loadFixture('initial-data');
@@ -43,7 +42,6 @@ describe('Podcast worker', () => {
 	after(async () => {
 		podcastQueue.handlers['__default__'] = podcastProcessor;
 		await podcastQueue.close();
-		await processor;
 		OgQueueAdd._fn = originalOgQueueAdd;
 	});
 

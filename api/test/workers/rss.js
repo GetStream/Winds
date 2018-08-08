@@ -11,7 +11,6 @@ import { loadFixture, dropDBs, getTestFeed, createMockFeed, getMockFeed } from '
 
 describe('RSS worker', () => {
 	let originalOgQueueAdd;
-	let processor;
 	let handler;
 
 	function setupHandler() {
@@ -27,7 +26,7 @@ describe('RSS worker', () => {
 		originalOgQueueAdd = OgQueueAdd._fn;
 		OgQueueAdd._fn = () => Promise.resolve();
 
-		processor = rssQueue.process(rssProcessor).catch(err => console.error(`RSS PROCESSING FAILURE: ${err.stack}`));
+		rssQueue.process(rssProcessor).catch(err => console.error(`RSS PROCESSING FAILURE: ${err.stack}`));
 
 		await dropDBs();
 		await loadFixture('initial-data');
@@ -36,7 +35,6 @@ describe('RSS worker', () => {
 	after(async () => {
 		rssQueue.handlers['__default__'] = rssProcessor;
 		await rssQueue.close();
-		await processor;
 		OgQueueAdd._fn = originalOgQueueAdd;
 	});
 

@@ -9,7 +9,6 @@ import { loadFixture, dropDBs, createMockFeed, getMockFeed } from '../utils';
 
 describe('Stream worker', () => {
 	let handler;
-	let processor;
 
 	function setupHandler() {
 		handler = new Promise((resolve, reject) => {
@@ -22,7 +21,7 @@ describe('Stream worker', () => {
 	before(async () => {
 		await streamQueue.empty();
 
-		processor = streamQueue.process(streamProcessor).catch(err => console.log(`STREAM PROCESSING FAILURE: ${err.stack}`));
+		streamQueue.process(streamProcessor).catch(err => console.log(`STREAM PROCESSING FAILURE: ${err.stack}`));
 
 		await dropDBs();
 		await loadFixture('initial-data');
@@ -31,7 +30,6 @@ describe('Stream worker', () => {
 	after(async () => {
 		streamQueue.handlers['__default__'] = streamProcessor;
 		await streamQueue.close();
-		await processor;
 	});
 
 	describe('queue', () => {

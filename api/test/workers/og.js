@@ -9,7 +9,6 @@ import { ogProcessor, handleOg } from '../../src/workers/og';
 import { loadFixture, dropDBs } from '../utils';
 
 describe('OG worker', () => {
-	let processor;
 	let handler;
 
 	function setupHandler() {
@@ -21,7 +20,7 @@ describe('OG worker', () => {
 	}
 
 	before(async () => {
-		processor = ogQueue.process(ogProcessor).catch(err => console.log(`OG PROCESSING FAILURE: ${err.stack}`));
+		ogQueue.process(ogProcessor).catch(err => console.log(`OG PROCESSING FAILURE: ${err.stack}`));
 
 		await dropDBs();
 		await loadFixture('initial-data');
@@ -30,7 +29,6 @@ describe('OG worker', () => {
 	after(async () => {
 		ogQueue.handlers['__default__'] = ogProcessor;
 		await ogQueue.close();
-		await processor;
 	});
 
 	describe('valid job', () => {

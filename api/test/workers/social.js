@@ -9,7 +9,6 @@ import { socialProcessor, handleSocial } from '../../src/workers/social';
 import { loadFixture, dropDBs } from '../utils';
 
 describe('Social worker', () => {
-	let processor;
 	let handler;
 
 	function setupHandler() {
@@ -21,7 +20,7 @@ describe('Social worker', () => {
 	}
 
 	before(async () => {
-		processor = socialQueue.process(socialProcessor).catch(err => console.log(`OG PROCESSING FAILURE: ${err.stack}`));
+		socialQueue.process(socialProcessor).catch(err => console.log(`OG PROCESSING FAILURE: ${err.stack}`));
 
 		await dropDBs();
 		await loadFixture('initial-data');
@@ -30,7 +29,6 @@ describe('Social worker', () => {
 	after(async () => {
 		socialQueue.handlers['__default__'] = socialProcessor;
 		await socialQueue.close();
-		await processor;
 	});
 
 	describe('queue', () => {
