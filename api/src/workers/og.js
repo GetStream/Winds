@@ -71,7 +71,7 @@ export async function handleOg(job) {
 	const urls = job.data.urls || [job.data.url];
 	for (const url of urls) {
 		if (!!joi.validate(url, joiUrl).error) {
-			logger.warn(`invalid URL '${url}' for jobtype ${jobType}`);
+			logger.warn(`OG job validation failed: invalid URL '${url}' for jobtype ${jobType}`);
 			continue;
 		}
 
