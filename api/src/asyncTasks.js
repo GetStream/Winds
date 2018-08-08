@@ -6,7 +6,7 @@ import { getStatsDClient } from './utils/statsd';
 
 const queueSettings = {
 	lockDuration: 45000,
-	lockRenewTime: 10000,
+	lockRenewTime: 30000,
 	stalledInterval: 75000,
 	maxStalledCount: 2,
 	guardInterval: 3500,
