@@ -137,6 +137,7 @@ Commands:
 *   `brew install redis mongodb`
 *   `brew services start mongodb`
 *   `brew services start redis`
+*   `yarn global add babel-cli`
 *   `cd winds/api`
 *   `yarn`
 *   `cd ../app`
