@@ -17,7 +17,7 @@ if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
 
 	logger.info('Starting the Social worker');
-	ProcessSocialQueue(50, socialProcessor);
+	ProcessSocialQueue(35, socialProcessor);
 }
 
 const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };
