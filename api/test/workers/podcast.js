@@ -14,6 +14,8 @@ describe('Podcast worker', () => {
 		url: 'https://anchor.fm/s/1f47f58/podcast/rss',
 	};
 
+	let originalOgQueueAdd;
+	let processor;
 	let handler;
 	let initialEpisodes;
 
@@ -26,14 +28,23 @@ describe('Podcast worker', () => {
 	}
 
 	before(async () => {
+		await podcastQueue.empty();
+		originalOgQueueAdd = OgQueueAdd._fn;
+		OgQueueAdd._fn = () => Promise.resolve();
+
+		processor = podcastQueue.process(podcastProcessor).catch(err => console.log(`PODCAST PROCESSING FAILURE: ${err.stack}`));
+
 		await dropDBs();
 		await loadFixture('initial-data');
 
 		initialEpisodes = await Episode.find({ podcast: data.podcast });
 	});
 
-	after(() => {
+	after(async () => {
 		podcastQueue.handlers['__default__'] = podcastProcessor;
+		await podcastQueue.close();
+		await processor;
+		OgQueueAdd._fn = originalOgQueueAdd;
 	});
 
 	describe('queue', () => {

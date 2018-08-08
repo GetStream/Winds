@@ -20,8 +20,6 @@ const conductorInterval = 60;
 const popularScrapeInterval = 2;
 const defaultScrapeInterval = 25;
 
-logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
-
 function forever() {
 	conduct().then(()=> {
 		logger.info('Conductor iteration completed...');
@@ -32,6 +30,8 @@ function forever() {
 }
 
 if (require.main === module) {
+	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
+
 	forever();
 }
 

@@ -5,11 +5,11 @@ import Queue from 'bull';
 import { getStatsDClient } from './utils/statsd';
 
 const queueSettings = {
-	lockDuration: 45000,
-	lockRenewTime: 30000,
-	stalledInterval: 75000,
-	maxStalledCount: 2,
-	guardInterval: 3500,
+    lockDuration: 60000,
+    lockRenewTime: 15000,
+    stalledInterval: 75000,
+    maxStalledCount: 2,
+    guardInterval: 3500,
 };
 
 export const rssQueue = new Queue('rss', config.cache.uri, {
@@ -72,11 +72,14 @@ function AddQueueTracking(queue) {
 	setInterval(trackQueueSize, 30000, statsd, queue);
 }
 
-AddQueueTracking(rssQueue);
-AddQueueTracking(ogQueue);
-AddQueueTracking(podcastQueue);
-AddQueueTracking(streamQueue);
-AddQueueTracking(socialQueue);
+const currentEnvironment = process.env.NODE_ENV || 'development';
+if (currentEnvironment !== test) {
+	AddQueueTracking(rssQueue);
+	AddQueueTracking(ogQueue);
+	AddQueueTracking(podcastQueue);
+	AddQueueTracking(streamQueue);
+	AddQueueTracking(socialQueue);
+};
 
 export const RssQueueAdd = rssQueue.add.bind(rssQueue);
 export const OgQueueAdd = ogQueue.add.bind(ogQueue);

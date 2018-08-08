@@ -14,13 +14,13 @@ import { setupAxiosRedirectInterceptor } from '../utils/axios';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
+
+	logger.info('Starting the OG worker');
+	ProcessOgQueue(100, ogProcessor);
+	logger.info(`Starting to process the og queue...`);
 }
 
-logger.info('Starting the OG worker');
 const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podcast };
-
-ProcessOgQueue(100, ogProcessor);
-logger.info(`Starting to process the og queue...`);
 
 export async function ogProcessor(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);

@@ -13,12 +13,10 @@ import { setupAxiosRedirectInterceptor } from '../utils/axios';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
+
+	logger.info('Starting the Stream worker');
+	ProcessStreamQueue(1, streamProcessor);
 }
-
-// connect the handler to the queue
-logger.info('Starting the Stream worker');
-
-ProcessStreamQueue(1, streamProcessor);
 
 export async function streamProcessor(job) {
 	logger.info(`Processing Stream feeds for feed ${job.data.rss}`);

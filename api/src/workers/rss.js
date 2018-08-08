@@ -17,14 +17,12 @@ import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
+
+	logger.info('Starting the RSS worker');
+	ProcessRssQueue(100, rssProcessor);
 }
 
 const duplicateKeyError = 11000;
-
-logger.info('Starting the RSS worker');
-
-ProcessRssQueue(100, rssProcessor);
-
 const statsd = getStatsDClient();
 
 export async function rssProcessor(job) {

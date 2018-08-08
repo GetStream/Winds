@@ -10,6 +10,8 @@ import { rssProcessor, handleRSS, upsertManyArticles } from '../../src/workers/r
 import { loadFixture, dropDBs, getTestFeed, createMockFeed, getMockFeed } from '../utils';
 
 describe('RSS worker', () => {
+	let originalOgQueueAdd;
+	let processor;
 	let handler;
 
 	function setupHandler() {
@@ -21,12 +23,21 @@ describe('RSS worker', () => {
 	}
 
 	before(async () => {
+		await rssQueue.empty();
+		originalOgQueueAdd = OgQueueAdd._fn;
+		OgQueueAdd._fn = () => Promise.resolve();
+
+		processor = rssQueue.process(rssProcessor).catch(err => console.error(`RSS PROCESSING FAILURE: ${err.stack}`));
+
 		await dropDBs();
 		await loadFixture('initial-data');
 	});
 
-	after(() => {
+	after(async () => {
 		rssQueue.handlers['__default__'] = rssProcessor;
+		await rssQueue.close();
+		await processor;
+		OgQueueAdd._fn = originalOgQueueAdd;
 	});
 
 	describe('queue', () => {

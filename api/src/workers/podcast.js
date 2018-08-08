@@ -18,11 +18,12 @@ import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import { ensureEncoded } from '../utils/urls';
 import { timeIt } from '../utils/statsd';
 
-setupAxiosRedirectInterceptor(axios);
+if (require.main === module) {
+	setupAxiosRedirectInterceptor(axios);
 
-logger.info('Starting to process podcasts....');
-
-ProcessPodcastQueue(100, podcastProcessor);
+	logger.info('Starting to process podcasts....');
+	ProcessPodcastQueue(100, podcastProcessor);
+}
 
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);

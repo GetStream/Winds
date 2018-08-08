@@ -15,12 +15,10 @@ import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
+
+	logger.info('Starting the Social worker');
+	ProcessSocialQueue(100, socialProcessor);
 }
-
-// connect the handler to the queue
-logger.info('Starting the Social worker');
-
-ProcessSocialQueue(100, socialProcessor);
 
 const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };
 
