@@ -73,7 +73,7 @@ function AddQueueTracking(queue) {
 }
 
 const currentEnvironment = process.env.NODE_ENV || 'development';
-if (currentEnvironment !== test) {
+if (currentEnvironment !== 'test') {
 	AddQueueTracking(rssQueue);
 	AddQueueTracking(ogQueue);
 	AddQueueTracking(podcastQueue);
