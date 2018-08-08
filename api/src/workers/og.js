@@ -16,7 +16,7 @@ if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
 
 	logger.info('Starting the OG worker');
-	ProcessOgQueue(35, ogProcessor);
+	ProcessOgQueue(25, ogProcessor);
 	logger.info(`Starting to process the og queue...`);
 }
 

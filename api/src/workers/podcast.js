@@ -22,7 +22,7 @@ if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
 
 	logger.info('Starting to process podcasts....');
-	ProcessPodcastQueue(100, podcastProcessor);
+	ProcessPodcastQueue(35, podcastProcessor);
 }
 
 export async function podcastProcessor(job) {

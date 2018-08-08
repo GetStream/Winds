@@ -19,7 +19,7 @@ if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
 
 	logger.info('Starting the RSS worker');
-	ProcessRssQueue(100, rssProcessor);
+	ProcessRssQueue(35, rssProcessor);
 }
 
 const duplicateKeyError = 11000;
