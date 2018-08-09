@@ -206,9 +206,9 @@ ajv@^5.1.0:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
 
-algoliasearch@^3.29.0:
-  version "3.29.0"
-  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.29.0.tgz#d04021a5450be55ce314b928bba4a38723399bd8"
+algoliasearch@^3.30.0:
+  version "3.30.0"
+  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.30.0.tgz#355585e49b672e5f71d45b9c2b371ecdff129cd1"
   dependencies:
     agentkeepalive "^2.2.0"
     debug "^2.6.8"
@@ -1034,13 +1034,13 @@ bluebird@3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
+bluebird@3.5.1, bluebird@^3.3.4, bluebird@^3.5.0:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
+
 bluebird@^2.9.33:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
-
-bluebird@^3.3.4, bluebird@^3.5.0:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
 blueimp-md5@^2.3.0:
   version "2.10.0"
@@ -2125,9 +2125,9 @@ express-jwt@^5.3.1:
     jsonwebtoken "^8.1.0"
     lodash.set "^4.0.0"
 
-express-rate-limit@^2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-2.11.0.tgz#092122218c86eddb56fb350f431e522fb8024ea9"
+express-rate-limit@^2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-2.12.2.tgz#bb4a04e8dc246340610824dd987c648cdef04ce1"
   dependencies:
     defaults "^1.0.3"
 
@@ -2526,9 +2526,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-getstream@^3.19.0:
-  version "3.19.0"
-  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.19.0.tgz#4b111d17328cbbb2e9347c0ce55875b4cacd0a3b"
+getstream@^3.20.0:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/getstream/-/getstream-3.20.0.tgz#80460372ee34bfb1db9075021aa07044b989ce0a"
   dependencies:
     Base64 "^1.0.1"
     faye "^1.2.4"
@@ -4228,9 +4228,9 @@ mongoose-validators@^0.1.0:
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-mongoose@^5.2.5:
-  version "5.2.5"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.2.5.tgz#4bab4e366cbc161ee4420a1661f9c84c2487a2e9"
+mongoose@^5.2.7:
+  version "5.2.7"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.2.7.tgz#679a682cc744f7fbcc14f23df77e9d8d5dfd043d"
   dependencies:
     async "2.6.1"
     bson "~1.0.5"
@@ -4240,7 +4240,7 @@ mongoose@^5.2.5:
     mongodb-core "3.1.0"
     mongoose-legacy-pluralize "1.0.2"
     mpath "0.4.1"
-    mquery "3.0.0"
+    mquery "3.1.2"
     ms "2.0.0"
     regexp-clone "0.0.1"
     sliced "1.0.1"
@@ -4267,6 +4267,15 @@ mquery@3.0.0:
     debug "2.6.9"
     regexp-clone "0.0.1"
     sliced "0.0.5"
+
+mquery@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/mquery/-/mquery-3.1.2.tgz#46c2ea6d7a08c9b9e0716022fb2990708ddba9ff"
+  dependencies:
+    bluebird "3.5.1"
+    debug "3.1.0"
+    regexp-clone "0.0.1"
+    sliced "1.0.1"
 
 mri@^1.1.0:
   version "1.1.1"
@@ -4342,9 +4351,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-newrelic@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-4.6.0.tgz#bf1cefd28fcf4049d025160b6877bc681516dc65"
+newrelic@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-4.7.0.tgz#9044848e1fc3c137aecb7497bf16923683773eff"
   dependencies:
     "@newrelic/koa" "^1.0.0"
     "@tyriar/fibonacci-heap" "^2.0.7"
@@ -4367,9 +4376,9 @@ nise@^1.4.2:
     path-to-regexp "^1.7.0"
     text-encoding "^0.6.4"
 
-nock@^9.4.3:
-  version "9.4.3"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-9.4.3.tgz#26bbc1280898f442c9814085f05199cab857a04c"
+nock@^9.6.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-9.6.0.tgz#df273defe35fd31c3ec9039c570e64339d31d68b"
   dependencies:
     chai "^4.1.2"
     debug "^3.1.0"
@@ -4899,9 +4908,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.0.tgz#847c235522035fd988100f1f43cf20a7d24f9372"
+prettier@^1.14.2:
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.2.tgz#0ac1c6e1a90baa22a62925f41963c841983282f9"
 
 prettierrc@^0.0.0-5:
   version "0.0.0-5"
@@ -5369,9 +5378,9 @@ samsam@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.3.0.tgz#8d1d9350e25622da30de3e44ba692b5221ab7c50"
 
-sanitize-html@^1.18.2:
-  version "1.18.2"
-  resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-1.18.2.tgz#61877ba5a910327e42880a28803c2fbafa8e4642"
+sanitize-html@^1.18.4:
+  version "1.18.4"
+  resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-1.18.4.tgz#ffdeea13b555dd5e872e9a68b79e5e716cd8c543"
   dependencies:
     chalk "^2.3.0"
     htmlparser2 "^3.9.0"
@@ -6181,9 +6190,9 @@ validator@3.16.0:
   version "3.16.0"
   resolved "https://registry.yarnpkg.com/validator/-/validator-3.16.0.tgz#ec2c6c3a8be5f7e7085cb79e1b1681fc5bd27846"
 
-validator@^10.4.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-10.4.0.tgz#ee99a44afb3bb5ed350a159f056ca72a204cfc3c"
+validator@^10.5.0:
+  version "10.5.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-10.5.0.tgz#1debbe1e6f5fd0c920ed2af47516f3762033939c"
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"
@@ -6306,9 +6315,9 @@ xml@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
 
-"xmlhttp-request@https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd":
+"xmlhttp-request@git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd":
   version "0.4.0"
-  resolved "https://github.com/GetStream/xmlhttp-request#2474db1c2829697bcf2788fee49156b62ad8bcfd"
+  resolved "git+https://github.com/GetStream/xmlhttp-request.git#2474db1c2829697bcf2788fee49156b62ad8bcfd"
 
 xregexp@4.0.0:
   version "4.0.0"
