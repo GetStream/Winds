@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/getstream/winds/issues"
   },
-  "homepage": "https://winds.getstream.io",
+  "homepage": "./",
   "main": "public/electron.js",
   "keywords": [
     "Winds",
@@ -138,7 +138,7 @@
     "mas": {
       "entitlements": "assets/entitlements.mas.plist",
       "entitlementsInherit": "assets/entitlements.mas.inherit.plist",
-      "provisioningProfile": "../../winds-private/embedded.provisionprofile"
+      "provisioningProfile": "../winds-private/embedded.provisionprofile"
     },
     "win": {
       "target": "nsis",
