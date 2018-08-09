@@ -18,11 +18,12 @@ import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import { ensureEncoded } from '../utils/urls';
 import { timeIt } from '../utils/statsd';
 
-setupAxiosRedirectInterceptor(axios);
+if (require.main === module) {
+	setupAxiosRedirectInterceptor(axios);
 
-logger.info('Starting to process podcasts....');
-
-ProcessPodcastQueue(100, podcastProcessor);
+	logger.info('Starting to process podcasts....');
+	ProcessPodcastQueue(35, podcastProcessor);
+}
 
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
@@ -66,7 +67,7 @@ export async function handlePodcast(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Podcast job validation failed: ${validation.error.message}`);
+		logger.warn(`Podcast job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
 		await Podcast.incrScrapeFailures(podcastID);
 		return;
 	}
@@ -113,8 +114,6 @@ export async function handlePodcast(job) {
 		return;
 	}
 
-	const queueOpts = { removeOnComplete: true, removeOnFail: true };
-
 	const chunkSize = 100;
 	const podcastFeed = getStreamClient().feed('podcast', podcastID);
 	for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
@@ -132,24 +131,21 @@ export async function handlePodcast(job) {
 		await podcastFeed.addActivities(streamEpisodes);
 	}
 
-	await Promise.all([
-		await OgQueueAdd({
-			type: 'episode',
-			urls: updatedEpisodes.map(e => e.link),
-		}, queueOpts),
-		await StreamQueueAdd({ podcast: podcastID }, queueOpts),
-	]);
+	const queueOpts = { removeOnComplete: true, removeOnFail: true };
+	const tasks = [];
+	const queueState = {};
+	if (!podcast.queueState.isUpdatingOG) {
+		queueState["queueState.isUpdatingOG"] = true;
+		tasks.push(OgQueueAdd({ type: 'episode', podcast: podcastID, urls: updatedEpisodes.map(e => e.link) }, queueOpts));
+	}
+	if (!podcast.queueState.isSynchronizingWithStream) {
+		queueState["queueState.isSynchronizingWithStream"] = true;
+		tasks.push(StreamQueueAdd({ podcast: podcastID }, queueOpts));
+	}
+	await Promise.all([Podcast.update({ _id: podcastID }, queueState), ...tasks]);
 }
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
-	// Set the last scraped for the given rssID
-	let updated = await Podcast.update(
-		{ _id: podcastID },
-		{
-			lastScraped: moment().toISOString(),
-			isParsing: false,
-		},
-	);
-	return updated;
+	return await Podcast.update({ _id: podcastID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }

@@ -19,12 +19,17 @@ describe('Stream worker', () => {
 	}
 
 	before(async () => {
+		await streamQueue.empty();
+
+		streamQueue.process(streamProcessor).catch(err => console.log(`STREAM PROCESSING FAILURE: ${err.stack}`));
+
 		await dropDBs();
 		await loadFixture('initial-data');
 	});
 
-	after(() => {
+	after(async () => {
 		streamQueue.handlers['__default__'] = streamProcessor;
+		await streamQueue.close();
 	});
 
 	describe('queue', () => {

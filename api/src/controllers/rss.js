@@ -131,6 +131,7 @@ exports.post = async (req, res) => {
 			let ogPromise = OgQueueAdd(
 				{
 					url: f.url,
+					rss: f._id,
 					type: 'rss',
 				},
 				{

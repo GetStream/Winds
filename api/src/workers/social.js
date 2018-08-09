@@ -15,12 +15,10 @@ import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
+
+	logger.info('Starting the Social worker');
+	ProcessSocialQueue(35, socialProcessor);
 }
-
-// connect the handler to the queue
-logger.info('Starting the Social worker');
-
-ProcessSocialQueue(25, socialProcessor);
 
 const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };
 
@@ -65,16 +63,20 @@ export async function handleSocial(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Social job validation failed: ${validation.error.message}`);
+		logger.warn(`Social job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
 		return;
 	}
 
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
 	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
 	if (!articles.length) {
-		logger.warn(`No article passed validation: ${articles.map(a => joi.validate(a, itemSchema).error)}`);
+		const errors = job.data.articles.map(a => joi.validate(a, itemSchema)).filter(r => !!r.error);
+		logger.warn(`No article passed validation: ${errors.map(r => r.error.message)} for '${JSON.stringify(job.data)}'`);
 		return;
 	}
+
+	await RSS.update({ _id: job.data.rss }, { "queueState.isSynchronizingWithStream": false });
+
 	let updatingSocialScore = false;
 	await timeIt('winds.handle_social.update_social_score', () => {
 		return Promise.all(articles.map(async article => {

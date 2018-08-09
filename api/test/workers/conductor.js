@@ -44,7 +44,6 @@ describe('Conductor worker', () => {
 		const rssBefore = await RSS.create({
 			title: 'RSS feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
@@ -53,7 +52,6 @@ describe('Conductor worker', () => {
 		const podcastBefore = await Podcast.create({
 			title: 'Podcast feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
@@ -65,8 +63,8 @@ describe('Conductor worker', () => {
 		const rssAfter = await RSS.findById(rssBefore._id);
 		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.isParsing).to.be.true;
-		expect(podcastAfter.isParsing).to.be.false;
+		expect(rssAfter.queueState.isParsing).to.be.true;
+		expect(podcastAfter.queueState.isParsing).to.be.false;
 		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
 		expect(Number(podcastAfter.updatedAt)).to.be.equal(
 			Number(podcastBefore.updatedAt),
@@ -77,7 +75,6 @@ describe('Conductor worker', () => {
 		const rssBefore = await RSS.create({
 			title: 'RSS feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
@@ -86,7 +83,6 @@ describe('Conductor worker', () => {
 		const podcastBefore = await Podcast.create({
 			title: 'Podcast feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 0,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
@@ -98,8 +94,8 @@ describe('Conductor worker', () => {
 		const rssAfter = await RSS.findById(rssBefore._id);
 		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.isParsing).to.be.true;
-		expect(podcastAfter.isParsing).to.be.false;
+		expect(rssAfter.queueState.isParsing).to.be.true;
+		expect(podcastAfter.queueState.isParsing).to.be.false;
 		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
 		expect(Number(podcastAfter.updatedAt)).to.be.equal(
 			Number(podcastBefore.updatedAt),
@@ -110,7 +106,6 @@ describe('Conductor worker', () => {
 		const rssBefore = await RSS.create({
 			title: 'RSS feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
@@ -119,7 +114,7 @@ describe('Conductor worker', () => {
 		const podcastBefore = await Podcast.create({
 			title: 'Podcast feed',
 			valid: true,
-			isParsing: true,
+			queueState: { isParsing: true },
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
@@ -131,11 +126,9 @@ describe('Conductor worker', () => {
 		const rssAfter = await RSS.findById(rssBefore._id);
 		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.isParsing).to.be.true;
+		expect(rssAfter.queueState.isParsing).to.be.true;
 		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
-		expect(Number(podcastAfter.updatedAt)).to.be.equal(
-			Number(podcastBefore.updatedAt),
-		);
+		expect(Number(podcastAfter.updatedAt)).to.be.equal(Number(podcastBefore.updatedAt));
 	});
 
 	it('should touch at most 1/15 of dataset at a time', async () => {
@@ -144,7 +137,6 @@ describe('Conductor worker', () => {
 				await RSS.create({
 					title: `RSS feed #${i}`,
 					valid: true,
-					isParsing: false,
 					followerCount: 2,
 					consecutiveScrapeFailures: 0,
 					feedUrl: `http://google.com/${i}`,
@@ -153,7 +145,6 @@ describe('Conductor worker', () => {
 				await RSS.create({
 					title: `RSS popular feed #${i}`,
 					valid: true,
-					isParsing: false,
 					followerCount: 102,
 					consecutiveScrapeFailures: 0,
 					feedUrl: `http://google.com/${i}`,
@@ -164,7 +155,7 @@ describe('Conductor worker', () => {
 
 		await conduct();
 
-		const updatedRss = await RSS.count({ isParsing: true });
+		const updatedRss = await RSS.count({ "queueState.isParsing": true });
 		expect(updatedRss).to.be.below(3);
 	});
 
@@ -174,7 +165,6 @@ describe('Conductor worker', () => {
 				await RSS.create({
 					title: `RSS feed #${i}`,
 					valid: true,
-					isParsing: false,
 					followerCount: 2,
 					consecutiveScrapeFailures: 0,
 					feedUrl: `http://google.com/${i}`,
@@ -183,7 +173,6 @@ describe('Conductor worker', () => {
 				await RSS.create({
 					title: `RSS popular feed #${i}`,
 					valid: true,
-					isParsing: false,
 					followerCount: 102,
 					consecutiveScrapeFailures: 0,
 					feedUrl: `http://google.com/${i}`,
@@ -194,12 +183,12 @@ describe('Conductor worker', () => {
 
 		for (let i = 1; i <= 14; ++i) {
 			await conduct();
-			const updatedRss = await RSS.count({ isParsing: true });
+			const updatedRss = await RSS.count({ "queueState.isParsing": true });
 			expect(updatedRss).to.be.below(i * 2 + 1);
 		}
 
 		await conduct();
-		const updatedRss = await RSS.count({ isParsing: true });
+		const updatedRss = await RSS.count({ "queueState.isParsing": true });
 		expect(updatedRss).to.be.equal(30);
 	});
 
@@ -208,7 +197,6 @@ describe('Conductor worker', () => {
 		const rss = await RSS.create({
 			title: 'RSS feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
@@ -217,7 +205,6 @@ describe('Conductor worker', () => {
 		const podcast = await Podcast.create({
 			title: 'Podcast feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
@@ -236,7 +223,6 @@ describe('Conductor worker', () => {
 		const rssBefore = await RSS.create({
 			title: 'RSS feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://google.com',
@@ -245,7 +231,6 @@ describe('Conductor worker', () => {
 		const podcastBefore = await Podcast.create({
 			title: 'Podcast feed',
 			valid: true,
-			isParsing: false,
 			followerCount: 2,
 			consecutiveScrapeFailures: 65,
 			feedUrl: 'http://bing.com',
@@ -257,8 +242,8 @@ describe('Conductor worker', () => {
 		const rssAfter = await RSS.findById(rssBefore._id);
 		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.isParsing).to.be.true;
-		expect(podcastAfter.isParsing).to.be.false;
+		expect(rssAfter.queueState.isParsing).to.be.true;
+		expect(podcastAfter.queueState.isParsing).to.be.false;
 		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
 		expect(Number(podcastAfter.updatedAt)).to.be.equal(
 			Number(podcastBefore.updatedAt),

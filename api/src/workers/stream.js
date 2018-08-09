@@ -13,12 +13,10 @@ import { setupAxiosRedirectInterceptor } from '../utils/axios';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
+
+	logger.info('Starting the Stream worker');
+	ProcessStreamQueue(2, streamProcessor);
 }
-
-// connect the handler to the queue
-logger.info('Starting the Stream worker');
-
-ProcessStreamQueue(1, streamProcessor);
 
 export async function streamProcessor(job) {
 	logger.info(`Processing Stream feeds for feed ${job.data.rss}`);
@@ -46,12 +44,14 @@ const schema = joi.object().keys({
 export async function handleStream(job) {
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Stream job validation failed: ${validation.error.message}`);
+		logger.warn(`Stream job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
 		return;
 	}
 
 	const type = 'rss' in job.data ? 'rss' : 'podcast';
 	const model = 'rss' in job.data ? RSS : Podcast;
+
+	await model.update({ _id: job.data[type] }, { "queueState.isSynchronizingWithStream": false });
 
 	const feed = await model.findById(job.data[type]);
 	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed));

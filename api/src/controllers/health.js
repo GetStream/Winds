@@ -49,8 +49,8 @@ exports.status = async (req, res) => {
 				: 'The most recent episode is too old.';
 	}
 
-	output.rssCurrentlyParsing = await RSS.count({ isParsing: true });
-	output.podcastCurrentlyParsing = await Podcast.count({ isParsing: true });
+	output.rssCurrentlyParsing = await RSS.count({ "queueState.isParsing": true });
+	output.podcastCurrentlyParsing = await Podcast.count({ "queueState.isParsing": true });
 
 	if (output.rssCurrentlyParsing > 1000) {
 		output.code = 500;

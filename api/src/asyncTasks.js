@@ -1,15 +1,33 @@
 import config from './config';
+import logger from './utils/logger';
 
 import Queue from 'bull';
 import { getStatsDClient } from './utils/statsd';
 
-export const rssQueue = new Queue('rss', config.cache.uri);
-export const ogQueue = new Queue('og', config.cache.uri);
-export const podcastQueue = new Queue('podcast', config.cache.uri);
-export const streamQueue = new Queue('stream', config.cache.uri, {
-	limiter: { max: 12000, duration: 3600000 } // 12k per hour
+const queueSettings = {
+    lockDuration: 60000,
+    lockRenewTime: 15000,
+    stalledInterval: 75000,
+    maxStalledCount: 2,
+    guardInterval: 3500,
+};
+
+export const rssQueue = new Queue('rss', config.cache.uri, {
+	settings: queueSettings,
 });
-export const socialQueue = new Queue('social', config.cache.uri);
+export const ogQueue = new Queue('og', config.cache.uri, {
+	settings: queueSettings,
+});
+export const podcastQueue = new Queue('podcast', config.cache.uri, {
+	settings: queueSettings,
+});
+export const streamQueue = new Queue('stream', config.cache.uri, {
+	limiter: { max: 12000, duration: 3600000 }, // 12k per hour
+	settings: queueSettings,
+});
+export const socialQueue = new Queue('social', config.cache.uri, {
+	settings: queueSettings,
+});
 
 function makeMetricKey(queue, event) {
 	return ['winds', 'bull', queue.name, event].join('.');
@@ -24,8 +42,9 @@ async function trackQueueSize(statsd, queue) {
 function AddQueueTracking(queue) {
 	var statsd = getStatsDClient();
 
-	queue.on('error', function(error) {
+	queue.on('error', function(err) {
 		statsd.increment(makeMetricKey(queue, 'error'));
+		logger.warn(`Queue ${queue.name} encountered an unexpected error: ${err.message}`);
 	});
 
 	queue.on('active', function(job, jobPromise) {
@@ -39,6 +58,7 @@ function AddQueueTracking(queue) {
 
 	queue.on('failed', function(job, err) {
 		statsd.increment(makeMetricKey(queue, 'failed'));
+		logger.warn(`Queue ${queue.name} failed to process job '${JSON.stringify(job)}': ${err.message}`);
 	});
 
 	queue.on('paused', function() {
@@ -52,11 +72,14 @@ function AddQueueTracking(queue) {
 	setInterval(trackQueueSize, 30000, statsd, queue);
 }
 
-AddQueueTracking(rssQueue);
-AddQueueTracking(ogQueue);
-AddQueueTracking(podcastQueue);
-AddQueueTracking(streamQueue);
-AddQueueTracking(socialQueue);
+const currentEnvironment = process.env.NODE_ENV || 'development';
+if (currentEnvironment !== 'test') {
+	AddQueueTracking(rssQueue);
+	AddQueueTracking(ogQueue);
+	AddQueueTracking(podcastQueue);
+	AddQueueTracking(streamQueue);
+	AddQueueTracking(socialQueue);
+};
 
 export const RssQueueAdd = rssQueue.add.bind(rssQueue);
 export const OgQueueAdd = ogQueue.add.bind(ogQueue);

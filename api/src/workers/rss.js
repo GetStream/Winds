@@ -17,14 +17,12 @@ import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
+
+	logger.info('Starting the RSS worker');
+	ProcessRssQueue(35, rssProcessor);
 }
 
 const duplicateKeyError = 11000;
-
-logger.info('Starting the RSS worker');
-
-ProcessRssQueue(100, rssProcessor);
-
 const statsd = getStatsDClient();
 
 export async function rssProcessor(job) {
@@ -71,7 +69,7 @@ export async function handleRSS(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`RSS job validation failed: ${validation.error.message}`);
+		logger.warn(`RSS job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
 		await RSS.incrScrapeFailures(rssID);
 		return;
 	}
@@ -152,27 +150,30 @@ export async function handleRSS(job) {
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
-
-	await Promise.all([
-		await OgQueueAdd({
-			type: 'article',
-			urls: updatedArticles.map(a => a.url),
-		}, queueOpts),
-		await SocialQueueAdd({
+	const tasks = [];
+	const queueState = {};
+	if (!rss.queueState.isFetchingSocialScore) {
+		queueState["queueState.isFetchingSocialScore"] = true;
+		tasks.push(SocialQueueAdd({
 			rss: rssID,
 			articles: updatedArticles.map(a => ({
 				id: a._id,
 				link: a.link,
 				commentUrl: a.commentUrl,
 			})),
-		}, queueOpts),
-		await StreamQueueAdd({ rss: rssID }, queueOpts),
-	]);
+		}, queueOpts));
+	}
+	if (!rss.queueState.isUpdatingOG) {
+		queueState["queueState.isUpdatingOG"] = true;
+		tasks.push(OgQueueAdd({ type: 'article', rss: rssID, urls: updatedArticles.map(a => a.url) }, queueOpts));
+	}
+	if (!rss.queueState.isSynchronizingWithStream) {
+		queueState["queueState.isSynchronizingWithStream"] = true;
+		tasks.push(StreamQueueAdd({ rss: rssID }, queueOpts));
+	}
+	await Promise.all([await RSS.update({ _id: rssID }, queueState), ...tasks]);
 }
 
 async function markDone(rssID) {
-	return await RSS.update(
-		{ _id: rssID },
-		{ lastScraped: moment().toISOString(), isParsing: false },
-	);
+	return await RSS.update({ _id: rssID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }

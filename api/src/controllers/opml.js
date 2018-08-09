@@ -188,7 +188,7 @@ exports.post = async (req, res) => {
 	}));
 
 	const failedFeeds = feedIdentities.filter(f => !!f.error);
-	const feedSchemas = feedIdentities.filter(f => !!f.result).map(f => f.result);
+	const feedSchemas = feedIdentities.filter(f => !f.error).map(f => f.result);
 
 	feedSchemas.sort((lhs, rhs) => lhs.publicationType.localeCompare(rhs.publicationType));
 
