@@ -108,13 +108,23 @@ export const RSSSchema = new Schema(
 			default: '',
 			index: true,
 		},
-		isParsing: {
-			type: Boolean,
-			default: false,
-		},
-		isSynchronizing: {
-			type: Boolean,
-			default: false,
+		queueState: {
+			isParsing: {
+				type: Boolean,
+				default: false,
+			},
+			isUpdatingOG: {
+				type: Boolean,
+				default: false,
+			},
+			isFetchingSocialScore: {
+				type: Boolean,
+				default: false,
+			},
+			isSynchronizingWithStream: {
+				type: Boolean,
+				default: false,
+			},
 		},
 		language: {
 			type: String,

@@ -11,11 +11,11 @@ logger.info('Starting the RSS reset');
 // simple script to reset isParsing state on Podcast and RSS feeds
 async function main() {
 	logger.info('Updating RSS feeds now');
-	let rssResponse = await RSS.update({}, { isParsing: false }, { multi: true });
+	let rssResponse = await RSS.update({}, { "queueState.isParsing": false }, { multi: true });
 	logger.info(`Updated isParsing to false for ${rssResponse.nModified} RSS feeds`);
 
 	logger.info('Updating Podcast feeds now');
-	let podcastResponse = await Podcast.update({}, { isParsing: false }, { multi: true });
+	let podcastResponse = await Podcast.update({}, { "queueState.isParsing": false }, { multi: true });
 	logger.info(
 		`Updated isParsing to false for ${podcastResponse.nModified} Podcast feeds`,
 	);

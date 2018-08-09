@@ -150,30 +150,30 @@ export async function handleRSS(job) {
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
-	const tasks = [
-		OgQueueAdd({
-			type: 'article',
-			urls: updatedArticles.map(a => a.url),
-		}, queueOpts),
-		SocialQueueAdd({
+	const tasks = [];
+	const queueState = {};
+	if (!rss.queueState.isFetchingSocialScore) {
+		queueState["queueState.isFetchingSocialScore"] = true;
+		tasks.push(SocialQueueAdd({
 			rss: rssID,
 			articles: updatedArticles.map(a => ({
 				id: a._id,
 				link: a.link,
 				commentUrl: a.commentUrl,
 			})),
-		}, queueOpts),
-	];
-	if (!rss.isSynchronizing) {
-		await RSS.update({ _id: rssID }, { isSynchronizing: true });
+		}, queueOpts));
+	}
+	if (!rss.queueState.isUpdatingOG) {
+		queueState["queueState.isUpdatingOG"] = true;
+		tasks.push(OgQueueAdd({ type: 'article', rss: rssID, urls: updatedArticles.map(a => a.url) }, queueOpts));
+	}
+	if (!rss.queueState.isSynchronizingWithStream) {
+		queueState["queueState.isSynchronizingWithStream"] = true;
 		tasks.push(StreamQueueAdd({ rss: rssID }, queueOpts));
 	}
-	await Promise.all(tasks);
+	await Promise.all([await RSS.update({ _id: rssID }, queueState), ...tasks]);
 }
 
 async function markDone(rssID) {
-	return await RSS.update(
-		{ _id: rssID },
-		{ lastScraped: moment().toISOString(), isParsing: false },
-	);
+	return await RSS.update({ _id: rssID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }

@@ -41,7 +41,7 @@ function getPublications(schema, followerMin, followerMax, interval, limit, excl
 		_id: { $nin: exclude },
 		valid: true,
 		duplicateOf: { $exists : false },
-		isParsing: { $ne: true, },
+		"queueState.isParsing": { $ne: true, },
 		lastScraped: { $lte: time, },
 		followerCount: { $gte: followerMin, $lte: followerMax },
 		consecutiveScrapeFailures: { $lt: weightedRandom() }
@@ -73,7 +73,7 @@ export async function conduct() {
 		const publicationIDs = publications.map(p => p._id);
 		const updated = await schema.update(
 			{ _id: { $in: publicationIDs } },
-			{ isParsing: true },
+			{ "queueState.isParsing": true },
 			{ multi: true },
 		);
 		logger.info(`marked ${updated.nModified} of type ${type} publications as isParsing`);

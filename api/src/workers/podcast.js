@@ -132,24 +132,20 @@ export async function handlePodcast(job) {
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
-	const tasks = [
-		OgQueueAdd({
-			type: 'episode',
-			urls: updatedEpisodes.map(e => e.link),
-		}, queueOpts),
-	];
-	if (!podcast.isSynchronizing) {
-		await Podcast.update({ _id: podcastID }, { isSynchronizing: true });
+	const tasks = [];
+	const queueState = {};
+	if (!podcast.queueState.isUpdatingOG) {
+		queueState["queueState.isUpdatingOG"] = true;
+		tasks.push(OgQueueAdd({ type: 'episode', podcast: podcastID, urls: updatedEpisodes.map(e => e.link) }, queueOpts));
+	}
+	if (!podcast.queueState.isSynchronizingWithStream) {
+		queueState["queueState.isSynchronizingWithStream"] = true;
 		tasks.push(StreamQueueAdd({ podcast: podcastID }, queueOpts));
 	}
-	await Promise.all(tasks);
+	await Promise.all([Podcast.update({ _id: podcastID }, queueState), ...tasks]);
 }
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
-	// Set the last scraped for the given rssID
-	let updated = await Podcast.update({ _id: podcastID },
-		{ lastScraped: moment().toISOString(), isParsing: false },
-	);
-	return updated;
+	return await Podcast.update({ _id: podcastID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }

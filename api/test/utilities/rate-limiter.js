@@ -19,8 +19,8 @@ describe('Rate limiter', () => {
     it('shouldn\'t block until max capacity is reached', async () => {
         for (let i = 0; i < 3000; ++i) {
             await limiter.tick('fake-id');
+            expect(setTimeout.called, `waiting #${i + 1}`).to.be.false;
         }
-        expect(setTimeout.called).to.be.false;
     });
 
     it('should block when over max capacity', async () => {

@@ -143,6 +143,7 @@ exports.post = async (req, res) => {
 				OgQueueAdd(
 					{
 						url: p.link,
+						podcast: p._id,
 						type: 'podcast',
 					},
 					{

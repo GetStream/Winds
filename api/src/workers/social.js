@@ -74,6 +74,9 @@ export async function handleSocial(job) {
 		logger.warn(`No article passed validation: ${errors.map(r => r.error.message)} for '${JSON.stringify(job.data)}'`);
 		return;
 	}
+
+	await RSS.update({ _id: job.data.rss }, { "queueState.isSynchronizingWithStream": false });
+
 	let updatingSocialScore = false;
 	await timeIt('winds.handle_social.update_social_score', () => {
 		return Promise.all(articles.map(async article => {

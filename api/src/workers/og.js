@@ -20,8 +20,6 @@ if (require.main === module) {
 	logger.info(`Starting to process the og queue...`);
 }
 
-const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podcast };
-
 export async function ogProcessor(job) {
 	logger.info(`OG image scraping: ${job.data.url}`);
 
@@ -37,15 +35,23 @@ export async function ogProcessor(job) {
 	}
 }
 
+const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podcast };
+const parentSchemaMap = { episode: Podcast, article: RSS, rss: RSS, podcast: Podcast };
 const validTypes = ['episode', 'article', 'rss', 'podcast'];
 
 const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
+const joiObjectId = joi.alternatives().try(
+	joi.string().length(12),
+	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+);
 const schema = joi.object().keys({
 	update: joi.boolean().default(false),
+	rss: joiObjectId,
+	podcast: joiObjectId,
 	type: joi.string().valid(validTypes).required(),
 	url: joiUrl,
 	urls: joi.array().min(1),
-}).xor('url', 'urls');
+}).xor('url', 'urls').xor('rss', 'podcast');
 
 // Run the OG scraping job
 export async function handleOg(job) {
@@ -67,6 +73,12 @@ export async function handleOg(job) {
 
 	const update = job.data.update;
 	const jobType = job.data.type;
+	const mongoSchema = schemaMap[jobType];
+	const mongoParentSchema = parentSchemaMap[jobType];
+	const field = jobType === 'episode' ? 'link' : 'url';
+	const parentField = mongoParentSchema === RSS ? 'rss' : 'podcast';
+
+	await mongoParentSchema.update({ _id: job.data[parentField] }, { "queueState.isUpdatingOG": false });
 
 	const urls = job.data.urls || [job.data.url];
 	for (const url of urls) {
@@ -74,10 +86,6 @@ export async function handleOg(job) {
 			logger.warn(`OG job validation failed: invalid URL '${url}' for jobtype ${jobType}`);
 			continue;
 		}
-
-		// Lookup the right type of schema: article, episode or podcast
-		const mongoSchema = schemaMap[jobType];
-		const field = jobType === 'episode' ? 'link' : 'url';
 
 		// if the instance hasn't been created yet, or it already has an OG image, ignore
 		const instances = await mongoSchema.find({ [field]: url }).lean().limit(10);
