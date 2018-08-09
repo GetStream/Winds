@@ -15,7 +15,7 @@ if (require.main === module) {
 	setupAxiosRedirectInterceptor(axios);
 
 	logger.info('Starting the Stream worker');
-	ProcessStreamQueue(1, streamProcessor);
+	ProcessStreamQueue(2, streamProcessor);
 }
 
 export async function streamProcessor(job) {
