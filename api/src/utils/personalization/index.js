@@ -1,5 +1,3 @@
-import axios from 'axios';
-import jwt from 'jsonwebtoken';
 import Article from '../../models/article';
 import Podcast from '../../models/podcast';
 import RSS from '../../models/rss';
@@ -7,28 +5,11 @@ import Episode from '../../models/episode';
 import logger from '../../utils/logger';
 import { getStreamClient } from '../../utils/stream';
 
-import config from '../../config';
-
-function createGlobalToken() {
-	const token = jwt.sign(
-		{
-			action: '*',
-			feed_id: '*',
-			resource: '*',
-			user_id: '*',
-		},
-		config.stream.apiSecret,
-		{ algorithm: 'HS256', noTimestamp: true },
-	);
-	return token;
-}
-
 export async function getRecommendations(userID, type, limit) {
 	if (!userID) {
 		throw Error('missing user id');
 	}
 	const streamClient = getStreamClient();
-	streamClient.personalizationToken = createGlobalToken();
 
 	const path = `winds_${type}_recommendations`;
 	const queryParams = { user_id: userID, limit: limit };
