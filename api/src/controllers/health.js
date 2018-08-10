@@ -27,12 +27,12 @@ exports.health = async (req, res) => {
 };
 
 exports.status = async (req, res) => {
-	let output = { version, code: 200 };
+	const output = { version, code: 200 };
 
-	const latestArticle = await Article.find({}).sort({ _id: -1 });
-	const latestEpisode = await Episode.find({}).sort({ _id: -1 });
+	const latestArticle = await Article.findOne({}).sort({ _id: -1 });
+	const latestEpisode = await Episode.findOne({}).sort({ _id: -1 });
 
-	let now = new Date();
+	const now = new Date();
 
 	output.now = now;
 	output.mostRecentArticle = moment(latestArticle.createdAt).fromNow();
