@@ -97,17 +97,20 @@ export async function handleRSS(job) {
 		await RSS.resetScrapeFailures(rssID);
 	} catch (err) {
 		await RSS.incrScrapeFailures(rssID);
-		logger.warn(`http request failed for url ${job.data.url}: ${err.message}`);
+		logger.warn(`HTTP request failed for url ${job.data.url}: ${err.message}`);
 	}
 
-	if (!rssContent) {
+	if (!rssContent || rssContent.articles.length === 0) {
+	    logger.debug(`RSS with ID ${rssID} is empty`);
+		return;
+	}
+
+	if (rssContent.fingerprint && rssContent.fingerprint === rss.fingerprint) {
+	    logger.debug(`RSS with ID ${rssID} has same fingerprint as registered before`);
 		return;
 	}
 
 	logger.debug(`Updating ${rssContent.articles.length} articles for feed ${rssID}`);
-	if (rssContent.articles.length === 0) {
-		return;
-	}
 
 	statsd.increment('winds.handle_rss.articles.parsed', rssContent.articles.length);
 	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
@@ -116,10 +119,10 @@ export async function handleRSS(job) {
 		article.rss = rssID;
 	}
 
-	logger.debug(`starting the upsertManyPosts for ${rssID}`);
+	logger.debug(`Starting the upsertManyPosts for RSS with ID ${rssID}`);
 	const operationMap = await upsertManyPosts(rssID, rssContent.articles, 'rss');
 	const updatedArticles = operationMap.new.concat(operationMap.changed).filter(a => !!a.url);
-	logger.info(`Finished updating. ${updatedArticles.length} out of ${rssContent.articles.length} changed`);
+	logger.info(`Finished updating. ${updatedArticles.length} out of ${rssContent.articles.length} changed for RSS with ID ${rssID}`);
 
 	await RSS.update({ _id: rssID }, {
 		postCount: await Article.count({ rss: rssID }),

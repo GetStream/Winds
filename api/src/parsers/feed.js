@@ -41,7 +41,6 @@ export async function ParsePodcast(podcastUrl, limit = 1000) {
 	return podcastResponse;
 }
 
-// ParseFeed parses the feedURL
 export async function ParseFeed(feedURL, limit = 1000) {
 	logger.info(`Attempting to parse RSS ${feedURL}`);
 	// timers
@@ -296,10 +295,7 @@ export function ParseFeedPosts(posts, limit = 1000) {
 		let article;
 
 		try {
-			let description = strip(entities.decodeHTML(post.description)).substring(
-				0,
-				280,
-			);
+			let description = strip(entities.decodeHTML(post.description)).substring(0, 280);
 			if (description == 'null') {
 				description = null;
 			}
@@ -318,9 +314,7 @@ export function ParseFeedPosts(posts, limit = 1000) {
 			// ensure we keep order for feeds with no time
 			const time =
 				moment(post.pubdate).toISOString() ||
-				moment()
-					.subtract(i, 'minutes')
-					.toISOString();
+				moment().subtract(i, 'minutes').toISOString();
 			article = new Article({
 				content: content,
 				description: description,
