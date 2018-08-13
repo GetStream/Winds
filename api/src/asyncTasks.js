@@ -56,6 +56,11 @@ function AddQueueTracking(queue) {
 		statsd.increment(makeMetricKey(queue, 'completed'));
 	});
 
+	queue.on('stalled', function(job) {
+		statsd.increment(makeMetricKey(queue, 'stalled'));
+		logger.warn(`Queue ${queue.name} job stalled: '${JSON.stringify(job)}'`);
+	});
+
 	queue.on('failed', function(job, err) {
 		statsd.increment(makeMetricKey(queue, 'failed'));
 		logger.warn(`Queue ${queue.name} failed to process job '${JSON.stringify(job)}': ${err.message}`);
