@@ -96,8 +96,7 @@ process.on('SIGINT', async () => {
 	logger.info(`Received SIGINT. Shutting down.`);
 	try {
 		await ShutDownSocialQueue();
-		const connection = await db;
-		await connection.close();
+		mongoose.connection.close();
 	} catch (err) {
 		logger.error(`Failure during Social worker shutdown: ${err.message}`);
 		process.exit(1);

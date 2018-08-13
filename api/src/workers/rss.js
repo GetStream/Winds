@@ -1,6 +1,7 @@
 import joi from 'joi';
 import axios from 'axios';
 import moment from 'moment';
+import mongoose from 'mongoose';
 
 import db from '../utils/db';
 
@@ -185,8 +186,7 @@ process.on('SIGINT', async () => {
 	logger.info(`Received SIGINT. Shutting down.`);
 	try {
 		await ShutDownRssQueue();
-		const connection = await db;
-		await connection.close();
+		mongoose.connection.close();
 	} catch (err) {
 		logger.error(`Failure during RSS worker shutdown: ${err.message}`);
 		process.exit(1);

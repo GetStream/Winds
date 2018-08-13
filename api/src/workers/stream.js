@@ -1,5 +1,6 @@
 import axios from 'axios';
 import joi from 'joi';
+import mongoose from 'mongoose';
 
 import db from '../utils/db';
 
@@ -61,8 +62,7 @@ process.on('SIGINT', async () => {
 	logger.info(`Received SIGINT. Shutting down.`);
 	try {
 		await ShutDownStreamQueue();
-		const connection = await db;
-		await connection.close();
+		mongoose.connection.close();
 	} catch (err) {
 		logger.error(`Failure during Stream worker shutdown: ${err.message}`);
 		process.exit(1);

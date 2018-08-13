@@ -1,6 +1,6 @@
 import moment from 'moment';
+import mongoose from 'mongoose';
 
-import config from '../config';
 import db from '../utils/db';
 
 import RSS from '../models/rss';
@@ -89,12 +89,11 @@ export async function conduct() {
 	}
 }
 
-process.on('SIGINT', async () => {
+process.on('SIGINT', () => {
 	logger.info(`Received SIGINT. Shutting down.`);
 	try {
 		clearTimeout(timeout);
-		const connection = await db;
-		await connection.close();
+		mongoose.connection.close();
 	} catch (err) {
 		logger.error(`Failure during Conductor worker shutdown: ${err.message}`);
 		process.exit(1);
