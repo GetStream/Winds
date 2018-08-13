@@ -33,24 +33,29 @@ exports.health = async (req, res) => {
 exports.status = async (req, res) => {
 	const output = { version, code: 200, rss: {}, podcast: {} };
 
-	const latestArticle = await Article.findOne({}).sort({ _id: -1 });
-	const latestEpisode = await Episode.findOne({}).sort({ _id: -1 });
+	const latestArticle = await Article.findOne().sort({ _id: -1 });
+	const latestEpisode = await Episode.findOne().sort({ _id: -1 });
 
 	const now = new Date();
 
 	output.now = now;
-	output.mostRecentArticle = moment(latestArticle.createdAt).fromNow();
-	output.mostRecentEpisode = moment(latestEpisode.createdAt).fromNow();
-
-	if (
-		now - latestArticle.createdAt > tooOld ||
-		now - latestEpisode.createdAt > tooOld
-	) {
-		output.code = 500;
-		output.error =
-			now - latestArticle.createdAt > tooOld
-				? 'The most recent article is too old.'
-				: 'The most recent episode is too old.';
+	if (latestArticle) {
+		output.mostRecentArticle = moment(latestArticle.createdAt).fromNow();
+		if (now - latestArticle.createdAt > tooOld) {
+			output.code = 500;
+			output.error = 'The most recent article is too old.';
+		}
+	} else {
+		output.mostRecentArticle = -1;
+	}
+	if (latestEpisode) {
+		output.mostRecentEpisode = moment(latestEpisode.createdAt).fromNow();
+		if (now - latestEpisode.createdAt > tooOld) {
+			output.code = 500;
+			output.error = 'The most recent episode is too old.';
+		}
+	} else {
+		output.mostRecentEpisode = -1;
 	}
 
 	output.rss.parsing = await RSS.count({ "queueState.isParsing": true });
