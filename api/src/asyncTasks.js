@@ -99,45 +99,45 @@ export function ProcessRssQueue() {
 
 export function ProcessOgQueue() {
 	getStatsDClient().increment(makeMetricKey(ogQueue, 'started'));
-	ogQueue.process(...arguments);
+	return ogQueue.process(...arguments);
 }
 
 export function ProcessPodcastQueue() {
 	getStatsDClient().increment(makeMetricKey(podcastQueue, 'started'));
-	podcastQueue.process(...arguments);
+	return podcastQueue.process(...arguments);
 }
 
 export function ProcessStreamQueue() {
 	getStatsDClient().increment(makeMetricKey(streamQueue, 'started'));
-	streamQueue.process(...arguments);
+	return streamQueue.process(...arguments);
 }
 
 export function ProcessSocialQueue() {
 	getStatsDClient().increment(makeMetricKey(socialQueue, 'started'));
-	socialQueue.process(...arguments);
+	return socialQueue.process(...arguments);
 }
 
 export function ShutDownRssQueue() {
 	getStatsDClient().increment(makeMetricKey(rssQueue, 'stopped'));
-	socialQueue.process(...arguments);
+	return socialQueue.close(...arguments);
 }
 
 export function ShutDownPodcastQueue() {
 	getStatsDClient().increment(makeMetricKey(podcastQueue, 'stopped'));
-	socialQueue.process(...arguments);
+	return socialQueue.close(...arguments);
 }
 
 export function ShutDownOgQueue() {
 	getStatsDClient().increment(makeMetricKey(ogQueue, 'stopped'));
-	socialQueue.process(...arguments);
+	return socialQueue.close(...arguments);
 }
 
 export function ShutDownSocialQueue() {
 	getStatsDClient().increment(makeMetricKey(socialQueue, 'stopped'));
-	socialQueue.process(...arguments);
+	return socialQueue.close(...arguments);
 }
 
 export function ShutDownStreamQueue() {
 	getStatsDClient().increment(makeMetricKey(streamQueue, 'stopped'));
-	socialQueue.process(...arguments);
+	return socialQueue.close(...arguments);
 }

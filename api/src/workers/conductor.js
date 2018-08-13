@@ -93,7 +93,8 @@ process.on('SIGINT', async () => {
 	logger.info(`Received SIGINT. Shutting down.`);
 	try {
 		clearTimeout(timeout);
-		await db.close();
+		const connection = await db;
+		await connection.close();
 	} catch (err) {
 		logger.error(`Failure during Conductor worker shutdown: ${err.message}`);
 		process.exit(1);
