@@ -151,8 +151,8 @@ async function markDone(podcastID) {
 	return await Podcast.update({ _id: podcastID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }
 
-process.on('SIGINT', async () => {
-	logger.info(`Received SIGINT. Shutting down.`);
+async function shutdown(signal) {
+	logger.info(`Received ${signal}. Shutting down.`);
 	try {
 		await ShutDownPodcastQueue();
 		mongoose.connection.close();
@@ -161,4 +161,7 @@ process.on('SIGINT', async () => {
 		process.exit(1);
 	}
 	process.exit(0);
-});
+}
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);

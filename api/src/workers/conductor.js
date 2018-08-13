@@ -89,8 +89,8 @@ export async function conduct() {
 	}
 }
 
-process.on('SIGINT', () => {
-	logger.info(`Received SIGINT. Shutting down.`);
+function shutdown(signal) {
+	logger.info(`Received ${signal}. Shutting down.`);
 	try {
 		clearTimeout(timeout);
 		mongoose.connection.close();
@@ -99,4 +99,7 @@ process.on('SIGINT', () => {
 		process.exit(1);
 	}
 	process.exit(0);
-});
+}
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);

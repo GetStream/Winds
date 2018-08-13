@@ -58,8 +58,8 @@ export async function handleStream(job) {
 	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed));
 }
 
-process.on('SIGINT', async () => {
-	logger.info(`Received SIGINT. Shutting down.`);
+async function shutdown(signal) {
+	logger.info(`Received ${signal}. Shutting down.`);
 	try {
 		await ShutDownStreamQueue();
 		mongoose.connection.close();
@@ -68,4 +68,7 @@ process.on('SIGINT', async () => {
 		process.exit(1);
 	}
 	process.exit(0);
-});
+}
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);

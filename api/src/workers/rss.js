@@ -182,8 +182,8 @@ async function markDone(rssID) {
 	return await RSS.update({ _id: rssID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }
 
-process.on('SIGINT', async () => {
-	logger.info(`Received SIGINT. Shutting down.`);
+async function shutdown(signal) {
+	logger.info(`Received ${signal}. Shutting down.`);
 	try {
 		await ShutDownRssQueue();
 		mongoose.connection.close();
@@ -192,4 +192,7 @@ process.on('SIGINT', async () => {
 		process.exit(1);
 	}
 	process.exit(0);
-});
+}
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);

@@ -138,8 +138,8 @@ export async function handleOg(job) {
 	}
 }
 
-process.on('SIGINT', async () => {
-	logger.info(`Received SIGINT. Shutting down.`);
+async function shutdown(signal) {
+	logger.info(`Received ${signal}. Shutting down.`);
 	try {
 		await ShutDownOgQueue();
 		mongoose.connection.close();
@@ -148,4 +148,7 @@ process.on('SIGINT', async () => {
 		process.exit(1);
 	}
 	process.exit(0);
-});
+}
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
