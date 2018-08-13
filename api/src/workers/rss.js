@@ -8,7 +8,7 @@ import RSS from '../models/rss';
 import Article from '../models/article';
 import logger from '../utils/logger';
 import { ParseFeed } from '../parsers/feed';
-import { ProcessRssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../asyncTasks';
+import { ProcessRssQueue, ShutDownRssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { getStreamClient } from '../utils/stream';
 import { upsertManyPosts } from '../utils/upsert';
@@ -180,3 +180,15 @@ export async function handleRSS(job) {
 async function markDone(rssID) {
 	return await RSS.update({ _id: rssID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }
+
+process.on('SIGINT', async () => {
+	logger.info(`Received SIGINT. Shutting down.`);
+	try {
+		await ShutDownRssQueue();
+		await db.close();
+	} catch (err) {
+		logger.error(`Failure during RSS worker shutdown: ${err.message}`);
+		process.exit(1);
+	}
+	process.exit(0);
+});

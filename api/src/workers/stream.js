@@ -6,7 +6,7 @@ import db from '../utils/db';
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 import logger from '../utils/logger';
-import { ProcessStreamQueue } from '../asyncTasks';
+import { ProcessStreamQueue, ShutDownStreamQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { sendFeedToCollections } from '../utils/collections';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
@@ -56,3 +56,15 @@ export async function handleStream(job) {
 	const feed = await model.findById(job.data[type]);
 	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed));
 }
+
+process.on('SIGINT', async () => {
+	logger.info(`Received SIGINT. Shutting down.`);
+	try {
+		await ShutDownStreamQueue();
+		await db.close();
+	} catch (err) {
+		logger.error(`Failure during Stream worker shutdown: ${err.message}`);
+		process.exit(1);
+	}
+	process.exit(0);
+});

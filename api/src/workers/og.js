@@ -9,7 +9,7 @@ import Podcast from '../models/podcast'; // eslint-disable-line
 import Article from '../models/article';
 import Episode from '../models/episode';
 import { ParseOG, IsValidOGUrl } from '../parsers/og';
-import { ProcessOgQueue } from '../asyncTasks';
+import { ProcessOgQueue, ShutDownOgQueue } from '../asyncTasks';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
 
 if (require.main === module) {
@@ -136,3 +136,15 @@ export async function handleOg(job) {
 		logger.info(`Stored ${normalized} image for '${url}'`);
 	}
 }
+
+process.on('SIGINT', async () => {
+	logger.info(`Received SIGINT. Shutting down.`);
+	try {
+		await ShutDownOgQueue();
+		await db.close();
+	} catch (err) {
+		logger.error(`Failure during OG worker shutdown: ${err.message}`);
+		process.exit(1);
+	}
+	process.exit(0);
+});

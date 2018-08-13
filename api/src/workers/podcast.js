@@ -11,7 +11,7 @@ import logger from '../utils/logger';
 import { sendFeedToCollections } from '../utils/collections';
 import { ParsePodcast } from '../parsers/feed';
 
-import { ProcessPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
+import { ProcessPodcastQueue, ShutDownPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
@@ -149,3 +149,15 @@ export async function handlePodcast(job) {
 async function markDone(podcastID) {
 	return await Podcast.update({ _id: podcastID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
 }
+
+process.on('SIGINT', async () => {
+	logger.info(`Received SIGINT. Shutting down.`);
+	try {
+		await ShutDownPodcastQueue();
+		await db.close();
+	} catch (err) {
+		logger.error(`Failure during Podcast worker shutdown: ${err.message}`);
+		process.exit(1);
+	}
+	process.exit(0);
+});

@@ -116,3 +116,28 @@ export function ProcessSocialQueue() {
 	getStatsDClient().increment(makeMetricKey(socialQueue, 'started'));
 	socialQueue.process(...arguments);
 }
+
+export function ShutDownRssQueue() {
+	getStatsDClient().increment(makeMetricKey(rssQueue, 'stopped'));
+	socialQueue.process(...arguments);
+}
+
+export function ShutDownPodcastQueue() {
+	getStatsDClient().increment(makeMetricKey(podcastQueue, 'stopped'));
+	socialQueue.process(...arguments);
+}
+
+export function ShutDownOgQueue() {
+	getStatsDClient().increment(makeMetricKey(ogQueue, 'stopped'));
+	socialQueue.process(...arguments);
+}
+
+export function ShutDownSocialQueue() {
+	getStatsDClient().increment(makeMetricKey(socialQueue, 'stopped'));
+	socialQueue.process(...arguments);
+}
+
+export function ShutDownStreamQueue() {
+	getStatsDClient().increment(makeMetricKey(streamQueue, 'stopped'));
+	socialQueue.process(...arguments);
+}

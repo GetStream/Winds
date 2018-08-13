@@ -7,7 +7,7 @@ import db from '../utils/db';
 import RSS from '../models/rss';
 import Article from '../models/article';
 import logger from '../utils/logger';
-import { ProcessSocialQueue } from '../asyncTasks';
+import { ProcessSocialQueue, ShutDownSocialQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { fetchSocialScore } from '../utils/social';
 import { setupAxiosRedirectInterceptor } from '../utils/axios';
@@ -91,3 +91,15 @@ export async function handleSocial(job) {
 		await socialBatch.execute();
 	}
 }
+
+process.on('SIGINT', async () => {
+	logger.info(`Received SIGINT. Shutting down.`);
+	try {
+		await ShutDownSocialQueue();
+		await db.close();
+	} catch (err) {
+		logger.error(`Failure during Social worker shutdown: ${err.message}`);
+		process.exit(1);
+	}
+	process.exit(0);
+});

@@ -1,14 +1,13 @@
-import '../loadenv';
-import '../utils/db';
-
 import moment from 'moment';
+
+import config from '../config';
+import db from '../utils/db';
 
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 
 import logger from '../utils/logger';
 import weightedRandom from '../utils/random';
-
 import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
 import { isURL } from '../utils/validation';
 
@@ -20,13 +19,15 @@ const conductorInterval = 60;
 const popularScrapeInterval = 2;
 const defaultScrapeInterval = 25;
 
+let timeout;
+
 function forever() {
 	conduct().then(()=> {
 		logger.info('Conductor iteration completed...');
 	}).catch(err => {
 		logger.error('Conductor broke down', {err});
 	});
-	setTimeout(forever, conductorInterval * 1000);
+	timeout = setTimeout(forever, conductorInterval * 1000);
 }
 
 if (require.main === module) {
@@ -87,3 +88,15 @@ export async function conduct() {
 		logger.info(`Processing complete! Will try again in ${conductorInterval} seconds...`);
 	}
 }
+
+process.on('SIGINT', async () => {
+	logger.info(`Received SIGINT. Shutting down.`);
+	try {
+		clearTimeout(timeout);
+		await db.close();
+	} catch (err) {
+		logger.error(`Failure during Conductor worker shutdown: ${err.message}`);
+		process.exit(1);
+	}
+	process.exit(0);
+});
