@@ -457,7 +457,7 @@ aws4@^1.2.1, aws4@^1.6.0:
 
 axios@Nekuromento/axios:
   version "0.19.0-beta.1"
-  resolved "https://codeload.github.com/Nekuromento/axios/tar.gz/b1d071f07a79399d920222d26d0831ad6756f419"
+  resolved "https://codeload.github.com/Nekuromento/axios/tar.gz/8664bc1554a8a23e50f337e7092c77638e64a7e9"
   dependencies:
     follow-redirects "^1.4.1"
     is-buffer "^2.0.2"
