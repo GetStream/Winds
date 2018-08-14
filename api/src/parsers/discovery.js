@@ -1,10 +1,9 @@
-import rssFinder from 'rss-finder';
-import FeedParser from 'feedparser';
 import axios from 'axios';
-import url from 'url';
-import normalize from 'normalize-url';
 import htmlparser from 'htmlparser2';
-import got from 'got';
+import normalize from 'normalize-url';
+import rssFinder from 'rss-finder';
+import url from 'url';
+import FeedParser from 'feedparser';
 
 import logger from '../utils/logger';
 import { extractHostname } from '../utils/urls';
@@ -43,7 +42,7 @@ export async function discoverRSSOld(url) {
 }
 
 export async function discoverRSS(uri) {
-	const headers = { 'User-Agent': WindsUserAgent };
+	const headers = { 'User-Agent': WindsUserAgent, 'Accept-Encoding': 'gzip' };
 	const response = await axios.get(uri, {
 		headers,
 		maxRedirects: 20,

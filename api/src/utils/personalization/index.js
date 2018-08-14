@@ -1,4 +1,3 @@
-import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import Article from '../../models/article';
 import Podcast from '../../models/podcast';

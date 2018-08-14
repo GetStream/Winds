@@ -1,9 +1,12 @@
-import strip from 'strip';
-import sanitizeHtml from 'sanitize-html';
+import axios from 'axios';
 import entities from 'entities';
 import moment from 'moment';
 import normalize from 'normalize-url';
+import sanitizeHtml from 'sanitize-html';
+import strip from 'strip';
+import zlib from 'zlib';
 import FeedParser from 'feedparser';
+import { createHash } from 'crypto';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
@@ -13,9 +16,6 @@ import RSS from '../models/rss';
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 import { getStatsDClient } from '../utils/statsd';
-import axios from 'axios';
-import zlib from 'zlib';
-import { createHash } from 'crypto';
 
 const WindsUserAgent =
 	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
@@ -189,7 +189,7 @@ export async function ReadURL(url) {
 	let headers = {
 		'User-Agent': WindsUserAgent,
 		Accept: AcceptHeader,
-		'Accept-Encoding': 'gzip,deflate',
+		'Accept-Encoding': 'gzip',
 	};
 	let response = await axios({
 		method: 'get',

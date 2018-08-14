@@ -1,6 +1,3 @@
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
-
 import Podcast from '../models/podcast';
 import RSS from '../models/rss';
 import Article from '../models/article';
