@@ -194,5 +194,18 @@ async function shutdown(signal) {
 	process.exit(0);
 }
 
+async function failure(err) {
+	logger.error(`Unhandled error: ${err.message}. Shutting down.`);
+	try {
+		await ShutDownRssQueue();
+		mongoose.connection.close();
+	} catch (err) {
+		logger.error(`Failure during RSS worker shutdown: ${err.message}`);
+	}
+	process.exit(1);
+}
+
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+process.on('unhandledRejection', failure);
+process.on('uncaughtException', failure);

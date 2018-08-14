@@ -92,8 +92,8 @@ export async function handleSocial(job) {
 	}
 }
 
-process.on('SIGINT', async () => {
-	logger.info(`Received SIGINT. Shutting down.`);
+async function shutdown(signal) {
+	logger.info(`Received ${signal}. Shutting down.`);
 	try {
 		await ShutDownSocialQueue();
 		mongoose.connection.close();
@@ -102,4 +102,20 @@ process.on('SIGINT', async () => {
 		process.exit(1);
 	}
 	process.exit(0);
-});
+}
+
+async function failure(err) {
+	logger.error(`Unhandled error: ${err.message}. Shutting down.`);
+	try {
+		await ShutDownSocialQueue();
+		mongoose.connection.close();
+	} catch (err) {
+		logger.error(`Failure during Social worker shutdown: ${err.message}`);
+	}
+	process.exit(1);
+}
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+process.on('unhandledRejection', failure);
+process.on('uncaughtException', failure);
