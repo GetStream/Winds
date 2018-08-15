@@ -161,6 +161,7 @@ async function shutdown(signal) {
 
 async function failure(err) {
 	logger.error(`Unhandled error: ${err.message}. Shutting down.`);
+	console.dir(err);
 	try {
 		await ShutDownPodcastQueue();
 		mongoose.connection.close();

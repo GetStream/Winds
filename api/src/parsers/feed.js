@@ -209,9 +209,9 @@ function sleep(time) {
 function checkHeaders(stream, url) {
 	return new Promise(resolve => {
 		stream.on('response', response => {
-			const contentType = response.headers['content-type'].toLowerCase();
-			if (!contentType.includes('html')) {
-				logger.warn(`Invalid content type ${contentType} for url ${url}`);
+			const contentType = response.headers['content-type'];
+			if (!contentType || !contentType.toLowerCase().includes('html')) {
+				logger.warn(`Invalid content type '${contentType}' for url ${url}`);
 				return resolve(null);
 			}
 			resolve(stream);
