@@ -1,6 +1,7 @@
 import joi from 'joi';
 import moment from 'moment';
 import mongoose from 'mongoose';
+import { EventEmitter } from 'events';
 
 import db from '../utils/db';
 
@@ -15,6 +16,8 @@ import { upsertManyPosts } from '../utils/upsert';
 import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
+	EventEmitter.defaultMaxListeners = 128;
+
 	logger.info('Starting the RSS worker');
 	ProcessRssQueue(35, rssProcessor);
 }
