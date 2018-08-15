@@ -1,5 +1,4 @@
 import joi from 'joi';
-import axios from 'axios';
 import moment from 'moment';
 import mongoose from 'mongoose';
 
@@ -15,13 +14,10 @@ import { ParsePodcast } from '../parsers/feed';
 import { ProcessPodcastQueue, ShutDownPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
-import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import { ensureEncoded } from '../utils/urls';
 import { timeIt } from '../utils/statsd';
 
 if (require.main === module) {
-	setupAxiosRedirectInterceptor(axios);
-
 	logger.info('Starting to process podcasts....');
 	ProcessPodcastQueue(35, podcastProcessor);
 }

@@ -1,5 +1,4 @@
 import joi from 'joi';
-import axios from 'axios';
 import mongoose from 'mongoose';
 import normalize from 'normalize-url';
 
@@ -11,14 +10,10 @@ import Article from '../models/article';
 import Episode from '../models/episode';
 import { ParseOG, IsValidOGUrl } from '../parsers/og';
 import { ProcessOgQueue, ShutDownOgQueue } from '../asyncTasks';
-import { setupAxiosRedirectInterceptor } from '../utils/axios';
 
 if (require.main === module) {
-	setupAxiosRedirectInterceptor(axios);
-
 	logger.info('Starting the OG worker');
 	ProcessOgQueue(35, ogProcessor);
-	logger.info(`Starting to process the og queue...`);
 }
 
 export async function ogProcessor(job) {
@@ -105,7 +100,7 @@ export async function handleOg(job) {
 			continue;
 		}
 
-		if (!(await IsValidOGUrl(url))) {
+		if (!(IsValidOGUrl(url))) {
 			continue;
 		}
 

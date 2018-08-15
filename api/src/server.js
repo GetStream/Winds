@@ -1,6 +1,5 @@
 import config from './config';
 import './utils/newrelic';
-import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 
@@ -14,9 +13,6 @@ import limit from 'express-rate-limit';
 import logger from './utils/logger';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
 import User from './models/user';
-import { setupAxiosRedirectInterceptor } from './utils/axios';
-
-setupAxiosRedirectInterceptor(axios);
 
 const api = express();
 

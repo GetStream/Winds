@@ -1,4 +1,3 @@
-import axios from 'axios';
 import joi from 'joi';
 import mongoose from 'mongoose';
 
@@ -10,11 +9,8 @@ import logger from '../utils/logger';
 import { ProcessStreamQueue, ShutDownStreamQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { sendFeedToCollections } from '../utils/collections';
-import { setupAxiosRedirectInterceptor } from '../utils/axios';
 
 if (require.main === module) {
-	setupAxiosRedirectInterceptor(axios);
-
 	logger.info('Starting the Stream worker');
 	ProcessStreamQueue(2, streamProcessor);
 }

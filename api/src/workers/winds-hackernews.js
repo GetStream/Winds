@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from 'request-promise-native';
 
 import '../config';
 import db from '../utils/db';
@@ -10,7 +10,7 @@ async function tryHackernewsAPI(path, retries = 5) {
 	const url = 'https://hacker-news.firebaseio.com/v0' + path;
 	while (retries) {
 		try {
-			return await axios.get(url);
+			return await request(url);
 		} catch (_) {
 			--retries;
 		}

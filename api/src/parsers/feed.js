@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from 'request';
 import entities from 'entities';
 import moment from 'moment';
 import normalize from 'normalize-url';
@@ -185,37 +185,38 @@ export function ParsePodcastPosts(posts, limit = 1000) {
 	return podcastContent;
 }
 
-export async function ReadURL(url) {
+export function ReadURL(url) {
 	let headers = {
 		'User-Agent': WindsUserAgent,
 		Accept: AcceptHeader,
-		'Accept-Encoding': 'gzip',
 	};
-	let response = await axios({
+	return request({
 		method: 'get',
-		url: url,
-		responseType: 'stream',
-		maxContentLength: maxContentLengthBytes,
+		uri: url,
+		gzip: true,
+		// maxContentLength: maxContentLengthBytes,
 		timeout: 12 * 1000,
 		headers: headers,
 		maxRedirects: 20,
+		resolveWithFullResponse: true,
 	});
-	let encoding = response.headers['content-encoding'];
-	switch (encoding) {
-		case 'gzip':
-			response.data.pipe(zlib.createGunzip());
-			break;
-		case 'deflate':
-			response.data.pipe(zlib.createDeflate());
-			break;
-		default:
-			break;
-	}
-	return response;
 }
 
 function sleep(time) {
 	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
+}
+
+function checkHeaders(stream) {
+	return new Promise(resolve => {
+		stream.on('response', response => {
+			const contentType = response.headers['content-type'].toLowerCase();
+			if (!contentType.includes('html')) {
+				logger.warn(`Invalid content type ${contentType} for url ${url}`);
+				return resolve(null);
+			}
+			resolve(stream);
+		});
+	});
 }
 
 // Read the given feed URL and return a Stream
@@ -224,14 +225,7 @@ export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
 	for (;;) {
 		try {
 			await sleep(currentDelay);
-			const response = await ReadURL(url);
-			const contentType = response.headers['content-type'].toLowerCase();
-			if (!contentType.includes('html')) {
-				logger.warn(`Invalid content type ${contentType} for url ${url}`);
-				return null;
-			}
-
-			return response.data;
+			return await checkHeaders(ReadURL(url));
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
 			--retries;
@@ -249,8 +243,7 @@ export async function ReadFeedURL(feedURL, retries = 3, backoffDelay = 20) {
 	for (;;) {
 		try {
 			await sleep(currentDelay);
-			const response = await ReadURL(feedURL);
-			return response.data;
+			return ReadURL(feedURL);
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${feedURL}. Retrying`);
 			--retries;

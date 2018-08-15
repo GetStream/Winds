@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from 'request-promise-native';
 import * as urlParser from 'url';
 import querystring from 'querystring';
 
@@ -43,18 +43,21 @@ async function refreshAccessToken() {
 		password: config.social.reddit.password
 	});
 	const options = {
+		uri: url,
+		json: true,
 		headers: {
 			'User-Agent': userAgent,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		},
 		auth: {
-			username: config.social.reddit.key,
-			password: config.social.reddit.secret
-		}
+			user: config.social.reddit.key,
+			pass: config.social.reddit.secret
+		},
+		body: data
 	};
-	const response = await axios.post(url, data, options);
+	const response = await request.post(options);
 
-	accessToken = response.data.access_token;
+	accessToken = response.access_token;
 }
 
 function sleep(time) {
@@ -68,6 +71,7 @@ async function tryRedditAPI(path, retries = 3, backoffDelay = 20) {
 
 	const url = 'https://oauth.reddit.com/api' + path;
 	const options = {
+		json: true,
 		headers: {
 			'User-Agent': userAgent,
 			Authorization: `bearer ${accessToken}`
@@ -77,7 +81,7 @@ async function tryRedditAPI(path, retries = 3, backoffDelay = 20) {
 	while (retries) {
 		try {
 			await sleep(currentDelay);
-			return await axios.get(url, options);
+			return await request(url, options);
 		} catch (err) {
 			if ([403, 401].includes(err.response.status)) {
 				await refreshAccessToken();
@@ -97,7 +101,7 @@ async function tryHackernewsAPI(path, retries = 3, backoffDelay = 20) {
 	while (retries) {
 		try {
 			await sleep(currentDelay);
-			return await axios.get(url);
+			return await request(url, { json: true });
 		} catch (_) {
 			--retries;
 			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
@@ -112,8 +116,9 @@ async function tryHackernewsSearch(query, retries = 3, backoffDelay = 20) {
 	while (retries) {
 		try {
 			await sleep(currentDelay);
-			return await axios.get(url, {
-				params: {
+			return await request(url, {
+				json: true,
+				qs: {
 					restrictSearchableAttributes: 'url',
 					tags: 'story',
 					query
@@ -129,24 +134,24 @@ async function tryHackernewsSearch(query, retries = 3, backoffDelay = 20) {
 
 export async function redditPost(article) {
 	const response = await tryRedditAPI(`/info?url=${article.url}`);
-	const postScores = response.data.data.children.map(c => c.data.score);
+	const postScores = response.data.children.map(c => c.data.score);
 	return postScores.reduce((max, n) => Math.max(max, n), 0);
 }
 
 export async function hackernewsPost(article) {
 	const response = await tryHackernewsSearch(article.url);
-	const postScores = response.data.hits.map(c => c.points);
+	const postScores = response.hits.map(c => c.points);
 	return postScores.reduce((max, n) => Math.max(max, n), 0);
 }
 
 export async function redditScore(postID) {
 	const response = await tryRedditAPI(`/info?id=${postID}`);
-	return response.data.data.children[0].data.score;
+	return response.data.children[0].data.score;
 }
 
 export async function hackernewsScore(postID) {
 	const response = await tryHackernewsAPI(`/item/${postID}.json`);
-	return response.data.score;
+	return response.score;
 }
 
 const socialSources = {

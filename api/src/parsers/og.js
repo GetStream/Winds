@@ -5,16 +5,15 @@ const invalidExtensions = ['mp3', 'mp4', 'mov', 'm4a', 'mpeg'];
 
 // determines if the given feedUrl is a podcast or not
 export async function ParseOG(pageURL) {
-	let pageStream = await ReadPageURL(pageURL);
-	let ogImage = await ParseOGStream(pageStream, pageURL);
-	return ogImage;
+	const pageStream = await ReadPageURL(pageURL);
+	return ParseOGStream(pageStream, pageURL);
 }
 
-export async function IsValidOGUrl(url) {
+export function IsValidOGUrl(url) {
 	if (!url) {
 		return false;
 	}
-	let invalid = invalidExtensions.some(extension => {
+	const invalid = invalidExtensions.some(extension => {
 		if (url.endsWith(`.${extension}`)) {
 			return extension;
 		}
@@ -27,34 +26,29 @@ export async function IsValidOGUrl(url) {
 	return true;
 }
 
-export async function ParseOGStream(pageStream, pageURL) {
-	let metaTagRe = /(<meta[^>]*?og:image[^>]*?>)/gm;
-	let urlRe = /content="(.*?)"/gm;
+export function ParseOGStream(pageStream, pageURL) {
+	const metaTagRe = /(<meta[^>]*?og:image[^>]*?>)/gm;
+	const urlRe = /content="(.*?)"/gm;
 
-	var end = new Promise(function(resolve, reject) {
+	var end = new Promise((resolve, reject) => {
 		pageStream
-			.on('error', reject)
-			.on('end', () => {
-				resolve(null);
-			})
-			.on('readable', function() {
-				var stream = this,
-					item;
-				while ((item = stream.read())) {
-					let html = item.toString('utf8');
-					if (html.indexOf('og:image') != -1) {
-						let matches = metaTagRe.exec(html);
-
-						if (matches) {
-							let meta = matches[1];
-							let urlMatches = urlRe.exec(meta);
-							if (urlMatches) {
-								return resolve(urlMatches[1]);
-							}
-						}
-					}
+			.on('data', data => {
+				const html = data.toString('utf8');
+				if (!html.includes('og:image')) {
+					return;
 				}
-			});
+				const matches = metaTagRe.exec(html);
+				if (!matches) {
+					return;
+				}
+				const meta = matches[1];
+				const urlMatches = urlRe.exec(meta);
+				if (urlMatches) {
+					resolve(urlMatches[1]);
+				}
+			})
+			.on('error', reject)
+			.on('end', () => resolve(null));
 	});
 	return end;
 }

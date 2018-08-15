@@ -17,18 +17,22 @@ export function getUrl(urlName, ...args) {
 
 export function extractHostname(request) {
 	const protocol = (request.connection && request.connection.encrypted ? 'https' : 'http') + '://';
-	let canonicalUrl;
-	if (request.res) {
+	let canonicalUrl = '';
+	if (request.uri) {
+		canonicalUrl = `${request.uri.protocol}//${request.uri.host}`;
+	}
+	if (!canonicalUrl && request.href) {
+		canonicalUrl = request.href;
+	}
+	if (!canonicalUrl && request.res) {
 		canonicalUrl = request.res.responseUrl;
 	}
 	if (!canonicalUrl && request.domain) {
 		canonicalUrl = protocol + request.domain;
 	}
 	if (!canonicalUrl) {
-		const host = request.headers ? request.headers['host'] : request.getHeader('Host');
+		const host = request.originalHost || request.host || (request.headers ? request.headers['host'] : request.getHeader('Host'));
 		canonicalUrl = protocol + host;
-	} else {
-		canonicalUrl = '';
 	}
 	return canonicalUrl;
 }

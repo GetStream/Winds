@@ -1,5 +1,4 @@
 import joi from 'joi';
-import axios from 'axios';
 import moment from 'moment';
 import mongoose from 'mongoose';
 
@@ -13,12 +12,9 @@ import { ProcessRssQueue, ShutDownRssQueue, OgQueueAdd, StreamQueueAdd, SocialQu
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { getStreamClient } from '../utils/stream';
 import { upsertManyPosts } from '../utils/upsert';
-import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
-	setupAxiosRedirectInterceptor(axios);
-
 	logger.info('Starting the RSS worker');
 	ProcessRssQueue(35, rssProcessor);
 }

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import mongoose from 'mongoose';
 import joi from 'joi';
 
@@ -10,12 +9,9 @@ import logger from '../utils/logger';
 import { ProcessSocialQueue, ShutDownSocialQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { fetchSocialScore } from '../utils/social';
-import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
-	setupAxiosRedirectInterceptor(axios);
-
 	logger.info('Starting the Social worker');
 	ProcessSocialQueue(35, socialProcessor);
 }

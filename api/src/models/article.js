@@ -170,13 +170,12 @@ ArticleSchema.methods.getParsedArticle = async function() {
 		return cached;
 	}
 
-	let response;
+	let parsed;
 	try {
-		response = await ParseArticle(this.url);
+		parsed = await ParseArticle(this.url);
 	} catch (e) {
 		throw new Error(`Mercury API call failed for ${this.url}`);
 	}
-	let parsed = response.data;
 	let content = parsed.content;
 
 	// XKCD doesn't like Mercury

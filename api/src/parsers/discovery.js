@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from 'request-promise-native';
 import htmlparser from 'htmlparser2';
 import normalize from 'normalize-url';
 import rssFinder from 'rss-finder';
@@ -42,19 +42,21 @@ export async function discoverRSSOld(url) {
 }
 
 export async function discoverRSS(uri) {
-	const headers = { 'User-Agent': WindsUserAgent, 'Accept-Encoding': 'gzip' };
-	const response = await axios.get(uri, {
+	const headers = { 'User-Agent': WindsUserAgent };
+	const response = await request({
+		uri,
 		headers,
 		maxRedirects: 20,
 		timeout: 12 * 1000,
-		maxContentLength: maxContentLengthBytes,
+		resolveWithFullResponse: true,
+		// maxContentLength: maxContentLengthBytes,
 	});
 
 	let discovered;
 	try {
-		discovered = await discoverFromFeed(response.data);
+		discovered = await discoverFromFeed(response.body);
 	} catch (e) {
-		discovered = discoverFromHTML(response.data);
+		discovered = discoverFromHTML(response.body);
 	}
 
 	const canonicalUrl = url.resolve(extractHostname(response.request), response.request.path);
@@ -170,11 +172,11 @@ async function fixData(res, uri) {
 		};
 
 		//XXX: ensure favicon url is reachable
-		await axios.get(favicon, {
+		await request(favicon, {
 			headers,
 			maxRedirects: 20,
 			timeout: 12 * 1000,
-			maxContentLength: maxContentLengthBytes,
+			// maxContentLength: maxContentLengthBytes,
 		});
 		res.site.favicon = favicon;
 	} catch (_) {
