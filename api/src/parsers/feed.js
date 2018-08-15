@@ -207,7 +207,7 @@ function sleep(time) {
 }
 
 function checkHeaders(stream, url) {
-	return new Promise(resolve => {
+	return new Promise((resolve, reject) => {
 		stream.on('response', response => {
 			const contentType = response.headers['content-type'];
 			if (!contentType || !contentType.toLowerCase().includes('html')) {
@@ -215,7 +215,7 @@ function checkHeaders(stream, url) {
 				return resolve(null);
 			}
 			resolve(stream);
-		});
+		}).on('error', reject);
 	});
 }
 
@@ -260,14 +260,12 @@ export async function ReadFeedStream(feedStream) {
 	let posts = [];
 	var end = new Promise(function(resolve, reject) {
 		feedStream
+			.on('error', reject)
 			.pipe(new FeedParser())
 			.on('error', reject)
-			.on('end', () => {
-				resolve(posts);
-			})
+			.on('end', () => resolve(posts))
 			.on('readable', function() {
-				var stream = this,
-					item;
+				let stream = this, item;
 				while ((item = stream.read())) {
 					posts.push(item);
 				}
