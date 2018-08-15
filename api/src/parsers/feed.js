@@ -206,7 +206,7 @@ function sleep(time) {
 	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
 }
 
-function checkHeaders(stream) {
+function checkHeaders(stream, url) {
 	return new Promise(resolve => {
 		stream.on('response', response => {
 			const contentType = response.headers['content-type'].toLowerCase();
@@ -225,7 +225,7 @@ export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
 	for (;;) {
 		try {
 			await sleep(currentDelay);
-			return await checkHeaders(ReadURL(url));
+			return await checkHeaders(ReadURL(url), url);
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
 			--retries;
