@@ -10,7 +10,7 @@ async function tryHackernewsAPI(path, retries = 5) {
 	const url = 'https://hacker-news.firebaseio.com/v0' + path;
 	while (retries) {
 		try {
-			return await request(url);
+			return await request(url, { json: true });
 		} catch (_) {
 			--retries;
 		}
