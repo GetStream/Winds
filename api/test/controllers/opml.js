@@ -102,7 +102,7 @@ describe('OPML', () => {
 				expect(response.body[1].error).to.equal(
 					'Error opening https://kotaku.com/rss404',
 				);
-			});
+			}).retries(3);
 
 			it('should return 200', async () => {
 				const response = await AuthPostRequest('/opml/upload').attach(
@@ -117,7 +117,7 @@ describe('OPML', () => {
 				expect(response.body[1].error).to.equal(
 					'Invalid feedUrl https://kotaku/rss404',
 				);
-			});
+			}).retries(3);
 		});
 	});
 
