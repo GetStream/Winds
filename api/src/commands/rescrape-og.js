@@ -1,7 +1,5 @@
-import '../loadenv';
 import '../utils/db';
 import program from 'commander';
-import logger from '../utils/logger';
 import Podcast from '../models/podcast';
 import Article from '../models/article';
 import Episode from '../models/episode';
@@ -15,54 +13,57 @@ program
 	.parse(process.argv);
 
 async function main() {
-	let schemas = { rss: RSS, episode: Episode, podcast: Podcast, article: Article };
-	let fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
-	logger.info(`program.all is set to ${program.all}`);
+	const schemas = { rss: RSS, episode: Episode, podcast: Podcast, article: Article };
+	const fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
+	const parentSchemaMap = { episode: Podcast, article: RSS, rss: RSS, podcast: Podcast };
+
+	console.log(`program.all is set to ${program.all}`);
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
-		let total = await schema.count({});
-		let completed = 0;
-		let chunkSize = 1000;
+		const total = await schema.count({});
+		const completed = 0;
+		const chunkSize = 1000;
 
-		let field = fieldMap[contentType];
-		logger.info(`Found ${total} for ${contentType} with url field ${field}`);
+		const field = fieldMap[contentType];
+		const mongoParentSchema = parentSchemaMap[contentType];
+		const parentField = mongoParentSchema === RSS ? 'rss' : 'podcast';
+
+		console.log(`Found ${total} for ${contentType} with url field ${field}`);
 
 		for (let i = 0, j = total; i < j; i += chunkSize) {
-			let chunk = await schema
-				.find({})
+			const chunk = await schema
+				.find()
 				.skip(i)
 				.limit(chunkSize)
 				.lean();
 			completed += chunkSize;
-			let promises = [];
-			for (const instance of chunk) {
-				let missingImage = !instance.images || !instance.images.og;
-				if ((missingImage || program.all) && instance[field]) {
-					let promise = OgQueueAdd(
-						{
-							type: contentType,
-							url: instance[field],
-							update: true,
-						},
-						{
-							removeOnComplete: true,
-							removeOnFail: true,
-						},
-					);
-					promises.push(promise);
-				}
-			}
-			let results = await Promise.all(promises);
+			const promises = chunk.filter(instance => {
+				const missingImage = !instance.images || !instance.images.og;
+				return (missingImage || program.all) && instance[field];
+			}).map(instance => {
+				return OgQueueAdd({
+					type: contentType,
+					[parentField]: instance[parentField],
+					url: instance[field],
+					update: true,
+				}, {
+					removeOnComplete: true,
+					removeOnFail: true,
+				});
+			});
+			await Promise.all(promises);
 		}
 
-		logger.info(`Completed for type ${contentType} with field ${field}`);
+		console.log(`Completed for type ${contentType} with field ${field}`);
 	}
 }
 
 main()
 	.then(result => {
-		logger.info('completed it all, open the test page to see queue status');
+		console.log('completed it all, open the test page to see queue status');
+		process.exit(0);
 	})
 	.catch(err => {
-		logger.info(`failed with err ${err}`);
+		console.log(`failed: ${err.stack}`);
+		process.exit(1);
 	});
