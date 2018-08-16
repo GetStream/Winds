@@ -13,7 +13,7 @@ program
 	.parse(process.argv);
 
 async function main() {
-	const schemas = { rss: RSS, episode: Episode, podcast: Podcast, article: Article };
+	const schemas = { podcast: Podcast, rss: RSS, episode: Episode, article: Article };
 	const fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
 	const feedIdMap = { episode: 'podcast', article: 'rss', rss: '_id', podcast: '_id' };
 	const feedFieldMap = { episode: 'podcast', article: 'rss', rss: 'rss', podcast: 'podcast' };
@@ -53,7 +53,7 @@ async function main() {
 				});
 			});
 			await Promise.all(promises);
-			const progress = math.floor(100 * i / j);
+			const progress = Math.floor(100 * i / j);
 			console.log(`\rprogress ${progress}%: ${i}/${j}`);
 		}
 
