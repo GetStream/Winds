@@ -147,7 +147,7 @@ Commands:
 Sign up for both Stream and Algolia, and create the following `.env` file in the `app` directory, replacing the keys where indicated:
 
 ```
-DATABASE_URI=mongodb://localhost/WINDS
+DATABASE_URI=mongodb://localhost/WINDS_DEV
 CACHE_URI=redis://localhost:6379
 JWT_SECRET=YOUR_JWT_SECRET
 
@@ -156,7 +156,7 @@ REACT_APP_API_ENDPOINT=http://localhost:8080
 STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1.0
 
 STREAM_APP_ID=YOUR_STREAM_APP_ID
-REACT_APP_STREAM_APP_ID=YOUR_STREAM_APP_ID # this needs to be included twice, once for the backend, and once for the frontend to make realtime connections directly to Stream
+REACT_APP_STREAM_APP_ID=YOUR_STREAM_APP_ID
 STREAM_API_KEY=YOUR_STREAM_API_KEY
 STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 
