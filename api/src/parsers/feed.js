@@ -194,7 +194,6 @@ export function ReadURL(url) {
 		method: 'get',
 		uri: url,
 		gzip: true,
-		// maxContentLength: maxContentLengthBytes,
 		timeout: 12 * 1000,
 		headers: headers,
 		maxRedirects: 20,

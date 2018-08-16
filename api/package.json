@@ -77,6 +77,7 @@
 				"require-all": "^3.0.0",
 				"require-directory": "^2.1.1",
 				"rss-finder": "^2.0.6",
+				"safe-buffer": "^5.1.2",
 				"sanitize-html": "^1.18.4",
 				"serve-favicon": "^2.5.0",
 				"stream-analytics": "^2.7.0",
