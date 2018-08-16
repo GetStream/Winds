@@ -78,6 +78,7 @@ describe('OPML', () => {
 			});
 
 			it('should return 200', () => {
+                console.dir(response)
 				expect(response).to.have.status(200);
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
