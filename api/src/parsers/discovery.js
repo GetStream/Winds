@@ -171,12 +171,13 @@ async function fixData(res, uri) {
 			'accept-encoding': 'gzip, deflate, br',
 		};
 
-		//XXX: ensure favicon url is reachable
-		await request(favicon, {
-			headers,
-			maxRedirects: 20,
-			timeout: 12 * 1000,
-			// maxContentLength: maxContentLengthBytes,
+		// ensure favicon url is reachable
+		await new Promise((resolve, reject) => {
+			const req = request(favicon, {
+				headers,
+				maxRedirects: 20,
+				timeout: 12 * 1000,
+			}).on('response', () => req.close()).on('error', reject);
 		});
 		res.site.favicon = favicon;
 	} catch (_) {
