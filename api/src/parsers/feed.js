@@ -206,16 +206,32 @@ function sleep(time) {
 	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
 }
 
-function checkHeaders(stream, url) {
+function checkHeaders(stream, url, checkContenType = false) {
 	return new Promise((resolve, reject) => {
+		let bodyLength = 0;
+
 		stream.on('response', response => {
-			const contentType = response.headers['content-type'];
-			if (!contentType || !contentType.toLowerCase().includes('html')) {
-				logger.warn(`Invalid content type '${contentType}' for url ${url}`);
-				return resolve(null);
+			if (checkContenType) {
+				const contentType = response.headers['content-type'];
+				if (!contentType || !contentType.toLowerCase().includes('html')) {
+					logger.warn(`Invalid content type '${contentType}' for url ${url}`);
+					return resolve(null);
+				}
+			}
+			const contentLength = parseInt(response.headers['content-length'], 10);
+			if (contentLength > maxContentLengthBytes) {
+				stream.close();
+				return reject(new Error("Request body larger than maxBodyLength limit"));
 			}
 			resolve(stream);
-		}).on('error', reject);
+		}).on('error', reject).on('data', data => {
+			if (bodyLength + data.length <= maxContentLengthBytes) {
+				bodyLength += data.length;
+			} else {
+				stream.close();
+				return reject(new Error("Request body larger than maxBodyLength limit"));
+			}
+		});
 	});
 }
 
@@ -225,7 +241,7 @@ export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
 	for (;;) {
 		try {
 			await sleep(currentDelay);
-			return await checkHeaders(ReadURL(url), url);
+			return await checkHeaders(ReadURL(url), url, true);
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
 			--retries;
@@ -243,7 +259,7 @@ export async function ReadFeedURL(feedURL, retries = 3, backoffDelay = 20) {
 	for (;;) {
 		try {
 			await sleep(currentDelay);
-			return ReadURL(feedURL);
+			return await checkHeaders(ReadURL(feedURL), feedURL);
 		} catch (err) {
 			logger.warn(`Failed to read feed url ${feedURL}. Retrying`);
 			--retries;
