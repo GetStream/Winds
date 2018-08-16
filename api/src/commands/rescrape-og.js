@@ -15,7 +15,8 @@ program
 async function main() {
 	const schemas = { rss: RSS, episode: Episode, podcast: Podcast, article: Article };
 	const fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
-	const parentSchemaMap = { episode: Podcast, article: RSS, rss: RSS, podcast: Podcast };
+	const feedIdMap = { episode: 'podcast', article: 'rss', rss: '_id', podcast: '_id' };
+	const feedFieldMap = { episode: 'podcast', article: 'rss', rss: 'rss', podcast: 'podcast' };
 
 	console.log(`program.all is set to ${program.all}`);
 
@@ -24,10 +25,10 @@ async function main() {
 		const chunkSize = 1000;
 
 		const field = fieldMap[contentType];
-		const mongoParentSchema = parentSchemaMap[contentType];
-		const parentField = mongoParentSchema === RSS ? 'rss' : 'podcast';
+		const feedField = feedFieldMap[contentType];
+		const feedIdField = feedIdMap[contentType];
 
-		console.log(`Found ${total} for ${contentType} with url field ${field}`);
+		console.log(`Found ${total} for ${contentType} with url field ${field}\n`);
 
 		let completed = 0;
 		for (let i = 0, j = total; i < j; i += chunkSize) {
@@ -43,7 +44,7 @@ async function main() {
 			}).map(instance => {
 				return OgQueueAdd({
 					type: contentType,
-					[parentField]: instance[parentField],
+					[feedField]: instance[feedIdField],
 					url: instance[field],
 					update: true,
 				}, {
@@ -52,6 +53,8 @@ async function main() {
 				});
 			});
 			await Promise.all(promises);
+			const progress = math.floor(100 * i / j);
+			console.log(`\rprogress ${progress}%: ${i}/${j}`);
 		}
 
 		console.log(`Completed for type ${contentType} with field ${field}`);
