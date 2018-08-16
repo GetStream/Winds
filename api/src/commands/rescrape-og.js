@@ -21,7 +21,6 @@ async function main() {
 
 	for (const [contentType, schema] of Object.entries(schemas)) {
 		const total = await schema.count({});
-		const completed = 0;
 		const chunkSize = 1000;
 
 		const field = fieldMap[contentType];
@@ -30,6 +29,7 @@ async function main() {
 
 		console.log(`Found ${total} for ${contentType} with url field ${field}`);
 
+		let completed = 0;
 		for (let i = 0, j = total; i < j; i += chunkSize) {
 			const chunk = await schema
 				.find()
