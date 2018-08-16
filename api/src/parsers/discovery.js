@@ -1,4 +1,5 @@
-import request from 'request-promise-native';
+import request from 'request';
+import prequest from 'request-promise-native';
 import htmlparser from 'htmlparser2';
 import normalize from 'normalize-url';
 import rssFinder from 'rss-finder';
@@ -43,7 +44,7 @@ export async function discoverRSSOld(url) {
 
 export async function discoverRSS(uri) {
 	const headers = { 'User-Agent': WindsUserAgent };
-	const response = await request({
+	const response = await prequest({
 		uri,
 		headers,
 		maxRedirects: 20,
@@ -177,7 +178,7 @@ async function fixData(res, uri) {
 				headers,
 				maxRedirects: 20,
 				timeout: 12 * 1000,
-			}).on('response', () => req.close()).on('error', reject);
+			}).on('response', () => resolve(req.abort())).on('error', reject);
 		});
 		res.site.favicon = favicon;
 	} catch (_) {

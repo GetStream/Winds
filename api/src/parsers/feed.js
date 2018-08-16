@@ -220,7 +220,7 @@ function checkHeaders(stream, url, checkContenType = false) {
 			}
 			const contentLength = parseInt(response.headers['content-length'], 10);
 			if (contentLength > maxContentLengthBytes) {
-				stream.close();
+				stream.abort();
 				return reject(new Error("Request body larger than maxBodyLength limit"));
 			}
 			resolve(stream);
@@ -228,7 +228,7 @@ function checkHeaders(stream, url, checkContenType = false) {
 			if (bodyLength + data.length <= maxContentLengthBytes) {
 				bodyLength += data.length;
 			} else {
-				stream.close();
+				stream.abort();
 				return reject(new Error("Request body larger than maxBodyLength limit"));
 			}
 		});
