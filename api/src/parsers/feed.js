@@ -214,6 +214,7 @@ function checkHeaders(stream, url, checkContenType = false) {
 				const contentType = response.headers['content-type'];
 				if (!contentType || !contentType.toLowerCase().includes('html')) {
 					logger.warn(`Invalid content type '${contentType}' for url ${url}`);
+					stream.abort();
 					return resolve(null);
 				}
 			}
