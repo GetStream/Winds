@@ -1,6 +1,7 @@
 import joi from 'joi';
 import mongoose from 'mongoose';
 import normalize from 'normalize-url';
+import { EventEmitter } from 'events';
 
 import db from '../utils/db';
 import logger from '../utils/logger';
@@ -12,6 +13,8 @@ import { ParseOG, IsValidOGUrl } from '../parsers/og';
 import { ProcessOgQueue, ShutDownOgQueue } from '../asyncTasks';
 
 if (require.main === module) {
+	EventEmitter.defaultMaxListeners = 128;
+
 	logger.info('Starting the OG worker');
 	ProcessOgQueue(35, ogProcessor);
 }

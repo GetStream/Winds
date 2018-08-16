@@ -1,6 +1,7 @@
 import joi from 'joi';
 import moment from 'moment';
 import mongoose from 'mongoose';
+import { EventEmitter } from 'events';
 
 import db from '../utils/db';
 
@@ -18,6 +19,8 @@ import { ensureEncoded } from '../utils/urls';
 import { timeIt } from '../utils/statsd';
 
 if (require.main === module) {
+	EventEmitter.defaultMaxListeners = 128;
+
 	logger.info('Starting to process podcasts....');
 	ProcessPodcastQueue(35, podcastProcessor);
 }
