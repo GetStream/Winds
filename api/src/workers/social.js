@@ -13,7 +13,7 @@ import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
 	logger.info('Starting the Social worker');
-	ProcessSocialQueue(35, socialProcessor);
+	ProcessSocialQueue(1, socialProcessor);
 }
 
 const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };
