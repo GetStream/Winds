@@ -101,7 +101,7 @@ async function shutdown(signal) {
 }
 
 async function failure(err) {
-	logger.error(`Unhandled error: ${err.message}. Shutting down.`);
+	logger.error(`Unhandled error: ${err.stack}. Shutting down Social worker.`);
 	try {
 		await ShutDownSocialQueue();
 		mongoose.connection.close();
