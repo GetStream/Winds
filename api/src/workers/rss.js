@@ -195,7 +195,6 @@ async function shutdown(signal) {
 
 async function failure(err) {
 	logger.error(`Unhandled error: ${err.stack}. Shutting down RSS worker.`);
-	console.dir(err);
 	try {
 		await ShutDownRssQueue();
 		mongoose.connection.close();

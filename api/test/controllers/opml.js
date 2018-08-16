@@ -80,8 +80,6 @@ describe('OPML', () => {
 			it('should return 200', () => {
 				expect(response).to.have.status(200);
 				expect(response).to.be.json;
-                console.dir('RERSPONSE BODY');
-                console.dir(response.body);
 				expect(response.body.length).to.equal(2);
 				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
 				expect(response.body[0].follow.rss).to.be.undefined;
