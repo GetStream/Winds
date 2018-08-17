@@ -42,11 +42,21 @@ services:
         networks:
             - backend
         restart: always
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "100MB"
+                max-file: "3"
     database:
         image: mongo
         ports:
             - '27017:27017'
         networks:
             - backend
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "100MB"
+                max-file: "3"
 networks:
     backend:
