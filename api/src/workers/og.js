@@ -20,7 +20,7 @@ if (require.main === module) {
 }
 
 export async function ogProcessor(job) {
-	logger.info(`OG image scraping: ${job.data.url}`);
+	logger.info(`OG image scraping: ${job.data.url || job.data.urls}`);
 
 	try {
 		await handleOg(job);

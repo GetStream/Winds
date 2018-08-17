@@ -223,15 +223,17 @@ function checkHeaders(stream, url, checkContenType = false) {
 				stream.abort();
 				return reject(new Error("Request body larger than maxBodyLength limit"));
 			}
+
+			response.on('data', data => {
+				if (bodyLength + data.length <= maxContentLengthBytes) {
+					bodyLength += data.length;
+				} else {
+					stream.abort();
+					return reject(new Error("Request body larger than maxBodyLength limit"));
+				}
+			})
 			resolve(stream);
-		}).on('error', reject).on('data', data => {
-			if (bodyLength + data.length <= maxContentLengthBytes) {
-				bodyLength += data.length;
-			} else {
-				stream.abort();
-				return reject(new Error("Request body larger than maxBodyLength limit"));
-			}
-		});
+		}).on('error', reject);
 	});
 }
 
