@@ -86,7 +86,7 @@ describe('OPML', () => {
 				expect(response.body[1].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
 				expect(response.body[1].follow.podcast).to.be.undefined;
 			});
-		}).retries(3);
+		}).retries(10);
 
 		describe('invalid request', () => {
 			it('should return 200', async () => {
@@ -99,9 +99,7 @@ describe('OPML', () => {
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
 				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
-				expect(response.body[1].error).to.equal(
-					'Error opening https://kotaku.com/rss404',
-				);
+				expect(response.body[1].error).to.equal('Error opening https://kotaku.com/rss404');
 			}).retries(3);
 
 			it('should return 200', async () => {
@@ -114,9 +112,7 @@ describe('OPML', () => {
 				expect(response).to.be.json;
 				expect(response.body.length).to.equal(2);
 				expect(response.body[0].follow.user).to.equal('5b0f306d8e147f10f16aceaf');
-				expect(response.body[1].error).to.equal(
-					'Invalid feedUrl https://kotaku/rss404',
-				);
+				expect(response.body[1].error).to.equal('Invalid feedUrl https://kotaku/rss404');
 			}).retries(3);
 		});
 	});
