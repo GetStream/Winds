@@ -38,6 +38,7 @@ const WindsUserAgent = 'Winds: Open Source RSS & Podcast app: https://getstream.
 function readRequestBody(stream, url) {
 	return new Promise((resolve, reject) => {
 		let bodyLength = 0;
+		let res;
 		const buffers = [];
 		const strings = []
 
@@ -47,37 +48,37 @@ function readRequestBody(stream, url) {
 				stream.abort();
 				return reject(new Error("Request body larger than maxBodyLength limit"));
 			}
-			response.on('data', data => {
-				if (bodyLength + data.length <= maxContentLengthBytes) {
-					bodyLength += data.length;
-					if (!Buffer.isBuffer(data)) {
-						strings.push(data);
-					} else if (data.length) {
-						buffers.push(data);
-					}
-				} else {
-					stream.abort();
-					return reject(new Error("Request body larger than maxBodyLength limit"));
+			res = response;
+		}).on('data', data => {
+			if (bodyLength + data.length <= maxContentLengthBytes) {
+				bodyLength += data.length;
+				if (!Buffer.isBuffer(data)) {
+					strings.push(data);
+				} else if (data.length) {
+					buffers.push(data);
 				}
-			}).on('end', () => {
-				if (bodyLength) {
-					response.body = Buffer.concat(buffers, bodyLength);
-					if (stream.encoding !== null) {
-						response.body = response.body.toString(stream.encoding);
-					}
-				} else if (strings.length) {
-					// The UTF8 BOM [0xEF,0xBB,0xBF] is converted to [0xFE,0xFF] in the JS UTC16/UCS2 representation.
-					// Strip this value out when the encoding is set to 'utf8', as upstream consumers won't expect it and it breaks JSON.parse().
-					if (stream.encoding === 'utf8' && strings[0].length > 0 && strings[0][0] === '\uFEFF') {
-						strings[0] = strings[0].substring(1);
-					}
-					response.body = strings.join('');
+			} else {
+				stream.abort();
+				return reject(new Error("Request body larger than maxBodyLength limit"));
+			}
+		}).on('end', () => {
+			if (bodyLength) {
+				res.body = Buffer.concat(buffers, bodyLength);
+				if (stream.encoding !== null) {
+					res.body = res.body.toString(stream.encoding);
 				}
-				if (typeof response.body === 'undefined') {
-					response.body = stream.encoding === null ? Buffer.alloc(0) : '';
+			} else if (strings.length) {
+				// The UTF8 BOM [0xEF,0xBB,0xBF] is converted to [0xFE,0xFF] in the JS UTC16/UCS2 representation.
+				// Strip this value out when the encoding is set to 'utf8', as upstream consumers won't expect it and it breaks JSON.parse().
+				if (stream.encoding === 'utf8' && strings[0].length > 0 && strings[0][0] === '\uFEFF') {
+					strings[0] = strings[0].substring(1);
 				}
-				resolve(response);
-			});
+				res.body = strings.join('');
+			}
+			if (typeof res.body === 'undefined') {
+				res.body = stream.encoding === null ? Buffer.alloc(0) : '';
+			}
+			resolve(res);
 		}).on('error', reject);
 	});
 }

@@ -31,7 +31,7 @@ describe('Rate limiter', () => {
         await limiter.tick('fake-id');
         const after = Date.now();
         expect(after - before).to.be.closeTo(28800, 50);
-    }).timeout(45000);
+    }).timeout(45000).retries(3);
 
     it('shouldn\'t block after waiting', async () => {
         for (let i = 0; i < 3000; ++i) {
@@ -42,5 +42,5 @@ describe('Rate limiter', () => {
         await limiter.tick('fake-id');
         const after = Date.now();
         expect(after - before).to.be.closeTo(0, 20);
-    }).timeout(45000);
+    }).timeout(45000).retries(3);
 });

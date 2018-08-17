@@ -7,6 +7,7 @@ import strip from 'strip';
 import zlib from 'zlib';
 import FeedParser from 'feedparser';
 import { createHash } from 'crypto';
+import { PassThrough } from 'stream';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
@@ -209,6 +210,11 @@ function checkHeaders(stream, url, checkContenType = false) {
 	return new Promise((resolve, reject) => {
 		let bodyLength = 0;
 
+		//XXX: piping to a pass through dummy stream so we can pipe it later
+		//     without causing request errors
+		const dummy = new PassThrough();
+		stream.pipe(dummy);
+
 		stream.on('response', response => {
 			if (checkContenType) {
 				const contentType = response.headers['content-type'];
@@ -223,8 +229,14 @@ function checkHeaders(stream, url, checkContenType = false) {
 				stream.abort();
 				return reject(new Error("Request body larger than maxBodyLength limit"));
 			}
-
-			resolve(stream);
+			resolve(dummy);
+		}).on('data', data => {
+			if (bodyLength + data.length <= maxContentLengthBytes) {
+				bodyLength += data.length;
+			} else {
+				stream.abort();
+				reject(new Error("Request body larger than maxBodyLength limit"));
+			}
 		}).on('error', reject);
 	});
 }
