@@ -93,7 +93,7 @@ export async function handleOg(job) {
 		// if the instance hasn't been created yet, or it already has an OG image, ignore
 		const instances = await mongoSchema.find({ [field]: originalUrl }).lean().limit(10);
 		if (!instances.length) {
-			logger.warn(`instance not found for type ${jobType} with lookup ${field}: '${originalUrl}'`);
+			logger.warn(`instance not found for type ${jobType} with lookup ${field}: '${originalUrl}' (${url})`);
 			continue;
 		}
 

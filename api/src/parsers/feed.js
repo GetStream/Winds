@@ -249,7 +249,7 @@ export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
 			await sleep(currentDelay);
 			return await checkHeaders(ReadURL(url), url, true);
 		} catch (err) {
-			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
+			logger.warn(`Failed to read page url ${url}: ${err.message}. Retrying`);
 			--retries;
 			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
@@ -267,7 +267,7 @@ export async function ReadFeedURL(feedURL, retries = 3, backoffDelay = 20) {
 			await sleep(currentDelay);
 			return await checkHeaders(ReadURL(feedURL), feedURL);
 		} catch (err) {
-			logger.warn(`Failed to read feed url ${feedURL}. Retrying`);
+			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
 			--retries;
 			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
