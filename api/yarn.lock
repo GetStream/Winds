@@ -120,6 +120,12 @@
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
 
+"@sinonjs/commons@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.0.2.tgz#3e0ac737781627b8844257fadc3d803997d0526e"
+  dependencies:
+    type-detect "4.0.8"
+
 "@sinonjs/formatio@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@sinonjs/formatio/-/formatio-2.0.0.tgz#84db7e9eb5531df18a8c5e0bfb6e449e55e654b2"
@@ -647,10 +653,6 @@ babel-plugin-istanbul@^4.1.6:
     istanbul-lib-instrument "^1.10.1"
     test-exclude "^4.2.1"
 
-babel-plugin-shebang@^0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-shebang/-/babel-plugin-shebang-0.0.0.tgz#50b1676aae9d681fa3cadff3531304d96e1d47bc"
-
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
@@ -1151,6 +1153,10 @@ browserslist@^3.2.6:
     caniuse-lite "^1.0.30000844"
     electron-to-chromium "^1.3.47"
 
+bson@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-1.1.0.tgz#bee57d1fb6a87713471af4e32bcae36de814b5b0"
+
 bson@~1.0.4, bson@~1.0.5:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/bson/-/bson-1.0.9.tgz#12319f8323b1254739b7c6bef8d3e89ae05a2f57"
@@ -1193,9 +1199,9 @@ bull@^3.3.7:
     semver "^5.5.0"
     uuid "^3.2.1"
 
-bull@^3.4.4:
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/bull/-/bull-3.4.4.tgz#763ca8f32cb65cd87f3bb5b83af609e4bccc43f3"
+bull@^3.4.7:
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/bull/-/bull-3.4.7.tgz#163df3358502f49ebe293de5529a1eaecce5cce7"
   dependencies:
     bluebird "^3.5.0"
     cron-parser "^2.5.0"
@@ -2274,9 +2280,9 @@ feedparser@^2.2.9:
     readable-stream "^2.2.2"
     sax "^1.2.4"
 
-file-type@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-8.1.0.tgz#244f3b7ef641bbe0cca196c7276e4b332399f68c"
+file-type@9:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-9.0.0.tgz#a68d5ad07f486414dfb2c8866f73161946714a18"
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -3062,7 +3068,7 @@ invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
 
-ioredis@^3.1.4, ioredis@^3.2.2:
+ioredis@^3.1.4:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-3.2.2.tgz#b7d5ff3afd77bb9718bb2821329b894b9a44c00b"
   dependencies:
@@ -3089,6 +3095,32 @@ ioredis@^3.1.4, ioredis@^3.2.2:
     lodash.values "^4.3.0"
     redis-commands "^1.2.0"
     redis-parser "^2.4.0"
+
+ioredis@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.0.0.tgz#fabf1cf8724f14fd0885233cf2f4fbc6e1e59da2"
+  dependencies:
+    cluster-key-slot "^1.0.6"
+    debug "^3.1.0"
+    denque "^1.1.0"
+    flexbuffer "0.0.6"
+    lodash.bind "^4.2.1"
+    lodash.clone "^4.5.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.defaults "^4.2.0"
+    lodash.difference "^4.5.0"
+    lodash.flatten "^4.4.0"
+    lodash.foreach "^4.5.0"
+    lodash.isempty "^4.4.0"
+    lodash.partial "^4.2.1"
+    lodash.pick "^4.4.0"
+    lodash.sample "^4.2.1"
+    lodash.shuffle "^4.2.0"
+    lodash.values "^4.3.0"
+    redis-commands "^1.2.0"
+    redis-errors "^1.2.0"
+    redis-parser "^3.0.0"
+    standard-as-callback "^1.0.0"
 
 ip-regex@^1.0.1:
   version "1.0.3"
@@ -3512,9 +3544,9 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-joi@^13.5.2:
-  version "13.5.2"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-13.5.2.tgz#32207c85fa76d889f1e971c7eaaf69b232259a91"
+joi@^13.6.0:
+  version "13.6.0"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-13.6.0.tgz#877d820e3ad688a49c32421ffefc746bfbe2d0a0"
   dependencies:
     hoek "5.x.x"
     isemail "3.x.x"
@@ -4171,17 +4203,32 @@ mongodb-core@3.1.0:
   optionalDependencies:
     saslprep "^1.0.0"
 
+mongodb-core@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.1.2.tgz#c85055a2691ac3661951e557a0d6482796ad5c42"
+  dependencies:
+    bson "^1.1.0"
+    require_optional "^1.0.1"
+  optionalDependencies:
+    saslprep "^1.0.0"
+
 mongodb@3.0.10:
   version "3.0.10"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.10.tgz#f948cb9595adcbfcad7444f6b24a040b653b23e8"
   dependencies:
     mongodb-core "3.0.9"
 
-mongodb@3.1.1, mongodb@^3.1.1:
+mongodb@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.1.1.tgz#c018c4b277614e8b1e08426d5bcbe1a7e5cdbd74"
   dependencies:
     mongodb-core "3.1.0"
+
+mongodb@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.1.3.tgz#7523d438d190e80a757c5947dbc226768cb7b1d5"
+  dependencies:
+    mongodb-core "3.1.2"
 
 mongoose-autopopulate@^0.8.0:
   version "0.8.0"
@@ -4236,9 +4283,9 @@ mongoose-validators@^0.1.0:
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-mongoose@^5.2.7:
-  version "5.2.7"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.2.7.tgz#679a682cc744f7fbcc14f23df77e9d8d5dfd043d"
+mongoose@^5.2.8:
+  version "5.2.8"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.2.8.tgz#dd74ce0c4df803cb816c37ee1228d6663e2c2254"
   dependencies:
     async "2.6.1"
     bson "~1.0.5"
@@ -4251,6 +4298,7 @@ mongoose@^5.2.7:
     mquery "3.1.2"
     ms "2.0.0"
     regexp-clone "0.0.1"
+    safe-buffer "5.1.2"
     sliced "1.0.1"
 
 morgan@~1.8.1:
@@ -4310,13 +4358,13 @@ multer@^1.3.1:
     type-is "^1.6.4"
     xtend "^4.0.0"
 
-music-metadata@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-2.4.2.tgz#b41c1067103f9912bd47e055a52dfe8bf5bebe6d"
+music-metadata@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-2.4.3.tgz#99bdb85438514cf1c13df226dd2707ca4a7bf1ca"
   dependencies:
     debug "^3.1.0"
     es6-promise "^4.2.4"
-    file-type "^8.1.0"
+    file-type "9"
     media-typer "^0.3.0"
     strtok3 "^1.5.3"
     then-read-stream "^1.2.1"
@@ -4359,9 +4407,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-newrelic@^4.7.0:
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-4.7.0.tgz#9044848e1fc3c137aecb7497bf16923683773eff"
+newrelic@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/newrelic/-/newrelic-4.8.0.tgz#5068bb18575b4461c14e2c4642ae5da9bace08ad"
   dependencies:
     "@newrelic/koa" "^1.0.0"
     "@tyriar/fibonacci-heap" "^2.0.7"
@@ -4384,9 +4432,9 @@ nise@^1.4.2:
     path-to-regexp "^1.7.0"
     text-encoding "^0.6.4"
 
-nock@^9.6.0:
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-9.6.0.tgz#df273defe35fd31c3ec9039c570e64339d31d68b"
+nock@^9.6.1:
+  version "9.6.1"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-9.6.1.tgz#d96e099be9bc1d0189a77f4490bbbb265c381b49"
   dependencies:
     chai "^4.1.2"
     debug "^3.1.0"
@@ -5133,9 +5181,19 @@ redis-commands@^1.2.0:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/redis-commands/-/redis-commands-1.3.5.tgz#4495889414f1e886261180b1442e7295602d83a2"
 
+redis-errors@^1.0.0, redis-errors@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
+
 redis-parser@^2.4.0, redis-parser@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-2.6.0.tgz#52ed09dacac108f1a631c07e9b69941e7a19504b"
+
+redis-parser@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-3.0.0.tgz#b66d828cdcafe6b4b8a428a7def4c6bcac31c8b4"
+  dependencies:
+    redis-errors "^1.0.0"
 
 redis@^2.7.1, redis@^2.8.0:
   version "2.8.0"
@@ -5578,10 +5636,11 @@ signal-exit@^3.0.0, signal-exit@^3.0.1, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-sinon@^6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/sinon/-/sinon-6.1.4.tgz#b67f7a7b7fe2496042b54a5c2f425e2d699927a2"
+sinon@^6.1.5:
+  version "6.1.5"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-6.1.5.tgz#41451502d43cd5ffb9d051fbf507952400e81d09"
   dependencies:
+    "@sinonjs/commons" "^1.0.1"
     "@sinonjs/formatio" "^2.0.0"
     "@sinonjs/samsam" "^2.0.0"
     diff "^3.5.0"
@@ -5755,6 +5814,10 @@ stack-trace@0.0.10, stack-trace@0.0.x:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
 
+standard-as-callback@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/standard-as-callback/-/standard-as-callback-1.0.1.tgz#2e9e1e9d278d7d77580253faaec42269015e3c1d"
+
 starts-with@^1.0.0, starts-with@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/starts-with/-/starts-with-1.0.2.tgz#16793a729d89d4cf3d4fb2eda2f908ae357f196f"
@@ -5778,9 +5841,9 @@ stealthy-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
 
-stream-analytics@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/stream-analytics/-/stream-analytics-2.7.0.tgz#0b818c0b1ef8586128511a370f69482dfcf2936e"
+stream-analytics@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/stream-analytics/-/stream-analytics-2.7.1.tgz#4e62ca6b7cc9808869b1455db4a6acb125ff477f"
   dependencies:
     browser-request "git://github.com/matthisk/browser-request"
     json-loader "^0.5.3"
@@ -6068,7 +6131,7 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
 
-type-detect@^4.0.0, type-detect@^4.0.8:
+type-detect@4.0.8, type-detect@^4.0.0, type-detect@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
 

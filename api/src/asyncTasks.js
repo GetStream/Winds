@@ -26,8 +26,8 @@ export const podcastQueue = new Queue('podcast', config.cache.uri, {
 	}
 });
 export const streamQueue = new Queue('stream', config.cache.uri, {
-	limiter: { max: 12000, duration: 3600000 } // 12k per hour
-});
+	limiter: { max: 12000, duration: 3600000 // 12k per hour
+	} });
 export const socialQueue = new Queue('social', config.cache.uri);
 
 function makeMetricKey(queue, event) {
@@ -43,35 +43,35 @@ async function trackQueueSize(statsd, queue) {
 function AddQueueTracking(queue) {
 	var statsd = getStatsDClient();
 
-	queue.on('error', function(err) {
+	queue.on('error', function (err) {
 		statsd.increment(makeMetricKey(queue, 'error'));
 		logger.warn(`Queue ${queue.name} encountered an unexpected error: ${err.message}`);
 	});
 
-	queue.on('active', function(job, jobPromise) {
+	queue.on('active', function (job, jobPromise) {
 		statsd.increment(makeMetricKey(queue, 'active'));
 	});
 
-	queue.on('completed', function(job, result) {
+	queue.on('completed', function (job, result) {
 		statsd.timing(makeMetricKey(queue, 'elapsed'), new Date() - job.timestamp);
 		statsd.increment(makeMetricKey(queue, 'completed'));
 	});
 
-	queue.on('stalled', function(job) {
+	queue.on('stalled', function (job) {
 		statsd.increment(makeMetricKey(queue, 'stalled'));
 		logger.warn(`Queue ${queue.name} job stalled: '${JSON.stringify(job)}'`);
 	});
 
-	queue.on('failed', function(job, err) {
+	queue.on('failed', function (job, err) {
 		statsd.increment(makeMetricKey(queue, 'failed'));
 		logger.warn(`Queue ${queue.name} failed to process job '${JSON.stringify(job)}': ${err.message}`);
 	});
 
-	queue.on('paused', function() {
+	queue.on('paused', function () {
 		statsd.increment(makeMetricKey(queue, 'paused'));
 	});
 
-	queue.on('resumed', function(job) {
+	queue.on('resumed', function (job) {
 		statsd.increment(makeMetricKey(queue, 'resumed'));
 	});
 

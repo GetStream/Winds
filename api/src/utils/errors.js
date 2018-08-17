@@ -1,12 +1,19 @@
 import config from '../config';
 import Raven from 'raven';
 import path from 'path';
-import { version } from '../../../app/package.json';
 import logger from '../utils/logger';
+
+let version;
+if (process.env.DOCKER) {
+	version = 'DOCKER';
+} else {
+	version = require('../../../app/package.json');
+}
+
 require.resolve('raven');
 
 const executable = path.basename(process.argv[1]);
-var ravenInstance;
+let ravenInstance;
 
 function sendSourceMaps(data) {
 	var stacktrace = data.exception && data.exception[0].stacktrace;
@@ -29,7 +36,6 @@ let sentryOptions = {
 	patchGlobal: config.env === 'production',
 	environment: config.env,
 	tags: { script: executable },
-	// dataCallback: sendSourceMaps,
 	release: `v${version}`,
 };
 

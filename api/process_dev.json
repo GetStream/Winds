@@ -1,0 +1,53 @@
+{
+	"apps": [
+		{
+			"name": "api",
+			"cwd": "src",
+			"interpreter": "babel-node",
+			"script": "./server.js",
+			"watch": true
+		},
+		{
+			"name": "conductor",
+			"cwd": "src/workers",
+			"interpreter": "babel-node",
+			"script": "./conductor.js",
+			"watch": true
+		},
+		{
+			"name": "stream",
+			"cwd": "src/workers",
+			"interpreter": "babel-node",
+			"script": "./stream.js",
+			"watch": true
+		},
+		{
+			"name": "social",
+			"cwd": "src/workers",
+			"interpreter": "babel-node",
+			"script": "./social.js",
+			"watch": true
+		},
+		{
+			"name": "rss",
+			"cwd": "src/workers",
+			"interpreter": "babel-node",
+			"script": "./rss.js",
+			"watch": true
+		},
+		{
+			"name": "podcast",
+			"cwd": "src/workers",
+			"interpreter": "babel-node",
+			"script": "./podcast.js",
+			"watch": true
+		},
+		{
+			"name": "og",
+			"cwd": "src/workers",
+			"interpreter": "babel-node",
+			"script": "./og.js",
+			"watch": true
+		}
+	]
+}

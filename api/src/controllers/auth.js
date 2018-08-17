@@ -7,7 +7,13 @@ import Podcast from '../models/podcast';
 import Follow from '../models/follow';
 
 import config from '../config';
-import packageInfo from '../../../app/package.json';
+
+let packageInfo;
+if (process.env.DOCKER) {
+	packageInfo = { version: 'DOCKER' };
+} else {
+	packageInfo = require('../../../app/package.json');
+}
 
 import Redis from 'ioredis';
 const cache = new Redis(config.cache.uri);
