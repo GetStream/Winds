@@ -12,6 +12,7 @@ import { ParseFeed } from '../parsers/feed';
 import { ProcessRssQueue, ShutDownRssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { getStreamClient } from '../utils/stream';
+import { startSampling } from '../utils/watchdog';
 import { upsertManyPosts } from '../utils/upsert';
 import { ensureEncoded } from '../utils/urls';
 
@@ -20,6 +21,8 @@ if (require.main === module) {
 
 	logger.info('Starting the RSS worker');
 	ProcessRssQueue(35, rssProcessor);
+
+	startSampling('winds.event_loop.rss.delay');
 }
 
 const duplicateKeyError = 11000;

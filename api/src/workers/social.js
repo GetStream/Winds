@@ -10,10 +10,13 @@ import { ProcessSocialQueue, ShutDownSocialQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { fetchSocialScore } from '../utils/social';
 import { ensureEncoded } from '../utils/urls';
+import { startSampling } from '../utils/watchdog';
 
 if (require.main === module) {
 	logger.info('Starting the Social worker');
 	ProcessSocialQueue(1, socialProcessor);
+
+	startSampling('winds.event_loop.social.delay');
 }
 
 const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };

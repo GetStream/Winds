@@ -11,6 +11,7 @@ import jwt from 'express-jwt';
 import limit from 'express-rate-limit';
 
 import logger from './utils/logger';
+import { startSampling } from './utils/watchdog';
 import { setupExpressRequestHandler, setupExpressErrorHandler } from './utils/errors';
 import User from './models/user';
 
@@ -86,6 +87,9 @@ fs.readdirSync(path.join(__dirname, 'routes')).map(file => {
 
 if (require.main === module) {
 	require('./utils/db');
+
+	startSampling('winds.event_loop.api.delay');
+
 	api.listen(config.server.port, err => {
 		if (err) {
 			logger.error({ err });

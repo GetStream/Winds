@@ -15,6 +15,7 @@ import { ParsePodcast } from '../parsers/feed';
 import { ProcessPodcastQueue, ShutDownPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
+import { startSampling } from '../utils/watchdog';
 import { ensureEncoded } from '../utils/urls';
 import { timeIt } from '../utils/statsd';
 
@@ -23,6 +24,8 @@ if (require.main === module) {
 
 	logger.info('Starting to process podcasts....');
 	ProcessPodcastQueue(35, podcastProcessor);
+
+	startSampling('winds.event_loop.podcast.delay');
 }
 
 export async function podcastProcessor(job) {

@@ -9,10 +9,13 @@ import logger from '../utils/logger';
 import { ProcessStreamQueue, ShutDownStreamQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { sendFeedToCollections } from '../utils/collections';
+import { startSampling } from '../utils/watchdog';
 
 if (require.main === module) {
 	logger.info('Starting the Stream worker');
 	ProcessStreamQueue(2, streamProcessor);
+
+	startSampling('winds.event_loop.stream.delay');
 }
 
 export async function streamProcessor(job) {

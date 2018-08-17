@@ -10,6 +10,7 @@ import logger from '../utils/logger';
 import weightedRandom from '../utils/random';
 import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
 import { isURL } from '../utils/validation';
+import { startSampling } from '../utils/watchdog';
 
 const publicationTypes = {
 	rss: { schema: RSS, enqueue: RssQueueAdd },
@@ -34,6 +35,8 @@ if (require.main === module) {
 	logger.info(`Starting the conductor... will conduct every ${conductorInterval} seconds`);
 
 	forever();
+
+	startSampling('winds.event_loop.conductor.delay');
 }
 
 function getPublications(schema, followerMin, followerMax, interval, limit, exclude=[]) {

@@ -5,6 +5,7 @@ import { EventEmitter } from 'events';
 
 import db from '../utils/db';
 import logger from '../utils/logger';
+import { startSampling } from '../utils/watchdog';
 import RSS from '../models/rss'; // eslint-disable-line
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Article from '../models/article';
@@ -17,6 +18,8 @@ if (require.main === module) {
 
 	logger.info('Starting the OG worker');
 	ProcessOgQueue(35, ogProcessor);
+
+	startSampling('winds.event_loop.og.delay');
 }
 
 export async function ogProcessor(job) {
