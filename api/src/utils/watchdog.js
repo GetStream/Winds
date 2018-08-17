@@ -6,7 +6,7 @@ export function startSampling(metricName, sampleInterval = defaultSampleInterval
 	var statsd = getStatsDClient();
 
 	function updateMetric(diff) {
-		const elapsed = diff[0] * 1000000 + diff[1] / 1000 - sampleInterval;
+		const elapsed = diff[0] * 1000 + diff[1] / 1000000 - sampleInterval;
 		statsd.timing(metricName, elapsed);
 	}
 
