@@ -1,9 +1,10 @@
-import request from 'request-promise-native';
+import request from 'request';
 import htmlparser from 'htmlparser2';
 import normalize from 'normalize-url';
 import rssFinder from 'rss-finder';
 import url from 'url';
 import FeedParser from 'feedparser';
+import { Buffer } from 'safe-buffer';
 
 import logger from '../utils/logger';
 import { extractHostname } from '../utils/urls';
@@ -34,23 +35,63 @@ const iconRels = { icon: 1, 'shortcut icon': 1 };
 const maxContentLengthBytes = 1024 * 1024 * 5;
 const WindsUserAgent = 'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
 
-// small wrapper around rssFinder that helps out with some common sites
-export async function discoverRSSOld(url) {
-	let foundRSS = await rssFinder(url);
+function readRequestBody(stream, url) {
+	return new Promise((resolve, reject) => {
+		let bodyLength = 0;
+		let res;
+		const buffers = [];
+		const strings = []
 
-	return foundRSS;
+		stream.on('response', response => {
+			const contentLength = parseInt(response.headers['content-length'], 10);
+			if (contentLength > maxContentLengthBytes) {
+				stream.abort();
+				return reject(new Error("Request body larger than maxBodyLength limit"));
+			}
+			res = response;
+		}).on('data', data => {
+			if (bodyLength + data.length <= maxContentLengthBytes) {
+				bodyLength += data.length;
+				if (!Buffer.isBuffer(data)) {
+					strings.push(data);
+				} else if (data.length) {
+					buffers.push(data);
+				}
+			} else {
+				stream.abort();
+				return reject(new Error("Request body larger than maxBodyLength limit"));
+			}
+		}).on('end', () => {
+			if (bodyLength) {
+				res.body = Buffer.concat(buffers, bodyLength);
+				if (stream.encoding !== null) {
+					res.body = res.body.toString(stream.encoding);
+				}
+			} else if (strings.length) {
+				// The UTF8 BOM [0xEF,0xBB,0xBF] is converted to [0xFE,0xFF] in the JS UTC16/UCS2 representation.
+				// Strip this value out when the encoding is set to 'utf8', as upstream consumers won't expect it and it breaks JSON.parse().
+				if (stream.encoding === 'utf8' && strings[0].length > 0 && strings[0][0] === '\uFEFF') {
+					strings[0] = strings[0].substring(1);
+				}
+				res.body = strings.join('');
+			}
+			if (typeof res.body === 'undefined') {
+				res.body = stream.encoding === null ? Buffer.alloc(0) : '';
+			}
+			resolve(res);
+		}).on('error', reject);
+	});
 }
 
 export async function discoverRSS(uri) {
 	const headers = { 'User-Agent': WindsUserAgent };
-	const response = await request({
+	const response = await readRequestBody(request({
 		uri,
 		headers,
 		maxRedirects: 20,
 		timeout: 12 * 1000,
 		resolveWithFullResponse: true,
-		// maxContentLength: maxContentLengthBytes,
-	});
+	}));
 
 	let discovered;
 	try {
@@ -171,12 +212,13 @@ async function fixData(res, uri) {
 			'accept-encoding': 'gzip, deflate, br',
 		};
 
-		//XXX: ensure favicon url is reachable
-		await request(favicon, {
-			headers,
-			maxRedirects: 20,
-			timeout: 12 * 1000,
-			// maxContentLength: maxContentLengthBytes,
+		// ensure favicon url is reachable
+		await new Promise((resolve, reject) => {
+			const req = request(favicon, {
+				headers,
+				maxRedirects: 20,
+				timeout: 12 * 1000,
+			}).on('response', () => resolve(req.abort())).on('error', reject);
 		});
 		res.site.favicon = favicon;
 	} catch (_) {

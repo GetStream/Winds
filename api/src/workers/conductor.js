@@ -102,7 +102,7 @@ function shutdown(signal) {
 }
 
 function failure(err) {
-	logger.error(`Unhandled error: ${err.message}. Shutting down.`);
+	logger.error(`Unhandled error: ${err.stack}. Shutting down Conductor worker.`);
 	try {
 		clearTimeout(timeout);
 		mongoose.connection.close();

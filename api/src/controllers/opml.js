@@ -56,6 +56,10 @@ exports.get = async (req, res) => {
 };
 
 function partitionBy(collection, selector) {
+	if (!collection.length) {
+		return [];
+	}
+
 	const partitions = [[collection[0]]];
 	let currentPartition = 0;
 	let lastElement = selector(collection[0]);

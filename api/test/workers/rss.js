@@ -81,7 +81,7 @@ describe('RSS worker', () => {
 					.reply(200, () => getTestFeed(url.host));
 				await queue(testCases[i]);
 				nock.cleanAll();
-			})
+			}).retries(3);
 		}
 
 		it('should fail for invalid job', async () => {

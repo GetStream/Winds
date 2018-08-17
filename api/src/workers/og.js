@@ -1,6 +1,7 @@
 import joi from 'joi';
 import mongoose from 'mongoose';
 import normalize from 'normalize-url';
+import { EventEmitter } from 'events';
 
 import db from '../utils/db';
 import logger from '../utils/logger';
@@ -12,12 +13,14 @@ import { ParseOG, IsValidOGUrl } from '../parsers/og';
 import { ProcessOgQueue, ShutDownOgQueue } from '../asyncTasks';
 
 if (require.main === module) {
+	EventEmitter.defaultMaxListeners = 128;
+
 	logger.info('Starting the OG worker');
 	ProcessOgQueue(35, ogProcessor);
 }
 
 export async function ogProcessor(job) {
-	logger.info(`OG image scraping: ${job.data.url}`);
+	logger.info(`OG image scraping: ${job.data.url || job.data.urls}`);
 
 	try {
 		await handleOg(job);
@@ -51,6 +54,7 @@ const schema = joi.object().keys({
 
 // Run the OG scraping job
 export async function handleOg(job) {
+	const originalPayload = Object.assign({}, job.data);
 	try {
 		// best effort at escaping urls found in the wild
 		if (!!job.data.urls) {
@@ -77,16 +81,19 @@ export async function handleOg(job) {
 	await mongoParentSchema.update({ _id: job.data[parentField] }, { "queueState.isUpdatingOG": false });
 
 	const urls = job.data.urls || [job.data.url];
-	for (const url of urls) {
+	const unecapedUrls = originalPayload.urls || [originalPayload.url];
+	for (let i in urls) {
+		const url = urls[i];
+		const originalUrl = unecapedUrls[i];
 		if (!!joi.validate(url, joiUrl).error) {
 			logger.warn(`OG job validation failed: invalid URL '${url}' for jobtype ${jobType}`);
 			continue;
 		}
 
 		// if the instance hasn't been created yet, or it already has an OG image, ignore
-		const instances = await mongoSchema.find({ [field]: url }).lean().limit(10);
+		const instances = await mongoSchema.find({ [field]: originalUrl }).lean().limit(10);
 		if (!instances.length) {
-			logger.warn(`instance not found for type ${jobType} with lookup ${field}: '${url}'`);
+			logger.warn(`instance not found for type ${jobType} with lookup ${field}: '${originalUrl}' (${url})`);
 			continue;
 		}
 
@@ -146,8 +153,7 @@ async function shutdown(signal) {
 }
 
 async function failure(err) {
-	logger.error(`Unhandled error: ${err.message}. Shutting down.`);
-	console.dir(err);
+	logger.error(`Unhandled error: ${err.stack}. Shutting down OG worker.`);
 	try {
 		await ShutDownOgQueue();
 		mongoose.connection.close();

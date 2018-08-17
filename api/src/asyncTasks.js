@@ -11,13 +11,7 @@ export const rssQueue = new Queue('rss', config.cache.uri, {
 		maxStalledCount: 2
 	}
 });
-export const ogQueue = new Queue('og', config.cache.uri, {
-	settings: {
-		lockDuration: 90000,
-		stalledInterval: 75000,
-		maxStalledCount: 2
-	}
-});
+
 export const podcastQueue = new Queue('podcast', config.cache.uri, {
 	settings: {
 		lockDuration: 90000,
@@ -25,9 +19,12 @@ export const podcastQueue = new Queue('podcast', config.cache.uri, {
 		maxStalledCount: 2
 	}
 });
+
 export const streamQueue = new Queue('stream', config.cache.uri, {
-	limiter: { max: 12000, duration: 3600000 // 12k per hour
-	} });
+	limiter: { max: 12000, duration: 3600000 } // 12k per hour
+});
+
+export const ogQueue = new Queue('og', config.cache.uri);
 export const socialQueue = new Queue('social', config.cache.uri);
 
 function makeMetricKey(queue, event) {

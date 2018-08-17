@@ -7,6 +7,7 @@ import strip from 'strip';
 import zlib from 'zlib';
 import FeedParser from 'feedparser';
 import { createHash } from 'crypto';
+import { PassThrough } from 'stream';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
@@ -194,7 +195,6 @@ export function ReadURL(url) {
 		method: 'get',
 		uri: url,
 		gzip: true,
-		// maxContentLength: maxContentLengthBytes,
 		timeout: 12 * 1000,
 		headers: headers,
 		maxRedirects: 20,
@@ -206,15 +206,37 @@ function sleep(time) {
 	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
 }
 
-function checkHeaders(stream, url) {
+function checkHeaders(stream, url, checkContenType = false) {
 	return new Promise((resolve, reject) => {
+		let bodyLength = 0;
+
+		//XXX: piping to a pass through dummy stream so we can pipe it later
+		//     without causing request errors
+		const dummy = new PassThrough();
+		stream.pipe(dummy);
+
 		stream.on('response', response => {
-			const contentType = response.headers['content-type'];
-			if (!contentType || !contentType.toLowerCase().includes('html')) {
-				logger.warn(`Invalid content type '${contentType}' for url ${url}`);
-				return resolve(null);
+			if (checkContenType) {
+				const contentType = response.headers['content-type'];
+				if (!contentType || !contentType.toLowerCase().includes('html')) {
+					logger.warn(`Invalid content type '${contentType}' for url ${url}`);
+					stream.abort();
+					return resolve(null);
+				}
 			}
-			resolve(stream);
+			const contentLength = parseInt(response.headers['content-length'], 10);
+			if (contentLength > maxContentLengthBytes) {
+				stream.abort();
+				return reject(new Error("Request body larger than maxBodyLength limit"));
+			}
+			resolve(dummy);
+		}).on('data', data => {
+			if (bodyLength + data.length <= maxContentLengthBytes) {
+				bodyLength += data.length;
+			} else {
+				stream.abort();
+				reject(new Error("Request body larger than maxBodyLength limit"));
+			}
 		}).on('error', reject);
 	});
 }
@@ -225,9 +247,9 @@ export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
 	for (;;) {
 		try {
 			await sleep(currentDelay);
-			return await checkHeaders(ReadURL(url), url);
+			return await checkHeaders(ReadURL(url), url, true);
 		} catch (err) {
-			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
+			logger.warn(`Failed to read page url ${url}: ${err.message}. Retrying`);
 			--retries;
 			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
@@ -243,9 +265,9 @@ export async function ReadFeedURL(feedURL, retries = 3, backoffDelay = 20) {
 	for (;;) {
 		try {
 			await sleep(currentDelay);
-			return ReadURL(feedURL);
+			return await checkHeaders(ReadURL(feedURL), feedURL);
 		} catch (err) {
-			logger.warn(`Failed to read feed url ${feedURL}. Retrying`);
+			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
 			--retries;
 			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {

@@ -13,7 +13,7 @@ import { ensureEncoded } from '../utils/urls';
 
 if (require.main === module) {
 	logger.info('Starting the Social worker');
-	ProcessSocialQueue(35, socialProcessor);
+	ProcessSocialQueue(1, socialProcessor);
 }
 
 const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };
@@ -101,7 +101,7 @@ async function shutdown(signal) {
 }
 
 async function failure(err) {
-	logger.error(`Unhandled error: ${err.message}. Shutting down.`);
+	logger.error(`Unhandled error: ${err.stack}. Shutting down Social worker.`);
 	try {
 		await ShutDownSocialQueue();
 		mongoose.connection.close();
