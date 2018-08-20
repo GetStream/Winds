@@ -392,9 +392,10 @@ OR
 `cd api && cd scripts && ./make-build.sh`
 
 **Build the Docker container (API & all workers)**:
+
 `cd ../ && docker-compose up`
 
-That will start the API. The frontend will still need to be started manually.
+The commands above will prepare and start the API (and all workers). The frontend will still need to be started manually.
 
 ## Debugging RSS & Podcast Issues
 
