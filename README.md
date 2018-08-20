@@ -383,6 +383,19 @@ To run the production JS files:
 pm2 start process_prod.json
 ```
 
+OR
+
+#### Docker Compose
+
+**Prepare the build for Docker**:
+
+`cd api && cd scripts && ./make-build.sh`
+
+**Build the Docker container (API & all workers)**:
+`cd ../ && docker-compose up`
+
+That will start the API. The frontend will still need to be started manually.
+
 ## Debugging RSS & Podcast Issues
 
 Unfortunately there is no unified standard for RSS.
