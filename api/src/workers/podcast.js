@@ -17,7 +17,7 @@ import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
 import { startSampling } from '../utils/watchdog';
 import { ensureEncoded } from '../utils/urls';
-import { timeIt } from '../utils/statsd';
+import { getStatsDClient, timeIt } from '../utils/statsd';
 
 if (require.main === module) {
 	EventEmitter.defaultMaxListeners = 128;
@@ -27,6 +27,8 @@ if (require.main === module) {
 
 	startSampling('winds.event_loop.podcast.delay');
 }
+
+const statsd = getStatsDClient();
 
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
@@ -40,6 +42,7 @@ export async function podcastProcessor(job) {
 		};
 
 		logger.error('Podcast job encountered an error', { err, tags, extra });
+		statsd.increment('winds.handle_podcast.result.error');
 	}
 }
 
@@ -72,12 +75,14 @@ export async function handlePodcast(job) {
 	if (!!validation.error) {
 		logger.warn(`Podcast job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
 		await Podcast.incrScrapeFailures(podcastID);
+		statsd.increment('winds.handle_podcast.result.validation_failed');
 		return;
 	}
 
 	let podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
 		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
+		statsd.increment('winds.handle_podcast.result.model_instance_absent');
 		return;
 	}
 
@@ -91,6 +96,7 @@ export async function handlePodcast(job) {
 	}
 
 	if (!podcastContent) {
+		statsd.increment('winds.handle_podcast.result.no_content');
 		return;
 	}
 
@@ -114,6 +120,7 @@ export async function handlePodcast(job) {
 	});
 
 	if (!updatedEpisodes.length) {
+		statsd.increment('winds.handle_podcast.result.no_updates');
 		return;
 	}
 
@@ -146,6 +153,7 @@ export async function handlePodcast(job) {
 		tasks.push(StreamQueueAdd({ podcast: podcastID }, queueOpts));
 	}
 	await Promise.all([Podcast.update({ _id: podcastID }, queueState), ...tasks]);
+	statsd.increment('winds.handle_podcast.result.updates');
 }
 
 // markDone sets lastScraped to now and isParsing to false
@@ -170,6 +178,7 @@ async function failure(err) {
 	try {
 		await ShutDownPodcastQueue();
 		mongoose.connection.close();
+		statsd.increment('winds.handle_podcast.result.error');
 	} catch (err) {
 		logger.error(`Failure during Podcast worker shutdown: ${err.message}`);
 	}

@@ -40,6 +40,7 @@ export async function rssProcessor(job) {
 		};
 
 		logger.error('RSS job encountered an error', { err, tags, extra });
+		statsd.increment('winds.handle_rss.result.error');
 	}
 
 	logger.info(`Completed scraping for ${job.data.url}`);
@@ -73,6 +74,7 @@ export async function handleRSS(job) {
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
 		logger.warn(`RSS job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
+		statsd.increment('winds.handle_rss.result.validation_failed');
 		await RSS.incrScrapeFailures(rssID);
 		return;
 	}
@@ -83,11 +85,13 @@ export async function handleRSS(job) {
 
 	if (!rss) {
 		logger.warn(`RSS with ID ${rssID} does not exist`);
+		statsd.increment('winds.handle_rss.result.model_instance_absent');
 		return;
 	}
 
 	if (rss.duplicateOf) {
 		logger.warn(`RSS with ID ${rssID} is a duplicate of ${rss.duplicateOf}. Skipping`);
+		statsd.increment('winds.handle_rss.result.model_instance_duplicate');
 		return;
 	}
 
@@ -105,18 +109,19 @@ export async function handleRSS(job) {
 
 	if (!rssContent || rssContent.articles.length === 0) {
 	    logger.debug(`RSS with ID ${rssID} is empty`);
+		statsd.increment('winds.handle_rss.result.no_content');
 		return;
 	}
 
 	if (rssContent.fingerprint && rssContent.fingerprint === rss.fingerprint) {
 	    logger.debug(`RSS with ID ${rssID} has same fingerprint as registered before`);
+		statsd.increment('winds.handle_rss.result.same_content');
 		return;
 	}
 
 	logger.debug(`Updating ${rssContent.articles.length} articles for feed ${rssID}`);
 
 	statsd.increment('winds.handle_rss.articles.parsed', rssContent.articles.length);
-	statsd.timing('winds.handle_rss.articles.parsed', rssContent.articles.length);
 
 	for (const article of rssContent.articles) {
 		article.rss = rssID;
@@ -135,6 +140,7 @@ export async function handleRSS(job) {
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);
 
 	if (!updatedArticles.length) {
+		statsd.increment('winds.handle_rss.result.no_updates');
 		return;
 	}
 
@@ -178,6 +184,7 @@ export async function handleRSS(job) {
 		tasks.push(StreamQueueAdd({ rss: rssID }, queueOpts));
 	}
 	await Promise.all([await RSS.update({ _id: rssID }, queueState), ...tasks]);
+	statsd.increment('winds.handle_rss.result.updates');
 }
 
 async function markDone(rssID) {
@@ -201,6 +208,7 @@ async function failure(err) {
 	try {
 		await ShutDownRssQueue();
 		mongoose.connection.close();
+		statsd.increment('winds.handle_rss.result.error');
 	} catch (err) {
 		logger.error(`Failure during RSS worker shutdown: ${err.message}`);
 	}

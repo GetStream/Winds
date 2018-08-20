@@ -313,7 +313,7 @@ export function ParseFeedPosts(posts, limit = 1000) {
 				description = null;
 			}
 			const content = sanitize(post.summary);
-			const url = normalize(post.link);
+			const url = normalize(post.link || '');
 			if (!url) {
 				logger.info('skipping article since there is no url');
 				continue;
