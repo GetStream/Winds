@@ -4,7 +4,7 @@
   "description": "Winds is a beatiful open source RSS Reader and Podcast app. Wind 2.0 was created using React/Redux/Node.\nFor more information, visit https://getstream.io/winds/.\nTo contribute or run your own version head over to Github: https://github.com/getstream/winds",
   "private": true,
   "author": "Winds Team <winds@getstream.io>",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "repository": "https://github.com/getstream/winds.git",
   "bugs": {
     "url": "https://github.com/getstream/winds/issues"
@@ -23,7 +23,7 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "dev": "yarn react-scripts start",
+    "web": "yarn react-scripts start",
     "build": "react-scripts build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",

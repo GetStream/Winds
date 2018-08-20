@@ -12,7 +12,6 @@ const configs = {
 
 const currentEnvironment = process.env.NODE_ENV || 'development';
 
-// workaround based on https://github.com/motdotla/dotenv/issues/133
 const defaultPath = path.resolve(__dirname, '..', '..', '..', 'app', '.env');
 const envPath = configs[currentEnvironment].env || defaultPath;
 

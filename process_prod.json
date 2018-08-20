@@ -2,19 +2,19 @@
 	"apps": [
 		{
 			"name": "api",
-			"cwd": "api/dist",
+			"cwd": "dist",
 			"script": "server.js",
 			"watch": false
 		},
 		{
 			"name": "conductor",
-			"cwd": "api/dist/workers",
+			"cwd": "dist/workers",
 			"script": "conductor.js",
 			"watch": false
 		},
 		{
 			"name": "rss-worker",
-			"cwd": "api/dist/workers",
+			"cwd": "dist/workers",
 			"script": "rss.js",
 			"instances": 2,
 			"exec_mode": "cluster",
@@ -22,7 +22,7 @@
 		},
 		{
 			"name": "podcast-worker",
-			"cwd": "api/dist/workers",
+			"cwd": "dist/workers",
 			"script": "podcast.js",
 			"instances": 2,
 			"exec_mode": "cluster",
@@ -30,7 +30,7 @@
 		},
 		{
 			"name": "og-worker",
-			"cwd": "api/dist/workers",
+			"cwd": "dist/workers",
 			"script": "og.js",
 			"instances": 2,
 			"exec_mode": "cluster",

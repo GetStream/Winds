@@ -25,33 +25,17 @@ api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json({ limit: '5mb' }));
 
 api.enable('trust proxy');
-api.use(
-	new limit({
-		windowMs: 60 * 1000,
-		max: 1000,
-		delayMs: 0,
-	}),
-);
+api.use(new limit({
+	windowMs: 60 * 1000,
+	max: 1000,
+	delayMs: 0
+}));
 
 api.set('json spaces', 4);
 
-api.use(
-	jwt({ secret: config.jwt.secret }).unless({
-		path: [
-			'/',
-			'/health',
-			'/email/weekly',
-			'/status',
-			'/queue',
-			'/sentry/log',
-			'/sentry/throw',
-			'/auth/signup',
-			'/auth/login',
-			'/auth/forgot-password',
-			'/auth/reset-password',
-		],
-	}),
-);
+api.use(jwt({ secret: config.jwt.secret }).unless({
+	path: ['/', '/health', '/email/weekly', '/status', '/queue', '/sentry/log', '/sentry/throw', '/auth/signup', '/auth/login', '/auth/forgot-password', '/auth/reset-password']
+}));
 
 api.use(async function addUser(req, res, next) {
 	// XXX: req.user is attached by JWT when a valid token is provided with the request
@@ -95,9 +79,7 @@ if (require.main === module) {
 			logger.error({ err });
 			process.exit(1);
 		}
-		logger.info(
-			`API is now running on port ${config.server.port} in ${config.env} mode`,
-		);
+		logger.info(`API is now running on port ${config.server.port} in ${config.env} mode`);
 	});
 }
 

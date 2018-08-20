@@ -4,11 +4,17 @@ import RSS from '../models/rss';
 import Podcast from '../models/podcast';
 import moment from 'moment';
 import config from '../config';
-
-import { version } from '../../../app/package.json';
 import { Throw } from '../utils/errors';
 import Queue from 'bull';
 import logger from '../utils/logger';
+
+let version;
+
+if (process.env.DOCKER) {
+	version = 'DOCKER';
+} else {
+	version = require('../../../app/package.json');
+}
 
 const rssQueue = new Queue('rss', config.cache.uri);
 const ogQueue = new Queue('og', config.cache.uri);
@@ -58,13 +64,15 @@ exports.status = async (req, res) => {
 		output.mostRecentEpisode = -1;
 	}
 
-	output.rss.parsing = await RSS.count({ "queueState.isParsing": true });
-	output.rss.og = await RSS.count({ "queueState.isUpdatingOG": true });
-	output.rss.stream = await RSS.count({ "queueState.isSynchronizingWithStream": true });
-	output.rss.social = await RSS.count({ "queueState.isFetchingSocialScore": true });
-	output.podcast.parsing = await Podcast.count({ "queueState.isParsing": true });
-	output.podcast.og = await Podcast.count({ "queueState.isUpdatingOG": true });
-	output.podcast.stream = await Podcast.count({ "queueState.isSynchronizingWithStream": true });
+	output.rss.parsing = await RSS.count({ 'queueState.isParsing': true });
+	output.rss.og = await RSS.count({ 'queueState.isUpdatingOG': true });
+	output.rss.stream = await RSS.count({ 'queueState.isSynchronizingWithStream': true });
+	output.rss.social = await RSS.count({ 'queueState.isFetchingSocialScore': true });
+	output.podcast.parsing = await Podcast.count({ 'queueState.isParsing': true });
+	output.podcast.og = await Podcast.count({ 'queueState.isUpdatingOG': true });
+	output.podcast.stream = await Podcast.count({
+		'queueState.isSynchronizingWithStream': true,
+	});
 
 	if (output.rss.parsing > 2000) {
 		output.code = 500;
@@ -91,7 +99,9 @@ exports.queue = async (req, res) => {
 		output[key] = queueStatus;
 		if (queueStatus.waiting > 2500) {
 			output.code = 500;
-			output.error = `Queue ${key} has more than 2500 items waiting to be processed: ${queueStatus.waiting} are waiting`;
+			output.error = `Queue ${key} has more than 2500 items waiting to be processed: ${
+				queueStatus.waiting
+			} are waiting`;
 		}
 	}
 
@@ -106,7 +116,11 @@ exports.sentryLog = async (req, res) => {
 	try {
 		Throw();
 	} catch (err) {
-		logger.error('this is a test error', { err, tags: { env: 'testing' }, extra: { additional: 'data', is: 'awesome' } });
+		logger.error('this is a test error', {
+			err,
+			tags: { env: 'testing' },
+			extra: { additional: 'data', is: 'awesome' },
+		});
 	}
 	try {
 		Throw();

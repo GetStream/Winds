@@ -1,4 +1,5 @@
 {
+  "license": "BSD-3-Clause",
   "dependencies": {
     "babel-cli": "^6.26.0"
   }
