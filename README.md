@@ -385,8 +385,6 @@ pm2 start process_prod.json
 
 OR
 
-#### Docker Compose
-
 **Prepare the build for Docker**:
 
 `cd api && cd scripts && ./make-build.sh`
