@@ -57,12 +57,14 @@ const schema = joi.object().keys({
 
 // Run the OG scraping job
 export async function handleOg(job) {
-	const originalPayload = Object.assign({}, job.data);
+	const originalPayload = {};
 	try {
 		// best effort at escaping urls found in the wild
 		if (!!job.data.urls) {
+			originalPayload.urls = job.data.urls;
 			job.data.urls = job.data.urls.map(u => ensureEncoded(u));
 		} else {
+			originalPayload.url = job.data.url;
 			job.data.url = ensureEncoded(job.data.url);
 		}
 	} catch (_) {

@@ -64,7 +64,7 @@ function sleep(time) {
 	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
 }
 
-async function tryRedditAPI(path, retries = 3, backoffDelay = 20) {
+async function tryRedditAPI(path, retries = 2, backoffDelay = 30) {
 	if (!accessToken) {
 		await refreshAccessToken();
 	}
@@ -95,7 +95,7 @@ async function tryRedditAPI(path, retries = 3, backoffDelay = 20) {
 	throw new Error(`Failed to perform call to '${path}'`);
 }
 
-async function tryHackernewsAPI(path, retries = 3, backoffDelay = 20) {
+async function tryHackernewsAPI(path, retries = 2, backoffDelay = 30) {
 	const url = 'https://hacker-news.firebaseio.com/v0' + path;
 	let currentDelay = 0, nextDelay = backoffDelay;
 	while (retries) {
@@ -110,7 +110,7 @@ async function tryHackernewsAPI(path, retries = 3, backoffDelay = 20) {
 	throw new Error(`Failed to perform call to '${path}'`);
 }
 
-async function tryHackernewsSearch(query, retries = 3, backoffDelay = 20) {
+async function tryHackernewsSearch(query, retries = 2, backoffDelay = 30) {
 	const url = 'https://hn.algolia.com/api/v1/search';
 	let currentDelay = 0, nextDelay = backoffDelay;
 	while (retries) {

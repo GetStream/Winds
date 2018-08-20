@@ -242,7 +242,7 @@ function checkHeaders(stream, url, checkContenType = false) {
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
+export async function ReadPageURL(url, retries = 2, backoffDelay = 30) {
 	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
@@ -260,7 +260,7 @@ export async function ReadPageURL(url, retries = 3, backoffDelay = 20) {
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadFeedURL(feedURL, retries = 3, backoffDelay = 20) {
+export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 30) {
 	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
