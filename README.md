@@ -25,10 +25,6 @@ To get started with Winds, please visit [https://getstream.io/winds/](https://ge
 
 In addition to the desktop apps for [macOS](https://s3.amazonaws.com/winds-2.0-releases/latest.html), [Linux](https://s3.amazonaws.com/winds-2.0-releases/latest.html), and [Windows](https://s3.amazonaws.com/winds-2.0-releases/latest.html), there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)
 
-## Jobs
-
-Stream is sponsoring 1 person to work full time on Winds. The job posting is available on [AngelList](https://angel.co/stream/jobs/376455-senior-javascript-frontend-engineer).
-
 ## Featured RSS & Podcasts
 
 Have a popular RSS or Podcast and want to be featured? Reach out to winds@getstream.io. We reply to every message.
