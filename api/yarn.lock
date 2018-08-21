@@ -3040,6 +3040,10 @@ index-of@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/index-of/-/index-of-0.2.0.tgz#38c1e2367ea55dffad3b6eb592ec1cc3090d7d65"
 
+inflate-auto@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/inflate-auto/-/inflate-auto-1.0.0.tgz#c8bd87194c729c3f8307e831dee118dcff46a6e4"
+
 inflight@^1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/inflight/-/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"

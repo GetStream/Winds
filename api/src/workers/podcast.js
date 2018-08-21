@@ -173,8 +173,8 @@ async function shutdown(signal) {
 	process.exit(0);
 }
 
-async function failure(err) {
-	logger.error(`Unhandled error: ${err.stack}. Shutting down Podcast worker.`);
+async function failure(reason, err) {
+	logger.error(`Unhandled ${reason}: ${err.stack}. Shutting down Podcast worker.`);
 	try {
 		await ShutDownPodcastQueue();
 		mongoose.connection.close();
@@ -187,5 +187,5 @@ async function failure(err) {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
-process.on('unhandledRejection', failure);
-process.on('uncaughtException', failure);
+process.on('unhandledRejection', failure.bind(null, 'promise rejection'));
+process.on('uncaughtException', failure.bind(null, 'exception'));

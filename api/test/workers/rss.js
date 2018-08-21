@@ -40,26 +40,44 @@ describe('RSS worker', () => {
 
 	describe('queue', () => {
 		const testCases = [
+			'http://20minutes.fr/rss/france.xml',
+			'http://20minutes.fr/rss/hightech.xml',
+			'http://20minutes.fr/rss/paris.xml',
+			'http://20minutes.fr/rss/une.xml',
+			'http://adelcho88.podomatic.com/rss2.xml',
 			'http://apublica.org/feed',
 			'http://audiworld.com/rss.xml',
+			'http://blog.moneydj.com/news/feed',
 			'http://bookshadow.com/weblog/feeds',
 			'http://dingxiaoyun555.blog.163.com/rss',
 			'http://douban.com/feed/people/52041165/interests',
 			'http://geektopia.es/rss.xml',
+			'http://gossip.podomatic.com/rss2.xml',
+			'http://htxt.co.za/feed',
+			'http://jasonhaley.com/syndication.axd',
 			'http://kaiak.tw/?cat=205&feed=rss2',
 			'http://maxwell-land-surveying.com/feed',
+			'http://opplopolis.com/feed/all',
 			'http://rss.cnki.net/kns/rss.aspx?journal=hhzx&virtual=knavi',
+			'http://scottishpoetrylibrary.podomatic.com/rss2.xml',
 			'http://shanzhuoboshi.com/feed',
+			'http://simonsays.fr/feed',
 			'http://sospc.name/feed',
+			'http://sourcedigit.com/feed',
+			'http://stevestoj.podomatic.com/rss2.xml',
 			'http://straitstimes.com/news/asia/rss.xml',
+			'http://sunnymegatron.com/feed',
 			'http://tejiendoelmundo.wordpress.com/feed',
+			'http://thejunkies.podomatic.com/rss2.xml',
 			'http://thewildeternal.com/blog/feed',
 			'http://totoyao.wordpress.com/feed',
 			'http://xda-developers.com/category/android/feed',
+			'http://yan.sg/feed',
 			'http://zhukun.net/feed',
 			'https://90.cx/feed',
 			'https://api.prprpr.me/weibo/rss/5953553734',
 			'https://lowendbox.com/feed',
+			'https://qiujunya.com/feed',
 			'https://seattle.craigslist.org/search/act?format=rss',
 			'https://torrentedigital.com/feed',
 			'https://ttt.tt/feed',
@@ -81,7 +99,7 @@ describe('RSS worker', () => {
 					.reply(200, () => getTestFeed(url.host));
 				await queue(testCases[i]);
 				nock.cleanAll();
-			}).retries(3);
+			}).timeout(30000).retries(3);
 		}
 
 		it('should fail for invalid job', async () => {

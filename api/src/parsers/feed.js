@@ -7,8 +7,10 @@ import strip from 'strip';
 import zlib from 'zlib';
 import * as urlParser from 'url';
 import FeedParser from 'feedparser';
+import InflateAuto from 'inflate-auto';
 import { createHash } from 'crypto';
 import { PassThrough } from 'stream';
+import { Gunzip } from 'zlib';
 
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Episode from '../models/episode';
@@ -35,22 +37,27 @@ function sanitize(dirty) {
 
 export async function ParsePodcast(podcastUrl, limit = 1000) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
-	let t0 = new Date();
-	let stream = await ReadFeedURL(podcastUrl);
-	let posts = await ReadFeedStream(stream);
-	let podcastResponse = ParsePodcastPosts(urlParser.parse(podcastUrl).host, posts, limit);
-	statsd.timing('winds.parsers.podcast.finished_parsing', new Date() - t0);
+	const start = new Date();
+	const host = urlParser.parse(podcastUrl).host;
+
+	const stream = await ReadFeedURL(podcastUrl);
+	const posts = await ReadFeedStream(stream);
+	const podcastResponse = ParsePodcastPosts(host, posts, limit);
+
+	statsd.timing('winds.parsers.podcast.finished_parsing', new Date() - start);
 	return podcastResponse;
 }
 
 export async function ParseFeed(feedURL, limit = 1000) {
 	logger.info(`Attempting to parse RSS ${feedURL}`);
-	// timers
-	let t0 = new Date();
-	let stream = await ReadFeedURL(feedURL);
-	let posts = await ReadFeedStream(stream);
-	let feedResponse = ParseFeedPosts(urlParser.parse(feedURL).host, posts, limit);
-	statsd.timing('winds.parsers.rss.finished_parsing', new Date() - t0);
+	const start = new Date();
+	const host = urlParser.parse(feedURL).host;
+
+	const stream = await ReadFeedURL(feedURL);
+	const posts = await ReadFeedStream(stream);
+	const feedResponse = ParseFeedPosts(host, posts, limit);
+
+	statsd.timing('winds.parsers.rss.finished_parsing', new Date() - start);
 	return feedResponse;
 }
 
@@ -59,7 +66,7 @@ export function ComputeHash(post) {
 		e.url;
 	});
 	const enclosureString = enclosureUrls.join(',') || '';
-	// ignore post.content for now, it changes too often I think
+	//XXX: ignore post.content for now, it changes too often I think
 	const data = `${post.title}:${post.description}:${post.link}:${enclosureString}`;
 	return createHash('md5')
 		.update(data)
@@ -193,12 +200,12 @@ export function ParsePodcastPosts(domain, posts, limit = 1000) {
 export function ReadURL(url) {
 	let headers = {
 		'User-Agent': WindsUserAgent,
+		'Accept-Encoding': 'gzip,deflate',
 		Accept: AcceptHeader,
 	};
 	return request({
 		method: 'get',
 		uri: url,
-		gzip: true,
 		timeout: 12 * 1000,
 		headers: headers,
 		maxRedirects: 20,
@@ -215,17 +222,18 @@ function sleep(time) {
 
 function checkHeaders(stream, url, checkContenType = false) {
 	return new Promise((resolve, reject) => {
+		let resolved = false;
 		let bodyLength = 0;
 
 		//XXX: piping to a pass through dummy stream so we can pipe it later
 		//     without causing request errors
-		const dummy = new PassThrough();
+		let dummy = new PassThrough();
 		stream.pipe(dummy);
 
 		stream.on('response', response => {
 			if (checkContenType) {
 				const contentType = response.headers['content-type'];
-				if (!contentType || !contentType.toLowerCase().includes('html')) {
+				if (!contentType || !contentType.trim().toLowerCase().includes('html')) {
 					logger.warn(`Invalid content type '${contentType}' for url ${url}`);
 					stream.abort();
 					return resolve(null);
@@ -236,15 +244,46 @@ function checkHeaders(stream, url, checkContenType = false) {
 				stream.abort();
 				return reject(new Error("Request body larger than maxBodyLength limit"));
 			}
-			resolve(dummy);
+			const encoding = response.headers['content-encoding'] || 'identity';
+			let inflater;
+			switch (encoding.trim().toLowerCase()) {
+			case 'deflate':
+				inflater = new InflateAuto();
+				break;
+			case 'gzip':
+				inflater = new Gunzip();
+				break;
+			}
+			if (inflater) {
+				dummy = dummy.pipe(inflater);
+			}
+			dummy.on('error', err => {
+				if (!resolved) {
+					reject(err);
+				}
+				stream.abort();
+			});
+		}).on('error', err => {
+			if (!resolved) {
+				reject(err);
+			} else {
+				dummy.destroy(err);
+			}
+			stream.abort();
 		}).on('data', data => {
+			resolved = true;
+			resolve(dummy);
+
 			if (bodyLength + data.length <= maxContentLengthBytes) {
 				bodyLength += data.length;
 			} else {
-				stream.abort();
-				reject(new Error("Request body larger than maxBodyLength limit"));
+				dummy.destroy(new Error("Request body larger than maxBodyLength limit"));
 			}
-		}).on('error', reject);
+		}).on('end', () => {
+			if (!resolved) {
+				resolve(dummy);
+			}
+		});
 	});
 }
 
@@ -274,7 +313,7 @@ export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 30) {
 			await sleep(currentDelay);
 			return await checkHeaders(ReadURL(feedURL), feedURL);
 		} catch (err) {
-			logger.warn(`Failed to read feed url ${url}: ${err.message}. Retrying`);
+			logger.warn(`Failed to read feed url ${feedURL}: ${err.message}. Retrying`);
 			--retries;
 			[currentDelay, nextDelay] = [nextDelay, currentDelay + nextDelay];
 			if (!retries) {
@@ -285,22 +324,33 @@ export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 30) {
 }
 
 // Turn the feed Stream into a list of posts
-export async function ReadFeedStream(feedStream) {
-	let posts = [];
-	var end = new Promise(function(resolve, reject) {
-		feedStream
-			.on('error', reject)
-			.pipe(new FeedParser())
-			.on('error', reject)
-			.on('end', () => resolve(posts))
-			.on('readable', function() {
-				let stream = this, item;
-				while ((item = stream.read())) {
-					posts.push(item);
+export function ReadFeedStream(feedStream) {
+	return new Promise((resolve, reject) => {
+		const posts = [];
+		const parser = new FeedParser();
+		let resolved = false;
+
+		feedStream.on('error', err => {
+			if (!resolved) {
+				reject(err);
+			}
+			feedStream.destroy();
+		});
+
+		parser.on('data', data => posts.push(data))
+			.on('end', () => {
+				resolved = true;
+				resolve(posts);
+			})
+			.on('error', err => {
+				if (!resolved) {
+					reject(err);
 				}
+				parser.destroy();
 			});
+
+		feedStream.pipe(parser);
 	});
-	return end;
 }
 
 // Parse the posts and add our custom logic

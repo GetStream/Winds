@@ -209,7 +209,7 @@ async function fixData(res, uri) {
 	try {
 		const headers = {
 			'User-Agent': WindsUserAgent,
-			'accept-encoding': 'gzip, deflate, br',
+			'Accept-Encoding': 'gzip,deflate,br',
 		};
 
 		// ensure favicon url is reachable

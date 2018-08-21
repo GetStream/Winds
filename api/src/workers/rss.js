@@ -203,8 +203,8 @@ async function shutdown(signal) {
 	process.exit(0);
 }
 
-async function failure(err) {
-	logger.error(`Unhandled error: ${err.stack}. Shutting down RSS worker.`);
+async function failure(source, err) {
+	logger.error(`Unhandled ${source}: ${err.stack}. Shutting down RSS worker.`);
 	try {
 		await ShutDownRssQueue();
 		mongoose.connection.close();
@@ -217,5 +217,5 @@ async function failure(err) {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
-process.on('unhandledRejection', failure);
-process.on('uncaughtException', failure);
+process.on('unhandledRejection', failure.bind(null, 'promise rejection'));
+process.on('uncaughtException', failure.bind(null, 'exception'));
