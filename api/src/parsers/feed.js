@@ -5,6 +5,7 @@ import normalize from 'normalize-url';
 import sanitizeHtml from 'sanitize-html';
 import strip from 'strip';
 import zlib from 'zlib';
+import * as urlParser from 'url';
 import FeedParser from 'feedparser';
 import { createHash } from 'crypto';
 import { PassThrough } from 'stream';
@@ -37,7 +38,7 @@ export async function ParsePodcast(podcastUrl, limit = 1000) {
 	let t0 = new Date();
 	let stream = await ReadFeedURL(podcastUrl);
 	let posts = await ReadFeedStream(stream);
-	let podcastResponse = ParsePodcastPosts(posts, limit);
+	let podcastResponse = ParsePodcastPosts(urlParser.parse(podcastUrl).host, posts, limit);
 	statsd.timing('winds.parsers.podcast.finished_parsing', new Date() - t0);
 	return podcastResponse;
 }
@@ -48,7 +49,7 @@ export async function ParseFeed(feedURL, limit = 1000) {
 	let t0 = new Date();
 	let stream = await ReadFeedURL(feedURL);
 	let posts = await ReadFeedStream(stream);
-	let feedResponse = ParseFeedPosts(posts, limit);
+	let feedResponse = ParseFeedPosts(urlParser.parse(feedURL).host, posts, limit);
 	statsd.timing('winds.parsers.rss.finished_parsing', new Date() - t0);
 	return feedResponse;
 }
@@ -129,7 +130,7 @@ export function CreateFingerPrints(posts) {
 }
 
 // Parse the posts and add our custom logic
-export function ParsePodcastPosts(posts, limit = 1000) {
+export function ParsePodcastPosts(domain, posts, limit = 1000) {
 	let podcastContent = { episodes: [] };
 
 	posts = CreateFingerPrints(posts);
@@ -143,11 +144,14 @@ export function ParsePodcastPosts(posts, limit = 1000) {
 					? post.enclosures[0].url
 					: post.guid;
 		}
-		url = normalize(url);
 		if (!url) {
 			logger.info('skipping episode since there is no url');
 			continue;
 		}
+		if (!urlParser.parse(url).host) {
+			url = url.resolve(domain, url);
+		}
+		url = normalize(url);
 		const title = strip(post.title);
 		if (!title) {
 			logger.info('skipping episode since there is no title');
@@ -297,7 +301,7 @@ export async function ReadFeedStream(feedStream) {
 }
 
 // Parse the posts and add our custom logic
-export function ParseFeedPosts(posts, limit = 1000) {
+export function ParseFeedPosts(domain, posts, limit = 1000) {
 	let feedContents = { articles: [] };
 	// create finger prints before doing anything else
 	posts = CreateFingerPrints(posts);
@@ -308,15 +312,18 @@ export function ParseFeedPosts(posts, limit = 1000) {
 		let article;
 
 		try {
+			if (!post.link) {
+				logger.info('skipping article since there is no url');
+				continue;
+			}
 			let description = strip(entities.decodeHTML(post.description)).substring(0, 280);
 			if (description == 'null') {
 				description = null;
 			}
 			const content = sanitize(post.summary);
-			const url = normalize(post.link || '');
-			if (!url) {
-				logger.info('skipping article since there is no url');
-				continue;
+			const url = normalize(post.link);
+			if (!urlParser.parse(url).host) {
+				url = url.resolve(domain, url);
 			}
 			// articles need to have a title
 			const title = strip(entities.decodeHTML(post.title));

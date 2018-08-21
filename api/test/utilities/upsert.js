@@ -113,15 +113,15 @@ describe('Upsert', () => {
 	describe('Double Inserts RSS feed', () => {
 		// loop over feeds, and verify that the 2nd insert has 0 changes
 		// this will break if something is wrong with the upsert/change detection
-		for (let f of [
-			'techcrunch',
-			'reddit-r-programming',
-			'hackernews',
-			'medium-technology',
-		]) {
+		for (let [f, url] of Object.entries({
+			'techcrunch': 'https://techcrunch.com/feed',
+			'reddit-r-programming': 'https://reddit.com/r/programming.rss',
+			'hackernews': 'https://news.ycombinator.com',
+			'medium-technology': 'https://medium.com',
+		})) {
 			it(`the second run should be unchanged for ${f}`, async () => {
 				let posts = await ReadFeedStream(getTestFeed(f));
-				let feedResponse = ParseFeedPosts(posts);
+				let feedResponse = ParseFeedPosts('', posts);
 				let articles = feedResponse.articles;
 
 				for (let a of articles) {
@@ -190,7 +190,7 @@ describe('Upsert', () => {
 		for (let f of ['giant-bombcast', 'serial', 'a16z']) {
 			it(`the second run should be unchanged for ${f}`, async () => {
 				const posts = await ReadFeedStream(getTestPodcast(f));
-				const feedResponse = ParsePodcastPosts(posts);
+				const feedResponse = ParsePodcastPosts('', posts);
 				const episodes = feedResponse.episodes;
 
 				for (const e of episodes) {
