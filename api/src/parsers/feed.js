@@ -148,15 +148,15 @@ export function ParsePodcastPosts(domain, posts, limit = 1000) {
 			logger.info('skipping episode since there is no url');
 			continue;
 		}
-		if (!urlParser.parse(url).host) {
-			url = url.resolve(domain, url);
-		}
-		url = normalize(url);
 		const title = strip(post.title);
 		if (!title) {
 			logger.info('skipping episode since there is no title');
 			continue;
 		}
+		if (!urlParser.parse(url).host) {
+			url = url.resolve(domain, url);
+		}
+		url = normalize(url);
 		let image = post.image && post.image.url;
 		// ensure we keep order for feeds with no time
 		const time =
@@ -207,6 +207,9 @@ export function ReadURL(url) {
 }
 
 function sleep(time) {
+	if (time <= 0) {
+		return Promise.resolve();
+	}
 	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
 }
 
@@ -310,31 +313,32 @@ export function ParseFeedPosts(domain, posts, limit = 1000) {
 		const post = posts[i];
 
 		let article;
+		let url = post.link;
 
 		try {
-			if (!post.link) {
+			if (!url) {
 				logger.info('skipping article since there is no url');
+				continue;
+			}
+			const title = strip(entities.decodeHTML(post.title));
+			if (!title) {
+				logger.info('skipping article since there is no title');
 				continue;
 			}
 			let description = strip(entities.decodeHTML(post.description)).substring(0, 280);
 			if (description == 'null') {
 				description = null;
 			}
-			const content = sanitize(post.summary);
-			const url = normalize(post.link);
 			if (!urlParser.parse(url).host) {
 				url = url.resolve(domain, url);
 			}
+			url = normalize(url);
 			// articles need to have a title
-			const title = strip(entities.decodeHTML(post.title));
-			if (!title) {
-				logger.info('skipping article since there is no title');
-				continue;
-			}
 			// ensure we keep order for feeds with no time
 			const time =
 				moment(post.pubdate).toISOString() ||
 				moment().subtract(i, 'minutes').toISOString();
+			const content = sanitize(post.summary);
 			article = new Article({
 				content: content,
 				description: description,
