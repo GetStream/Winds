@@ -26,6 +26,7 @@ const WindsUserAgent =
 const AcceptHeader = 'text/html,application/xhtml+xml,application/xml';
 const statsd = getStatsDClient();
 
+const requestTTL = 12 * 1000;
 const maxContentLengthBytes = 1024 * 1024 * 5;
 
 function sanitize(dirty) {
@@ -208,7 +209,7 @@ export function ReadURL(url) {
 		agent: false,
 		pool: { maxSockets: 256 },
 		uri: url,
-		timeout: 12 * 1000,
+		timeout: requestTTL,
 		headers: headers,
 		maxRedirects: 20,
 		resolveWithFullResponse: true,
@@ -219,7 +220,7 @@ function sleep(time) {
 	if (time <= 0) {
 		return Promise.resolve();
 	}
-	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
+	return new Promise(resolve => setTimeout(resolve, time));
 }
 
 function checkHeaders(stream, url, checkContenType = false) {
@@ -290,7 +291,7 @@ function checkHeaders(stream, url, checkContenType = false) {
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadPageURL(url, retries = 2, backoffDelay = 30) {
+export async function ReadPageURL(url, retries = 2, backoffDelay = 100) {
 	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
@@ -308,7 +309,7 @@ export async function ReadPageURL(url, retries = 2, backoffDelay = 30) {
 }
 
 // Read the given feed URL and return a Stream
-export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 30) {
+export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 100) {
 	let currentDelay = 0, nextDelay = backoffDelay;
 	for (;;) {
 		try {
@@ -327,32 +328,35 @@ export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 30) {
 
 // Turn the feed Stream into a list of posts
 export function ReadFeedStream(feedStream) {
-	return new Promise((resolve, reject) => {
-		const posts = [];
-		const parser = new FeedParser();
-		let resolved = false;
+	return Promise.race([
+		new Promise((resolve, reject) => setTimeout(reject, 2 * requestTTL, new Error('Request timed out'))),
+		new Promise((resolve, reject) => {
+			const posts = [];
+			const parser = new FeedParser();
+			let resolved = false;
 
-		feedStream.on('error', err => {
-			if (!resolved) {
-				reject(err);
-			}
-			feedStream.destroy();
-		});
-
-		parser.on('data', data => posts.push(data))
-			.on('end', () => {
-				resolved = true;
-				resolve(posts);
-			})
-			.on('error', err => {
+			feedStream.on('error', err => {
 				if (!resolved) {
 					reject(err);
 				}
-				parser.destroy();
+				feedStream.destroy();
 			});
 
-		feedStream.pipe(parser);
-	});
+			parser.on('data', data => posts.push(data))
+				.on('end', () => {
+					resolved = true;
+					resolve(posts);
+				})
+				.on('error', err => {
+					if (!resolved) {
+						reject(err);
+					}
+					parser.destroy();
+				});
+
+			feedStream.pipe(parser);
+		})
+	]);
 }
 
 // Parse the posts and add our custom logic

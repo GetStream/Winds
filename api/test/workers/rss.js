@@ -96,7 +96,6 @@ describe('RSS worker', () => {
 		];
 
 		for (let i = 0; i < testCases.length; ++i) {
-			continue;
 
 			it(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
 				async function queue(url) {
