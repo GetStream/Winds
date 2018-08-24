@@ -1,3 +1,4 @@
+import nock from 'nock';
 import { expect } from 'chai';
 
 import { ogQueue } from '../../src/asyncTasks';
@@ -6,7 +7,7 @@ import Episode from '../../src/models/episode';
 import Article from '../../src/models/article';
 import { ParseOG } from '../../src/parsers/og';
 import { ogProcessor, handleOg } from '../../src/workers/og';
-import { loadFixture, dropDBs } from '../utils';
+import { getTestPage, loadFixture, dropDBs } from '../utils';
 
 describe('OG worker', () => {
 	let handler;
@@ -115,12 +116,21 @@ describe('OG worker', () => {
 				url: 'http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk',
 			};
 
+			nock('http://feedproxy.google.com/~r/bildblog/~3/sUeojXz2BCk')
+				.defaultReplyHeaders({
+					'Content-Type': 'text/html'
+				})
+				.get('')
+				.reply(200, () => getTestPage('bildblog.html'));
+
 			await ogQueue.add(data);
 			await handler;
 
 			expect(ParseOG.calledWith(data.url)).to.be.true;
 			const image = await ParseOG.firstCall.returnValue;
 			expect(image).to.be.null;
+
+			nock.cleanAll();
 		});
 	});
 

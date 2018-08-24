@@ -51,7 +51,7 @@ describe('RSS worker', () => {
 	});
 
 	describe('queue', () => {
-		const testCases = [];[
+		const testCases = [
 			'http://20minutes.fr/rss/france.xml',
 			'http://20minutes.fr/rss/hightech.xml',
 			'http://20minutes.fr/rss/paris.xml',
