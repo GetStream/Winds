@@ -11,6 +11,7 @@ import weightedRandom from '../utils/random';
 import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
 import { isURL } from '../utils/validation';
 import { startSampling } from '../utils/watchdog';
+import { tryAddToQueueFlagSet, getQueueFlagSetMembers } from '../utils/queue';
 
 const publicationTypes = {
 	rss: { schema: RSS, enqueue: RssQueueAdd },
@@ -39,13 +40,14 @@ if (require.main === module) {
 	startSampling('winds.event_loop.conductor.delay');
 }
 
-function getPublications(schema, followerMin, followerMax, interval, limit, exclude=[]) {
+async function getPublications(schema, followerMin, followerMax, interval, limit, exclude=[]) {
+	const busy = await getQueueFlagSetMembers(schema == RSS ? 'rss' : 'podcast');
+	const ids = busy.map(v => v.split(':')[0]);
 	const time = moment().subtract(interval, 'minutes').toDate();
-	return schema.find({
-		_id: { $nin: exclude },
+	return await schema.find({
+		_id: { $nin: exclude.concat(ids) },
 		valid: true,
 		duplicateOf: { $exists : false },
-		"queueState.isParsing": { $ne: true, },
 		lastScraped: { $lte: time, },
 		followerCount: { $gte: followerMin, $lte: followerMax },
 		consecutiveScrapeFailures: { $lt: weightedRandom() }
@@ -73,14 +75,8 @@ export async function conduct() {
 		            `${other.length} that we scrape every ${scrapeInterval} minutes`);
 		const publications = popular.concat(other);
 
-		// make sure we don't schedule these guys again till its finished
-		const publicationIDs = publications.map(p => p._id);
-		const updated = await schema.update(
-			{ _id: { $in: publicationIDs } },
-			{ "queueState.isParsing": true },
-			{ multi: true },
-		);
-		logger.info(`marked ${updated.nModified} of type ${type} publications as isParsing`);
+		const updated = await Promise.all(publications.map(p => tryAddToQueueFlagSet(type, type, p._id)));
+		logger.info(`marked ${updated.filter(u => !!u).length} of type ${type} publications as isParsing`);
 		logger.info(`conductor found ${publications.length} of type ${type} to scrape`);
 		const validPublications = publications.filter(p => isURL(p.feedUrl));
 		await Promise.all(validPublications.map(publication => {

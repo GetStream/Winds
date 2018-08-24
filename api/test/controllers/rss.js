@@ -85,7 +85,7 @@ describe('RSS controller', () => {
 			expect(response).to.have.status(201);
 			expect(response.body).to.have.length(1);
 			expect(response.body[0].url).to.eq('https://news.ycombinator.com');
-			rss = await RSS.find({ url: 'https://news.ycombinator.com' });
+			rss = await RSS.findOne({ url: 'https://news.ycombinator.com' });
 		});
 
 		it('2nd time shoudl still return a response', async () => {
@@ -97,9 +97,9 @@ describe('RSS controller', () => {
 			expect(response).to.have.status(201);
 			expect(response.body).to.have.length(1);
 
-			let rss2 = await RSS.find({ url: 'https://news.ycombinator.com' });
+			const rss2 = await RSS.findOne({ url: 'https://news.ycombinator.com' });
 			// but not be updated
-			expect(rss2.updatedAt).to.eq(rss.updatedAt);
+			expect(Number(rss2.updatedAt)).to.eq(Number(rss.updatedAt));
 		});
 
 		it('creates 2 RSS feeds for Tech Crunch', async () => {

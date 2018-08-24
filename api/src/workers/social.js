@@ -11,6 +11,7 @@ import { timeIt } from '../utils/statsd';
 import { fetchSocialScore } from '../utils/social';
 import { ensureEncoded } from '../utils/urls';
 import { startSampling } from '../utils/watchdog';
+import { removeQueueFlag } from '../utils/queue';
 
 if (require.main === module) {
 	logger.info('Starting the Social worker');
@@ -74,7 +75,7 @@ export async function handleSocial(job) {
 		return;
 	}
 
-	await RSS.update({ _id: job.data.rss }, { "queueState.isSynchronizingWithStream": false });
+	await removeQueueFlag('social', 'rss', job.data.rss);
 
 	let updatingSocialScore = false;
 	await timeIt('winds.handle_social.update_social_score', () => {

@@ -9,6 +9,7 @@ import logger from '../utils/logger';
 import { ProcessStreamQueue, ShutDownStreamQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { sendFeedToCollections } from '../utils/collections';
+import { removeQueueFlag } from '../utils/queue';
 import { startSampling } from '../utils/watchdog';
 
 if (require.main === module) {
@@ -51,7 +52,7 @@ export async function handleStream(job) {
 	const type = 'rss' in job.data ? 'rss' : 'podcast';
 	const model = 'rss' in job.data ? RSS : Podcast;
 
-	await model.update({ _id: job.data[type] }, { "queueState.isSynchronizingWithStream": false });
+	await removeQueueFlag('stream', type, job.data[type]);
 
 	const feed = await model.findById(job.data[type]);
 	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed));

@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import RSS from '../../src/models/rss';
 import Podcast from '../../src/models/podcast';
 import { conduct } from '../../src/workers/conductor';
+import { tryAddToQueueFlagSet, getQueueFlagSetMembers } from '../../src/utils/queue';
 import { RssQueueAdd, PodcastQueueAdd } from '../../src/asyncTasks';
 import { loadFixture, dropDBs } from '../utils';
 
@@ -63,12 +64,10 @@ describe('Conductor worker', () => {
 		const rssAfter = await RSS.findById(rssBefore._id);
 		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.queueState.isParsing).to.be.true;
-		expect(podcastAfter.queueState.isParsing).to.be.false;
-		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
-		expect(Number(podcastAfter.updatedAt)).to.be.equal(
-			Number(podcastBefore.updatedAt),
-		);
+		const busyRss = new Set(await getQueueFlagSetMembers('rss'));
+		const busyPodcasts = new Set(await getQueueFlagSetMembers('podcast'));
+		expect(busyRss.has(`${rssAfter._id}:rss`)).to.be.true;
+		expect(busyPodcasts.has(`${podcastAfter._id}:podcast`)).to.be.false;
 	});
 
 	it('should only touch data followed by someone', async () => {
@@ -94,12 +93,10 @@ describe('Conductor worker', () => {
 		const rssAfter = await RSS.findById(rssBefore._id);
 		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.queueState.isParsing).to.be.true;
-		expect(podcastAfter.queueState.isParsing).to.be.false;
-		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
-		expect(Number(podcastAfter.updatedAt)).to.be.equal(
-			Number(podcastBefore.updatedAt),
-		);
+		const busyRss = new Set(await getQueueFlagSetMembers('rss'));
+		const busyPodcasts = new Set(await getQueueFlagSetMembers('podcast'));
+		expect(busyRss.has(`${rssAfter._id}:rss`)).to.be.true;
+		expect(busyPodcasts.has(`${podcastAfter._id}:podcast`)).to.be.false;
 	});
 
 	it('should only schedule data scraping if its not in the process of parsing', async () => {
@@ -114,21 +111,21 @@ describe('Conductor worker', () => {
 		const podcastBefore = await Podcast.create({
 			title: 'Podcast feed',
 			valid: true,
-			queueState: { isParsing: true },
 			followerCount: 2,
 			consecutiveScrapeFailures: 0,
 			feedUrl: 'http://bing.com',
 			lastScraped: beforeDeadline(),
 		});
+		await tryAddToQueueFlagSet('podcast', 'podcast', podcastBefore._id);
 
 		await conduct();
 
 		const rssAfter = await RSS.findById(rssBefore._id);
-		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.queueState.isParsing).to.be.true;
-		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
-		expect(Number(podcastAfter.updatedAt)).to.be.equal(Number(podcastBefore.updatedAt));
+		const busyRss = new Set(await getQueueFlagSetMembers('rss'));
+		expect(busyRss.has(`${rssAfter._id}:rss`)).to.be.true;
+		expect(RssQueueAdd.called).to.be.true;
+		expect(PodcastQueueAdd.called).to.be.false;
 	});
 
 	it('should touch at most 1/15 of dataset at a time', async () => {
@@ -155,8 +152,8 @@ describe('Conductor worker', () => {
 
 		await conduct();
 
-		const updatedRss = await RSS.count({ "queueState.isParsing": true });
-		expect(updatedRss).to.be.below(3);
+		const busyRss = new Set(await getQueueFlagSetMembers('rss'));
+		expect(busyRss.size).to.be.below(3);
 	});
 
 	it('should take at least 15 invocations to touch all dataset', async () => {
@@ -183,13 +180,13 @@ describe('Conductor worker', () => {
 
 		for (let i = 1; i <= 14; ++i) {
 			await conduct();
-			const updatedRss = await RSS.count({ "queueState.isParsing": true });
-			expect(updatedRss).to.be.below(i * 2 + 1);
+			const busyRss = new Set(await getQueueFlagSetMembers('rss'));
+			expect(busyRss.size).to.be.below(i * 2 + 1);
 		}
 
 		await conduct();
-		const updatedRss = await RSS.count({ "queueState.isParsing": true });
-		expect(updatedRss).to.be.equal(30);
+		const busyRss = new Set(await getQueueFlagSetMembers('rss'));
+		expect(busyRss.size).to.be.equal(30);
 	});
 
 	it('should schedule data for scraping with appropriate worker', async () => {
@@ -242,11 +239,9 @@ describe('Conductor worker', () => {
 		const rssAfter = await RSS.findById(rssBefore._id);
 		const podcastAfter = await Podcast.findById(podcastBefore._id);
 
-		expect(rssAfter.queueState.isParsing).to.be.true;
-		expect(podcastAfter.queueState.isParsing).to.be.false;
-		expect(Number(rssAfter.updatedAt)).to.not.be.equal(Number(rssBefore.updatedAt));
-		expect(Number(podcastAfter.updatedAt)).to.be.equal(
-			Number(podcastBefore.updatedAt),
-		);
+		const busyRss = new Set(await getQueueFlagSetMembers('rss'));
+		const busyPodcasts = new Set(await getQueueFlagSetMembers('podcast'));
+		expect(busyRss.has(`${rssAfter._id}:rss`)).to.be.true;
+		expect(busyPodcasts.has(`${podcastAfter._id}:podcast`)).to.be.false;
 	});
 });
