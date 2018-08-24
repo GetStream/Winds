@@ -205,6 +205,8 @@ export function ReadURL(url) {
 	};
 	return request({
 		method: 'get',
+		agent: false,
+		pool: { maxSockets: 256 },
 		uri: url,
 		timeout: 12 * 1000,
 		headers: headers,
