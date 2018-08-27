@@ -7,15 +7,10 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 [![StackShare](https://img.shields.io/badge/Tech-Stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
-<a href="https://www.patreon.com/winds_rss_podcast" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/Patreon-Donate-green.svg" alt="Patreon" /></a>
 
 ## Description
 
 Winds is a beautiful open-source RSS and Podcast app created using React & Redux on the frontend and Express.js on the backend. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions in form of pull requests are always appreciated. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
-
-## Patreon
-
-With Winds being an open-source application, we rely heavily on community members to both help build our platform, in addition to fund the resources required to keep it alive (servers, services, etc.). On that note, we've created a [Patreon](https://www.patreon.com/winds_rss_podcast) page where you can donate an amount of your choice to help Winds out. With the help of YOU, we will be able to continue building what we feel is the best RSS and Podcast application available – free for all to use.
 
 ## Getting Started
 
