@@ -110,12 +110,12 @@ The following tutorials will not only help you start contributing to Winds, but 
 2.  Building activity streams and newsfeeds on top of Stream
 3.  [Implementing search with Algolia](https://hackernoon.com/integrating-algolia-search-in-winds-a-beautiful-rss-podcast-application-f231e49cdab5)
 4.  MongoDB database schema design
-5.  Design thought process for Winds
+5.  [Stream and Winds](https://getstream.io/blog/the-engine-that-powers-winds/)
 6.  PM2 in production environments
 7.  [Creating a RESTful API design with Express.js](https://hackernoon.com/building-a-node-js-powered-api-with-express-mongoose-mongodb-19b14fd4b51e)
 8. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
 9. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
-10. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
+10. [Building Touch Bar Support for macOS in Electron with React](https://hackernoon.com/winds-2-1-building-touch-bar-support-for-macos-in-electron-with-react-e10adb811c91)
 11. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
 12. [Simple Steps to Optimize Your App Performance with MongoDB, Redis, and Node.js](https://hackernoon.com/simple-steps-to-optimize-your-app-performance-5700d8b58f58)
 13. [Getting Started with Winds & Open Source](https://hackernoon.com/winds-an-in-depth-tutorial-on-making-your-first-contribution-to-open-source-software-ebf259f21db2)
