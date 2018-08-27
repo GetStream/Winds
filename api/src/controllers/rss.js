@@ -79,10 +79,10 @@ exports.post = async (req, res) => {
 			continue;
 		}
 
-		let rss;
-		rss = await RSS.findOne({ feedUrl: feedUrl });
+		let rss = await RSS.findOne({ feedUrl: feedUrl });
+		const limit = moment().subtract(30, 'seconds');
 		// don't update featured RSS feeds since that ends up removing images etc
-		if (!rss || (rss && !rss.featured)) {
+		if (!rss || (!rss.featured && limit.isAfter(rss.lastScraped))) {
 			let response = await RSS.findOneAndUpdate(
 				{ feedUrl: feedUrl },
 				{

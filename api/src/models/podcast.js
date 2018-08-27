@@ -46,20 +46,6 @@ export const PodcastSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		queueState: {
-			isParsing: {
-				type: Boolean,
-				default: false,
-			},
-			isUpdatingOG: {
-				type: Boolean,
-				default: false,
-			},
-			isSynchronizingWithStream: {
-				type: Boolean,
-				default: false,
-			},
-		},
 		images: {
 			featured: {
 				type: String,

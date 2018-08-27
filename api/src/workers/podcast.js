@@ -18,6 +18,7 @@ import { getStreamClient } from '../utils/stream';
 import { startSampling } from '../utils/watchdog';
 import { ensureEncoded } from '../utils/urls';
 import { getStatsDClient, timeIt } from '../utils/statsd';
+import { tryCreateQueueFlag, removeFromQueueFlagSet } from '../utils/queue';
 
 if (require.main === module) {
 	EventEmitter.defaultMaxListeners = 128;
@@ -143,22 +144,19 @@ export async function handlePodcast(job) {
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 	const tasks = [];
-	const queueState = {};
-	if (!podcast.queueState.isUpdatingOG) {
-		queueState["queueState.isUpdatingOG"] = true;
+	if (await tryCreateQueueFlag('og', 'podcast', podcastID)) {
 		tasks.push(OgQueueAdd({ type: 'episode', podcast: podcastID, urls: updatedEpisodes.map(e => e.link) }, queueOpts));
 	}
-	if (!podcast.queueState.isSynchronizingWithStream) {
-		queueState["queueState.isSynchronizingWithStream"] = true;
+	if (await tryCreateQueueFlag('stream', 'podcast', podcastID)) {
 		tasks.push(StreamQueueAdd({ podcast: podcastID }, queueOpts));
 	}
-	await Promise.all([Podcast.update({ _id: podcastID }, queueState), ...tasks]);
 	statsd.increment('winds.handle_podcast.result.updates');
 }
 
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
-	return await Podcast.update({ _id: podcastID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
+	await removeFromQueueFlagSet('podcast', 'podcast', podcastID);
+	return await Podcast.update({ _id: podcastID }, { lastScraped: moment().toISOString() });
 }
 
 async function shutdown(signal) {

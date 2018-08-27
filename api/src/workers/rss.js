@@ -15,6 +15,7 @@ import { getStreamClient } from '../utils/stream';
 import { startSampling } from '../utils/watchdog';
 import { upsertManyPosts } from '../utils/upsert';
 import { ensureEncoded } from '../utils/urls';
+import { tryCreateQueueFlag, removeFromQueueFlagSet } from '../utils/queue';
 
 if (require.main === module) {
 	EventEmitter.defaultMaxListeners = 128;
@@ -163,9 +164,7 @@ export async function handleRSS(job) {
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 	const tasks = [];
-	const queueState = {};
-	if (!rss.queueState.isFetchingSocialScore) {
-		queueState["queueState.isFetchingSocialScore"] = true;
+	if (await tryCreateQueueFlag('social', 'rss', rssID)) {
 		tasks.push(SocialQueueAdd({
 			rss: rssID,
 			articles: updatedArticles.map(a => ({
@@ -175,20 +174,18 @@ export async function handleRSS(job) {
 			})),
 		}, queueOpts));
 	}
-	if (!rss.queueState.isUpdatingOG) {
-		queueState["queueState.isUpdatingOG"] = true;
+	if (await tryCreateQueueFlag('og', 'rss', rssID)) {
 		tasks.push(OgQueueAdd({ type: 'article', rss: rssID, urls: updatedArticles.map(a => a.url) }, queueOpts));
 	}
-	if (!rss.queueState.isSynchronizingWithStream) {
-		queueState["queueState.isSynchronizingWithStream"] = true;
+	if (await tryCreateQueueFlag('stream', 'rss', rssID)) {
 		tasks.push(StreamQueueAdd({ rss: rssID }, queueOpts));
 	}
-	await Promise.all([await RSS.update({ _id: rssID }, queueState), ...tasks]);
 	statsd.increment('winds.handle_rss.result.updates');
 }
 
 async function markDone(rssID) {
-	return await RSS.update({ _id: rssID }, { lastScraped: moment().toISOString(), "queueState.isParsing": false });
+	await removeFromQueueFlagSet('rss', 'rss', rssID);
+	return await RSS.update({ _id: rssID }, { lastScraped: moment().toISOString() });
 }
 
 async function shutdown(signal) {

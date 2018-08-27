@@ -15,6 +15,7 @@ describe('Podcast worker', () => {
 	};
 
 	let originalOgQueueAdd;
+	let originalStreamQueueAdd;
 	let handler;
 	let initialEpisodes;
 
@@ -29,7 +30,9 @@ describe('Podcast worker', () => {
 	before(async () => {
 		await podcastQueue.empty();
 		originalOgQueueAdd = OgQueueAdd._fn;
+		originalStreamQueueAdd = StreamQueueAdd._fn;
 		OgQueueAdd._fn = () => Promise.resolve();
+		StreamQueueAdd._fn = () => Promise.resolve();
 
 		podcastQueue.process(podcastProcessor).catch(err => console.log(`PODCAST PROCESSING FAILURE: ${err.stack}`));
 
@@ -43,6 +46,7 @@ describe('Podcast worker', () => {
 		podcastQueue.handlers['__default__'] = podcastProcessor;
 		await podcastQueue.close();
 		OgQueueAdd._fn = originalOgQueueAdd;
+		StreamQueueAdd._fn = originalStreamQueueAdd;
 	});
 
 	describe('queue', () => {
@@ -148,8 +152,8 @@ describe('Podcast worker', () => {
 				podcast: data.podcast,
 			});
 			const opts = { removeOnComplete: true, removeOnFail: true };
-			const args = { type: 'episode', urls: episodes.filter(e => !!e.url).map(e => e.url) };
-			expect(OgQueueAdd.calledOnceWith(args, opts));
+			const args = { type: 'episode', podcast: data.podcast, urls: episodes.map(e => e.link) };
+			expect(OgQueueAdd.calledOnceWith(args, opts)).to.be.true;
 		});
 
 		it('should schedule Stream job', async () => {

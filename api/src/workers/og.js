@@ -6,6 +6,7 @@ import { EventEmitter } from 'events';
 import db from '../utils/db';
 import logger from '../utils/logger';
 import { startSampling } from '../utils/watchdog';
+import { removeQueueFlag } from '../utils/queue';
 import RSS from '../models/rss'; // eslint-disable-line
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Article from '../models/article';
@@ -83,7 +84,7 @@ export async function handleOg(job) {
 	const field = jobType === 'episode' ? 'link' : 'url';
 	const parentField = mongoParentSchema === RSS ? 'rss' : 'podcast';
 
-	await mongoParentSchema.update({ _id: job.data[parentField] }, { "queueState.isUpdatingOG": false });
+	await removeQueueFlag('og', parentField, job.data[parentField]);
 
 	const urls = job.data.urls || [job.data.url];
 	const unecapedUrls = originalPayload.urls || [originalPayload.url];

@@ -11,6 +11,8 @@ import { loadFixture, dropDBs, getTestFeed, createMockFeed, getMockFeed } from '
 
 describe('RSS worker', () => {
 	let originalOgQueueAdd;
+	let originalStreamQueueAdd;
+	let originalSocialQueueAdd;
 	let handler;
 
 	function setupHandler() {
@@ -23,8 +25,16 @@ describe('RSS worker', () => {
 
 	before(async () => {
 		await rssQueue.empty();
+		OgQueueAdd.resetHistory();
+		StreamQueueAdd.resetHistory();
+		SocialQueueAdd.resetHistory();
+
 		originalOgQueueAdd = OgQueueAdd._fn;
+		originalStreamQueueAdd = StreamQueueAdd._fn;
+		originalSocialQueueAdd = SocialQueueAdd._fn;
 		OgQueueAdd._fn = () => Promise.resolve();
+		StreamQueueAdd._fn = () => Promise.resolve();
+		SocialQueueAdd._fn = () => Promise.resolve();
 
 		rssQueue.process(rssProcessor).catch(err => console.error(`RSS PROCESSING FAILURE: ${err.stack}`));
 
@@ -36,6 +46,8 @@ describe('RSS worker', () => {
 		rssQueue.handlers['__default__'] = rssProcessor;
 		await rssQueue.close();
 		OgQueueAdd._fn = originalOgQueueAdd;
+		StreamQueueAdd._fn = originalStreamQueueAdd;
+		SocialQueueAdd._fn = originalSocialQueueAdd;
 	});
 
 	describe('queue', () => {
@@ -84,6 +96,7 @@ describe('RSS worker', () => {
 		];
 
 		for (let i = 0; i < testCases.length; ++i) {
+
 			it(`should call worker when enqueueing job for ${testCases[i]}`, async () => {
 				async function queue(url) {
 					setupHandler();
@@ -99,7 +112,7 @@ describe('RSS worker', () => {
 					.reply(200, () => getTestFeed(url.host));
 				await queue(testCases[i]);
 				nock.cleanAll();
-			}).timeout(30000).retries(3);
+			}).timeout(30000).retries(2);
 		}
 
 		it('should fail for invalid job', async () => {
@@ -232,8 +245,8 @@ describe('RSS worker', () => {
 					rss: data.rss,
 				});
 				const opts = { removeOnComplete: true, removeOnFail: true };
-				const args = { type: 'article', urls: articles.filter(a => !!a.url).map(a => a.url) };
-				expect(OgQueueAdd.calledOnceWith(args, opts));
+				const args = { type: 'article', rss: data.rss, urls: articles.filter(a => !!a.url).map(a => a.url) };
+				expect(OgQueueAdd.calledOnceWith(args, opts)).to.be.true;
 			});
 
 			it('should schedule Social job', async () => {
