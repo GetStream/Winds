@@ -63,10 +63,10 @@ describe('OG worker', () => {
 			await handler;
 
 			expect(ParseOG.calledWith(data.url)).to.be.true;
-			const image = await ParseOG.firstCall.returnValue;
-			expect(image).to.not.be.null;
+			const og = await ParseOG.firstCall.returnValue;
+			expect(og).to.have.property('image');
 			const afterUpdate = await Article.findById(beforeUpdate._id);
-			expect(afterUpdate.images.og).to.be.equal(image);
+			expect(afterUpdate.images.og).to.be.equal(og.image);
 		});
 
 		it('should update article with image if update requested', async () => {
@@ -86,10 +86,10 @@ describe('OG worker', () => {
 			await handler;
 
 			expect(ParseOG.calledWith(data.url)).to.be.true;
-			const image = await ParseOG.firstCall.returnValue;
-			expect(image).to.not.be.null;
+			const og = await ParseOG.firstCall.returnValue;
+			expect(og).to.have.property('image');
 			const afterUpdate = await Article.findById(beforeUpdate._id);
-			expect(afterUpdate.images.og).to.be.equal(image);
+			expect(afterUpdate.images.og).to.be.equal(og.image);
 		});
 
 		it("shouldn't update article with image if update not requested", async () => {
@@ -127,8 +127,8 @@ describe('OG worker', () => {
 			await handler;
 
 			expect(ParseOG.calledWith(data.url)).to.be.true;
-			const image = await ParseOG.firstCall.returnValue;
-			expect(image).to.be.null;
+			const og = await ParseOG.firstCall.returnValue;
+			expect(og).to.not.have.property('image');
 
 			nock.cleanAll();
 		});

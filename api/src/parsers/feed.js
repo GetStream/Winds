@@ -63,24 +63,19 @@ export async function ParseFeed(feedURL, limit = 1000) {
 }
 
 export function ComputeHash(post) {
-	const enclosureUrls = post.enclosures.map(e => {
-		e.url;
-	});
+	const enclosureUrls = post.enclosures.map(e => e.url);
 	const enclosureString = enclosureUrls.join(',') || '';
-	//XXX: ignore post.content for now, it changes too often I think
+	//XXX: ignore post.content for now, it changes too often
 	const data = `${post.title}:${post.description}:${post.link}:${enclosureString}`;
 	return createHash('md5')
 		.update(data)
 		.digest('hex');
 }
 
-export function ComputePublicationHash(posts) {
-	let fingerprints = [];
-	for (let p of posts.slice(0, 20)) {
-		if (!p.fingerprint) {
-			throw Error('missing fingerprint');
-		}
-		fingerprints.push(p.fingerprint);
+export function ComputePublicationHash(posts, limit = 20) {
+	const fingerprints = posts.slice(0, limit).filter(p => !!p.fingerprint).map(p => p.fingerprint);
+	if (fingerprints.length != Math.min(posts.length, limit)) {
+		throw Error('Missing post fingerprints');
 	}
 	const data = fingerprints.join(',');
 	return createHash('md5')

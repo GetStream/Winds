@@ -16,6 +16,10 @@ export const RSSSchema = new Schema(
 			type: String,
 			trim: true,
 		},
+		canonicalUrl: {
+			type: String,
+			trim: true,
+		},
 		feedUrl: {
 			type: String,
 			trim: true,

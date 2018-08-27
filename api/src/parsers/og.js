@@ -26,29 +26,67 @@ export function IsValidOGUrl(url) {
 	return true;
 }
 
-export function ParseOGStream(pageStream, pageURL) {
+function parseImage(html) {
 	const metaTagRe = /(<meta[^>]*?og:image[^>]*?>)/gm;
 	const urlRe = /content="(.*?)"/gm;
 
-	var end = new Promise((resolve, reject) => {
+	if (!html.includes('og:image')) {
+		return {};
+	}
+	const matches = metaTagRe.exec(html);
+	if (!matches) {
+		return {};
+	}
+	const meta = matches[1];
+	const urlMatches = urlRe.exec(meta);
+	if (urlMatches) {
+		return { image: urlMatches[1] };
+	}
+}
+
+function parseCanonicalUrl(html) {
+	if (html.includes('og:image')) {
+		const metaTagRe = /(<meta[^>]*?og:url[^>]*?>)/gm;
+		const matches = metaTagRe.exec(html);
+		if (matches) {
+			const meta = matches[1];
+			const urlRe = /content="(.*?)"/gm;
+			const urlMatches = urlRe.exec(meta);
+			if (urlMatches) {
+				return { canonicalUrl: urlMatches[1] };
+			}
+		}
+	} else if (html.includes('"canonical"')) {
+		const linkTagRe = /(<link[^>]*?rel\s*=\s*"canonical"[^>]*?>)/gm;
+		const matches = linkTagRe.exec(html);
+		if (matches) {
+			const meta = matches[1];
+			const urlRe = /href="(.*?)"/gm;
+			const urlMatches = urlRe.exec(meta);
+			if (urlMatches) {
+				return { canonicalUrl: urlMatches[1] };
+			}
+		}
+	}
+	return {};
+}
+
+export function ParseOGStream(pageStream, pageURL) {
+	let result = {};
+
+	return new Promise((resolve, reject) => {
 		pageStream
 			.on('data', data => {
 				const html = data.toString('utf8');
-				if (!html.includes('og:image')) {
-					return;
+				for (const extractor of [parseImage, parseCanonicalUrl]) {
+					result = Object.assign(result, extractor(html));
 				}
-				const matches = metaTagRe.exec(html);
-				if (!matches) {
-					return;
-				}
-				const meta = matches[1];
-				const urlMatches = urlRe.exec(meta);
-				if (urlMatches) {
-					resolve(urlMatches[1]);
+				if (result.image && result.canonicalUrl) {
+					pageStream.destroy();
+					resolve(result);
 				}
 			})
 			.on('error', reject)
-			.on('end', () => resolve(null));
+			.on('end', () => resolve(result));
 	});
-	return end;
 }

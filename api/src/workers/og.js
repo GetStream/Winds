@@ -105,10 +105,13 @@ export async function handleOg(job) {
 
 		logger.debug(`found ${instances.length} to update with url ${url}`);
 
-		const needUpdate = instances.filter(i => !i.images.og);
+		const needUpdate = instances.filter(i => !i.images.og || !i.canonicalUrl);
 		if (!needUpdate.length && !update) {
 			for (const instance of instances.filter(i => !!i.images.og)) {
 				logger.debug(`instance already has an image '${instance.images.og}': ${jobType} with lookup ${field}: '${url}'`);
+			}
+			for (const instance of instances.filter(i => !!i.canonicalUrl)) {
+				logger.debug(`instance already has a canonical URL '${instance.canonicalUrl}': ${jobType} with lookup ${field}: '${url}'`);
 			}
 			continue;
 		}
@@ -117,11 +120,16 @@ export async function handleOg(job) {
 			continue;
 		}
 
-		let ogImage;
+		let og;
 		try {
-			ogImage = await ParseOG(url);
-			if (!ogImage) {
+			og = await ParseOG(url);
+			if (!og.image) {
 				logger.debug(`Didn't find image for ${url}`);
+			}
+			if (!og.canonicalUrl) {
+				logger.debug(`Didn't find canonicalUrl for ${url}`);
+			}
+			if (!og.image && !og.canonicalUrl) {
 				continue;
 			}
 		} catch (err) {
@@ -132,16 +140,26 @@ export async function handleOg(job) {
 		}
 		let normalized;
 		try {
-			normalized = normalize(ogImage);
+			normalized = normalize(og.image);
 		} catch (err) {
-			logger.debug(`Bad OG Image URL '${ogImage}'`, { err });
-			continue;
+			logger.debug(`Bad OG Image URL '${og.image}'`, { err });
 		}
 
-		for (const instance of needUpdate) {
-			const images = Object.assign(instance.images || {}, { og: normalized });
-			await mongoSchema.update({ _id: instance._id }, { images });
+		if (!normalized && !og.canonicalUrl) {
+			continue;
 		}
+		const operations = [];
+		for (const instance of needUpdate) {
+			const updates = {};
+			if (normalized) {
+				updates.images = Object.assign(instance.images || {}, { og: normalized });
+			}
+			if (og.canonicalUrl) {
+				updates.canonicalUrl = og.canonicalUrl;
+			}
+			operations.push({ updateOne: { filter: { _id: instance._id }, update: { $set: updates } } });
+		}
+		await mongoSchema.bulkWrite(operations, { ordered: false });
 		logger.info(`Stored ${normalized} image for '${url}'`);
 	}
 }

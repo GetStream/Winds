@@ -45,6 +45,10 @@ export const ArticleSchema = new Schema(
 			required: true,
 			index: { type: 'hashed' },
 		},
+		canonicalUrl: {
+			type: String,
+			trim: true,
+		},
 		fingerprint: {
 			type: String,
 			trim: true,
