@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build the Docker image
-docker build -t winds-api ../
+docker build -t winds-api .
 
 # List all Docker images
 docker images
