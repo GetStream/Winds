@@ -7,15 +7,10 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green.svg)](https://github.com/GetStream/winds/graphs/commit-activity)
 [![Built With](https://img.shields.io/badge/Built%20With-❤️%20in%20Boulder,%20CO-green.svg)](httpds://shields.io/)
 [![StackShare](https://img.shields.io/badge/Tech-Stack-0690fa.svg?style=flat)](https://stackshare.io/stream/winds)
-<a href="https://www.patreon.com/winds_rss_podcast" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/Patreon-Donate-green.svg" alt="Patreon" /></a>
 
 ## Description
 
 Winds is a beautiful open-source RSS and Podcast app created using React & Redux on the frontend and Express.js on the backend. Use the free hosted version or run it on your own server and customize it as you see fit. Contributions in form of pull requests are always appreciated. Activity Feeds & Discovery in Winds are powered by [Stream](https://getstream.io/get_started/), the app leverages [Algolia](https://algolia.com?ref=stream) for search, [AWS](https://aws.amazon.com/) for hosting, [MongoDB Atlas](http://mbsy.co/mongodb/228644) for a hosted database (DBaaS), and [SendGrid](https://sendgrid.com/) for email. All of these services have a free tier.
-
-## Patreon
-
-With Winds being an open-source application, we rely heavily on community members to both help build our platform, in addition to fund the resources required to keep it alive (servers, services, etc.). On that note, we've created a [Patreon](https://www.patreon.com/winds_rss_podcast) page where you can donate an amount of your choice to help Winds out. With the help of YOU, we will be able to continue building what we feel is the best RSS and Podcast application available – free for all to use.
 
 ## Getting Started
 
@@ -106,19 +101,16 @@ The following tutorials will not only help you start contributing to Winds, but 
 
 **Note:** We're actively working on this portion of the README. To stay up to date with the latest information, please signup for the hosted version at [https://getstream.io/winds](https://getstream.io/winds).
 
-1.  Architecting a large React/Redux codebase
-2.  Building activity streams and newsfeeds on top of Stream
-3.  [Implementing search with Algolia](https://hackernoon.com/integrating-algolia-search-in-winds-a-beautiful-rss-podcast-application-f231e49cdab5)
-4.  MongoDB database schema design
-5.  Design thought process for Winds
-6.  PM2 in production environments
-7.  [Creating a RESTful API design with Express.js](https://hackernoon.com/building-a-node-js-powered-api-with-express-mongoose-mongodb-19b14fd4b51e)
-8. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
-9. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
-10. [Building Touch Bar Support for macOS](https://medium.com/@nparsons08)
-11. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
-12. [Simple Steps to Optimize Your App Performance with MongoDB, Redis, and Node.js](https://hackernoon.com/simple-steps-to-optimize-your-app-performance-5700d8b58f58)
-13. [Getting Started with Winds & Open Source](https://hackernoon.com/winds-an-in-depth-tutorial-on-making-your-first-contribution-to-open-source-software-ebf259f21db2)
+1.  [Implementing search with Algolia](https://hackernoon.com/integrating-algolia-search-in-winds-a-beautiful-rss-podcast-application-f231e49cdab5)
+2.  [Stream and Winds](https://getstream.io/blog/the-engine-that-powers-winds/)
+3.  [Running PM2 & Node.js in Production Environments](https://hackernoon.com/running-pm2-node-js-in-production-environments-13e703fc108a)
+4.  [Creating a RESTful API design with Express.js](https://hackernoon.com/building-a-node-js-powered-api-with-express-mongoose-mongodb-19b14fd4b51e)
+5. [Takeaways on Building a React Based App with Electron](https://medium.com/@nparsons08/publishing-a-react-based-app-with-electron-and-nodejs-f5ec44169366)
+6. [The Winds Stack](https://stackshare.io/stream/how-stream-built-a-modern-rss-reader-with-javascript)
+7. [Building Touch Bar Support for macOS in Electron with React](https://hackernoon.com/winds-2-1-building-touch-bar-support-for-macos-in-electron-with-react-e10adb811c91)
+8. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
+9. [Simple Steps to Optimize Your App Performance with MongoDB, Redis, and Node.js](https://hackernoon.com/simple-steps-to-optimize-your-app-performance-5700d8b58f58)
+10. [Getting Started with Winds & Open Source](https://hackernoon.com/winds-an-in-depth-tutorial-on-making-your-first-contribution-to-open-source-software-ebf259f21db2)
 
 ## Download
 
