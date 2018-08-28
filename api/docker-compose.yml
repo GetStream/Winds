@@ -1,0 +1,64 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '/opt/data:/opt/data'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - cache
+      - database
+    links:
+      - cache
+      - database
+    networks:
+      - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 100MB
+        max-file: '3'
+    environment:
+      NODE_ENV: production
+      DOCKER: 'true'
+      PRODUCT_URL: 'https://getstream.io/winds'
+      PRODUCT_NAME: Winds
+      PRODUCT_AUTHOR: Stream
+      DATABASE_URI: 'mongodb://database/WINDS'
+      CACHE_URI: 'redis://cache:6379'
+      JWT_SECRET: INSERT_JWT_SECRET_HERE
+      API_PORT: 8080
+      STREAM_API_BASE_URL: 'https://windspersonalization.getstream.io/personalization/v1.0'
+      STREAM_APP_ID: INSERT_STREAM_API_ID_HERE
+      STREAM_API_KEY: INSERT_STREAM_API_KEY_HERE
+      STREAM_API_SECRET: INSERT_STREAM_API_SECRET_HERE
+      ALGOLIA_WRITE_KEY: INSERT_ALGOLIA_WRITE_KEY_HERE
+      MERCURY_KEY: INSERT_MERCURY_KEY_HERE
+  cache:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    networks:
+      - backend
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: 100MB
+        max-file: '3'
+  database:
+    image: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 100MB
+        max-file: '3'
+networks:
+  backend: null
