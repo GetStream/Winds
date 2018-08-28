@@ -363,6 +363,7 @@ RSSArticle.propTypes = {
 	}),
 	title: PropTypes.string,
 	url: PropTypes.string,
+	canonicalUrl: PropTypes.string,
 };
 
 const mapStateToProps = (state, ownProps) => {
