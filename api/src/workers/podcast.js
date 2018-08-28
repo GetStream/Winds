@@ -29,6 +29,7 @@ if (require.main === module) {
 	startSampling('winds.event_loop.podcast.delay');
 }
 
+const streamTTL = 25200; // 7 hours
 const statsd = getStatsDClient();
 
 export async function podcastProcessor(job) {
@@ -147,7 +148,7 @@ export async function handlePodcast(job) {
 	if (await tryCreateQueueFlag('og', 'podcast', podcastID)) {
 		tasks.push(OgQueueAdd({ type: 'episode', podcast: podcastID, urls: updatedEpisodes.map(e => e.link) }, queueOpts));
 	}
-	if (await tryCreateQueueFlag('stream', 'podcast', podcastID)) {
+	if (await tryCreateQueueFlag('stream', 'podcast', podcastID, streamTTL)) {
 		tasks.push(StreamQueueAdd({ podcast: podcastID }, queueOpts));
 	}
 	statsd.increment('winds.handle_podcast.result.updates');

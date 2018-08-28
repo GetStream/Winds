@@ -25,11 +25,11 @@ redis.defineCommand('tryAddToQueueFlagSet', {
 	numberOfKeys: 1,
 	lua: `
 		local key = ARGV[1]
+		local TTL = ARGV[2]
 		local set = KEYS[1]
 
 		redis.replicate_commands()
 
-		local TTL = ${TTL}
 		local time = redis.call('TIME')
 		local now = tonumber(time[1])
 
@@ -45,21 +45,22 @@ redis.defineCommand('tryCreateQueueFlag', {
 	numberOfKeys: 1,
 	lua: `
 		local key = KEYS[1]
+		local TTL = ARGV[1]
 
 		redis.replicate_commands()
 
 		local exists = redis.call('EXISTS', key)
 		if exists == 0 then
-			return redis.call('SETEX', key, ${TTL}, 1)
+			return redis.call('SETEX', key, TTL, 1)
 		end
 		return nil
 	`
 });
 
-export async function tryAddToQueueFlagSet(queueName, suffix, id) {
+export async function tryAddToQueueFlagSet(queueName, suffix, id, ttl = TTL) {
 	const key = `queue-status:${queueName}`;
 	const value = `${id}:${suffix}`;
-	const created = await redis.tryAddToQueueFlagSet(key, value);
+	const created = await redis.tryAddToQueueFlagSet(key, value, ttl);
 	return !!created;
 }
 
@@ -74,9 +75,9 @@ export async function getQueueFlagSetMembers(queueName) {
 	return await redis.getQueueFlagSetMembers(key);
 }
 
-export async function tryCreateQueueFlag(queueName, suffix, id) {
+export async function tryCreateQueueFlag(queueName, suffix, id, ttl = TTL) {
 	const key = `queue-status:${queueName}:${id}:${suffix}`;
-	const created = await redis.tryCreateQueueFlag(key);
+	const created = await redis.tryCreateQueueFlag(key, ttl);
 	return !!created;
 }
 

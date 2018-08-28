@@ -1,6 +1,6 @@
 {
   "name": "Winds",
-  "version": "2.1.151",
+  "version": "2.1.154",
   "description": "Winds is a beatiful open source RSS Reader and Podcast app. Wind 2.0 was created using React/Redux/Node.\nFor more information, visit https://getstream.io/winds/.\nTo contribute or run your own version head over to Github: https://github.com/getstream/winds",
   "private": true,
   "author": "Winds Team <winds@getstream.io>",
@@ -95,7 +95,7 @@
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",
     "electron": "^2.0.5",
-    "electron-builder": "^20.26.0",
+    "electron-builder": "^20.28.3",
     "electron-devtools-installer": "^2.2.4",
     "electron-osx-sign": "^0.4.10",
     "eslint": "^5.2.0",

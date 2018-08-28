@@ -26,6 +26,7 @@ if (require.main === module) {
 	startSampling('winds.event_loop.rss.delay');
 }
 
+const streamTTL = 25200; // 7 hours
 const duplicateKeyError = 11000;
 const statsd = getStatsDClient();
 
@@ -177,7 +178,7 @@ export async function handleRSS(job) {
 	if (await tryCreateQueueFlag('og', 'rss', rssID)) {
 		tasks.push(OgQueueAdd({ type: 'article', rss: rssID, urls: updatedArticles.map(a => a.url) }, queueOpts));
 	}
-	if (await tryCreateQueueFlag('stream', 'rss', rssID)) {
+	if (await tryCreateQueueFlag('stream', 'rss', rssID, streamTTL)) {
 		tasks.push(StreamQueueAdd({ rss: rssID }, queueOpts));
 	}
 	statsd.increment('winds.handle_rss.result.updates');
