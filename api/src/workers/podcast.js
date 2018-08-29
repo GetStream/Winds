@@ -88,7 +88,7 @@ export async function handlePodcast(job) {
 		return;
 	}
 
-	let podcastContent, controlPodcastContent;
+	let podcastContent, controlPodcastContent = { episodes: [] };
 	try {
 		podcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
 		await Podcast.resetScrapeFailures(podcastID);

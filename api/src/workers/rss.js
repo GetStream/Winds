@@ -99,7 +99,7 @@ export async function handleRSS(job) {
 
 	logger.info(`Marked ${rssID} as done`);
 
-	let rssContent, controlRssContent;
+	let rssContent, controlRssContent = { articles: [] };
 	try {
 		rssContent = await ParseFeed(job.data.url, rss.guidStability);
 		if (rss.guidStability === 'UNCHECKED') {
