@@ -92,7 +92,7 @@ export async function handlePodcast(job) {
 	try {
 		podcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
 		await Podcast.resetScrapeFailures(podcastID);
-		if (podcast.guidStability === 'UNCHECKED') {
+		if (!podcast.guidStability || podcast.guidStability === 'UNCHECKED') {
 			controlPodcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
 		}
 	} catch (err) {

@@ -102,7 +102,7 @@ export async function handleRSS(job) {
 	let rssContent, controlRssContent = { articles: [] };
 	try {
 		rssContent = await ParseFeed(job.data.url, rss.guidStability);
-		if (rss.guidStability === 'UNCHECKED') {
+		if (!rss.guidStability || rss.guidStability === 'UNCHECKED') {
 			controlRssContent = await ParseFeed(job.data.url, rss.guidStability);
 		}
 		await RSS.resetScrapeFailures(rssID);
