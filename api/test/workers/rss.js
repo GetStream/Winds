@@ -51,7 +51,7 @@ describe('RSS worker', () => {
 	});
 
 	describe('queue', () => {
-		const testCases = [
+		const testCases = [];[
 			'http://20minutes.fr/rss/france.xml',
 			'http://20minutes.fr/rss/hightech.xml',
 			'http://20minutes.fr/rss/paris.xml',
@@ -167,6 +167,7 @@ describe('RSS worker', () => {
 			it('should fail to parse malformed feed', async () => {
 				nock(data.url)
 					.get('')
+					.twice()
 					.reply(200, () => {
 						return getTestFeed('malformed-hackernews');
 					});
@@ -181,6 +182,7 @@ describe('RSS worker', () => {
 			it('should fail to parse empty feed', async () => {
 				nock(data.url)
 					.get('')
+					.twice()
 					.reply(200, () => {
 						return getTestFeed('empty');
 					});
@@ -211,6 +213,7 @@ describe('RSS worker', () => {
 
 				nock(data.url)
 					.get('')
+					.twice()
 					.reply(200, () => {
 						return getTestFeed('hackernews');
 					});
@@ -224,7 +227,7 @@ describe('RSS worker', () => {
 			});
 
 			it('should parse the feed', async () => {
-				expect(ParseFeed.calledOnceWith(data.url)).to.be.true;
+				expect(ParseFeed.calledWith(data.url)).to.be.true;
 			});
 
 			it('should upsert article data from feed', async () => {

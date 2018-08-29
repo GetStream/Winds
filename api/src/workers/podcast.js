@@ -10,7 +10,7 @@ import Episode from '../models/episode';
 
 import logger from '../utils/logger';
 import { sendFeedToCollections } from '../utils/collections';
-import { ParsePodcast } from '../parsers/feed';
+import { ParsePodcast, checkGuidStability } from '../parsers/feed';
 
 import { ProcessPodcastQueue, ShutDownPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
@@ -67,7 +67,7 @@ export async function handlePodcast(job) {
 		//XXX: ignore error
 	}
 
-	let podcastID = job.data.podcast;
+	const podcastID = job.data.podcast;
 
 	await timeIt('winds.handle_podcast.ack', () => {
 		return markDone(podcastID);
@@ -81,44 +81,52 @@ export async function handlePodcast(job) {
 		return;
 	}
 
-	let podcast = await Podcast.findOne({ _id: podcastID });
+	const podcast = await Podcast.findOne({ _id: podcastID });
 	if (!podcast) {
 		logger.warn(`Podcast with ID ${job.data.podcast} does not exist`);
 		statsd.increment('winds.handle_podcast.result.model_instance_absent');
 		return;
 	}
 
-	let podcastContent;
+	let podcastContent, controlPodcastContent;
 	try {
-		podcastContent = await ParsePodcast(job.data.url);
+		podcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
 		await Podcast.resetScrapeFailures(podcastID);
+		if (podcast.guidStability === 'UNCHECKED') {
+			controlPodcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
+		}
 	} catch (err) {
 		await Podcast.incrScrapeFailures(podcastID);
 		logger.warn(`http request failed for url ${job.data.url}: ${err.message}`);
 	}
 
-	if (!podcastContent) {
+	if (!podcastContent || podcastContent.episodes.length === 0) {
 		statsd.increment('winds.handle_podcast.result.no_content');
+		return;
+	}
+
+	if (podcastContent.fingerprint && podcastContent.fingerprint === podcast.fingerprint) {
+	    logger.debug(`Podcast with ID ${podcastID} has same fingerprint as registered before`);
+		statsd.increment('winds.handle_podcast.result.same_content');
 		return;
 	}
 
 	// update the episodes
 	logger.debug(`Updating ${podcastContent.episodes.length} episodes`);
-	let episodes = podcastContent.episodes;
-	for (let e of episodes) {
+	const episodes = podcastContent.episodes;
+	for (const e of episodes) {
 		e.podcast = podcastID;
 	}
 
-	let operationMap = await upsertManyPosts(podcastID, episodes, 'podcast');
-	let updatedEpisodes = operationMap.new.concat(operationMap.changed);
-	logger.info(
-		`Finished updating ${updatedEpisodes.length} out of ${
-			podcastContent.episodes.length
-		} changed`,
-	);
+	const operationMap = await upsertManyPosts(podcastID, episodes, 'podcast');
+	const updatedEpisodes = operationMap.new.concat(operationMap.changed);
+	const guidStability = checkGuidStability(updatedEpisodes, controlPodcastContent.episodes);
+	logger.info(`Finished updating ${updatedEpisodes.length} out of ${podcastContent.episodes.length} changed`);
 
 	await Podcast.update({ _id: podcastID }, {
 		postCount: await Episode.count({ podcast: podcastID }),
+		fingerprint: podcastContent.fingerprint,
+		guidStability,
 	});
 
 	if (!updatedEpisodes.length) {

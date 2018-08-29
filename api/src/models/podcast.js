@@ -109,6 +109,11 @@ export const PodcastSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		guidStability: {
+			type: String,
+			enum: ['STABLE', 'UNSTABLE', 'UNCHECKED'],
+			default: 'UNCHECKED',
+		},
 	},
 	{
 		collection: 'podcasts',

@@ -36,7 +36,7 @@ function sanitize(dirty) {
 	});
 }
 
-export async function ParsePodcast(podcastUrl, limit = 1000) {
+export async function ParsePodcast(podcastUrl, guidStability, limit = 1000) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
 	const start = new Date();
 	const host = urlParser.parse(podcastUrl).host;
@@ -49,7 +49,7 @@ export async function ParsePodcast(podcastUrl, limit = 1000) {
 	return podcastResponse;
 }
 
-export async function ParseFeed(feedURL, limit = 1000) {
+export async function ParseFeed(feedURL, guidStability, limit = 1000) {
 	logger.info(`Attempting to parse RSS ${feedURL}`);
 	const start = new Date();
 	const host = urlParser.parse(feedURL).host;
@@ -459,4 +459,16 @@ export function ParseFeedPosts(domain, posts, limit = 1000) {
 		}
 	}
 	return feedContents;
+}
+
+export function checkGuidStability(original, control) {
+	const link2guid = original.reduce((map, content) => map.set(content.link, content.guid), new Map());
+	let same = true;
+	for (const content of control) {
+		const originalGUID = link2guid.get(content.link);
+		if (originalGUID) {
+			same = same && originalGUID == content.guid;
+		}
+	}
+	return same ? 'STABLE' : 'UNSTABLE';
 }
