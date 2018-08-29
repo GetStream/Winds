@@ -7,7 +7,7 @@ const redis = new Redis(config.cache.uri);
 const statsd = getStatsDClient();
 
 function countSetElements(key) {
-    return redis.zcount(key, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY);
+	return redis.zcount(key, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY);
 }
 
 function countLockTypes(pattern) {
@@ -31,6 +31,7 @@ async function main() {
 		const key = `queue-status:${queueName}`;
 		const count = await countSetElements(key);
 		statsd.gauge(`winds.queue.${queueName}.flags.${queueName}`, count);
+		console.log(`${queueName} total: ${count}`);
 		statsd.gauge(`winds.queue.${queueName}.flags.total`, count);
 	}
 	for (const queueName of ['og', 'stream', 'social']) {
@@ -39,18 +40,20 @@ async function main() {
 		let total = 0;
 		for (const [type, count] of Object.entries(types)) {
 			statsd.gauge(`winds.queue.${queueName}.flags.${type}`, count);
+			console.log(`${queueName} type ${type}: ${count}`);
 			total += count;
 		}
 		statsd.gauge(`winds.queue.${queueName}.flags.total`, total);
+		console.log(`${queueName} total: ${total}`);
 	}
 }
 
 main()
 	.then(() => {
 		console.info('done');
-		process.exit(0);
+		setTimeout(process.exit.bind(process, 0), 2000);
 	})
 	.catch(err => {
 		console.info(`failed with err ${err.stack}`);
-		process.exit(1);
+		setTimeout(process.exit.bind(process, 1), 2000);
 	});
