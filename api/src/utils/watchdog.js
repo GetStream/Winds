@@ -3,7 +3,7 @@ import { getStatsDClient } from './statsd';
 const defaultSampleInterval = 60;
 
 export function startSampling(metricName, sampleInterval = defaultSampleInterval) {
-	var statsd = getStatsDClient();
+	const statsd = getStatsDClient();
 
 	function updateMetric(diff) {
 		const elapsed = diff[0] * 1000 + diff[1] / 1000000 - sampleInterval;
