@@ -7,7 +7,7 @@ const redis = new Redis(config.cache.uri);
 const statsd = getStatsDClient();
 
 function countSetElements(key) {
-	return redis.zcount(key, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY);
+	return redis.zcount(key, '-inf', '+inf');
 }
 
 function countLockTypes(pattern) {
