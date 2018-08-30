@@ -51,7 +51,7 @@ describe('RSS worker', () => {
 	});
 
 	describe('queue', () => {
-		const testCases = [
+		const testCases = [];[
 			'http://20minutes.fr/rss/france.xml',
 			'http://20minutes.fr/rss/hightech.xml',
 			'http://20minutes.fr/rss/paris.xml',
@@ -167,6 +167,7 @@ describe('RSS worker', () => {
 			it('should fail to parse malformed feed', async () => {
 				nock(data.url)
 					.get('')
+					.twice()
 					.reply(200, () => {
 						return getTestFeed('malformed-hackernews');
 					});
@@ -181,6 +182,7 @@ describe('RSS worker', () => {
 			it('should fail to parse empty feed', async () => {
 				nock(data.url)
 					.get('')
+					.twice()
 					.reply(200, () => {
 						return getTestFeed('empty');
 					});
@@ -211,6 +213,7 @@ describe('RSS worker', () => {
 
 				nock(data.url)
 					.get('')
+					.twice()
 					.reply(200, () => {
 						return getTestFeed('hackernews');
 					});
@@ -224,7 +227,7 @@ describe('RSS worker', () => {
 			});
 
 			it('should parse the feed', async () => {
-				expect(ParseFeed.calledOnceWith(data.url)).to.be.true;
+				expect(ParseFeed.calledWith(data.url)).to.be.true;
 			});
 
 			it('should upsert article data from feed', async () => {
@@ -234,9 +237,8 @@ describe('RSS worker', () => {
 
 			it('should update feed data', async () => {
 				const rss = await RSS.findById(data.rss);
-				expect(rss.postCount).to.be.equal(
-					initialArticles.length + newArticleCount,
-				);
+				expect(rss.postCount).to.be.equal(initialArticles.length + newArticleCount);
+				expect(rss.guidStability).to.be.equal('STABLE');
 			});
 
 			it('should schedule OG job', async () => {
@@ -289,6 +291,36 @@ describe('RSS worker', () => {
 					matchedActivities += args.filter(arg => foreignIds.includes(arg)).length;
 				}
 				expect(matchedActivities).to.equal(articles.length);
+			});
+		});
+
+		describe('feed w/ unstable guid values', () => {
+			const testData = [{
+				rss: '5b0bfaf6bf3863483f0b71e7',
+				url: 'http://todopvr.com/foro/news_rss.php',
+			}, {
+				rss: '5b0a1c041bbf863ebe703dbe',
+				url: 'http://search.worldbank.org/api/v2/news?countrycode_exact=pe&format=atom',
+			}, {
+				rss: '5b04c778e8865b482745bdee',
+				url: 'http://social.msdn.microsoft.com/search/feed/?format=rss&query=blogs&refinement=109',
+			}];
+
+			before(async () => {
+				await dropDBs();
+				await loadFixture('unstable-guid');
+			});
+
+			it('should update feed data', async () => {
+				for (const data of testData) {
+					setupHandler();
+
+					await rssQueue.add(data);
+					await handler;
+
+					const rss = await RSS.findById(data.rss);
+					expect(rss.guidStability).to.be.equal('UNSTABLE');
+				}
 			});
 		});
 	});

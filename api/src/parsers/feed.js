@@ -36,27 +36,27 @@ function sanitize(dirty) {
 	});
 }
 
-export async function ParsePodcast(podcastUrl, limit = 1000) {
+export async function ParsePodcast(podcastUrl, guidStability, limit = 1000) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
 	const start = new Date();
 	const host = urlParser.parse(podcastUrl).host;
 
 	const stream = await ReadFeedURL(podcastUrl);
 	const posts = await ReadFeedStream(stream);
-	const podcastResponse = ParsePodcastPosts(host, posts, limit);
+	const podcastResponse = ParsePodcastPosts(host, posts, guidStability, limit);
 
 	statsd.timing('winds.parsers.podcast.finished_parsing', new Date() - start);
 	return podcastResponse;
 }
 
-export async function ParseFeed(feedURL, limit = 1000) {
+export async function ParseFeed(feedURL, guidStability, limit = 1000) {
 	logger.info(`Attempting to parse RSS ${feedURL}`);
 	const start = new Date();
 	const host = urlParser.parse(feedURL).host;
 
 	const stream = await ReadFeedURL(feedURL);
 	const posts = await ReadFeedStream(stream);
-	const feedResponse = ParseFeedPosts(host, posts, limit);
+	const feedResponse = ParseFeedPosts(host, posts, guidStability, limit);
 
 	statsd.timing('winds.parsers.rss.finished_parsing', new Date() - start);
 	return feedResponse;
@@ -83,17 +83,17 @@ export function ComputePublicationHash(posts, limit = 20) {
 		.digest('hex');
 }
 
-export function CreateFingerPrints(posts) {
+export function CreateFingerPrints(posts, guidStability = 'STABLE') {
 	if (!posts.length) {
 		return posts;
 	}
 	// start by selecting the best strategy for uniqueness
 	let uniqueness = { guid: {}, link: {}, enclosure: {}, hash: {} };
 	for (let p of posts) {
-		uniqueness.guid[p.guid && p.guid] = 1;
-		uniqueness.link[p.link && p.link] = 1;
+		uniqueness.guid[p.guid && p.guid.slice(0, 249)] = 1;
+		uniqueness.link[p.link && p.link.slice(0, 249)] = 1;
 		if (p.enclosures.length && p.enclosures[0].url) {
-			uniqueness.enclosure[p.enclosures[0].url] = 1;
+			uniqueness.enclosure[p.enclosures[0].url.slice(0, 244)] = 1;
 			p.enclosure = p.enclosures[0].url;
 		}
 		p.hash = ComputeHash(p);
@@ -106,21 +106,26 @@ export function CreateFingerPrints(posts) {
 	}
 	// select the strategy that's 100% unique, if none match fall back to a hash
 	let strategy = 'hash';
+	const backupStrategy = guidStability === 'STABLE' ? 'guid' : 'link';
 	const l = posts.length;
-	for (let s of ['guid', 'link', 'enclosure']) {
+	const strategies = ['guid', 'link', 'enclosure'];
+	if (guidStability !== 'STABLE') {
+		strategies.shift();
+	}
+	for (let s of strategies) {
 		if (uniquenessCounts[s] == l) {
 			strategy = s;
 			break;
 		}
 	}
-	if (strategy == 'hash' && uniquenessCounts.guid >= 3) {
+	if (strategy == 'hash' && uniquenessCounts[backupStrategy] >= 3) {
 		// better to fail in a predictable way
-		strategy = 'guid';
+		strategy = backupStrategy;
 	}
 
 	// compute the post fingerprints
 	for (let p of posts) {
-		p.fingerprint = `${strategy}:${p[strategy] && p[strategy].slice(0, 1023 - strategy.length)}`;
+		p.fingerprint = `${strategy}:${p[strategy] && p[strategy].slice(0, 254 - strategy.length)}`;
 	}
 
 	// next compute the publication fingerprint
@@ -133,10 +138,10 @@ export function CreateFingerPrints(posts) {
 }
 
 // Parse the posts and add our custom logic
-export function ParsePodcastPosts(domain, posts, limit = 1000) {
+export function ParsePodcastPosts(domain, posts, guidStability, limit = 1000) {
 	let podcastContent = { episodes: [] };
 
-	posts = CreateFingerPrints(posts);
+	posts = CreateFingerPrints(posts, guidStability);
 
 	for (let i in posts.slice(0, limit)) {
 		const post = posts[i];
@@ -355,10 +360,10 @@ export function ReadFeedStream(feedStream) {
 }
 
 // Parse the posts and add our custom logic
-export function ParseFeedPosts(domain, posts, limit = 1000) {
+export function ParseFeedPosts(domain, posts, guidStability, limit = 1000) {
 	let feedContents = { articles: [] };
 	// create finger prints before doing anything else
-	posts = CreateFingerPrints(posts);
+	posts = CreateFingerPrints(posts, guidStability);
 
 	for (let i in posts.slice(0, limit)) {
 		const post = posts[i];
@@ -459,4 +464,16 @@ export function ParseFeedPosts(domain, posts, limit = 1000) {
 		}
 	}
 	return feedContents;
+}
+
+export function checkGuidStability(original, control) {
+	const link2guid = original.reduce((map, content) => map.set(content.link, content.guid), new Map());
+	let same = true;
+	for (const content of control) {
+		const originalGUID = link2guid.get(content.link);
+		if (originalGUID) {
+			same = same && originalGUID == content.guid;
+		}
+	}
+	return same ? 'STABLE' : 'UNSTABLE';
 }

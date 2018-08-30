@@ -93,6 +93,7 @@ describe('Podcast worker', () => {
 
 			nock(data.url)
 				.get('')
+				.twice()
 				.reply(200, () => {
 					return getTestPodcast('giant-bombcast');
 				});
@@ -112,7 +113,7 @@ describe('Podcast worker', () => {
 		});
 
 		it('should parse the feed', async () => {
-			expect(ParsePodcast.calledOnceWith(data.url)).to.be.true;
+			expect(ParsePodcast.calledWith(data.url)).to.be.true;
 		});
 
 		it('should upsert episode data from feed', async () => {
