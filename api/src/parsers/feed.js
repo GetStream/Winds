@@ -43,7 +43,7 @@ export async function ParsePodcast(podcastUrl, guidStability, limit = 1000) {
 
 	const stream = await ReadFeedURL(podcastUrl);
 	const posts = await ReadFeedStream(stream);
-	const podcastResponse = ParsePodcastPosts(host, posts, limit);
+	const podcastResponse = ParsePodcastPosts(host, posts, guidStability, limit);
 
 	statsd.timing('winds.parsers.podcast.finished_parsing', new Date() - start);
 	return podcastResponse;
@@ -56,7 +56,7 @@ export async function ParseFeed(feedURL, guidStability, limit = 1000) {
 
 	const stream = await ReadFeedURL(feedURL);
 	const posts = await ReadFeedStream(stream);
-	const feedResponse = ParseFeedPosts(host, posts, limit);
+	const feedResponse = ParseFeedPosts(host, posts, guidStability, limit);
 
 	statsd.timing('winds.parsers.rss.finished_parsing', new Date() - start);
 	return feedResponse;
@@ -83,7 +83,7 @@ export function ComputePublicationHash(posts, limit = 20) {
 		.digest('hex');
 }
 
-export function CreateFingerPrints(posts) {
+export function CreateFingerPrints(posts, guidStability = 'STABLE') {
 	if (!posts.length) {
 		return posts;
 	}
@@ -106,16 +106,21 @@ export function CreateFingerPrints(posts) {
 	}
 	// select the strategy that's 100% unique, if none match fall back to a hash
 	let strategy = 'hash';
+	const backupStrategy = guidStability === 'STABLE' ? 'guid' : 'link';
 	const l = posts.length;
-	for (let s of ['guid', 'link', 'enclosure']) {
+	const strategies = ['guid', 'link', 'enclosure'];
+	if (guidStability !== 'STABLE') {
+		strategies.shift();
+	}
+	for (let s of strategies) {
 		if (uniquenessCounts[s] == l) {
 			strategy = s;
 			break;
 		}
 	}
-	if (strategy == 'hash' && uniquenessCounts.guid >= 3) {
+	if (strategy == 'hash' && uniquenessCounts[backupStrategy] >= 3) {
 		// better to fail in a predictable way
-		strategy = 'guid';
+		strategy = backupStrategy;
 	}
 
 	// compute the post fingerprints
@@ -133,10 +138,10 @@ export function CreateFingerPrints(posts) {
 }
 
 // Parse the posts and add our custom logic
-export function ParsePodcastPosts(domain, posts, limit = 1000) {
+export function ParsePodcastPosts(domain, posts, guidStability, limit = 1000) {
 	let podcastContent = { episodes: [] };
 
-	posts = CreateFingerPrints(posts);
+	posts = CreateFingerPrints(posts, guidStability);
 
 	for (let i in posts.slice(0, limit)) {
 		const post = posts[i];
@@ -355,10 +360,10 @@ export function ReadFeedStream(feedStream) {
 }
 
 // Parse the posts and add our custom logic
-export function ParseFeedPosts(domain, posts, limit = 1000) {
+export function ParseFeedPosts(domain, posts, guidStability, limit = 1000) {
 	let feedContents = { articles: [] };
 	// create finger prints before doing anything else
-	posts = CreateFingerPrints(posts);
+	posts = CreateFingerPrints(posts, guidStability);
 
 	for (let i in posts.slice(0, limit)) {
 		const post = posts[i];
