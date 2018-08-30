@@ -90,10 +90,10 @@ export function CreateFingerPrints(posts, guidStability = 'STABLE') {
 	// start by selecting the best strategy for uniqueness
 	let uniqueness = { guid: {}, link: {}, enclosure: {}, hash: {} };
 	for (let p of posts) {
-		uniqueness.guid[p.guid && p.guid] = 1;
-		uniqueness.link[p.link && p.link] = 1;
+		uniqueness.guid[p.guid && p.guid.slice(0, 249)] = 1;
+		uniqueness.link[p.link && p.link.slice(0, 249)] = 1;
 		if (p.enclosures.length && p.enclosures[0].url) {
-			uniqueness.enclosure[p.enclosures[0].url] = 1;
+			uniqueness.enclosure[p.enclosures[0].url.slice(0, 244)] = 1;
 			p.enclosure = p.enclosures[0].url;
 		}
 		p.hash = ComputeHash(p);
@@ -125,7 +125,7 @@ export function CreateFingerPrints(posts, guidStability = 'STABLE') {
 
 	// compute the post fingerprints
 	for (let p of posts) {
-		p.fingerprint = `${strategy}:${p[strategy] && p[strategy].slice(0, 1023 - strategy.length)}`;
+		p.fingerprint = `${strategy}:${p[strategy] && p[strategy].slice(0, 254 - strategy.length)}`;
 	}
 
 	// next compute the publication fingerprint
