@@ -13,7 +13,7 @@ let version;
 if (process.env.DOCKER) {
 	version = 'DOCKER';
 } else {
-	version = require('../../../app/package.json');
+	version = require('../../../app/package.json').version;
 }
 
 const rssQueue = new Queue('rss', config.cache.uri);
