@@ -72,14 +72,14 @@ export async function loadFixture(...fixtures) {
 			for (const article of articles) {
 				article.enclosures = article.enclosures || [];
 			}
-			CreateFingerPrints(articles);
+			CreateFingerPrints(articles, 'STABLE');
 			return articles;
 		},
 		Episode: episodes => {
 			for (const episode of episodes) {
 				episode.enclosures = episode.enclosures || [];
 			}
-			CreateFingerPrints(episodes);
+			CreateFingerPrints(episodes, 'STABLE');
 			return episodes;
 		},
 	};

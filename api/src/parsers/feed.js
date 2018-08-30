@@ -83,7 +83,7 @@ export function ComputePublicationHash(posts, limit = 20) {
 		.digest('hex');
 }
 
-export function CreateFingerPrints(posts, guidStability = 'STABLE') {
+export function CreateFingerPrints(posts, guidStability) {
 	if (!posts.length) {
 		return posts;
 	}

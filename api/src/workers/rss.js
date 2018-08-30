@@ -8,7 +8,7 @@ import db from '../utils/db';
 import RSS from '../models/rss';
 import Article from '../models/article';
 import logger from '../utils/logger';
-import { ParseFeed, checkGuidStability } from '../parsers/feed';
+import { ParseFeed, checkGuidStability, CreateFingerPrints } from '../parsers/feed';
 import { ProcessRssQueue, ShutDownRssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { getStreamClient } from '../utils/stream';
@@ -99,11 +99,13 @@ export async function handleRSS(job) {
 
 	logger.info(`Marked ${rssID} as done`);
 
-	let rssContent, controlRssContent = { articles: [] };
+	let rssContent, guidStability;
 	try {
 		rssContent = await ParseFeed(job.data.url, rss.guidStability);
 		if (!rss.guidStability || rss.guidStability === 'UNCHECKED') {
-			controlRssContent = await ParseFeed(job.data.url, rss.guidStability);
+			const controlRssContent = await ParseFeed(job.data.url, rss.guidStability);
+			guidStability = checkGuidStability(rssContent.articles, controlRssContent.articles);
+			rssContent.articles = CreateFingerPrints(rssContent.articles, guidStability);
 		}
 		await RSS.resetScrapeFailures(rssID);
 	} catch (err) {
@@ -134,13 +136,12 @@ export async function handleRSS(job) {
 	logger.debug(`Starting the upsertManyPosts for RSS with ID ${rssID}`);
 	const operationMap = await upsertManyPosts(rssID, rssContent.articles, 'rss');
 	const updatedArticles = operationMap.new.concat(operationMap.changed).filter(a => !!a.url);
-	const guidStability = checkGuidStability(updatedArticles, controlRssContent.articles);
 	logger.info(`Finished updating. ${updatedArticles.length} out of ${rssContent.articles.length} changed for RSS with ID ${rssID}`);
 
 	await RSS.update({ _id: rssID }, {
 		postCount: await Article.count({ rss: rssID }),
 		fingerprint: rssContent.fingerprint,
-		guidStability,
+		guidStability: guidStability || rss.guidStability,
 	});
 
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);

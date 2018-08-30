@@ -45,7 +45,7 @@ describe('Upsert', () => {
 					publicationDate: new Date(),
 				}),
 			);
-			CreateFingerPrints([article3]);
+			CreateFingerPrints([article3], 'STABLE');
 
 			const operationMap = await upsertManyPosts(article1.rss, [article3], 'rss');
 			expect(operationMap.changed).to.be.empty;
@@ -58,7 +58,7 @@ describe('Upsert', () => {
 					link: 'https://google.com/test',
 				}),
 			);
-			CreateFingerPrints([article3]);
+			CreateFingerPrints([article3], 'STABLE');
 
 			const operationMap = await upsertManyPosts(article1.rss, [article3], 'rss');
 			expect(operationMap.changed).to.have.length(1);
@@ -262,7 +262,7 @@ describe('upsertManyPosts', () => {
 				});
 				article.enclosures = [];
 				return article;
-			}),
+			}), 'STABLE'
 		);
 		insertedArticles = await Article.find({ rss: rssID }).sort('fingerprint');
 		expect(insertedArticles).to.be.empty;
@@ -287,7 +287,7 @@ describe('upsertManyPosts', () => {
 			articles[i].title = `Article №${i}`;
 			articles[i].description = 'Article about pugs';
 		}
-		CreateFingerPrints(articles);
+		CreateFingerPrints(articles, 'STABLE');
 		await upsertManyPosts(rssID, articles, 'rss');
 
 		const updatedArticles = await Article.find({ rss: rssID }).sort('fingerprint');
@@ -313,7 +313,7 @@ describe('upsertManyPosts', () => {
 			articles[i]._id = mongoose.Types.ObjectId();
 			articles[i].content = `c${i}`;
 		}
-		CreateFingerPrints(articles);
+		CreateFingerPrints(articles, 'STABLE');
 		const newHashResult = await upsertManyPosts(rssID, articles, 'rss');
 		expect(newHashResult.new).to.be.empty;
 		expect(newHashResult.changed).to.not.be.empty;
@@ -330,7 +330,7 @@ describe('upsertManyPosts', () => {
 			articles[i].link = `http://google.com/${i}/`;
 			articles[i].guid = `http://google.com/${i}/`;
 		}
-		CreateFingerPrints(articles);
+		CreateFingerPrints(articles, 'STABLE');
 		const insertResult = await upsertManyPosts(rssID, articles, 'rss');
 		expect(insertResult.new).to.not.be.empty;
 		expect(insertResult.changed).to.be.empty;

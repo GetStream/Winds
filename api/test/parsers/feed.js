@@ -336,7 +336,7 @@ describe('Parsing', () => {
 			it(`should parse feed ${test.filename}`, async () => {
 				let tc = getTestFeed(test.filename);
 				let posts = await ReadFeedStream(tc);
-				let feedResponse = ParseFeedPosts('', posts);
+				let feedResponse = ParseFeedPosts('', posts, 'STABLE');
 
 				expect(feedResponse.title).to.equal(test.expectations.title);
 				expect(feedResponse.link).to.equal(test.expectations.link);
@@ -376,7 +376,7 @@ describe('Parsing', () => {
 			it(`should parse podcast feed ${test.filename}`, async () => {
 				let tc = getTestPodcast(test.filename);
 				let posts = await ReadFeedStream(tc);
-				let podcastResponse = ParsePodcastPosts('', posts);
+				let podcastResponse = ParsePodcastPosts('', posts, 'STABLE');
 
 				expect(podcastResponse.title).to.equal(test.expectations.title);
 				expect(podcastResponse.link).to.equal(test.expectations.link);

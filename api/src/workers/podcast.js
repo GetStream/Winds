@@ -10,7 +10,7 @@ import Episode from '../models/episode';
 
 import logger from '../utils/logger';
 import { sendFeedToCollections } from '../utils/collections';
-import { ParsePodcast, checkGuidStability } from '../parsers/feed';
+import { ParsePodcast, checkGuidStability, CreateFingerPrints } from '../parsers/feed';
 
 import { ProcessPodcastQueue, ShutDownPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
@@ -88,12 +88,14 @@ export async function handlePodcast(job) {
 		return;
 	}
 
-	let podcastContent, controlPodcastContent = { episodes: [] };
+	let podcastContent, guidStability;
 	try {
 		podcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
 		await Podcast.resetScrapeFailures(podcastID);
 		if (!podcast.guidStability || podcast.guidStability === 'UNCHECKED') {
-			controlPodcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
+			const controlPodcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
+			guidStability = checkGuidStability(podcastContent.episodes, controlPodcastContent.episodes);
+			podcastContent.episodes = CreateFingerPrints(podcastContent.episodes, guidStability);
 		}
 	} catch (err) {
 		await Podcast.incrScrapeFailures(podcastID);
@@ -120,13 +122,12 @@ export async function handlePodcast(job) {
 
 	const operationMap = await upsertManyPosts(podcastID, episodes, 'podcast');
 	const updatedEpisodes = operationMap.new.concat(operationMap.changed);
-	const guidStability = checkGuidStability(updatedEpisodes, controlPodcastContent.episodes);
 	logger.info(`Finished updating ${updatedEpisodes.length} out of ${podcastContent.episodes.length} changed`);
 
 	await Podcast.update({ _id: podcastID }, {
 		postCount: await Episode.count({ podcast: podcastID }),
 		fingerprint: podcastContent.fingerprint,
-		guidStability,
+		guidStability: guidStability || podcast.guidStability,
 	});
 
 	if (!updatedEpisodes.length) {
