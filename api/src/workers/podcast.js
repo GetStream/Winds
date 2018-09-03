@@ -30,7 +30,7 @@ if (require.main === module) {
 }
 
 const streamTTL = 25200; // 7 hours
-const secondaryCheckDelay = 3000; // 3 seconds
+const secondaryCheckDelay = 240000; // 4 minutes
 const statsd = getStatsDClient();
 
 function sleep(time) {
