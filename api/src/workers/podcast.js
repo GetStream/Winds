@@ -30,7 +30,12 @@ if (require.main === module) {
 }
 
 const streamTTL = 25200; // 7 hours
+const secondaryCheckDelay = 3000; // 3 seconds
 const statsd = getStatsDClient();
+
+function sleep(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
 
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
@@ -88,11 +93,19 @@ export async function handlePodcast(job) {
 		return;
 	}
 
+	if (podcast.duplicateOf) {
+		logger.warn(`Podcast with ID ${podcastID} is a duplicate of ${podcast.duplicateOf}. Skipping`);
+		statsd.increment('winds.handle_podcast.result.model_instance_duplicate');
+		return;
+	}
+
 	let podcastContent, guidStability;
 	try {
 		podcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
 		await Podcast.resetScrapeFailures(podcastID);
 		if (!podcast.guidStability || podcast.guidStability === 'UNCHECKED') {
+			//XXX: waiting a bit to increase the chances of catching time-dependent GUIDs
+			await sleep(secondaryCheckDelay);
 			const controlPodcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
 			guidStability = checkGuidStability(podcastContent.episodes, controlPodcastContent.episodes);
 			podcastContent.episodes = CreateFingerPrints(podcastContent.episodes, guidStability);

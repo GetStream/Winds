@@ -28,8 +28,14 @@ export const EpisodeSchema = new Schema(
 					'lastScraped',
 					'images',
 					'featured',
+					'duplicateOf',
 				],
 			},
+		},
+		duplicateOf: {
+			type: Schema.Types.ObjectId,
+			ref: 'Episode',
+			required: false,
 		},
 		url: {
 			type: String,

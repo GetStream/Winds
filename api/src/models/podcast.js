@@ -6,6 +6,11 @@ import { getUrl } from '../utils/urls';
 
 export const PodcastSchema = new Schema(
 	{
+		duplicateOf: {
+			type: Schema.Types.ObjectId,
+			ref: 'Podcast',
+			required: false,
+		},
 		url: {
 			type: String,
 			trim: true,

@@ -1,13 +1,10 @@
-import axios from 'axios';
 import mongoose from 'mongoose';
 import ProgressBar from 'progress';
 
-import '../config';
 import db from '../utils/db';
 import { mergeFeeds } from '../utils/merge';
 import { fetchSocialScore } from '../utils/social';
 import { upsertCollections } from '../utils/collections';
-import { setupAxiosRedirectInterceptor } from '../utils/axios';
 import User from '../models/user';
 import Article from '../models/article';
 
@@ -19,11 +16,30 @@ function sleep(time) {
 
 process.on('unhandledRejection', error => console.error(error.message));
 
-setupAxiosRedirectInterceptor(axios);
-
 async function main() {
     await db;
+    await mergeFeeds('5aff4dd4fe7430d359cbb524', '5afdcfe4fe7430d359b7c234', 'podcast');
+    await mergeFeeds('5aff4dd4fe7430d359cbb524', '5afdc6eefe7430d359b6e81d', 'podcast');
+    return;
 
+    const articles = mongoose.connection.collection('dup_articles_clean')
+    const articleCount = await articles.count();
+    const bar = new ProgressBar('[:current / :total] :bar [:percent | :rate records per second]', { total: articleCount });
+    const cursor = articles.find().batchSize(batchSize);
+
+    let deletes = [];
+    while (await cursor.hasNext()) {
+        const data = await cursor.next();
+        deletes.push(Article.deleteMany({ _id: { $in: data.ids } }));
+        if (deletes.length % 128 === 0) {
+            await Promise.all(deletes);
+            deletes = [];
+        }
+        bar.tick();
+    }
+    await Promise.all(deletes);
+
+    /*
     const cursor = Article.collection.aggregate([
         { $match: { fingerprint: 1 } },
         { $lookup: { from: 'articles', localField: 'fingerprint', foreignField: 'fingerprint', as: 'duplicate' } },
@@ -79,6 +95,7 @@ async function main() {
     for (const result of summaries) {
         console.dir(result);
     }
+    */
 }
 
 main().then(() => {

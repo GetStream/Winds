@@ -59,6 +59,7 @@ export const FollowSchema = new Schema(
 					'public',
 					'featured',
 					'images',
+					'duplicateOf',
 				],
 			},
 			index: true,
@@ -103,6 +104,9 @@ FollowSchema.methods.removeFromStream = async function remove(follows) {
 	const publicationType = this.rss ? 'rss' : 'podcast';
 	const feedGroup = this.rss ? 'user_article' : 'user_episode';
 	const publicationID = this.rss ? this.rss._id : this.podcast._id;
+	if (!this.user) {
+		return [];
+	}
 
 	const timelineFeed = getStreamClient().feed('timeline', this.user._id);
 	const otherFeed = getStreamClient().feed(feedGroup, this.user._id);

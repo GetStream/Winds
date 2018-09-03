@@ -28,7 +28,12 @@ if (require.main === module) {
 
 const streamTTL = 25200; // 7 hours
 const duplicateKeyError = 11000;
+const secondaryCheckDelay = 3000; // 3 seconds
 const statsd = getStatsDClient();
+
+function sleep(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
 
 export async function rssProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
@@ -103,6 +108,8 @@ export async function handleRSS(job) {
 	try {
 		rssContent = await ParseFeed(job.data.url, rss.guidStability);
 		if (!rss.guidStability || rss.guidStability === 'UNCHECKED') {
+			//XXX: waiting a bit to increase the chances of catching time-dependent GUIDs
+			await sleep(secondaryCheckDelay);
 			const controlRssContent = await ParseFeed(job.data.url, rss.guidStability);
 			guidStability = checkGuidStability(rssContent.articles, controlRssContent.articles);
 			rssContent.articles = CreateFingerPrints(rssContent.articles, guidStability);

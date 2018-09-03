@@ -20,7 +20,7 @@ describe('Merge utility', () => {
 		expect(await RSS.findById(feedA)).to.not.be.null;
 		expect(await RSS.findById(feedB)).to.not.be.null;
 
-		await mergeFeeds(feedA, feedB);
+		await mergeFeeds(feedA, feedB, 'rss');
 
 		expect(await RSS.findById(feedA)).to.not.be.null;
 		const feed = await RSS.findById(feedB);
@@ -28,14 +28,14 @@ describe('Merge utility', () => {
 	});
 
 	it('should move articles from one feed to another', async () => {
-		await mergeFeeds(feedA, feedB);
+		await mergeFeeds(feedA, feedB, 'rss');
 
 		expect(await Article.count({ rss: feedA })).to.be.equal(3);
 		expect(await Article.count({ rss: feedB })).to.be.equal(2);
 	});
 
 	it('shouldn\'t produce duplicate articles', async () => {
-		await mergeFeeds(feedA, feedB);
+		await mergeFeeds(feedA, feedB, 'rss');
 
 		expect(await Article.count()).to.be.equal(5);
 		const article1 = await Article.findById('5b0ad37226dc3db38194e5ee');
@@ -45,7 +45,7 @@ describe('Merge utility', () => {
 	});
 
 	it('should move pins from one feed to another', async () => {
-		await mergeFeeds(feedA, feedB);
+		await mergeFeeds(feedA, feedB, 'rss');
 
 		const aArticles = await Article.find({ rss: feedA });
 		const bArticles = await Article.find({ rss: feedB });
@@ -54,21 +54,21 @@ describe('Merge utility', () => {
 	});
 
 	it('shouldn\'t produce duplicate pins', async () => {
-		await mergeFeeds(feedA, feedB);
+		await mergeFeeds(feedA, feedB, 'rss');
 
 		expect(await Pin.count()).to.be.equal(4);
 		expect(await Pin.findById('5b0ad37226dc3db38194e603')).to.be.null;
 	});
 
 	it('should move followers from one feed to another', async () => {
-		await mergeFeeds(feedA, feedB);
+		await mergeFeeds(feedA, feedB, 'rss');
 
 		expect(await Follow.count({ rss: feedA })).to.be.equal(3);
 		expect(await Follow.count({ rss: feedB })).to.be.equal(0);
 	});
 
 	it('shouldn\'t produce duplicate follows', async () => {
-		await mergeFeeds(feedA, feedB);
+		await mergeFeeds(feedA, feedB, 'rss');
 
 		expect(await Follow.count()).to.be.equal(3);
 		expect(await Follow.findById('5b0ad37226dc3db38194e702')).to.be.null;
