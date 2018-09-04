@@ -51,6 +51,7 @@
 				"url": "http://dorkly.com/comics",
 				"updatedAt": "2018-06-01T18:07:31.230Z",
 				"createdAt": "2018-05-27T15:37:30.017Z",
+				"guidStability": "STABLE",
 				"__v": 0
 			},
 			{
@@ -73,6 +74,7 @@
 				"url": "http://dorkly.com/comics/original",
 				"updatedAt": "2018-06-01T18:07:31.230Z",
 				"createdAt": "2018-05-27T15:37:30.017Z",
+				"guidStability": "STABLE",
 				"__v": 0
 			},
 			{
@@ -95,6 +97,7 @@
 				"url": "http://bildblog.de",
 				"updatedAt": "2018-06-01T18:06:31.392Z",
 				"createdAt": "2018-05-27T15:37:30.032Z",
+				"guidStability": "STABLE",
 				"__v": 0
 			}
 		],
@@ -119,6 +122,7 @@
 				"url": "http://mbmbam.com",
 				"valid": true,
 				"isParsing": false,
+				"guidStability": "STABLE",
 				"language": "eng"
 			},
 			{
@@ -141,6 +145,7 @@
 				"url": "http://openargs.com",
 				"valid": true,
 				"language": "eng",
+				"guidStability": "STABLE",
 				"isParsing": false
 			}
 		],

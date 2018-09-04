@@ -170,7 +170,8 @@ export async function handlePodcast(job) {
 	if (await tryCreateQueueFlag('og', 'podcast', podcastID)) {
 		tasks.push(OgQueueAdd({ type: 'episode', podcast: podcastID, urls: updatedEpisodes.map(e => e.link) }, queueOpts));
 	}
-	if (await tryCreateQueueFlag('stream', 'podcast', podcastID, streamTTL)) {
+	const allowedLanguage = [null, undefined, '', 'eng'].includes(podcast.language);
+	if (await tryCreateQueueFlag('stream', 'podcast', podcastID, streamTTL) && allowedLanguage) {
 		tasks.push(StreamQueueAdd({ podcast: podcastID }, queueOpts));
 	}
 	statsd.increment('winds.handle_podcast.result.updates');
