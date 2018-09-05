@@ -116,12 +116,24 @@ export async function handlePodcast(job) {
 
 	if (!podcastContent || podcastContent.episodes.length === 0) {
 		statsd.increment('winds.handle_podcast.result.no_content');
+
+		if (podcast.guidStability != guidStability) {
+			await Podcast.update({ _id: podcastID }, {
+				guidStability: guidStability || podcast.guidStability,
+			});
+		}
 		return;
 	}
 
 	if (podcastContent.fingerprint && podcastContent.fingerprint === podcast.fingerprint) {
 	    logger.debug(`Podcast with ID ${podcastID} has same fingerprint as registered before`);
 		statsd.increment('winds.handle_podcast.result.same_content');
+
+		if (podcast.guidStability != guidStability) {
+			await Podcast.update({ _id: podcastID }, {
+				guidStability: guidStability || podcast.guidStability,
+			});
+		}
 		return;
 	}
 

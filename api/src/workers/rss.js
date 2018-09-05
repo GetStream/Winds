@@ -123,12 +123,24 @@ export async function handleRSS(job) {
 	if (!rssContent || rssContent.articles.length === 0) {
 	    logger.debug(`RSS with ID ${rssID} is empty`);
 		statsd.increment('winds.handle_rss.result.no_content');
+
+		if (rss.guidStability != guidStability) {
+			await RSS.update({ _id: rssID }, {
+				guidStability: guidStability || rss.guidStability,
+			});
+		}
 		return;
 	}
 
 	if (rssContent.fingerprint && rssContent.fingerprint === rss.fingerprint) {
 	    logger.debug(`RSS with ID ${rssID} has same fingerprint as registered before`);
 		statsd.increment('winds.handle_rss.result.same_content');
+
+		if (rss.guidStability != guidStability) {
+			await RSS.update({ _id: rssID }, {
+				guidStability: guidStability || rss.guidStability,
+			});
+		}
 		return;
 	}
 
