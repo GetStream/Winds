@@ -5,6 +5,8 @@ import db from '../utils/db';
 
 import RSS from '../models/rss';
 import Podcast from '../models/podcast';
+import Article from '../models/article';
+import Episode from '../models/episode';
 import logger from '../utils/logger';
 import { ProcessStreamQueue, ShutDownStreamQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
@@ -40,6 +42,7 @@ const joiObjectId = joi.alternatives().try(
 const schema = joi.object().keys({
 	rss: joiObjectId,
 	podcast: joiObjectId,
+	contentIds: joi.array().items(joiObjectId).min(1).required(),
 }).xor('rss', 'podcast');
 
 export async function handleStream(job) {
@@ -49,13 +52,16 @@ export async function handleStream(job) {
 		return;
 	}
 
-	const type = 'rss' in job.data ? 'rss' : 'podcast';
-	const model = 'rss' in job.data ? RSS : Podcast;
+	const [type, model, contentModel] =
+		'rss' in job.data ? ['rss', RSS, Article] : ['podcast', Podcast, Episode];
 
 	await removeQueueFlag('stream', type, job.data[type]);
 
 	const feed = await model.findById(job.data[type]);
-	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed));
+	const content = await contentModel.find({ _id: { $in: job.data.contentIds } })
+		.sort({ publicationDate: -1 })
+		.limit(1000);
+	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed, content));
 }
 
 async function shutdown(signal) {

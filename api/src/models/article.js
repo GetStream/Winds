@@ -178,7 +178,7 @@ ArticleSchema.methods.getParsedArticle = async function() {
 	try {
 		parsed = await ParseArticle(this.url);
 	} catch (e) {
-		throw new Error(`Mercury API call failed for ${this.url}`);
+		throw new Error(`Mercury API call failed for ${this.url}: ${e.message}`);
 	}
 	let content = parsed.content;
 

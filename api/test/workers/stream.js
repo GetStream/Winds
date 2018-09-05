@@ -46,9 +46,35 @@ describe('Stream worker', () => {
 
 		it('should fail for invalid job', async () => {
 			const testCases = [
-				{ rss: '5b0ad0baf6f89574a638887' },
-				{ rss: '5b0ad0baf6f89574a638887aa' },
+				{ podcast: '' },
+				{ podcast: '5b0ad0baf6f89574a638887' },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: '' },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: 42 },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: [''] },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: ['5b0ad0baf6f89574a638887'] },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: ['5b0ad0baf6f89574a638887aa'] },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: [42] },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: [] },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: [null] },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: [undefined] },
+				{ podcast: '5b0ad0baf6f89574a638887a', contentIds: null },
+				{ podcast: '5b0ad0baf6f89574a638887aa' },
+				{ podcast: 42 },
+				{ podcast: null },
+				{ podcast: undefined },
 				{ rss: '' },
+				{ rss: '5b0ad0baf6f89574a638887' },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: '' },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: 42 },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: [''] },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: ['5b0ad0baf6f89574a638887'] },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: ['5b0ad0baf6f89574a638887aa'] },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: [42] },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: [] },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: [null] },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: [undefined] },
+				{ rss: '5b0ad0baf6f89574a638887a', contentIds: null },
+				{ rss: '5b0ad0baf6f89574a638887aa' },
 				{ rss: 42 },
 				{ rss: null },
 				{ rss: undefined },
@@ -70,7 +96,10 @@ describe('Stream worker', () => {
 	});
 
 	describe('worker', () => {
-		const data = { rss: '5b0ad0baf6f89574a638887a' };
+		const data = {
+			rss: '5b0ad0baf6f89574a638887a',
+			contentIds: ['5b0ad37226dc3db38194e5ec', '5b0ad37226dc3db38194e5ed']
+		};
 
 		before(async () => {
 			await dropDBs();

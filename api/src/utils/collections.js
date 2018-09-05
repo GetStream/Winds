@@ -38,16 +38,13 @@ function estimateSize(content) {
 	return size;
 }
 
-export async function sendFeedToCollections(type, feed) {
+export async function sendFeedToCollections(type, feed, content) {
 	const model = feedModels[type];
 
 	if (!feed.language) {
 		feed.language = await DetectLanguage(feed.feedUrl);
 		await model.feed.findByIdAndUpdate(feed.id, { language: feed.language }, { new: true });
 	}
-	const content = await model.content.find({ [type]: feed.id })
-		.sort({ publicationDate: -1 })
-		.limit(1000);
 
 	let mostRecentPublicationDate;
 	if (content.length) {

@@ -9,7 +9,6 @@ import Podcast from '../models/podcast';
 import Episode from '../models/episode';
 
 import logger from '../utils/logger';
-import { sendFeedToCollections } from '../utils/collections';
 import { ParsePodcast, checkGuidStability, CreateFingerPrints } from '../parsers/feed';
 
 import { ProcessPodcastQueue, ShutDownPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
