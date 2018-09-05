@@ -268,7 +268,12 @@ describe('RSS worker', () => {
 
 			it('should schedule Stream job', async () => {
 				const opts = { removeOnComplete: true, removeOnFail: true };
-				const args = { rss: data.rss };
+				const newArticles = await Article.find({
+					_id: { $nin: initialArticles.map(a => a._id) },
+					rss: data.rss,
+				});
+				const articleIDs = newArticles.filter(a => !!a.url).map(a => a._id);
+				const args = { rss: data.rss, contentIds: articleIDs };
 				expect(StreamQueueAdd.calledOnceWith(args, opts)).to.be.true;
 			});
 

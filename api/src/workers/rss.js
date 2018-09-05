@@ -192,7 +192,7 @@ export async function handleRSS(job) {
 	}
 	const allowedLanguage = [null, undefined, '', 'eng'].includes(rss.language);
 	if (await tryCreateQueueFlag('stream', 'rss', rssID, streamTTL) && allowedLanguage) {
-		tasks.push(StreamQueueAdd({ rss: rssID }, queueOpts));
+		tasks.push(StreamQueueAdd({ rss: rssID, contentIds: updatedArticles.map(a => a._id)  }, queueOpts));
 	}
 	statsd.increment('winds.handle_rss.result.updates');
 }

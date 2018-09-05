@@ -158,8 +158,12 @@ describe('Podcast worker', () => {
 		});
 
 		it('should schedule Stream job', async () => {
+			const episodes = await Episode.find({
+				_id: { $nin: initialEpisodes.map(a => a._id) },
+				podcast: data.podcast,
+			});
 			const opts = { removeOnComplete: true, removeOnFail: true };
-			const args = { podcast: data.podcast };
+			const args = { podcast: data.podcast, contentIds: episodes.map(e => e._id) };
 			expect(StreamQueueAdd.calledOnceWith(args, opts)).to.be.true;
 		});
 	});
