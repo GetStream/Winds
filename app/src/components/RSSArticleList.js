@@ -87,10 +87,12 @@ class RSSArticleList extends React.Component {
 			);
 
 			this.unsubscribeFromStreamFeed();
-			this.subscribeToStreamFeed(
-				nextProps.rssFeed._id,
-				nextProps.rssFeed.streamToken,
-			);
+			if (nextProps.rssFeed) {
+				this.subscribeToStreamFeed(
+					nextProps.rssFeed._id,
+					nextProps.rssFeed.streamToken,
+				);
+			}
 		}
 
 		if (!this.props.rssFeed && nextProps.rssFeed) {
