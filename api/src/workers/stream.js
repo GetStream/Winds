@@ -11,7 +11,6 @@ import logger from '../utils/logger';
 import { ProcessStreamQueue, ShutDownStreamQueue } from '../asyncTasks';
 import { timeIt } from '../utils/statsd';
 import { sendFeedToCollections } from '../utils/collections';
-import { removeQueueFlag } from '../utils/queue';
 import { startSampling } from '../utils/watchdog';
 
 if (require.main === module) {
@@ -30,6 +29,8 @@ export async function streamProcessor(job) {
 		const tags = { queue: 'stream' };
 		const extra = { JobRSS: job.data.rss, JobArticles: job.data.articles };
 		logger.error('Stream feed job ecountered an error', { err, tags, extra });
+		//XXX: we have to retry to not lose updates
+		await job.retry();
 	}
 	logger.info(`Completed processing Stream feeds for feed ${job.data.rss}`);
 }
@@ -54,8 +55,6 @@ export async function handleStream(job) {
 
 	const [type, model, contentModel] =
 		'rss' in job.data ? ['rss', RSS, Article] : ['podcast', Podcast, Episode];
-
-	await removeQueueFlag('stream', type, job.data[type]);
 
 	const feed = await model.findById(job.data[type]);
 	const content = await contentModel.find({ _id: { $in: job.data.contentIds } })
