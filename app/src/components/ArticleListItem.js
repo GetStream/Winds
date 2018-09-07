@@ -52,7 +52,7 @@ class ArticleListItem extends React.Component {
 							}}
 						>
 							{this.props.pinned ? (
-								<i className="fa fa-bookmark" />
+								<i className="fas fa-bookmark" />
 							) : (
 								<i className="far fa-bookmark" />
 							)}
