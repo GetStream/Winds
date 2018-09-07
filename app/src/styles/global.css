@@ -187,11 +187,13 @@ textarea {
   top: 0;
   z-index: 100000; }
 
-.delete-account-confirmation-popover .message {
+.delete-account-confirmation-popover .message,
+.save-account-error-popover .message {
   font-size: 0.9em;
   font-weight: lighter; }
 
-.delete-account-confirmation-popover .menu-item {
+.delete-account-confirmation-popover .menu-item,
+.save-account-error-popover .menu-item {
   cursor: pointer; }
 
 label {
@@ -1073,6 +1075,8 @@ a.column-header:hover, .column-header:hover {
     color: #000;
     font-size: 1.5em;
     font-weight: normal; }
+    .item-info i.fa-bookmark.fas {
+      font-weight: 900; }
   .item-info .muted {
     color: #aaa; }
   .item-info a {

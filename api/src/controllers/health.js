@@ -9,7 +9,6 @@ import Queue from 'bull';
 import logger from '../utils/logger';
 
 let version;
-
 if (process.env.DOCKER) {
 	version = 'DOCKER';
 } else {

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # stop all containers
-docker stop $(docker ps -a -q)
+docker stop --force $(docker ps -a -q)
 
 # destroy all containers
-docker rm $(docker ps -a -q)
+docker rm --force $(docker ps -a -q)
 
 # destroy all images
-docker rmi $(docker images -q)
+docker rmi --force $(docker images -q)
