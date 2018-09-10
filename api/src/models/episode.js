@@ -5,6 +5,8 @@ import autopopulate from 'mongoose-autopopulate';
 import 'crypto';
 import { createHash } from 'crypto';
 import { EnclosureSchema } from './enclosure';
+import Cache from './cache';
+import { ParseArticle } from '../parsers/article';
 
 export const EpisodeSchema = new Schema(
 	{
@@ -150,5 +152,44 @@ EpisodeSchema.plugin(autopopulate);
 
 EpisodeSchema.index({ podcast: 1, fingerprint: 1 }, { unique: true });
 EpisodeSchema.index({ podcast: 1, publicationDate: -1 });
+
+EpisodeSchema.methods.getParsedEpisode = async function() {
+	let cached = await Cache.findOne({ url: this.url });
+	if (cached) {
+		return cached;
+	}
+
+	let parsed;
+	try {
+		parsed = await ParseArticle(this.url);
+	} catch (e) {
+		throw new Error(`Mercury API call failed for ${this.url}: ${e.message}`);
+	}
+	let content = parsed.content;
+
+	// XKCD doesn't like Mercury
+	if (this.url.indexOf('https://xkcd') === 0) {
+		content = this.content;
+	}
+
+	const excerpt = parsed.excerpt || parsed.title || this.description;
+	const title = parsed.title || this.title;
+
+	if (!title) {
+		return null;
+	}
+
+	cached = await Cache.create({
+		content: content,
+		excerpt: excerpt,
+		image: parsed.lead_image_url || '',
+		publicationDate: parsed.date_published || this.publicationDate,
+		title: title,
+		url: this.url,
+		commentUrl: this.commentUrl,
+		enclosures: this.enclosures,
+	});
+	return cached;
+};
 
 module.exports = exports = mongoose.model('Episode', EpisodeSchema);
