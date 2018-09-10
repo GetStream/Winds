@@ -10,9 +10,6 @@ npx babel ../src --out-dir ../dist --ignore node_modules
 cp ../src/package.json ../dist/package.json
 
 # Copy build files to fresh /dist directory
-cp ../src/workers/package.json ../dist/workers/package.json
-
-# Copy build files to fresh /dist directory
 cp process_prod.json ../dist/process_prod.json
 
 # Copy email files to fresh /dist directory
@@ -20,6 +17,3 @@ cp -R ../src/utils/email/templates ../dist/utils/email
 
 # Install node modules via yarn
 cd ../dist && yarn install --production --modules-folder node_modules
-
-# Install node modules via yarn
-cd workers && yarn install --production --modules-folder node_modules
