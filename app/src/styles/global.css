@@ -1068,7 +1068,6 @@ a.column-header:hover, .column-header:hover {
     cursor: pointer; }
   .item-info > * {
     margin-right: 1em;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
   .item-info i {
