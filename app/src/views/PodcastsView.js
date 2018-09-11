@@ -10,6 +10,7 @@ import fetch from '../util/fetch';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import AllEpisodesList from '../components/AllEpisodesList';
+import PodcastEpisode from '../components/PodcastEpisode';
 
 class PodcastsView extends React.Component {
 	constructor(props) {
@@ -116,6 +117,10 @@ class PodcastsView extends React.Component {
 				{leftColumn}
 				<div className="border" />
 				<Switch>
+					<Route
+						component={PodcastEpisode}
+						path="/podcasts/:podcastID/episodes/:episodeID"
+					/>
 					<Route component={PodcastEpisodesView} path="/podcasts/:podcastID" />
 					<Route component={AllEpisodesList} path="/podcasts" />
 				</Switch>

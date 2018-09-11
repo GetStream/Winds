@@ -2356,6 +2356,24 @@ a.column-header:hover, .column-header:hover {
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .podcasts-view .rss-article-content {
+    -webkit-app-region: no-drag;
+    margin: auto;
+    max-width: 720px;
+    padding-bottom: 100px; }
+    .podcasts-view .rss-article-content h1 {
+      font-size: 30px; }
+    .podcasts-view .rss-article-content p {
+      font-size: 15px;
+      font-weight: normal;
+      line-height: 26px; }
+    .podcasts-view .rss-article-content a {
+      color: #44bc75;
+      text-decoration: none; }
+      .podcasts-view .rss-article-content a:hover {
+        text-decoration: underline; }
+    .podcasts-view .rss-article-content img {
+      max-width: 100%; }
   .podcasts-view .featured-podcast label {
     color: #000; }
   .podcasts-view .featured-podcast > * {

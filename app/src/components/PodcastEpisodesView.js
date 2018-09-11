@@ -160,7 +160,8 @@ class PodcastEpisodesView extends React.Component {
 						{`If you're pretty sure there's supposed to be some episodes here, and they aren't showing up, please file a `}
 						<a href="https://github.com/getstream/winds/issues">
 							GitHub Issue
-						</a>.
+						</a>
+						.
 					</p>
 				</div>
 			);
@@ -180,6 +181,7 @@ class PodcastEpisodesView extends React.Component {
 							<EpisodeListItem
 								active={active}
 								key={episode._id}
+								episodeID={episode._id}
 								playOrPauseEpisode={() => {
 									if (active && this.props.context.playing) {
 										this.props.pauseEpisode();
