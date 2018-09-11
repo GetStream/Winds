@@ -40,16 +40,20 @@ exports.get = async (req, res) => {
 	}
 
 	if (req.query && req.query.type === 'parsed') {
-		const parsed = await episode.getParsedEpisode();
-		if (!parsed) {
+		try {
+			const parsed = await episode.getParsedEpisode();
+			if (!parsed) {
+				return res.status(400).json({ error: 'Failed to parse the episode.' });
+			}
+			await trackEngagement(req.User, {
+				label: 'open_episode',
+				content: { foreign_id: `episode:${episodeId}` },
+			});
+
+			return res.json(parsed);
+		} catch (err) {
 			return res.status(400).json({ error: 'Failed to parse the episode.' });
 		}
-		await trackEngagement(req.User, {
-			label: 'open_episode',
-			content: { foreign_id: `episode:${episodeId}` },
-		});
-
-		return res.json(parsed);
 	}
 
 	res.json(episode);
