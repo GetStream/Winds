@@ -1,13 +1,12 @@
 import url from 'url';
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactPlayer from 'react-player';
 import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
-import { pinEpisode, unpinEpisode } from '../util/pins';
+import { pinEpisode, unpinEpisode, getPinnedEpisodes } from '../util/pins';
 
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
@@ -26,9 +25,17 @@ class PodcastEpisode extends React.Component {
 
 	componentDidMount() {
 		const episodeID = this.props.match.params.episodeID;
+		const podcastID = this.props.match.params.podcastID;
 
 		this.getEpisode(episodeID);
 		this.getEpisodeContent(episodeID);
+		getPinnedEpisodes(this.props.dispatch);
+
+		if (!this.props.episodes) {
+			// In order to make the Player works in direct access to page
+			this.getPodcastEpisodes(podcastID);
+			this.getPodcastInfo(podcastID);
+		}
 
 		window.streamAnalyticsClient.trackEngagement({
 			label: 'episode_open',
@@ -63,6 +70,61 @@ class PodcastEpisode extends React.Component {
 			this.setState({ error: true, loadingContent: false });
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		}
+	}
+
+	getPodcastInfo(podcastID) {
+		fetch('GET', `/podcasts/${podcastID}`)
+			.then(res => {
+				console.log(res.data);
+
+				this.props.dispatch({
+					podcast: res.data,
+					type: 'UPDATE_PODCAST_SHOW',
+				});
+			})
+			.catch(err => {
+				if (window.console) console.log(err); // eslint-disable-line no-console
+			});
+	}
+
+	getPodcastEpisodes(podcastID) {
+		fetch(
+			'GET',
+			'/episodes',
+			{},
+			{
+				podcast: podcastID,
+				sort_by: 'publicationDate,desc',
+			},
+		)
+			.then(res =>
+				this.props.dispatch({
+					episodes: res.data,
+					type: 'BATCH_UPDATE_EPISODES',
+				}),
+			)
+			.catch(err => {
+				if (window.console) console.log(err); // eslint-disable-line no-console
+			});
+	}
+
+	playOrPause() {
+		const episode = this.state.episode;
+		const player = this.props.player;
+		const isActive = player && player.episodeID === episode._id;
+		const isPlaying = isActive && player.playing;
+
+		if (!isActive)
+			this.props.dispatch({
+				contextID: episode.podcast._id,
+				contextPosition: 0, //TODO: Ideally, API should send the episode position
+				contextType: 'podcast',
+				episodeID: episode._id,
+				playing: true,
+				type: 'PLAY_EPISODE',
+			});
+		else if (isPlaying) this.props.dispatch({ type: 'PAUSE_EPISODE' });
+		else this.props.dispatch({ type: 'RESUME_EPISODE' });
 	}
 
 	tweet() {
@@ -104,6 +166,8 @@ class PodcastEpisode extends React.Component {
 
 	render() {
 		const episode = this.state.episode;
+		const player = this.props.player;
+		const isPlaying = player && player.playing && player.episodeID === episode._id;
 
 		return (
 			<React.Fragment>
@@ -113,7 +177,7 @@ class PodcastEpisode extends React.Component {
 						<p>
 							Please go{' '}
 							<u onClick={() => this.props.history.goBack()}>Back</u> to the
-							Podcast page.
+							Podcast page and play it from there!
 						</p>
 					</div>
 				)}
@@ -125,7 +189,16 @@ class PodcastEpisode extends React.Component {
 								<Loader />
 							) : (
 								<React.Fragment>
-									<h1>{episode.title}</h1>
+									<h1>
+										<span onClick={() => this.playOrPause()}>
+											{isPlaying ? (
+												<i className="fas fa-pause-circle" />
+											) : (
+												<i className="fas fa-play-circle" />
+											)}
+										</span>{' '}
+										{episode.title}
+									</h1>
 									<div className="item-info">
 										<span
 											className="bookmark"
@@ -201,24 +274,35 @@ class PodcastEpisode extends React.Component {
 }
 
 PodcastEpisode.propTypes = {
+	pinID: PropTypes.string,
+	pinned: PropTypes.bool.isRequired,
+	player: PropTypes.object,
 	dispatch: PropTypes.func.isRequired,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			episodeID: PropTypes.string.isRequired,
+			podcastID: PropTypes.string.isRequired,
 		}),
 	}),
-
-	pinID: PropTypes.string,
-	pinned: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
 	const episodeID = ownProps.match.params.episodeID;
 
-	if (state.pinnedEpisodes && state.pinnedEpisodes[episodeID])
-		return { pinned: true, pinID: state.pinnedEpisodes[episodeID]._id };
+	let pinned, pinID;
+	if (state.pinnedEpisodes && state.pinnedEpisodes[episodeID]) {
+		pinned = true;
+		pinID = state.pinnedEpisodes[episodeID]._id;
+	} else {
+		pinned = false;
+	}
 
-	return { pinned: false };
+	return {
+		pinned,
+		pinID,
+		player: state.player,
+		episodes: state.episodes,
+	};
 };
 
 export default connect(mapStateToProps)(PodcastEpisode);
