@@ -157,6 +157,22 @@ class UserProfileSettingsDrawer extends React.Component {
 		}
 	}
 
+	downloadOPML() {
+		fetch('GET', `/opml/download`)
+			.then(res => {
+				if (res.data) {
+					const link = document.createElement('a');
+					const blob = new Blob([res.data], { type: 'text/xml' });
+					link.href = URL.createObjectURL(blob);
+					link.download = 'export.xml';
+					link.click();
+				}
+			})
+			.catch(err => {
+				if (window.console) console.log(err); // eslint-disable-line no-console
+			});
+	}
+
 	render() {
 		const deleteAccountPopover = (
 			<div className="popover-panel delete-account-confirmation-popover">
@@ -320,6 +336,12 @@ class UserProfileSettingsDrawer extends React.Component {
 								Delete account
 							</button>
 						</Popover>
+					</div>
+					<div
+						className="btn primary export"
+						onClick={() => this.downloadOPML()}
+					>
+						Export OPML
 					</div>
 					<button className="btn primary with-circular-icon" type="submit">
 						<Img decode={false} src={saveIcon} />

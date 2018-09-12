@@ -132,4 +132,9 @@
 		border-color: $foreground-red;
 		color: $foreground-red;
 	}
+
+	&.export {
+		margin-right: 5px;
+		text-align: center;
+	}
 }
