@@ -3,13 +3,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
+import Img from 'react-image';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
 import { pinEpisode, unpinEpisode, getPinnedEpisodes } from '../util/pins';
-
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
+import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
+import pauseIcon from '../images/icons/pause.svg';
+import playIcon from '../images/icons/play.svg';
 
 class PodcastEpisode extends React.Component {
 	constructor(props) {
@@ -189,69 +192,88 @@ class PodcastEpisode extends React.Component {
 								<Loader />
 							) : (
 								<React.Fragment>
-									<h1>
-										<span onClick={() => this.playOrPause()}>
-											{isPlaying ? (
-												<i className="fas fa-pause-circle" />
-											) : (
-												<i className="fas fa-play-circle" />
-											)}
-										</span>{' '}
-										{episode.title}
+									<h1
+										className="left"
+										onClick={() => this.playOrPause()}
+									>
+										<Img
+											height="75"
+											width="75"
+											className="og-image"
+											src={[
+												episode.images.og,
+												episode.podcast.images.featured,
+												getPlaceholderImageURL(
+													episode.podcast._id,
+												),
+											]}
+										/>
+										<div className="play-icon">
+											<div className="icon-container">
+												<Img
+													src={isPlaying ? pauseIcon : playIcon}
+												/>
+											</div>
+										</div>
 									</h1>
-									<div className="item-info">
-										<span
-											className="bookmark"
-											onClick={() => {
-												if (this.props.pinned) {
-													unpinEpisode(
-														this.props.pinID,
-														episode._id,
-														this.props.dispatch,
-													);
-												} else {
-													pinEpisode(
-														episode._id,
-														this.props.dispatch,
-													);
-												}
-											}}
-										>
-											{this.props.pinned ? (
-												<i className="fas fa-bookmark" />
-											) : (
-												<i className="far fa-bookmark" />
-											)}
-										</span>{' '}
-										{this.props.link && (
-											<span>
-												<i className="fa fa-external-link-alt" />
-												<a href={this.props.link}>View on site</a>
-											</span>
-										)}{' '}
-										<span>
-											<a
-												href="tweet"
-												onClick={e => {
-													e.preventDefault();
-													e.stopPropagation();
-													this.tweet();
+									<div className="right">
+										<h1>{episode.title}</h1>
+										<div className="item-info">
+											<span
+												className="bookmark"
+												onClick={() => {
+													if (this.props.pinned) {
+														unpinEpisode(
+															this.props.pinID,
+															episode._id,
+															this.props.dispatch,
+														);
+													} else {
+														pinEpisode(
+															episode._id,
+															this.props.dispatch,
+														);
+													}
 												}}
 											>
-												<i className="fab fa-twitter" />
-											</a>
-										</span>
-										<div>
-											<a href={episode.url}>
-												{episode.podcast.title}
-											</a>
+												{this.props.pinned ? (
+													<i className="fas fa-bookmark" />
+												) : (
+													<i className="far fa-bookmark" />
+												)}
+											</span>{' '}
+											{this.props.link && (
+												<span>
+													<i className="fa fa-external-link-alt" />
+													<a href={this.props.link}>
+														View on site
+													</a>
+												</span>
+											)}{' '}
+											<span>
+												<a
+													href="tweet"
+													onClick={e => {
+														e.preventDefault();
+														e.stopPropagation();
+														this.tweet();
+													}}
+												>
+													<i className="fab fa-twitter" />
+												</a>
+											</span>
+											<div>
+												<a href={episode.url}>
+													{episode.podcast.title}
+												</a>
+											</div>
+											<span className="muted">
+												{'Posted '}
+												<TimeAgo
+													timestamp={episode.publicationDate}
+												/>
+											</span>
 										</div>
-										<span className="muted">
-											{'Posted '}
-											<TimeAgo
-												timestamp={episode.publicationDate}
-											/>
-										</span>
 									</div>
 								</React.Fragment>
 							)}
