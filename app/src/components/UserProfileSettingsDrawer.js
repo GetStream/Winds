@@ -32,6 +32,7 @@ class UserProfileSettingsDrawer extends React.Component {
 			followNotifications,
 			password: '',
 			weeklyNotifications,
+			exportError: false,
 		};
 
 		this.toggleDeleteAccountPopover = this.toggleDeleteAccountPopover.bind(this);
@@ -155,6 +156,26 @@ class UserProfileSettingsDrawer extends React.Component {
 					this.props.closeDrawer();
 				});
 		}
+	}
+
+	downloadOPML() {
+		fetch('GET', `/opml/download`)
+			.then(res => {
+				if (res.data) {
+					const link = document.createElement('a');
+					const blob = new Blob([res.data], { type: 'text/xml' });
+					link.href = URL.createObjectURL(blob);
+					link.download = 'export.xml';
+					link.click();
+				}
+			})
+			.catch(err => {
+				this.setState({ exportError: true }, () => {
+					setTimeout(() => this.setState({ exportError: false }), 1500);
+				});
+
+				if (window.console) console.log(err); // eslint-disable-line no-console
+			});
 	}
 
 	render() {
@@ -321,6 +342,26 @@ class UserProfileSettingsDrawer extends React.Component {
 							</button>
 						</Popover>
 					</div>
+					<Popover
+						body={
+							<div className="popover-panel">
+								<div className="panel-element">
+									An Error occured, Please try again.
+								</div>
+							</div>
+						}
+						isOpen={this.state.exportError}
+						preferPlace="above"
+						tipSize={0.2}
+					>
+						<div
+							className="btn primary export"
+							onClick={() => this.downloadOPML()}
+						>
+							Export OPML
+						</div>
+					</Popover>
+
 					<button className="btn primary with-circular-icon" type="submit">
 						<Img decode={false} src={saveIcon} />
 						<span>Save</span>

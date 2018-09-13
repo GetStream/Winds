@@ -105,6 +105,9 @@ textarea {
   .btn.delete {
     border-color: #e55262;
     color: #e55262; }
+  .btn.export {
+    margin-right: 5px;
+    text-align: center; }
 
 .drawer {
   background-color: #fff;
