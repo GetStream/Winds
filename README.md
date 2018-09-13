@@ -111,6 +111,8 @@ The following tutorials will not only help you start contributing to Winds, but 
 8. [Testing Node.js in 2018](https://hackernoon.com/testing-node-js-in-2018-10a04dd77391)
 9. [Simple Steps to Optimize Your App Performance with MongoDB, Redis, and Node.js](https://hackernoon.com/simple-steps-to-optimize-your-app-performance-5700d8b58f58)
 10. [Getting Started with Winds & Open Source](https://hackernoon.com/winds-an-in-depth-tutorial-on-making-your-first-contribution-to-open-source-software-ebf259f21db2)
+11. [Deploying the Winds App to Amazon S3 and CloudFront](https://getstream.io/blog/deploying-the-winds-app-to-amazon-s3-and-cloudfront/)
+12. [Deploying the Winds API to AWS ECS with Docker Compose](https://getstream.io/blog/deploying-the-winds-api-to-aws-ecs-with-docker-compose/)
 
 ## Download
 
