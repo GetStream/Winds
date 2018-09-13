@@ -62,12 +62,7 @@ class PodcastEpisode extends React.Component {
 		this.setState({ loadingContent: true });
 
 		try {
-			const res = await fetch(
-				'GET',
-				`/episodes/${episodeID}`,
-				{},
-				{ type: 'parsed' },
-			);
+			const res = await fetch('GET', `/episodes/${episodeID}?type=parsed`);
 			this.setState({ content: res.data.content, loadingContent: false });
 		} catch (err) {
 			this.setState({ error: true, loadingContent: false });
@@ -140,9 +135,7 @@ class PodcastEpisode extends React.Component {
 		if (location.pathname === '/' && location.hash) {
 			link.pathname = location.hash.slice(1);
 		}
-		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${
-			this.props.title
-		}&hashtags=Winds,RSS`;
+		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${this.state.episode.title}&hashtags=Winds,RSS`;
 
 		if (isElectron()) {
 			window.ipcRenderer.send('open-external-window', shareUrl);
