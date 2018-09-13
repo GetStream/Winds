@@ -396,25 +396,25 @@ Go to the `api` directory and run `yarn link` to make these commands available:
 winds rss https://techcrunch.com/feed/
 ```
 
-For podcasts:
+**Podcasts**:
 
 ```
 winds podcast https://www.npr.org/rss/podcast.php\?id\=510289
 ```
 
-For Open Graph scraping
+**Open Graph scraping**:
 
 ```
 winds og http://www.planetary.org/multimedia/planetary-radio/show/2018/0509-amy-mainzer-neowise.html
 ```
 
-RSS Discovery
+**RSS Discovery**:
 
 ```
 winds discover mashable.com
 ```
 
-Article parsing (using mercury)
+**Article parsing (w/ Mercury)**:
 
 ```
 winds article https://alexiskold.net/2018/04/12/meet-12-startups-from-techstars-nyc-winter-2018-program/
