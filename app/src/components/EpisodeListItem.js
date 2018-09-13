@@ -48,17 +48,19 @@ class EpisodeListItem extends React.Component {
 		}
 
 		return (
-			<div
-				className="list-item podcast-episode"
-				onClick={() => {
-					if (this.props.playable) {
-						this.props.playOrPauseEpisode();
-					} else {
-						this.props.history.push(`/podcasts/${this.props.podcast._id}`);
-					}
-				}}
-			>
-				<div className="left">
+			<div className="list-item podcast-episode">
+				<div
+					className="left"
+					onClick={() => {
+						if (this.props.playable) {
+							this.props.playOrPauseEpisode();
+						} else {
+							this.props.history.push(
+								`/podcasts/${this.props.podcast._id}`,
+							);
+						}
+					}}
+				>
 					<Img
 						height="100"
 						width="100"
@@ -71,7 +73,18 @@ class EpisodeListItem extends React.Component {
 					{this.props.playable ? icon : null}
 					{this.props.recent ? <div className="recent-indicator" /> : null}
 				</div>
-				<div className="right">
+				<div
+					className="right"
+					onClick={() => {
+						this.props.history.push(
+							this.props.playable
+								? `/podcasts/${this.props.podcast._id}/episodes/${
+										this.props.episodeID
+								  }`
+								: `/podcasts/${this.props.podcast._id}`,
+						);
+					}}
+				>
 					<h2>{`${this.props.title}`}</h2>
 					<div className="item-info">
 						<span
@@ -98,7 +111,12 @@ class EpisodeListItem extends React.Component {
 						{this.props.link ? (
 							<span>
 								<i className="fa fa-external-link-alt" />
-								<a href={this.props.link}>View on site</a>
+								<a
+									href={this.props.link}
+									onClick={e => e.stopPropagation()}
+								>
+									View on site
+								</a>
 							</span>
 						) : null}
 						<span>{this.props.podcast.title}</span>
@@ -134,6 +152,7 @@ EpisodeListItem.propTypes = {
 	}),
 	pinned: PropTypes.bool,
 	playOrPauseEpisode: PropTypes.func,
+	episodeID: PropTypes.string,
 	playable: PropTypes.bool,
 	playing: PropTypes.bool,
 	link: PropTypes.string,

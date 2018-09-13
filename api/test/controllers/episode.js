@@ -26,6 +26,17 @@ describe('Episode controller', () => {
 		});
 	});
 
+	describe('get parsed episode', () => {
+		it('should return the parsed version of the episode', async () => {
+			const response = await withLogin(
+				request(api)
+					.get(`/episodes/${episode._id}`)
+					.query({ type: 'parsed' }),
+			);
+			expect(response).to.have.status(200);
+		});
+	});
+
 	describe('list', () => {
 		it('should return the list of episodes', async () => {
 			const response = await withLogin(request(api).get('/episodes'));
@@ -45,7 +56,9 @@ describe('Episode controller', () => {
 				],
 			};
 
-			mock.personalization.get.withArgs('winds_episode_recommendations', opts).returns({ data: result });
+			mock.personalization.get
+				.withArgs('winds_episode_recommendations', opts)
+				.returns({ data: result });
 
 			const response = await withLogin(
 				request(api)

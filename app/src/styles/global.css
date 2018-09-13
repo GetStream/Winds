@@ -1068,7 +1068,6 @@ a.column-header:hover, .column-header:hover {
     cursor: pointer; }
   .item-info > * {
     margin-right: 1em;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
   .item-info i {
@@ -2356,6 +2355,24 @@ a.column-header:hover, .column-header:hover {
   max-width: 100%;
   overflow-y: hidden;
   padding: 0 20px; }
+  .podcasts-view .rss-article-content {
+    -webkit-app-region: no-drag;
+    margin: auto;
+    max-width: 720px;
+    padding-bottom: 100px; }
+    .podcasts-view .rss-article-content h1 {
+      font-size: 30px; }
+    .podcasts-view .rss-article-content p {
+      font-size: 15px;
+      font-weight: normal;
+      line-height: 26px; }
+    .podcasts-view .rss-article-content a {
+      color: #44bc75;
+      text-decoration: none; }
+      .podcasts-view .rss-article-content a:hover {
+        text-decoration: underline; }
+    .podcasts-view .rss-article-content img {
+      max-width: 100%; }
   .podcasts-view .featured-podcast label {
     color: #000; }
   .podcasts-view .featured-podcast > * {
@@ -2389,7 +2406,40 @@ a.column-header:hover, .column-header:hover {
     grid-area: content;
     overflow-y: scroll; }
   .podcasts-view .content-header {
-    grid-area: content-header; }
+    display: flex;
+    grid-area: content-header;
+    margin: auto;
+    width: 720px; }
+    .podcasts-view .content-header .left {
+      cursor: pointer;
+      margin-right: 20px;
+      position: relative; }
+    .podcasts-view .content-header .og-image {
+      background-position: 50%;
+      background-size: cover;
+      border-radius: 8px;
+      -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05); }
+    .podcasts-view .content-header .play-icon {
+      align-items: center;
+      display: flex;
+      height: 79px;
+      justify-content: center;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0; }
+      .podcasts-view .content-header .play-icon .icon-container {
+        align-items: center;
+        background-color: #000;
+        border-radius: 10000px;
+        display: flex;
+        height: 1.6em;
+        justify-content: center;
+        width: 1.6em; }
+    .podcasts-view .content-header.list-view-header {
+      margin: 0;
+      width: unset; }
   .podcasts-view .alignment-box {
     margin-top: 1.7em; }
 
