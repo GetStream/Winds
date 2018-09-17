@@ -42,32 +42,40 @@ exports.post = async (req, res) => {
 		return res.status(422).json({ error: 'Missing required fields.' });
 
 	const exists = isRss
-		? await Rss.findOne({ _id: data.rss })
-		: await Podcast.findOne({ _id: data.podcast });
+		? await Rss.findById(data.rss)
+		: await Podcast.findById(data.podcast);
 	if (!exists) return res.status(422).json({ error: "Resource doesn't exists." });
 
-	if (!!(await Alias.findOne(data)))
-		return res.status(409).json({ error: 'Resource already exists.' });
+	const feedID = isRss ? { rss: data.rss } : { podcast: data.podcast };
+	if (!!(await Alias.findOne({ user: data.user, ...feedID }))) {
+		res.json(
+			await Alias.findOneAndUpdate(
+				{ user: data.user, ...feedID },
+				{ alias: data.alias },
+				{ new: true },
+			),
+		);
+	} else {
+		const alias = await Alias.create(data);
 
-	const alias = await Alias.create(data);
+		// await getStreamClient()
+		// 	.feed('user', alias.user)
+		// 	.addActivity({
+		// 		actor: alias.user,
+		// 		verb: 'alias',
+		// 		object: alias._id,
+		// 		foreign_id: `aliass:${alias._id}`,
+		// 		time: alias.createdAt,
+		// 	});
 
-	// await getStreamClient()
-	// 	.feed('user', alias.user)
-	// 	.addActivity({
-	// 		actor: alias.user,
-	// 		verb: 'alias',
-	// 		object: alias._id,
-	// 		foreign_id: `aliass:${alias._id}`,
-	// 		time: alias.createdAt,
-	// 	});
-
-	// await trackEngagement(req.User, {
-	// 	label: alias.rss ? 'alias_rss' : 'alias_podcast',
-	// 	content: {
-	// 		foreign_id: alias.rss ? `rss:${alias.rss}` : `podcast:${alias.podcast}`,
-	// 	},
-	// });
-	res.json(await Alias.findOne({ _id: alias._id }));
+		// await trackEngagement(req.User, {
+		// 	label: alias.rss ? 'alias_rss' : 'alias_podcast',
+		// 	content: {
+		// 		foreign_id: alias.rss ? `rss:${alias.rss}` : `podcast:${alias.podcast}`,
+		// 	},
+		// });
+		res.json(await Alias.findOne({ _id: alias._id }));
+	}
 };
 
 exports.put = async (req, res) => {
