@@ -24,7 +24,13 @@ export const streamQueue = new Queue('stream', config.cache.uri, {
 	limiter: { max: 12000, duration: 3600000 } // 12k per hour
 });
 
-export const ogQueue = new Queue('og', config.cache.uri);
+export const ogQueue = new Queue('og', config.cache.uri, {
+	settings: {
+		lockDuration: 60000,
+		stalledInterval: 50000,
+		maxStalledCount: 2
+	}
+});
 export const socialQueue = new Queue('social', config.cache.uri);
 
 function makeMetricKey(queue, event) {
