@@ -6,11 +6,13 @@ import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import Popover from 'react-popover';
 import fetch from '../util/fetch';
 import moment from 'moment';
 import { getPinnedEpisodes } from '../util/pins';
 import { getFeed } from '../util/feeds';
 import Loader from './Loader';
+import AliasModal from './AliasModal';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
@@ -20,6 +22,8 @@ class PodcastEpisodesView extends React.Component {
 			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
 			sortBy: 'latest',
 			newEpisodesAvailable: false,
+			menuPopover: false,
+			aliasModal: false,
 		};
 	}
 	subscribeToStreamFeed(podcastID, streamFeedToken) {
@@ -129,16 +133,41 @@ class PodcastEpisodesView extends React.Component {
 		}
 	}
 
-	toggleMenu() {
-		this.setState({
-			menuIsOpen: !this.state.menuIsOpen,
-		});
-	}
+	toggleMenuPopover = () => {
+		this.setState(prevState => ({ menuPopover: !prevState.menuPopover }));
+	};
+
+	toggleAliasModal = () => {
+		this.setState(prevState => ({ aliasModal: !prevState.aliasModal }));
+	};
 
 	render() {
-		if (!this.props.podcast) {
-			return <Loader />;
-		}
+		if (!this.props.podcast) return <Loader />;
+
+		const menuPopover = (
+			<div className="popover-panel">
+				<div
+					className="panel-element menu-item"
+					onClick={() => this.toggleAliasModal()}
+				>
+					Rename
+				</div>
+				<div
+					className="panel-element menu-item"
+					onClick={() =>
+						this.props.isFollowing
+							? this.props.unfollowPodcast()
+							: this.props.followPodcast()
+					}
+				>
+					{this.props.isFollowing ? (
+						<span className="red">Unfollow</span>
+					) : (
+						'Follow'
+					)}
+				</div>
+			</div>
+		);
 
 		let sortedEpisodes = [...this.props.episodes];
 		sortedEpisodes.sort((a, b) => {
@@ -160,7 +189,8 @@ class PodcastEpisodesView extends React.Component {
 						{`If you're pretty sure there's supposed to be some episodes here, and they aren't showing up, please file a `}
 						<a href="https://github.com/getstream/winds/issues">
 							GitHub Issue
-						</a>.
+						</a>
+						.
 					</p>
 				</div>
 			);
@@ -249,22 +279,30 @@ class PodcastEpisodesView extends React.Component {
 						<div className="info">
 							<h1>{this.props.podcast.title}</h1>
 						</div>
-						<div className="menu">
+						<Popover
+							body={menuPopover}
+							isOpen={this.state.menuPopover}
+							onOuterAction={this.toggleMenuPopover}
+							preferPlace="below"
+							tipSize={0.1}
+						>
 							<div
-								className="panel-element"
-								onClick={() => {
-									if (this.props.isFollowing) {
-										this.props.unfollowPodcast();
-									} else {
-										this.props.followPodcast();
-									}
-								}}
+								className="menu"
+								onClick={() => this.toggleMenuPopover()}
 							>
-								{this.props.isFollowing ? 'Unfollow' : 'Follow'}
+								&bull; &bull; &bull;
 							</div>
-						</div>
+						</Popover>
 					</div>
 				</div>
+
+				<AliasModal
+					defVal={this.props.podcast.title}
+					isOpen={this.state.aliasModal}
+					toggleModal={this.toggleAliasModal}
+					isRss={false}
+					feedID={this.props.podcast._id}
+				/>
 
 				<div className="list podcast-episode-list content">
 					{this.state.newEpisodesAvailable ? (

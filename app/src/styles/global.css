@@ -106,6 +106,9 @@ textarea {
     border-color: #e55262;
     color: #e55262; }
 
+.red {
+  color: #981212; }
+
 .drawer {
   background-color: #fff;
   bottom: 0;
