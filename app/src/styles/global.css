@@ -191,12 +191,14 @@ textarea {
   z-index: 100000; }
 
 .delete-account-confirmation-popover .message,
-.save-account-error-popover .message {
+.save-account-error-popover .message,
+.feed-popover .message {
   font-size: 0.9em;
   font-weight: lighter; }
 
 .delete-account-confirmation-popover .menu-item,
-.save-account-error-popover .menu-item {
+.save-account-error-popover .menu-item,
+.feed-popover .menu-item {
   cursor: pointer; }
 
 label {
@@ -1103,8 +1105,15 @@ a.column-header:hover, .column-header:hover {
     margin-right: 1em; }
     .list-view-header .alignment-box > *.menu {
       cursor: pointer;
-      margin-left: auto;
-      margin-right: 0; }
+      margin-left: auto; }
+    .list-view-header .alignment-box > *.menu-pop {
+      cursor: pointer; }
+    .list-view-header .alignment-box > *.follow {
+      color: #08A270;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 0.82px;
+      margin-right: 15px; }
 
 .list {
   padding-left: 4px;

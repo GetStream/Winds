@@ -145,7 +145,7 @@ class PodcastEpisodesView extends React.Component {
 		if (!this.props.podcast) return <Loader />;
 
 		const menuPopover = (
-			<div className="popover-panel">
+			<div className="popover-panel feed-popover">
 				<div
 					className="panel-element menu-item"
 					onClick={() => this.toggleAliasModal()}
@@ -279,6 +279,15 @@ class PodcastEpisodesView extends React.Component {
 						<div className="info">
 							<h1>{this.props.podcast.title}</h1>
 						</div>
+						{!this.props.isFollowing && (
+							<div
+								className="follow menu"
+								onClick={() => this.props.followPodcast()}
+							>
+								FOLLOW
+							</div>
+						)}
+
 						<Popover
 							body={menuPopover}
 							isOpen={this.state.menuPopover}
@@ -287,7 +296,7 @@ class PodcastEpisodesView extends React.Component {
 							tipSize={0.1}
 						>
 							<div
-								className="menu"
+								className={this.props.isFollowing ? 'menu' : 'menu-pop'}
 								onClick={() => this.toggleMenuPopover()}
 							>
 								&bull; &bull; &bull;

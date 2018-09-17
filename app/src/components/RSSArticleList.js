@@ -248,7 +248,7 @@ class RSSArticleList extends React.Component {
 		if (this.props.loading) return <Loader />;
 
 		const menuPopover = (
-			<div className="popover-panel">
+			<div className="popover-panel feed-popover">
 				<div
 					className="panel-element menu-item"
 					onClick={() => this.toggleAliasModal()}
@@ -356,6 +356,12 @@ class RSSArticleList extends React.Component {
 						</div>
 						<h1>{this.props.rssFeed.title}</h1>
 
+						{!this.props.following && (
+							<div className="follow menu" onClick={() => this.follow()}>
+								FOLLOW
+							</div>
+						)}
+
 						<Popover
 							body={menuPopover}
 							isOpen={this.state.menuPopover}
@@ -364,7 +370,7 @@ class RSSArticleList extends React.Component {
 							tipSize={0.1}
 						>
 							<div
-								className="menu"
+								className={this.props.following ? 'menu' : 'menu-pop'}
 								onClick={() => this.toggleMenuPopover()}
 							>
 								&bull; &bull; &bull;
