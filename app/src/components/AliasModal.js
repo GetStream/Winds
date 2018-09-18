@@ -5,6 +5,7 @@ import Img from 'react-image';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
+import { getAliases } from '../util/aliases';
 import saveIcon from '../images/icons/save.svg';
 import exitIcon from '../images/buttons/exit.svg';
 
@@ -37,6 +38,7 @@ class AliasModal extends React.Component {
 			.then(res => {
 				if (res.data) {
 					this.setState({ success: true, submitting: false });
+					getAliases(this.props.dispatch);
 					setTimeout(() => this.closeModal(), 500);
 				}
 			})
@@ -122,6 +124,7 @@ AliasModal.propTypes = {
 	defVal: PropTypes.string,
 	isRss: PropTypes.bool,
 	feedID: PropTypes.string,
+	dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(AliasModal);

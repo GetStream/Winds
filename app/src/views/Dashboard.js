@@ -10,12 +10,17 @@ import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import DiscoverSection from '../components/DiscoverSection';
 import fetch from '../util/fetch';
+import { getAliases } from '../util/aliases';
 
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.refresh = this.refresh.bind(this);
+	}
+
+	componentDidMount() {
+		getAliases(this.props.dispatch);
 	}
 
 	refresh() {
@@ -119,6 +124,7 @@ Dashboard.propTypes = {
 	userEmail: PropTypes.string,
 	userID: PropTypes.string,
 	userName: PropTypes.string,
+	dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {

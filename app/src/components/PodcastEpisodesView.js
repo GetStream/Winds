@@ -13,6 +13,7 @@ import { getPinnedEpisodes } from '../util/pins';
 import { getFeed } from '../util/feeds';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
+import { getAliases } from '../util/aliases';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
@@ -47,6 +48,8 @@ class PodcastEpisodesView extends React.Component {
 		});
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.getEpisodes(this.props.match.params.podcastID);
+
+		getAliases(this.props.dispatch);
 		getPinnedEpisodes(this.props.dispatch);
 		getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 		// subscribe to feed updates
@@ -399,6 +402,10 @@ const mapStateToProps = (state, ownProps) => {
 			}
 		}
 	}
+
+	if (state.aliases && podcast && state.aliases[podcast._id])
+		podcast.title = state.aliases[podcast._id].alias;
+
 	for (let episode of episodes) {
 		// attach pinned state
 		if (state.pinnedEpisodes && state.pinnedEpisodes[episode._id]) {
