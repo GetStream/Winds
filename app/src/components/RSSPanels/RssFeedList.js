@@ -104,10 +104,10 @@ const mapStateToProps = (state, ownProps) => {
 		return { ...state.rssFeeds[rssFeedID] };
 	});
 
-	const aliases = state.aliases;
-	if (aliases) {
+	if (state.aliases) {
 		rssFeeds = rssFeeds.map(rssFeed => {
-			if (aliases[rssFeed._id]) rssFeed.title = aliases[rssFeed._id].alias;
+			if (state.aliases[rssFeed._id])
+				rssFeed.title = state.aliases[rssFeed._id].alias;
 			return rssFeed;
 		});
 	}
