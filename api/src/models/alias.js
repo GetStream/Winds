@@ -37,9 +37,6 @@ export const AliasSchema = new Schema(
 	{ collection: 'aliases' },
 );
 
-// AliasSchema.index({ user: 1, rss: 1 }, { unique: true });
-// AliasSchema.index({ user: 1, podcast: 1 }, { unique: true });
-
 AliasSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },

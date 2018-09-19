@@ -3,8 +3,6 @@ import mongoose from 'mongoose';
 import Alias from '../models/alias';
 import Rss from '../models/rss';
 import Podcast from '../models/podcast';
-import { trackEngagement } from '../utils/analytics';
-import { getStreamClient } from '../utils/stream';
 
 exports.list = async (req, res) => {
 	const query = req.query || {};
@@ -57,23 +55,6 @@ exports.post = async (req, res) => {
 		);
 	} else {
 		const alias = await Alias.create(data);
-
-		// await getStreamClient()
-		// 	.feed('user', alias.user)
-		// 	.addActivity({
-		// 		actor: alias.user,
-		// 		verb: 'alias',
-		// 		object: alias._id,
-		// 		foreign_id: `aliass:${alias._id}`,
-		// 		time: alias.createdAt,
-		// 	});
-
-		// await trackEngagement(req.User, {
-		// 	label: alias.rss ? 'alias_rss' : 'alias_podcast',
-		// 	content: {
-		// 		foreign_id: alias.rss ? `rss:${alias.rss}` : `podcast:${alias.podcast}`,
-		// 	},
-		// });
 		res.json(await Alias.findOne({ _id: alias._id }));
 	}
 };
