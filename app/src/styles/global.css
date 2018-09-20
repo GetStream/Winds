@@ -1274,6 +1274,10 @@ a.column-header:hover, .column-header:hover {
       padding-left: 6px; }
     .panel .panel-header .right {
       margin-left: auto; }
+  .panel a.panel-header {
+    transition: all 0.22s ease-in-out; }
+    .panel a.panel-header:hover {
+      background-color: #efefef; }
   .panel .panel-element {
     align-items: center;
     border-bottom: 1px solid #eee;
