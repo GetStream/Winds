@@ -90,7 +90,7 @@ class Player extends Component {
 			this.setState({
 				episodeListenAnalyticsEventSent: false,
 			});
-
+			this.resetPlaybackSpeed();
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'episode_listen_start',
 				content: {
@@ -144,6 +144,12 @@ class Player extends Component {
 
 		this.audioPlayerElement.audioEl.playbackRate = nextSpeed;
 	}
+
+	resetPlaybackSpeed = () => {
+		const resetSpeed = this.playbackSpeedOptions[0];
+		this.setState({ playbackSpeed: resetSpeed });
+		this.audioPlayerElement.audioEl.playbackRate = resetSpeed;
+	};
 
 	setVolume(volume) {
 		this.setState({
