@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/getstream/winds/issues"
   },
-  "homepage": "./",
+  "homepage": "https://winds.getstream.io",
   "main": "public/electron.js",
   "keywords": [
     "Winds",
@@ -23,10 +23,10 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "web": "yarn react-scripts start",
-    "build": "react-scripts build",
+    "web": "concurrently \"yarn watch-css\" \"yarn react-scripts start\"",
+    "build": "yarn build-css && react-scripts build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\" \"yarn watch-css\"",
-    "pack": "electron-builder --dir",
+    "pack": "yarn build-css && electron-builder --dir",
     "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
   },
   "dependencies": {
