@@ -315,8 +315,8 @@ class AccountDetailsForm extends React.Component {
 			<div className="center auth-view create-account-view">
 				<h1>Create Your Free Account</h1>
 				<p>
-					Enjoy a new and personalized way to listen,<br /> read, and share your
-					favorite content.
+					Enjoy a new and personalized way to listen,
+					<br /> read, and share your favorite content.
 				</p>
 
 				<form

@@ -14,30 +14,30 @@ const index = client.initIndex(config.algolia.index);
 
 const getResourceUrl = resource => {
 	switch (resource.type) {
-	case 'user':
-		return `/profile/${resource._id}`;
-	case 'article':
-		return `/rss/${resource.rss}/articles/${resource._id}`;
-	case 'episode':
-		return `/podcasts/${resource.podcast}`;
-	case 'rss':
-		return `/rss/${resource.duplicateOf || resource._id}`;
-	case 'podcast':
-		return `/podcasts/${resource._id}`;
-	case 'playlist':
-		return `/playlists/${resource._id}`;
-	default:
-		console.log(resource); // eslint-disable-line no-console
+		case 'user':
+			return `/profile/${resource._id}`;
+		case 'article':
+			return `/rss/${resource.rss}/articles/${resource._id}`;
+		case 'episode':
+			return `/podcasts/${resource.podcast}`;
+		case 'rss':
+			return `/rss/${resource.duplicateOf || resource._id}`;
+		case 'podcast':
+			return `/podcasts/${resource._id}`;
+		case 'playlist':
+			return `/playlists/${resource._id}`;
+		default:
+			console.log(resource); // eslint-disable-line no-console
 	}
 };
 
 const getResourceTitle = resource => {
 	switch (resource.type) {
-	case 'user':
-	case 'playlist':
-		return resource.name;
-	default:
-		return resource.title;
+		case 'user':
+		case 'playlist':
+			return resource.name;
+		default:
+			return resource.title;
 	}
 };
 

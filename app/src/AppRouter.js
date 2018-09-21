@@ -40,7 +40,10 @@ class AppRouter extends Component {
 					});
 				})
 				.catch(err => {
-					if (err.response && (err.response.status === 401 || err.response.status === 404)) {
+					if (
+						err.response &&
+						(err.response.status === 401 || err.response.status === 404)
+					) {
 						localStorage.clear();
 						window.location = '/';
 					}
