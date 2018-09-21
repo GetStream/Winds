@@ -16,7 +16,10 @@ import TimeAgo from './TimeAgo';
 function mergeSocialScore(article, socialScore) {
 	article.socialScore = article.socialScore || {};
 	for (const key of Object.keys(socialScore)) {
-		article.socialScore[key] = Object.assign({ score: article.socialScore[key] }, socialScore[key]);
+		article.socialScore[key] = Object.assign(
+			{ score: article.socialScore[key] },
+			socialScore[key],
+		);
 	}
 	return article;
 }
@@ -99,7 +102,9 @@ class RSSArticle extends React.Component {
 		if (location.pathname === '/' && location.hash) {
 			link.pathname = location.hash.slice(1);
 		}
-		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${this.props.title}&hashtags=Winds,RSS`;
+		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${
+			this.props.title
+		}&hashtags=Winds,RSS`;
 
 		if (isElectron()) {
 			window.ipcRenderer.send('open-external-window', shareUrl);
@@ -139,7 +144,7 @@ class RSSArticle extends React.Component {
 				rssArticle: mergeSocialScore(res.data, { reddit, hackernews }),
 				type: 'UPDATE_ARTICLE',
 			});
-		} catch(err) {
+		} catch (err) {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -192,10 +197,12 @@ class RSSArticle extends React.Component {
 			);
 		}
 
-		const redditDataAvailable = this.props.socialScore &&
+		const redditDataAvailable =
+			this.props.socialScore &&
 			this.props.socialScore.reddit &&
 			this.props.socialScore.reddit.url;
-		const hackernewsDataAvailable = this.props.socialScore &&
+		const hackernewsDataAvailable =
+			this.props.socialScore &&
 			this.props.socialScore.hackernews &&
 			this.props.socialScore.hackernews.url;
 
@@ -210,7 +217,11 @@ class RSSArticle extends React.Component {
 								e.preventDefault();
 								e.stopPropagation();
 								if (this.props.pinned) {
-									unpinArticle(this.props.pinID, this.props._id, this.props.dispatch);
+									unpinArticle(
+										this.props.pinID,
+										this.props._id,
+										this.props.dispatch,
+									);
 								} else {
 									pinArticle(this.props._id, this.props.dispatch);
 								}
@@ -245,13 +256,19 @@ class RSSArticle extends React.Component {
 											e.preventDefault();
 											e.stopPropagation();
 
-											window.ipcRenderer.send('open-external-window', this.props.socialScore.reddit.url);
+											window.ipcRenderer.send(
+												'open-external-window',
+												this.props.socialScore.reddit.url,
+											);
 										}}
 									>
 										<i className="fab fa-reddit-alien" />
 									</a>
 								) : (
-									<a href={this.props.socialScore.reddit.url} target="_blank">
+									<a
+										href={this.props.socialScore.reddit.url}
+										target="_blank"
+									>
 										<i className="fab fa-reddit-alien" />
 									</a>
 								)}
@@ -267,13 +284,19 @@ class RSSArticle extends React.Component {
 											e.preventDefault();
 											e.stopPropagation();
 
-											window.ipcRenderer.send('open-external-window', this.props.socialScore.hackernews.url);
+											window.ipcRenderer.send(
+												'open-external-window',
+												this.props.socialScore.hackernews.url,
+											);
 										}}
 									>
 										<i className="fab fa-hacker-news-square" />
 									</a>
 								) : (
-									<a href={this.props.socialScore.hackernews.url} target="_blank">
+									<a
+										href={this.props.socialScore.hackernews.url}
+										target="_blank"
+									>
 										<i className="fab fa-hacker-news-square" />
 									</a>
 								)}

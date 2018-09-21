@@ -126,14 +126,16 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 	}
 
 	// batch create the follow relationships
-	const followInstances = await Promise.all(follows.map(async f => {
-		const query = { [f.type]: f.publicationID, user: f.userID };
-		let instance = await this.findOne(query).lean();
-		if (!instance) {
-			instance = await this.create(query);
-		}
-		return instance;
-	}));
+	const followInstances = await Promise.all(
+		follows.map(async f => {
+			const query = { [f.type]: f.publicationID, user: f.userID };
+			let instance = await this.findOne(query).lean();
+			if (!instance) {
+				instance = await this.create(query);
+			}
+			return instance;
+		}),
+	);
 
 	// sync to stream in a batch
 	const feedRelationsTimeline = follows.map(f => {
@@ -155,16 +157,22 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 	}
 
 	// update the counts
-	await Promise.all(follows.map(async f => {
-		const followerCount = await this.count({ [f.type]: f.publicationID });
-		const schema = f.type == 'rss' ? RSS : Podcast;
-		await schema.update({ _id: f.publicationID }, { followerCount });
-	}));
+	await Promise.all(
+		follows.map(async f => {
+			const followerCount = await this.count({ [f.type]: f.publicationID });
+			const schema = f.type == 'rss' ? RSS : Podcast;
+			await schema.update({ _id: f.publicationID }, { followerCount });
+		}),
+	);
 
 	return followInstances;
 };
 
-FollowSchema.statics.getOrCreate = async function getOrCreate(followType, userID, publicationID) {
+FollowSchema.statics.getOrCreate = async function getOrCreate(
+	followType,
+	userID,
+	publicationID,
+) {
 	const instances = await this.getOrCreateMany([
 		{ type: followType, userID: userID, publicationID: publicationID },
 	]);

@@ -9,7 +9,13 @@ import RSS from '../models/rss';
 import Article from '../models/article';
 import logger from '../utils/logger';
 import { ParseFeed, checkGuidStability, CreateFingerPrints } from '../parsers/feed';
-import { ProcessRssQueue, ShutDownRssQueue, OgQueueAdd, StreamQueueAdd, SocialQueueAdd } from '../asyncTasks';
+import {
+	ProcessRssQueue,
+	ShutDownRssQueue,
+	OgQueueAdd,
+	StreamQueueAdd,
+	SocialQueueAdd,
+} from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { getStreamClient } from '../utils/stream';
 import { startSampling } from '../utils/watchdog';
@@ -32,7 +38,7 @@ const secondaryCheckDelay = 240000; // 4 minutes
 const statsd = getStatsDClient();
 
 function sleep(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise(resolve => setTimeout(resolve, time));
 }
 
 export async function rssProcessor(job) {
@@ -55,9 +61,14 @@ export async function rssProcessor(job) {
 
 const joiObjectId = joi.alternatives().try(
 	joi.string().length(12),
-	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+	joi
+		.string()
+		.length(24)
+		.regex(/^[0-9a-fA-F]{24}$/),
 );
-const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
+const joiUrl = joi
+	.string()
+	.uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
 
 const schema = joi.object().keys({
 	rss: joiObjectId.required(),
@@ -80,7 +91,11 @@ export async function handleRSS(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`RSS job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
+		logger.warn(
+			`RSS job validation failed: ${validation.error.message} for '${JSON.stringify(
+				job.data,
+			)}'`,
+		);
 		statsd.increment('winds.handle_rss.result.validation_failed');
 		await RSS.incrScrapeFailures(rssID);
 		return;
@@ -97,7 +112,9 @@ export async function handleRSS(job) {
 	}
 
 	if (rss.duplicateOf) {
-		logger.warn(`RSS with ID ${rssID} is a duplicate of ${rss.duplicateOf}. Skipping`);
+		logger.warn(
+			`RSS with ID ${rssID} is a duplicate of ${rss.duplicateOf}. Skipping`,
+		);
 		statsd.increment('winds.handle_rss.result.model_instance_duplicate');
 		return;
 	}
@@ -111,7 +128,10 @@ export async function handleRSS(job) {
 			//XXX: waiting a bit to increase the chances of catching time-dependent GUIDs
 			await sleep(secondaryCheckDelay);
 			const controlRssContent = await ParseFeed(job.data.url, rss.guidStability);
-			guidStability = checkGuidStability(rssContent.articles, controlRssContent.articles);
+			guidStability = checkGuidStability(
+				rssContent.articles,
+				controlRssContent.articles,
+			);
 			rssContent.articles = CreateFingerPrints(rssContent.articles, guidStability);
 		}
 		await RSS.resetScrapeFailures(rssID);
@@ -121,25 +141,31 @@ export async function handleRSS(job) {
 	}
 
 	if (!rssContent || rssContent.articles.length === 0) {
-	    logger.debug(`RSS with ID ${rssID} is empty`);
+		logger.debug(`RSS with ID ${rssID} is empty`);
 		statsd.increment('winds.handle_rss.result.no_content');
 
 		if (rss.guidStability != guidStability) {
-			await RSS.update({ _id: rssID }, {
-				guidStability: guidStability || rss.guidStability,
-			});
+			await RSS.update(
+				{ _id: rssID },
+				{
+					guidStability: guidStability || rss.guidStability,
+				},
+			);
 		}
 		return;
 	}
 
 	if (rssContent.fingerprint && rssContent.fingerprint === rss.fingerprint) {
-	    logger.debug(`RSS with ID ${rssID} has same fingerprint as registered before`);
+		logger.debug(`RSS with ID ${rssID} has same fingerprint as registered before`);
 		statsd.increment('winds.handle_rss.result.same_content');
 
 		if (rss.guidStability != guidStability) {
-			await RSS.update({ _id: rssID }, {
-				guidStability: guidStability || rss.guidStability,
-			});
+			await RSS.update(
+				{ _id: rssID },
+				{
+					guidStability: guidStability || rss.guidStability,
+				},
+			);
 		}
 		return;
 	}
@@ -154,14 +180,23 @@ export async function handleRSS(job) {
 
 	logger.debug(`Starting the upsertManyPosts for RSS with ID ${rssID}`);
 	const operationMap = await upsertManyPosts(rssID, rssContent.articles, 'rss');
-	const updatedArticles = operationMap.new.concat(operationMap.changed).filter(a => !!a.url);
-	logger.info(`Finished updating. ${updatedArticles.length} out of ${rssContent.articles.length} changed for RSS with ID ${rssID}`);
+	const updatedArticles = operationMap.new
+		.concat(operationMap.changed)
+		.filter(a => !!a.url);
+	logger.info(
+		`Finished updating. ${updatedArticles.length} out of ${
+			rssContent.articles.length
+		} changed for RSS with ID ${rssID}`,
+	);
 
-	await RSS.update({ _id: rssID }, {
-		postCount: await Article.count({ rss: rssID }),
-		fingerprint: rssContent.fingerprint,
-		guidStability: guidStability || rss.guidStability,
-	});
+	await RSS.update(
+		{ _id: rssID },
+		{
+			postCount: await Article.count({ rss: rssID }),
+			fingerprint: rssContent.fingerprint,
+			guidStability: guidStability || rss.guidStability,
+		},
+	);
 
 	statsd.increment('winds.handle_rss.articles.upserted', updatedArticles.length);
 
@@ -184,27 +219,44 @@ export async function handleRSS(job) {
 				verb: 'rss_article',
 			};
 		});
-		await timeIt('winds.handle_rss.send_to_collections', () => rssFeed.addActivities(streamArticles));
+		await timeIt('winds.handle_rss.send_to_collections', () =>
+			rssFeed.addActivities(streamArticles),
+		);
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 	const tasks = [];
 	if (await tryCreateQueueFlag('social', 'rss', rssID)) {
-		tasks.push(SocialQueueAdd({
-			rss: rssID,
-			articles: updatedArticles.map(a => ({
-				id: a._id,
-				link: a.link,
-				commentUrl: a.commentUrl,
-			})),
-		}, queueOpts));
+		tasks.push(
+			SocialQueueAdd(
+				{
+					rss: rssID,
+					articles: updatedArticles.map(a => ({
+						id: a._id,
+						link: a.link,
+						commentUrl: a.commentUrl,
+					})),
+				},
+				queueOpts,
+			),
+		);
 	}
 	if (await tryCreateQueueFlag('og', 'rss', rssID)) {
-		tasks.push(OgQueueAdd({ type: 'article', rss: rssID, urls: updatedArticles.map(a => a.url) }, queueOpts));
+		tasks.push(
+			OgQueueAdd(
+				{ type: 'article', rss: rssID, urls: updatedArticles.map(a => a.url) },
+				queueOpts,
+			),
+		);
 	}
 	const allowedLanguage = [null, undefined, '', 'eng'].includes(rss.language);
 	if (allowedLanguage) {
-		tasks.push(StreamQueueAdd({ rss: rssID, contentIds: updatedArticles.map(a => a._id)  }, queueOpts));
+		tasks.push(
+			StreamQueueAdd(
+				{ rss: rssID, contentIds: updatedArticles.map(a => a._id) },
+				queueOpts,
+			),
+		);
 	}
 	statsd.increment('winds.handle_rss.result.updates');
 }

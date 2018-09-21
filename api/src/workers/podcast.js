@@ -11,7 +11,12 @@ import Episode from '../models/episode';
 import logger from '../utils/logger';
 import { ParsePodcast, checkGuidStability, CreateFingerPrints } from '../parsers/feed';
 
-import { ProcessPodcastQueue, ShutDownPodcastQueue, StreamQueueAdd, OgQueueAdd } from '../asyncTasks';
+import {
+	ProcessPodcastQueue,
+	ShutDownPodcastQueue,
+	StreamQueueAdd,
+	OgQueueAdd,
+} from '../asyncTasks';
 import { upsertManyPosts } from '../utils/upsert';
 import { getStreamClient } from '../utils/stream';
 import { startSampling } from '../utils/watchdog';
@@ -33,7 +38,7 @@ const secondaryCheckDelay = 240000; // 4 minutes
 const statsd = getStatsDClient();
 
 function sleep(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise(resolve => setTimeout(resolve, time));
 }
 
 export async function podcastProcessor(job) {
@@ -54,9 +59,14 @@ export async function podcastProcessor(job) {
 
 const joiObjectId = joi.alternatives().try(
 	joi.string().length(12),
-	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+	joi
+		.string()
+		.length(24)
+		.regex(/^[0-9a-fA-F]{24}$/),
 );
-const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
+const joiUrl = joi
+	.string()
+	.uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
 
 const schema = joi.object().keys({
 	podcast: joiObjectId.required(),
@@ -79,7 +89,11 @@ export async function handlePodcast(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Podcast job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
+		logger.warn(
+			`Podcast job validation failed: ${
+				validation.error.message
+			} for '${JSON.stringify(job.data)}'`,
+		);
 		await Podcast.incrScrapeFailures(podcastID);
 		statsd.increment('winds.handle_podcast.result.validation_failed');
 		return;
@@ -93,7 +107,11 @@ export async function handlePodcast(job) {
 	}
 
 	if (podcast.duplicateOf) {
-		logger.warn(`Podcast with ID ${podcastID} is a duplicate of ${podcast.duplicateOf}. Skipping`);
+		logger.warn(
+			`Podcast with ID ${podcastID} is a duplicate of ${
+				podcast.duplicateOf
+			}. Skipping`,
+		);
 		statsd.increment('winds.handle_podcast.result.model_instance_duplicate');
 		return;
 	}
@@ -105,9 +123,18 @@ export async function handlePodcast(job) {
 		if (!podcast.guidStability || podcast.guidStability === 'UNCHECKED') {
 			//XXX: waiting a bit to increase the chances of catching time-dependent GUIDs
 			await sleep(secondaryCheckDelay);
-			const controlPodcastContent = await ParsePodcast(job.data.url, podcast.guidStability);
-			guidStability = checkGuidStability(podcastContent.episodes, controlPodcastContent.episodes);
-			podcastContent.episodes = CreateFingerPrints(podcastContent.episodes, guidStability);
+			const controlPodcastContent = await ParsePodcast(
+				job.data.url,
+				podcast.guidStability,
+			);
+			guidStability = checkGuidStability(
+				podcastContent.episodes,
+				controlPodcastContent.episodes,
+			);
+			podcastContent.episodes = CreateFingerPrints(
+				podcastContent.episodes,
+				guidStability,
+			);
 		}
 	} catch (err) {
 		await Podcast.incrScrapeFailures(podcastID);
@@ -118,21 +145,32 @@ export async function handlePodcast(job) {
 		statsd.increment('winds.handle_podcast.result.no_content');
 
 		if (podcast.guidStability != guidStability) {
-			await Podcast.update({ _id: podcastID }, {
-				guidStability: guidStability || podcast.guidStability,
-			});
+			await Podcast.update(
+				{ _id: podcastID },
+				{
+					guidStability: guidStability || podcast.guidStability,
+				},
+			);
 		}
 		return;
 	}
 
-	if (podcastContent.fingerprint && podcastContent.fingerprint === podcast.fingerprint) {
-	    logger.debug(`Podcast with ID ${podcastID} has same fingerprint as registered before`);
+	if (
+		podcastContent.fingerprint &&
+		podcastContent.fingerprint === podcast.fingerprint
+	) {
+		logger.debug(
+			`Podcast with ID ${podcastID} has same fingerprint as registered before`,
+		);
 		statsd.increment('winds.handle_podcast.result.same_content');
 
 		if (podcast.guidStability != guidStability) {
-			await Podcast.update({ _id: podcastID }, {
-				guidStability: guidStability || podcast.guidStability,
-			});
+			await Podcast.update(
+				{ _id: podcastID },
+				{
+					guidStability: guidStability || podcast.guidStability,
+				},
+			);
 		}
 		return;
 	}
@@ -146,13 +184,20 @@ export async function handlePodcast(job) {
 
 	const operationMap = await upsertManyPosts(podcastID, episodes, 'podcast');
 	const updatedEpisodes = operationMap.new.concat(operationMap.changed);
-	logger.info(`Finished updating ${updatedEpisodes.length} out of ${podcastContent.episodes.length} changed`);
+	logger.info(
+		`Finished updating ${updatedEpisodes.length} out of ${
+			podcastContent.episodes.length
+		} changed`,
+	);
 
-	await Podcast.update({ _id: podcastID }, {
-		postCount: await Episode.count({ podcast: podcastID }),
-		fingerprint: podcastContent.fingerprint,
-		guidStability: guidStability || podcast.guidStability,
-	});
+	await Podcast.update(
+		{ _id: podcastID },
+		{
+			postCount: await Episode.count({ podcast: podcastID }),
+			fingerprint: podcastContent.fingerprint,
+			guidStability: guidStability || podcast.guidStability,
+		},
+	);
 
 	if (!updatedEpisodes.length) {
 		statsd.increment('winds.handle_podcast.result.no_updates');
@@ -179,11 +224,25 @@ export async function handlePodcast(job) {
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 	const tasks = [];
 	if (await tryCreateQueueFlag('og', 'podcast', podcastID)) {
-		tasks.push(OgQueueAdd({ type: 'episode', podcast: podcastID, urls: updatedEpisodes.map(e => e.link) }, queueOpts));
+		tasks.push(
+			OgQueueAdd(
+				{
+					type: 'episode',
+					podcast: podcastID,
+					urls: updatedEpisodes.map(e => e.link),
+				},
+				queueOpts,
+			),
+		);
 	}
 	const allowedLanguage = [null, undefined, '', 'eng'].includes(podcast.language);
 	if (allowedLanguage) {
-		tasks.push(StreamQueueAdd({ podcast: podcastID, contentIds: updatedEpisodes.map(e => e._id) }, queueOpts));
+		tasks.push(
+			StreamQueueAdd(
+				{ podcast: podcastID, contentIds: updatedEpisodes.map(e => e._id) },
+				queueOpts,
+			),
+		);
 	}
 	statsd.increment('winds.handle_podcast.result.updates');
 }
@@ -191,7 +250,10 @@ export async function handlePodcast(job) {
 // markDone sets lastScraped to now and isParsing to false
 async function markDone(podcastID) {
 	await removeFromQueueFlagSet('podcast', 'podcast', podcastID);
-	return await Podcast.update({ _id: podcastID }, { lastScraped: moment().toISOString() });
+	return await Podcast.update(
+		{ _id: podcastID },
+		{ lastScraped: moment().toISOString() },
+	);
 }
 
 async function shutdown(signal) {

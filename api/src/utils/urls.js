@@ -16,7 +16,8 @@ export function getUrl(urlName, ...args) {
 }
 
 export function extractHostname(request) {
-	const protocol = (request.connection && request.connection.encrypted ? 'https' : 'http') + '://';
+	const protocol =
+		(request.connection && request.connection.encrypted ? 'https' : 'http') + '://';
 	let canonicalUrl = '';
 	if (request.uri) {
 		canonicalUrl = `${request.uri.protocol}//${request.uri.host}`;
@@ -31,7 +32,10 @@ export function extractHostname(request) {
 		canonicalUrl = protocol + request.domain;
 	}
 	if (!canonicalUrl) {
-		const host = request.originalHost || request.host || (request.headers ? request.headers['host'] : request.getHeader('Host'));
+		const host =
+			request.originalHost ||
+			request.host ||
+			(request.headers ? request.headers['host'] : request.getHeader('Host'));
 		canonicalUrl = protocol + host;
 	}
 	return canonicalUrl;

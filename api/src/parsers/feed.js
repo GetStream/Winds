@@ -73,7 +73,10 @@ export function ComputeHash(post) {
 }
 
 export function ComputePublicationHash(posts, limit = 20) {
-	const fingerprints = posts.slice(0, limit).filter(p => !!p.fingerprint).map(p => p.fingerprint);
+	const fingerprints = posts
+		.slice(0, limit)
+		.filter(p => !!p.fingerprint)
+		.map(p => p.fingerprint);
 	if (fingerprints.length != Math.min(posts.length, limit)) {
 		throw Error('Missing post fingerprints');
 	}
@@ -125,7 +128,8 @@ export function CreateFingerPrints(posts, guidStability) {
 
 	// compute the post fingerprints
 	for (let p of posts) {
-		p.fingerprint = `${strategy}:${p[strategy] && p[strategy].slice(0, 254 - strategy.length)}`;
+		p.fingerprint = `${strategy}:${p[strategy] &&
+			p[strategy].slice(0, 254 - strategy.length)}`;
 	}
 
 	// next compute the publication fingerprint
@@ -233,66 +237,83 @@ function checkHeaders(stream, url, checkContenType = false) {
 		let dummy = new PassThrough();
 		stream.pipe(dummy);
 
-		stream.on('response', response => {
-			if (checkContenType) {
-				const contentType = response.headers['content-type'];
-				if (!contentType || !contentType.trim().toLowerCase().includes('html')) {
-					logger.warn(`Invalid content type '${contentType}' for url ${url}`);
-					stream.abort();
-					return resolve(null);
+		stream
+			.on('response', response => {
+				if (checkContenType) {
+					const contentType = response.headers['content-type'];
+					if (
+						!contentType ||
+						!contentType
+							.trim()
+							.toLowerCase()
+							.includes('html')
+					) {
+						logger.warn(
+							`Invalid content type '${contentType}' for url ${url}`,
+						);
+						stream.abort();
+						return resolve(null);
+					}
 				}
-			}
-			const contentLength = parseInt(response.headers['content-length'], 10);
-			if (contentLength > maxContentLengthBytes) {
-				stream.abort();
-				return reject(new Error("Request body larger than maxBodyLength limit"));
-			}
-			const encoding = response.headers['content-encoding'] || 'identity';
-			let inflater;
-			switch (encoding.trim().toLowerCase()) {
-			case 'deflate':
-				inflater = new InflateAuto();
-				break;
-			case 'gzip':
-				inflater = new Gunzip();
-				break;
-			}
-			if (inflater) {
-				dummy = dummy.pipe(inflater);
-			}
-			dummy.on('error', err => {
+				const contentLength = parseInt(response.headers['content-length'], 10);
+				if (contentLength > maxContentLengthBytes) {
+					stream.abort();
+					return reject(
+						new Error('Request body larger than maxBodyLength limit'),
+					);
+				}
+				const encoding = response.headers['content-encoding'] || 'identity';
+				let inflater;
+				switch (encoding.trim().toLowerCase()) {
+					case 'deflate':
+						inflater = new InflateAuto();
+						break;
+					case 'gzip':
+						inflater = new Gunzip();
+						break;
+				}
+				if (inflater) {
+					dummy = dummy.pipe(inflater);
+				}
+				dummy.on('error', err => {
+					if (!resolved) {
+						reject(err);
+					}
+					stream.abort();
+				});
+			})
+			.on('error', err => {
 				if (!resolved) {
 					reject(err);
+				} else {
+					dummy.destroy(err);
 				}
 				stream.abort();
-			});
-		}).on('error', err => {
-			if (!resolved) {
-				reject(err);
-			} else {
-				dummy.destroy(err);
-			}
-			stream.abort();
-		}).on('data', data => {
-			resolved = true;
-			resolve(dummy);
-
-			if (bodyLength + data.length <= maxContentLengthBytes) {
-				bodyLength += data.length;
-			} else {
-				dummy.destroy(new Error("Request body larger than maxBodyLength limit"));
-			}
-		}).on('end', () => {
-			if (!resolved) {
+			})
+			.on('data', data => {
+				resolved = true;
 				resolve(dummy);
-			}
-		});
+
+				if (bodyLength + data.length <= maxContentLengthBytes) {
+					bodyLength += data.length;
+				} else {
+					dummy.destroy(
+						new Error('Request body larger than maxBodyLength limit'),
+					);
+				}
+			})
+			.on('end', () => {
+				if (!resolved) {
+					resolve(dummy);
+				}
+			});
 	});
 }
 
 // Read the given feed URL and return a Stream
 export async function ReadPageURL(url, retries = 2, backoffDelay = 100) {
-	let currentDelay = 0, nextDelay = backoffDelay;
+	let currentDelay = 0,
+		nextDelay = backoffDelay;
 	for (;;) {
 		try {
 			await sleep(currentDelay);
@@ -310,7 +331,8 @@ export async function ReadPageURL(url, retries = 2, backoffDelay = 100) {
 
 // Read the given feed URL and return a Stream
 export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 100) {
-	let currentDelay = 0, nextDelay = backoffDelay;
+	let currentDelay = 0,
+		nextDelay = backoffDelay;
 	for (;;) {
 		try {
 			await sleep(currentDelay);
@@ -329,7 +351,9 @@ export async function ReadFeedURL(feedURL, retries = 2, backoffDelay = 100) {
 // Turn the feed Stream into a list of posts
 export function ReadFeedStream(feedStream) {
 	return Promise.race([
-		new Promise((resolve, reject) => setTimeout(reject, 2 * requestTTL, new Error('Request timed out'))),
+		new Promise((resolve, reject) =>
+			setTimeout(reject, 2 * requestTTL, new Error('Request timed out')),
+		),
 		new Promise((resolve, reject) => {
 			const posts = [];
 			const parser = new FeedParser();
@@ -342,7 +366,8 @@ export function ReadFeedStream(feedStream) {
 				feedStream.destroy();
 			});
 
-			parser.on('data', data => posts.push(data))
+			parser
+				.on('data', data => posts.push(data))
 				.on('end', () => {
 					resolved = true;
 					resolve(posts);
@@ -355,7 +380,7 @@ export function ReadFeedStream(feedStream) {
 				});
 
 			feedStream.pipe(parser);
-		})
+		}),
 	]);
 }
 
@@ -381,7 +406,10 @@ export function ParseFeedPosts(domain, posts, guidStability, limit = 1000) {
 				logger.info('skipping article since there is no title');
 				continue;
 			}
-			let description = strip(entities.decodeHTML(post.description)).substring(0, 280);
+			let description = strip(entities.decodeHTML(post.description)).substring(
+				0,
+				280,
+			);
 			if (description == 'null') {
 				description = null;
 			}
@@ -393,7 +421,9 @@ export function ParseFeedPosts(domain, posts, guidStability, limit = 1000) {
 			// ensure we keep order for feeds with no time
 			const time =
 				moment(post.pubdate).toISOString() ||
-				moment().subtract(i, 'minutes').toISOString();
+				moment()
+					.subtract(i, 'minutes')
+					.toISOString();
 			const content = sanitize(post.summary);
 			article = new Article({
 				content: content,
@@ -467,7 +497,10 @@ export function ParseFeedPosts(domain, posts, guidStability, limit = 1000) {
 }
 
 export function checkGuidStability(original, control) {
-	const link2guid = original.reduce((map, content) => map.set(content.link, content.guid), new Map());
+	const link2guid = original.reduce(
+		(map, content) => map.set(content.link, content.guid),
+		new Map(),
+	);
 	let same = true;
 	for (const content of control) {
 		const originalGUID = link2guid.get(content.link);

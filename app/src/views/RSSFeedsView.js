@@ -32,14 +32,16 @@ class RSSFeedsView extends React.Component {
 	}
 
 	fetchRSS(props) {
-		return fetch('get', `/rss/${props.match.params.rssFeedID}`).then(res => {
-			if (res.data.duplicateOf) {
-				return fetch('GET', `/rss/${res.data.duplicateOf}`);
-			}
-			return res;
-		}).then(response => {
-			this.props.dispatch({ rssFeed: response.data, type: 'UPDATE_RSS_FEED' });
-		});
+		return fetch('get', `/rss/${props.match.params.rssFeedID}`)
+			.then(res => {
+				if (res.data.duplicateOf) {
+					return fetch('GET', `/rss/${res.data.duplicateOf}`);
+				}
+				return res;
+			})
+			.then(response => {
+				this.props.dispatch({ rssFeed: response.data, type: 'UPDATE_RSS_FEED' });
+			});
 	}
 
 	componentWillReceiveProps(nextProps) {

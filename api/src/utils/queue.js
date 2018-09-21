@@ -18,7 +18,7 @@ redis.defineCommand('getQueueFlagSetMembers', {
 
 		redis.call('ZREMRANGEBYSCORE', set, 0, now)
 		return redis.call('ZRANGE', set, 0, -1)
-	`
+	`,
 });
 
 redis.defineCommand('tryAddToQueueFlagSet', {
@@ -38,7 +38,7 @@ redis.defineCommand('tryAddToQueueFlagSet', {
 			return redis.call('ZADD', set, now + TTL, key)
 		end
 		return nil
-	`
+	`,
 });
 
 redis.defineCommand('tryCreateQueueFlag', {
@@ -54,7 +54,7 @@ redis.defineCommand('tryCreateQueueFlag', {
 			return redis.call('SETEX', key, TTL, 1)
 		end
 		return nil
-	`
+	`,
 });
 
 export async function tryAddToQueueFlagSet(queueName, suffix, id, ttl = TTL) {
