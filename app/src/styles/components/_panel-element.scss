@@ -46,6 +46,14 @@
 		}
 	}
 
+	a.panel-header {
+		transition: all 0.22s ease-in-out;
+
+		&:hover {
+			background-color: $background-lightishgray;
+		}
+	}
+	
 	.panel-element {
 		align-items: center;
 		border-bottom: 1px solid $foreground-lightgray;

@@ -53,6 +53,7 @@ class PodcastList extends React.Component {
 					this.props.match.params.podcastID !== 'recent'
 				}
 				headerText="Podcasts"
+				headerLink="/podcasts"
 			>
 				{this.props.podcasts.map(podcast => {
 					return (
