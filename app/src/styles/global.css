@@ -2425,7 +2425,6 @@ a.column-header:hover, .column-header:hover {
     grid-area: content;
     overflow-y: scroll; }
   .podcasts-view .content-header {
-    display: flex;
     grid-area: content-header;
     margin: auto;
     width: 720px; }

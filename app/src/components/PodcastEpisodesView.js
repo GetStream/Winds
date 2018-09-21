@@ -280,9 +280,7 @@ class PodcastEpisodesView extends React.Component {
 								]}
 							/>
 						</div>
-						<div className="info">
-							<h1>{this.props.podcast.title}</h1>
-						</div>
+						<h1>{this.props.podcast.title}</h1>
 						{!this.props.isFollowing && (
 							<div
 								className="follow menu"
