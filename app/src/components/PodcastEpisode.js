@@ -24,8 +24,6 @@ class PodcastEpisode extends React.Component {
 			error: false,
 			loadingEpisode: true,
 			loadingContent: true,
-			episodeID: props.match.params.episodeID,
-			podcastID: props.match.params.podcastID,
 		};
 	}
 
@@ -34,24 +32,15 @@ class PodcastEpisode extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.match.params.episodeID !== this.state.episodeID)
+		if (prevProps.match.params.episodeID !== this.props.match.params.episodeID)
 			this.fetchAllData();
 	}
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (nextProps.match.params.episodeID !== prevState.episodeID)
-			return {
-				episodeID: nextProps.match.params.episodeID,
-				podcastID: nextProps.match.params.podcastID,
-				error: false,
-			};
-		return null;
-	}
-
 	fetchAllData() {
-		const episodeID = this.state.episodeID;
-		const podcastID = this.state.podcastID;
+		const episodeID = this.props.match.params.episodeID;
+		const podcastID = this.props.match.params.podcastID;
 
+		this.setState({ error: false });
 		this.getEpisode(episodeID);
 		this.getEpisodeContent(episodeID);
 		getPinnedEpisodes(this.props.dispatch);
