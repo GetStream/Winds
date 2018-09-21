@@ -357,7 +357,6 @@ class RSSArticleList extends React.Component {
 							/>
 						</div>
 						<h1>{this.props.rssFeed.title}</h1>
-
 						{!this.props.following && (
 							<div className="follow menu" onClick={() => this.follow()}>
 								FOLLOW
