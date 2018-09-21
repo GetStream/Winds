@@ -310,7 +310,8 @@ export default (previousState = {}, action) => {
 			if (!article.duplicateOf) {
 				continue;
 			}
-			let previous = previousState.articles && previousState.articles[article.duplicateOf];
+			let previous =
+				previousState.articles && previousState.articles[article.duplicateOf];
 			let next = newArticles[article.duplicateOf];
 			newArticles[article._id] = next || previous || article;
 		}
@@ -406,7 +407,10 @@ export default (previousState = {}, action) => {
 
 		return { ...existingState };
 	} else if (action.type === 'UPDATE_RSS_FEED') {
-		let original = action.rssFeed.duplicateOf && previousState.rssFeeds && previousState.rssFeeds[action.rssFeed.duplicateOf];
+		let original =
+			action.rssFeed.duplicateOf &&
+			previousState.rssFeeds &&
+			previousState.rssFeeds[action.rssFeed.duplicateOf];
 		return {
 			...previousState,
 			rssFeeds: {
@@ -424,7 +428,8 @@ export default (previousState = {}, action) => {
 			if (!rssFeed.duplicateOf) {
 				continue;
 			}
-			let previous = previousState.rssFeeds && previousState.rssFeeds[rssFeed.duplicateOf];
+			let previous =
+				previousState.rssFeeds && previousState.rssFeeds[rssFeed.duplicateOf];
 			let next = newRssFeeds[rssFeed.duplicateOf];
 			newRssFeeds[rssFeed._id] = next || previous || rssFeed;
 		}
@@ -707,6 +712,8 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'UPDATE_FEATURED_ITEMS') {
 		return { ...previousState, featuredItems: [...action.featuredItemIDs] };
+	} else if (action.type === 'BATCH_UPDATE_ALIASES') {
+		return { ...previousState, aliases: { ...action.aliases } };
 	} else {
 		return previousState;
 	}

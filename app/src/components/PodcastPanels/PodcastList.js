@@ -111,6 +111,14 @@ const mapStateToProps = (state, ownProps) => {
 		return state.podcasts[podcastID];
 	});
 
+	if (state.aliases) {
+		podcasts = podcasts.map(podcast => {
+			if (state.aliases[podcast._id])
+				podcast.title = state.aliases[podcast._id].alias;
+			return podcast;
+		});
+	}
+
 	podcasts.sort((a, b) => {
 		return a.title.localeCompare(b.title);
 	});

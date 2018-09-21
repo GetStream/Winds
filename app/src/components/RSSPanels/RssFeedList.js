@@ -105,6 +105,14 @@ const mapStateToProps = (state, ownProps) => {
 		return { ...state.rssFeeds[rssFeedID] };
 	});
 
+	if (state.aliases) {
+		rssFeeds = rssFeeds.map(rssFeed => {
+			if (state.aliases[rssFeed._id])
+				rssFeed.title = state.aliases[rssFeed._id].alias;
+			return rssFeed;
+		});
+	}
+
 	rssFeeds.sort((a, b) => {
 		return a.title.localeCompare(b.title);
 	});

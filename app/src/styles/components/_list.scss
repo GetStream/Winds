@@ -22,7 +22,18 @@
 			&.menu {
 				cursor: pointer;
 				margin-left: auto;
-				margin-right: 0;
+			}
+
+			&.menu-pop {
+				cursor: pointer;
+			}
+
+			&.follow {
+				color: #08A270;
+				cursor: pointer;
+				font-weight: bold;
+				letter-spacing: 0.82px;
+				margin-right: 15px;
 			}
 		}
 	}
