@@ -18,7 +18,12 @@ class RecentEpisodesPanel extends React.Component {
 			<Panel expandable={true} headerLink="/podcasts" headerText="Recent Episodes">
 				{this.props.episodes.slice(0, 20).map(episode => {
 					return (
-						<Link key={episode._id} to={`/podcasts/${episode.podcast._id}`}>
+						<Link
+							key={episode._id}
+							to={`/podcasts/${episode.podcast._id}/episodes/${
+								episode._id
+							}`}
+						>
 							<Img
 								src={[
 									episode.podcast.images.favicon,
