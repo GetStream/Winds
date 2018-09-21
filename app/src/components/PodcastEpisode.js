@@ -5,6 +5,7 @@ import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
 import Img from 'react-image';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import fetch from '../util/fetch';
 import { pinEpisode, unpinEpisode, getPinnedEpisodes } from '../util/pins';
@@ -27,9 +28,19 @@ class PodcastEpisode extends React.Component {
 	}
 
 	componentDidMount() {
+		this.fetchAllData();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.match.params.episodeID !== this.props.match.params.episodeID)
+			this.fetchAllData();
+	}
+
+	fetchAllData() {
 		const episodeID = this.props.match.params.episodeID;
 		const podcastID = this.props.match.params.podcastID;
 
+		this.setState({ error: false });
 		this.getEpisode(episodeID);
 		this.getEpisodeContent(episodeID);
 		getPinnedEpisodes(this.props.dispatch);
@@ -73,8 +84,6 @@ class PodcastEpisode extends React.Component {
 	getPodcastInfo(podcastID) {
 		fetch('GET', `/podcasts/${podcastID}`)
 			.then(res => {
-				console.log(res.data);
-
 				this.props.dispatch({
 					podcast: res.data,
 					type: 'UPDATE_PODCAST_SHOW',
@@ -173,16 +182,18 @@ class PodcastEpisode extends React.Component {
 					<div>
 						<p>There was a problem loading this episode :(</p>
 						<p>
-							Please go{' '}
-							<u onClick={() => this.props.history.goBack()}>Back</u> to the
-							Podcast page and play it from there!
+							Please refresh the page or go back to the{' '}
+							<Link to={`/podcasts/${episode.podcast._id}`}>
+								Podcast page
+							</Link>{' '}
+							and play it from there!
 						</p>
 					</div>
 				)}
 
 				{!this.state.error && (
 					<React.Fragment>
-						<div className="content-header">
+						<div className="content-header episode-header">
 							{this.state.loadingEpisode ? (
 								<Loader />
 							) : (
