@@ -25,7 +25,9 @@ class BookmarkedEpisodes extends React.Component {
 					return (
 						<Link
 							key={bookmark._id}
-							to={`/podcasts/${bookmark.episode.podcast._id}`}
+							to={`/podcasts/${bookmark.episode.podcast._id}/episodes/${
+								bookmark.episode._id
+							}`}
 						>
 							<Img
 								src={[
