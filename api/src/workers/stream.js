@@ -37,19 +37,33 @@ export async function streamProcessor(job) {
 
 const joiObjectId = joi.alternatives().try(
 	joi.string().length(12),
-	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+	joi
+		.string()
+		.length(24)
+		.regex(/^[0-9a-fA-F]{24}$/),
 );
 
-const schema = joi.object().keys({
-	rss: joiObjectId,
-	podcast: joiObjectId,
-	contentIds: joi.array().items(joiObjectId).min(1).required(),
-}).xor('rss', 'podcast');
+const schema = joi
+	.object()
+	.keys({
+		rss: joiObjectId,
+		podcast: joiObjectId,
+		contentIds: joi
+			.array()
+			.items(joiObjectId)
+			.min(1)
+			.required(),
+	})
+	.xor('rss', 'podcast');
 
 export async function handleStream(job) {
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Stream job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
+		logger.warn(
+			`Stream job validation failed: ${
+				validation.error.message
+			} for '${JSON.stringify(job.data)}'`,
+		);
 		return;
 	}
 
@@ -57,10 +71,13 @@ export async function handleStream(job) {
 		'rss' in job.data ? ['rss', RSS, Article] : ['podcast', Podcast, Episode];
 
 	const feed = await model.findById(job.data[type]);
-	const content = await contentModel.find({ _id: { $in: job.data.contentIds } })
+	const content = await contentModel
+		.find({ _id: { $in: job.data.contentIds } })
 		.sort({ publicationDate: -1 })
 		.limit(1000);
-	await timeIt('winds.handle_stream.send_to_collections', () => sendFeedToCollections(type, feed, content));
+	await timeIt('winds.handle_stream.send_to_collections', () =>
+		sendFeedToCollections(type, feed, content),
+	);
 }
 
 async function shutdown(signal) {

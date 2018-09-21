@@ -36,7 +36,12 @@ async function main() {
 	const schemas = { podcast: Podcast, rss: RSS, episode: Episode, article: Article };
 	const fieldMap = { article: 'url', episode: 'link', podcast: 'url', rss: 'url' };
 	const feedIdMap = { episode: 'podcast', article: 'rss', rss: '_id', podcast: '_id' };
-	const feedFieldMap = { episode: 'podcast', article: 'rss', rss: 'rss', podcast: 'podcast' };
+	const feedFieldMap = {
+		episode: 'podcast',
+		article: 'rss',
+		rss: 'rss',
+		podcast: 'podcast',
+	};
 
 	console.log(`program.all is set to ${program.all}`);
 
@@ -66,15 +71,18 @@ async function main() {
 			});
 			const partitions = partitionBy(instances, i => i[feedIdField]);
 			const promises = partitions.map(partition => {
-				return OgQueueAdd({
-					type: contentType,
-					[feedField]: partition[0][feedIdField],
-					urls: partition.map(i => i[field]),
-					update: true,
-				}, { removeOnComplete: true, removeOnFail: true });
+				return OgQueueAdd(
+					{
+						type: contentType,
+						[feedField]: partition[0][feedIdField],
+						urls: partition.map(i => i[field]),
+						update: true,
+					},
+					{ removeOnComplete: true, removeOnFail: true },
+				);
 			});
 			await Promise.all(promises);
-			const progress = Math.floor(100 * i / j);
+			const progress = Math.floor((100 * i) / j);
 			console.log(`\rprogress ${progress}%: ${i}/${j}`);
 		}
 

@@ -29,17 +29,19 @@ redis.defineCommand('rateLimit', {
 		end
 		redis.call('SET', KEYS[1], newValue)
 		return tostring(timeUntilRefil)
-	`
+	`,
 });
 
 function sleep(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise(resolve => setTimeout(resolve, time));
 }
 
-export async function tick(userID, requestsPerDay=3000) {
+export async function tick(userID, requestsPerDay = 3000) {
 	const valueKey = `rate-limit:${userID}:value`;
 	const lastUpdateKey = `rate-limit:${userID}:last-update`;
-	const timeUntilRefil = parseFloat(await redis.rateLimit(valueKey, lastUpdateKey, requestsPerDay));
+	const timeUntilRefil = parseFloat(
+		await redis.rateLimit(valueKey, lastUpdateKey, requestsPerDay),
+	);
 	if (timeUntilRefil === -1) {
 		return;
 	}
@@ -50,5 +52,5 @@ export async function tick(userID, requestsPerDay=3000) {
 export async function reset(userID) {
 	const valueKey = `rate-limit:${userID}:value`;
 	const lastUpdateKey = `rate-limit:${userID}:last-update`;
-    return await redis.del(valueKey, lastUpdateKey);
+	return await redis.del(valueKey, lastUpdateKey);
 }

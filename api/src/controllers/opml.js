@@ -103,7 +103,7 @@ async function identifyFeedType(feed) {
 		throw new Error(`Invalid URL for OPML import ${feedUrl}`);
 	}
 
-	return {feed, schema, publicationType, url: feedUrl};
+	return { feed, schema, publicationType, url: feedUrl };
 }
 
 async function getOrCreateManyPublications(feeds) {
@@ -138,10 +138,13 @@ async function getOrCreateManyPublications(feeds) {
 
 	const newInstances = await feeds[0].schema.insertMany(newInstanceData);
 
-	const queue = feeds[0].publicationType.toLowerCase() == 'rss' ? RssQueueAdd : PodcastQueueAdd;
+	const queue =
+		feeds[0].publicationType.toLowerCase() == 'rss' ? RssQueueAdd : PodcastQueueAdd;
 	const queueData = newInstances.map(i => ({ [i.categories]: i._id, url: i.feedUrl }));
 
-	const enqueues = queueData.map(d => queue(d, { priority: 1, removeOnComplete: true, removeOnFail: true }));
+	const enqueues = queueData.map(d =>
+		queue(d, { priority: 1, removeOnComplete: true, removeOnFail: true }),
+	);
 	const indexing = newInstances.map(i => search(i.searchDocument()));
 
 	await Promise.all(enqueues.concat(indexing));
@@ -183,18 +186,22 @@ exports.post = async (req, res) => {
 		}
 	}
 
-	const feedIdentities = await Promise.all(feeds.map(async f => {
-		try {
-			return { result: await identifyFeedType(f) };
-		} catch (err) {
-			return { feedUrl: f.feedUrl, error: err.message };
-		}
-	}));
+	const feedIdentities = await Promise.all(
+		feeds.map(async f => {
+			try {
+				return { result: await identifyFeedType(f) };
+			} catch (err) {
+				return { feedUrl: f.feedUrl, error: err.message };
+			}
+		}),
+	);
 
 	const failedFeeds = feedIdentities.filter(f => !!f.error);
 	const feedSchemas = feedIdentities.filter(f => !f.error).map(f => f.result);
 
-	feedSchemas.sort((lhs, rhs) => lhs.publicationType.localeCompare(rhs.publicationType));
+	feedSchemas.sort((lhs, rhs) =>
+		lhs.publicationType.localeCompare(rhs.publicationType),
+	);
 
 	//XXX: process podcasts first, then rss to allow bulk operations
 	const partitions = partitionBy(feedSchemas, p => p.schema);
@@ -217,9 +224,15 @@ exports.post = async (req, res) => {
 
 		await rateLimit.tick(req.user.sub);
 
-		const followInstructions = chunk.map(p => ({ type: p.categories.toLowerCase(), userID: req.user.sub, publicationID: p._id }));
+		const followInstructions = chunk.map(p => ({
+			type: p.categories.toLowerCase(),
+			userID: req.user.sub,
+			publicationID: p._id,
+		}));
 		const newFollows = await Follow.getOrCreateMany(followInstructions);
-		follows = follows.concat(newFollows.map((f, i) => ({ feedUrl: chunk[i].url, follow: f })));
+		follows = follows.concat(
+			newFollows.map((f, i) => ({ feedUrl: chunk[i].url, follow: f })),
+		);
 	}
 
 	const errors = failedFeeds.map(f => ({ ...f, follow: {} }));

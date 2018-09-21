@@ -56,13 +56,11 @@ async function main() {
 			.updateOne({ $set: { 'socialScore.hackernews': urlToScore.get(match.url) } });
 	}
 	for (const match of commentUrlMatch) {
-		batch
-			.find({ _id: match._id })
-			.updateOne({
-				$set: {
-					'socialScore.hackernews': commentUrlToScore.get(match.commentUrl),
-				},
-			});
+		batch.find({ _id: match._id }).updateOne({
+			$set: {
+				'socialScore.hackernews': commentUrlToScore.get(match.commentUrl),
+			},
+		});
 	}
 	await batch.execute();
 }

@@ -24,13 +24,21 @@ const streamQueueSettings = { removeOnComplete: true, removeOnFail: true };
 
 const joiObjectId = joi.alternatives().try(
 	joi.string().length(12),
-	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+	joi
+		.string()
+		.length(24)
+		.regex(/^[0-9a-fA-F]{24}$/),
 );
-const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
+const joiUrl = joi
+	.string()
+	.uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
 
 const schema = joi.object().keys({
 	rss: joiObjectId.required(),
-	articles: joi.array().min(1).required(),
+	articles: joi
+		.array()
+		.min(1)
+		.required(),
 });
 const itemSchema = joi.object().keys({
 	id: joiObjectId.required(),
@@ -63,15 +71,25 @@ export async function handleSocial(job) {
 
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`Social job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
+		logger.warn(
+			`Social job validation failed: ${
+				validation.error.message
+			} for '${JSON.stringify(job.data)}'`,
+		);
 		return;
 	}
 
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
 	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
 	if (!articles.length) {
-		const errors = job.data.articles.map(a => joi.validate(a, itemSchema)).filter(r => !!r.error);
-		logger.warn(`No article passed validation: ${errors.map(r => r.error.message)} for '${JSON.stringify(job.data)}'`);
+		const errors = job.data.articles
+			.map(a => joi.validate(a, itemSchema))
+			.filter(r => !!r.error);
+		logger.warn(
+			`No article passed validation: ${errors.map(
+				r => r.error.message,
+			)} for '${JSON.stringify(job.data)}'`,
+		);
 		return;
 	}
 
@@ -79,13 +97,17 @@ export async function handleSocial(job) {
 
 	let updatingSocialScore = false;
 	await timeIt('winds.handle_social.update_social_score', () => {
-		return Promise.all(articles.map(async article => {
-			const socialScore = await fetchSocialScore(article);
-			if (Object.keys(socialScore).length) {
-				updatingSocialScore = true;
-				socialBatch.find({ _id: mongoose.Types.ObjectId(article.id) }).updateOne({ $set: { socialScore } });
-			}
-		}));
+		return Promise.all(
+			articles.map(async article => {
+				const socialScore = await fetchSocialScore(article);
+				if (Object.keys(socialScore).length) {
+					updatingSocialScore = true;
+					socialBatch
+						.find({ _id: mongoose.Types.ObjectId(article.id) })
+						.updateOne({ $set: { socialScore } });
+				}
+			}),
+		);
 	});
 	if (updatingSocialScore) {
 		await socialBatch.execute();
