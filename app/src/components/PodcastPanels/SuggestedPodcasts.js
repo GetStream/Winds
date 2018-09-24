@@ -9,6 +9,8 @@ import Panel from '../Panel';
 
 class SuggestedPodcasts extends React.Component {
 	componentDidMount() {
+		if (this.props.podcasts.length) return;
+
 		fetch('GET', '/podcasts', {}, { type: 'recommended' })
 			.then(res => {
 				this.props.dispatch({
