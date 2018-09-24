@@ -99,7 +99,9 @@
 			position: relative;
 
 			> img,
-			> .background-image {
+			> .background-image,
+			> .placeholder {
+				background-color: $white-smoke;
 				background-position: center;
 				background-size: cover;
 				border-radius: $border-radius;

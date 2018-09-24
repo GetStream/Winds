@@ -28,6 +28,7 @@ class RecentArticlesPanel extends React.Component {
 									article.rss.images.favicon,
 									getPlaceholderImageURL(article.rss._id),
 								]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{article.title}</div>
 							<TimeAgo

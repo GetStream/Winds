@@ -203,8 +203,6 @@ class PodcastEpisode extends React.Component {
 										onClick={() => this.playOrPause()}
 									>
 										<Img
-											height="75"
-											width="75"
 											className="og-image"
 											src={[
 												episode.images.og,
@@ -213,6 +211,7 @@ class PodcastEpisode extends React.Component {
 													episode.podcast._id,
 												),
 											]}
+											loader={<div className="placeholder" />}
 										/>
 										<div className="play-icon">
 											<div className="icon-container">

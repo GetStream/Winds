@@ -130,6 +130,7 @@ class SuggestedFeeds extends React.Component {
 									rssFeed.images.favicon,
 									getPlaceholderImageURL(rssFeed._id),
 								]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{rssFeed.title}</div>
 							<div

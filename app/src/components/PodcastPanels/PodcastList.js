@@ -71,6 +71,7 @@ class PodcastList extends React.Component {
 									podcast.images.favicon,
 									getPlaceholderImageURL(podcast._id),
 								]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>
 							<div>
