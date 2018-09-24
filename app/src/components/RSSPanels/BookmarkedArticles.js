@@ -33,8 +33,9 @@ class BookmarkedArticles extends React.Component {
 							<Img
 								src={[
 									bookmark.article.rss.images.favicon,
-									getPlaceholderImageURL(bookmark.article.rss._id),
+									getPlaceholderImageURL(),
 								]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{bookmark.article.title}</div>
 							<TimeAgo

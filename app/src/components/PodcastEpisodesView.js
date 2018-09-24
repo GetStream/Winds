@@ -276,7 +276,7 @@ class PodcastEpisodesView extends React.Component {
 								src={[
 									this.props.podcast.images.featured,
 									this.props.podcast.images.og,
-									getPlaceholderImageURL(this.props.podcast._id),
+									getPlaceholderImageURL(),
 								]}
 							/>
 						</div>

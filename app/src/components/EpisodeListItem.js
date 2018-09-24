@@ -62,13 +62,14 @@ class EpisodeListItem extends React.Component {
 					}}
 				>
 					<Img
-						height="100"
-						width="100"
+						height="75"
+						width="75"
 						src={[
 							this.props.images.og,
 							this.props.podcast.images.featured,
-							getPlaceholderImageURL(this.props.podcast._id),
+							getPlaceholderImageURL(),
 						]}
+						loader={<div className="placeholder" />}
 					/>
 					{this.props.playable ? icon : null}
 					{this.props.recent ? <div className="recent-indicator" /> : null}

@@ -1,20 +1,15 @@
-let cards = [];
-let squareCards = [];
-for (var i = 1; i < 10; i++) {
+const cards = [];
+const squareCards = [];
+const numberOfImages = 9;
+
+for (let i = 1; i <= numberOfImages; i++) {
 	cards.push(require(`../images/cards/pattern-${i}.png`));
 	squareCards.push(require(`../images/cards/pattern-${i}-square.png`));
 }
 
-let numberOfPlaceholderImages = 9;
+export default (square = false) => {
+	const random = Math.floor(Math.random() * numberOfImages);
 
-export default (string, opts) => {
-	let count = 0;
-	for (let char of string) {
-		count += char.charCodeAt(0);
-	}
-	if (opts && opts.square) {
-		return squareCards[count % numberOfPlaceholderImages];
-	} else {
-		return cards[count % numberOfPlaceholderImages];
-	}
+	if (square) return squareCards[random];
+	return cards[random];
 };
