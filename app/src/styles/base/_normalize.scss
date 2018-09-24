@@ -17,3 +17,7 @@ textarea {
 	height: 100vh;
 }
 
+div[tabindex="-1"]:focus {
+	outline: 0;
+}
+
