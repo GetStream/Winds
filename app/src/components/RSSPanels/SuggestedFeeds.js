@@ -126,10 +126,7 @@ class SuggestedFeeds extends React.Component {
 					return (
 						<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
 							<Img
-								src={[
-									rssFeed.images.favicon,
-									getPlaceholderImageURL(rssFeed._id),
-								]}
+								src={[rssFeed.images.favicon, getPlaceholderImageURL()]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{rssFeed.title}</div>

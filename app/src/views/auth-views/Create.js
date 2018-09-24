@@ -101,7 +101,7 @@ class OnboardingGrid extends React.Component {
 								}}
 								style={{
 									backgroundImage: `url(${interest.image ||
-										getPlaceholderImageURL(i.toString())})`,
+										getPlaceholderImageURL()})`,
 								}}
 							>
 								<h1>{interest.name}</h1>

@@ -14,6 +14,7 @@
 
 			&:first-child {
 				background: $white-smoke;
+				flex-shrink: 0;
 				height: 1.5em;
 				width: 1.5em;
 			}

@@ -27,7 +27,7 @@ class RecentEpisodesPanel extends React.Component {
 							<Img
 								src={[
 									episode.podcast.images.favicon,
-									getPlaceholderImageURL(episode.podcast._id),
+									getPlaceholderImageURL(),
 								]}
 								loader={<div className="placeholder" />}
 							/>
