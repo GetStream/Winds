@@ -397,7 +397,7 @@ const mapStateToProps = (state, ownProps) => {
 	}
 	let rss = {};
 	let loading = false;
-	if (!('articles' in state) || !(articleID in state.articles)) {
+	if (!('articles' in state) || !(articleID in state.articles) || !state.rssFeeds) {
 		loading = true;
 	} else {
 		article = { ...state.articles[articleID] };
