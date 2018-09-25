@@ -9,6 +9,8 @@ import Panel from '../Panel';
 
 class SuggestedFeeds extends React.Component {
 	componentDidMount() {
+		if (this.props.rssFeeds.length) return;
+
 		fetch('get', '/rss', {}, { type: 'recommended' })
 			.then(res => {
 				this.props.dispatch({
