@@ -75,6 +75,25 @@ const schema = joi.object().keys({
 	url: joiUrl.required(),
 });
 
+const chunkSize = 100;
+
+async function updateFeed(rssID, update, articles) {
+	for (let offset = 0; offset < articles.length; offset += chunkSize) {
+		const limit = offset + chunkSize;
+		const chunk = articles.slice(offset, limit);
+		const streamArticles = chunk.map(article => {
+			return {
+				actor: rssID,
+				foreign_id: `articles:${article._id}`,
+				object: article._id,
+				time: article.publicationDate,
+				verb: 'rss_article',
+			};
+		});
+		await timeIt('winds.handle_rss.send_to_collections', () => update(streamArticles));
+	}
+}
+
 export async function handleRSS(job) {
 	try {
 		// best effort at escaping urls found in the wild
@@ -205,23 +224,13 @@ export async function handleRSS(job) {
 		return;
 	}
 
-	const rssFeed = getStreamClient().feed('rss', rssID);
-	const chunkSize = 100;
-	for (let offset = 0; offset < updatedArticles.length; offset += chunkSize) {
-		const limit = offset + chunkSize;
-		const chunk = updatedArticles.slice(offset, limit);
-		const streamArticles = chunk.map(article => {
-			return {
-				actor: rssID,
-				foreign_id: `articles:${article._id}`,
-				object: article._id,
-				time: article.publicationDate,
-				verb: 'rss_article',
-			};
-		});
-		await timeIt('winds.handle_rss.send_to_collections', () =>
-			rssFeed.addActivities(streamArticles),
-		);
+	const streamClient = getStreamClient();
+	const rssFeed = streamClient.feed('rss', rssID);
+	if (operationMap.new.length) {
+		await updateFeed(rssID, rssFeed.addActivities.bind(rssFeed), operationMap.new.filter(a => !!a.url));
+	}
+	if (operationMap.changed.length) {
+		await updateFeed(rssID, streamClient.updateActivities.bind(streamClient), operationMap.changed.filter(a => !!a.url));
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
