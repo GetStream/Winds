@@ -80,7 +80,7 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	loading: !state.users[localStorage['authedUser']],
+	loading: !state.user,
 });
 
 export default connect(mapStateToProps)(Dashboard);

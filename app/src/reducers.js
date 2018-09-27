@@ -22,12 +22,7 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_USER') {
-		let users = { ...previousState.users };
-		users[action.user._id] = action.user;
-
-		return Object.assign({}, previousState, {
-			users,
-		});
+		return { ...previousState, user: action.user };
 	} else if (action.type === 'UPDATE_EPISODE') {
 		let episode = { ...action.episode };
 		episode.podcast = action.episode.podcast._id;

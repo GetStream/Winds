@@ -294,7 +294,7 @@ Header.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	user: state.users[localStorage['authedUser']],
+	user: state.user,
 });
 
 export default connect(mapStateToProps)(withRouter(Header));

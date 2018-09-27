@@ -489,7 +489,7 @@ UserProfileSettingsDrawer.propTypes = {
 };
 
 const mapStateToProps = state => {
-	return { ...state.users[localStorage['authedUser']], ...state.userSettings };
+	return { ...state.user, ...state.userSettings };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -31,11 +31,6 @@ class SuggestedPodcasts extends React.Component {
 
 		fetch('GET', '/follows', null, { type: 'podcast' })
 			.then(res => {
-				this.props.dispatch({
-					type: 'UPDATE_USER',
-					user: res.data[0].user,
-				});
-
 				let podcasts = [];
 				let podcastFollowRelationships = [];
 

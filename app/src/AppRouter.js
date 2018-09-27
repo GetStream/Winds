@@ -18,9 +18,10 @@ import { getUser, getAliases } from './api';
 class AppRouter extends Component {
 	componentDidMount() {
 		const userId = localStorage['authedUser'];
-		if (userId) getUser(this.props.dispatch, userId);
-
-		getAliases(this.props.dispatch);
+		if (userId) {
+			getUser(this.props.dispatch, userId);
+			getAliases(this.props.dispatch);
+		}
 	}
 
 	render() {

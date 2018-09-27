@@ -161,9 +161,8 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		...ownProps,
 		episodes,
-		userEpisodeStreamToken:
-			state.users[localStorage['authedUser']].streamTokens.user_episode,
-		userID: localStorage['authedUser'],
+		userEpisodeStreamToken: state.user.streamTokens.user_episode,
+		userID: state.user._id,
 	};
 };
 
