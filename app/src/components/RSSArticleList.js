@@ -1,16 +1,20 @@
-import loaderIcon from '../images/loaders/default.svg';
-import Loader from './Loader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import Waypoint from 'react-waypoint';
+import Img from 'react-image';
+import Popover from 'react-popover';
+
 import fetch from '../util/fetch';
 import { getPinnedArticles } from '../util/pins';
 import { getFeed } from '../util/feeds';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
-import moment from 'moment';
 import ArticleListItem from './ArticleListItem';
-import Waypoint from 'react-waypoint';
-import Img from 'react-image';
+import AliasModal from './AliasModal';
+import { getAliases } from '../util/aliases';
+import Loader from './Loader';
+import loaderIcon from '../images/loaders/default.svg';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
@@ -20,16 +24,11 @@ class RSSArticleList extends React.Component {
 			articleCursor: 1,
 			sortBy: 'latest',
 			newArticlesAvailable: false,
+			menuPopover: false,
+			aliasModal: false,
 		};
-		this.toggleMenu = this.toggleMenu.bind(this);
 
 		this.contentsEl = React.createRef();
-	}
-
-	toggleMenu() {
-		this.setState({
-			menuIsOpen: !this.state.menuIsOpen,
-		});
 	}
 
 	subscribeToStreamFeed(rssFeedID, streamFeedToken) {
@@ -56,6 +55,7 @@ class RSSArticleList extends React.Component {
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
 
+		getAliases(this.props.dispatch);
 		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
 
@@ -231,6 +231,14 @@ class RSSArticleList extends React.Component {
 		});
 	}
 
+	toggleMenuPopover = () => {
+		this.setState(prevState => ({ menuPopover: !prevState.menuPopover }));
+	};
+
+	toggleAliasModal = () => {
+		this.setState(prevState => ({ aliasModal: !prevState.aliasModal }));
+	};
+
 	render() {
 		let sortedArticles = [...this.props.articles];
 		sortedArticles.sort((a, b) => {
@@ -239,126 +247,163 @@ class RSSArticleList extends React.Component {
 			);
 		});
 
-		if (this.props.loading) {
-			return <Loader />;
-		} else {
-			let rightContents;
-			if (this.props.articles.length === 0) {
-				rightContents = (
-					<div>
-						<p>{"We haven't found any articles for this RSS feed yet :("}</p>
-						<p>
-							{
-								"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
-							}
-						</p>
-						<p>
-							{
-								"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
-							}
-							<a href="https://github.com/getstream/winds/issues">
-								GitHub Issue
-							</a>.
-						</p>
-					</div>
-				);
-			} else {
-				rightContents = (
-					<React.Fragment>
-						{sortedArticles.map(article => {
-							return (
-								<ArticleListItem
-									key={article._id}
-									onNavigation={() => {
-										localStorage[
-											'rss-article-list-scroll-position'
-										] = this.contentsEl.current.scrollTop;
-									}}
-									{...article}
-								/>
-							);
-						})}
+		if (this.props.loading) return <Loader />;
 
-						{this.state.reachedEndOfFeed ? (
-							<div className="end">
-								<p>{"That's it! No more articles here."}</p>
-								<p>
-									{
-										"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
-									}
-								</p>
-							</div>
-						) : (
-							<div>
-								<Waypoint
-									onEnter={() => {
-										this.setState(
-											{
-												articleCursor:
-													this.state.articleCursor + 1,
-											},
-											() => {
-												this.getRSSArticles(
-													this.props.match.params.rssFeedID,
-												);
-											},
-										);
-									}}
-								/>
-								<div className="end-loader">
-									<Img src={loaderIcon} />
-								</div>
-							</div>
-						)}
-					</React.Fragment>
-				);
-			}
-			return (
+		const menuPopover = (
+			<div className="popover-panel feed-popover">
+				<div
+					className="panel-element menu-item"
+					onClick={() => this.toggleAliasModal()}
+				>
+					Rename
+				</div>
+				<div
+					className="panel-element menu-item"
+					onClick={() =>
+						this.props.following ? this.unfollow() : this.follow()
+					}
+				>
+					{this.props.following ? (
+						<span className="red">Unfollow</span>
+					) : (
+						'Follow'
+					)}
+				</div>
+			</div>
+		);
+
+		let rightContents;
+		if (this.props.articles.length === 0) {
+			rightContents = (
+				<div>
+					<p>{"We haven't found any articles for this RSS feed yet :("}</p>
+					<p>
+						{
+							"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
+						}
+					</p>
+					<p>
+						{
+							"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
+						}
+						<a href="https://github.com/getstream/winds/issues">
+							GitHub Issue
+						</a>
+						.
+					</p>
+				</div>
+			);
+		} else {
+			rightContents = (
 				<React.Fragment>
-					<div className="list-view-header content-header">
-						<div className="alignment-box">
-							<div className="image">
-								<Img
-									src={[
-										this.props.rssFeed.images.featured,
-										this.props.rssFeed.images.og,
-										getPlaceholderImageURL(this.props.rssFeed._id),
-									]}
-								/>
-							</div>
-							<h1>{this.props.rssFeed.title}</h1>
-							<div className="menu">
-								<div
-									onClick={() => {
-										if (this.props.following) {
-											this.unfollow();
-										} else {
-											this.follow();
-										}
-									}}
-								>
-									{this.props.following ? 'Unfollow' : 'Follow'}
-								</div>
+					{sortedArticles.map(article => {
+						return (
+							<ArticleListItem
+								key={article._id}
+								onNavigation={() => {
+									localStorage[
+										'rss-article-list-scroll-position'
+									] = this.contentsEl.current.scrollTop;
+								}}
+								{...article}
+							/>
+						);
+					})}
+
+					{this.state.reachedEndOfFeed ? (
+						<div className="end">
+							<p>{"That's it! No more articles here."}</p>
+							<p>
+								{
+									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
+								}
+							</p>
+						</div>
+					) : (
+						<div>
+							<Waypoint
+								onEnter={() => {
+									this.setState(
+										{
+											articleCursor: this.state.articleCursor + 1,
+										},
+										() => {
+											this.getRSSArticles(
+												this.props.match.params.rssFeedID,
+											);
+										},
+									);
+								}}
+							/>
+							<div className="end-loader">
+								<Img src={loaderIcon} />
 							</div>
 						</div>
-					</div>
-					<div className="list content" ref={this.contentsEl}>
-						{this.state.newArticlesAvailable ? (
-							<div
-								className="toast"
-								onClick={() => {
-									this.getRSSFeed(this.props.match.params.rssFeedID);
-									this.setState({ newArticlesAvailable: false });
-								}}
-							>
-								New Articles Available – Click to Refresh
-							</div>
-						) : null}
-						{rightContents}
-					</div>
+					)}
 				</React.Fragment>
 			);
 		}
+		return (
+			<React.Fragment>
+				<div className="list-view-header content-header">
+					<div className="alignment-box">
+						<div className="image">
+							<Img
+								src={[
+									this.props.rssFeed.images.featured,
+									this.props.rssFeed.images.og,
+									getPlaceholderImageURL(),
+								]}
+							/>
+						</div>
+						<h1>{this.props.rssFeed.title}</h1>
+						{!this.props.following && (
+							<div className="follow menu" onClick={() => this.follow()}>
+								FOLLOW
+							</div>
+						)}
+
+						<Popover
+							body={menuPopover}
+							isOpen={this.state.menuPopover}
+							onOuterAction={this.toggleMenuPopover}
+							preferPlace="below"
+							tipSize={0.1}
+						>
+							<div
+								className={this.props.following ? 'menu' : 'menu-pop'}
+								onClick={() => this.toggleMenuPopover()}
+							>
+								&bull; &bull; &bull;
+							</div>
+						</Popover>
+					</div>
+				</div>
+
+				<AliasModal
+					defVal={this.props.rssFeed.title}
+					isOpen={this.state.aliasModal}
+					toggleModal={this.toggleAliasModal}
+					isRss={true}
+					feedID={this.props.rssFeed._id}
+				/>
+
+				<div className="list content" ref={this.contentsEl}>
+					{this.state.newArticlesAvailable ? (
+						<div
+							className="toast"
+							onClick={() => {
+								this.getRSSFeed(this.props.match.params.rssFeedID);
+								this.setState({ newArticlesAvailable: false });
+							}}
+						>
+							New Articles Available – Click to Refresh
+						</div>
+					) : null}
+					{rightContents}
+				</div>
+			</React.Fragment>
+		);
 	}
 }
 
@@ -401,6 +446,9 @@ const mapStateToProps = (state, ownProps) => {
 			loading: true,
 		};
 	}
+
+	if (state.aliases && rssFeed._id && state.aliases[rssFeed._id])
+		rssFeed.title = state.aliases[rssFeed._id].alias;
 
 	let following = false;
 	if (
@@ -454,7 +502,8 @@ const mapStateToProps = (state, ownProps) => {
 	}
 
 	articles.sort((a, b) => {
-		let diff = moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
+		let diff =
+			moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
 		if (diff === 0) {
 			diff = moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf();
 		}

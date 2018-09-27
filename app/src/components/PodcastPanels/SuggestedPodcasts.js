@@ -9,6 +9,8 @@ import Panel from '../Panel';
 
 class SuggestedPodcasts extends React.Component {
 	componentDidMount() {
+		if (this.props.podcasts.length) return;
+
 		fetch('GET', '/podcasts', {}, { type: 'recommended' })
 			.then(res => {
 				this.props.dispatch({
@@ -107,10 +109,8 @@ class SuggestedPodcasts extends React.Component {
 					return (
 						<Link key={podcast._id} to={`/podcasts/${podcast._id}`}>
 							<Img
-								src={[
-									podcast.images.favicon,
-									getPlaceholderImageURL(podcast._id),
-								]}
+								src={[podcast.images.favicon, getPlaceholderImageURL()]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>
 							<div

@@ -53,6 +53,7 @@ class PodcastList extends React.Component {
 					this.props.match.params.podcastID !== 'recent'
 				}
 				headerText="Podcasts"
+				headerLink="/podcasts"
 			>
 				{this.props.podcasts.map(podcast => {
 					return (
@@ -66,10 +67,8 @@ class PodcastList extends React.Component {
 							to={`/podcasts/${podcast._id}`}
 						>
 							<Img
-								src={[
-									podcast.images.favicon,
-									getPlaceholderImageURL(podcast._id),
-								]}
+								src={[podcast.images.favicon, getPlaceholderImageURL()]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>
 							<div>
@@ -109,6 +108,14 @@ const mapStateToProps = (state, ownProps) => {
 	let podcasts = podcastsUserFollows.map(podcastID => {
 		return state.podcasts[podcastID];
 	});
+
+	if (state.aliases) {
+		podcasts = podcasts.map(podcast => {
+			if (state.aliases[podcast._id])
+				podcast.title = state.aliases[podcast._id].alias;
+			return podcast;
+		});
+	}
 
 	podcasts.sort((a, b) => {
 		return a.title.localeCompare(b.title);

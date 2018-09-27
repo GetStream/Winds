@@ -122,7 +122,6 @@
 	}
 
 	.content-header {
-		display: flex;
 		grid-area: content-header;
 		margin: auto;
 		width: 720px;
@@ -133,12 +132,16 @@
 			position: relative;
 		}
 
-		.og-image {
+		.og-image,
+		.placeholder {
+			background: $white-smoke;
 			background-position: 50%;
 			background-size: cover;
 			border-radius: 8px;
 			-webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
 			box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06), 0 2px 7px 0 rgba(0, 0, 0, 0.05);
+			height: 75px;
+			width: 75px;
 		}
 
 		.play-icon {
@@ -171,6 +174,10 @@
 	.alignment-box {
 		margin-top: 1.7em;
 	}
+}
+
+.episode-header {
+	display: flex;
 }
 
 .podcast-episode {

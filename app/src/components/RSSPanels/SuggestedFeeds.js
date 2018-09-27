@@ -9,6 +9,8 @@ import Panel from '../Panel';
 
 class SuggestedFeeds extends React.Component {
 	componentDidMount() {
+		if (this.props.rssFeeds.length) return;
+
 		fetch('get', '/rss', {}, { type: 'recommended' })
 			.then(res => {
 				this.props.dispatch({
@@ -126,10 +128,8 @@ class SuggestedFeeds extends React.Component {
 					return (
 						<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
 							<Img
-								src={[
-									rssFeed.images.favicon,
-									getPlaceholderImageURL(rssFeed._id),
-								]}
+								src={[rssFeed.images.favicon, getPlaceholderImageURL()]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{rssFeed.title}</div>
 							<div
@@ -180,7 +180,13 @@ const mapStateToProps = (state, ownProps) => {
 	if (state.followedRssFeeds && state.followedRssFeeds[localStorage['authedUser']]) {
 		followedRssFeeds = { ...state.followedRssFeeds[localStorage['authedUser']] };
 	}
-
+	if (state.aliases) {
+		rssFeeds = rssFeeds.map(rssFeed => {
+			if (state.aliases[rssFeed._id])
+				rssFeed.title = state.aliases[rssFeed._id].alias;
+			return rssFeed;
+		});
+	}
 	return {
 		...ownProps,
 		followedRssFeeds,

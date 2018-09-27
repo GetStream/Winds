@@ -25,13 +25,16 @@ class BookmarkedEpisodes extends React.Component {
 					return (
 						<Link
 							key={bookmark._id}
-							to={`/podcasts/${bookmark.episode.podcast._id}`}
+							to={`/podcasts/${bookmark.episode.podcast._id}/episodes/${
+								bookmark.episode._id
+							}`}
 						>
 							<Img
 								src={[
 									bookmark.episode.podcast.images.favicon,
-									getPlaceholderImageURL(bookmark.episode.podcast._id),
+									getPlaceholderImageURL(),
 								]}
+								loader={<div className="placeholder" />}
 							/>
 							<div>{bookmark.episode.title}</div>
 							<TimeAgo

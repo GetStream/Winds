@@ -46,6 +46,14 @@
 		}
 	}
 
+	a.panel-header {
+		transition: all 0.22s ease-in-out;
+
+		&:hover {
+			background-color: $background-lightishgray;
+		}
+	}
+	
 	.panel-element {
 		align-items: center;
 		border-bottom: 1px solid $foreground-lightgray;
@@ -106,9 +114,12 @@
 			color: $foreground-darkgray;
 		}
 
-		img {
-			height: 16px;
-			width: 16px;
+		img,
+		.placeholder {
+			background-color: $white-smoke;
+			flex-shrink: 0;
+			height: 1.5em;
+			width: 1.5em;
 		}
 
 		&:last-child {

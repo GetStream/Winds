@@ -79,8 +79,8 @@ class ForgotPassword extends Component {
 					</div>
 					<div className="cta">
 						<p>
-							Fill in your email address and we'll send you<br />
-							a passcode allowing you to reset your password.
+							Fill in your email address and we'll send you
+							<br />a passcode allowing you to reset your password.
 						</p>
 					</div>
 					<div className="form">

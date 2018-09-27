@@ -22,7 +22,18 @@
 			&.menu {
 				cursor: pointer;
 				margin-left: auto;
-				margin-right: 0;
+			}
+
+			&.menu-pop {
+				cursor: pointer;
+			}
+
+			&.follow {
+				color: #08A270;
+				cursor: pointer;
+				font-weight: bold;
+				letter-spacing: 0.82px;
+				margin-right: 15px;
 			}
 		}
 	}
@@ -88,7 +99,9 @@
 			position: relative;
 
 			> img,
-			> .background-image {
+			> .background-image,
+			> .placeholder {
+				background-color: $white-smoke;
 				background-position: center;
 				background-size: cover;
 				border-radius: $border-radius;

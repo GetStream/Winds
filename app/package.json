@@ -1,6 +1,6 @@
 {
   "name": "Winds",
-  "version": "2.1.175",
+  "version": "2.2.2",
   "description": "Winds is a beatiful open source RSS Reader and Podcast app. Wind 2.0 was created using React/Redux/Node.\nFor more information, visit https://getstream.io/winds/.\nTo contribute or run your own version head over to Github: https://github.com/getstream/winds",
   "private": true,
   "author": "Winds Team <winds@getstream.io>",
@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/getstream/winds/issues"
   },
-  "homepage": "./",
+  "homepage": "https://winds.getstream.io",
   "main": "public/electron.js",
   "keywords": [
     "Winds",
@@ -23,11 +23,12 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "yarn build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "web": "yarn react-scripts start",
-    "build": "react-scripts build",
+    "web": "concurrently \"yarn watch-css\" \"yarn react-scripts start\"",
+    "build": "yarn build-css && react-scripts build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\" \"yarn watch-css\"",
-    "pack": "electron-builder --dir",
-    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
+    "pack": "yarn build-css && electron-builder --dir",
+    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always",
+    "prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\""
   },
   "dependencies": {
     "algoliasearch": "^3.30.0",

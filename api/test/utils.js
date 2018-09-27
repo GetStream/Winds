@@ -6,9 +6,9 @@ import path from 'path';
 import redis from 'redis';
 import sinon from 'sinon';
 import { expect, request } from 'chai';
-import StreamClient from 'getstream/src/lib/client';
-import Personalization from 'getstream/src/lib/personalization';
-import Collections from 'getstream/src/lib/collections';
+import StreamClient from 'getstream/lib/lib/client';
+import Personalization from 'getstream/lib/lib/personalization';
+import Collections from 'getstream/lib/lib/collections';
 
 import api from '../src/server';
 import config from '../src/config';

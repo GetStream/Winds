@@ -53,8 +53,8 @@ class Login extends Component {
 			<div className="center auth-view login-view">
 				<h1>Sign In</h1>
 				<p>
-					Enjoy a new and personalized way to listen, <br />read, and share your
-					favorite content.
+					Enjoy a new and personalized way to listen, <br />
+					read, and share your favorite content.
 				</p>
 				<form className="auth-form" onSubmit={this.submit}>
 					<label>

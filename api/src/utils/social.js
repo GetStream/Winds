@@ -10,16 +10,16 @@ export function extractRedditPostID(article) {
 	}
 	const parts = article.link.split('/');
 	if (parts.includes('comments')) {
-		return 't3_' + parts[parts.indexOf('comments') + 1]
+		return 't3_' + parts[parts.indexOf('comments') + 1];
 	}
 
 	if (parts.includes('r')) {
-		throw new Error(`Invalid URL (subreddit, not submission): ${article.link}`)
+		throw new Error(`Invalid URL (subreddit, not submission): ${article.link}`);
 	}
 
 	const id = parts[parts.length - 1];
 	if (!/^[a-z0-9]+$/i.test(id)) {
-		throw new Error(`Invalid URL: ${article.link}`)
+		throw new Error(`Invalid URL: ${article.link}`);
 	}
 	return 't3_' + id;
 }
@@ -40,20 +40,20 @@ async function refreshAccessToken() {
 	const data = querystring.stringify({
 		grant_type: 'password',
 		username: config.social.reddit.username,
-		password: config.social.reddit.password
+		password: config.social.reddit.password,
 	});
 	const options = {
 		uri: url,
 		json: true,
 		headers: {
 			'User-Agent': userAgent,
-			'Content-Type': 'application/x-www-form-urlencoded'
+			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 		auth: {
 			user: config.social.reddit.key,
-			pass: config.social.reddit.secret
+			pass: config.social.reddit.secret,
 		},
-		body: data
+		body: data,
 	};
 	const response = await request.post(options);
 
@@ -61,7 +61,7 @@ async function refreshAccessToken() {
 }
 
 function sleep(time) {
-	return new Promise(resolve => time ? setTimeout(resolve, time) : resolve());
+	return new Promise(resolve => (time ? setTimeout(resolve, time) : resolve()));
 }
 
 async function tryRedditAPI(path, retries = 2, backoffDelay = 30) {
@@ -74,10 +74,11 @@ async function tryRedditAPI(path, retries = 2, backoffDelay = 30) {
 		json: true,
 		headers: {
 			'User-Agent': userAgent,
-			Authorization: `bearer ${accessToken}`
-		}
+			Authorization: `bearer ${accessToken}`,
+		},
 	};
-	let currentDelay = 0, nextDelay = backoffDelay;
+	let currentDelay = 0,
+		nextDelay = backoffDelay;
 	while (retries) {
 		try {
 			await sleep(currentDelay);
@@ -97,7 +98,8 @@ async function tryRedditAPI(path, retries = 2, backoffDelay = 30) {
 
 async function tryHackernewsAPI(path, retries = 2, backoffDelay = 30) {
 	const url = 'https://hacker-news.firebaseio.com/v0' + path;
-	let currentDelay = 0, nextDelay = backoffDelay;
+	let currentDelay = 0,
+		nextDelay = backoffDelay;
 	while (retries) {
 		try {
 			await sleep(currentDelay);
@@ -112,7 +114,8 @@ async function tryHackernewsAPI(path, retries = 2, backoffDelay = 30) {
 
 async function tryHackernewsSearch(query, retries = 2, backoffDelay = 30) {
 	const url = 'https://hn.algolia.com/api/v1/search';
-	let currentDelay = 0, nextDelay = backoffDelay;
+	let currentDelay = 0,
+		nextDelay = backoffDelay;
 	while (retries) {
 		try {
 			await sleep(currentDelay);
@@ -121,7 +124,7 @@ async function tryHackernewsSearch(query, retries = 2, backoffDelay = 30) {
 				qs: {
 					restrictSearchableAttributes: 'url',
 					tags: 'story',
-					query
+					query,
 				},
 			});
 		} catch (_) {
@@ -156,36 +159,46 @@ export async function hackernewsScore(postID) {
 
 const socialSources = {
 	reddit: { extractID: extractRedditPostID, search: redditPost, score: redditScore },
-	hackernews: { extractID: extractHackernewsPostID, search: hackernewsPost, score: hackernewsScore }
+	hackernews: {
+		extractID: extractHackernewsPostID,
+		search: hackernewsPost,
+		score: hackernewsScore,
+	},
 };
 
 export async function fetchSocialScore(article) {
-	const entries = await Promise.all(Object.entries(socialSources).map(async ([source, { extractID, search, score }]) => {
-		let id;
-		try {
-			id = extractID(article);
-		} catch (_) {
-			//XXX: ignore error
-		}
+	const entries = await Promise.all(
+		Object.entries(socialSources).map(
+			async ([source, { extractID, search, score }]) => {
+				let id;
+				try {
+					id = extractID(article);
+				} catch (_) {
+					//XXX: ignore error
+				}
 
-		let result;
-		if (id) {
-			try {
-				result = [source, await score(id)];
-			} catch (_) {
-				//XXX: ignore error
-			}
-		}
-		if (!result) {
-			try {
-				result = [source, await search(article)];
-			} catch (_) {
-				result = [source, 0];
-			}
-		}
-		return result;
-	}));
+				let result;
+				if (id) {
+					try {
+						result = [source, await score(id)];
+					} catch (_) {
+						//XXX: ignore error
+					}
+				}
+				if (!result) {
+					try {
+						result = [source, await search(article)];
+					} catch (_) {
+						result = [source, 0];
+					}
+				}
+				return result;
+			},
+		),
+	);
 
 	// assemble entries w/ positive score into an object
-	return entries.filter(([_, score]) => !!score).reduce((obj, [source, score]) => Object.assign(obj, { [source]: score }), {});
+	return entries
+		.filter(([_, score]) => !!score)
+		.reduce((obj, [source, score]) => Object.assign(obj, { [source]: score }), {});
 }

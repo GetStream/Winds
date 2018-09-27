@@ -31,7 +31,7 @@ export async function ogProcessor(job) {
 	} catch (err) {
 		const tags = { queue: 'og' };
 		const extra = {
-			JobURL: job.data.url || job.data.urls ,
+			JobURL: job.data.url || job.data.urls,
 			JobType: job.data.type,
 		};
 		logger.error('OG job encountered an error', { err, tags, extra });
@@ -42,19 +42,31 @@ const schemaMap = { episode: Episode, article: Article, rss: RSS, podcast: Podca
 const parentSchemaMap = { episode: Podcast, article: RSS, rss: RSS, podcast: Podcast };
 const validTypes = ['episode', 'article', 'rss', 'podcast'];
 
-const joiUrl = joi.string().uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
+const joiUrl = joi
+	.string()
+	.uri({ scheme: ['http', 'https'], allowQuerySquareBrackets: true });
 const joiObjectId = joi.alternatives().try(
 	joi.string().length(12),
-	joi.string().length(24).regex(/^[0-9a-fA-F]{24}$/)
+	joi
+		.string()
+		.length(24)
+		.regex(/^[0-9a-fA-F]{24}$/),
 );
-const schema = joi.object().keys({
-	update: joi.boolean().default(false),
-	rss: joiObjectId,
-	podcast: joiObjectId,
-	type: joi.string().valid(validTypes).required(),
-	url: joiUrl,
-	urls: joi.array().min(1),
-}).xor('url', 'urls').xor('rss', 'podcast');
+const schema = joi
+	.object()
+	.keys({
+		update: joi.boolean().default(false),
+		rss: joiObjectId,
+		podcast: joiObjectId,
+		type: joi
+			.string()
+			.valid(validTypes)
+			.required(),
+		url: joiUrl,
+		urls: joi.array().min(1),
+	})
+	.xor('url', 'urls')
+	.xor('rss', 'podcast');
 
 // Run the OG scraping job
 export async function handleOg(job) {
@@ -73,7 +85,11 @@ export async function handleOg(job) {
 	}
 	const validation = joi.validate(job.data, schema);
 	if (!!validation.error) {
-		logger.warn(`OG job validation failed: ${validation.error.message} for '${JSON.stringify(job.data)}'`);
+		logger.warn(
+			`OG job validation failed: ${validation.error.message} for '${JSON.stringify(
+				job.data,
+			)}'`,
+		);
 		return;
 	}
 
@@ -92,14 +108,21 @@ export async function handleOg(job) {
 		const url = urls[i];
 		const originalUrl = unecapedUrls[i];
 		if (!!joi.validate(url, joiUrl).error) {
-			logger.warn(`OG job validation failed: invalid URL '${url}' for jobtype ${jobType}`);
+			logger.warn(
+				`OG job validation failed: invalid URL '${url}' for jobtype ${jobType}`,
+			);
 			continue;
 		}
 
 		// if the instance hasn't been created yet, or it already has an OG image, ignore
-		const instances = await mongoSchema.find({ [field]: originalUrl }).lean().limit(10);
+		const instances = await mongoSchema
+			.find({ [field]: originalUrl })
+			.lean()
+			.limit(10);
 		if (!instances.length) {
-			logger.warn(`instance not found for type ${jobType} with lookup ${field}: '${originalUrl}' (${url})`);
+			logger.warn(
+				`instance not found for type ${jobType} with lookup ${field}: '${originalUrl}' (${url})`,
+			);
 			continue;
 		}
 
@@ -108,15 +131,23 @@ export async function handleOg(job) {
 		const needUpdate = instances.filter(i => !i.images.og || !i.canonicalUrl);
 		if (!needUpdate.length && !update) {
 			for (const instance of instances.filter(i => !!i.images.og)) {
-				logger.debug(`instance already has an image '${instance.images.og}': ${jobType} with lookup ${field}: '${url}'`);
+				logger.debug(
+					`instance already has an image '${
+						instance.images.og
+					}': ${jobType} with lookup ${field}: '${url}'`,
+				);
 			}
 			for (const instance of instances.filter(i => !!i.canonicalUrl)) {
-				logger.debug(`instance already has a canonical URL '${instance.canonicalUrl}': ${jobType} with lookup ${field}: '${url}'`);
+				logger.debug(
+					`instance already has a canonical URL '${
+						instance.canonicalUrl
+					}': ${jobType} with lookup ${field}: '${url}'`,
+				);
 			}
 			continue;
 		}
 
-		if (!(IsValidOGUrl(url))) {
+		if (!IsValidOGUrl(url)) {
 			continue;
 		}
 
@@ -134,7 +165,10 @@ export async function handleOg(job) {
 			}
 		} catch (err) {
 			//XXX: err object is huge, dont log it
-			const message = err.message.length > 256 ? err.message.substr(0, 253) + '...' : err.message;
+			const message =
+				err.message.length > 256
+					? err.message.substr(0, 253) + '...'
+					: err.message;
 			logger.debug(`OGS scraping broke for URL '${url}': ${message}`);
 			continue;
 		}
@@ -157,7 +191,9 @@ export async function handleOg(job) {
 			if (og.canonicalUrl) {
 				updates.canonicalUrl = og.canonicalUrl;
 			}
-			operations.push({ updateOne: { filter: { _id: instance._id }, update: { $set: updates } } });
+			operations.push({
+				updateOne: { filter: { _id: instance._id }, update: { $set: updates } },
+			});
 		}
 		await mongoSchema.bulkWrite(operations, { ordered: false });
 		logger.info(`Stored ${normalized} image for '${url}'`);

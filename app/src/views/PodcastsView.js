@@ -21,10 +21,12 @@ class PodcastsView extends React.Component {
 			selectedTab: localStorage['selectedPodcastTab'] || 'all',
 		};
 
+		this.container = React.createRef();
 		this.toggleNewPodcastModal = this.toggleNewPodcastModal.bind(this);
 	}
 
 	componentDidMount() {
+		this.container.current.focus();
 		if (this.props.match.params.podcastID) {
 			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(res => {
 				this.props.dispatch({
@@ -107,6 +109,13 @@ class PodcastsView extends React.Component {
 
 		return (
 			<div
+				onKeyDown={e => {
+					e = e || window.e;
+					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
+						this.props.history.goBack();
+				}}
+				tabIndex="-1"
+				ref={this.container}
 				className={`podcasts-view ${
 					new URLSearchParams(this.props.location.search).get('featured') ===
 					'true'

@@ -14,7 +14,7 @@ const fetch = (method, path, data, params) => {
 		baseURL: config.api.url,
 		data: data || {},
 		headers: {
-			'Authorization': `Bearer ${localStorage['jwt']}`,
+			Authorization: `Bearer ${localStorage['jwt']}`,
 			'Content-Type': 'application/json',
 		},
 		method: method.toUpperCase(),

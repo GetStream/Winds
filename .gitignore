@@ -71,6 +71,7 @@ typings/
 
 # Sass support
 src/**/*.css
+app/src/styles/global.css
 
 # API & Worker Production Builds
 api/dist

@@ -13,7 +13,9 @@ function isError(e) {
 
 const warnAboutWinston = format(info => {
 	if (isError(info)) {
-		console.log('You should use logger.error(err). Please use logger.error({err}) instead.');
+		console.log(
+			'You should use logger.error(err). Please use logger.error({err}) instead.',
+		);
 		return false;
 	}
 	return info;
@@ -39,7 +41,7 @@ const logger = winston.createLogger({
 		warnAboutWinston(),
 		sillyWinstonConsoleFormatter,
 	),
-	transports: [ new winston.transports.Console() ],
+	transports: [new winston.transports.Console()],
 });
 
 if (config.sentry.dsn) {

@@ -24,8 +24,8 @@ export async function upsertCollections(type, content) {
 }
 
 const feedModels = {
-    rss: { feed: RSS, content: Article },
-    podcast: { feed: Podcast, content: Episode }
+	rss: { feed: RSS, content: Article },
+	podcast: { feed: Podcast, content: Episode },
 };
 
 function estimateSize(content) {
@@ -43,7 +43,11 @@ export async function sendFeedToCollections(type, feed, content) {
 
 	if (!feed.language) {
 		feed.language = await DetectLanguage(feed.feedUrl);
-		await model.feed.findByIdAndUpdate(feed.id, { language: feed.language }, { new: true });
+		await model.feed.findByIdAndUpdate(
+			feed.id,
+			{ language: feed.language },
+			{ new: true },
+		);
 	}
 
 	let mostRecentPublicationDate;
@@ -51,19 +55,21 @@ export async function sendFeedToCollections(type, feed, content) {
 		mostRecentPublicationDate = content[0].publicationDate;
 	}
 
-	await upsertCollections(type, [{
-		id: feed.id,
-		title: feed.title,
-		language: feed.language,
-		description: feed.description,
-		articleCount: content.length,
-		mostRecentPublicationDate
-	}]);
+	await upsertCollections(type, [
+		{
+			id: feed.id,
+			title: feed.title,
+			language: feed.language,
+			description: feed.description,
+			articleCount: content.length,
+			mostRecentPublicationDate,
+		},
+	]);
 
 	const contentModelName = model.content.collection.collectionName;
 	const chunkSize = 1000;
 	const sizeLimit = 100 * 1024; // less then 128Kb to leave some space for external data
-	for (let offset = 0; offset < content.length;) {
+	for (let offset = 0; offset < content.length; ) {
 		const data = [];
 		const limit = Math.min(content.length, offset + chunkSize);
 		let currentSize = 0;
