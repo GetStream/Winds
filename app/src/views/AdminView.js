@@ -18,7 +18,7 @@ class AdminView extends React.Component {
 	}
 
 	getRssFeeds() {
-		fetch('get', '/rss').then(res => {
+		fetch('get', '/rss').then((res) => {
 			this.setState({
 				rssFeeds: res.data.sort((a, b) => {
 					if (a.title.toLowerCase() > b.title.toLowerCase()) {
@@ -32,7 +32,7 @@ class AdminView extends React.Component {
 	}
 
 	getPodcasts() {
-		fetch('get', '/podcasts').then(res => {
+		fetch('get', '/podcasts').then((res) => {
 			this.setState({
 				podcasts: res.data.sort((a, b) => {
 					if (a.title.toLowerCase() > b.title.toLowerCase()) {
@@ -67,7 +67,7 @@ class AdminView extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.state.podcasts.map(podcast => {
+						{this.state.podcasts.map((podcast) => {
 							return (
 								<PodcastRow
 									{...podcast}
@@ -98,7 +98,7 @@ class AdminView extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.state.rssFeeds.map(rssFeed => {
+						{this.state.rssFeeds.map((rssFeed) => {
 							return (
 								<RssRow
 									key={rssFeed._id}
@@ -147,7 +147,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								featuredImageText: e.target.value,
@@ -174,7 +174,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<select
-						onChange={e => {
+						onChange={(e) => {
 							let interest = e.target.value;
 							if (e.target.value === 'none') {
 								interest = '';
@@ -188,7 +188,7 @@ class PodcastRow extends React.Component {
 						value={this.props.interest}
 					>
 						<option value="none">None</option>
-						{onboardingTopics.map(interest => {
+						{onboardingTopics.map((interest) => {
 							return (
 								<option key={interest.name} value={interest.name}>
 									{interest.name}
@@ -199,7 +199,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								descriptionText: e.target.value,
@@ -223,7 +223,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								summaryText: e.target.value,
@@ -298,7 +298,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								featuredImageText: e.target.value,
@@ -325,7 +325,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<select
-						onChange={e => {
+						onChange={(e) => {
 							let interest = e.target.value;
 							if (e.target.value === 'none') {
 								interest = '';
@@ -339,7 +339,7 @@ class RssRow extends React.Component {
 						value={this.props.interest}
 					>
 						<option value="none">None</option>
-						{onboardingTopics.map(interest => {
+						{onboardingTopics.map((interest) => {
 							return (
 								<option key={interest.name} value={interest.name}>
 									{interest.name}
@@ -350,7 +350,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								descriptionText: e.target.value,
@@ -374,7 +374,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								summaryText: e.target.value,

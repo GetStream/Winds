@@ -18,7 +18,7 @@ class Create extends Component {
 		if (this.state.stage === 'onboarding') {
 			return (
 				<OnboardingGrid
-					done={interests => {
+					done={(interests) => {
 						this.setState({
 							interests,
 							stage: 'account-details',
@@ -59,7 +59,7 @@ class OnboardingGrid extends React.Component {
 
 	toggleInterest(interestName) {
 		let foundInterestIndex = this.state.selectedInterests.findIndex(
-			selectedInterest => {
+			(selectedInterest) => {
 				return selectedInterest === interestName;
 			},
 		);
@@ -88,14 +88,14 @@ class OnboardingGrid extends React.Component {
 				<div className="interests-grid">
 					{interests.map((interest, i) => {
 						let isSelected =
-							this.state.selectedInterests.findIndex(selectedInterest => {
+							this.state.selectedInterests.findIndex((selectedInterest) => {
 								return selectedInterest === interest.name;
 							}) !== -1;
 						return (
 							<div
 								className={`hero-card ${isSelected ? 'selected' : ''}`}
 								key={interest.name}
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
 									this.toggleInterest(interest.name);
 								}}
@@ -116,7 +116,7 @@ class OnboardingGrid extends React.Component {
 				<button
 					className={'btn primary'}
 					disabled={this.state.selectedInterests.length < 3}
-					onClick={e => {
+					onClick={(e) => {
 						e.preventDefault();
 						this.props.done(this.state.selectedInterests);
 					}}
@@ -127,7 +127,7 @@ class OnboardingGrid extends React.Component {
 				</button>
 				<button
 					className="btn link"
-					onClick={e => {
+					onClick={(e) => {
 						e.preventDefault();
 						this.props.done();
 					}}
@@ -281,14 +281,14 @@ class AccountDetailsForm extends React.Component {
 				name,
 				interests: this.props.interests,
 			})
-			.then(res => {
+			.then((res) => {
 				this.props.done(res.data);
 
 				this.setState({
 					submitting: false,
 				});
 			})
-			.catch(err => {
+			.catch((err) => {
 				let errorMessage;
 
 				if (
@@ -321,7 +321,7 @@ class AccountDetailsForm extends React.Component {
 
 				<form
 					className="auth-form"
-					onSubmit={e => {
+					onSubmit={(e) => {
 						e.preventDefault();
 						this.submit(
 							this.state.username,

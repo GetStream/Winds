@@ -114,20 +114,20 @@ class RSSArticleList extends React.Component {
 
 	getRSSFeed(rssFeedID) {
 		return fetch('GET', `/rss/${rssFeedID}`)
-			.then(res => {
+			.then((res) => {
 				if (res.data.duplicateOf) {
 					return fetch('GET', `/rss/${res.data.duplicateOf}`);
 				}
 				return res;
 			})
-			.then(res => {
+			.then((res) => {
 				this.props.dispatch({ rssFeed: res.data, type: 'UPDATE_RSS_FEED' });
 				this.getRSSArticles(res.data._id);
 				this.getFollowState(res.data._id);
 				getPinnedArticles(this.props.dispatch);
 				getFeed(this.props.dispatch, 'article', 0, 20);
 			})
-			.catch(err => {
+			.catch((err) => {
 				if (window.console) {
 					console.log(err); // eslint-disable-line no-console
 				}
@@ -143,7 +143,7 @@ class RSSArticleList extends React.Component {
 				rss: rssFeedID,
 				user: localStorage['authedUser'],
 			},
-		).then(res => {
+		).then((res) => {
 			for (let followRelationship of res.data) {
 				this.props.dispatch({
 					rssFeedID: followRelationship.rss._id,
@@ -166,7 +166,7 @@ class RSSArticleList extends React.Component {
 				sort_by: 'publicationDate,desc',
 			},
 		)
-			.then(res => {
+			.then((res) => {
 				if (res.data.length === 0) {
 					this.setState({
 						reachedEndOfFeed: true,
@@ -178,7 +178,7 @@ class RSSArticleList extends React.Component {
 					type: 'BATCH_UPDATE_ARTICLES',
 				});
 			})
-			.catch(err => {
+			.catch((err) => {
 				if (window.console) {
 					console.log(err); // eslint-disable-line no-console
 				}
@@ -195,7 +195,7 @@ class RSSArticleList extends React.Component {
 		fetch('post', '/follows', null, {
 			rss: this.props.match.params.rssFeedID,
 			type: 'rss',
-		}).catch(err => {
+		}).catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -218,7 +218,7 @@ class RSSArticleList extends React.Component {
 		fetch('delete', '/follows', null, {
 			rss: this.props.match.params.rssFeedID,
 			type: 'rss',
-		}).catch(err => {
+		}).catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -232,11 +232,11 @@ class RSSArticleList extends React.Component {
 	}
 
 	toggleMenuPopover = () => {
-		this.setState(prevState => ({ menuPopover: !prevState.menuPopover }));
+		this.setState((prevState) => ({ menuPopover: !prevState.menuPopover }));
 	};
 
 	toggleAliasModal = () => {
-		this.setState(prevState => ({ aliasModal: !prevState.aliasModal }));
+		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
 	render() {
@@ -296,7 +296,7 @@ class RSSArticleList extends React.Component {
 		} else {
 			rightContents = (
 				<React.Fragment>
-					{sortedArticles.map(article => {
+					{sortedArticles.map((article) => {
 						return (
 							<ArticleListItem
 								key={article._id}

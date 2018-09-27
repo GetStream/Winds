@@ -70,7 +70,7 @@ class AllEpisodesList extends React.Component {
 						</div>
 					) : null}
 
-					{this.props.episodes.map(episode => {
+					{this.props.episodes.map((episode) => {
 						return (
 							<EpisodeListItem
 								key={episode._id}

@@ -71,7 +71,7 @@ class Player extends Component {
 				});
 
 				fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-					res => {
+					(res) => {
 						if (res.data.length !== 0) {
 							this.setInitialPlaybackTime(res.data[0].duration).then(() => {
 								this.audioPlayerElement.audioEl.play();
@@ -99,7 +99,7 @@ class Player extends Component {
 			});
 
 			fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-				res => {
+				(res) => {
 					if (res.data.length !== 0) {
 						this.setInitialPlaybackTime(res.data[0].duration).then(() => {
 							this.audioPlayerElement.audioEl.play();
@@ -173,7 +173,7 @@ class Player extends Component {
 	}
 
 	setInitialPlaybackTime(currentTime) {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			this.audioPlayerElement.audioEl.currentTime = currentTime;
 			this.setState(
 				{
@@ -260,7 +260,7 @@ class Player extends Component {
 					/>
 					<div
 						className="progress-bar-click-catcher"
-						onClick={e => {
+						onClick={(e) => {
 							this.seekTo(e.nativeEvent.offsetX / e.target.clientWidth);
 						}}
 					/>
@@ -312,7 +312,7 @@ class Player extends Component {
 
 						this.props.nextTrack();
 					}}
-					onListen={seconds => {
+					onListen={(seconds) => {
 						this.updateProgress(seconds);
 
 						if (
@@ -341,7 +341,7 @@ class Player extends Component {
 							});
 						}
 					}}
-					ref={element => {
+					ref={(element) => {
 						this.audioPlayerElement = element;
 					}}
 					src={this.props.episode.enclosure}
@@ -380,7 +380,7 @@ Player.propTypes = {
 	play: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	if (!('player' in state)) {
 		return { episode: null };
 	}
@@ -432,7 +432,7 @@ const mapStateToProps = state => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		nextTrack: () => {
 			dispatch({ type: 'NEXT_TRACK' });

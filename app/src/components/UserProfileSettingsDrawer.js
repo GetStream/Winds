@@ -85,7 +85,7 @@ class UserProfileSettingsDrawer extends React.Component {
 				localStorage.clear();
 				window.location.reload();
 			})
-			.catch(err => {
+			.catch((err) => {
 				if (window.console) {
 					console.log(err); // eslint-disable-line no-console
 				}
@@ -125,11 +125,11 @@ class UserProfileSettingsDrawer extends React.Component {
 			url,
 			username,
 		})
-			.then(res => {
+			.then((res) => {
 				this.props.updateUser(res.data);
 				this.props.closeDrawer();
 			})
-			.catch(err => {
+			.catch((err) => {
 				this.props.closeDrawer();
 			});
 	}
@@ -148,11 +148,11 @@ class UserProfileSettingsDrawer extends React.Component {
 			fetch('PUT', `/users/${this.props._id}`, {
 				password: this.state.password,
 			})
-				.then(res => {
+				.then((res) => {
 					this.props.updateUser(res.data);
 					this.props.closeDrawer();
 				})
-				.catch(err => {
+				.catch((err) => {
 					this.props.closeDrawer();
 				});
 		}
@@ -160,7 +160,7 @@ class UserProfileSettingsDrawer extends React.Component {
 
 	downloadOPML() {
 		fetch('GET', `/opml/download`)
-			.then(res => {
+			.then((res) => {
 				if (res.data) {
 					const link = document.createElement('a');
 					const blob = new Blob([res.data], { type: 'text/xml' });
@@ -169,7 +169,7 @@ class UserProfileSettingsDrawer extends React.Component {
 					link.click();
 				}
 			})
-			.catch(err => {
+			.catch((err) => {
 				this.setState({ exportError: true }, () => {
 					setTimeout(() => this.setState({ exportError: false }), 1500);
 				});
@@ -221,7 +221,7 @@ class UserProfileSettingsDrawer extends React.Component {
 				</a>
 				<div className="form-section">
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								email: e.target.value,
 							});
@@ -231,7 +231,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						value={this.state.email}
 					/>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								name: e.target.value,
 							});
@@ -241,7 +241,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						value={this.state.name}
 					/>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								username: e.target.value,
 							});
@@ -252,7 +252,7 @@ class UserProfileSettingsDrawer extends React.Component {
 					/>
 					<textarea
 						maxLength="280"
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								bio: e.target.value,
 							});
@@ -264,7 +264,7 @@ class UserProfileSettingsDrawer extends React.Component {
 				<div className="form-section">
 					<h2>Website & Social</h2>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								url: e.target.value,
 							});
@@ -275,7 +275,7 @@ class UserProfileSettingsDrawer extends React.Component {
 					/>
 					<input
 						maxLength="50"
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								twitter: e.target.value,
 							});
@@ -375,7 +375,7 @@ class UserProfileSettingsDrawer extends React.Component {
 				<div className="form-section">
 					<h2>Change Password</h2>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								password: e.target.value,
 							});
@@ -385,7 +385,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						value={this.state.password}
 					/>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								confirmPassword: e.target.value,
 							});
@@ -488,24 +488,24 @@ UserProfileSettingsDrawer.propTypes = {
 	gravatar: PropTypes.string,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return { ...state.user, ...state.userSettings };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		getUserInfo: () => {
 			fetch('GET', `/users/${localStorage['authedUser']}`)
-				.then(res => {
+				.then((res) => {
 					dispatch({ type: 'UPDATE_USER_SETTINGS', user: res.data });
 				})
-				.catch(err => {
+				.catch((err) => {
 					if (window.console) {
 						console.log(err); // eslint-disable-line no-console
 					}
 				});
 		},
-		updateUser: user => {
+		updateUser: (user) => {
 			dispatch({ type: 'UPDATE_USER', user });
 		},
 	};

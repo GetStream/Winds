@@ -49,7 +49,7 @@ const crawlUpDomForAnchorTag = (node, e) => {
 };
 
 if (isElectron()) {
-	document.body.addEventListener('click', e => {
+	document.body.addEventListener('click', (e) => {
 		crawlUpDomForAnchorTag(e.target, e);
 	});
 }

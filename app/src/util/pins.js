@@ -8,7 +8,7 @@ const unpinArticle = (pinID, articleID, dispatch) => {
 				type: 'UNPIN_ARTICLE',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -26,13 +26,13 @@ const pinArticle = (articleID, dispatch) => {
 	fetch('POST', '/pins', {
 		article: articleID,
 	})
-		.then(res => {
+		.then((res) => {
 			dispatch({
 				pin: res.data,
 				type: 'PIN_ARTICLE',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -50,13 +50,13 @@ const pinEpisode = (episodeID, dispatch) => {
 	fetch('POST', '/pins', {
 		episode: episodeID,
 	})
-		.then(res => {
+		.then((res) => {
 			dispatch({
 				pin: res.data,
 				type: 'PIN_EPISODE',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -71,18 +71,18 @@ const unpinEpisode = (pinID, episodeID, dispatch) => {
 				type: 'UNPIN_EPISODE',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
 		});
 };
 
-const getPinnedArticles = dispatch => {
+const getPinnedArticles = (dispatch) => {
 	fetch('GET', '/pins', null, {
 		type: 'article',
 		user: localStorage['authedUser'],
-	}).then(res => {
+	}).then((res) => {
 		let rssFeeds = [];
 		let articles = [];
 
@@ -108,8 +108,8 @@ const getPinnedArticles = dispatch => {
 	});
 };
 
-const getPinnedEpisodes = dispatch => {
-	fetch('GET', '/pins', null, { type: 'episode' }).then(res => {
+const getPinnedEpisodes = (dispatch) => {
+	fetch('GET', '/pins', null, { type: 'episode' }).then((res) => {
 		let podcasts = [];
 		let episodes = [];
 		for (let pin of res.data) {

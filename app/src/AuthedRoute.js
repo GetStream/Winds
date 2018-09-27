@@ -12,7 +12,7 @@ class AuthedRoute extends React.Component {
 		return (
 			<Route
 				{...rest}
-				render={props => {
+				render={(props) => {
 					if (!localStorage['authedUser']) {
 						if (this.props.redirect) {
 							return <Redirect to="/create-account" />;
@@ -46,7 +46,7 @@ AuthedRoute.propTypes = {
 	user: PropTypes.shape({}),
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	user: state.user,
 });
 

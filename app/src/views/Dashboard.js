@@ -79,7 +79,7 @@ Dashboard.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	loading: !state.user,
 });
 

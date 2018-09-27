@@ -38,7 +38,7 @@ class PodcastsView extends React.Component {
 	}
 
 	toggleNewPodcastModal() {
-		this.setState(prevState => ({
+		this.setState((prevState) => ({
 			newPodcastModalIsOpen: !prevState.newPodcastModalIsOpen,
 		}));
 	}
@@ -98,7 +98,7 @@ class PodcastsView extends React.Component {
 
 		return (
 			<div
-				onKeyDown={e => {
+				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
 						this.props.history.goBack();

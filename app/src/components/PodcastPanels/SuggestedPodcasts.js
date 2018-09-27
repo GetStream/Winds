@@ -57,7 +57,7 @@ class SuggestedPodcasts extends React.Component {
 	render() {
 		return (
 			<Panel headerText="Suggested Podcasts">
-				{this.props.podcasts.map(podcast => {
+				{this.props.podcasts.map((podcast) => {
 					return (
 						<Link key={podcast._id} to={`/podcasts/${podcast._id}`}>
 							<Img
@@ -71,7 +71,7 @@ class SuggestedPodcasts extends React.Component {
 										? 'active'
 										: ''
 								}`}
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
 									if (this.props.followedPodcasts[podcast._id]) {
 										this.unfollowPodcast(podcast._id);

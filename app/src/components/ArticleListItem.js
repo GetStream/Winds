@@ -35,7 +35,7 @@ class ArticleListItem extends React.Component {
 					<div className="item-info">
 						<span
 							className="bookmark"
-							onClick={e => {
+							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
 								if (this.props.pinned) {

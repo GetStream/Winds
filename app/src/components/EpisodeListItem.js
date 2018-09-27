@@ -89,7 +89,7 @@ class EpisodeListItem extends React.Component {
 					<h2>{`${this.props.title}`}</h2>
 					<div className="item-info">
 						<span
-							onClick={e => {
+							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
 								if (this.props.pinned) {
@@ -114,7 +114,7 @@ class EpisodeListItem extends React.Component {
 								<i className="fa fa-external-link-alt" />
 								<a
 									href={this.props.link}
-									onClick={e => e.stopPropagation()}
+									onClick={(e) => e.stopPropagation()}
 								>
 									View on site
 								</a>

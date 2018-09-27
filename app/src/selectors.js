@@ -31,7 +31,7 @@ const getPlaylistsForUser = (state, userID) => {
 	}
 
 	for (let playlist of playlists) {
-		let hydratedEpisodes = playlist.episodes.map(episodeID => {
+		let hydratedEpisodes = playlist.episodes.map((episodeID) => {
 			return { ...state.episodes[episodeID] };
 		});
 		playlist.episodes = hydratedEpisodes;

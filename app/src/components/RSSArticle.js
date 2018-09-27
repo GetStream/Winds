@@ -49,7 +49,7 @@ class RSSArticle extends React.Component {
 
 		this.getArticle(this.props.match.params.articleID);
 		this.getRSSContent(this.props.match.params.articleID);
-		this.contentRef.current.onscroll = e => {
+		this.contentRef.current.onscroll = (e) => {
 			let scrollPercentage =
 				this.contentRef.current.scrollTop /
 				(this.contentRef.current.scrollHeight -
@@ -157,7 +157,7 @@ class RSSArticle extends React.Component {
 		});
 
 		fetch('GET', `/articles/${articleId}`, {}, { type: 'parsed' })
-			.then(res => {
+			.then((res) => {
 				this.setState({
 					loadingContent: false,
 					...res.data,
@@ -213,7 +213,7 @@ class RSSArticle extends React.Component {
 					<div className="item-info">
 						<span
 							className="bookmark"
-							onClick={e => {
+							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
 								if (this.props.pinned) {
@@ -236,7 +236,7 @@ class RSSArticle extends React.Component {
 						<span>
 							<a
 								href="tweet"
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
 
@@ -252,7 +252,7 @@ class RSSArticle extends React.Component {
 								{isElectron() ? (
 									<a
 										href="tweet"
-										onClick={e => {
+										onClick={(e) => {
 											e.preventDefault();
 											e.stopPropagation();
 
@@ -280,7 +280,7 @@ class RSSArticle extends React.Component {
 								{isElectron() ? (
 									<a
 										href="tweet"
-										onClick={e => {
+										onClick={(e) => {
 											e.preventDefault();
 											e.stopPropagation();
 
@@ -321,7 +321,7 @@ class RSSArticle extends React.Component {
 				<div className="content" ref={this.contentRef}>
 					<div className="enclosures">
 						{this.props.enclosures.map(
-							enclosure =>
+							(enclosure) =>
 								enclosure.type.includes('audio') ||
 								enclosure.type.includes('video') ||
 								enclosure.type.includes('youtube') ? (

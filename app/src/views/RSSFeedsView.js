@@ -38,7 +38,9 @@ class RSSFeedsView extends React.Component {
 	}
 
 	toggleNewRSSModal() {
-		this.setState(prevState => ({ newRSSModalIsOpen: !prevState.newRSSModalIsOpen }));
+		this.setState((prevState) => ({
+			newRSSModalIsOpen: !prevState.newRSSModalIsOpen,
+		}));
 	}
 
 	render() {
@@ -94,7 +96,7 @@ class RSSFeedsView extends React.Component {
 
 		return (
 			<div
-				onKeyDown={e => {
+				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
 						this.props.history.goBack();

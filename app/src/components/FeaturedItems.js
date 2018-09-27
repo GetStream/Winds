@@ -17,7 +17,7 @@ class FeaturedItems extends React.Component {
 					<h2>Featured on Winds</h2>
 				</div>
 				<div className="featured-item-list">
-					{this.props.featuredItems.map(featuredItem => {
+					{this.props.featuredItems.map((featuredItem) => {
 						let linkURL = '#';
 						if (featuredItem.type === 'rss') {
 							linkURL = `/rss/${featuredItem._id}?featured=true`;
@@ -55,7 +55,7 @@ FeaturedItems.propTypes = {
 	featuredItems: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	featuredItems: state.featuredItems,
 });
 

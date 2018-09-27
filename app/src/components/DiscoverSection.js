@@ -20,7 +20,7 @@ class DiscoverSection extends React.Component {
 		return (
 			<div>
 				<div className="shows-grid">
-					{podcastGrid.map(podcast => {
+					{podcastGrid.map((podcast) => {
 						return (
 							<Link
 								className="shows-grid-item"
@@ -40,7 +40,7 @@ class DiscoverSection extends React.Component {
 					})}
 				</div>
 				<div className="tiny-list">
-					{allSuggestions.map(suggestion => {
+					{allSuggestions.map((suggestion) => {
 						return (
 							<Link
 								key={suggestion._id}

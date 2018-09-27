@@ -23,7 +23,7 @@ class PodcastList extends React.Component {
 				headerText="Podcasts"
 				headerLink="/podcasts"
 			>
-				{this.props.podcasts.map(podcast => {
+				{this.props.podcasts.map((podcast) => {
 					return (
 						<Link
 							className={
@@ -73,12 +73,12 @@ const mapStateToProps = (state, ownProps) => {
 		}
 	}
 
-	let podcasts = podcastsUserFollows.map(podcastID => {
+	let podcasts = podcastsUserFollows.map((podcastID) => {
 		return state.podcasts[podcastID];
 	});
 
 	if (state.aliases) {
-		podcasts = podcasts.map(podcast => {
+		podcasts = podcasts.map((podcast) => {
 			if (state.aliases[podcast._id])
 				podcast.title = state.aliases[podcast._id].alias;
 			return podcast;

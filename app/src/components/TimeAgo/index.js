@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
-const TimeAgo = props => {
+const TimeAgo = (props) => {
 	let { timestamp, trim, ...rest } = props;
 	return <span {...rest}>{moment.utc(timestamp).fromNow(trim)}</span>;
 };

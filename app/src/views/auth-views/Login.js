@@ -28,7 +28,7 @@ class Login extends Component {
 				email: this.state.email,
 				password: this.state.password,
 			})
-			.then(res => {
+			.then((res) => {
 				window.streamAnalyticsClient.setUser({
 					id: res.data._id,
 					alias: res.data.email,
@@ -62,7 +62,7 @@ class Login extends Component {
 							autoComplete="username"
 							autoFocus={true}
 							name="email"
-							onChange={e => {
+							onChange={(e) => {
 								e.preventDefault();
 								this.setState({
 									email: e.target.value,
@@ -78,7 +78,7 @@ class Login extends Component {
 						<input
 							autoComplete="current-password"
 							name="password"
-							onChange={e => {
+							onChange={(e) => {
 								e.preventDefault();
 								this.setState({
 									password: e.target.value,

@@ -58,7 +58,7 @@ async function refreshAccessToken() {
 }
 
 function sleep(time) {
-	return new Promise(resolve => (time ? setTimeout(resolve, time) : resolve()));
+	return new Promise((resolve) => (time ? setTimeout(resolve, time) : resolve()));
 }
 
 async function tryRedditAPI(path, retries = 3, backoffDelay = 20) {
@@ -134,7 +134,7 @@ export async function redditPost(article) {
 	const response = await tryRedditAPI(
 		`/info?url=${article.canonicalUrl || article.url || article.link}`,
 	);
-	const postScores = response.data.data.children.map(c => [c.data.id, c.data.score]);
+	const postScores = response.data.data.children.map((c) => [c.data.id, c.data.score]);
 	const [postID, score] = postScores.reduce((max, n) => (max[1] > n[1] ? max : n), [
 		undefined,
 		0,
@@ -146,7 +146,7 @@ export async function hackernewsPost(article) {
 	const response = await tryHackernewsSearch(
 		article.canonicalUrl || article.url || article.link,
 	);
-	const postScores = response.data.hits.map(c => [c.objectID, c.points]);
+	const postScores = response.data.hits.map((c) => [c.objectID, c.points]);
 	const [postID, score] = postScores.reduce((max, n) => (max[1] > n[1] ? max : n), [
 		undefined,
 		0,

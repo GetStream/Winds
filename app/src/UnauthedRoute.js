@@ -6,7 +6,7 @@ const UnauthedRoute = ({ component: Component, ...rest }) => {
 	return (
 		<Route
 			{...rest}
-			render={props => {
+			render={(props) => {
 				if (!window.localStorage.getItem('authedUser')) {
 					return <Component {...props} />;
 				} else if (rest.redirect) {

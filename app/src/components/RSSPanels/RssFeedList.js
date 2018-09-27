@@ -23,7 +23,7 @@ class RssFeedList extends React.Component {
 				headerText="Feeds"
 				headerLink="/rss"
 			>
-				{this.props.rssFeeds.map(rssFeed => {
+				{this.props.rssFeeds.map((rssFeed) => {
 					let rssId = rssFeed.duplicateOf || rssFeed._id;
 					let clazz =
 						this.props.match.params.rssFeedID === rssFeed._id
@@ -70,12 +70,12 @@ const mapStateToProps = (state, ownProps) => {
 		}
 	}
 
-	let rssFeeds = rssFeedsUserFollows.map(rssFeedID => {
+	let rssFeeds = rssFeedsUserFollows.map((rssFeedID) => {
 		return { ...state.rssFeeds[rssFeedID] };
 	});
 
 	if (state.aliases) {
-		rssFeeds = rssFeeds.map(rssFeed => {
+		rssFeeds = rssFeeds.map((rssFeed) => {
 			if (state.aliases[rssFeed._id])
 				rssFeed.title = state.aliases[rssFeed._id].alias;
 			return rssFeed;

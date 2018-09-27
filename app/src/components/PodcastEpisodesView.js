@@ -110,7 +110,7 @@ class PodcastEpisodesView extends React.Component {
 				sort_by: 'publicationDate,desc',
 			},
 		)
-			.then(res => {
+			.then((res) => {
 				if (res.data.length === 0) {
 					this.setState({
 						reachedEndOfFeed: true,
@@ -121,7 +121,7 @@ class PodcastEpisodesView extends React.Component {
 					type: 'BATCH_UPDATE_EPISODES',
 				});
 			})
-			.catch(err => {
+			.catch((err) => {
 				if (window.console) {
 					console.log(err); // eslint-disable-line no-console
 				}
@@ -137,11 +137,11 @@ class PodcastEpisodesView extends React.Component {
 	}
 
 	toggleMenuPopover = () => {
-		this.setState(prevState => ({ menuPopover: !prevState.menuPopover }));
+		this.setState((prevState) => ({ menuPopover: !prevState.menuPopover }));
 	};
 
 	toggleAliasModal = () => {
-		this.setState(prevState => ({ aliasModal: !prevState.aliasModal }));
+		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
 	render() {
@@ -462,7 +462,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 					podcast: podcastID,
 					type: 'podcast',
 				},
-			).catch(err => {
+			).catch((err) => {
 				if (window.console) {
 					console.log(err); // eslint-disable-line no-console
 				}
@@ -474,32 +474,32 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 				});
 			});
 		},
-		getPodcast: podcastID => {
+		getPodcast: (podcastID) => {
 			fetch('GET', `/podcasts/${podcastID}`)
-				.then(res => {
+				.then((res) => {
 					dispatch({
 						podcast: res.data,
 						type: 'UPDATE_PODCAST_SHOW',
 					});
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.log(err); // eslint-disable-line no-console
 				});
 		},
 		pauseEpisode: () => {
 			dispatch({ type: 'PAUSE_EPISODE' });
 		},
-		pinEpisode: episodeID => {
+		pinEpisode: (episodeID) => {
 			fetch('POST', '/pins', {
 				episode: episodeID,
 			})
-				.then(res => {
+				.then((res) => {
 					dispatch({
 						pin: res.data,
 						type: 'PIN_EPISODE',
 					});
 				})
-				.catch(err => {
+				.catch((err) => {
 					if (window.console) {
 						console.log(err); // eslint-disable-line no-console
 					}
@@ -528,7 +528,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 			fetch('DELETE', '/follows', null, {
 				podcast: podcastID,
 				type: 'podcast',
-			}).catch(err => {
+			}).catch((err) => {
 				if (window.console) {
 					console.log(err); // eslint-disable-line no-console
 				}
@@ -548,7 +548,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 						type: 'UNPIN_EPISODE',
 					});
 				})
-				.catch(err => {
+				.catch((err) => {
 					if (window.console) {
 						console.log(err); // eslint-disable-line no-console
 					}

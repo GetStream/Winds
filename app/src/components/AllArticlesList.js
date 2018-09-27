@@ -81,7 +81,7 @@ class AllArticles extends React.Component {
 							New articles available - click to refresh
 						</div>
 					) : null}
-					{this.props.articles.map(article => {
+					{this.props.articles.map((article) => {
 						return (
 							<ArticleListItem
 								key={article._id}

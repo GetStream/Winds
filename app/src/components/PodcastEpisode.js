@@ -223,7 +223,7 @@ class PodcastEpisode extends React.Component {
 											<span>
 												<a
 													href="tweet"
-													onClick={e => {
+													onClick={(e) => {
 														e.preventDefault();
 														e.stopPropagation();
 														this.tweet();

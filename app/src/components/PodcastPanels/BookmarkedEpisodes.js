@@ -21,7 +21,7 @@ class BookmarkedEpisodes extends React.Component {
 
 		return (
 			<Panel headerText="Bookmarks">
-				{sortedBookmarks.map(bookmark => {
+				{sortedBookmarks.map((bookmark) => {
 					return (
 						<Link
 							key={bookmark._id}

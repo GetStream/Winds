@@ -31,43 +31,43 @@ class Header extends Component {
 		};
 	}
 
-	toggleGithubPopover = e => {
+	toggleGithubPopover = (e) => {
 		e.preventDefault();
-		this.setState(prevState => ({
+		this.setState((prevState) => ({
 			githubPopoverIsOpen: !prevState.githubPopoverIsOpen,
 		}));
 	};
 
-	toggleNewContentPopover = e => {
+	toggleNewContentPopover = (e) => {
 		e.preventDefault();
-		this.setState(prevState => ({
+		this.setState((prevState) => ({
 			newContentPopoverIsOpen: !prevState.newContentPopoverIsOpen,
 		}));
 	};
 
 	toggleNewRSSModal = () => {
-		this.setState(prevState => ({
+		this.setState((prevState) => ({
 			newContentPopoverIsOpen: false,
 			newRSSModalIsOpen: !prevState.newRSSModalIsOpen,
 		}));
 	};
 
 	toggleNewPodcastModal = () => {
-		this.setState(prevState => ({
+		this.setState((prevState) => ({
 			newContentPopoverIsOpen: false,
 			newPodcastModalIsOpen: !prevState.newPodcastModalIsOpen,
 		}));
 	};
 
 	toggleOPMLModal = () => {
-		this.setState(prevState => ({
+		this.setState((prevState) => ({
 			newContentPopoverIsOpen: false,
 			addOPMLModalIsOpen: !prevState.addOPMLModalIsOpen,
 		}));
 	};
 
 	toggleProfilePopover = () => {
-		this.setState(prevState => ({
+		this.setState((prevState) => ({
 			profilePopoverIsOpen: !prevState.profilePopoverIsOpen,
 		}));
 	};
@@ -293,7 +293,7 @@ Header.propTypes = {
 	}),
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	user: state.user,
 });
 

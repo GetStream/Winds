@@ -31,7 +31,7 @@ class SuggestedFeeds extends React.Component {
 				rss: rssFeedID,
 				type: 'rss',
 			},
-		).catch(err => {
+		).catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -58,7 +58,7 @@ class SuggestedFeeds extends React.Component {
 				rss: rssFeedID,
 				type: 'rss',
 			},
-		).catch(err => {
+		).catch((err) => {
 			if (window.console) {
 				console.log(err); // eslint-disable-line no-console
 			}
@@ -74,7 +74,7 @@ class SuggestedFeeds extends React.Component {
 	render() {
 		return (
 			<Panel headerText="Suggested Feeds">
-				{this.props.rssFeeds.map(rssFeed => {
+				{this.props.rssFeeds.map((rssFeed) => {
 					return (
 						<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
 							<Img
@@ -88,7 +88,7 @@ class SuggestedFeeds extends React.Component {
 										? 'active'
 										: ''
 								}`}
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
 									if (this.props.followedRssFeeds[rssFeed._id]) {
 										this.unfollowRssFeed(rssFeed._id);
@@ -131,7 +131,7 @@ const mapStateToProps = (state, ownProps) => {
 		followedRssFeeds = { ...state.followedRssFeeds[localStorage['authedUser']] };
 	}
 	if (state.aliases) {
-		rssFeeds = rssFeeds.map(rssFeed => {
+		rssFeeds = rssFeeds.map((rssFeed) => {
 			if (state.aliases[rssFeed._id])
 				rssFeed.title = state.aliases[rssFeed._id].alias;
 			return rssFeed;

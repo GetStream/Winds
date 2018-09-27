@@ -18,10 +18,10 @@ const getFeedActivities = (feedID, jwt) => {
 			},
 			url: `/users/${userID}/feeds`,
 		})
-			.then(res => {
+			.then((res) => {
 				resolve(res);
 			})
-			.catch(err => {
+			.catch((err) => {
 				reject(err);
 			});
 	});

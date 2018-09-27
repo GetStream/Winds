@@ -8,8 +8,8 @@ const getFeed = (dispatch, type, page = 0, per_page = 10) => {
 		page,
 		per_page,
 		type,
-	}).then(res => {
-		let items = res.data.map(item => {
+	}).then((res) => {
+		let items = res.data.map((item) => {
 			return { ...item, type };
 		});
 
