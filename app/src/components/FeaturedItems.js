@@ -55,28 +55,8 @@ FeaturedItems.propTypes = {
 	featuredItems: PropTypes.array,
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let deserializedFeaturedItems = [];
-	if (state.featuredItems) {
-		for (let featuredItemID of state.featuredItems) {
-			let [featuredItemType, featuredItemValue] = featuredItemID.split(':');
-			if (featuredItemType === 'rss') {
-				deserializedFeaturedItems.push({
-					...state.rssFeeds[featuredItemValue],
-					type: 'rss',
-				});
-			} else if (featuredItemType === 'podcast') {
-				deserializedFeaturedItems.push({
-					...state.podcasts[featuredItemValue],
-					type: 'podcast',
-				});
-			}
-		}
-	}
-	return {
-		...ownProps,
-		featuredItems: deserializedFeaturedItems,
-	};
-};
+const mapStateToProps = state => ({
+	featuredItems: state.featuredItems,
+});
 
 export default connect(mapStateToProps)(FeaturedItems);

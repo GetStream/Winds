@@ -22,7 +22,7 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_USER') {
-		return { ...previousState, user: action.user };
+		return { ...previousState, user: { ...action.user } };
 	} else if (action.type === 'UPDATE_EPISODE') {
 		let episode = { ...action.episode };
 		episode.podcast = action.episode.podcast._id;
@@ -132,7 +132,7 @@ export default (previousState = {}, action) => {
 			}
 		} else if (existingState.player.contextType === 'podcast') {
 			// build a sorted array of podcast episodes
-			let episodes = Object.values(existingState.episodes).filter(episode => {
+			let episodes = Object.values(existingState.episodes).filter((episode) => {
 				// only return the episodes where the podcast ID matches the parent ID
 				return episode.podcast === player.contextID;
 			});
@@ -195,13 +195,13 @@ export default (previousState = {}, action) => {
 
 		return { ...previousState, articles };
 	} else if (action.type === 'UPDATE_SUGGESTED_PODCASTS') {
-		let podcastIDs = action.podcasts.map(podcast => {
+		let podcastIDs = action.podcasts.map((podcast) => {
 			return podcast._id;
 		});
 
 		return { ...previousState, suggestedPodcasts: podcastIDs };
 	} else if (action.type === 'UPDATE_SUGGESTED_RSS_FEEDS') {
-		let rssFeedIDs = action.rssFeeds.map(rssFeed => {
+		let rssFeedIDs = action.rssFeeds.map((rssFeed) => {
 			return rssFeed._id;
 		});
 
@@ -413,7 +413,7 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'UPDATE_FEATURED_ITEMS') {
-		return { ...previousState, featuredItems: [...action.featuredItemIDs] };
+		return { ...previousState, featuredItems: [...action.featuredItems] };
 	} else if (action.type === 'BATCH_UPDATE_ALIASES') {
 		return { ...previousState, aliases: { ...action.aliases } };
 	} else return previousState;

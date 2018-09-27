@@ -2,7 +2,7 @@ import fetch from '../util/fetch';
 
 export const getUser = (dispatch, userId) => {
 	fetch('GET', `/users/${userId}`)
-		.then(res => {
+		.then((res) => {
 			window.streamAnalyticsClient.setUser({
 				id: res.data._id,
 				alias: res.data.email,
@@ -13,7 +13,7 @@ export const getUser = (dispatch, userId) => {
 				user: res.data,
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (
 				err.response &&
 				(err.response.status === 401 || err.response.status === 404)
@@ -24,7 +24,7 @@ export const getUser = (dispatch, userId) => {
 		});
 };
 
-export const getAliases = dispatch => {
+export const getAliases = (dispatch) => {
 	fetch('GET', '/aliases')
 		.then(({ data }) => {
 			const aliases = data.reduce((result, { _id, alias, podcast, rss }) => {
@@ -38,14 +38,14 @@ export const getAliases = dispatch => {
 				type: 'BATCH_UPDATE_ALIASES',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		});
 };
 
 export const getRss = (dispatch, type = 'recommended') => {
 	fetch('GET', '/rss', {}, { type })
-		.then(res => {
+		.then((res) => {
 			dispatch({
 				rssFeeds: res.data,
 				type: 'BATCH_UPDATE_RSS_FEEDS',
@@ -55,18 +55,18 @@ export const getRss = (dispatch, type = 'recommended') => {
 				type: 'UPDATE_SUGGESTED_RSS_FEEDS',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		});
 };
 
 export const getRssById = (dispatch, id) => {
 	fetch('get', `/rss/${id}`)
-		.then(res => {
+		.then((res) => {
 			if (res.data.duplicateOf) return fetch('GET', `/rss/${res.data.duplicateOf}`);
 			return res;
 		})
-		.then(response => {
+		.then((response) => {
 			dispatch({
 				rssFeed: response.data,
 				type: 'UPDATE_RSS_FEED',
@@ -76,7 +76,7 @@ export const getRssById = (dispatch, id) => {
 
 export const getPodcasts = (dispatch, type = 'recommended') => {
 	fetch('GET', '/podcasts', {}, { type })
-		.then(res => {
+		.then((res) => {
 			dispatch({
 				podcasts: res.data,
 				type: 'BATCH_UPDATE_PODCASTS',
@@ -86,25 +86,25 @@ export const getPodcasts = (dispatch, type = 'recommended') => {
 				type: 'UPDATE_SUGGESTED_PODCASTS',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		});
 };
 
 export const getPodcastById = (dispatch, id) => {
 	fetch('get', `/podcasts/${id}`)
-		.then(res => {
+		.then((res) => {
 			dispatch({
 				podcast: res.data,
 				type: 'UPDATE_PODCAST_SHOW',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		});
 };
 
-export const getPodcastEpisodes = podcastID => {
+export const getPodcastEpisodes = (podcastID) => {
 	fetch(
 		'GET',
 		'/episodes',
@@ -114,20 +114,20 @@ export const getPodcastEpisodes = podcastID => {
 			sort_by: 'publicationDate,desc',
 		},
 	)
-		.then(res =>
+		.then((res) =>
 			this.props.dispatch({
 				episodes: res.data,
 				type: 'BATCH_UPDATE_EPISODES',
 			}),
 		)
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		});
 };
 
-export const getRssFollows = dispatch => {
+export const getRssFollows = (dispatch) => {
 	fetch('GET', '/follows', null, { type: 'rss' })
-		.then(res => {
+		.then((res) => {
 			let rssFeeds = [];
 			let rssFeedFollowRelationships = [];
 			for (let followRelationship of res.data) {
@@ -147,14 +147,14 @@ export const getRssFollows = dispatch => {
 				type: 'BATCH_FOLLOW_RSS_FEEDS',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		});
 };
 
-export const getPodcastsFollows = dispatch => {
+export const getPodcastsFollows = (dispatch) => {
 	fetch('GET', '/follows', null, { type: 'podcast' })
-		.then(res => {
+		.then((res) => {
 			let podcasts = [];
 			let podcastFollowRelationships = [];
 
@@ -176,40 +176,15 @@ export const getPodcastsFollows = dispatch => {
 				type: 'BATCH_FOLLOW_PODCASTS',
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		});
 };
 
-export const getFeatured = dispatch => {
-	fetch('GET', '/featured').then(res => {
-		let rssFeeds = [];
-		let podcasts = [];
-
-		for (let item of res.data) {
-			if (item.type === 'rss') {
-				rssFeeds.push(item);
-			} else if (item.type === 'podcast') {
-				podcasts.push(item);
-			}
-		}
-
+export const getFeatured = (dispatch) => {
+	fetch('GET', '/featured').then((res) => {
 		dispatch({
-			rssFeeds,
-			type: 'BATCH_UPDATE_RSS_FEEDS',
-		});
-
-		dispatch({
-			podcasts,
-			type: 'BATCH_UPDATE_PODCASTS',
-		});
-
-		const featuredItemIDs = res.data.map(item => {
-			return `${item.type}:${item._id}`;
-		});
-
-		dispatch({
-			featuredItemIDs,
+			featuredItems: res.data,
 			type: 'UPDATE_FEATURED_ITEMS',
 		});
 	});
