@@ -5,7 +5,7 @@ import Img from 'react-image';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
-import { getAliases } from '../util/aliases';
+import { getAliases } from '../api';
 import saveIcon from '../images/icons/save.svg';
 import exitIcon from '../images/buttons/exit.svg';
 

@@ -1,45 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { Link } from 'react-router-dom';
+import { getFeatured } from '../api';
 
 class FeaturedItems extends React.Component {
 	componentDidMount() {
-		if (this.props.featuredItems.length === 0) {
-			fetch('GET', '/featured').then(res => {
-				let rssFeeds = [];
-				let podcasts = [];
-
-				for (let item of res.data) {
-					if (item.type === 'rss') {
-						rssFeeds.push(item);
-					} else if (item.type === 'podcast') {
-						podcasts.push(item);
-					}
-				}
-
-				this.props.dispatch({
-					rssFeeds,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-
-				this.props.dispatch({
-					podcasts,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				let featuredItemIDs = res.data.map(item => {
-					return `${item.type}:${item._id}`;
-				});
-
-				this.props.dispatch({
-					featuredItemIDs,
-					type: 'UPDATE_FEATURED_ITEMS',
-				});
-			});
-		}
+		if (!this.props.featuredItems.length) getFeatured(this.props.dispatch);
 	}
 
 	render() {

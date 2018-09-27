@@ -6,7 +6,7 @@ import BookmarkedEpisodes from '../components/PodcastPanels/BookmarkedEpisodes';
 import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import PropTypes from 'prop-types';
 import React from 'react';
-import fetch from '../util/fetch';
+import { getPodcastById } from '../api';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import AllEpisodesList from '../components/AllEpisodesList';
@@ -27,31 +27,20 @@ class PodcastsView extends React.Component {
 
 	componentDidMount() {
 		this.container.current.focus();
-		if (this.props.match.params.podcastID) {
-			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(res => {
-				this.props.dispatch({
-					podcast: res.data,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-			});
-		}
+
+		if (this.props.match.params.podcastID)
+			getPodcastById(this.props.dispatch, this.props.match.params.podcastID);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.match.params.podcastID !== nextProps.match.params.podcastID) {
-			fetch('get', `/podcasts/${nextProps.match.params.podcastID}`).then(res => {
-				this.props.dispatch({
-					podcast: res.data,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-			});
-		}
+	componentDidUpdate(prevProps) {
+		if (this.props.match.params.podcastID !== prevProps.match.params.podcastID)
+			getPodcastById(this.props.dispatch, this.props.match.params.podcastID);
 	}
 
 	toggleNewPodcastModal() {
-		this.setState({
-			newPodcastModalIsOpen: !this.state.newPodcastModalIsOpen,
-		});
+		this.setState(prevState => ({
+			newPodcastModalIsOpen: !prevState.newPodcastModalIsOpen,
+		}));
 	}
 
 	render() {

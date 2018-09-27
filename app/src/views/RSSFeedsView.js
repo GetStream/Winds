@@ -3,7 +3,7 @@ import RSSArticle from '../components/RSSArticle';
 import RSSArticleList from '../components/RSSArticleList';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
+import { getRssById } from '../api';
 import PropTypes from 'prop-types';
 import Tabs from '../components/Tabs';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
@@ -27,34 +27,18 @@ class RSSFeedsView extends React.Component {
 
 	componentDidMount() {
 		this.container.current.focus();
-		if (!this.props.match.params.rssFeedID) {
-			return;
-		}
-		this.fetchRSS(this.props);
+
+		if (this.props.match.params.podcastID)
+			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
-	fetchRSS(props) {
-		return fetch('get', `/rss/${props.match.params.rssFeedID}`)
-			.then(res => {
-				if (res.data.duplicateOf) {
-					return fetch('GET', `/rss/${res.data.duplicateOf}`);
-				}
-				return res;
-			})
-			.then(response => {
-				this.props.dispatch({ rssFeed: response.data, type: 'UPDATE_RSS_FEED' });
-			});
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (this.props.match.params.rssFeedID === nextProps.match.params.rssFeedID) {
-			return;
-		}
-		this.fetchRSS(nextProps);
+	componentDidUpdate(prevProps) {
+		if (this.props.match.params.rssFeedID !== prevProps.match.params.rssFeedID)
+			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
 	toggleNewRSSModal() {
-		this.setState({ newRSSModalIsOpen: !this.state.newRSSModalIsOpen });
+		this.setState(prevState => ({ newRSSModalIsOpen: !prevState.newRSSModalIsOpen }));
 	}
 
 	render() {

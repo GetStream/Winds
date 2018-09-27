@@ -14,6 +14,7 @@ import TimeAgo from './TimeAgo';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import pauseIcon from '../images/icons/pause.svg';
 import playIcon from '../images/icons/play.svg';
+import { getPodcastById, getPodcastEpisodes } from '../api';
 
 class PodcastEpisode extends React.Component {
 	constructor(props) {
@@ -47,8 +48,8 @@ class PodcastEpisode extends React.Component {
 
 		if (!this.props.episodes) {
 			// In order to make the Player works in direct access to page
-			this.getPodcastEpisodes(podcastID);
-			this.getPodcastInfo(podcastID);
+			getPodcastEpisodes(podcastID);
+			getPodcastById(podcastID);
 		}
 
 		window.streamAnalyticsClient.trackEngagement({
@@ -79,40 +80,6 @@ class PodcastEpisode extends React.Component {
 			this.setState({ error: true, loadingContent: false });
 			if (window.console) console.log(err); // eslint-disable-line no-console
 		}
-	}
-
-	getPodcastInfo(podcastID) {
-		fetch('GET', `/podcasts/${podcastID}`)
-			.then(res => {
-				this.props.dispatch({
-					podcast: res.data,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-			})
-			.catch(err => {
-				if (window.console) console.log(err); // eslint-disable-line no-console
-			});
-	}
-
-	getPodcastEpisodes(podcastID) {
-		fetch(
-			'GET',
-			'/episodes',
-			{},
-			{
-				podcast: podcastID,
-				sort_by: 'publicationDate,desc',
-			},
-		)
-			.then(res =>
-				this.props.dispatch({
-					episodes: res.data,
-					type: 'BATCH_UPDATE_EPISODES',
-				}),
-			)
-			.catch(err => {
-				if (window.console) console.log(err); // eslint-disable-line no-console
-			});
 	}
 
 	playOrPause() {

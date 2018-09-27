@@ -378,7 +378,6 @@ Player.propTypes = {
 	nextTrack: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
-	toggleLike: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -443,9 +442,6 @@ const mapDispatchToProps = dispatch => {
 		},
 		play: () => {
 			dispatch({ type: 'RESUME_EPISODE' });
-		},
-		toggleLike: () => {
-			dispatch({ type: 'TOGGLE_LIKE_ON_CURRENT_TRACK' });
 		},
 	};
 };

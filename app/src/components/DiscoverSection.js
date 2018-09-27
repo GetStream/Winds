@@ -1,49 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
 import Img from 'react-image';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { Link } from 'react-router-dom';
+import { getRss, getPodcasts } from '../api/';
 
 class DiscoverSection extends React.Component {
 	componentDidMount() {
-		fetch('GET', '/podcasts', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'UPDATE_SUGGESTED_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-
-		fetch('GET', '/rss', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
+		getPodcasts(this.props.dispatch);
+		getRss(this.props.dispatch);
 	}
+
 	render() {
 		let podcastGrid = this.props.suggestedPodcasts.slice(0, 3);
 		let restOfPodcasts = this.props.suggestedPodcasts.slice(3);

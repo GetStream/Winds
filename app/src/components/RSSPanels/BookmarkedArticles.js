@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-// import fetch from '../../util/fetch';
 import Panel from '../Panel';
 import { Link } from 'react-router-dom';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';

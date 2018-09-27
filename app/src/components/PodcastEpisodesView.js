@@ -13,7 +13,7 @@ import { getPinnedEpisodes } from '../util/pins';
 import { getFeed } from '../util/feeds';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
-import { getAliases } from '../util/aliases';
+import { getAliases } from '../api';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {

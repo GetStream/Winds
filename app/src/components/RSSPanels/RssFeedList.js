@@ -4,44 +4,15 @@ import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import Img from 'react-image';
 import React from 'react';
 import Panel from '../Panel';
-import fetch from '../../util/fetch';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { getFollows } from '../../api';
 
 class RssFeedList extends React.Component {
 	componentDidMount() {
-		fetch('GET', '/follows', null, { type: 'rss' })
-			.then(res => {
-				this.props.dispatch({
-					type: 'UPDATE_USER',
-					user: res.data[0].user,
-				});
-
-				let rssFeeds = [];
-				let rssFeedFollowRelationships = [];
-				for (let followRelationship of res.data) {
-					rssFeeds.push(followRelationship.rss);
-					rssFeedFollowRelationships.push({
-						rssFeedID: followRelationship.rss._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				this.props.dispatch({
-					rssFeeds,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-				this.props.dispatch({
-					rssFeedFollowRelationships,
-					type: 'BATCH_FOLLOW_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
+		getFollows(this.props.dispatch, 'rss');
 	}
+
 	render() {
 		return (
 			<Panel

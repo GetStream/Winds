@@ -2,47 +2,15 @@ import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import Img from 'react-image';
 import React from 'react';
 import Panel from '../Panel';
-import fetch from '../../util/fetch';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { getFollows } from '../../api';
 
 class PodcastList extends React.Component {
 	componentDidMount() {
-		fetch('GET', '/follows', null, { type: 'podcast' })
-			.then(res => {
-				this.props.dispatch({
-					type: 'UPDATE_USER',
-					user: res.data[0].user,
-				});
-
-				let podcasts = [];
-				let podcastFollowRelationships = [];
-
-				for (let followRelationship of res.data) {
-					podcasts.push(followRelationship.podcast);
-					podcastFollowRelationships.push({
-						podcastID: followRelationship.podcast._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				this.props.dispatch({
-					podcasts,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcastFollowRelationships,
-					type: 'BATCH_FOLLOW_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
+		getFollows(this.props.dispatch, 'podcast');
 	}
 
 	render() {

@@ -1,15 +1,14 @@
-import './styles/global.css';
-
-import React, { Component } from 'react';
-import AppRouter from './AppRouter.js';
+import React from 'react';
+import isElectron from 'is-electron';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import fetch from './util/fetch';
+import { createHashHistory, createBrowserHistory } from 'history';
+
+import AppRouter from './AppRouter.js';
 import reducer from './reducers';
-import isElectron from 'is-electron';
+import './styles/global.css';
 
 let initialState = {};
-
 if ('authedUser' in localStorage) {
 	try {
 		initialState['authedUser'] = localStorage['authedUser'];
@@ -18,25 +17,13 @@ if ('authedUser' in localStorage) {
 	}
 }
 
-if (initialState['authedUser']) {
-	fetch('GET', `/users/${initialState['authedUser']}`).then(res => {
-		if (!initialState.users) {
-			initialState.users = {};
-		}
-		initialState.users[res.data._id] = res.data;
-	});
-}
-
-initialState['showIntroBanner'] = true;
-if (localStorage['dismissedIntroBanner'] === 'true') {
-	initialState['showIntroBanner'] = false;
-}
-
 let store;
-
+let history;
 if (isElectron()) {
+	history = createHashHistory();
 	store = createStore(reducer, initialState);
 } else {
+	history = createBrowserHistory();
 	store = createStore(
 		reducer,
 		initialState,
@@ -61,20 +48,16 @@ const crawlUpDomForAnchorTag = (node, e) => {
 	}
 };
 
-if (isElectron) {
+if (isElectron()) {
 	document.body.addEventListener('click', e => {
 		crawlUpDomForAnchorTag(e.target, e);
 	});
 }
 
-class App extends Component {
-	render() {
-		return (
-			<Provider store={store}>
-				<AppRouter />
-			</Provider>
-		);
-	}
-}
+const App = () => (
+	<Provider store={store}>
+		<AppRouter history={history} />
+	</Provider>
+);
 
 export default App;

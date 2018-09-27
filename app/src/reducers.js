@@ -1,133 +1,7 @@
 import moment from 'moment';
 
 export default (previousState = {}, action) => {
-	if (action.type === 'DISMISS_INTRO_BANNER') {
-		return { ...previousState, showIntroBanner: false };
-	}
-
-	if (action.type === 'UPDATE_COMMENT') {
-		let serializedComment = { ...action.comment };
-
-		serializedComment.user = serializedComment.user._id;
-		serializedComment.share = serializedComment.share._id;
-
-		return {
-			...previousState,
-			comments: {
-				...previousState.comments,
-				[action.comment._id]: serializedComment,
-			},
-		};
-	} else if (action.type === 'LIKE') {
-		let reduxKey;
-
-		if (action.objectType === 'share') {
-			reduxKey = 'shares';
-		} else if (action.objectType === 'playlist') {
-			reduxKey = 'playlists';
-		} else if (action.objectType === 'episode') {
-			reduxKey = 'episodes';
-		} else if (action.objectType === 'article') {
-			reduxKey = 'articles';
-		}
-
-		return {
-			...previousState,
-			[reduxKey]: {
-				...previousState[reduxKey],
-				[action.objectID]: {
-					...previousState[reduxKey][action.objectID],
-					liked: true,
-					likes:
-						previousState[reduxKey][action.objectID] &&
-						previousState[reduxKey][action.objectID].likes
-							? previousState[reduxKey][action.objectID].likes + 1
-							: 1,
-				},
-			},
-		};
-	} else if (action.type === 'UNLIKE') {
-		let reduxKey;
-
-		if (action.objectType === 'share') {
-			reduxKey = 'shares';
-		} else if (action.objectType === 'playlist') {
-			reduxKey = 'playlists';
-		} else if (action.objectType === 'episode') {
-			reduxKey = 'episodes';
-		} else if (action.objectType === 'article') {
-			reduxKey = 'articles';
-		}
-
-		return {
-			...previousState,
-			[reduxKey]: {
-				...previousState[reduxKey],
-				[action.objectID]: {
-					...previousState[reduxKey][action.objectID],
-					liked: false,
-					likes:
-						previousState[reduxKey][action.objectID] &&
-						previousState[reduxKey][action.objectID].likes
-							? previousState[reduxKey][action.objectID].likes - 1
-							: 0,
-				},
-			},
-		};
-	} else if (action.type === 'NEW_SHARE') {
-		let newTimelineFeed;
-		if (previousState.feeds[`timeline:${action.activity.user._id}`]) {
-			newTimelineFeed = previousState.feeds[
-				`timeline:${action.activity.user._id}`
-			].slice();
-		} else {
-			newTimelineFeed = [];
-		}
-
-		newTimelineFeed.splice(0, 0, `share:${action.activity._id}`); // push the new foreign_id onto the front of the new timeline feed
-
-		let newUserFeed;
-		if (previousState.feeds[`user:${action.activity.user._id}`]) {
-			newUserFeed = previousState.feeds[`user:${action.activity.user._id}`].slice();
-		} else {
-			newUserFeed = [];
-		}
-
-		newUserFeed.splice(0, 0, `share:${action.activity._id}`); // push the new foreign_id onto the front of the new timeline feed
-
-		return {
-			...previousState,
-			feeds: {
-				...previousState.feeds,
-				[`timeline:${action.activity.user._id}`]: newTimelineFeed,
-				[`user:${action.activity.user._id}`]: newUserFeed,
-			},
-		};
-	} else if (action.type === 'TOGGLE_LIKE_ON_CURRENT_TRACK') {
-		let userLikes;
-
-		if ('likes' in previousState.user) {
-			userLikes = previousState.user.likes;
-		} else {
-			userLikes = {};
-		}
-
-		if (previousState.currentlyPlaying.podcastEpisodeID in userLikes) {
-			userLikes[previousState.currentlyPlaying.podcastEpisodeID] = !userLikes[
-				previousState.currentlyPlaying.podcastEpisodeID
-			];
-		} else {
-			userLikes[previousState.currentlyPlaying.podcastEpisodeID] = true;
-		}
-
-		let user = Object.assign({}, previousState.user, {
-			likes: userLikes,
-		});
-
-		saveUserToLocalStorage(user);
-
-		return Object.assign({}, previousState, { user });
-	} else if (action.type === 'UPDATE_FEED') {
+	if (action.type === 'UPDATE_FEED') {
 		let feedItems = [];
 
 		if (previousState.feeds && previousState.feeds[action.feedID]) {
@@ -147,17 +21,6 @@ export default (previousState = {}, action) => {
 				[action.feedID]: feedItems,
 			},
 		};
-	} else if (action.type === 'UPDATE_SHARE') {
-		return {
-			...previousState,
-			shares: {
-				...previousState.shares,
-				[action.share._id]: {
-					...action.share,
-					user: action.share.user._id,
-				},
-			},
-		};
 	} else if (action.type === 'UPDATE_USER') {
 		let users = { ...previousState.users };
 		users[action.user._id] = action.user;
@@ -165,117 +28,6 @@ export default (previousState = {}, action) => {
 		return Object.assign({}, previousState, {
 			users,
 		});
-	} else if (action.type === 'UPDATE_FOLLOWING_USERS') {
-		let existingFollowRelationships = { ...previousState.follows };
-		let existingUsers = { ...previousState.users };
-
-		for (let relationship of action.relationships) {
-			let followingUserID = relationship.user._id;
-			let followedUserID = relationship.followee._id;
-			existingFollowRelationships[followingUserID] = {
-				[followedUserID]: true,
-				...existingFollowRelationships[followingUserID],
-			};
-			existingUsers[followedUserID] = {
-				...existingUsers[followedUserID],
-				...relationship.followee,
-			};
-			existingUsers[followingUserID] = {
-				...existingUsers[followingUserID],
-				...relationship.user,
-			};
-		}
-
-		return {
-			...previousState,
-			follows: existingFollowRelationships,
-			users: existingUsers,
-		};
-	} else if (action.type === 'UPDATE_FOLLOWING_USER') {
-		let allFollows;
-
-		if (previousState.follows) {
-			allFollows = previousState.follows;
-		} else {
-			allFollows = {};
-		}
-
-		let otherUserFollows;
-		if (allFollows[action.userID]) {
-			otherUserFollows = { ...allFollows[action.userID] };
-		} else {
-			otherUserFollows = {};
-		}
-
-		return {
-			...previousState,
-			follows: {
-				...allFollows,
-				[action.userID]: {
-					...otherUserFollows,
-					[action.followeeID]: true,
-				},
-			},
-		};
-	} else if (action.type === 'FOLLOW_USER') {
-		let existingFollowRelationships = { ...previousState.follows };
-		let followObject = { [action.toUserID]: true };
-		let followerObject = {
-			[action.fromUserID]: {
-				...existingFollowRelationships[action.fromUserID],
-				...followObject,
-			},
-		};
-
-		return {
-			...previousState,
-			follows: {
-				...existingFollowRelationships,
-				...followerObject,
-			},
-		};
-	} else if (action.type === 'UNFOLLOW_USER') {
-		let existingFollowRelationships = { ...previousState.follows };
-		let followObject = { [action.toUserID]: false };
-		let followerObject = {
-			[action.fromUserID]: {
-				...existingFollowRelationships[action.fromUserID],
-				...followObject,
-			},
-		};
-
-		return {
-			...previousState,
-			follows: {
-				...existingFollowRelationships,
-				...followerObject,
-			},
-		};
-	} else if (action.type === 'UPDATE_PLAYLIST') {
-		return {
-			...previousState,
-			playlists: {
-				...previousState.playlists,
-				[action.playlist._id]: {
-					...action.playlist,
-					episodes: action.playlist.episodes.map(episode => {
-						return episode._id;
-					}),
-					user: action.playlist.user._id,
-				},
-			},
-		};
-	} else if (action.type === 'UPDATE_PLAYLIST_ORDER') {
-		return {
-			...previousState,
-			playlists: {
-				...previousState.playlists,
-				[action.playlistID]: {
-					...previousState.playlists[action.playlistID],
-					episodes: action.newOrder,
-				},
-			},
-		};
 	} else if (action.type === 'UPDATE_EPISODE') {
 		let episode = { ...action.episode };
 		episode.podcast = action.episode.podcast._id;
@@ -447,58 +199,18 @@ export default (previousState = {}, action) => {
 		articles[action.rssArticle._id]['rss'] = action.rssArticle.rss._id;
 
 		return { ...previousState, articles };
-	} else if (action.type === 'SET_FEATURED_PLAYLIST') {
-		return { ...previousState, featuredPlaylist: action.playlistID };
-	} else if (action.type === 'UPDATE_SUGGESTED_USERS') {
-		let users = { ...previousState.users };
-		for (let updatedUser of action.users) {
-			users[updatedUser._id] = updatedUser;
-		}
-
-		let suggestions = { ...previousState.suggestions };
-		suggestions.users = action.users.map(suggestedUser => {
-			return suggestedUser._id;
-		});
-
-		return Object.assign({}, previousState, {
-			suggestions,
-			users,
-		});
 	} else if (action.type === 'UPDATE_SUGGESTED_PODCASTS') {
 		let podcastIDs = action.podcasts.map(podcast => {
 			return podcast._id;
 		});
 
 		return { ...previousState, suggestedPodcasts: podcastIDs };
-	} else if (action.type === 'UPDATE_SUGGESTED_PLAYLISTS') {
-		return { ...previousState, suggestedPlaylists: action.playlistIDs };
 	} else if (action.type === 'UPDATE_SUGGESTED_RSS_FEEDS') {
 		let rssFeedIDs = action.rssFeeds.map(rssFeed => {
 			return rssFeed._id;
 		});
 
 		return { ...previousState, suggestedRssFeeds: rssFeedIDs };
-	} else if (action.type === 'UPDATE_PODCAST_FOLLOWER') {
-		let userFollows = {};
-
-		if (!previousState.followedPodcasts) {
-			userFollows = {
-				[action.followRelationship.podcast._id]: true,
-			};
-		} else {
-			userFollows = {
-				...previousState.followedPodcasts[action.followRelationship.user._id],
-				[action.followRelationship.podcast._id]: true,
-			};
-		}
-
-		return {
-			...previousState,
-			followedPodcasts: {
-				...previousState.followedPodcasts,
-				[action.followRelationship.user._id]: userFollows,
-			},
-		};
 	} else if (action.type === 'FOLLOW_PODCAST') {
 		let userFollows = {};
 
@@ -662,11 +374,6 @@ export default (previousState = {}, action) => {
 			...previousState,
 			pinnedArticles: allPins,
 		};
-	} else if (action.type === 'DELETE_PLAYLIST') {
-		let playlists = { ...previousState.playlists };
-		delete playlists[action.playlistID];
-
-		return { ...previousState, playlists };
 	} else if (action.type === 'UPDATE_USER_SETTINGS') {
 		let userSettings = { ...previousState.userSettings };
 		userSettings.preferences = action.user.preferences;
@@ -714,11 +421,5 @@ export default (previousState = {}, action) => {
 		return { ...previousState, featuredItems: [...action.featuredItemIDs] };
 	} else if (action.type === 'BATCH_UPDATE_ALIASES') {
 		return { ...previousState, aliases: { ...action.aliases } };
-	} else {
-		return previousState;
-	}
-};
-
-let saveUserToLocalStorage = userObject => {
-	localStorage['user'] = JSON.stringify(userObject);
+	} else return previousState;
 };

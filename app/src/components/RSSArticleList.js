@@ -12,7 +12,7 @@ import { getFeed } from '../util/feeds';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
 import AliasModal from './AliasModal';
-import { getAliases } from '../util/aliases';
+import { getAliases } from '../api';
 import Loader from './Loader';
 import loaderIcon from '../images/loaders/default.svg';
 
