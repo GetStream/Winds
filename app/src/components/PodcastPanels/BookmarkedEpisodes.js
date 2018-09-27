@@ -11,17 +11,17 @@ import { getPinnedEpisodes } from '../../util/pins';
 
 class BookmarkedEpisodes extends React.Component {
 	componentDidMount() {
-		getPinnedEpisodes(this.props.dispatch);
+		if (!this.props.bookmarks.length) getPinnedEpisodes(this.props.dispatch);
 	}
 
 	render() {
-		let sortedBookmarks = [...this.props.bookmarks].sort((a, b) => {
-			return moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf();
-		});
+		const bookmarks = this.props.bookmarks.sort(
+			(a, b) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
+		);
 
 		return (
 			<Panel headerText="Bookmarks">
-				{sortedBookmarks.map((bookmark) => {
+				{bookmarks.map((bookmark) => {
 					return (
 						<Link
 							key={bookmark._id}
@@ -59,20 +59,8 @@ BookmarkedEpisodes.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let bookmarks = [];
-	for (let episodeID in state.pinnedEpisodes) {
-		if (state.pinnedEpisodes.hasOwnProperty(episodeID)) {
-			if (state.pinnedEpisodes[episodeID]) {
-				let pin = { ...state.pinnedEpisodes[episodeID] };
-				pin.episode = { ...state.episodes[episodeID] };
-				pin.episode.podcast = { ...state.podcasts[pin.episode.podcast] };
-				bookmarks.push(pin);
-			}
-		}
-	}
-
-	return { ...ownProps, bookmarks };
-};
+const mapStateToProps = (state) => ({
+	bookmarks: state.pinnedEpisodes ? Object.values(state.pinnedEpisodes) : [],
+});
 
 export default connect(mapStateToProps)(BookmarkedEpisodes);

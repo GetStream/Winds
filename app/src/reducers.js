@@ -290,85 +290,45 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'PIN_EPISODE') {
-		let pin = {
-			...action.pin,
-			episode: action.pin.episode._id,
-			user: action.pin.user._id,
-		};
-
 		return {
 			...previousState,
 			pinnedEpisodes: {
 				...previousState.pinnedEpisodes,
-				[pin.episode]: pin,
+				[action.pin.episode._id]: { ...action.pin },
 			},
 		};
 	} else if (action.type === 'BATCH_PIN_EPISODES') {
-		let newPinnedEpisodes = {};
+		const pinnedEpisodes = action.pins.reduce((result, pin) => {
+			result[pin.episode._id] = { ...pin };
+			return result;
+		}, {});
 
-		for (let pin of action.pins) {
-			newPinnedEpisodes[pin.episode._id] = {
-				...pin,
-				episode: pin.episode._id,
-				user: pin.user._id,
-			};
-		}
-
-		return {
-			...previousState,
-			pinnedEpisodes: {
-				...previousState.pinnedEpisodes,
-				...newPinnedEpisodes,
-			},
-		};
+		return { ...previousState, pinnedEpisodes };
 	} else if (action.type === 'UNPIN_EPISODE') {
 		let allPins = { ...previousState.pinnedEpisodes };
 		delete allPins[action.episodeID];
 
-		return {
-			...previousState,
-			pinnedEpisodes: allPins,
-		};
+		return { ...previousState, pinnedEpisodes: allPins };
 	} else if (action.type === 'PIN_ARTICLE') {
-		let pin = {
-			...action.pin,
-			article: action.pin.article._id,
-			user: action.pin.user._id,
-		};
-
 		return {
 			...previousState,
 			pinnedArticles: {
 				...previousState.pinnedArticles,
-				[pin.article]: pin,
+				[action.pin.article._id]: { ...action.pin },
 			},
 		};
 	} else if (action.type === 'BATCH_PIN_ARTICLES') {
-		let newPinnedArticles = {};
+		const pinnedArticles = action.pins.reduce((result, pin) => {
+			result[pin.article._id] = { ...pin };
+			return result;
+		}, {});
 
-		for (let pin of action.pins) {
-			newPinnedArticles[pin.article._id] = {
-				...pin,
-				article: pin.article._id,
-				user: pin.user._id,
-			};
-		}
-
-		return {
-			...previousState,
-			pinnedArticles: {
-				...previousState.pinnedArticles,
-				...newPinnedArticles,
-			},
-		};
+		return { ...previousState, pinnedArticles };
 	} else if (action.type === 'UNPIN_ARTICLE') {
 		let allPins = { ...previousState.pinnedArticles };
 		delete allPins[action.articleID];
 
-		return {
-			...previousState,
-			pinnedArticles: allPins,
-		};
+		return { ...previousState, pinnedArticles: allPins };
 	} else if (action.type === 'UPDATE_USER_SETTINGS') {
 		let userSettings = { ...previousState.userSettings };
 		userSettings.preferences = action.user.preferences;
