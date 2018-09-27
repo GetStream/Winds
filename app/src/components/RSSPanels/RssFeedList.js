@@ -6,11 +6,11 @@ import React from 'react';
 import Panel from '../Panel';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getFollows } from '../../api';
+import { getRssFollows } from '../../api';
 
 class RssFeedList extends React.Component {
 	componentDidMount() {
-		getFollows(this.props.dispatch, 'rss');
+		getRssFollows(this.props.dispatch);
 	}
 
 	render() {

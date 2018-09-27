@@ -6,57 +6,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../../util/fetch';
 import Panel from '../Panel';
+import { getPodcasts, getPodcastsFollows } from '../../api';
 
 class SuggestedPodcasts extends React.Component {
 	componentDidMount() {
 		if (this.props.podcasts.length) return;
 
-		fetch('GET', '/podcasts', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'UPDATE_SUGGESTED_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-
-		fetch('GET', '/follows', null, { type: 'podcast' })
-			.then(res => {
-				let podcasts = [];
-				let podcastFollowRelationships = [];
-
-				for (let followRelationship of res.data) {
-					podcasts.push(followRelationship.podcast);
-					podcastFollowRelationships.push({
-						podcastID: followRelationship.podcast._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				this.props.dispatch({
-					podcasts,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcastFollowRelationships,
-					type: 'BATCH_FOLLOW_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
+		getPodcasts(this.props.dispatch);
+		getPodcastsFollows(this.props.dispatch);
 	}
 
 	followPodcast(podcastID) {

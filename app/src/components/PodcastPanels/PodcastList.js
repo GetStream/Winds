@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { getFollows } from '../../api';
+import { getPodcastsFollows } from '../../api';
 
 class PodcastList extends React.Component {
 	componentDidMount() {
-		getFollows(this.props.dispatch, 'podcast');
+		getPodcastsFollows(this.props.dispatch);
 	}
 
 	render() {

@@ -6,64 +6,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../../util/fetch';
 import Panel from '../Panel';
+import { getRss, getRssFollows } from '../../api';
 
 class SuggestedFeeds extends React.Component {
 	componentDidMount() {
 		if (this.props.rssFeeds.length) return;
 
-		fetch('get', '/rss', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-
-		fetch('get', '/follows', null, {
-			type: 'rss',
-			user: localStorage['authedUser'],
-		})
-			.then(res => {
-				let rssFeeds = [];
-				let rssFeedFollowRelationships = [];
-
-				this.props.dispatch({
-					type: 'UPDATE_USER',
-					user: res.data[0].user,
-				});
-
-				for (let followRelationship of res.data) {
-					rssFeeds.push(followRelationship.rss);
-					rssFeedFollowRelationships.push({
-						rssFeedID: followRelationship.rss._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				this.props.dispatch({
-					rssFeeds,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-
-				this.props.dispatch({
-					rssFeedFollowRelationships,
-					type: 'BATCH_FOLLOW_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
+		getRss(this.props.dispatch);
+		getRssFollows(this.props.dispatch);
 	}
 
 	followRssFeed(rssFeedID) {

@@ -125,56 +125,56 @@ export const getPodcastEpisodes = podcastID => {
 		});
 };
 
-export const getFollows = (dispatch, type) => {
-	if (!type) throw new Error('"type" not provided when fetching feed');
-
-	fetch('GET', '/follows', null, { type })
+export const getRssFollows = dispatch => {
+	fetch('GET', '/follows', null, { type: 'rss' })
 		.then(res => {
-			dispatch({
-				type: 'UPDATE_USER',
-				user: res.data[0].user,
-			});
-			if (type === 'rss') {
-				let rssFeeds = [];
-				let rssFeedFollowRelationships = [];
-				for (let followRelationship of res.data) {
-					rssFeeds.push(followRelationship.rss);
-					rssFeedFollowRelationships.push({
-						rssFeedID: followRelationship.rss._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				dispatch({
-					rssFeeds,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-				dispatch({
-					rssFeedFollowRelationships,
-					type: 'BATCH_FOLLOW_RSS_FEEDS',
-				});
-			} else {
-				let podcasts = [];
-				let podcastFollowRelationships = [];
-
-				for (let followRelationship of res.data) {
-					podcasts.push(followRelationship.podcast);
-					podcastFollowRelationships.push({
-						podcastID: followRelationship.podcast._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				dispatch({
-					podcasts,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				dispatch({
-					podcastFollowRelationships,
-					type: 'BATCH_FOLLOW_PODCASTS',
+			let rssFeeds = [];
+			let rssFeedFollowRelationships = [];
+			for (let followRelationship of res.data) {
+				rssFeeds.push(followRelationship.rss);
+				rssFeedFollowRelationships.push({
+					rssFeedID: followRelationship.rss._id,
+					userID: followRelationship.user._id,
 				});
 			}
+
+			dispatch({
+				rssFeeds,
+				type: 'BATCH_UPDATE_RSS_FEEDS',
+			});
+			dispatch({
+				rssFeedFollowRelationships,
+				type: 'BATCH_FOLLOW_RSS_FEEDS',
+			});
+		})
+		.catch(err => {
+			if (window.console) console.log(err); // eslint-disable-line no-console
+		});
+};
+
+export const getPodcastsFollows = dispatch => {
+	fetch('GET', '/follows', null, { type: 'podcast' })
+		.then(res => {
+			let podcasts = [];
+			let podcastFollowRelationships = [];
+
+			for (let followRelationship of res.data) {
+				podcasts.push(followRelationship.podcast);
+				podcastFollowRelationships.push({
+					podcastID: followRelationship.podcast._id,
+					userID: followRelationship.user._id,
+				});
+			}
+
+			dispatch({
+				podcasts,
+				type: 'BATCH_UPDATE_PODCASTS',
+			});
+
+			dispatch({
+				podcastFollowRelationships,
+				type: 'BATCH_FOLLOW_PODCASTS',
+			});
 		})
 		.catch(err => {
 			if (window.console) console.log(err); // eslint-disable-line no-console
