@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import fetch from '../util/fetch';
-import { pinEpisode, unpinEpisode, getPinnedEpisodes } from '../util/pins';
+import { pinEpisode, unpinEpisode } from '../util/pins';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
@@ -44,7 +44,6 @@ class PodcastEpisode extends React.Component {
 		this.setState({ error: false });
 		this.getEpisode(episodeID);
 		this.getEpisodeContent(episodeID);
-		getPinnedEpisodes(this.props.dispatch);
 
 		if (!this.props.episodes) {
 			// In order to make the Player works in direct access to page

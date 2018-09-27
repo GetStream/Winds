@@ -14,6 +14,7 @@ import Header from './components/Header';
 import Player from './components/Player.js';
 import { Create, ForgotPassword, Login, ResetPassword } from './views/auth-views';
 import { getUser, getAliases } from './api';
+import { getPinnedArticles, getPinnedEpisodes } from './util/pins';
 
 class AppRouter extends Component {
 	componentDidMount() {
@@ -21,6 +22,8 @@ class AppRouter extends Component {
 		if (userId) {
 			getUser(this.props.dispatch, userId);
 			getAliases(this.props.dispatch);
+			getPinnedArticles(this.props.dispatch);
+			getPinnedEpisodes(this.props.dispatch);
 		}
 	}
 

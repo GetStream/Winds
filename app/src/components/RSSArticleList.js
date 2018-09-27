@@ -7,7 +7,6 @@ import Img from 'react-image';
 import Popover from 'react-popover';
 
 import fetch from '../util/fetch';
-import { getPinnedArticles } from '../util/pins';
 import { getFeed } from '../util/feeds';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
@@ -56,7 +55,6 @@ class RSSArticleList extends React.Component {
 		this.getRSSArticles(this.props.match.params.rssFeedID);
 
 		getAliases(this.props.dispatch);
-		getPinnedArticles(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
 
 		if (this.props.rssFeed) {
@@ -73,18 +71,12 @@ class RSSArticleList extends React.Component {
 				content: `rss:${nextProps.match.params.rssFeedID}`,
 			});
 
-			this.setState(
-				{
-					articleCursor: 1,
-				},
-				() => {
-					this.getRSSFeed(nextProps.match.params.rssFeedID);
-					this.getFollowState(nextProps.match.params.rssFeedID);
-					this.getRSSArticles(nextProps.match.params.rssFeedID);
-					getPinnedArticles(this.props.dispatch);
-					getFeed(this.props.dispatch, 'article', 0, 20);
-				},
-			);
+			this.setState({ articleCursor: 1 }, () => {
+				this.getRSSFeed(nextProps.match.params.rssFeedID);
+				this.getFollowState(nextProps.match.params.rssFeedID);
+				this.getRSSArticles(nextProps.match.params.rssFeedID);
+				getFeed(this.props.dispatch, 'article', 0, 20);
+			});
 
 			this.unsubscribeFromStreamFeed();
 			if (nextProps.rssFeed) {
@@ -124,7 +116,6 @@ class RSSArticleList extends React.Component {
 				this.props.dispatch({ rssFeed: res.data, type: 'UPDATE_RSS_FEED' });
 				this.getRSSArticles(res.data._id);
 				this.getFollowState(res.data._id);
-				getPinnedArticles(this.props.dispatch);
 				getFeed(this.props.dispatch, 'article', 0, 20);
 			})
 			.catch((err) => {

@@ -9,11 +9,11 @@ import { connect } from 'react-redux';
 import Popover from 'react-popover';
 import fetch from '../util/fetch';
 import moment from 'moment';
-import { getPinnedEpisodes } from '../util/pins';
 import { getFeed } from '../util/feeds';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
 import { getAliases } from '../api';
+import { pinEpisode, unpinEpisode } from '../util/pins';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
@@ -50,7 +50,6 @@ class PodcastEpisodesView extends React.Component {
 		this.getEpisodes(this.props.match.params.podcastID);
 
 		getAliases(this.props.dispatch);
-		getPinnedEpisodes(this.props.dispatch);
 		getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 		// subscribe to feed updates
 		if (this.props.podcast) {
@@ -74,7 +73,6 @@ class PodcastEpisodesView extends React.Component {
 				() => {
 					this.props.getPodcast(nextProps.match.params.podcastID);
 					this.getEpisodes(nextProps.match.params.podcastID);
-					getPinnedEpisodes(this.props.dispatch);
 					getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 				},
 			);
@@ -322,7 +320,6 @@ class PodcastEpisodesView extends React.Component {
 							onClick={() => {
 								this.props.getPodcast(this.props.match.params.podcastID);
 								this.getEpisodes(this.props.match.params.podcastID);
-								getPinnedEpisodes(this.props.dispatch);
 								getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 								this.setState({
 									newEpisodesAvailable: false,
@@ -489,22 +486,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		pauseEpisode: () => {
 			dispatch({ type: 'PAUSE_EPISODE' });
 		},
-		pinEpisode: (episodeID) => {
-			fetch('POST', '/pins', {
-				episode: episodeID,
-			})
-				.then((res) => {
-					dispatch({
-						pin: res.data,
-						type: 'PIN_EPISODE',
-					});
-				})
-				.catch((err) => {
-					if (window.console) {
-						console.log(err); // eslint-disable-line no-console
-					}
-				});
-		},
 		playEpisode: (episodeID, position) => {
 			dispatch({
 				contextID: podcastID,
@@ -540,20 +521,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 				});
 			});
 		},
-		unpinEpisode: (pinID, episodeID) => {
-			fetch('DELETE', `/pins/${pinID}`)
-				.then(() => {
-					dispatch({
-						episodeID,
-						type: 'UNPIN_EPISODE',
-					});
-				})
-				.catch((err) => {
-					if (window.console) {
-						console.log(err); // eslint-disable-line no-console
-					}
-				});
-		},
+		unpinEpisode: (pinID, episodeID) => unpinEpisode(pinID, episodeID, dispatch),
+		pinEpisode: (episodeID) => pinEpisode(episodeID, dispatch),
 	};
 };
 

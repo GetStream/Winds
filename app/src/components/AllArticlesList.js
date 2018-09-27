@@ -1,4 +1,3 @@
-import { getPinnedArticles } from '../util/pins';
 import { getArticle } from '../selectors';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -22,26 +21,20 @@ class AllArticles extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState(
-			{
-				cursor: Math.floor(this.props.articles.length / 10),
-			},
-			() => {
-				this.getArticleFeed();
-				getPinnedArticles(this.props.dispatch);
-				this.subscription = window.streamClient
-					.feed(
-						'user_article',
-						this.props.userID,
-						this.props.userArticleStreamToken,
-					)
-					.subscribe(() => {
-						this.setState({
-							newArticlesAvailable: true,
-						});
+		this.setState({ cursor: Math.floor(this.props.articles.length / 10) }, () => {
+			this.getArticleFeed();
+			this.subscription = window.streamClient
+				.feed(
+					'user_article',
+					this.props.userID,
+					this.props.userArticleStreamToken,
+				)
+				.subscribe(() => {
+					this.setState({
+						newArticlesAvailable: true,
 					});
-			},
-		);
+				});
+		});
 	}
 
 	componentWillReceiveProps() {

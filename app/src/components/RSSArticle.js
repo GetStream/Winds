@@ -7,7 +7,7 @@ import isElectron from 'is-electron';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
-import { pinArticle, unpinArticle, getPinnedArticles } from '../util/pins';
+import { pinArticle, unpinArticle } from '../util/pins';
 import { fetchSocialScore } from '../util/social';
 
 import Loader from './Loader';
@@ -40,12 +40,8 @@ class RSSArticle extends React.Component {
 	componentDidMount() {
 		window.streamAnalyticsClient.trackEngagement({
 			label: 'article_open',
-			content: {
-				foreign_id: `articles:${this.props.match.params.articleID}`,
-			},
+			content: { foreign_id: `articles:${this.props.match.params.articleID}` },
 		});
-
-		getPinnedArticles(this.props.dispatch);
 
 		this.getArticle(this.props.match.params.articleID);
 		this.getRSSContent(this.props.match.params.articleID);
@@ -80,12 +76,8 @@ class RSSArticle extends React.Component {
 
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'article_open',
-				content: {
-					foreign_id: `articles:${nextProps.match.params.articleID}`,
-				},
+				content: { foreign_id: `articles:${nextProps.match.params.articleID}` },
 			});
-
-			getPinnedArticles(this.props.dispatch);
 
 			this.getArticle(nextProps.match.params.articleID);
 			this.getRSSContent(nextProps.match.params.articleID);
