@@ -63,6 +63,25 @@ const schema = joi.object().keys({
 	url: joiUrl.required(),
 });
 
+const chunkSize = 100;
+
+async function updateFeed(podcastID, update, episodes) {
+	for (let i = 0, j = episodes.length; i < j; i += chunkSize) {
+		const chunk = episodes.slice(i, i + chunkSize);
+		const streamEpisodes = chunk.map(episode => {
+			return {
+				actor: podcastID,
+				foreign_id: `episodes:${episode._id}`,
+				object: episode._id,
+				time: episode.publicationDate,
+				verb: 'podcast_episode',
+			};
+		});
+
+		await timeIt('winds.handle_podcast.send_to_collections', () => update(streamEpisodes));
+	}
+}
+
 export async function handlePodcast(job) {
 	try {
 		// best effort at escaping urls found in the wild
@@ -159,21 +178,13 @@ export async function handlePodcast(job) {
 		return;
 	}
 
-	const chunkSize = 100;
-	const podcastFeed = getStreamClient().feed('podcast', podcastID);
-	for (let i = 0, j = updatedEpisodes.length; i < j; i += chunkSize) {
-		const chunk = updatedEpisodes.slice(i, i + chunkSize);
-		const streamEpisodes = chunk.map(episode => {
-			return {
-				actor: episode.podcast,
-				foreign_id: `episodes:${episode._id}`,
-				object: episode._id,
-				time: episode.publicationDate,
-				verb: 'podcast_episode',
-			};
-		});
-
-		await podcastFeed.addActivities(streamEpisodes);
+	const streamClient = getStreamClient();
+	const podcastFeed = streamClient.feed('podcast', podcastID);
+	if (operationMap.new.length) {
+		await updateFeed(podcastID, podcastFeed.addActivities.bind(podcastFeed), operationMap.new);
+	}
+	if (operationMap.changed.length) {
+		await updateFeed(podcastID, streamClient.updateActivities.bind(streamClient), operationMap.changed);
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
