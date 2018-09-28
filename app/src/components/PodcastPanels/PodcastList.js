@@ -6,13 +6,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { getPodcastsFollows } from '../../api';
 
 class PodcastList extends React.Component {
-	componentDidMount() {
-		getPodcastsFollows(this.props.dispatch);
-	}
-
 	render() {
 		return (
 			<Panel
@@ -60,22 +55,11 @@ PodcastList.propTypes = {
 	podcasts: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let podcastsUserFollows = [];
+const mapStateToProps = (state) => {
+	if (!state.podcasts) return { podcasts: [] };
 
-	if (state.followedPodcasts && state.followedPodcasts[localStorage['authedUser']]) {
-		for (let podcastID of Object.keys(
-			state.followedPodcasts[localStorage['authedUser']],
-		)) {
-			if (state.followedPodcasts[localStorage['authedUser']][podcastID]) {
-				podcastsUserFollows.push(podcastID);
-			}
-		}
-	}
-
-	let podcasts = podcastsUserFollows.map((podcastID) => {
-		return state.podcasts[podcastID];
-	});
+	let podcasts = Object.values(state.podcasts);
+	podcasts.sort((a, b) => a.title.localeCompare(b.title));
 
 	if (state.aliases) {
 		podcasts = podcasts.map((podcast) => {
@@ -84,14 +68,7 @@ const mapStateToProps = (state, ownProps) => {
 			return podcast;
 		});
 	}
-
-	podcasts.sort((a, b) => {
-		return a.title.localeCompare(b.title);
-	});
-	return {
-		...ownProps,
-		podcasts,
-	};
+	return { podcasts };
 };
 
 export default connect(mapStateToProps)(withRouter(PodcastList));

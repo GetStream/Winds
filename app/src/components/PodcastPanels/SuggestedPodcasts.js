@@ -6,14 +6,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../../util/fetch';
 import Panel from '../Panel';
-import { getPodcasts, getPodcastsFollows } from '../../api';
+import { getSuggestedPodcasts } from '../../api';
 
 class SuggestedPodcasts extends React.Component {
 	componentDidMount() {
-		if (this.props.podcasts.length) return;
-
-		getPodcasts(this.props.dispatch);
-		getPodcastsFollows(this.props.dispatch);
+		if (!this.props.podcasts.length) getSuggestedPodcasts(this.props.dispatch);
 	}
 
 	followPodcast(podcastID) {

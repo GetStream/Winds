@@ -43,13 +43,9 @@ export const getAliases = (dispatch) => {
 		});
 };
 
-export const getRss = (dispatch, type = 'recommended') => {
-	fetch('GET', '/rss', {}, { type })
+export const getSuggestedRss = (dispatch) => {
+	fetch('GET', '/rss', {}, { type: 'recommended' })
 		.then((res) => {
-			dispatch({
-				rssFeeds: res.data,
-				type: 'BATCH_UPDATE_RSS_FEEDS',
-			});
 			dispatch({
 				rssFeeds: res.data,
 				type: 'UPDATE_SUGGESTED_RSS_FEEDS',
@@ -74,13 +70,9 @@ export const getRssById = (dispatch, id) => {
 		});
 };
 
-export const getPodcasts = (dispatch, type = 'recommended') => {
-	fetch('GET', '/podcasts', {}, { type })
+export const getSuggestedPodcasts = (dispatch) => {
+	fetch('GET', '/podcasts', {}, { type: 'recommended' })
 		.then((res) => {
-			dispatch({
-				podcasts: res.data,
-				type: 'BATCH_UPDATE_PODCASTS',
-			});
 			dispatch({
 				podcasts: res.data,
 				type: 'UPDATE_SUGGESTED_PODCASTS',
@@ -128,22 +120,12 @@ export const getPodcastEpisodes = (podcastID) => {
 export const getRssFollows = (dispatch) => {
 	fetch('GET', '/follows', null, { type: 'rss' })
 		.then((res) => {
-			let rssFeeds = [];
-			let rssFeedFollowRelationships = [];
-			for (let followRelationship of res.data) {
-				rssFeeds.push(followRelationship.rss);
-				rssFeedFollowRelationships.push({
-					rssFeedID: followRelationship.rss._id,
-					userID: followRelationship.user._id,
-				});
-			}
-
 			dispatch({
-				rssFeeds,
+				rssFeeds: res.data,
 				type: 'BATCH_UPDATE_RSS_FEEDS',
 			});
 			dispatch({
-				rssFeedFollowRelationships,
+				follows: res.data,
 				type: 'BATCH_FOLLOW_RSS_FEEDS',
 			});
 		})
@@ -155,24 +137,12 @@ export const getRssFollows = (dispatch) => {
 export const getPodcastsFollows = (dispatch) => {
 	fetch('GET', '/follows', null, { type: 'podcast' })
 		.then((res) => {
-			let podcasts = [];
-			let podcastFollowRelationships = [];
-
-			for (let followRelationship of res.data) {
-				podcasts.push(followRelationship.podcast);
-				podcastFollowRelationships.push({
-					podcastID: followRelationship.podcast._id,
-					userID: followRelationship.user._id,
-				});
-			}
-
 			dispatch({
-				podcasts,
+				podcasts: res.data,
 				type: 'BATCH_UPDATE_PODCASTS',
 			});
-
 			dispatch({
-				podcastFollowRelationships,
+				follows: res.data,
 				type: 'BATCH_FOLLOW_PODCASTS',
 			});
 		})

@@ -25,51 +25,36 @@ export default (previousState = {}, action) => {
 		return { ...previousState, user: { ...action.user } };
 	} else if (action.type === 'UPDATE_EPISODE') {
 		let episode = { ...action.episode };
-		episode.podcast = action.episode.podcast._id;
+		episode.podcast = episode.podcast._id;
+		episode.favicon = episode.images.favicon;
+
 		let episodes = { ...previousState.episodes };
 		episodes[episode._id] = episode;
 
 		return { ...previousState, episodes };
 	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
-		let previousEpisodes = { ...previousState.episodes };
+		const episodes = action.episodes.reduce((result, item) => {
+			result[item._id] = { ...item, favicon: item.podcast.images.favicon };
+			return result;
+		}, {});
 
-		for (let episode of action.episodes) {
-			previousEpisodes[episode._id] = {
-				...episode,
-				podcast: episode.podcast._id,
-			};
-		}
-
-		return {
-			...previousState,
-			episodes: { ...previousEpisodes },
-		};
+		return { ...previousState, episodes };
 	} else if (action.type === 'BATCH_UPDATE_ARTICLES') {
-		let newArticles = {};
+		const articles = action.articles.reduce((result, item) => {
+			result[item._id] = { ...item, favicon: item.rss.images.favicon };
+			return result;
+		}, {});
 
-		for (let article of action.articles) {
-			newArticles[article._id] = {
-				...article,
-				rss: article.rss._id,
-			};
-		}
-		for (let article of action.articles) {
-			if (!article.duplicateOf) {
-				continue;
-			}
-			let previous =
+		// TODO: Refactor
+		for (let article in articles) {
+			if (!article.duplicateOf) continue;
+			const previous =
 				previousState.articles && previousState.articles[article.duplicateOf];
-			let next = newArticles[article.duplicateOf];
-			newArticles[article._id] = next || previous || article;
+			const next = articles[article.duplicateOf];
+			articles[article._id] = next || previous || article;
 		}
 
-		return {
-			...previousState,
-			articles: {
-				...previousState.articles,
-				...newArticles,
-			},
-		};
+		return { ...previousState, articles };
 	} else if (action.type === 'UPDATE_PODCAST_SHOW') {
 		return {
 			...previousState,
@@ -79,19 +64,12 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'BATCH_UPDATE_PODCASTS') {
-		let newPodcasts = {};
+		const podcasts = action.podcasts.reduce((result, item) => {
+			result[item.podcast._id] = item.podcast;
+			return result;
+		}, {});
 
-		for (let podcast of action.podcasts) {
-			newPodcasts[podcast._id] = podcast;
-		}
-
-		return {
-			...previousState,
-			podcasts: {
-				...previousState.podcasts,
-				...newPodcasts,
-			},
-		};
+		return { ...previousState, podcasts };
 	} else if (action.type === 'PLAY_EPISODE') {
 		let player = { ...action, playing: true };
 		delete player.type;
@@ -166,46 +144,32 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'BATCH_UPDATE_RSS_FEEDS') {
-		let newRssFeeds = {};
+		const rssFeeds = action.rssFeeds.reduce((result, item) => {
+			result[item.rss._id] = item.rss;
+			return result;
+		}, {});
 
-		for (let rssFeed of action.rssFeeds) {
-			newRssFeeds[rssFeed._id] = rssFeed;
-		}
-		for (let rssFeed of action.rssFeeds) {
-			if (!rssFeed.duplicateOf) {
-				continue;
-			}
-			let previous =
+		// TODO: Refactor
+		for (let rssFeed in rssFeeds) {
+			if (!rssFeed.duplicateOf) continue;
+			const previous =
 				previousState.rssFeeds && previousState.rssFeeds[rssFeed.duplicateOf];
-			let next = newRssFeeds[rssFeed.duplicateOf];
-			newRssFeeds[rssFeed._id] = next || previous || rssFeed;
+			const next = rssFeeds[rssFeed.duplicateOf];
+			rssFeeds[rssFeed._id] = next || previous || rssFeed;
 		}
 
-		return {
-			...previousState,
-			rssFeeds: {
-				...previousState.rssFeeds,
-				...newRssFeeds,
-			},
-		};
+		return { ...previousState, rssFeeds };
 	} else if (action.type === 'UPDATE_ARTICLE') {
 		let articles = { ...previousState.articles };
 		articles[action.rssArticle._id] = { ...action.rssArticle };
 		articles[action.rssArticle._id]['rss'] = action.rssArticle.rss._id;
+		articles[action.rssArticle._id]['favicon'] = action.rssArticle.rssimages.favicon;
 
 		return { ...previousState, articles };
 	} else if (action.type === 'UPDATE_SUGGESTED_PODCASTS') {
-		let podcastIDs = action.podcasts.map((podcast) => {
-			return podcast._id;
-		});
-
-		return { ...previousState, suggestedPodcasts: podcastIDs };
+		return { ...previousState, suggestedPodcasts: [...action.podcasts] };
 	} else if (action.type === 'UPDATE_SUGGESTED_RSS_FEEDS') {
-		let rssFeedIDs = action.rssFeeds.map((rssFeed) => {
-			return rssFeed._id;
-		});
-
-		return { ...previousState, suggestedRssFeeds: rssFeedIDs };
+		return { ...previousState, suggestedRssFeeds: [...action.rssFeeds] };
 	} else if (action.type === 'FOLLOW_PODCAST') {
 		let userFollows = {};
 
@@ -228,46 +192,19 @@ export default (previousState = {}, action) => {
 			},
 		};
 	} else if (action.type === 'BATCH_FOLLOW_PODCASTS') {
-		let previousPodcastFollows = { ...(previousState.followedPodcasts || {}) };
+		const followedPodcasts = action.follows.reduce((result, follow) => {
+			result[follow.podcast._id] = true;
+			return result;
+		}, {});
 
-		for (let followRelationship of action.podcastFollowRelationships) {
-			// followRelationship.podcastID
-			// followRelationship.userID
-			if (!(followRelationship.userID in previousPodcastFollows)) {
-				// create new object just for that user/podcast
-				previousPodcastFollows[followRelationship.userID] = {
-					[followRelationship.podcastID]: true,
-				};
-			} else {
-				// just add new key for that user/podcast
-				previousPodcastFollows[followRelationship.userID][
-					followRelationship.podcastID
-				] = true;
-			}
-		}
-
-		return {
-			...previousState,
-			followedPodcasts: {
-				...previousPodcastFollows,
-			},
-		};
+		return { ...previousState, followedPodcasts };
 	} else if (action.type === 'BATCH_FOLLOW_RSS_FEEDS') {
-		let previousRssFeedFollows = { ...(previousState.followedRssFeeds || {}) };
+		const followedRssFeeds = action.follows.reduce((result, follow) => {
+			result[follow.rss._id] = true;
+			return result;
+		}, {});
 
-		for (let followRelationship of action.rssFeedFollowRelationships) {
-			if (!(followRelationship.userID in previousRssFeedFollows)) {
-				previousRssFeedFollows[followRelationship.userID] = {
-					[followRelationship.rssFeedID]: true,
-				};
-			} else {
-				previousRssFeedFollows[followRelationship.userID][
-					followRelationship.rssFeedID
-				] = true;
-			}
-		}
-
-		return { ...previousState, followedRssFeeds: { ...previousRssFeedFollows } };
+		return { ...previousState, followedRssFeeds };
 	} else if (action.type === 'UNFOLLOW_PODCAST') {
 		let userFollows = {};
 

@@ -6,13 +6,8 @@ import React from 'react';
 import Panel from '../Panel';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getRssFollows } from '../../api';
 
 class RssFeedList extends React.Component {
-	componentDidMount() {
-		getRssFollows(this.props.dispatch);
-	}
-
 	render() {
 		return (
 			<Panel
@@ -57,22 +52,11 @@ RssFeedList.propTypes = {
 	rssFeeds: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let rssFeedsUserFollows = [];
+const mapStateToProps = (state) => {
+	if (!state.rssFeeds) return { rssFeeds: [] };
 
-	if (state.followedRssFeeds && state.followedRssFeeds[localStorage['authedUser']]) {
-		for (let rssFeedID of Object.keys(
-			state.followedRssFeeds[localStorage['authedUser']],
-		)) {
-			if (state.followedRssFeeds[localStorage['authedUser']][rssFeedID]) {
-				rssFeedsUserFollows.push(rssFeedID);
-			}
-		}
-	}
-
-	let rssFeeds = rssFeedsUserFollows.map((rssFeedID) => {
-		return { ...state.rssFeeds[rssFeedID] };
-	});
+	let rssFeeds = Object.values(state.rssFeeds);
+	rssFeeds.sort((a, b) => a.title.localeCompare(b.title));
 
 	if (state.aliases) {
 		rssFeeds = rssFeeds.map((rssFeed) => {
@@ -82,14 +66,7 @@ const mapStateToProps = (state, ownProps) => {
 		});
 	}
 
-	rssFeeds.sort((a, b) => {
-		return a.title.localeCompare(b.title);
-	});
-
-	return {
-		...ownProps,
-		rssFeeds,
-	};
+	return { rssFeeds };
 };
 
 export default connect(mapStateToProps)(withRouter(RssFeedList));

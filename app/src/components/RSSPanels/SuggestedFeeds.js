@@ -6,14 +6,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../../util/fetch';
 import Panel from '../Panel';
-import { getRss, getRssFollows } from '../../api';
+import { getSuggestedRss } from '../../api';
 
 class SuggestedFeeds extends React.Component {
 	componentDidMount() {
 		if (this.props.rssFeeds.length) return;
 
-		getRss(this.props.dispatch);
-		getRssFollows(this.props.dispatch);
+		getSuggestedRss(this.props.dispatch);
 	}
 
 	followRssFeed(rssFeedID) {
@@ -23,18 +22,8 @@ class SuggestedFeeds extends React.Component {
 			userID: localStorage['authedUser'],
 		});
 
-		fetch(
-			'post',
-			'/follows',
-			{},
-			{
-				rss: rssFeedID,
-				type: 'rss',
-			},
-		).catch((err) => {
-			if (window.console) {
-				console.log(err); // eslint-disable-line no-console
-			}
+		fetch('post', '/follows', {}, { rss: rssFeedID, type: 'rss' }).catch((err) => {
+			if (window.console) console.log(err); // eslint-disable-line no-console
 
 			this.props.dispatch({
 				rssFeedID: rssFeedID,
@@ -48,7 +37,6 @@ class SuggestedFeeds extends React.Component {
 		this.props.dispatch({
 			rssFeedID: rssFeedID,
 			type: 'UNFOLLOW_RSS_FEED',
-			userID: localStorage['authedUser'],
 		});
 		fetch(
 			'delete',

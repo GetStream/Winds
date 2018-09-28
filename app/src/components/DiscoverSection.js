@@ -4,18 +4,21 @@ import { connect } from 'react-redux';
 import Img from 'react-image';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { Link } from 'react-router-dom';
-import { getRss, getPodcasts } from '../api/';
+import { getSuggestedRss, getSuggestedPodcasts } from '../api/';
 
 class DiscoverSection extends React.Component {
 	componentDidMount() {
-		getPodcasts(this.props.dispatch);
-		getRss(this.props.dispatch);
+		getSuggestedPodcasts(this.props.dispatch);
+		getSuggestedRss(this.props.dispatch);
 	}
 
 	render() {
-		let podcastGrid = this.props.suggestedPodcasts.slice(0, 3);
-		let restOfPodcasts = this.props.suggestedPodcasts.slice(3);
-		let allSuggestions = [...restOfPodcasts, ...this.props.suggestedRssFeeds];
+		const podcastGrid = this.props.suggestedPodcasts.slice(0, 3);
+		const allSuggestions = [
+			...this.props.suggestedRssFeeds,
+			...this.props.suggestedPodcasts.slice(3),
+		];
+		allSuggestions.sort(() => Math.random() >= 0.5);
 
 		return (
 			<div>
@@ -83,23 +86,23 @@ DiscoverSection.propTypes = {
 	suggestedRssFeeds: PropTypes.array,
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let suggestedPodcasts = [];
-	let suggestedRssFeeds = [];
+const mapStateToProps = (state) => {
+	if (!state.suggestedPodcasts || !state.suggestedRssFeeds)
+		return {
+			suggestedPodcasts: [],
+			suggestedRssFeeds: [],
+		};
 
-	if ('suggestedPodcasts' in state) {
-		for (let podcastID of state.suggestedPodcasts) {
-			suggestedPodcasts.push({ ...state.podcasts[podcastID], type: 'podcast' });
-		}
-	}
-	if ('suggestedRssFeeds' in state) {
-		for (let rssFeedID of state.suggestedRssFeeds) {
-			suggestedRssFeeds.push({ ...state.rssFeeds[rssFeedID], type: 'rss' });
-		}
-	}
+	const suggestedPodcasts = state.suggestedPodcasts.map((item) => ({
+		...item,
+		type: 'podcast',
+	}));
+	const suggestedRssFeeds = state.suggestedRssFeeds.map((item) => ({
+		...item,
+		type: 'rss',
+	}));
 
 	return {
-		...ownProps,
 		suggestedPodcasts,
 		suggestedRssFeeds,
 	};

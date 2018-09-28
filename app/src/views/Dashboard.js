@@ -11,12 +11,12 @@ import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import DiscoverSection from '../components/DiscoverSection';
 
-import { getRss, getPodcasts } from '../api';
+import { getSuggestedRss, getSuggestedPodcasts } from '../api';
 
 class Dashboard extends React.Component {
 	refresh = () => {
-		getPodcasts(this.props.dispatch);
-		getRss(this.props.dispatch);
+		getSuggestedPodcasts(this.props.dispatch);
+		getSuggestedRss(this.props.dispatch);
 	};
 
 	render() {

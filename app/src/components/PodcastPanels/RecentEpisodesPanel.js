@@ -4,14 +4,13 @@ import React from 'react';
 import Panel from '../Panel';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getEpisode } from '../../selectors';
 import { getFeed } from '../../util/feeds';
 import TimeAgo from '../TimeAgo';
 import PropTypes from 'prop-types';
 
 class RecentEpisodesPanel extends React.Component {
 	componentDidMount() {
-		getFeed(this.props.dispatch, 'episode', 0, 20);
+		if (!this.props.episodes.length) getFeed(this.props.dispatch, 'episode', 0, 20);
 	}
 	render() {
 		return (
@@ -54,19 +53,8 @@ RecentEpisodesPanel.propTypes = {
 	episodes: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let episodes = [];
-	let userEpisodeFeed = [];
-
-	if (state.feeds && state.feeds[`user_episode:${localStorage['authedUser']}`]) {
-		userEpisodeFeed = state.feeds[`user_episode:${localStorage['authedUser']}`];
-	}
-
-	for (let episodeID of userEpisodeFeed) {
-		episodes.push(getEpisode(state, episodeID.replace('episode:', '')));
-	}
-
-	return { ...ownProps, episodes };
-};
+const mapStateToProps = (state) => ({
+	episodes: state.episodes ? Object.values(state.episodes) : [],
+});
 
 export default connect(mapStateToProps)(RecentEpisodesPanel);

@@ -11,7 +11,6 @@ import { getFeed } from '../util/feeds';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
 import AliasModal from './AliasModal';
-import { getAliases } from '../api';
 import Loader from './Loader';
 import loaderIcon from '../images/loaders/default.svg';
 
@@ -54,7 +53,6 @@ class RSSArticleList extends React.Component {
 		this.getFollowState(this.props.match.params.rssFeedID);
 		this.getRSSArticles(this.props.match.params.rssFeedID);
 
-		getAliases(this.props.dispatch);
 		getFeed(this.props.dispatch, 'article', 0, 20);
 
 		if (this.props.rssFeed) {

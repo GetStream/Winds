@@ -12,7 +12,6 @@ import moment from 'moment';
 import { getFeed } from '../util/feeds';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
-import { getAliases } from '../api';
 import { pinEpisode, unpinEpisode } from '../util/pins';
 
 class PodcastEpisodesView extends React.Component {
@@ -49,7 +48,6 @@ class PodcastEpisodesView extends React.Component {
 		this.props.getPodcast(this.props.match.params.podcastID);
 		this.getEpisodes(this.props.match.params.podcastID);
 
-		getAliases(this.props.dispatch);
 		getFeed(this.props.dispatch, 'episode', 0, 20); // this is to populate 'recent' state indicators
 		// subscribe to feed updates
 		if (this.props.podcast) {

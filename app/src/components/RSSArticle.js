@@ -31,48 +31,40 @@ class RSSArticle extends React.Component {
 		this.state = {
 			error: false,
 			loadingContent: true,
-			sentArticleReadCompleteAnalyticsEvent: false,
 		};
 
+		this.sentArticleReadCompleteAnalyticsEvent = false;
 		this.contentRef = React.createRef();
 	}
 
 	componentDidMount() {
+		const articleID = this.props.match.params.articleID;
 		window.streamAnalyticsClient.trackEngagement({
 			label: 'article_open',
-			content: { foreign_id: `articles:${this.props.match.params.articleID}` },
+			content: { foreign_id: `articles:${articleID}` },
 		});
 
-		this.getArticle(this.props.match.params.articleID);
-		this.getRSSContent(this.props.match.params.articleID);
-		this.contentRef.current.onscroll = (e) => {
-			let scrollPercentage =
-				this.contentRef.current.scrollTop /
-				(this.contentRef.current.scrollHeight -
-					this.contentRef.current.clientHeight);
-			if (
-				!this.state.sentArticleReadCompleteAnalyticsEvent &&
-				scrollPercentage > 0.8
-			) {
+		this.getArticle(articleID);
+		this.getRSSContent(articleID);
+
+		const contentEl = this.contentRef.current;
+		contentEl.onscroll = () => {
+			const scrollPercentage =
+				contentEl.scrollTop / (contentEl.scrollHeight - contentEl.clientHeight);
+			if (!this.sentArticleReadCompleteAnalyticsEvent && scrollPercentage > 0.8) {
 				window.streamAnalyticsClient.trackEngagement({
 					label: 'article_read_complete',
-					content: {
-						foreign_id: `articles:${this.props.match.params.articleID}`,
-					},
+					content: { foreign_id: `articles:${articleID}` },
 				});
 
-				this.setState({
-					sentArticleReadCompleteAnalyticsEvent: true,
-				});
+				this.sentArticleReadCompleteAnalyticsEvent = true;
 			}
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
-			this.setState({
-				sentArticleReadCompleteAnalyticsEvent: false,
-			});
+			this.sentArticleReadCompleteAnalyticsEvent = false;
 
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'article_open',
@@ -137,23 +129,16 @@ class RSSArticle extends React.Component {
 				type: 'UPDATE_ARTICLE',
 			});
 		} catch (err) {
-			if (window.console) {
-				console.log(err); // eslint-disable-line no-console
-			}
+			if (window.console) console.log(err); // eslint-disable-line no-console
 		}
 	}
 
 	getRSSContent(articleId) {
-		this.setState({
-			loadingContent: true,
-		});
+		this.setState({ loadingContent: true });
 
 		fetch('GET', `/articles/${articleId}`, {}, { type: 'parsed' })
 			.then((res) => {
-				this.setState({
-					loadingContent: false,
-					...res.data,
-				});
+				this.setState({ loadingContent: false, ...res.data });
 			})
 			.catch(() => {
 				this.setState({

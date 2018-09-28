@@ -13,17 +13,20 @@ import NotFound from './views/404View';
 import Header from './components/Header';
 import Player from './components/Player.js';
 import { Create, ForgotPassword, Login, ResetPassword } from './views/auth-views';
-import { getUser, getAliases } from './api';
+import { getUser, getAliases, getRssFollows, getPodcastsFollows } from './api';
 import { getPinnedArticles, getPinnedEpisodes } from './util/pins';
 
 class AppRouter extends Component {
 	componentDidMount() {
 		const userId = localStorage['authedUser'];
 		if (userId) {
-			getUser(this.props.dispatch, userId);
-			getAliases(this.props.dispatch);
-			getPinnedArticles(this.props.dispatch);
-			getPinnedEpisodes(this.props.dispatch);
+			const dispatch = this.props.dispatch;
+			getUser(dispatch, userId);
+			getAliases(dispatch);
+			getPinnedArticles(dispatch);
+			getPinnedEpisodes(dispatch);
+			getRssFollows(dispatch);
+			getPodcastsFollows(dispatch);
 		}
 	}
 
@@ -65,6 +68,7 @@ class AppRouter extends Component {
 
 AppRouter.propTypes = {
 	dispatch: PropTypes.func.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 export default connect()(AppRouter);
