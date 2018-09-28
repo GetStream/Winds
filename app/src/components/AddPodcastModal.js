@@ -9,6 +9,7 @@ import fetch from '../util/fetch';
 import saveIcon from '../images/icons/save.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { followPodcast } from '../api';
 
 class AddPodcastModal extends React.Component {
 	constructor(props) {
@@ -80,7 +81,7 @@ class AddPodcastModal extends React.Component {
 			submitting: true,
 			success: false,
 		});
-
+		// TODO: FIX Dispatch
 		Promise.all(
 			this.state.checkedPodcastsToFollow.map((checkedPodcastToFollow) => {
 				return fetch('post', '/follows', null, {

@@ -56,20 +56,6 @@ export const getSuggestedRss = (dispatch) => {
 		});
 };
 
-export const getRssById = (dispatch, id) => {
-	fetch('get', `/rss/${id}`)
-		.then((res) => {
-			if (res.data.duplicateOf) return fetch('GET', `/rss/${res.data.duplicateOf}`);
-			return res;
-		})
-		.then((response) => {
-			dispatch({
-				rssFeed: response.data,
-				type: 'UPDATE_RSS_FEED',
-			});
-		});
-};
-
 export const getSuggestedPodcasts = (dispatch) => {
 	fetch('GET', '/podcasts', {}, { type: 'recommended' })
 		.then((res) => {
@@ -83,8 +69,22 @@ export const getSuggestedPodcasts = (dispatch) => {
 		});
 };
 
+export const getRssById = (dispatch, id) => {
+	fetch('GET', `/rss/${id}`)
+		.then((res) => {
+			if (res.data.duplicateOf) return fetch('GET', `/rss/${res.data.duplicateOf}`);
+			return res;
+		})
+		.then((response) => {
+			dispatch({
+				rssFeed: response.data,
+				type: 'UPDATE_RSS_FEED',
+			});
+		});
+};
+
 export const getPodcastById = (dispatch, id) => {
-	fetch('get', `/podcasts/${id}`)
+	fetch('GET', `/podcasts/${id}`)
 		.then((res) => {
 			dispatch({
 				podcast: res.data,
@@ -158,4 +158,43 @@ export const getFeatured = (dispatch) => {
 			type: 'UPDATE_FEATURED_ITEMS',
 		});
 	});
+};
+
+export const followRss = (dispatch, rssFeedID) => {
+	dispatch({ rssFeedID, type: 'FOLLOW_RSS_FEED' });
+
+	fetch('POST', '/follows', {}, { rss: rssFeedID, type: 'rss' }).catch((err) => {
+		if (window.console) console.log(err); // eslint-disable-line no-console
+		dispatch({ rssFeedID, type: 'UNFOLLOW_RSS_FEED' });
+	});
+};
+
+export const unfollowRss = (dispatch, rssFeedID) => {
+	dispatch({ rssFeedID, type: 'UNFOLLOW_RSS_FEED' });
+
+	fetch('DELETE', '/follows', {}, { rss: rssFeedID, type: 'rss' }).catch((err) => {
+		if (window.console) console.log(err); // eslint-disable-line no-console
+		dispatch({ rssFeedID, type: 'FOLLOW_RSS_FEED' });
+	});
+};
+
+export const followPodcast = (dispatch, podcastID) => {
+	dispatch({ podcastID, type: 'FOLLOW_PODCAST' });
+
+	fetch('POST', '/follows', null, { podcast: podcastID, type: 'podcast' }).catch(
+		(err) => {
+			if (window.console) console.log(err); // eslint-disable-line no-console
+			dispatch({ podcastID, type: 'UNFOLLOW_PODCAST' });
+		},
+	);
+};
+
+export const unfollowPodcast = (dispatch, podcastID) => {
+	dispatch({ podcastID, type: 'UNFOLLOW_PODCAST' });
+	fetch('DELETE', '/follows', null, { podcast: podcastID, type: 'podcast' }).catch(
+		(err) => {
+			if (window.console) console.log(err); // eslint-disable-line no-console
+			dispatch({ podcastID, type: 'FOLLOW_PODCAST' });
+		},
+	);
 };

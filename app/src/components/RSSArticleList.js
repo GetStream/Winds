@@ -12,6 +12,7 @@ import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
 import AliasModal from './AliasModal';
 import Loader from './Loader';
+import { followRss, unfollowRss } from '../api';
 import loaderIcon from '../images/loaders/default.svg';
 
 class RSSArticleList extends React.Component {
@@ -113,34 +114,11 @@ class RSSArticleList extends React.Component {
 			.then((res) => {
 				this.props.dispatch({ rssFeed: res.data, type: 'UPDATE_RSS_FEED' });
 				this.getRSSArticles(res.data._id);
-				this.getFollowState(res.data._id);
 				getFeed(this.props.dispatch, 'article', 0, 20);
 			})
 			.catch((err) => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
+				if (window.console) console.log(err); // eslint-disable-line no-console
 			});
-	}
-
-	getFollowState(rssFeedID) {
-		return fetch(
-			'get',
-			'/follows',
-			{},
-			{
-				rss: rssFeedID,
-				user: localStorage['authedUser'],
-			},
-		).then((res) => {
-			for (let followRelationship of res.data) {
-				this.props.dispatch({
-					rssFeedID: followRelationship.rss._id,
-					type: 'FOLLOW_RSS_FEED',
-					userID: followRelationship.user._id,
-				});
-			}
-		});
 	}
 
 	getRSSArticles(rssFeedID) {
@@ -174,52 +152,6 @@ class RSSArticleList extends React.Component {
 			});
 	}
 
-	follow() {
-		this.props.dispatch({
-			rssFeedID: this.props.match.params.rssFeedID,
-			type: 'FOLLOW_RSS_FEED',
-			userID: localStorage['authedUser'],
-		});
-
-		fetch('post', '/follows', null, {
-			rss: this.props.match.params.rssFeedID,
-			type: 'rss',
-		}).catch((err) => {
-			if (window.console) {
-				console.log(err); // eslint-disable-line no-console
-			}
-
-			this.props.dispatch({
-				rssFeedID: this.props.match.params.rssFeedID,
-				type: 'UNFOLLOW_RSS_FEED',
-				userID: localStorage['authedUser'],
-			});
-		});
-	}
-
-	unfollow() {
-		this.props.dispatch({
-			rssFeedID: this.props.match.params.rssFeedID,
-			type: 'UNFOLLOW_RSS_FEED',
-			userID: localStorage['authedUser'],
-		});
-
-		fetch('delete', '/follows', null, {
-			rss: this.props.match.params.rssFeedID,
-			type: 'rss',
-		}).catch((err) => {
-			if (window.console) {
-				console.log(err); // eslint-disable-line no-console
-			}
-
-			this.props.dispatch({
-				rssFeedID: this.props.match.params.rssFeedID,
-				type: 'FOLLOW_RSS_FEED',
-				userID: localStorage['authedUser'],
-			});
-		});
-	}
-
 	toggleMenuPopover = () => {
 		this.setState((prevState) => ({ menuPopover: !prevState.menuPopover }));
 	};
@@ -249,7 +181,15 @@ class RSSArticleList extends React.Component {
 				<div
 					className="panel-element menu-item"
 					onClick={() =>
-						this.props.following ? this.unfollow() : this.follow()
+						this.props.following
+							? unfollowRss(
+									this.props.dispatch,
+									this.props.match.params.rssFeedID,
+							  )
+							: followRss(
+									this.props.dispatch,
+									this.props.match.params.rssFeedID,
+							  )
 					}
 				>
 					{this.props.following ? (
@@ -313,14 +253,11 @@ class RSSArticleList extends React.Component {
 							<Waypoint
 								onEnter={() => {
 									this.setState(
-										{
-											articleCursor: this.state.articleCursor + 1,
-										},
-										() => {
+										{ articleCursor: this.state.articleCursor + 1 },
+										() =>
 											this.getRSSArticles(
 												this.props.match.params.rssFeedID,
-											);
-										},
+											),
 									);
 								}}
 							/>

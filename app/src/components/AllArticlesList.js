@@ -29,11 +29,7 @@ class AllArticles extends React.Component {
 					this.props.userID,
 					this.props.userArticleStreamToken,
 				)
-				.subscribe(() => {
-					this.setState({
-						newArticlesAvailable: true,
-					});
-				});
+				.subscribe(() => this.setState({ newArticlesAvailable: true }));
 		});
 	}
 
@@ -61,19 +57,17 @@ class AllArticles extends React.Component {
 				</div>
 
 				<div className="list content" ref={this.contentsEl}>
-					{this.state.newArticlesAvailable ? (
+					{this.state.newArticlesAvailable && (
 						<div
 							className="toast"
 							onClick={() => {
 								this.getArticleFeed();
-								this.setState({
-									newArticlesAvailable: false,
-								});
+								this.setState({ newArticlesAvailable: false });
 							}}
 						>
 							New articles available - click to refresh
 						</div>
-					) : null}
+					)}
 					{this.props.articles.map((article) => {
 						return (
 							<ArticleListItem
@@ -89,26 +83,21 @@ class AllArticles extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{"That's it! No more articles here."}</p>
+							<p>"That's it! No more articles here."</p>
 							<p>
-								{
-									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
-								}
+								"What, did you think that once you got all the way around,
+								you'd just be back at the same place that you started?
+								Sounds like some real round-feed thinking to me."
 							</p>
 						</div>
 					) : (
 						<div>
 							<Waypoint
-								onEnter={() => {
-									this.setState(
-										{
-											cursor: this.state.cursor + 1,
-										},
-										() => {
-											this.getArticleFeed();
-										},
-									);
-								}}
+								onEnter={() =>
+									this.setState({ cursor: this.state.cursor + 1 }, () =>
+										this.getArticleFeed(),
+									)
+								}
 							/>
 							<div className="end-loader">
 								<Img src={loaderIcon} />
@@ -139,7 +128,7 @@ const mapStateToProps = (state, ownProps) => {
 	if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
 		userArticleFeed = state.feeds[`user_article:${localStorage['authedUser']}`];
 	}
-
+	console.log(state.feeds);
 	for (let articleID of userArticleFeed) {
 		// need to trim the `episode:` from the episode ID
 		articles.push(getArticle(state, articleID.replace('article:', '')));

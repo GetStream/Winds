@@ -171,26 +171,10 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'UPDATE_SUGGESTED_RSS_FEEDS') {
 		return { ...previousState, suggestedRssFeeds: [...action.rssFeeds] };
 	} else if (action.type === 'FOLLOW_PODCAST') {
-		let userFollows = {};
+		const followedPodcasts = { ...previousState.followedPodcasts } || {};
+		followedPodcasts[action.podcastID] = true;
 
-		if (!previousState.followedPodcasts) {
-			userFollows = {
-				[action.podcastID]: true,
-			};
-		} else {
-			userFollows = {
-				...previousState.followedPodcasts[action.userID],
-				[action.podcastID]: true,
-			};
-		}
-
-		return {
-			...previousState,
-			followedPodcasts: {
-				...previousState.followedPodcasts,
-				[action.userID]: userFollows,
-			},
-		};
+		return { ...previousState, followedPodcasts };
 	} else if (action.type === 'BATCH_FOLLOW_PODCASTS') {
 		const followedPodcasts = action.follows.reduce((result, follow) => {
 			result[follow.podcast._id] = true;
@@ -206,26 +190,10 @@ export default (previousState = {}, action) => {
 
 		return { ...previousState, followedRssFeeds };
 	} else if (action.type === 'UNFOLLOW_PODCAST') {
-		let userFollows = {};
+		const followedPodcasts = { ...previousState.followedPodcasts } || {};
+		followedPodcasts[action.podcastID] = false;
 
-		if (!previousState.followedPodcasts) {
-			userFollows = {
-				[action.podcastID]: false,
-			};
-		} else {
-			userFollows = {
-				...previousState.followedPodcasts[action.userID],
-				[action.podcastID]: false,
-			};
-		}
-
-		return {
-			...previousState,
-			followedPodcasts: {
-				...previousState.followedPodcasts,
-				[action.userID]: userFollows,
-			},
-		};
+		return { ...previousState, followedPodcasts };
 	} else if (action.type === 'PIN_EPISODE') {
 		return {
 			...previousState,
@@ -272,43 +240,15 @@ export default (previousState = {}, action) => {
 
 		return { ...previousState, userSettings };
 	} else if (action.type === 'FOLLOW_RSS_FEED') {
-		let userFollows = {};
+		const followedRssFeeds = { ...previousState.followedRssFeeds } || {};
+		followedRssFeeds[action.rssFeedID] = true;
 
-		if (
-			previousState.followedRssFeeds &&
-			previousState.followedRssFeeds[action.userID]
-		) {
-			userFollows = { ...previousState.followedRssFeeds[action.userID] };
-		}
-
-		userFollows[action.rssFeedID] = true;
-
-		return {
-			...previousState,
-			followedRssFeeds: {
-				...(previousState.followedRssFeeds || {}),
-				[action.userID]: userFollows,
-			},
-		};
+		return { ...previousState, followedRssFeeds };
 	} else if (action.type === 'UNFOLLOW_RSS_FEED') {
-		let userFollows = {};
+		const followedRssFeeds = { ...previousState.followedRssFeeds } || {};
+		followedRssFeeds[action.rssFeedID] = false;
 
-		if (
-			previousState.followedRssFeeds &&
-			previousState.followedRssFeeds[action.userID]
-		) {
-			userFollows = { ...previousState.followedRssFeeds[action.userID] };
-		}
-
-		userFollows[action.rssFeedID] = false;
-
-		return {
-			...previousState,
-			followedRssFeeds: {
-				...(previousState.followedRssFeeds || {}),
-				[action.userID]: userFollows,
-			},
-		};
+		return { ...previousState, followedRssFeeds };
 	} else if (action.type === 'UPDATE_FEATURED_ITEMS') {
 		return { ...previousState, featuredItems: [...action.featuredItems] };
 	} else if (action.type === 'BATCH_UPDATE_ALIASES') {

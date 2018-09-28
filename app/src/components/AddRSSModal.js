@@ -146,6 +146,7 @@ class AddRSSModal extends React.Component {
 			submitting: true,
 			success: false,
 		});
+		// TODO: FIX Dispatch
 		Promise.all(
 			this.state.checkedFeedsToFollow.map((checkedFeedToFollow) => {
 				return fetch('post', '/follows', null, {

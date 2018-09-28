@@ -13,6 +13,7 @@ import { getFeed } from '../util/feeds';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
 import { pinEpisode, unpinEpisode } from '../util/pins';
+import { getPodcastById, followPodcast, unfollowPodcast } from '../api';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
@@ -437,53 +438,11 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	let podcastID = ownProps.match.params.podcastID;
+	const podcastID = ownProps.match.params.podcastID;
 	return {
 		dispatch,
-		followPodcast: () => {
-			// optimistic dispatch
-			// dispatch updated follow relationship
-			dispatch({
-				podcastID,
-				type: 'FOLLOW_PODCAST',
-				userID: localStorage['authedUser'],
-			});
-			// already have podcastID
-			fetch(
-				'POST',
-				'/follows',
-				{},
-				{
-					podcast: podcastID,
-					type: 'podcast',
-				},
-			).catch((err) => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-
-				dispatch({
-					podcastID,
-					type: 'UNFOLLOW_PODCAST',
-					userID: localStorage['authedUser'],
-				});
-			});
-		},
-		getPodcast: (podcastID) => {
-			fetch('GET', `/podcasts/${podcastID}`)
-				.then((res) => {
-					dispatch({
-						podcast: res.data,
-						type: 'UPDATE_PODCAST_SHOW',
-					});
-				})
-				.catch((err) => {
-					console.log(err); // eslint-disable-line no-console
-				});
-		},
-		pauseEpisode: () => {
-			dispatch({ type: 'PAUSE_EPISODE' });
-		},
+		getPodcast: () => getPodcastById(dispatch, podcastID),
+		pauseEpisode: () => dispatch({ type: 'PAUSE_EPISODE' }),
 		playEpisode: (episodeID, position) => {
 			dispatch({
 				contextID: podcastID,
@@ -494,31 +453,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 				type: 'PLAY_EPISODE',
 			});
 		},
-		resumeEpisode: () => {
-			dispatch({ type: 'RESUME_EPISODE' });
-		},
-		unfollowPodcast: () => {
-			dispatch({
-				podcastID,
-				type: 'UNFOLLOW_PODCAST',
-				userID: localStorage['authedUser'],
-			});
-
-			fetch('DELETE', '/follows', null, {
-				podcast: podcastID,
-				type: 'podcast',
-			}).catch((err) => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-
-				dispatch({
-					podcastID,
-					type: 'FOLLOW_PODCAST',
-					userID: localStorage['authedUser'],
-				});
-			});
-		},
+		resumeEpisode: () => dispatch({ type: 'RESUME_EPISODE' }),
+		unfollowPodcast: () => unfollowPodcast(dispatch, podcastID),
+		followPodcast: () => followPodcast(dispatch, podcastID),
 		unpinEpisode: (pinID, episodeID) => unpinEpisode(pinID, episodeID, dispatch),
 		pinEpisode: (episodeID) => pinEpisode(episodeID, dispatch),
 	};

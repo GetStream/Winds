@@ -20,7 +20,7 @@ class RecentArticlesPanel extends React.Component {
 					return (
 						<Link
 							key={article._id}
-							to={`/rss/${article.rss}/articles/${article._id}`}
+							to={`/rss/${article.rss._id}/articles/${article._id}`}
 						>
 							<Img
 								src={[article.favicon, getPlaceholderImageURL()]}

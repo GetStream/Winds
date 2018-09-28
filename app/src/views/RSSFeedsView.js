@@ -71,13 +71,11 @@ class RSSFeedsView extends React.Component {
 				</React.Fragment>
 			);
 		} else {
-			let headerComponent = <h1>RSS</h1>;
-
 			leftColumn = (
 				<Tabs
 					componentClass="panels"
 					headerClass="panels-header"
-					headerComponent={headerComponent}
+					headerComponent={<h1>RSS</h1>}
 					tabGroup="rss-view"
 				>
 					<div tabTitle="All Feeds">
