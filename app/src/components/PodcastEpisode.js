@@ -173,7 +173,7 @@ class PodcastEpisode extends React.Component {
 											src={[
 												episode.images.og,
 												episode.podcast.images.featured,
-												getPlaceholderImageURL(),
+												getPlaceholderImageURL(episode._id),
 											]}
 											loader={<div className="placeholder" />}
 										/>

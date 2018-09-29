@@ -67,7 +67,7 @@ class EpisodeListItem extends React.Component {
 						src={[
 							this.props.images.og,
 							this.props.podcast.images.featured,
-							getPlaceholderImageURL(),
+							getPlaceholderImageURL(this.props.episodeID),
 						]}
 						loader={<div className="placeholder" />}
 					/>

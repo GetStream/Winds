@@ -9,7 +9,6 @@ import fetch from '../util/fetch';
 import saveIcon from '../images/icons/save.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { followPodcast } from '../api';
 
 class AddPodcastModal extends React.Component {
 	constructor(props) {

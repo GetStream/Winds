@@ -278,7 +278,7 @@ class RSSArticleList extends React.Component {
 								src={[
 									this.props.rssFeed.images.featured,
 									this.props.rssFeed.images.og,
-									getPlaceholderImageURL(),
+									getPlaceholderImageURL(this.props.rssFeed._id),
 								]}
 							/>
 						</div>

@@ -23,7 +23,10 @@ class RecentArticlesPanel extends React.Component {
 							to={`/rss/${article.rss._id}/articles/${article._id}`}
 						>
 							<Img
-								src={[article.favicon, getPlaceholderImageURL()]}
+								src={[
+									article.favicon,
+									getPlaceholderImageURL(article._id),
+								]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{article.title}</div>

@@ -20,7 +20,7 @@ class SuggestedFeeds extends React.Component {
 					return (
 						<Link key={id} to={`/rss/${id}`}>
 							<Img
-								src={[rssFeed.images.favicon, getPlaceholderImageURL()]}
+								src={[rssFeed.images.favicon, getPlaceholderImageURL(id)]}
 							/>
 							<div>{rssFeed.title}</div>
 							<div

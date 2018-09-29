@@ -30,7 +30,10 @@ class PodcastList extends React.Component {
 							to={`/podcasts/${podcast._id}`}
 						>
 							<Img
-								src={[podcast.images.favicon, getPlaceholderImageURL()]}
+								src={[
+									podcast.images.favicon,
+									getPlaceholderImageURL(podcast._id),
+								]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>

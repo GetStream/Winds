@@ -27,7 +27,10 @@ class RssFeedList extends React.Component {
 					return (
 						<Link className={clazz} key={rssId} to={`/rss/${rssId}`}>
 							<Img
-								src={[rssFeed.images.favicon, getPlaceholderImageURL()]}
+								src={[
+									rssFeed.images.favicon,
+									getPlaceholderImageURL(rssId),
+								]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{rssFeed.title}</div>

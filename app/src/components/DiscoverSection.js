@@ -34,7 +34,7 @@ class DiscoverSection extends React.Component {
 									className="shows-grid-item-image"
 									style={{
 										backgroundImage: `url(${podcast.images.featured ||
-											getPlaceholderImageURL(true)})`,
+											getPlaceholderImageURL(podcast._id, true)})`,
 									}}
 								/>
 								{podcast.title}
@@ -54,7 +54,7 @@ class DiscoverSection extends React.Component {
 								<Img
 									src={[
 										suggestion.images.favicon,
-										getPlaceholderImageURL(),
+										getPlaceholderImageURL(suggestion._id),
 									]}
 									loader={<div className="placeholder" />}
 									unloader={<div />}

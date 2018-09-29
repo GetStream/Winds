@@ -183,7 +183,7 @@ class SearchBar extends React.Component {
 					>
 						<div className="left">
 							<Img
-								src={[result.image, getPlaceholderImageURL()]}
+								src={[result.image, getPlaceholderImageURL(result._id)]}
 								width="25"
 							/>
 						</div>

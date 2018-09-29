@@ -21,7 +21,7 @@ class SuggestedPodcasts extends React.Component {
 					return (
 						<Link key={id} to={`/podcasts/${id}`}>
 							<Img
-								src={[podcast.images.favicon, getPlaceholderImageURL()]}
+								src={[podcast.images.favicon, getPlaceholderImageURL(id)]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>

@@ -25,7 +25,10 @@ class ArticleListItem extends React.Component {
 					<Img
 						width="75"
 						height="75"
-						src={[this.props.images.og, getPlaceholderImageURL()]}
+						src={[
+							this.props.images.og,
+							getPlaceholderImageURL(this.props._id),
+						]}
 						loader={<div className="placeholder" />}
 					/>
 					{this.props.recent ? <div className="recent-indicator" /> : null}
