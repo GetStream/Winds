@@ -1,27 +1,7 @@
 import moment from 'moment';
 
 export default (previousState = {}, action) => {
-	if (action.type === 'UPDATE_FEED') {
-		let feedItems = [];
-
-		if (previousState.feeds && previousState.feeds[action.feedID]) {
-			feedItems = [...previousState.feeds[action.feedID]] || [];
-		}
-
-		for (let newFeedItem of action.activities) {
-			if (!feedItems.includes(newFeedItem._id)) {
-				feedItems.push(newFeedItem._id);
-			}
-		}
-
-		return {
-			...previousState,
-			feeds: {
-				...previousState.feeds,
-				[action.feedID]: feedItems,
-			},
-		};
-	} else if (action.type === 'UPDATE_USER') {
+	if (action.type === 'UPDATE_USER') {
 		return { ...previousState, user: { ...action.user } };
 	} else if (action.type === 'UPDATE_EPISODE') {
 		let episode = { ...action.episode };
@@ -33,14 +13,32 @@ export default (previousState = {}, action) => {
 
 		return { ...previousState, episodes };
 	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
-		const episodes = action.episodes.reduce((result, item) => {
+		let episodes = action.episodes.reduce((result, item) => {
 			result[item._id] = { ...item, favicon: item.podcast.images.favicon };
 			return result;
 		}, {});
 
-		return { ...previousState, episodes };
+		episodes = { ...previousState.episodes, ...episodes };
+
+		const order = Object.values(episodes)
+			.sort((a, b) => {
+				return (
+					moment(b.publicationDate).valueOf() -
+					moment(a.publicationDate).valueOf()
+				);
+			})
+			.map((episode) => episode._id);
+
+		return {
+			...previousState,
+			episodes,
+			feeds: {
+				...previousState.feeds,
+				episode: order,
+			},
+		};
 	} else if (action.type === 'BATCH_UPDATE_ARTICLES') {
-		const articles = action.articles.reduce((result, item) => {
+		let articles = action.articles.reduce((result, item) => {
 			result[item._id] = { ...item, favicon: item.rss.images.favicon };
 			return result;
 		}, {});
@@ -54,7 +52,25 @@ export default (previousState = {}, action) => {
 			articles[article._id] = next || previous || article;
 		}
 
-		return { ...previousState, articles };
+		articles = { ...previousState.articles, ...articles };
+
+		const order = Object.values(articles)
+			.sort((a, b) => {
+				return (
+					moment(b.publicationDate).valueOf() -
+					moment(a.publicationDate).valueOf()
+				);
+			})
+			.map((article) => article._id);
+
+		return {
+			...previousState,
+			articles,
+			feeds: {
+				...previousState.feeds,
+				article: order,
+			},
+		};
 	} else if (action.type === 'UPDATE_PODCAST_SHOW') {
 		return {
 			...previousState,

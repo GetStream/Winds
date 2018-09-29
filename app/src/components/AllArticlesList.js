@@ -1,4 +1,3 @@
-import { getArticle } from '../selectors';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -23,17 +22,14 @@ class AllArticles extends React.Component {
 	componentDidMount() {
 		this.setState({ cursor: Math.floor(this.props.articles.length / 10) }, () => {
 			this.getArticleFeed();
-			this.subscription = window.streamClient
-				.feed(
-					'user_article',
-					this.props.userID,
-					this.props.userArticleStreamToken,
-				)
-				.subscribe(() => this.setState({ newArticlesAvailable: true }));
 		});
+
+		this.subscription = window.streamClient
+			.feed('user_article', this.props.userID, this.props.userArticleStreamToken)
+			.subscribe(() => this.setState({ newArticlesAvailable: true }));
 	}
 
-	componentWillReceiveProps() {
+	componentDidUpdate() {
 		if (this.contentsEl.current && localStorage['all-article-list-scroll-position']) {
 			this.contentsEl.current.scrollTop =
 				localStorage['all-article-list-scroll-position'];
@@ -121,35 +117,21 @@ AllArticles.propTypes = {
 	userArticleStreamToken: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
 	let articles = [];
-	let userArticleFeed = [];
 
-	if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
-		userArticleFeed = state.feeds[`user_article:${localStorage['authedUser']}`];
-	}
-	console.log(state.feeds);
-	for (let articleID of userArticleFeed) {
-		// need to trim the `episode:` from the episode ID
-		articles.push(getArticle(state, articleID.replace('article:', '')));
-	}
+	if (state.articles && state.feeds && state.feeds.article)
+		articles = state.feeds.article.map((id) => state.articles[id]);
 
 	for (let article of articles) {
-		// attach pinned state
 		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
 			article.pinned = true;
 			article.pinID = state.pinnedArticles[article._id]._id;
-		} else {
-			article.pinned = false;
-		}
+		} else article.pinned = false;
 
 		if (
-			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
-				article._id,
-			) < 20 &&
-			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
-				article._id,
-			) !== -1
+			state.feeds.article.indexOf(article._id) < 20 &&
+			state.feeds.article.indexOf(article._id) !== -1
 		) {
 			article.recent = true;
 		} else {
@@ -158,7 +140,6 @@ const mapStateToProps = (state, ownProps) => {
 	}
 
 	return {
-		...ownProps,
 		articles,
 		userArticleStreamToken: state.user.streamTokens.user_article,
 		userID: state.user._id,

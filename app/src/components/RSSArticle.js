@@ -62,7 +62,7 @@ class RSSArticle extends React.Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
 			this.sentArticleReadCompleteAnalyticsEvent = false;
 

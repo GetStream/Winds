@@ -33,11 +33,7 @@ class RSSArticleList extends React.Component {
 	subscribeToStreamFeed(rssFeedID, streamFeedToken) {
 		this.subscription = window.streamClient
 			.feed('rss', rssFeedID, streamFeedToken)
-			.subscribe(() => {
-				this.setState({
-					newArticlesAvailable: true,
-				});
-			});
+			.subscribe(() => this.setState({ newArticlesAvailable: true }));
 	}
 
 	unsubscribeFromStreamFeed() {
@@ -45,14 +41,15 @@ class RSSArticleList extends React.Component {
 	}
 
 	componentDidMount() {
+		const rssFeedID = this.props.match.params.rssFeedID;
+
 		window.streamAnalyticsClient.trackEngagement({
 			label: 'viewed_rss_feed',
-			content: `rss:${this.props.match.params.rssFeedID}`,
+			content: `rss:${rssFeedID}`,
 		});
 
-		this.getRSSFeed(this.props.match.params.rssFeedID);
-		this.getFollowState(this.props.match.params.rssFeedID);
-		this.getRSSArticles(this.props.match.params.rssFeedID);
+		this.getRSSFeed(rssFeedID);
+		this.getRSSArticles(rssFeedID);
 
 		getFeed(this.props.dispatch, 'article', 0, 20);
 
@@ -63,7 +60,7 @@ class RSSArticleList extends React.Component {
 			);
 		}
 	}
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'viewed_rss_feed',
@@ -99,6 +96,7 @@ class RSSArticleList extends React.Component {
 			delete localStorage['rss-article-list-scroll-position'];
 		}
 	}
+
 	componentWillUnmount() {
 		this.unsubscribeFromStreamFeed();
 	}
@@ -106,9 +104,9 @@ class RSSArticleList extends React.Component {
 	getRSSFeed(rssFeedID) {
 		return fetch('GET', `/rss/${rssFeedID}`)
 			.then((res) => {
-				if (res.data.duplicateOf) {
+				if (res.data.duplicateOf)
 					return fetch('GET', `/rss/${res.data.duplicateOf}`);
-				}
+
 				return res;
 			})
 			.then((res) => {
@@ -134,11 +132,7 @@ class RSSArticleList extends React.Component {
 			},
 		)
 			.then((res) => {
-				if (res.data.length === 0) {
-					this.setState({
-						reachedEndOfFeed: true,
-					});
-				}
+				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
 
 				this.props.dispatch({
 					articles: res.data,
@@ -146,9 +140,7 @@ class RSSArticleList extends React.Component {
 				});
 			})
 			.catch((err) => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
+				if (window.console) console.log(err); // eslint-disable-line no-console
 			});
 	}
 

@@ -58,7 +58,7 @@ class PodcastEpisodesView extends React.Component {
 			);
 		}
 	}
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.match.params.podcastID !== this.props.match.params.podcastID) {
 			// essentially, if we've just switched views from one podcast to another
 			window.streamAnalyticsClient.trackEngagement({

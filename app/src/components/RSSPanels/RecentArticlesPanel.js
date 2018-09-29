@@ -53,7 +53,10 @@ RecentArticlesPanel.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-	articles: state.articles ? Object.values(state.articles) : [],
+	articles:
+		state.articles && state.feeds && state.feeds.article
+			? state.feeds.article.map((id) => state.articles[id])
+			: [],
 });
 
 export default connect(mapStateToProps)(RecentArticlesPanel);

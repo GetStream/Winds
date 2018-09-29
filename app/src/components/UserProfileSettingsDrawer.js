@@ -47,7 +47,7 @@ class UserProfileSettingsDrawer extends React.Component {
 		this.props.getUserInfo();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		let dailyNotifications = false;
 		let weeklyNotifications = false;
 		let followNotifications = false;

@@ -28,7 +28,7 @@ class RSSFeedsView extends React.Component {
 	componentDidMount() {
 		this.container.current.focus();
 
-		if (this.props.match.params.podcastID)
+		if (this.props.match.params.rssFeedID)
 			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
