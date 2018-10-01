@@ -31,6 +31,8 @@ class RSSArticle extends React.Component {
 		this.state = {
 			error: false,
 			loadingContent: true,
+			loading: true,
+			article: {},
 		};
 
 		this.sentArticleReadCompleteAnalyticsEvent = false;
@@ -46,33 +48,42 @@ class RSSArticle extends React.Component {
 
 		this.getArticle(articleID);
 		this.getRSSContent(articleID);
-
-		const contentEl = this.contentRef.current;
-		contentEl.onscroll = () => {
-			const scrollPercentage =
-				contentEl.scrollTop / (contentEl.scrollHeight - contentEl.clientHeight);
-			if (!this.sentArticleReadCompleteAnalyticsEvent && scrollPercentage > 0.8) {
-				window.streamAnalyticsClient.trackEngagement({
-					label: 'article_read_complete',
-					content: { foreign_id: `articles:${articleID}` },
-				});
-
-				this.sentArticleReadCompleteAnalyticsEvent = true;
-			}
-		};
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (nextProps.match.params.articleID !== this.props.match.params.articleID) {
+	componentDidUpdate(prevProps) {
+		const articleID = this.props.match.params.articleID;
+
+		if (articleID !== prevProps.match.params.articleID) {
 			this.sentArticleReadCompleteAnalyticsEvent = false;
 
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'article_open',
-				content: { foreign_id: `articles:${nextProps.match.params.articleID}` },
+				content: { foreign_id: `articles:${articleID}` },
 			});
 
-			this.getArticle(nextProps.match.params.articleID);
-			this.getRSSContent(nextProps.match.params.articleID);
+			this.getArticle(articleID);
+			this.getRSSContent(articleID);
+		}
+
+		const contentEl = this.contentRef.current;
+		if (contentEl) {
+			contentEl.onscroll = () => {
+				const scrollPercentage =
+					contentEl.scrollTop /
+					(contentEl.scrollHeight - contentEl.clientHeight);
+				if (
+					!this.sentArticleReadCompleteAnalyticsEvent &&
+					scrollPercentage > 0.8
+				) {
+					window.streamAnalyticsClient.trackEngagement({
+						label: 'article_read_complete',
+						content: {
+							foreign_id: `articles:${articleID}`,
+						},
+					});
+					this.sentArticleReadCompleteAnalyticsEvent = true;
+				}
+			};
 		}
 	}
 
@@ -115,18 +126,17 @@ class RSSArticle extends React.Component {
 
 	async getArticle(articleID) {
 		try {
+			this.setState({ article: {}, loading: true });
 			const res = await fetch('GET', `/articles/${articleID}`);
-			this.props.dispatch({
-				rssArticle: res.data,
-				type: 'UPDATE_ARTICLE',
-			});
+			this.setState({ article: res.data, loading: false });
+
 			const [reddit, hackernews] = await Promise.all([
 				fetchSocialScore('reddit', res.data),
 				fetchSocialScore('hackernews', res.data),
 			]);
-			this.props.dispatch({
-				rssArticle: mergeSocialScore(res.data, { reddit, hackernews }),
-				type: 'UPDATE_ARTICLE',
+
+			this.setState({
+				article: mergeSocialScore(res.data, { reddit, hackernews }),
 			});
 		} catch (err) {
 			if (window.console) console.log(err); // eslint-disable-line no-console
@@ -150,9 +160,26 @@ class RSSArticle extends React.Component {
 	}
 
 	render() {
+		if (this.state.loading) return <Loader />;
+
+		const article = this.state.article;
+
+		const redditDataAvailable =
+			article.socialScore &&
+			article.socialScore.reddit &&
+			article.socialScore.reddit.url;
+		const hackernewsDataAvailable =
+			article.socialScore &&
+			article.socialScore.hackernews &&
+			article.socialScore.hackernews.url;
+
+		const pinID = this.props.pinnedArticles[article._id]
+			? this.props.pinnedArticles[article._id]._id
+			: null;
+
 		let articleContents;
 
-		if (this.props.loading || this.state.loadingContent) {
+		if (this.state.loadingContent) {
 			articleContents = <Loader />;
 		} else if (this.state.error) {
 			articleContents = (
@@ -160,8 +187,8 @@ class RSSArticle extends React.Component {
 					<p>There was a problem loading this article :(</p>
 					<p>To read the article, head on over to:</p>
 					<p>
-						<a href={this.props.url} target="_blank">
-							{this.props.title}
+						<a href={article.url} target="_blank">
+							{article.title}
 						</a>
 					</p>
 				</div>
@@ -174,37 +201,26 @@ class RSSArticle extends React.Component {
 			);
 		}
 
-		const redditDataAvailable =
-			this.props.socialScore &&
-			this.props.socialScore.reddit &&
-			this.props.socialScore.reddit.url;
-		const hackernewsDataAvailable =
-			this.props.socialScore &&
-			this.props.socialScore.hackernews &&
-			this.props.socialScore.hackernews.url;
-
 		return (
 			<React.Fragment>
 				<div className="content-header">
-					<h1>{this.props.title}</h1>
+					<h1>{article.title}</h1>
 					<div className="item-info">
 						<span
 							className="bookmark"
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								if (this.props.pinned) {
-									unpinArticle(
-										this.props.pinID,
-										this.props._id,
-										this.props.dispatch,
-									);
-								} else {
-									pinArticle(this.props._id, this.props.dispatch);
-								}
+								pinID
+									? unpinArticle(
+											pinID,
+											article._id,
+											this.props.dispatch,
+									  )
+									: pinArticle(article._id, this.props.dispatch);
 							}}
 						>
-							{this.props.pinned ? (
+							{pinID ? (
 								<i className="fas fa-bookmark" />
 							) : (
 								<i className="far fa-bookmark" />
@@ -216,16 +232,15 @@ class RSSArticle extends React.Component {
 								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
-
 									this.tweet();
 								}}
 							>
 								<i className="fab fa-twitter" />
 							</a>
 						</span>
-						{redditDataAvailable ? (
+						{redditDataAvailable && (
 							<span>
-								{this.props.socialScore.reddit.score}
+								{article.socialScore.reddit.score}
 								{isElectron() ? (
 									<a
 										href="tweet"
@@ -235,7 +250,7 @@ class RSSArticle extends React.Component {
 
 											window.ipcRenderer.send(
 												'open-external-window',
-												this.props.socialScore.reddit.url,
+												article.socialScore.reddit.url,
 											);
 										}}
 									>
@@ -243,17 +258,17 @@ class RSSArticle extends React.Component {
 									</a>
 								) : (
 									<a
-										href={this.props.socialScore.reddit.url}
+										href={article.socialScore.reddit.url}
 										target="_blank"
 									>
 										<i className="fab fa-reddit-alien" />
 									</a>
 								)}
 							</span>
-						) : null}
-						{hackernewsDataAvailable ? (
+						)}
+						{hackernewsDataAvailable && (
 							<span>
-								{this.props.socialScore.hackernews.score}
+								{article.socialScore.hackernews.score}
 								{isElectron() ? (
 									<a
 										href="tweet"
@@ -263,7 +278,7 @@ class RSSArticle extends React.Component {
 
 											window.ipcRenderer.send(
 												'open-external-window',
-												this.props.socialScore.hackernews.url,
+												article.socialScore.hackernews.url,
 											);
 										}}
 									>
@@ -271,44 +286,45 @@ class RSSArticle extends React.Component {
 									</a>
 								) : (
 									<a
-										href={this.props.socialScore.hackernews.url}
+										href={article.socialScore.hackernews.url}
 										target="_blank"
 									>
 										<i className="fab fa-hacker-news-square" />
 									</a>
 								)}
 							</span>
-						) : null}
+						)}
 						<div>
-							<a href={this.props.url}>{this.props.rss.title}</a>
+							<a href={article.url}>{article.rss.title}</a>
 						</div>
-						{this.props.commentUrl ? (
+						{article.commentUrl && (
 							<div>
 								<i className="fas fa-comment" />
-								<a href={this.props.commentUrl}>Comments</a>
+								<a href={article.commentUrl}>Comments</a>
 							</div>
-						) : null}
+						)}
 						<span className="muted">
 							{'Posted '}
-							<TimeAgo timestamp={this.props.publicationDate} />
+							<TimeAgo timestamp={article.publicationDate} />
 						</span>
 					</div>
 				</div>
 
 				<div className="content" ref={this.contentRef}>
 					<div className="enclosures">
-						{this.props.enclosures.map(
-							(enclosure) =>
-								enclosure.type.includes('audio') ||
-								enclosure.type.includes('video') ||
-								enclosure.type.includes('youtube') ? (
-									<ReactPlayer
-										controls={true}
-										key={enclosure._id}
-										url={enclosure.url}
-									/>
-								) : null,
-						)}
+						{article.enclosures &&
+							article.enclosures.map(
+								(enclosure) =>
+									enclosure.type.includes('audio') ||
+									enclosure.type.includes('video') ||
+									enclosure.type.includes('youtube') ? (
+										<ReactPlayer
+											controls={true}
+											key={enclosure._id}
+											url={enclosure.url}
+										/>
+									) : null,
+							)}
 					</div>
 					{articleContents}
 				</div>
@@ -317,82 +333,16 @@ class RSSArticle extends React.Component {
 	}
 }
 
-RSSArticle.defaultProps = {
-	images: {},
-};
-
 RSSArticle.propTypes = {
-	_id: PropTypes.string,
-	duplicateOf: PropTypes.string,
-	commentUrl: PropTypes.string,
-	enclosures: PropTypes.arrayOf(
-		PropTypes.shape({
-			_id: PropTypes.string,
-			url: PropTypes.string,
-			type: PropTypes.string,
-			length: PropTypes.string,
-		}),
-	),
-	description: PropTypes.string,
 	dispatch: PropTypes.func.isRequired,
-	images: PropTypes.shape({
-		og: PropTypes.string,
-	}),
-	loading: PropTypes.bool,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			articleID: PropTypes.string.isRequired,
 			rssFeedID: PropTypes.string.isRequired,
 		}),
 	}),
-	socialScore: PropTypes.shape({
-		reddit: PropTypes.shape({
-			url: PropTypes.string,
-			score: PropTypes.number,
-		}),
-		hackernews: PropTypes.shape({
-			url: PropTypes.string,
-			score: PropTypes.number,
-		}),
-	}),
-	pinID: PropTypes.string,
-	pinned: PropTypes.bool,
-	publicationDate: PropTypes.string,
-	rss: PropTypes.shape({
-		title: PropTypes.string,
-	}),
-	title: PropTypes.string,
-	url: PropTypes.string,
-	canonicalUrl: PropTypes.string,
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let articleID = ownProps.match.params.articleID;
-	let article = {};
-	if (!article.enclosures) {
-		article.enclosures = [];
-	}
-	let rss = {};
-	let loading = false;
-	if (!('articles' in state) || !(articleID in state.articles) || !state.rssFeeds) {
-		loading = true;
-	} else {
-		article = { ...state.articles[articleID] };
-		rss = { ...state.rssFeeds[article.rss] };
-	}
-
-	if (state.pinnedArticles && state.pinnedArticles[article._id]) {
-		article.pinned = true;
-		article.pinID = state.pinnedArticles[article._id]._id;
-	} else {
-		article.pinned = false;
-	}
-
-	return {
-		loading,
-		...article,
-		rss,
-	};
-};
+const mapStateToProps = (state) => ({ pinnedArticles: state.pinnedArticles });
 
 export default connect(mapStateToProps)(RSSArticle);

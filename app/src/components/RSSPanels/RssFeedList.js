@@ -19,6 +19,7 @@ class RssFeedList extends React.Component {
 				headerLink="/rss"
 			>
 				{this.props.rssFeeds.map((rssFeed) => {
+					const favicon = rssFeed.images ? rssFeed.images.favicon : null;
 					let rssId = rssFeed.duplicateOf || rssFeed._id;
 					let clazz =
 						this.props.match.params.rssFeedID === rssFeed._id
@@ -27,10 +28,7 @@ class RssFeedList extends React.Component {
 					return (
 						<Link className={clazz} key={rssId} to={`/rss/${rssId}`}>
 							<Img
-								src={[
-									rssFeed.images.favicon,
-									getPlaceholderImageURL(rssId),
-								]}
+								src={[favicon, getPlaceholderImageURL(rssId)]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{rssFeed.title}</div>

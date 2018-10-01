@@ -19,6 +19,7 @@ class PodcastList extends React.Component {
 				headerLink="/podcasts"
 			>
 				{this.props.podcasts.map((podcast) => {
+					const favicon = podcast.images ? podcast.images.favicon : null;
 					return (
 						<Link
 							className={
@@ -30,10 +31,7 @@ class PodcastList extends React.Component {
 							to={`/podcasts/${podcast._id}`}
 						>
 							<Img
-								src={[
-									podcast.images.favicon,
-									getPlaceholderImageURL(podcast._id),
-								]}
+								src={[favicon, getPlaceholderImageURL(podcast._id)]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>

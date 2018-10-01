@@ -7,7 +7,6 @@ import Img from 'react-image';
 import Popover from 'react-popover';
 
 import fetch from '../util/fetch';
-import { getFeed } from '../util/feeds';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
 import AliasModal from './AliasModal';
@@ -25,19 +24,24 @@ class RSSArticleList extends React.Component {
 			newArticlesAvailable: false,
 			menuPopover: false,
 			aliasModal: false,
+			loading: true,
+			rssFeed: { images: {} },
+			articles: [],
 		};
 
 		this.contentsEl = React.createRef();
 	}
 
 	subscribeToStreamFeed(rssFeedID, streamFeedToken) {
+		this.unsubscribeFromStreamFeed();
+
 		this.subscription = window.streamClient
 			.feed('rss', rssFeedID, streamFeedToken)
 			.subscribe(() => this.setState({ newArticlesAvailable: true }));
 	}
 
 	unsubscribeFromStreamFeed() {
-		this.subscription.cancel();
+		if (this.subscription) this.subscription.cancel();
 	}
 
 	componentDidMount() {
@@ -50,46 +54,23 @@ class RSSArticleList extends React.Component {
 
 		this.getRSSFeed(rssFeedID);
 		this.getRSSArticles(rssFeedID);
-
-		getFeed(this.props.dispatch, 'article', 0, 20);
-
-		if (this.props.rssFeed) {
-			this.subscribeToStreamFeed(
-				this.props.rssFeed._id,
-				this.props.rssFeed.streamToken,
-			);
-		}
 	}
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (nextProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.match.params.rssFeedID !== this.props.match.params.rssFeedID) {
+			const rssFeedID = this.props.match.params.rssFeedID;
+
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'viewed_rss_feed',
-				content: `rss:${nextProps.match.params.rssFeedID}`,
+				content: `rss:${rssFeedID}`,
 			});
+			this.unsubscribeFromStreamFeed();
 
 			this.setState({ articleCursor: 1 }, () => {
-				this.getRSSFeed(nextProps.match.params.rssFeedID);
-				this.getFollowState(nextProps.match.params.rssFeedID);
-				this.getRSSArticles(nextProps.match.params.rssFeedID);
-				getFeed(this.props.dispatch, 'article', 0, 20);
+				this.getRSSFeed(rssFeedID);
+				this.getRSSArticles(rssFeedID);
 			});
-
-			this.unsubscribeFromStreamFeed();
-			if (nextProps.rssFeed) {
-				this.subscribeToStreamFeed(
-					nextProps.rssFeed._id,
-					nextProps.rssFeed.streamToken,
-				);
-			}
 		}
-
-		if (!this.props.rssFeed && nextProps.rssFeed) {
-			this.subscribeToStreamFeed(
-				nextProps.rssFeed._id,
-				nextProps.rssFeed.streamToken,
-			);
-		}
-
 		if (this.contentsEl.current && localStorage['rss-article-list-scroll-position']) {
 			this.contentsEl.current.scrollTop =
 				localStorage['rss-article-list-scroll-position'];
@@ -102,30 +83,33 @@ class RSSArticleList extends React.Component {
 	}
 
 	getRSSFeed(rssFeedID) {
-		return fetch('GET', `/rss/${rssFeedID}`)
+		this.setState({ loading: true });
+		fetch('GET', `/rss/${rssFeedID}`)
 			.then((res) => {
-				if (res.data.duplicateOf)
-					return fetch('GET', `/rss/${res.data.duplicateOf}`);
-
-				return res;
+				return res.data.duplicateOf
+					? fetch('GET', `/rss/${res.data.duplicateOf}`)
+					: res;
 			})
-			.then((res) => {
-				this.props.dispatch({ rssFeed: res.data, type: 'UPDATE_RSS_FEED' });
-				this.getRSSArticles(res.data._id);
-				getFeed(this.props.dispatch, 'article', 0, 20);
-			})
+			.then((res) =>
+				this.setState({ rssFeed: res.data, loading: false }, () => {
+					this.subscribeToStreamFeed(
+						this.state.rssFeed._id,
+						this.state.rssFeed.streamToken,
+					);
+				}),
+			)
 			.catch((err) => {
 				if (window.console) console.log(err); // eslint-disable-line no-console
 			});
 	}
 
-	getRSSArticles(rssFeedID) {
-		return fetch(
+	getRSSArticles(rssFeedID, newFeed = false) {
+		fetch(
 			'GET',
 			'/articles',
 			{},
 			{
-				page: this.state.articleCursor,
+				page: newFeed ? 0 : this.state.articleCursor,
 				per_page: 10,
 				rss: rssFeedID,
 				sort_by: 'publicationDate,desc',
@@ -133,11 +117,11 @@ class RSSArticleList extends React.Component {
 		)
 			.then((res) => {
 				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
-
-				this.props.dispatch({
-					articles: res.data,
-					type: 'BATCH_UPDATE_ARTICLES',
-				});
+				else if (newFeed) this.setState({ articles: res.data });
+				else
+					this.setState((prevState) => ({
+						articles: [...prevState.articles, ...res.data],
+					}));
 			})
 			.catch((err) => {
 				if (window.console) console.log(err); // eslint-disable-line no-console
@@ -153,14 +137,39 @@ class RSSArticleList extends React.Component {
 	};
 
 	render() {
-		let sortedArticles = [...this.props.articles];
-		sortedArticles.sort((a, b) => {
-			return (
-				moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf()
-			);
-		});
+		if (this.state.loading) return <Loader />;
 
-		if (this.props.loading) return <Loader />;
+		const rssFeed = this.state.rssFeed;
+
+		const isFollowing = this.props.following[rssFeed._id]
+			? this.props.following[rssFeed._id]
+			: false;
+
+		const title = this.props.aliases[rssFeed._id]
+			? this.props.aliases[rssFeed._id].alias
+			: rssFeed.title;
+
+		let articles = this.state.articles.sort(
+			(a, b) =>
+				moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf(),
+		);
+
+		articles = articles.map((article) => {
+			if (this.props.pinnedArticles[article._id]) {
+				article.pinned = true;
+				article.pinID = this.props.pinnedArticles[article._id]._id;
+			} else article.pinned = false;
+
+			if (
+				this.props.feeds.article &&
+				this.props.feeds.article.indexOf(article._id) < 20 &&
+				this.props.feeds.article.indexOf(article._id) !== -1
+			) {
+				article.recent = true;
+			} else article.recent = false;
+
+			return article;
+		});
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
@@ -173,40 +182,29 @@ class RSSArticleList extends React.Component {
 				<div
 					className="panel-element menu-item"
 					onClick={() =>
-						this.props.following
-							? unfollowRss(
-									this.props.dispatch,
-									this.props.match.params.rssFeedID,
-							  )
-							: followRss(
-									this.props.dispatch,
-									this.props.match.params.rssFeedID,
-							  )
+						isFollowing
+							? unfollowRss(this.props.dispatch, rssFeed._id)
+							: followRss(this.props.dispatch, rssFeed._id)
 					}
 				>
-					{this.props.following ? (
-						<span className="red">Unfollow</span>
-					) : (
-						'Follow'
-					)}
+					{isFollowing ? <span className="red">Unfollow</span> : 'Follow'}
 				</div>
 			</div>
 		);
 
 		let rightContents;
-		if (this.props.articles.length === 0) {
+		if (this.state.articles.length === 0) {
 			rightContents = (
 				<div>
-					<p>{"We haven't found any articles for this RSS feed yet :("}</p>
+					<p>We haven't found any articles for this RSS feed yet :(</p>
 					<p>
-						{
-							"It might be because the RSS feed doesn't have any articles, or because it just got added and we're still parsing them. Come check back in a few minutes?"
-						}
+						It might be because the RSS feed doesn't have any articles, or
+						because it just got added and we're still parsing them. Come check
+						back in a few minutes?
 					</p>
 					<p>
-						{
-							"If you're pretty sure there's supposed to be some articles here, and they aren't showing up, please file a "
-						}
+						If you're pretty sure there's supposed to be some articles here,
+						and they aren't showing up, please file a{' '}
 						<a href="https://github.com/getstream/winds/issues">
 							GitHub Issue
 						</a>
@@ -217,7 +215,7 @@ class RSSArticleList extends React.Component {
 		} else {
 			rightContents = (
 				<React.Fragment>
-					{sortedArticles.map((article) => {
+					{articles.map((article) => {
 						return (
 							<ArticleListItem
 								key={article._id}
@@ -233,11 +231,11 @@ class RSSArticleList extends React.Component {
 
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{"That's it! No more articles here."}</p>
+							<p>That's it! No more articles here.</p>
 							<p>
-								{
-									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
-								}
+								What, did you think that once you got all the way around,
+								you'd just be back at the same place that you started?
+								Sounds like some real round-feed thinking to me.
 							</p>
 						</div>
 					) : (
@@ -245,11 +243,10 @@ class RSSArticleList extends React.Component {
 							<Waypoint
 								onEnter={() => {
 									this.setState(
-										{ articleCursor: this.state.articleCursor + 1 },
-										() =>
-											this.getRSSArticles(
-												this.props.match.params.rssFeedID,
-											),
+										(prevState) => ({
+											articleCursor: prevState.articleCursor + 1,
+										}),
+										() => this.getRSSArticles(rssFeed._id),
 									);
 								}}
 							/>
@@ -261,6 +258,7 @@ class RSSArticleList extends React.Component {
 				</React.Fragment>
 			);
 		}
+
 		return (
 			<React.Fragment>
 				<div className="list-view-header content-header">
@@ -268,15 +266,20 @@ class RSSArticleList extends React.Component {
 						<div className="image">
 							<Img
 								src={[
-									this.props.rssFeed.images.featured,
-									this.props.rssFeed.images.og,
-									getPlaceholderImageURL(this.props.rssFeed._id),
+									rssFeed.images.featured,
+									rssFeed.images.og,
+									getPlaceholderImageURL(rssFeed._id),
 								]}
 							/>
 						</div>
-						<h1>{this.props.rssFeed.title}</h1>
-						{!this.props.following && (
-							<div className="follow menu" onClick={() => this.follow()}>
+						<h1>{title}</h1>
+						{!isFollowing && (
+							<div
+								className="follow menu"
+								onClick={() =>
+									followRss(this.props.dispatch, rssFeed._id)
+								}
+							>
 								FOLLOW
 							</div>
 						)}
@@ -289,7 +292,7 @@ class RSSArticleList extends React.Component {
 							tipSize={0.1}
 						>
 							<div
-								className={this.props.following ? 'menu' : 'menu-pop'}
+								className={isFollowing ? 'menu' : 'menu-pop'}
 								onClick={() => this.toggleMenuPopover()}
 							>
 								&bull; &bull; &bull;
@@ -299,25 +302,25 @@ class RSSArticleList extends React.Component {
 				</div>
 
 				<AliasModal
-					defVal={this.props.rssFeed.title}
+					defVal={rssFeed.title}
 					isOpen={this.state.aliasModal}
 					toggleModal={this.toggleAliasModal}
 					isRss={true}
-					feedID={this.props.rssFeed._id}
+					feedID={rssFeed._id}
 				/>
 
 				<div className="list content" ref={this.contentsEl}>
-					{this.state.newArticlesAvailable ? (
+					{this.state.newArticlesAvailable && (
 						<div
 							className="toast"
 							onClick={() => {
-								this.getRSSFeed(this.props.match.params.rssFeedID);
+								this.getRSSArticles(rssFeed._id, true);
 								this.setState({ newArticlesAvailable: false });
 							}}
 						>
 							New Articles Available – Click to Refresh
 						</div>
-					) : null}
+					)}
 					{rightContents}
 				</div>
 			</React.Fragment>
@@ -326,118 +329,28 @@ class RSSArticleList extends React.Component {
 }
 
 RSSArticleList.defaultProps = {
-	articles: [],
-	loading: true,
-	following: false,
+	aliases: {},
+	following: {},
+	pinnedArticles: {},
+	feeds: {},
 };
 
 RSSArticleList.propTypes = {
-	articles: PropTypes.array,
 	dispatch: PropTypes.func.isRequired,
-	following: PropTypes.bool,
+	following: PropTypes.shape({}),
+	aliases: PropTypes.shape({}),
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			rssFeedID: PropTypes.string.isRequired,
 		}),
 	}),
-	loading: PropTypes.bool,
-	rssFeed: PropTypes.shape({
-		_id: PropTypes.string,
-		duplicateOf: PropTypes.string,
-		images: PropTypes.shape({
-			featured: PropTypes.string,
-			og: PropTypes.string,
-		}),
-		title: PropTypes.string,
-		streamToken: PropTypes.string.isRequired,
-	}),
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let rssFeed = { images: {} };
-
-	if ('rssFeeds' in state && ownProps.match.params.rssFeedID in state.rssFeeds) {
-		rssFeed = { ...state.rssFeeds[ownProps.match.params.rssFeedID] };
-	} else {
-		return {
-			...ownProps,
-			loading: true,
-		};
-	}
-
-	if (state.aliases && rssFeed._id && state.aliases[rssFeed._id])
-		rssFeed.title = state.aliases[rssFeed._id].alias;
-
-	let following = false;
-	if (
-		state.followedRssFeeds &&
-		state.followedRssFeeds[localStorage['authedUser']] &&
-		state.followedRssFeeds[localStorage['authedUser']][
-			ownProps.match.params.rssFeedID
-		]
-	) {
-		following = true;
-	}
-
-	let articles = [];
-	if (state.articles) {
-		for (let articleID of Object.keys(state.articles)) {
-			if (state.articles[articleID].rss === ownProps.match.params.rssFeedID) {
-				articles.push({ ...state.articles[articleID] }); // from @kenhoff - derp, make sure that you're pushing a _copy_ of the object, not the object itself, otherwise redux state is boom :(
-			}
-		}
-	} else {
-		return {
-			...ownProps,
-			loading: true,
-		};
-	}
-
-	for (let article of articles) {
-		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
-			article.pinned = true;
-			article.pinID = state.pinnedArticles[article._id]._id;
-		} else {
-			article.pinned = false;
-		}
-
-		if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
-			if (
-				state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
-					article._id,
-				) < 20 &&
-				state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
-					article._id,
-				) !== -1
-			) {
-				article.recent = true;
-			} else {
-				article.recent = false;
-			}
-		}
-
-		article.rss = { ...rssFeed };
-	}
-
-	articles.sort((a, b) => {
-		let diff =
-			moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf();
-		if (diff === 0) {
-			diff = moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf();
-		}
-		if (diff === 0) {
-			return a._id.localeCompare(b._id);
-		}
-		return diff;
-	});
-
-	return {
-		articles,
-		following,
-		loading: false,
-		rssFeed,
-		...ownProps,
-	};
-};
+const mapStateToProps = (state) => ({
+	aliases: state.aliases || {},
+	following: state.followedRssFeeds || {},
+	pinnedArticles: state.pinnedArticles || {},
+	feeds: state.feeds || {},
+});
 
 export default connect(mapStateToProps)(RSSArticleList);

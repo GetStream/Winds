@@ -18,10 +18,11 @@ class SuggestedPodcasts extends React.Component {
 			<Panel headerText="Suggested Podcasts">
 				{this.props.suggestedPodcasts.map((podcast) => {
 					const id = podcast._id;
+					const favicon = podcast.images ? podcast.images.favicon : null;
 					return (
 						<Link key={id} to={`/podcasts/${id}`}>
 							<Img
-								src={[podcast.images.favicon, getPlaceholderImageURL(id)]}
+								src={[favicon, getPlaceholderImageURL(id)]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>

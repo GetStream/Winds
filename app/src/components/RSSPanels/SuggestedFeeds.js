@@ -17,11 +17,10 @@ class SuggestedFeeds extends React.Component {
 			<Panel headerText="Suggested Feeds">
 				{this.props.suggestedRssFeeds.map((rssFeed) => {
 					const id = rssFeed._id;
+					const favicon = rssFeed.images ? rssFeed.images.favicon : null;
 					return (
 						<Link key={id} to={`/rss/${id}`}>
-							<Img
-								src={[rssFeed.images.favicon, getPlaceholderImageURL(id)]}
-							/>
+							<Img src={[favicon, getPlaceholderImageURL(id)]} />
 							<div>{rssFeed.title}</div>
 							<div
 								className={`clickable ${

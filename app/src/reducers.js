@@ -6,7 +6,7 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'UPDATE_EPISODE') {
 		let episode = { ...action.episode };
 		episode.podcast = episode.podcast._id;
-		episode.favicon = episode.images.favicon;
+		episode.favicon = episode.images ? episode.images.favicon : null;
 
 		let episodes = { ...previousState.episodes };
 		episodes[episode._id] = episode;
@@ -14,7 +14,10 @@ export default (previousState = {}, action) => {
 		return { ...previousState, episodes };
 	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
 		let episodes = action.episodes.reduce((result, item) => {
-			result[item._id] = { ...item, favicon: item.podcast.images.favicon };
+			result[item._id] = {
+				...item,
+				favicon: item.podcast.images ? item.podcast.images.favicon : null,
+			};
 			return result;
 		}, {});
 
@@ -39,7 +42,10 @@ export default (previousState = {}, action) => {
 		};
 	} else if (action.type === 'BATCH_UPDATE_ARTICLES') {
 		let articles = action.articles.reduce((result, item) => {
-			result[item._id] = { ...item, favicon: item.rss.images.favicon };
+			result[item._id] = {
+				...item,
+				favicon: item.rss.images ? item.rss.images.favicon : null,
+			};
 			return result;
 		}, {});
 
@@ -179,7 +185,9 @@ export default (previousState = {}, action) => {
 		let articles = { ...previousState.articles };
 		articles[action.rssArticle._id] = { ...action.rssArticle };
 		articles[action.rssArticle._id]['rss'] = action.rssArticle.rss._id;
-		articles[action.rssArticle._id]['favicon'] = action.rssArticle.rssimages.favicon;
+		articles[action.rssArticle._id]['favicon'] = action.rssArticle.rssimages
+			? action.rssArticle.rssimages.favicon
+			: null;
 
 		return { ...previousState, articles };
 	} else if (action.type === 'UPDATE_SUGGESTED_PODCASTS') {
