@@ -22,7 +22,6 @@ class PodcastsView extends React.Component {
 		};
 
 		this.container = React.createRef();
-		this.toggleNewPodcastModal = this.toggleNewPodcastModal.bind(this);
 	}
 
 	componentDidMount() {
@@ -37,11 +36,11 @@ class PodcastsView extends React.Component {
 			getPodcastById(this.props.dispatch, this.props.match.params.podcastID);
 	}
 
-	toggleNewPodcastModal() {
+	toggleNewPodcastModal = () => {
 		this.setState((prevState) => ({
 			newPodcastModalIsOpen: !prevState.newPodcastModalIsOpen,
 		}));
-	}
+	};
 
 	render() {
 		let headerComponent = <h1>Podcasts</h1>;
@@ -156,7 +155,7 @@ const mapStateToProps = (state, ownProps) => {
 	if (ownProps.match.params.podcastID && state.podcasts) {
 		return {
 			...ownProps,
-			podcast: { ...state.podcasts[ownProps.match.params.podcastID] },
+			podcast: state.podcasts[ownProps.match.params.podcastID],
 		};
 	} else {
 		return { ...ownProps };

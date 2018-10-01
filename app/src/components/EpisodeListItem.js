@@ -13,14 +13,13 @@ class EpisodeListItem extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { addToPlaylistPopoverIsOpen: false };
-		this.toggleAddToPlaylistPopover = this.toggleAddToPlaylistPopover.bind(this);
 	}
 
-	toggleAddToPlaylistPopover() {
-		this.setState({
-			addToPlaylistPopoverIsOpen: !this.state.addToPlaylistPopoverIsOpen,
-		});
-	}
+	toggleAddToPlaylistPopover = () => {
+		this.setState((prevState) => ({
+			addToPlaylistPopoverIsOpen: !prevState.addToPlaylistPopoverIsOpen,
+		}));
+	};
 
 	render() {
 		let icon;
@@ -67,7 +66,7 @@ class EpisodeListItem extends React.Component {
 						src={[
 							this.props.images.og,
 							this.props.podcast.images.featured,
-							getPlaceholderImageURL(this.props.episodeID),
+							getPlaceholderImageURL(this.props._id),
 						]}
 						loader={<div className="placeholder" />}
 					/>
@@ -80,7 +79,7 @@ class EpisodeListItem extends React.Component {
 						this.props.history.push(
 							this.props.playable
 								? `/podcasts/${this.props.podcast._id}/episodes/${
-										this.props.episodeID
+										this.props._id
 								  }`
 								: `/podcasts/${this.props.podcast._id}`,
 						);
@@ -92,18 +91,16 @@ class EpisodeListItem extends React.Component {
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								if (this.props.pinned) {
-									unpinEpisode(
-										this.props.pinID,
-										this.props._id,
-										this.props.dispatch,
-									);
-								} else {
-									pinEpisode(this.props._id, this.props.dispatch);
-								}
+								this.props.pinID
+									? unpinEpisode(
+											this.props.pinID,
+											this.props._id,
+											this.props.dispatch,
+									  )
+									: pinEpisode(this.props._id, this.props.dispatch);
 							}}
 						>
-							{this.props.pinned ? (
+							{this.props.pinID ? (
 								<i className="fas fa-bookmark" />
 							) : (
 								<i className="far fa-bookmark" />
@@ -136,7 +133,7 @@ class EpisodeListItem extends React.Component {
 EpisodeListItem.defaultProps = {
 	liked: false,
 	likes: 0,
-	pinned: false,
+	pinID: '',
 	playable: false,
 	playing: false,
 	recent: false,
@@ -151,9 +148,9 @@ EpisodeListItem.propTypes = {
 	images: PropTypes.shape({
 		og: PropTypes.string,
 	}),
-	pinned: PropTypes.bool,
+	pinID: PropTypes.string,
 	playOrPauseEpisode: PropTypes.func,
-	episodeID: PropTypes.string,
+	_id: PropTypes.string,
 	playable: PropTypes.bool,
 	playing: PropTypes.bool,
 	link: PropTypes.string,

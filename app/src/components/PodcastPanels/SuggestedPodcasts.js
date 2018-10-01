@@ -56,7 +56,7 @@ SuggestedPodcasts.propTypes = {
 	suggestedPodcasts: PropTypes.arrayOf(PropTypes.shape()),
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
 	if (!state.suggestedPodcasts) return { suggestedPodcasts: [] };
 
 	let suggestedPodcasts = state.suggestedPodcasts;

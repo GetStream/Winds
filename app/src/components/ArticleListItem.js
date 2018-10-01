@@ -40,7 +40,7 @@ class ArticleListItem extends React.Component {
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								this.props.pinned
+								this.props.pinID
 									? unpinArticle(
 											this.props.pinID,
 											this.props._id,
@@ -49,7 +49,7 @@ class ArticleListItem extends React.Component {
 									: pinArticle(this.props._id, this.props.dispatch);
 							}}
 						>
-							{this.props.pinned ? (
+							{this.props.pinID ? (
 								<i className="fas fa-bookmark" />
 							) : (
 								<i className="far fa-bookmark" />
@@ -81,7 +81,7 @@ ArticleListItem.defaultProps = {
 	images: {},
 	liked: false,
 	likes: 0,
-	pinned: false,
+	pinID: '',
 	recent: false,
 };
 
@@ -98,7 +98,6 @@ ArticleListItem.propTypes = {
 	}),
 	onNavigation: PropTypes.func,
 	pinID: PropTypes.string,
-	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
 	recent: PropTypes.bool,
 	rss: PropTypes.shape({

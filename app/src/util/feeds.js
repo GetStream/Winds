@@ -8,10 +8,9 @@ export const getFeed = (dispatch, type, page = 0, per_page = 10) => {
 		per_page,
 		type,
 	}).then((res) => {
-		const items = res.data.map((item) => ({ ...item, type }));
 		if (type === 'episode')
-			dispatch({ episodes: items, type: 'BATCH_UPDATE_EPISODES' });
+			dispatch({ episodes: res.data, type: 'BATCH_UPDATE_EPISODES' });
 		else if (type === 'article')
-			dispatch({ articles: items, type: 'BATCH_UPDATE_ARTICLES' });
+			dispatch({ articles: res.data, type: 'BATCH_UPDATE_ARTICLES' });
 	});
 };

@@ -125,9 +125,8 @@ const mapStateToProps = (state) => {
 
 	for (let article of articles) {
 		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
-			article.pinned = true;
 			article.pinID = state.pinnedArticles[article._id]._id;
-		} else article.pinned = false;
+		} else article.pinID = '';
 
 		if (
 			state.feeds.article.indexOf(article._id) < 20 &&

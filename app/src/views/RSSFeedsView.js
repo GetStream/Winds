@@ -22,7 +22,6 @@ class RSSFeedsView extends React.Component {
 		};
 
 		this.container = React.createRef();
-		this.toggleNewRSSModal = this.toggleNewRSSModal.bind(this);
 	}
 
 	componentDidMount() {
@@ -37,11 +36,11 @@ class RSSFeedsView extends React.Component {
 			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
-	toggleNewRSSModal() {
+	toggleNewRSSModal = () => {
 		this.setState((prevState) => ({
 			newRSSModalIsOpen: !prevState.newRSSModalIsOpen,
 		}));
-	}
+	};
 
 	render() {
 		let leftColumn;

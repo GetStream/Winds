@@ -82,7 +82,7 @@ class RSSArticleList extends React.Component {
 		this.unsubscribeFromStreamFeed();
 	}
 
-	getRSSFeed(rssFeedID) {
+	getRSSFeed = (rssFeedID) => {
 		this.setState({ loading: true });
 		fetch('GET', `/rss/${rssFeedID}`)
 			.then((res) => {
@@ -101,15 +101,22 @@ class RSSArticleList extends React.Component {
 			.catch((err) => {
 				if (window.console) console.log(err); // eslint-disable-line no-console
 			});
-	}
+	};
 
-	getRSSArticles(rssFeedID, newFeed = false) {
+	uniqueArr = (array) => {
+		const seen = {};
+		return array.filter(
+			(item) => (seen.hasOwnProperty(item._id) ? false : (seen[item._id] = true)),
+		);
+	};
+
+	getRSSArticles = (rssFeedID, newFeed = false) => {
 		fetch(
 			'GET',
 			'/articles',
 			{},
 			{
-				page: newFeed ? 0 : this.state.articleCursor,
+				page: newFeed ? 1 : this.state.articleCursor,
 				per_page: 10,
 				rss: rssFeedID,
 				sort_by: 'publicationDate,desc',
@@ -120,13 +127,13 @@ class RSSArticleList extends React.Component {
 				else if (newFeed) this.setState({ articles: res.data });
 				else
 					this.setState((prevState) => ({
-						articles: [...prevState.articles, ...res.data],
+						articles: this.uniqueArr([...prevState.articles, ...res.data]),
 					}));
 			})
 			.catch((err) => {
 				if (window.console) console.log(err); // eslint-disable-line no-console
 			});
-	}
+	};
 
 	toggleMenuPopover = () => {
 		this.setState((prevState) => ({ menuPopover: !prevState.menuPopover }));
@@ -156,9 +163,8 @@ class RSSArticleList extends React.Component {
 
 		articles = articles.map((article) => {
 			if (this.props.pinnedArticles[article._id]) {
-				article.pinned = true;
 				article.pinID = this.props.pinnedArticles[article._id]._id;
-			} else article.pinned = false;
+			} else article.pinID = '';
 
 			if (
 				this.props.feeds.article &&
@@ -173,10 +179,7 @@ class RSSArticleList extends React.Component {
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
-				<div
-					className="panel-element menu-item"
-					onClick={() => this.toggleAliasModal()}
-				>
+				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>
 					Rename
 				</div>
 				<div
@@ -193,7 +196,7 @@ class RSSArticleList extends React.Component {
 		);
 
 		let rightContents;
-		if (this.state.articles.length === 0) {
+		if (articles.length === 0) {
 			rightContents = (
 				<div>
 					<p>We haven't found any articles for this RSS feed yet :(</p>
@@ -302,7 +305,7 @@ class RSSArticleList extends React.Component {
 				</div>
 
 				<AliasModal
-					defVal={rssFeed.title}
+					defVal={title}
 					isOpen={this.state.aliasModal}
 					toggleModal={this.toggleAliasModal}
 					isRss={true}

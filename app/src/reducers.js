@@ -16,6 +16,7 @@ export default (previousState = {}, action) => {
 		let episodes = action.episodes.reduce((result, item) => {
 			result[item._id] = {
 				...item,
+				type: 'episode',
 				favicon: item.podcast.images ? item.podcast.images.favicon : null,
 			};
 			return result;
@@ -44,6 +45,7 @@ export default (previousState = {}, action) => {
 		let articles = action.articles.reduce((result, item) => {
 			result[item._id] = {
 				...item,
+				type: 'article',
 				favicon: item.rss.images ? item.rss.images.favicon : null,
 			};
 			return result;
