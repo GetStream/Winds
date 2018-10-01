@@ -10,18 +10,26 @@ import User from '../../models/user';
 import logger from '../../utils/logger';
 import { getStreamClient } from '../../utils/stream';
 
+export async function daylyContextGlobal() {
+	//TODO: actually implement this
+	return await weeklyContextGlobal();
+}
+
 export async function weeklyContextGlobal() {
-	let counts = {};
+	return {
+		counts: {
+			rss: await RSS.find({}).count(),
+			users: await User.find({}).count(),
+			podcast: await Podcast.find({}).count(),
+			episodes: await Episode.find({}).count(),
+			articles: await Article.find({}).count(),
+		}
+	};
+}
 
-	counts.users = await User.find({}).count();
-	counts.articles = await Article.find({}).count();
-	counts.episodes = await Episode.find({}).count();
-	counts.rss = await RSS.find({}).count();
-	counts.podcast = await Podcast.find({}).count();
-
-	let data = { counts };
-
-	return data;
+export async function daylyContextUser(user) {
+	//TODO: actually implement this
+	return await weeklyContextUser(user);
 }
 
 export async function weeklyContextUser(user) {

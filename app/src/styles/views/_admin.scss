@@ -1,0 +1,251 @@
+// ----------------------------------------
+// // ------ tables config ------
+// ----------------------------------------
+
+// ----------------------------------------
+// // ------ colors ------
+// ----------------------------------------
+
+$table-border-color: #b8b8b8;
+
+// ----------------------------------------
+// // ------ demo container settings ------
+// ----------------------------------------
+
+$container-width: 88%;
+
+// ----------------------------------------
+// // ------ table settings ------
+// ----------------------------------------
+
+$table-border-width: .071428571em;
+$table-border-style: solid;
+$table-margin-bottom: 1.529411765em;
+$table-cell-padding: .470588235em;
+$table-cell-text-align: left;
+$table-cell-border-top: $table-border-width $table-border-style $table-border-color;
+$table-header-font-weight: bold;
+$table-body-border-top: .142857143em $table-border-style $table-border-color;
+$table-condensed-padding: .294117647em;
+$table-bordered-border: $table-border-width $table-border-style $table-border-color;
+$table-bordered-border-radius: .470588235em;
+$table-border-left: $table-border-width $table-border-style $table-border-color;
+$table-bordered-child-radius: .470588235em;
+
+/* =============================================================
+
+    Tables v1.0
+    Simple table styling by Chris Ferdinandi.
+    http://gomakethings.com
+
+    Adapted from Twitter Bootstrap.
+    http://twitter.github.com/bootstrap/
+
+    Licensed under the Apache License v2.0
+    http://www.apache.org/licenses/LICENSE-2.0
+
+ * ============================================================= */
+
+/*  Sets Body Width */
+.admin {
+    display: flex;
+    flex-flow: column;
+    width: $container-width;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin .email {
+    border-style: dashed;
+    border-color: lightgray;
+    border-width: thin;
+    padding: 15px;
+    background: white;
+}
+
+.admin input[type='checkbox'] {
+    display: none;
+}
+
+.lbl-toggle h2 {
+    display: inline-block;
+}
+
+.lbl-toggle {
+    display: block;
+
+    cursor: pointer;
+
+    border-radius: 7px;
+    transition: all 0.25s ease-out;
+}
+
+.lbl-toggle:hover {
+    color: #7C5A0B;
+}
+
+.lbl-toggle::before {
+    content: ' ';
+    display: inline-block;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid currentColor;
+
+    vertical-align: middle;
+    margin-right: .7rem;
+    transform: translateY(-2px);
+
+    transition: transform .2s ease-out;
+}
+
+.collapsible-content .table {
+    background: white;
+}
+
+.collapsible-content {
+    max-height: 0px;
+    overflow: scroll;
+
+    transition: max-height .25s ease-in-out;
+}
+
+.toggle:checked + .lbl-toggle + .collapsible-content {
+    max-height: 800px;
+}
+
+.toggle:checked + .lbl-toggle::before {
+    transform: rotate(90deg) translateX(-3px);
+}
+
+.toggle:checked + .lbl-toggle {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* =============================================================
+    TABLES
+    Table styling.
+ * ============================================================= */
+
+/*  Removes default browser settings
+ *  and evens out inconsistencies. */
+.admin table {
+    max-width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/*  Sets table width to 100%.
+ *  Adds bottom-margin. */
+.table,
+%table {
+    width: 100%;
+    margin-bottom: $table-margin-bottom;
+}
+
+/*  Adds table cell padding,
+ *  aligns text to the left,
+ *  and adds a top border to each cell. */
+.table th,
+%table th,
+.table td,
+%table td {
+    padding: $table-cell-padding;
+    text-align: $table-cell-text-align;
+    border-top: $table-cell-border-top;
+}
+
+/*  Sets table header font-weight to bold.
+ *  Aligns table header text to the bottom of each cell. */
+.table th,
+%table th {
+    font-weight: $table-header-font-weight;
+    vertical-align: bottom;
+}
+
+/*  Aligns cell text to the top of each cell. */
+.table td,
+%table td {
+   vertical-align: top;
+}
+
+/*  Removes the border-top from the first row. */
+.table thead:first-child tr th,
+%table thead:first-child tr th,
+.table thead:first-child tr td,
+%table thead:first-child tr td {
+    border-top: 0;
+}
+
+/*  Adds border-top between two table-body sections. */
+.table tbody + tbody,
+%table tbody + tbody {
+    border-top: $table-body-border-top;
+}
+
+/*  Reduces cell padding */
+.table-condensed th,
+%table-condensed th,
+.table-condensed td,
+%table-condensed td {
+    padding: $table-condensed-padding;
+}
+
+/* Adds borders and border-radius. */
+.table-bordered,
+%table-bordered {
+    border: $table-bordered-border;
+    border-collapse: separate;
+    *border-collapse: collapsed;
+    border-radius: $table-bordered-border-radius;
+}
+
+.table-bordered th + th,
+%table-bordered th + th,
+.table-bordered td + td,
+%table-bordered td + td,
+.table-bordered th + td,
+%table-bordered th + td,
+.table-bordered td + th,
+%table-bordered td + th {
+    border-left: $table-border-left;
+}
+
+.table-bordered thead:first-child tr:first-child th,
+%table-bordered thead:first-child tr:first-child th,
+.table-bordered tbody:first-child tr:first-child th,
+%table-bordered tbody:first-child tr:first-child th,
+.table-bordered tbody:first-child tr:first-child td,
+%table-bordered tbody:first-child tr:first-child td {
+    border-top: 0;
+}
+
+.table-bordered thead:first-child tr:first-child th:first-child,
+%table-bordered thead:first-child tr:first-child th:first-child,
+.table-bordered tbody:first-child tr:first-child td:first-child,
+%table-bordered tbody:first-child tr:first-child td:first-child {
+    border-radius: $table-bordered-child-radius 0 0 0;
+}
+
+.table-bordered thead:first-child tr:first-child th:last-child,
+%table-bordered thead:first-child tr:first-child th:last-child,
+.table-bordered tbody:first-child tr:first-child td:last-child,
+%table-bordered tbody:first-child tr:first-child td:last-child {
+    border-radius: 0 $table-bordered-child-radius 0 0;
+}
+
+.table-bordered thead:last-child tr:last-child th:first-child,
+%table-bordered thead:last-child tr:last-child th:first-child,
+.table-bordered tbody:last-child tr:last-child td:first-child,
+%table-bordered tbody:last-child tr:last-child td:first-child {
+    border-radius: 0 0 0 $table-bordered-child-radius;
+}
+
+.table-bordered thead:last-child tr:last-child th:last-child,
+%table-bordered thead:last-child tr:last-child th:last-child,
+.table-bordered tbody:last-child tr:last-child td:last-child,
+%table-bordered tbody:last-child tr:last-child td:last-child {
+    border-radius: 0 0 $table-bordered-child-radius 0;
+}
