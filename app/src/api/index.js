@@ -1,4 +1,5 @@
 import fetch from '../util/fetch';
+import { getPinnedArticles, getPinnedEpisodes } from '../util/pins';
 
 export const getUser = (dispatch, userId) => {
 	fetch('GET', `/users/${userId}`)
@@ -197,4 +198,16 @@ export const unfollowPodcast = (dispatch, podcastID) => {
 			dispatch({ podcastID, type: 'FOLLOW_PODCAST' });
 		},
 	);
+};
+
+export const getAllData = (dispatch) => {
+	const userId = localStorage['authedUser'];
+	if (userId) {
+		getUser(dispatch, userId);
+		getAliases(dispatch);
+		getPinnedArticles(dispatch);
+		getPinnedEpisodes(dispatch);
+		getRssFollows(dispatch);
+		getPodcastsFollows(dispatch);
+	}
 };

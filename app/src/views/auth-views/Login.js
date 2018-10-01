@@ -1,26 +1,27 @@
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import config from '../../config';
+import { getAllData } from '../../api';
 
 class Login extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			email: '',
 			errorMessage: '',
 			password: '',
 		};
-		this.submit = this.submit.bind(this);
-		this.isValid = this.isValid.bind(this);
 	}
 
-	isValid() {
+	isValid = () => {
 		return this.state.email.trim !== '' && this.state.password !== '';
-	}
+	};
 
-	submit(e) {
+	submit = (e) => {
 		e.preventDefault();
 
 		axios
@@ -36,7 +37,7 @@ class Login extends Component {
 
 				window.localStorage.setItem('jwt', res.data.jwt);
 				window.localStorage.setItem('authedUser', res.data._id);
-
+				getAllData(this.props.dispatch);
 				this.props.history.push('/');
 			})
 			.catch(() => {
@@ -46,7 +47,7 @@ class Login extends Component {
 					password: '',
 				});
 			});
-	}
+	};
 
 	render() {
 		return (
@@ -64,9 +65,7 @@ class Login extends Component {
 							name="email"
 							onChange={(e) => {
 								e.preventDefault();
-								this.setState({
-									email: e.target.value,
-								});
+								this.setState({ email: e.target.value });
 							}}
 							placeholder="Email"
 							tabIndex="1"
@@ -80,9 +79,7 @@ class Login extends Component {
 							name="password"
 							onChange={(e) => {
 								e.preventDefault();
-								this.setState({
-									password: e.target.value,
-								});
+								this.setState({ password: e.target.value });
 							}}
 							placeholder="Password"
 							tabIndex="2"
@@ -102,10 +99,10 @@ class Login extends Component {
 					<div className="error">{this.state.errorMessage}</div>
 				</form>
 				<p className="info">
-					New to Winds? <Link to={'/create-account'}>Create an Account</Link>
+					New to Winds? <Link to="/create-account">Create an Account</Link>
 				</p>
 				<p className="info">
-					Forget password? <Link to={'/forgot-password'}>Reset Password</Link>
+					Forget password? <Link to="/forgot-password">Reset Password</Link>
 				</p>
 			</div>
 		);
@@ -119,4 +116,4 @@ Login.propTypes = {
 	signin: PropTypes.func,
 };
 
-export default Login;
+export default connect()(Login);

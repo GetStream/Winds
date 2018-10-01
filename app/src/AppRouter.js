@@ -13,21 +13,11 @@ import NotFound from './views/404View';
 import Header from './components/Header';
 import Player from './components/Player.js';
 import { Create, ForgotPassword, Login, ResetPassword } from './views/auth-views';
-import { getUser, getAliases, getRssFollows, getPodcastsFollows } from './api';
-import { getPinnedArticles, getPinnedEpisodes } from './util/pins';
+import { getAllData } from './api';
 
 class AppRouter extends Component {
 	componentDidMount() {
-		const userId = localStorage['authedUser'];
-		if (userId) {
-			const dispatch = this.props.dispatch;
-			getUser(dispatch, userId);
-			getAliases(dispatch);
-			getPinnedArticles(dispatch);
-			getPinnedEpisodes(dispatch);
-			getRssFollows(dispatch);
-			getPodcastsFollows(dispatch);
-		}
+		getAllData(this.props.dispatch);
 	}
 
 	render() {
@@ -71,4 +61,6 @@ AppRouter.propTypes = {
 	history: PropTypes.object.isRequired,
 };
 
-export default connect()(AppRouter);
+const mapStateToProps = (state) => ({ user: state.user });
+
+export default connect(mapStateToProps)(AppRouter);
