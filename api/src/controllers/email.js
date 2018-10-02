@@ -14,13 +14,13 @@ exports.list = async (req, res) => {
 	res.json(['daily', 'weekly']);
 };
 
-function createEmail(type, user) {
+async function createEmail(type, user) {
 	const create = { daily: CreateDailyEmail, weekly: CreateWeeklyEmail };
 	const context = { // storing as lambda to defer evaluation
 		daily: () => [ dailyContextGlobal(), dailyContextUser(user) ],
 		weekly: () => [ weeklyContextGlobal(), weeklyContextUser(user) ]
 	};
-	const emailContext = Promise.all(context[type]());
+	const emailContext = await Promise.all(context[type]());
 	return create[type](Object.assign({}, ...emailContext));
 }
 
@@ -43,7 +43,7 @@ exports.get = async (req, res) => {
 	if (!user) {
 		return res.status(404);
 	}
-	const email = createEmail(req.params.emailName, user);
+	const email = await createEmail(req.params.emailName, user);
 
 	return res.type('html').send(email.html);
 };
@@ -62,7 +62,7 @@ exports.post = async (req, res) => {
 	if (!user) {
 		return res.status(404);
 	}
-	const email = createEmail(req.params.emailName, user);
+	const email = await createEmail(req.params.emailName, user);
 	await sendEmail(req.params.emailName, email);
 
 	return res.status(204);
