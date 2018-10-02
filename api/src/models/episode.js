@@ -7,6 +7,7 @@ import { createHash } from 'crypto';
 import { EnclosureSchema } from './enclosure';
 import Cache from './cache';
 import { ParseArticle } from '../parsers/article';
+import { getUrl } from '../utils/urls';
 
 export const EpisodeSchema = new Schema(
 	{
