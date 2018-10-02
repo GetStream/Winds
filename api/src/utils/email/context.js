@@ -16,15 +16,15 @@ export async function dailyContextGlobal() {
 }
 
 export async function weeklyContextGlobal() {
-	return {
-		counts: {
-			rss: await RSS.find({}).countDocuments(),
-			users: await User.find({}).countDocuments(),
-			podcast: await Podcast.find({}).countDocuments(),
-			episodes: await Episode.find({}).countDocuments(),
-			articles: await Article.find({}).countDocuments(),
-		}
-	};
+	const [rss, users, podcast, episodes, articles] = await Promise.all([
+		RSS.find({}).estimatedDocumentCount(),
+		User.find({}).estimatedDocumentCount(),
+		Podcast.find({}).estimatedDocumentCount(),
+		Episode.find({}).estimatedDocumentCount(),
+		Article.find({}).estimatedDocumentCount(),
+	]);
+
+	return { counts: { rss, users, podcast, episodes, articles } };
 }
 
 export async function dailyContextUser(user) {
