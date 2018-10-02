@@ -71,7 +71,7 @@ export async function weeklyContextUser(user) {
 	let podcasts = [];
 	let rss = [];
 	try {
-		[podcast, rss] = await Promise.all([
+		[podcasts, rss] = await Promise.all([
 			personalization.getPodcastRecommendations(userID, 3),
 			personalization.getRSSRecommendations(userID, 3),
 		]);
