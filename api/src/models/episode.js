@@ -153,7 +153,7 @@ EpisodeSchema.plugin(autopopulate);
 EpisodeSchema.index({ podcast: 1, fingerprint: 1 }, { unique: true });
 EpisodeSchema.index({ podcast: 1, publicationDate: -1 });
 
-ArticleSchema.methods.getUrl = function() {
+EpisodeSchema.methods.getUrl = function() {
 	return getUrl('episode_detail', this.podcast._id, this._id);
 };
 

@@ -43,7 +43,7 @@ export async function getRSSRecommendations(userID, limit = 20) {
 	try {
 		const ids = await getRecommendations(userID, 'rss', limit);
 		const feeds = await RSS.find({ _id: { $in: ids } });
-		if (ids.length != episodes.length) {
+		if (ids.length != feeds.length) {
 			logger.warn(`Failed to find some rss feeds from list ${ids.join(',')}`);
 		}
 		return feeds;
@@ -57,7 +57,7 @@ export async function getPodcastRecommendations(userID, limit = 20) {
 	try {
 		const ids = await getRecommendations(userID, 'podcast', limit);
 		const feeds = await Podcast.find({ _id: { $in: ids } });
-		if (ids.length != episodes.length) {
+		if (ids.length != feeds.length) {
 			logger.warn(`Failed to find some podcast feeds from list ${ids.join(',')}`);
 		}
 		return feeds;
