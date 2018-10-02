@@ -18,11 +18,11 @@ export async function dailyContextGlobal() {
 export async function weeklyContextGlobal() {
 	return {
 		counts: {
-			rss: await RSS.find({}).count(),
-			users: await User.find({}).count(),
-			podcast: await Podcast.find({}).count(),
-			episodes: await Episode.find({}).count(),
-			articles: await Article.find({}).count(),
+			rss: await RSS.find({}).countDocuments(),
+			users: await User.find({}).countDocuments(),
+			podcast: await Podcast.find({}).countDocuments(),
+			episodes: await Episode.find({}).countDocuments(),
+			articles: await Article.find({}).countDocuments(),
 		}
 	};
 }
@@ -32,74 +32,56 @@ export async function dailyContextUser(user) {
 	return await weeklyContextUser(user);
 }
 
+function getRedirectUrl(url, id, userID, position) {
+	return getStreamClient().createRedirectUrl(url, userID, [{
+		content: id,
+		label: 'click',
+		user_data: userID,
+		location: 'email',
+		position,
+	}]);
+}
+
 export async function weeklyContextUser(user) {
-	const userId = user._id.toString();
+	const userID = user._id.toString();
 
 	let articles = [];
 	let episodes = [];
-	let podcasts = [];
-	let rss = [];
-
 	try {
-		articles = await personalization.getArticleRecommendations(userId, 5);
-		episodes = await personalization.getEpisodeRecommendations(userId, 5);
+		[articles, episodes] = await Promise.all([
+			personalization.getArticleRecommendations(userID, 5),
+			personalization.getEpisodeRecommendations(userID, 5),
+		]);
 
 		let position = 0;
-
-		episodes.map(episode => {
-			position++;
-
-			episode.trackingUrl = getStreamClient().createRedirectUrl(
-				episode.getUrl(),
-				user._id,
-				[
-					{
-						content: `episode:${episode._id}`,
-						label: 'click',
-						user_data: user._id,
-						position: position,
-						location: 'email',
-					},
-				],
-			);
-		});
-
-		articles.map((article, index) => {
-			position++;
-
-			article.trackingUrl = getStreamClient().createRedirectUrl(
-				article.getUrl(),
-				user._id,
-				[
-					{
-						content: `article:${article._id}`,
-						label: 'click',
-						user_data: user._id,
-						position: position,
-						location: 'email',
-					},
-				],
-			);
-		});
+		for (const episode of episodes) {
+			episode.trackingUrl = getRedirectUrl(episode.getUrl(), `episode:${episode._id}`, user._id, ++position);
+		}
+		for (const article of articles) {
+			article.trackingUrl = getRedirectUrl(article.getUrl(), `article:${article._id}`, user._id, ++position);
+		}
 	} catch (e) {
-		logger.info(`article recommendations failed for ${userId}`);
+		logger.warn(`Article recommendations failed for ${userID}`);
 
 		if (e.request) {
-			logger.warn(
-				`Failed with code ${e.response.status} for path  ${e.request.path}`,
-			);
+			logger.warn(`Failed with code ${e.response.status} for path  ${e.request.path}`);
 		} else {
-			logger.warn(`error ${e}`);
+			logger.warn(`error: ${e.stack}`);
 		}
 	}
+
+	let podcasts = [];
+	let rss = [];
 	try {
-		podcasts = await personalization.getPodcastRecommendations(userId, 3);
-		rss = await personalization.getRSSRecommendations(userId, 3);
+		[podcast, rss] = await Promise.all([
+			personalization.getPodcastRecommendations(userID, 3),
+			personalization.getRSSRecommendations(userID, 3),
+		]);
 	} catch (e) {
-		logger.info(`Follow suggestions failed for ${userId}`);
+		logger.info(`Follow suggestions failed for ${userID}: ${e.stack}`);
 	}
 
-	let userContext = {
+	return {
 		email: user.email,
 		articles,
 		episodes,
@@ -107,6 +89,4 @@ export async function weeklyContextUser(user) {
 		podcasts,
 		rss,
 	};
-
-	return userContext;
 }

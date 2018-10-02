@@ -8,7 +8,7 @@ import {
     weeklyContextGlobal,
     weeklyContextUser
 } from '../utils/email/context';
-import { CreateDailyEmail, CreateWeeklyEmail, SendDailyEmail, SendWeeklyEmail } from '../utils/email/send';
+import { CreateDailyEmail, CreateWeeklyEmail, SendEmail } from '../utils/email/send';
 
 exports.list = async (req, res) => {
 	res.json(['daily', 'weekly']);
@@ -22,11 +22,6 @@ async function createEmail(type, user) {
 	};
 	const emailContext = await Promise.all(context[type]());
 	return create[type](Object.assign({}, ...emailContext));
-}
-
-function sendEmail(type, email) {
-	const send = { daily: SendDailyEmail, weekly: SendWeeklyEmail };
-	return send[type](email);
 }
 
 exports.get = async (req, res) => {
@@ -63,7 +58,7 @@ exports.post = async (req, res) => {
 		return res.status(404);
 	}
 	const email = await createEmail(req.params.emailName, user);
-	await sendEmail(req.params.emailName, email);
+	const result = await SendEmail(email);
 
-	return res.status(204);
+	return res.status(200).json(result);
 }
