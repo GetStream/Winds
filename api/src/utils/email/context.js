@@ -76,7 +76,7 @@ export async function weeklyContextUser(user) {
 			personalization.getRSSRecommendations(userID, 3),
 		]);
 	} catch (e) {
-		logger.info(`Follow suggestions failed for ${userID}: ${e.stack}`);
+		logger.warn(`Follow suggestions failed for ${userID}: ${e.stack}`);
 	}
 
 	return {

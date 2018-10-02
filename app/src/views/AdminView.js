@@ -14,7 +14,7 @@ class AdminView extends React.Component {
 		super(props);
 		this.state = {
 			userID: props.userID,
-			emailHTML: '',
+			emailHTML: 'No content',
 			emailType: 'daily',
 			podcasts: [],
 			rssFeeds: [],
@@ -104,6 +104,7 @@ class AdminView extends React.Component {
 				<label htmlFor="collapsible-email" className="lbl-toggle"><h2>Test email</h2></label>
 				<div className="collapsible-content">
 					<form onSubmit={event => {
+						this.setState({ emailHTML: 'Loading' });
 						fetch('get', `/email/${this.state.emailType}?user=${this.state.userID}`).then(res => {
 							this.setState({ emailHTML: res.data });
 						});
@@ -117,7 +118,10 @@ class AdminView extends React.Component {
 						</label>
 						&nbsp;
 						<select value={this.state.emailType} onChange={event => {
-							this.setState({ emailType: event.target.value });
+							this.setState({
+								emailHTML: 'No content',
+								emailType: event.target.value,
+							});
 						}}>
 							<option value="daily">Daily digest</option>
 							<option value="weekly">Weekly digest</option>
