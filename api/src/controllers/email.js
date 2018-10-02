@@ -3,21 +3,21 @@ import mongoose from 'mongoose';
 import User from '../models/user';
 
 import {
-    daylyContextGlobal,
-    daylyContextUser,
+    dailyContextGlobal,
+    dailyContextUser,
     weeklyContextGlobal,
     weeklyContextUser
 } from '../utils/email/context';
-import { CreateDaylyEmail, CreateWeeklyEmail, SendDaylyEmail, SendWeeklyEmail } from '../utils/email/send';
+import { CreateDailyEmail, CreateWeeklyEmail, SendDailyEmail, SendWeeklyEmail } from '../utils/email/send';
 
 exports.list = async (req, res) => {
 	res.json(['daily', 'weekly']);
 };
 
 function createEmail(type, user) {
-	const create = { dayly: CreateDaylyEmail, weekly: CreateWeeklyEmail };
+	const create = { daily: CreateDailyEmail, weekly: CreateWeeklyEmail };
 	const context = { // storing as lambda to defer evaluation
-		dayly: () => [ daylyContextGlobal(), daylyContextUser(user) ],
+		daily: () => [ dailyContextGlobal(), dailyContextUser(user) ],
 		weekly: () => [ weeklyContextGlobal(), weeklyContextUser(user) ]
 	};
 	const emailContext = Promise.all(context[type]());
@@ -25,13 +25,13 @@ function createEmail(type, user) {
 }
 
 function sendEmail(type, email) {
-	const send = { dayly: SendDaylyEmail, weekly: SendWeeklyEmail };
+	const send = { daily: SendDailyEmail, weekly: SendWeeklyEmail };
 	return send[type](email);
 }
 
 exports.get = async (req, res) => {
 	if (!['daily', 'weekly'].includes(req.params.emailName)) {
-		return;
+		return res.status(401);
 	}
 
 	const userId = req.query.user;
@@ -40,6 +40,9 @@ exports.get = async (req, res) => {
 	}
 
 	const user = await User.findOne({ _id: userId, admin: true });
+	if (!user) {
+		return res.status(404);
+	}
 	const email = createEmail(req.params.emailName, user);
 
 	return res.type('html').send(email.html);
@@ -47,7 +50,7 @@ exports.get = async (req, res) => {
 
 exports.post = async (req, res) => {
 	if (!['daily', 'weekly'].includes(req.params.emailName)) {
-		return;
+		return res.status(401);
 	}
 
 	const userId = req.query.user;
@@ -56,6 +59,9 @@ exports.post = async (req, res) => {
 	}
 
 	const user = await User.findOne({ _id: userId, admin: true });
+	if (!user) {
+		return res.status(404);
+	}
 	const email = createEmail(req.params.emailName, user);
 	await sendEmail(req.params.emailName, email);
 

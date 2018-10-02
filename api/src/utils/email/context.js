@@ -10,7 +10,7 @@ import User from '../../models/user';
 import logger from '../../utils/logger';
 import { getStreamClient } from '../../utils/stream';
 
-export async function daylyContextGlobal() {
+export async function dailyContextGlobal() {
 	//TODO: actually implement this
 	return await weeklyContextGlobal();
 }
@@ -27,7 +27,7 @@ export async function weeklyContextGlobal() {
 	};
 }
 
-export async function daylyContextUser(user) {
+export async function dailyContextUser(user) {
 	//TODO: actually implement this
 	return await weeklyContextUser(user);
 }

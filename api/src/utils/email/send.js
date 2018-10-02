@@ -7,9 +7,9 @@ import config from '../../config';
 
 export var DummyEmailTransport = { emails: [] };
 
-export function CreateDaylyEmail(data) {
+export function CreateDailyEmail(data) {
 	const msg = ejs.render(
-		fs.readFileSync(__dirname + '/templates/dayly.ejs', 'utf8'),
+		fs.readFileSync(__dirname + '/templates/daily.ejs', 'utf8'),
 		data,
 	);
 
@@ -39,8 +39,8 @@ export function CreateWeeklyEmail(data) {
 	return obj;
 }
 
-export async function SendDaylyEmail(data) {
-	let obj = CreateDaylyEmail(data);
+export async function SendDailyEmail(data) {
+	let obj = CreateDailyEmail(data);
 	let res = await SendEmail(obj);
 	return res;
 }
