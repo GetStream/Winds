@@ -61,12 +61,10 @@ export async function weeklyContextUser(user) {
 			article.trackingUrl = getRedirectUrl(article.getUrl(), `article:${article._id}`, user._id, ++position);
 		}
 	} catch (e) {
-		logger.warn(`Article recommendations failed for ${userID}`);
+		logger.warn(`Content recommendations failed for ${userID}: ${e.stack}`);
 
 		if (e.request) {
-			logger.warn(`Failed with code ${e.response.status} for path  ${e.request.path}`);
-		} else {
-			logger.warn(`error: ${e.stack}`);
+			logger.warn(`Failed with code ${e.response.status} for path ${e.request.path}`);
 		}
 	}
 
