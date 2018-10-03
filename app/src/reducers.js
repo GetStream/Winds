@@ -101,60 +101,51 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'PAUSE_EPISODE') {
 		return {
 			...previousState,
-			player: {
-				...previousState.player,
-				playing: false,
-			},
+			player: { ...previousState.player, playing: false },
 		};
 	} else if (action.type === 'RESUME_EPISODE') {
 		return {
 			...previousState,
-			player: {
-				...previousState.player,
-				playing: true,
-			},
+			player: { ...previousState.player, playing: true },
 		};
 	} else if (action.type === 'NEXT_TRACK') {
-		let existingState = { ...previousState };
-		let player = { ...previousState.player };
-
-		if (existingState.player.contextType === 'playlist') {
-			if (
-				player.contextPosition + 1 >=
-				existingState.playlists[player.contextID].episodes.length
-			) {
-				delete existingState.player;
-			} else {
-				player.episodeID =
-					existingState.playlists[player.contextID].episodes[
-						player.contextPosition + 1
-					];
-				player.contextPosition += 1;
-				existingState.player = player;
-			}
-		} else if (existingState.player.contextType === 'podcast') {
-			// build a sorted array of podcast episodes
-			let episodes = Object.values(existingState.episodes).filter((episode) => {
-				// only return the episodes where the podcast ID matches the parent ID
-				return episode.podcast === player.contextID;
-			});
-			episodes.sort((a, b) => {
-				return (
-					moment(b.publicationDate).valueOf() -
-					moment(a.publicationDate).valueOf()
-				);
-			});
-
-			if (player.contextPosition + 1 >= episodes.length) {
-				delete existingState.player;
-			} else {
-				player.episodeID = episodes[player.contextPosition + 1]._id;
-				player.contextPosition += 1;
-				existingState.player = player;
-			}
-		}
-
-		return { ...existingState };
+		// let existingState = { ...previousState };
+		// let player = { ...previousState.player };
+		// if (existingState.player.contextType === 'playlist') {
+		// 	if (
+		// 		player.contextPosition + 1 >=
+		// 		existingState.playlists[player.contextID].episodes.length
+		// 	) {
+		// 		delete existingState.player;
+		// 	} else {
+		// 		player.episodeID =
+		// 			existingState.playlists[player.contextID].episodes[
+		// 				player.contextPosition + 1
+		// 			];
+		// 		player.contextPosition += 1;
+		// 		existingState.player = player;
+		// 	}
+		// } else if (existingState.player.contextType === 'podcast') {
+		// 	// build a sorted array of podcast episodes
+		// 	let episodes = Object.values(existingState.episodes).filter((episode) => {
+		// 		// only return the episodes where the podcast ID matches the parent ID
+		// 		return episode.podcast === player.contextID;
+		// 	});
+		// 	episodes.sort((a, b) => {
+		// 		return (
+		// 			moment(b.publicationDate).valueOf() -
+		// 			moment(a.publicationDate).valueOf()
+		// 		);
+		// 	});
+		// 	if (player.contextPosition + 1 >= episodes.length) {
+		// 		delete existingState.player;
+		// 	} else {
+		// 		player.episodeID = episodes[player.contextPosition + 1]._id;
+		// 		player.contextPosition += 1;
+		// 		existingState.player = player;
+		// 	}
+		// }
+		// return { ...existingState };
 	} else if (action.type === 'UPDATE_RSS_FEED') {
 		let original =
 			action.rssFeed.duplicateOf &&
