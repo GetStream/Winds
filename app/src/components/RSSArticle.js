@@ -183,7 +183,11 @@ class RSSArticle extends React.Component {
 					<p>There was a problem loading this article :(</p>
 					<p>To read the article, head on over to:</p>
 					<p>
-						<a href={this.props.url} target="_blank">
+						<a
+							href={this.props.url}
+							rel="noopener noreferrer"
+							target="_blank"
+						>
 							{this.props.title}
 						</a>
 					</p>
@@ -267,6 +271,7 @@ class RSSArticle extends React.Component {
 								) : (
 									<a
 										href={this.props.socialScore.reddit.url}
+										rel="noopener noreferrer"
 										target="_blank"
 									>
 										<i className="fab fa-reddit-alien" />
@@ -295,6 +300,7 @@ class RSSArticle extends React.Component {
 								) : (
 									<a
 										href={this.props.socialScore.hackernews.url}
+										rel="noopener noreferrer"
 										target="_blank"
 									>
 										<i className="fab fa-hacker-news-square" />
@@ -325,12 +331,12 @@ class RSSArticle extends React.Component {
 								enclosure.type.includes('audio') ||
 								enclosure.type.includes('video') ||
 								enclosure.type.includes('youtube') ? (
-									<ReactPlayer
-										controls={true}
-										key={enclosure._id}
-										url={enclosure.url}
-									/>
-								) : null,
+										<ReactPlayer
+											controls={true}
+											key={enclosure._id}
+											url={enclosure.url}
+										/>
+									) : null,
 						)}
 					</div>
 					{articleContents}

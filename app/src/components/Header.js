@@ -210,6 +210,7 @@ class Header extends Component {
 					</div>
 					<a
 						className="bottom"
+						href="/"
 						onClick={e => {
 							e.preventDefault();
 							window.ipcRenderer.send(

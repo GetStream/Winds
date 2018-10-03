@@ -9,7 +9,9 @@ const NotFound = props => {
 				Hm, looks like there's nothing here. Maybe{' '}
 				<a
 					className="link"
-					onClick={() => {
+					href="/"
+					onClick={e => {
+						e.preventDefault();
 						props.history.goBack();
 					}}
 				>
