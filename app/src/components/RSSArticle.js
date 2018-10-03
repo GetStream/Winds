@@ -331,12 +331,12 @@ class RSSArticle extends React.Component {
 								enclosure.type.includes('audio') ||
 								enclosure.type.includes('video') ||
 								enclosure.type.includes('youtube') ? (
-										<ReactPlayer
-											controls={true}
-											key={enclosure._id}
-											url={enclosure.url}
-										/>
-									) : null,
+									<ReactPlayer
+										controls={true}
+										key={enclosure._id}
+										url={enclosure.url}
+									/>
+								) : null,
 						)}
 					</div>
 					{articleContents}

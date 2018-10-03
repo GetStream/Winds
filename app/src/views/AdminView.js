@@ -6,7 +6,7 @@ import onboardingTopics from '../static-data/onboarding-topics';
 import { Link } from 'react-router-dom';
 
 function compareTitles(lhs, rhs) {
-    return lhs.title.localeCompare(rhs.title, undefined, { sensitivity: "accent" });
+	return lhs.title.localeCompare(rhs.title, undefined, { sensitivity: 'accent' });
 }
 
 class AdminView extends React.Component {
@@ -42,8 +42,15 @@ class AdminView extends React.Component {
 		return (
 			<div className="admin">
 				<h1>Admin View</h1>
-				<input id="collapsible-podcast" className="toggle" type="checkbox" value=""/>
-				<label htmlFor="collapsible-podcast" className="lbl-toggle"><h2>Podcasts</h2></label>
+				<input
+					id="collapsible-podcast"
+					className="toggle"
+					type="checkbox"
+					value=""
+				/>
+				<label htmlFor="collapsible-podcast" className="lbl-toggle">
+					<h2>Podcasts</h2>
+				</label>
 				<div className="collapsible-content">
 					<table className="table">
 						<thead>
@@ -52,7 +59,10 @@ class AdminView extends React.Component {
 								<th>Title</th>
 								<th>Featured (new users automatically follow)</th>
 								<th>Featured image</th>
-								<th>Interest (users that select this interest will automatically follow)</th>
+								<th>
+									Interest (users that select this interest will
+									automatically follow)
+								</th>
 								<th>Description</th>
 								<th>Summary</th>
 								<th>Link</th>
@@ -71,8 +81,10 @@ class AdminView extends React.Component {
 						</tbody>
 					</table>
 				</div>
-				<input id="collapsible-rss" className="toggle" type="checkbox" value=""/>
-				<label htmlFor="collapsible-rss" className="lbl-toggle"><h2>RSS Feeds</h2></label>
+				<input id="collapsible-rss" className="toggle" type="checkbox" value="" />
+				<label htmlFor="collapsible-rss" className="lbl-toggle">
+					<h2>RSS Feeds</h2>
+				</label>
 				<div className="collapsible-content">
 					<table className="table">
 						<thead>
@@ -81,7 +93,10 @@ class AdminView extends React.Component {
 								<th>Title</th>
 								<th>Featured (new users automatically follow)</th>
 								<th>Featured image</th>
-								<th>Interest (users that select this interest will automatically follow)</th>
+								<th>
+									Interest (users that select this interest will
+									automatically follow)
+								</th>
 								<th>Description</th>
 								<th>Summary</th>
 								<th>Link</th>
@@ -100,40 +115,73 @@ class AdminView extends React.Component {
 						</tbody>
 					</table>
 				</div>
-				<input id="collapsible-email" className="toggle" type="checkbox" value=""/>
-				<label htmlFor="collapsible-email" className="lbl-toggle"><h2>Test email</h2></label>
+				<input
+					id="collapsible-email"
+					className="toggle"
+					type="checkbox"
+					value=""
+				/>
+				<label htmlFor="collapsible-email" className="lbl-toggle">
+					<h2>Test email</h2>
+				</label>
 				<div className="collapsible-content">
-					<form onSubmit={event => {
-						this.setState({ emailHTML: 'Loading' });
-						fetch('get', `/email/${this.state.emailType}?user=${this.state.userID}`).then(res => {
-							this.setState({ emailHTML: res.data });
-						});
-						event.preventDefault();
-					}}>
+					<form
+						onSubmit={event => {
+							this.setState({ emailHTML: 'Loading' });
+							fetch(
+								'get',
+								`/email/${this.state.emailType}?user=${
+									this.state.userID
+								}`,
+							).then(res => {
+								this.setState({ emailHTML: res.data });
+							});
+							event.preventDefault();
+						}}
+					>
 						<label>
 							User ID:&nbsp;
-							<input value={this.state.userID} name="user_id" onChange={event => {
-								this.setState({ userID: event.target.value });
-							}} />
+							<input
+								value={this.state.userID}
+								name="user_id"
+								onChange={event => {
+									this.setState({ userID: event.target.value });
+								}}
+							/>
 						</label>
 						&nbsp;
-						<select value={this.state.emailType} onChange={event => {
-							this.setState({
-								emailHTML: 'No content',
-								emailType: event.target.value,
-							});
-						}}>
+						<select
+							value={this.state.emailType}
+							onChange={event => {
+								this.setState({
+									emailHTML: 'No content',
+									emailType: event.target.value,
+								});
+							}}
+						>
 							<option value="daily">Daily digest</option>
 							<option value="weekly">Weekly digest</option>
 						</select>
 						&nbsp;
 						<input type="submit" value="Preview" />
 						&nbsp;
-						<input type="button" value="Send" onClick={() => {
-							fetch('post', `/email/${this.state.emailType}?user=${this.state.userID}`);
-						}} />
+						<input
+							type="button"
+							value="Send"
+							onClick={() => {
+								fetch(
+									'post',
+									`/email/${this.state.emailType}?user=${
+										this.state.userID
+									}`,
+								);
+							}}
+						/>
 					</form>
-					<div className="email" dangerouslySetInnerHTML={{ __html: this.state.emailHTML }} />
+					<div
+						className="email"
+						dangerouslySetInnerHTML={{ __html: this.state.emailHTML }}
+					/>
 				</div>
 			</div>
 		);
@@ -446,7 +494,7 @@ const mapStateToProps = state => {
 	}
 
 	return { userID, ...state };
-}
+};
 
 AdminView.propTypes = {
 	userID: PropTypes.string,

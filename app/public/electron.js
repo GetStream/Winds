@@ -1,3 +1,5 @@
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
 const { app, BrowserWindow, shell, ipcMain, Menu, TouchBar } = require('electron');
 const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 
@@ -27,6 +29,8 @@ createWindow = () => {
 	);
 
 	if (isDev) {
+		mainWindow.webContents.openDevTools();
+
 		const {
 			default: installExtension,
 			REACT_DEVELOPER_TOOLS,
