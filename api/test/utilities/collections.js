@@ -21,7 +21,7 @@ describe('Collections', () => {
 		});
 
 		it('should update the podcast collection', async () => {
-			const podcast = await await Podcast.findOne();
+			const podcast = await Podcast.findOne();
 			const content = await Article.find({ podcast: podcast._id })
 				.sort({ publicationDate: -1 })
 				.limit(1000);
