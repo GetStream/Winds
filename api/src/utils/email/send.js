@@ -7,6 +7,22 @@ import config from '../../config';
 
 export var DummyEmailTransport = { emails: [] };
 
+export function CreateDailyEmail(data) {
+	const msg = ejs.render(
+		fs.readFileSync(__dirname + '/templates/daily.ejs', 'utf8'),
+		data,
+	);
+
+	const obj = {
+		to: data.email,
+		from: config.email.sender.support.email,
+		subject: 'Winds Digest',
+		html: msg,
+	};
+
+	return obj;
+}
+
 export function CreateWeeklyEmail(data) {
 	const msg = ejs.render(
 		fs.readFileSync(__dirname + '/templates/weekly.ejs', 'utf8'),
@@ -21,6 +37,12 @@ export function CreateWeeklyEmail(data) {
 	};
 
 	return obj;
+}
+
+export async function SendDailyEmail(data) {
+	let obj = CreateDailyEmail(data);
+	let res = await SendEmail(obj);
+	return res;
 }
 
 export async function SendWeeklyEmail(data) {

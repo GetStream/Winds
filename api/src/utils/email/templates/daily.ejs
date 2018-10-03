@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>Winds Digest</title>
+    </head>
+    <body>
+        Winds<br/>
+        <%= user.username %>'s Digest
+        <br /><br />
+        If you're not happy with this email's recommendations be sure to talk to balazs@getstream.io
+
+        <h3>top episodes for you</h3>
+
+        <ol>
+        <% for(const episode of episodes) { %>
+            <li><a href="<%= episode.trackingUrl %>"><%= episode.title %></a></li>
+        <% } %>
+        </ol>
+
+        <h3>top articles for you</h3>
+
+        <ol>
+        <% for(const article of articles) { %>
+            <li><a href="<%= article.trackingUrl %>"><%= article.title %></a></li>
+        <% } %>
+        </ol>
+
+        <h3>follow suggestions podcasts</h3>
+        <ol>
+        <% for(const podcast of podcasts) { %>
+            <li><a href="<%= podcast.getUrl() %>"><%= podcast.title %></a></li>
+        <% } %>
+        </ol>
+        <h3>follow suggestions rss</h3>
+        <ol>
+        <% for(const r of rss) { %>
+            <li><a href="<%= r.getUrl() %>"><%= r.title %></a></li>
+        <% } %>
+        </ol>
+
+        <h3>stats about winds</h3>
+        <ol>
+            <li>Users: <%= counts.users %></li>
+            <li>Articles: <%= counts.articles %></li>
+            <li>Episodes: <%= counts.episodes %></li>
+            <li>RSS feeds: <%= counts.rss %></li>
+            <li>Podcast feeds: <%= counts.podcast %></li>
+        </ol>
+
+        Happy Procrastination,<br />
+        <a href="https://twitter.com/nickparsons" target="_blank">@nickparsons</a>, <a href="https://twitter.com/ken_hoff" target="_blank">@kenhoff</a>, <a href="https://twitter.com/uijudo" target="_blank">@joshtilton</a> and <a href="https://twitter.com/tschellenbach" target="_blank">@tschellenbach</a>
+    </body>
+</html>

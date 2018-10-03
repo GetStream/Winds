@@ -3,6 +3,7 @@ import util from 'util';
 
 const urlMap = {
 	article_detail: 'rss/%s/articles/%s',
+	episode_detail: 'podcast/%s/episodes/%s',
 	rss_detail: 'rss/%s',
 	podcast_detail: 'podcast/%s',
 };

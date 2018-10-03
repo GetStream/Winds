@@ -35,14 +35,18 @@ export async function getRecommendations(userID, type, limit) {
 
 	const data = response.data ? response.data.results : response.results;
 	return data.map(result => {
-		return result.foreign_id.split(':')[1];
+		return result.foreign_id.includes(':') ? result.foreign_id.split(':')[1] : result.foreign_id;
 	});
 }
 
 export async function getRSSRecommendations(userID, limit = 20) {
 	try {
-		let ids = await getRecommendations(userID, 'rss', limit);
-		return RSS.find({ _id: { $in: ids } });
+		const ids = await getRecommendations(userID, 'rss', limit);
+		const feeds = await RSS.find({ _id: { $in: ids } });
+		if (ids.length != feeds.length) {
+			logger.warn(`Failed to find some rss feeds from list ${ids.join(',')}`);
+		}
+		return feeds;
 	} catch (err) {
 		logger.warn(`Failed to get RSS recomentations for user ${userID}`, { err });
 		return [];
@@ -51,8 +55,12 @@ export async function getRSSRecommendations(userID, limit = 20) {
 
 export async function getPodcastRecommendations(userID, limit = 20) {
 	try {
-		let ids = await getRecommendations(userID, 'podcast', limit);
-		return Podcast.find({ _id: { $in: ids } });
+		const ids = await getRecommendations(userID, 'podcast', limit);
+		const feeds = await Podcast.find({ _id: { $in: ids } });
+		if (ids.length != feeds.length) {
+			logger.warn(`Failed to find some podcast feeds from list ${ids.join(',')}`);
+		}
+		return feeds;
 	} catch (err) {
 		logger.warn(`Failed to get Podcast recomentations for user ${userID}`, { err });
 		return [];
@@ -61,8 +69,8 @@ export async function getPodcastRecommendations(userID, limit = 20) {
 
 export async function getEpisodeRecommendations(userID, limit = 20) {
 	try {
-		let ids = await getRecommendations(userID, 'episode', limit);
-		let episodes = await Episode.find({ _id: { $in: ids } });
+		const ids = await getRecommendations(userID, 'episode', limit);
+		const episodes = await Episode.find({ _id: { $in: ids } });
 		if (ids.length != episodes.length) {
 			logger.warn(`failed to find some episodes from list ${ids.join(',')}`);
 		}
@@ -75,8 +83,8 @@ export async function getEpisodeRecommendations(userID, limit = 20) {
 
 export async function getArticleRecommendations(userID, limit = 20) {
 	try {
-		let ids = await getRecommendations(userID, 'article', limit);
-		let articles = await Article.find({ _id: { $in: ids } });
+		const ids = await getRecommendations(userID, 'article', limit);
+		const articles = await Article.find({ _id: { $in: ids } });
 		if (ids.length != articles.length) {
 			logger.warn(`failed to find some articles from list ${ids.join(',')}`);
 		}
