@@ -87,7 +87,7 @@ class PodcastEpisode extends React.Component {
 		const isActive = player && player.episodeID === episode._id;
 		const isPlaying = isActive && player.playing;
 
-		if (!isActive) this.props.playEpisode(episode._id, episode.podcast._id, 0);
+		if (!isActive) this.props.playEpisode(episode._id, episode.podcast._id);
 		else if (isPlaying) this.props.pauseEpisode();
 		else this.props.resumeEpisode();
 	}
@@ -273,7 +273,7 @@ PodcastEpisode.propTypes = {
 	}),
 	player: PropTypes.shape({
 		contextID: PropTypes.string,
-		contextPosition: PropTypes.number,
+		episodeID: PropTypes.string,
 		playing: PropTypes.bool,
 	}),
 };
@@ -288,12 +288,11 @@ const mapDispatchToProps = (dispatch) => {
 		dispatch,
 		pauseEpisode: () => dispatch({ type: 'PAUSE_EPISODE' }),
 		resumeEpisode: () => dispatch({ type: 'RESUME_EPISODE' }),
-		playEpisode: (episodeID, podcastID, position) => {
+		playEpisode: (episodeID, podcastID) => {
 			dispatch({
 				contextID: podcastID,
-				contextPosition: position,
-				contextType: 'podcast',
 				episodeID: episodeID,
+				contextType: 'podcast',
 				playing: true,
 				type: 'PLAY_EPISODE',
 			});

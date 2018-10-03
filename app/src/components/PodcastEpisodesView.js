@@ -211,7 +211,7 @@ class PodcastEpisodesView extends React.Component {
 					{episodes.map((episode, i) => {
 						const active =
 							this.props.player.contextID === podcast._id &&
-							i === this.props.player.contextPosition;
+							episode._id === this.props.player.episodeID;
 
 						return (
 							<EpisodeListItem
@@ -221,12 +221,7 @@ class PodcastEpisodesView extends React.Component {
 									if (active && this.props.player.playing)
 										this.props.pauseEpisode();
 									else if (active) this.props.resumeEpisode();
-									else
-										this.props.playEpisode(
-											episode._id,
-											podcast._id,
-											i,
-										);
+									else this.props.playEpisode(episode._id, podcast._id);
 								}}
 								playable={true}
 								playing={this.props.player.playing}
@@ -344,7 +339,6 @@ PodcastEpisodesView.propTypes = {
 	aliases: PropTypes.shape({}),
 	player: PropTypes.shape({
 		contextID: PropTypes.string,
-		contextPosition: PropTypes.number,
 		playing: PropTypes.bool,
 	}),
 	dispatch: PropTypes.func.isRequired,
@@ -371,10 +365,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		dispatch,
 		pauseEpisode: () => dispatch({ type: 'PAUSE_EPISODE' }),
 		resumeEpisode: () => dispatch({ type: 'RESUME_EPISODE' }),
-		playEpisode: (episodeID, podcastID, position) => {
+		playEpisode: (episodeID, podcastID) => {
 			dispatch({
 				contextID: podcastID,
-				contextPosition: position,
 				contextType: 'podcast',
 				episodeID: episodeID,
 				playing: true,

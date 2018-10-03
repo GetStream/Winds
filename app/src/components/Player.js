@@ -25,8 +25,8 @@ class Player extends Component {
 			playbackSpeed: 1,
 			progress: 0,
 			volume: 0.5,
-			episode: {},
 			episodes: {},
+			episodesOrder: [],
 		};
 
 		this.playbackSpeedOptions = [1, 1.25, 1.5, 1.75, 2];
@@ -34,12 +34,6 @@ class Player extends Component {
 	}
 
 	componentDidMount() {
-		this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-		if (this.props.player.episodeID) this.getEpisodeByID(this.props.player.episodeID);
-
-		if (this.props.episode)
-			this.audioPlayerElement.audioEl.volume = this.state.volume / 100;
-
 		if (isElectron())
 			window.ipcRenderer.on('media-controls', this.incomingMediaControls);
 	}
@@ -56,9 +50,30 @@ class Player extends Component {
 		const player = this.props.player;
 
 		if (!player) return;
-		if (player.episodeID !== prevProps.player.episodeID) {
-			this.getEpisodeByID(player.episodeID);
+		if (player.contextID !== prevProps.player.contextID) {
+			this.getEpisodes(player.contextID, player.episodeID);
 			this.setState({ episodeListenAnalyticsEventSent: false });
+
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'episode_listen_start',
+				content: { foreign_id: `episodes:${player.episodeID}` },
+			});
+		} else if (player.episodeID !== prevProps.player.episodeID) {
+			if (!this.state.episodes[player.episodeID])
+				return this.getEpisodes(player.podcastID, player.episodeID);
+
+			this.setState({ episodeListenAnalyticsEventSent: false });
+			this.resetPlaybackSpeed();
+
+			fetch('GET', '/listens', null, {
+				episode: player.episodeID,
+			}).then((res) => {
+				if (res.data.length !== 0)
+					this.setInitialPlaybackTime(res.data[0].duration).then(() => {
+						this.audioPlayerElement.audioEl.play();
+					});
+				else this.audioPlayerElement.audioEl.play();
+			});
 
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'episode_listen_start',
@@ -66,26 +81,40 @@ class Player extends Component {
 			});
 		} else if (!prevProps.player.playing && player.playing) {
 			this.audioPlayerElement.audioEl.play();
-			this.pushNotification(this.state.episode);
-			this.mediaControl(true, this.state.episode);
+			this.pushNotification(this.state.episodes[player.episodeID]);
+			this.mediaControl(true, this.state.episodes[player.episodeID]);
 		} else if (prevProps.player.playing && !player.playing) {
 			this.audioPlayerElement.audioEl.pause();
-			this.mediaControl(false, this.state.episode);
+			this.mediaControl(false, this.state.episodes[player.episodeID]);
 		}
 	}
 
-	getEpisodeByID = async (episodeID) => {
-		try {
-			const res = await fetch('GET', `/episodes/${episodeID}`);
+	getEpisodes = async (podcastID, episodeID) => {
+		this.setState({ episodesOrder: [] });
 
-			this.setState({ episode: res.data }, () => {
+		try {
+			const res = await fetch(
+				'GET',
+				'/episodes',
+				{},
+				{ podcast: podcastID, sort_by: 'publicationDate,desc' },
+			);
+
+			const episodes = res.data.reduce((result, item) => {
+				result[item._id] = item;
+				return result;
+			}, {});
+
+			const episodesOrder = res.data.map((episode) => episode._id);
+
+			this.setState({ episodes, episodesOrder }, () => {
 				this.resetPlaybackSpeed();
-				this.pushNotification(this.state.episode);
-				this.mediaControl(true, this.state.episode);
+				this.pushNotification(this.state.episodes[episodeID]);
+				this.mediaControl(true, this.state.episodes[episodeID]);
 			});
 
 			const listen = await fetch('GET', '/listens', null, {
-				episode: res.data._id,
+				episode: episodeID,
 			});
 
 			if (listen.data.length !== 0)
@@ -100,10 +129,24 @@ class Player extends Component {
 	};
 
 	nextTrack = () => {
-		this.props.pause();
+		const currentIndex = this.state.episodesOrder.findIndex(
+			(item) => this.props.player.episodeID === item,
+		);
+
+		if (currentIndex + 1 !== this.state.episodesOrder.length) {
+			this.props.playEpisode(
+				this.props.player.contextID,
+				this.state.episodesOrder[currentIndex + 1],
+				'podcast',
+			);
+		} else {
+			this.setState({ episode: {}, episodesOrder: [] });
+			this.props.clearPlayer();
+		}
 	};
 
 	pushNotification = (episode) => {
+		if (!episode) return;
 		if ('Notification' in window) {
 			if (
 				Notification.permission !== 'denied' ||
@@ -163,10 +206,6 @@ class Player extends Component {
 		this.audioPlayerElement.audioEl.playbackRate = resetSpeed;
 	};
 
-	setVolume = (volume) => {
-		this.setState({ volume });
-	};
-
 	seekTo = (progress) => {
 		this.audioPlayerElement.audioEl.currentTime =
 			progress * this.audioPlayerElement.audioEl.duration;
@@ -197,9 +236,10 @@ class Player extends Component {
 
 	render() {
 		const player = this.props.player;
-		const episode = this.state.episode;
 
-		if (!player.episodeID || !episode._id) return null;
+		if (!player.episodeID || !this.state.episodesOrder.length) return null;
+
+		const episode = this.state.episodes[player.episodeID];
 
 		let contextURL = '';
 		if (player.contextType === 'playlist') {
@@ -215,7 +255,7 @@ class Player extends Component {
 						className="poster"
 						decode={false}
 						height="40"
-						src={episode.podcast.image}
+						src={episode ? episode.podcast.image : null}
 						width="40"
 					/>
 					<div className="rewind" onClick={this.skipBack}>
@@ -251,13 +291,15 @@ class Player extends Component {
 						}
 					/>
 					<div className="media">
-						<div className="title">{episode.title}</div>
-						<div className="info">
-							<span className="episode">{episode.podcast.title}</span>
-							<span className="date">
-								{moment(episode.publicationDate).format('MMM D YYYY')}
-							</span>
-						</div>
+						<div className="title">{episode ? episode.title : ''}</div>
+						{episode && (
+							<div className="info">
+								<span className="episode">{episode.podcast.title}</span>
+								<span className="date">
+									{moment(episode.publicationDate).format('MMM D YYYY')}
+								</span>
+							</div>
+						)}
 					</div>
 					<div className="sub-right">
 						<div className="timestamps">
@@ -277,7 +319,7 @@ class Player extends Component {
 					<Slider
 						max={1}
 						min={0}
-						onChange={this.setVolume}
+						onChange={(volume) => this.setState({ volume })}
 						step={0.1}
 						value={this.state.volume}
 					/>
@@ -289,6 +331,7 @@ class Player extends Component {
 					listenInterval={500}
 					onEnded={() => this.nextTrack()}
 					onListen={(seconds) => {
+						if (!episode) return;
 						this.updateProgress(seconds);
 
 						if (
@@ -315,7 +358,7 @@ class Player extends Component {
 					ref={(element) => {
 						this.audioPlayerElement = element;
 					}}
-					src={episode.enclosure}
+					src={episode ? episode.enclosure : null}
 					volume={this.state.volume}
 				/>
 			</div>
@@ -324,20 +367,15 @@ class Player extends Component {
 }
 
 Player.propTypes = {
-	episode: null,
-	playing: false,
-};
-
-Player.propTypes = {
 	player: PropTypes.shape({
 		contextID: PropTypes.string,
-		contextPosition: PropTypes.number,
 		contextType: PropTypes.string,
 		episodeID: PropTypes.string,
 		playing: PropTypes.bool,
 	}),
 	pause: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
+	clearPlayer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ player: state.player || {} });
@@ -345,12 +383,12 @@ const mapStateToProps = (state) => ({ player: state.player || {} });
 const mapDispatchToProps = (dispatch) => ({
 	pause: () => dispatch({ type: 'PAUSE_EPISODE' }),
 	play: () => dispatch({ type: 'RESUME_EPISODE' }),
-	playEpisode: (episodeID, podcastID, position, type) => {
+	clearPlayer: () => dispatch({ type: 'CLEAR_PLAYER' }),
+	playEpisode: (podcastID, episodeID, type) => {
 		dispatch({
 			contextID: podcastID,
-			contextPosition: position,
-			contextType: type,
 			episodeID: episodeID,
+			contextType: type,
 			playing: true,
 			type: 'PLAY_EPISODE',
 		});
