@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import fetch from '../util/fetch';
+import { getUser } from '../api';
 
 class UserProfileSettingsDrawer extends React.Component {
 	constructor(props) {
@@ -22,9 +23,8 @@ class UserProfileSettingsDrawer extends React.Component {
 			followNotifications = props.preferences.notifications.follows;
 		}
 
-		this.state = { ...props };
-
 		this.state = {
+			...props,
 			confirmPassword: '',
 			currentTab: 'account',
 			deleteAccountPopoverIsOpen: false,
@@ -34,48 +34,25 @@ class UserProfileSettingsDrawer extends React.Component {
 			weeklyNotifications,
 			exportError: false,
 		};
-
-		this.toggleDeleteAccountPopover = this.toggleDeleteAccountPopover.bind(this);
-		this.handleDeleteAccountConfirmationClick = this.handleDeleteAccountConfirmationClick.bind(
-			this,
-		);
-		this.handleAccountFormSubmit = this.handleAccountFormSubmit.bind(this);
-		this.handlePasswordFormSubmit = this.handlePasswordFormSubmit.bind(this);
 	}
 
 	componentDidMount() {
-		this.props.getUserInfo();
+		getUser(this.props.dispatch, localStorage['authedUser']);
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		let dailyNotifications = false;
-		let weeklyNotifications = false;
-		let followNotifications = false;
-
-		if (nextProps.preferences && nextProps.preferences.notifications) {
-			dailyNotifications = nextProps.preferences.notifications.daily;
-			weeklyNotifications = nextProps.preferences.notifications.weekly;
-			followNotifications = nextProps.preferences.notifications.follows;
-		}
-
-		this.setState({
-			...nextProps,
-			currentTab: 'account',
-			dailyNotifications,
-			followNotifications,
-			weeklyNotifications,
-		});
+	componentDidUpdate(prevProps) {
+		if (!prevProps._id && this.props._id) this.setState({ ...this.state.props });
 	}
 
-	toggleDeleteAccountPopover(e) {
+	toggleDeleteAccountPopover = (e) => {
 		e.preventDefault();
 
 		this.setState({
 			deleteAccountPopoverIsOpen: !this.state.deleteAccountPopoverIsOpen,
 		});
-	}
+	};
 
-	handleDeleteAccountConfirmationClick(e) {
+	handleDeleteAccountConfirmationClick = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -86,13 +63,11 @@ class UserProfileSettingsDrawer extends React.Component {
 				window.location.reload();
 			})
 			.catch((err) => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
+				if (window.console) console.log(err); // eslint-disable-line no-console
 			});
-	}
+	};
 
-	handleAccountFormSubmit(e) {
+	handleAccountFormSubmit = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -127,21 +102,20 @@ class UserProfileSettingsDrawer extends React.Component {
 		})
 			.then((res) => {
 				this.props.updateUser(res.data);
+				this.props.getUserInfo();
 				this.props.closeDrawer();
 			})
-			.catch((err) => {
-				this.props.closeDrawer();
-			});
-	}
+			.catch((err) => this.props.closeDrawer());
+	};
 
-	passwordIsValid() {
+	passwordIsValid = () => {
 		return (
 			this.state.password === this.state.confirmPassword &&
 			this.state.password.trim() !== ''
 		);
-	}
+	};
 
-	handlePasswordFormSubmit(e) {
+	handlePasswordFormSubmit = (e) => {
 		e.preventDefault();
 
 		if (this.passwordIsValid()) {
@@ -156,9 +130,9 @@ class UserProfileSettingsDrawer extends React.Component {
 					this.props.closeDrawer();
 				});
 		}
-	}
+	};
 
-	downloadOPML() {
+	downloadOPML = () => {
 		fetch('GET', `/opml/download`)
 			.then((res) => {
 				if (res.data) {
@@ -176,7 +150,7 @@ class UserProfileSettingsDrawer extends React.Component {
 
 				if (window.console) console.log(err); // eslint-disable-line no-console
 			});
-	}
+	};
 
 	render() {
 		const deleteAccountPopover = (
@@ -221,42 +195,26 @@ class UserProfileSettingsDrawer extends React.Component {
 				</a>
 				<div className="form-section">
 					<input
-						onChange={(e) => {
-							this.setState({
-								email: e.target.value,
-							});
-						}}
+						onChange={(e) => this.setState({ email: e.target.value })}
 						placeholder="Your Email"
 						type="text"
 						value={this.state.email}
 					/>
 					<input
-						onChange={(e) => {
-							this.setState({
-								name: e.target.value,
-							});
-						}}
+						onChange={(e) => this.setState({ name: e.target.value })}
 						placeholder="Your Full Name"
 						type="text"
 						value={this.state.name}
 					/>
 					<input
-						onChange={(e) => {
-							this.setState({
-								username: e.target.value,
-							});
-						}}
+						onChange={(e) => this.setState({ username: e.target.value })}
 						placeholder="Your Username"
 						type="text"
 						value={this.state.username}
 					/>
 					<textarea
 						maxLength="280"
-						onChange={(e) => {
-							this.setState({
-								bio: e.target.value,
-							});
-						}}
+						onChange={(e) => this.setState({ bio: e.target.value })}
 						placeholder="Your Bio (280 character max)"
 						value={this.state.bio}
 					/>
@@ -264,22 +222,14 @@ class UserProfileSettingsDrawer extends React.Component {
 				<div className="form-section">
 					<h2>Website & Social</h2>
 					<input
-						onChange={(e) => {
-							this.setState({
-								url: e.target.value,
-							});
-						}}
+						onChange={(e) => this.setState({ url: e.target.value })}
 						placeholder="Your Website URL"
 						type="url"
 						value={this.state.url}
 					/>
 					<input
 						maxLength="50"
-						onChange={(e) => {
-							this.setState({
-								twitter: e.target.value,
-							});
-						}}
+						onChange={(e) => this.setState({ twitter: e.target.value })}
 						placeholder="Your Twitter Handle (e.g. @nickparsons)"
 						type="text"
 						value={this.state.twitter}
@@ -290,11 +240,11 @@ class UserProfileSettingsDrawer extends React.Component {
 					<label className="checkbox">
 						<input
 							checked={this.state.dailyNotifications}
-							onChange={() => {
-								this.setState({
-									dailyNotifications: !this.state.dailyNotifications,
-								});
-							}}
+							onChange={() =>
+								this.setState((prevState) => ({
+									dailyNotifications: !prevState.dailyNotifications,
+								}))
+							}
 							type="checkbox"
 						/>
 						<span>Daily Digests</span>
@@ -302,11 +252,11 @@ class UserProfileSettingsDrawer extends React.Component {
 					<label className="checkbox">
 						<input
 							checked={this.state.weeklyNotifications}
-							onChange={() => {
-								this.setState({
-									weeklyNotifications: !this.state.weeklyNotifications,
-								});
-							}}
+							onChange={() =>
+								this.setState((prevState) => ({
+									weeklyNotifications: !prevState.weeklyNotifications,
+								}))
+							}
 							type="checkbox"
 						/>
 						<span>Weekly Digests</span>
@@ -314,11 +264,11 @@ class UserProfileSettingsDrawer extends React.Component {
 					<label className="checkbox">
 						<input
 							checked={this.state.followNotifications}
-							onChange={() => {
-								this.setState({
-									followNotifications: !this.state.followNotifications,
-								});
-							}}
+							onChange={() =>
+								this.setState((prevState) => ({
+									followNotifications: !prevState.followNotifications,
+								}))
+							}
 							type="checkbox"
 						/>
 						<span>Follow Notifications</span>
@@ -354,10 +304,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						preferPlace="above"
 						tipSize={0.2}
 					>
-						<div
-							className="btn primary export"
-							onClick={() => this.downloadOPML()}
-						>
+						<div className="btn primary export" onClick={this.downloadOPML}>
 							Export OPML
 						</div>
 					</Popover>
@@ -375,21 +322,15 @@ class UserProfileSettingsDrawer extends React.Component {
 				<div className="form-section">
 					<h2>Change Password</h2>
 					<input
-						onChange={(e) => {
-							this.setState({
-								password: e.target.value,
-							});
-						}}
+						onChange={(e) => this.setState({ password: e.target.value })}
 						placeholder="New Password"
 						type="password"
 						value={this.state.password}
 					/>
 					<input
-						onChange={(e) => {
-							this.setState({
-								confirmPassword: e.target.value,
-							});
-						}}
+						onChange={(e) =>
+							this.setState({ confirmPassword: e.target.value })
+						}
 						placeholder="Confirm New Password"
 						type="password"
 						value={this.state.confirmPassword}
@@ -428,11 +369,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						className={`tab ${
 							this.state.currentTab === 'account' ? 'active' : null
 						}`}
-						onClick={() => {
-							this.setState({
-								currentTab: 'account',
-							});
-						}}
+						onClick={() => this.setState({ currentTab: 'account' })}
 					>
 						Account
 					</li>
@@ -440,11 +377,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						className={`tab ${
 							this.state.currentTab === 'password' ? 'active' : null
 						}`}
-						onClick={() => {
-							this.setState({
-								currentTab: 'password',
-							});
-						}}
+						onClick={() => this.setState({ currentTab: 'password' })}
 					>
 						Password
 					</li>
@@ -464,6 +397,13 @@ UserProfileSettingsDrawer.defaultProps = {
 	twitter: '',
 	url: '',
 	username: '',
+	preferences: {
+		notifications: {
+			daily: false,
+			follows: false,
+			weekly: false,
+		},
+	},
 };
 
 UserProfileSettingsDrawer.propTypes = {
@@ -471,7 +411,6 @@ UserProfileSettingsDrawer.propTypes = {
 	bio: PropTypes.string,
 	closeDrawer: PropTypes.func.isRequired,
 	email: PropTypes.string,
-	getUserInfo: PropTypes.func.isRequired,
 	isOpen: PropTypes.bool,
 	name: PropTypes.string,
 	preferences: PropTypes.shape({
@@ -482,36 +421,11 @@ UserProfileSettingsDrawer.propTypes = {
 		}),
 	}),
 	twitter: PropTypes.string,
-	updateUser: PropTypes.func.isRequired,
 	url: PropTypes.string,
 	username: PropTypes.string,
 	gravatar: PropTypes.string,
 };
 
-const mapStateToProps = (state) => {
-	return { ...state.user, ...state.userSettings };
-};
+const mapStateToProps = (state) => ({ ...state.user });
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getUserInfo: () => {
-			fetch('GET', `/users/${localStorage['authedUser']}`)
-				.then((res) => {
-					dispatch({ type: 'UPDATE_USER_SETTINGS', user: res.data });
-				})
-				.catch((err) => {
-					if (window.console) {
-						console.log(err); // eslint-disable-line no-console
-					}
-				});
-		},
-		updateUser: (user) => {
-			dispatch({ type: 'UPDATE_USER', user });
-		},
-	};
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(UserProfileSettingsDrawer);
+export default connect(mapStateToProps)(UserProfileSettingsDrawer);

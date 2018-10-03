@@ -217,11 +217,6 @@ export default (previousState = {}, action) => {
 		delete allPins[action.articleID];
 
 		return { ...previousState, pinnedArticles: allPins };
-	} else if (action.type === 'UPDATE_USER_SETTINGS') {
-		let userSettings = { ...previousState.userSettings };
-		userSettings.preferences = action.user.preferences;
-
-		return { ...previousState, userSettings };
 	} else if (action.type === 'FOLLOW_RSS_FEED') {
 		const followedRssFeeds = { ...previousState.followedRssFeeds } || {};
 		followedRssFeeds[action.rssFeedID] = true;
