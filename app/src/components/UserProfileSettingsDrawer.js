@@ -1,13 +1,16 @@
-import saveIcon from '..//images/icons/save.svg';
-import Avatar from './Avatar';
-import Drawer from './Drawer';
 import Img from 'react-image';
 import Popover from 'react-popover';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+
+import Avatar from './Avatar';
+import Drawer from './Drawer';
 import fetch from '../util/fetch';
 import { getUser } from '../api';
+
+import closeIcon from '../images/buttons/close.svg';
+import saveIcon from '../images/icons/save.svg';
 
 class UserProfileSettingsDrawer extends React.Component {
 	constructor(props) {
@@ -361,7 +364,7 @@ class UserProfileSettingsDrawer extends React.Component {
 						className="close-icon"
 						decode={false}
 						onClick={this.props.closeDrawer}
-						src="/images/buttons/close.svg"
+						src={closeIcon}
 					/>
 				</header>
 				<ul className="tabs">
