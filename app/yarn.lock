@@ -7,11 +7,6 @@
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-4.0.2.tgz#6abbdc22f33cab742053777a26db2e25ca527179"
   integrity sha512-XtGk+IF57pr852UK1AhQJXqmm1WmSgS5uISL+LPs0z/iAxXouMvdlLJrHPeukP6gd7yR2rDTMSMkHNODgwIq7A==
 
-"7zip@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/7zip/-/7zip-0.0.6.tgz#9cafb171af82329490353b4816f03347aa150a30"
-  integrity sha1-nK+xca+CMpSQNTtIFvAzR6oVCjA=
-
 "@babel/code-frame@7.0.0", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.0.0-beta.35":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
@@ -1826,10 +1821,10 @@ babel-preset-jest@^23.2.0:
     babel-plugin-jest-hoist "^23.2.0"
     babel-plugin-syntax-object-rest-spread "^6.13.0"
 
-babel-preset-react-app@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/babel-preset-react-app/-/babel-preset-react-app-5.0.2.tgz#b00605ec1ae4f0dee0bde33f5b6896de6f720a15"
-  integrity sha512-ogV5J3o5lxdUwNGNGbVTHhAnWMLhnSv9QR/Kyb0aeeJ4IURdky3Uj8gTb258hyE4jRUMohU9CUUwzHfeuj3qPw==
+babel-preset-react-app@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/babel-preset-react-app/-/babel-preset-react-app-5.0.3.tgz#ab750bc368e5bbabb45a3dade946660d29dac6bd"
+  integrity sha512-nLeuYPjhOUGKgYCZrGW57glKCwr5ahMsX5gv025bugevHfK2H+wTw8zOIkG/mpiC/vkhFBp8GamOhnpHNFIwmA==
   dependencies:
     "@babel/core" "7.1.0"
     "@babel/plugin-proposal-class-properties" "7.1.0"
@@ -3076,11 +3071,6 @@ cross-spawn@^5.0.1:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-unzip@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/cross-unzip/-/cross-unzip-0.0.2.tgz#5183bc47a09559befcf98cc4657964999359372f"
-  integrity sha1-UYO8R6CVWb78+YzEZXlkmZNZNy8=
-
 crypt@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
@@ -3849,16 +3839,6 @@ electron-builder@^20.28.4:
     update-notifier "^2.5.0"
     yargs "^12.0.1"
 
-electron-devtools-installer@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-2.2.4.tgz#261a50337e37121d338b966f07922eb4939a8763"
-  integrity sha512-b5kcM3hmUqn64+RUcHjjr8ZMpHS2WJ5YO0pnG9+P/RTdx46of/JrEjuciHWux6pE+On6ynWhHJF53j/EDJN0PA==
-  dependencies:
-    "7zip" "0.0.6"
-    cross-unzip "0.0.2"
-    rimraf "^2.5.2"
-    semver "^5.3.0"
-
 electron-download@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/electron-download/-/electron-download-4.1.1.tgz#02e69556705cc456e520f9e035556ed5a015ebe8"
@@ -3932,7 +3912,7 @@ electron-open-link-in-browser@^1.0.2:
   dependencies:
     is-electron-renderer "^2.0.0"
 
-electron-osx-sign@0.4.10, electron-osx-sign@^0.4.10:
+electron-osx-sign@0.4.10:
   version "0.4.10"
   resolved "https://registry.yarnpkg.com/electron-osx-sign/-/electron-osx-sign-0.4.10.tgz#be4f3b89b2a75a1dc5f1e7249081ab2929ca3a26"
   integrity sha1-vk87ibKnWh3F8eckkIGrKSnKOiY=
@@ -4023,10 +4003,10 @@ electron-window-state@^4.1.1:
     jsonfile "^2.2.3"
     mkdirp "^0.5.1"
 
-electron@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-3.0.2.tgz#0aed43a331b43dfe671ddb54d75fc4102d362959"
-  integrity sha512-BsU/KJRPODlEoaOZhsmFTIaG2h1Y28JCrqeTGVqGL+fef/7xQZdHx5ZCStUDXXUSTcoqiHlc5QvLH4PfZFbOmg==
+electron@^4.0.0:
+  version "4.0.0-nightly.20180929"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-4.0.0-nightly.20180929.tgz#156fe37178dd2d1be261b3d2ff3c6050136954fe"
+  integrity sha512-QE02WXDTou2e6RGiJooTi32kGlVDJhna1PRNnC77KxS3fIEc2Ixgx1r0egdVnEWqOmtZMsMvi4+v6nj5hmBIug==
   dependencies:
     "@types/node" "^8.0.24"
     electron-download "^4.1.0"
@@ -7120,11 +7100,6 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
-json@^9.0.6:
-  version "9.0.6"
-  resolved "https://registry.yarnpkg.com/json/-/json-9.0.6.tgz#7972c2a5a48a42678db2730c7c2c4ee6e4e24585"
-  integrity sha1-eXLCpaSKQmeNsnMMfCxO5uTiRYU=
-
 jsonfile@^2.2.3:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-2.4.0.tgz#3736a2b428b87bbda0cc83b53fa3d633a35c2ae8"
@@ -10082,10 +10057,10 @@ react-audio-player@^0.10.0:
   dependencies:
     prop-types "^15.5.8"
 
-react-dev-utils@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-6.0.3.tgz#78662b5fd7b4441140485e80d04d594116c5b1e3"
-  integrity sha512-3fI6rknX4td1/iFM+RtQh56TgSKUn6lvAmzqtYepk6OrTGwG1bEXv0x0NvaUdTwZHwdcdkuaeOeTzZHSbHk4Ug==
+react-dev-utils@^6.0.4:
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-6.0.4.tgz#cd6d2712aa22d67751ef6757dc82787351da8826"
+  integrity sha512-0I+eRcb4RrmlWCKRJhDLi29oTEqpDEbbVGI1DrN/ZTJbvhzycsg03Edi67YQVUjYl690URufowi54+u0TUnQMw==
   dependencies:
     "@babel/code-frame" "7.0.0"
     address "1.0.3"
@@ -10103,7 +10078,7 @@ react-dev-utils@^6.0.3:
     loader-utils "1.1.0"
     opn "5.4.0"
     pkg-up "2.0.0"
-    react-error-overlay "^5.0.3"
+    react-error-overlay "^5.0.4"
     recursive-readdir "2.2.2"
     shell-quote "1.6.1"
     sockjs-client "1.1.5"
@@ -10120,18 +10095,18 @@ react-dom@^16.5.2:
     prop-types "^15.6.2"
     schedule "^0.5.0"
 
-react-dropzone@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-6.0.1.tgz#e7aaa8a1795b29042fd4ec536fe89434032105af"
-  integrity sha512-99x/Gjj9rrp4xUp1I8LWGTDm9kf94sEjvkXCdJAGcwm4HcCMmXnyeqrmHFSeAzUwRna9BHtJ+i9Hu8t4gcVi1w==
+react-dropzone@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-6.0.2.tgz#53a9fdc7b9125c5f2aa9d985a75878b200ee241c"
+  integrity sha512-0Q8OrrEvHAxUAyGm1126XL6nMo4RQtOY+pz5LWgv8DB8PjSc1dOkCSiY1fuwdR+Cc4u+wK4u1lGunx7ABwWbxg==
   dependencies:
     attr-accept "^1.1.3"
     prop-types "^15.6.2"
 
-react-error-overlay@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.0.3.tgz#6eae9350144f3cd036e4f968c5a8bfae542af562"
-  integrity sha512-TLMcjJcNy7BalEHN1iNuIK0E6ODYgExcrdaKraT4kzKVztkrBHI1THTAn3qx7GVvtP4TbCqi+mBjsZqoWtuiEQ==
+react-error-overlay@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.0.4.tgz#39cf184d770f98b65a2ee59a779d03b8d092b69e"
+  integrity sha512-grVJtoDzIbSMYgy5rKbSOmt2FvzR4iJnpMBjXmZolSYJM5acQvBHoEbBBNW0FzTE/TLZMZ+gSy0bAHydc1hFEw==
 
 react-github-button@^0.1.11:
   version "0.1.11"
@@ -10227,9 +10202,9 @@ react-router@^4.3.1:
     warning "^4.0.1"
 
 react-scripts@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-2.0.3.tgz#f766839096a7d28b318edcea16e56634243ae04f"
-  integrity sha512-Hw6P9vJ9vXWdo5J752lzN6NpmY3DpEjp5VD+V+N+61TY5+UY/oKtfF+23ZRFBCkULlVvQdo25Sw92HKA2wI8sw==
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-2.0.4.tgz#244a69abbf5630a80ad81349a6d0d56d91583c6c"
+  integrity sha512-zqsdYYeUqfURac6NEL9/5aImOINuMdm3OjBaIhGxEqJQOtlhsJTrvjY30zJpnCLUMv9B7BLIsmkvvOd0z+x1kQ==
   dependencies:
     "@babel/core" "7.1.0"
     "@svgr/webpack" "2.4.1"
@@ -10238,7 +10213,7 @@ react-scripts@^2.0.3:
     babel-jest "23.6.0"
     babel-loader "8.0.4"
     babel-plugin-named-asset-import "^0.2.2"
-    babel-preset-react-app "^5.0.2"
+    babel-preset-react-app "^5.0.3"
     bfj "6.1.1"
     case-sensitive-paths-webpack-plugin "2.1.2"
     chalk "2.4.1"
@@ -10267,7 +10242,7 @@ react-scripts@^2.0.3:
     postcss-preset-env "6.0.6"
     postcss-safe-parser "4.0.1"
     react-app-polyfill "^0.1.3"
-    react-dev-utils "^6.0.3"
+    react-dev-utils "^6.0.4"
     resolve "1.8.1"
     sass-loader "7.1.0"
     style-loader "0.23.0"
@@ -10889,7 +10864,7 @@ rgba-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
   integrity sha1-QzdOLiyglosO8VI0YLfXMP8i7rM=
 
-rimraf@2, rimraf@^2.2.8, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
+rimraf@2, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   integrity sha512-lreewLK/BlghmxtfH36YYVg1i8IAce4TI7oao75I1g245+6BctqTVQiBP3YUJ9C6DQOXJmkYR9X9fCLtCOJc5w==

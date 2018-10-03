@@ -18,3 +18,8 @@ body {
 	display: flex;
 	justify-content: center;
 }
+
+::selection {
+	color: #ffffff;
+	background: #44bc75;
+}
