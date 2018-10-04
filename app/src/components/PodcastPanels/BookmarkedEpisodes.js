@@ -30,11 +30,11 @@ class BookmarkedEpisodes extends React.Component {
 							}`}
 						>
 							<Img
+								loader={<div className="placeholder" />}
 								src={[
 									bookmark.episode.podcast.images.favicon,
 									getPlaceholderImageURL(bookmark._id),
 								]}
-								loader={<div className="placeholder" />}
 							/>
 							<div>{bookmark.episode.title}</div>
 							<TimeAgo

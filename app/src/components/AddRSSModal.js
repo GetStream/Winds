@@ -49,7 +49,7 @@ class AddRSSModal extends React.Component {
 			baseURL: config.api.url,
 			data: fd,
 			headers: {
-				Authorization: `Bearer ${localStorage['jwt']}`,
+				'Authorization': `Bearer ${localStorage['jwt']}`,
 				'Content-Type': 'multipart/form-data',
 			},
 			method: 'POST',
@@ -97,7 +97,7 @@ class AddRSSModal extends React.Component {
 			baseURL: config.api.url,
 			data: { feedUrl: this.state.rssInputValue },
 			headers: {
-				Authorization: `Bearer ${localStorage['jwt']}`,
+				'Authorization': `Bearer ${localStorage['jwt']}`,
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
@@ -116,7 +116,7 @@ class AddRSSModal extends React.Component {
 					submitting: false,
 				});
 			})
-			.catch((err) => {
+			.catch(() => {
 				this.setState({
 					errorMessage: 'Oops, something went wrong. Please try again later.',
 					errored: true,

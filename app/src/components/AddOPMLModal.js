@@ -46,7 +46,7 @@ class AddOPMLModal extends React.Component {
 			baseURL: config.api.url,
 			data: fd,
 			headers: {
-				Authorization: `Bearer ${localStorage['jwt']}`,
+				'Authorization': `Bearer ${localStorage['jwt']}`,
 				'Content-Type': 'multipart/form-data',
 			},
 			method: 'POST',

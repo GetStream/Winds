@@ -6,10 +6,12 @@ const NotFound = (props) => {
 		<div className="not-found">
 			<h1>404</h1>
 			<p>
-				Hm, looks like there's nothing here. Maybe{' '}
+				Hm, looks like there&#39;s nothing here. Maybe{' '}
 				<a
 					className="link"
-					onClick={() => {
+					href="/"
+					onClick={(e) => {
+						e.preventDefault();
 						props.history.goBack();
 					}}
 				>

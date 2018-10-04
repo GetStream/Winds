@@ -99,7 +99,7 @@ class RSSArticleList extends React.Component {
 				}),
 			)
 			.catch((err) => {
-				if (window.console) console.log(err); // eslint-disable-line no-console
+				console.log(err); // eslint-disable-line no-console
 			});
 	};
 
@@ -131,7 +131,7 @@ class RSSArticleList extends React.Component {
 					}));
 			})
 			.catch((err) => {
-				if (window.console) console.log(err); // eslint-disable-line no-console
+				console.log(err); // eslint-disable-line no-console
 			});
 	};
 
@@ -199,15 +199,15 @@ class RSSArticleList extends React.Component {
 		if (articles.length === 0) {
 			rightContents = (
 				<div>
-					<p>We haven't found any articles for this RSS feed yet :(</p>
+					<p>We haven&#39;t found any articles for this RSS feed yet :(</p>
 					<p>
-						It might be because the RSS feed doesn't have any articles, or
-						because it just got added and we're still parsing them. Come check
-						back in a few minutes?
+						It might be because the RSS feed doesn&#39;t have any articles, or
+						because it just got added and we&#39;re still parsing them. Come
+						check back in a few minutes?
 					</p>
 					<p>
-						If you're pretty sure there's supposed to be some articles here,
-						and they aren't showing up, please file a{' '}
+						If you&#39;re pretty sure there&#39;s supposed to be some articles
+						here, and they aren&#39;t showing up, please file a{' '}
 						<a href="https://github.com/getstream/winds/issues">
 							GitHub Issue
 						</a>
@@ -234,10 +234,10 @@ class RSSArticleList extends React.Component {
 
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>That's it! No more articles here.</p>
+							<p>That&#39;s it! No more articles here.</p>
 							<p>
 								What, did you think that once you got all the way around,
-								you'd just be back at the same place that you started?
+								you&#39;d just be back at the same place that you started?
 								Sounds like some real round-feed thinking to me.
 							</p>
 						</div>
@@ -306,10 +306,10 @@ class RSSArticleList extends React.Component {
 
 				<AliasModal
 					defVal={title}
-					isOpen={this.state.aliasModal}
-					toggleModal={this.toggleAliasModal}
-					isRss={true}
 					feedID={rssFeed._id}
+					isOpen={this.state.aliasModal}
+					isRss={true}
+					toggleModal={this.toggleAliasModal}
 				/>
 
 				<div className="list content" ref={this.contentsEl}>

@@ -15,8 +15,8 @@ class PodcastList extends React.Component {
 					this.props.match.params.podcastID &&
 					this.props.match.params.podcastID !== 'recent'
 				}
-				headerText="Podcasts"
 				headerLink="/podcasts"
+				headerText="Podcasts"
 			>
 				{this.props.podcasts.map((podcast) => {
 					const favicon = podcast.images ? podcast.images.favicon : null;
@@ -31,8 +31,8 @@ class PodcastList extends React.Component {
 							to={`/podcasts/${podcast._id}`}
 						>
 							<Img
-								src={[favicon, getPlaceholderImageURL(podcast._id)]}
 								loader={<div className="placeholder" />}
+								src={[favicon, getPlaceholderImageURL(podcast._id)]}
 							/>
 							<div>{podcast.title}</div>
 							<div>

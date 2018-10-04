@@ -22,13 +22,13 @@ class ArticleListItem extends React.Component {
 			>
 				<div className="left">
 					<Img
-						width="75"
 						height="75"
+						loader={<div className="placeholder" />}
 						src={[
 							this.props.images.og,
 							getPlaceholderImageURL(this.props._id),
 						]}
-						loader={<div className="placeholder" />}
+						width="75"
 					/>
 					{this.props.recent && <div className="recent-indicator" />}
 				</div>
@@ -42,9 +42,9 @@ class ArticleListItem extends React.Component {
 								e.stopPropagation();
 								this.props.pinID
 									? unpinArticle(
-											this.props.pinID,
-											this.props._id,
-											this.props.dispatch,
+										this.props.pinID,
+										this.props._id,
+										this.props.dispatch,
 									  )
 									: pinArticle(this.props._id, this.props.dispatch);
 							}}

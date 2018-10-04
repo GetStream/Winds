@@ -43,7 +43,7 @@ class AddPodcastModal extends React.Component {
 			baseURL: config.api.url,
 			data: { feedUrl: this.state.podcastInputValue },
 			headers: {
-				Authorization: `Bearer ${localStorage['jwt']}`,
+				'Authorization': `Bearer ${localStorage['jwt']}`,
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
@@ -150,7 +150,7 @@ class AddPodcastModal extends React.Component {
 						/>
 					</div>
 					<div className="info">
-						{"Enter a valid podcast URL and we'll add it to Winds."}
+						Enter a valid podcast URL and we&#39;ll add it to Winds.
 					</div>
 					<div className="error-message">{this.state.errorMessage}</div>
 					<div className="buttons">

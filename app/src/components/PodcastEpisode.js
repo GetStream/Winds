@@ -14,7 +14,6 @@ import TimeAgo from './TimeAgo';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import pauseIcon from '../images/icons/pause.svg';
 import playIcon from '../images/icons/play.svg';
-import { getPodcastById, getPodcastEpisodes } from '../api';
 
 class PodcastEpisode extends React.Component {
 	constructor(props) {
@@ -39,17 +38,10 @@ class PodcastEpisode extends React.Component {
 
 	fetchAllData() {
 		const episodeID = this.props.match.params.episodeID;
-		const podcastID = this.props.match.params.podcastID;
 
 		this.setState({ error: false });
 		this.getEpisode(episodeID);
 		this.getEpisodeContent(episodeID);
-
-		if (!this.props.episodes && false) {
-			// In order to make the Player works in direct access to page
-			getPodcastEpisodes(podcastID);
-			getPodcastById(podcastID);
-		}
 
 		window.streamAnalyticsClient.trackEngagement({
 			label: 'episode_open',
@@ -65,7 +57,7 @@ class PodcastEpisode extends React.Component {
 			this.setState({ episode: res.data, loadingEpisode: false });
 		} catch (err) {
 			this.setState({ error: true, loadingEpisode: false });
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		}
 	}
 
@@ -77,7 +69,7 @@ class PodcastEpisode extends React.Component {
 			this.setState({ content: res.data.content, loadingContent: false });
 		} catch (err) {
 			this.setState({ error: true, loadingContent: false });
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		}
 	}
 
@@ -167,12 +159,12 @@ class PodcastEpisode extends React.Component {
 									>
 										<Img
 											className="og-image"
+											loader={<div className="placeholder" />}
 											src={[
 												episode.images.og,
 												episode.podcast.images.featured,
 												getPlaceholderImageURL(episode._id),
 											]}
-											loader={<div className="placeholder" />}
 										/>
 										<div className="play-icon">
 											<div className="icon-container">
@@ -190,13 +182,13 @@ class PodcastEpisode extends React.Component {
 												onClick={() => {
 													pinID
 														? unpinEpisode(
-																pinID,
-																episode._id,
-																this.props.dispatch,
+															pinID,
+															episode._id,
+															this.props.dispatch,
 														  )
 														: pinEpisode(
-																episode._id,
-																this.props.dispatch,
+															episode._id,
+															this.props.dispatch,
 														  );
 												}}
 											>

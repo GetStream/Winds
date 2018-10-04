@@ -40,7 +40,7 @@ export const getAliases = (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -53,7 +53,7 @@ export const getSuggestedRss = (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -66,7 +66,7 @@ export const getSuggestedPodcasts = (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -93,7 +93,7 @@ export const getPodcastById = (dispatch, id) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -114,7 +114,7 @@ export const getPodcastEpisodes = (podcastID) => {
 			}),
 		)
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -131,7 +131,7 @@ export const getRssFollows = (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -148,7 +148,7 @@ export const getPodcastsFollows = (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -165,7 +165,7 @@ export const followRss = (dispatch, rssFeedID) => {
 	dispatch({ rssFeedID, type: 'FOLLOW_RSS_FEED' });
 
 	fetch('POST', '/follows', {}, { rss: rssFeedID, type: 'rss' }).catch((err) => {
-		if (window.console) console.log(err); // eslint-disable-line no-console
+		console.log(err); // eslint-disable-line no-console
 		dispatch({ rssFeedID, type: 'UNFOLLOW_RSS_FEED' });
 	});
 };
@@ -174,7 +174,7 @@ export const unfollowRss = (dispatch, rssFeedID) => {
 	dispatch({ rssFeedID, type: 'UNFOLLOW_RSS_FEED' });
 
 	fetch('DELETE', '/follows', {}, { rss: rssFeedID, type: 'rss' }).catch((err) => {
-		if (window.console) console.log(err); // eslint-disable-line no-console
+		console.log(err); // eslint-disable-line no-console
 		dispatch({ rssFeedID, type: 'FOLLOW_RSS_FEED' });
 	});
 };
@@ -184,7 +184,7 @@ export const followPodcast = (dispatch, podcastID) => {
 
 	fetch('POST', '/follows', null, { podcast: podcastID, type: 'podcast' }).catch(
 		(err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 			dispatch({ podcastID, type: 'UNFOLLOW_PODCAST' });
 		},
 	);
@@ -194,7 +194,7 @@ export const unfollowPodcast = (dispatch, podcastID) => {
 	dispatch({ podcastID, type: 'UNFOLLOW_PODCAST' });
 	fetch('DELETE', '/follows', null, { podcast: podcastID, type: 'podcast' }).catch(
 		(err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 			dispatch({ podcastID, type: 'FOLLOW_PODCAST' });
 		},
 	);

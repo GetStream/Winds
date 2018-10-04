@@ -62,13 +62,13 @@ class EpisodeListItem extends React.Component {
 				>
 					<Img
 						height="75"
-						width="75"
+						loader={<div className="placeholder" />}
 						src={[
 							this.props.images.og,
 							this.props.podcast.images.featured,
 							getPlaceholderImageURL(this.props._id),
 						]}
-						loader={<div className="placeholder" />}
+						width="75"
 					/>
 					{this.props.playable ? icon : null}
 					{this.props.recent ? <div className="recent-indicator" /> : null}
@@ -79,7 +79,7 @@ class EpisodeListItem extends React.Component {
 						this.props.history.push(
 							this.props.playable
 								? `/podcasts/${this.props.podcast._id}/episodes/${
-										this.props._id
+									this.props._id
 								  }`
 								: `/podcasts/${this.props.podcast._id}`,
 						);
@@ -93,9 +93,9 @@ class EpisodeListItem extends React.Component {
 								e.stopPropagation();
 								this.props.pinID
 									? unpinEpisode(
-											this.props.pinID,
-											this.props._id,
-											this.props.dispatch,
+										this.props.pinID,
+										this.props._id,
+										this.props.dispatch,
 									  )
 									: pinEpisode(this.props._id, this.props.dispatch);
 							}}
@@ -140,6 +140,7 @@ EpisodeListItem.defaultProps = {
 };
 
 EpisodeListItem.propTypes = {
+	dispatch: PropTypes.func.isRequired,
 	active: PropTypes.bool,
 	description: PropTypes.string,
 	history: PropTypes.shape({

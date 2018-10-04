@@ -98,7 +98,7 @@ class RSSArticle extends React.Component {
 			link.pathname = location.hash.slice(1);
 		}
 		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${
-			this.props.title
+			this.state.article.title
 		}&hashtags=Winds,RSS`;
 
 		if (isElectron()) {
@@ -139,7 +139,7 @@ class RSSArticle extends React.Component {
 				article: mergeSocialScore(res.data, { reddit, hackernews }),
 			});
 		} catch (err) {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		}
 	}
 
@@ -187,7 +187,7 @@ class RSSArticle extends React.Component {
 					<p>There was a problem loading this article :(</p>
 					<p>To read the article, head on over to:</p>
 					<p>
-						<a href={article.url} target="_blank">
+						<a href={article.url} rel="noopener noreferrer" target="_blank">
 							{article.title}
 						</a>
 					</p>
@@ -211,13 +211,10 @@ class RSSArticle extends React.Component {
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
+								const dispatch = this.props.dispatch;
 								pinID
-									? unpinArticle(
-											pinID,
-											article._id,
-											this.props.dispatch,
-									  )
-									: pinArticle(article._id, this.props.dispatch);
+									? unpinArticle(pinID, article._id, dispatch)
+									: pinArticle(article._id, dispatch);
 							}}
 						>
 							{pinID ? (
@@ -259,6 +256,7 @@ class RSSArticle extends React.Component {
 								) : (
 									<a
 										href={article.socialScore.reddit.url}
+										rel="noopener noreferrer"
 										target="_blank"
 									>
 										<i className="fab fa-reddit-alien" />
@@ -287,6 +285,7 @@ class RSSArticle extends React.Component {
 								) : (
 									<a
 										href={article.socialScore.hackernews.url}
+										rel="noopener noreferrer"
 										target="_blank"
 									>
 										<i className="fab fa-hacker-news-square" />
@@ -318,12 +317,12 @@ class RSSArticle extends React.Component {
 									enclosure.type.includes('audio') ||
 									enclosure.type.includes('video') ||
 									enclosure.type.includes('youtube') ? (
-										<ReactPlayer
-											controls={true}
-											key={enclosure._id}
-											url={enclosure.url}
-										/>
-									) : null,
+											<ReactPlayer
+												controls={true}
+												key={enclosure._id}
+												url={enclosure.url}
+											/>
+										) : null,
 							)}
 					</div>
 					{articleContents}
@@ -335,6 +334,7 @@ class RSSArticle extends React.Component {
 
 RSSArticle.propTypes = {
 	dispatch: PropTypes.func.isRequired,
+	pinnedArticles: PropTypes.shape({}),
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			articleID: PropTypes.string.isRequired,

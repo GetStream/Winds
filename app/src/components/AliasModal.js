@@ -42,7 +42,7 @@ class AliasModal extends React.Component {
 					setTimeout(() => this.closeModal(), 500);
 				}
 			})
-			.catch((err) => this.setState({ error: true, submitting: false }));
+			.catch(() => this.setState({ error: true, submitting: false }));
 	};
 
 	render() {
@@ -75,8 +75,8 @@ class AliasModal extends React.Component {
 						<input
 							autoComplete="false"
 							defaultValue={this.props.defVal}
-							placeholder="Enter new name"
 							name="alias"
+							placeholder="Enter new name"
 							type="text"
 						/>
 					</div>

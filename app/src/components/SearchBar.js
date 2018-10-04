@@ -14,30 +14,30 @@ const index = client.initIndex(config.algolia.index);
 
 const getResourceUrl = (resource) => {
 	switch (resource.type) {
-		case 'user':
-			return `/profile/${resource._id}`;
-		case 'article':
-			return `/rss/${resource.rss}/articles/${resource._id}`;
-		case 'episode':
-			return `/podcasts/${resource.podcast}`;
-		case 'rss':
-			return `/rss/${resource.duplicateOf || resource._id}`;
-		case 'podcast':
-			return `/podcasts/${resource._id}`;
-		case 'playlist':
-			return `/playlists/${resource._id}`;
-		default:
-			console.log(resource); // eslint-disable-line no-console
+	case 'user':
+		return `/profile/${resource._id}`;
+	case 'article':
+		return `/rss/${resource.rss}/articles/${resource._id}`;
+	case 'episode':
+		return `/podcasts/${resource.podcast}`;
+	case 'rss':
+		return `/rss/${resource.duplicateOf || resource._id}`;
+	case 'podcast':
+		return `/podcasts/${resource._id}`;
+	case 'playlist':
+		return `/playlists/${resource._id}`;
+	default:
+		console.log(resource); // eslint-disable-line no-console
 	}
 };
 
 const getResourceTitle = (resource) => {
 	switch (resource.type) {
-		case 'user':
-		case 'playlist':
-			return resource.name;
-		default:
-			return resource.title;
+	case 'user':
+	case 'playlist':
+		return resource.name;
+	default:
+		return resource.title;
 	}
 };
 
@@ -51,76 +51,44 @@ class SearchBar extends React.Component {
 			results: [],
 			selectedIndex: 0,
 		};
-
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleKeyDown = this.handleKeyDown.bind(this);
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
-	search(searchText) {
-		index.search(
-			{
-				query: searchText,
-			},
-			(err, results) => {
-				if (err) {
-					if (window.console) {
-						console.log(err); // eslint-disable-line no-console
-					}
+	search = (searchText) => {
+		index.search({ query: searchText }, (err, results) => {
+			if (err) return console.log(err); // eslint-disable-line no-console
 
-					return;
-				}
+			this.setState({ results: results.hits.slice(0, 5) });
+		});
+	};
 
-				this.setState({
-					results: results.hits.slice(0, 5),
-				});
-			},
-		);
-	}
-
-	clearSearchResults() {
+	clearSearchResults = () => {
 		this.hideSearchResults();
+		this.setState({ displayResults: false });
+	};
 
-		this.setState({
-			displayResults: false,
-		});
-	}
+	hideSearchResults = () => {
+		this.setState({ query: '', results: [] });
+	};
 
-	hideSearchResults() {
-		this.setState({
-			query: '',
-			results: [],
-		});
-	}
-
-	handleInputChange(e) {
+	handleInputChange = (e) => {
 		this.search(e.target.value);
 
-		let displayResults = true;
-		if (e.target.value.trim() === '') {
-			displayResults = false;
-		}
-
 		this.setState({
-			displayResults,
+			displayResults: e.target.value.trim() !== '',
 			query: e.target.value,
 			selectedIndex: 0,
 		});
-	}
+	};
 
-	handleKeyDown(e) {
+	handleKeyDown = (e) => {
 		if (e.keyCode === 40) {
 			// 40 is down, 38 is up
 			e.preventDefault();
 
 			let newPos = this.state.selectedIndex + 1;
-			if (newPos > 4) {
-				newPos = 4;
-			}
+			if (newPos > 4) newPos = 4;
 
-			this.setState({
-				selectedIndex: newPos,
-			});
+			this.setState({ selectedIndex: newPos });
 		} else if (e.keyCode === 27) {
 			e.preventDefault();
 
@@ -129,37 +97,29 @@ class SearchBar extends React.Component {
 			e.preventDefault();
 
 			let newPos = this.state.selectedIndex - 1;
-			if (newPos < 0) {
-				newPos = 0;
-			}
+			if (newPos < 0) newPos = 0;
 
-			this.setState({
-				selectedIndex: newPos,
-			});
+			this.setState({ selectedIndex: newPos });
 		}
-	}
+	};
 
-	handleFormSubmit(e) {
+	handleFormSubmit = (e) => {
 		e.preventDefault();
 
-		if (this.state.results.length === 0) {
-			return;
-		}
+		if (!this.state.results.length) return;
 
 		this.props.history.push(
 			getResourceUrl(this.state.results[this.state.selectedIndex]),
 		);
 
 		this.inputElement.blur();
-		this.setState({
-			displayResults: false,
-		});
-	}
+		this.setState({ displayResults: false });
+	};
 
 	render() {
 		let results;
 
-		if (this.state.results.length === 0) {
+		if (!this.state.results.length) {
 			results = (
 				<div className="panel-element">
 					<span>No search results found...</span>
@@ -175,9 +135,7 @@ class SearchBar extends React.Component {
 						key={result._id}
 						onClick={() => {
 							this.inputElement.blur();
-							this.setState({
-								displayResults: false,
-							});
+							this.setState({ displayResults: false });
 						}}
 						to={getResourceUrl(result)}
 					>
@@ -199,7 +157,7 @@ class SearchBar extends React.Component {
 		}
 
 		return (
-			<React.Fragment>
+			<>
 				<div
 					className={`search ${
 						this.props.bannerIsShown ? 'banner-is-shown' : ''
@@ -211,11 +169,8 @@ class SearchBar extends React.Component {
 							id="search"
 							onChange={this.handleInputChange}
 							onFocus={() => {
-								if (this.state.results.length !== 0) {
-									this.setState({
-										displayResults: true,
-									});
-								}
+								if (this.state.results.length !== 0)
+									this.setState({ displayResults: true });
 							}}
 							onKeyDown={this.handleKeyDown}
 							placeholder="Search Winds..."
@@ -238,18 +193,16 @@ class SearchBar extends React.Component {
 						</div>
 					) : null}
 				</div>
-				{this.state.displayResults ? (
+				{this.state.displayResults && (
 					<div
 						className="click-catcher"
 						onClick={() => {
 							this.inputElement.blur();
-							this.setState({
-								displayResults: false,
-							});
+							this.setState({ displayResults: false });
 						}}
 					/>
-				) : null}
-			</React.Fragment>
+				)}
+			</>
 		);
 	}
 }
