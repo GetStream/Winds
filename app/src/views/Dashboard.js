@@ -1,69 +1,26 @@
-import FeaturedItems from '../components/FeaturedItems';
-import { Link } from 'react-router-dom';
-import Loader from '../components/Loader';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+
+import Loader from '../components/Loader';
+import FeaturedItems from '../components/FeaturedItems';
 import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import DiscoverSection from '../components/DiscoverSection';
-import fetch from '../util/fetch';
-import { getAliases } from '../util/aliases';
+
+import { getSuggestedRss, getSuggestedPodcasts } from '../api';
 
 class Dashboard extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.refresh = this.refresh.bind(this);
-	}
-
-	componentDidMount() {
-		getAliases(this.props.dispatch);
-	}
-
-	refresh() {
-		fetch('GET', '/podcasts', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'UPDATE_SUGGESTED_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-		fetch('GET', '/rss', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-	}
+	refresh = () => {
+		getSuggestedPodcasts(this.props.dispatch);
+		getSuggestedRss(this.props.dispatch);
+	};
 
 	render() {
-		if (this.props.loading) {
-			return <Loader />;
-		}
+		if (this.props.loading) return <Loader />;
 
 		return (
 			<div className="dashboard">
@@ -115,36 +72,15 @@ class Dashboard extends React.Component {
 
 Dashboard.defaultProps = {
 	loading: true,
-	showIntroBanner: true,
 };
 
 Dashboard.propTypes = {
 	loading: PropTypes.bool,
-	showIntroBanner: PropTypes.bool,
-	userEmail: PropTypes.string,
-	userID: PropTypes.string,
-	userName: PropTypes.string,
 	dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
-	let user = state.users[localStorage['authedUser']];
-
-	if (!user) {
-		return { loading: true };
-	}
-
-	let showIntroBanner = false;
-	if (state['showIntroBanner'] === true) {
-		showIntroBanner = true;
-	}
-	return {
-		loading: false,
-		showIntroBanner,
-		userEmail: user.email,
-		userID: user._id,
-		userName: user.name,
-	};
-};
+const mapStateToProps = (state) => ({
+	loading: !state.user,
+});
 
 export default connect(mapStateToProps)(Dashboard);

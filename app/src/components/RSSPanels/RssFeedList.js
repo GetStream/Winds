@@ -4,44 +4,10 @@ import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import Img from 'react-image';
 import React from 'react';
 import Panel from '../Panel';
-import fetch from '../../util/fetch';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class RssFeedList extends React.Component {
-	componentDidMount() {
-		fetch('GET', '/follows', null, { type: 'rss' })
-			.then(res => {
-				this.props.dispatch({
-					type: 'UPDATE_USER',
-					user: res.data[0].user,
-				});
-
-				let rssFeeds = [];
-				let rssFeedFollowRelationships = [];
-				for (let followRelationship of res.data) {
-					rssFeeds.push(followRelationship.rss);
-					rssFeedFollowRelationships.push({
-						rssFeedID: followRelationship.rss._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				this.props.dispatch({
-					rssFeeds,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-				this.props.dispatch({
-					rssFeedFollowRelationships,
-					type: 'BATCH_FOLLOW_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-	}
 	render() {
 		return (
 			<Panel
@@ -52,7 +18,8 @@ class RssFeedList extends React.Component {
 				headerText="Feeds"
 				headerLink="/rss"
 			>
-				{this.props.rssFeeds.map(rssFeed => {
+				{this.props.rssFeeds.map((rssFeed) => {
+					const favicon = rssFeed.images ? rssFeed.images.favicon : null;
 					let rssId = rssFeed.duplicateOf || rssFeed._id;
 					let clazz =
 						this.props.match.params.rssFeedID === rssFeed._id
@@ -61,7 +28,7 @@ class RssFeedList extends React.Component {
 					return (
 						<Link className={clazz} key={rssId} to={`/rss/${rssId}`}>
 							<Img
-								src={[rssFeed.images.favicon, getPlaceholderImageURL()]}
+								src={[favicon, getPlaceholderImageURL(rssId)]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{rssFeed.title}</div>
@@ -86,39 +53,21 @@ RssFeedList.propTypes = {
 	rssFeeds: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let rssFeedsUserFollows = [];
+const mapStateToProps = (state) => {
+	if (!state.rssFeeds) return { rssFeeds: [] };
 
-	if (state.followedRssFeeds && state.followedRssFeeds[localStorage['authedUser']]) {
-		for (let rssFeedID of Object.keys(
-			state.followedRssFeeds[localStorage['authedUser']],
-		)) {
-			if (state.followedRssFeeds[localStorage['authedUser']][rssFeedID]) {
-				rssFeedsUserFollows.push(rssFeedID);
-			}
-		}
-	}
-
-	let rssFeeds = rssFeedsUserFollows.map(rssFeedID => {
-		return { ...state.rssFeeds[rssFeedID] };
-	});
+	let rssFeeds = Object.values(state.rssFeeds);
+	rssFeeds.sort((a, b) => a.title.localeCompare(b.title));
 
 	if (state.aliases) {
-		rssFeeds = rssFeeds.map(rssFeed => {
+		rssFeeds = rssFeeds.map((rssFeed) => {
 			if (state.aliases[rssFeed._id])
 				rssFeed.title = state.aliases[rssFeed._id].alias;
 			return rssFeed;
 		});
 	}
 
-	rssFeeds.sort((a, b) => {
-		return a.title.localeCompare(b.title);
-	});
-
-	return {
-		...ownProps,
-		rssFeeds,
-	};
+	return { rssFeeds };
 };
 
 export default connect(mapStateToProps)(withRouter(RssFeedList));

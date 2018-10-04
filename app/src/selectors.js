@@ -8,7 +8,7 @@ const getActivity = (state, activityID) => {
 		activity.type = 'episode';
 	} else if (type === 'share') {
 		activity = { ...state.shares[Id] };
-		activity.user = { ...state.users[activity.user] };
+		activity.user = { ...state.user };
 		activity.type = 'share';
 	} else if (type === 'article') {
 		activity = { ...state.articles[Id] };
@@ -31,7 +31,7 @@ const getPlaylistsForUser = (state, userID) => {
 	}
 
 	for (let playlist of playlists) {
-		let hydratedEpisodes = playlist.episodes.map(episodeID => {
+		let hydratedEpisodes = playlist.episodes.map((episodeID) => {
 			return { ...state.episodes[episodeID] };
 		});
 		playlist.episodes = hydratedEpisodes;

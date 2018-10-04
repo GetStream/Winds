@@ -1,58 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
 import Img from 'react-image';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { Link } from 'react-router-dom';
+import { getSuggestedRss, getSuggestedPodcasts } from '../api/';
 
 class DiscoverSection extends React.Component {
 	componentDidMount() {
-		fetch('GET', '/podcasts', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'UPDATE_SUGGESTED_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-
-		fetch('GET', '/rss', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
+		getSuggestedPodcasts(this.props.dispatch);
+		getSuggestedRss(this.props.dispatch);
 	}
+
 	render() {
-		let podcastGrid = this.props.suggestedPodcasts.slice(0, 3);
-		let restOfPodcasts = this.props.suggestedPodcasts.slice(3);
-		let allSuggestions = [...restOfPodcasts, ...this.props.suggestedRssFeeds];
+		const podcastGrid = this.props.suggestedPodcasts.slice(0, 3);
+		const allSuggestions = [
+			...this.props.suggestedRssFeeds,
+			...this.props.suggestedPodcasts.slice(3),
+		];
+		allSuggestions.sort(() => Math.random() >= 0.5);
 
 		return (
 			<div>
 				<div className="shows-grid">
-					{podcastGrid.map(podcast => {
+					{podcastGrid.map((podcast) => {
 						return (
 							<Link
 								className="shows-grid-item"
@@ -63,7 +34,7 @@ class DiscoverSection extends React.Component {
 									className="shows-grid-item-image"
 									style={{
 										backgroundImage: `url(${podcast.images.featured ||
-											getPlaceholderImageURL(true)})`,
+											getPlaceholderImageURL(podcast._id, true)})`,
 									}}
 								/>
 								{podcast.title}
@@ -72,7 +43,7 @@ class DiscoverSection extends React.Component {
 					})}
 				</div>
 				<div className="tiny-list">
-					{allSuggestions.map(suggestion => {
+					{allSuggestions.map((suggestion) => {
 						return (
 							<Link
 								key={suggestion._id}
@@ -83,7 +54,7 @@ class DiscoverSection extends React.Component {
 								<Img
 									src={[
 										suggestion.images.favicon,
-										getPlaceholderImageURL(),
+										getPlaceholderImageURL(suggestion._id),
 									]}
 									loader={<div className="placeholder" />}
 									unloader={<div />}
@@ -115,23 +86,23 @@ DiscoverSection.propTypes = {
 	suggestedRssFeeds: PropTypes.array,
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let suggestedPodcasts = [];
-	let suggestedRssFeeds = [];
+const mapStateToProps = (state) => {
+	if (!state.suggestedPodcasts || !state.suggestedRssFeeds)
+		return {
+			suggestedPodcasts: [],
+			suggestedRssFeeds: [],
+		};
 
-	if ('suggestedPodcasts' in state) {
-		for (let podcastID of state.suggestedPodcasts) {
-			suggestedPodcasts.push({ ...state.podcasts[podcastID], type: 'podcast' });
-		}
-	}
-	if ('suggestedRssFeeds' in state) {
-		for (let rssFeedID of state.suggestedRssFeeds) {
-			suggestedRssFeeds.push({ ...state.rssFeeds[rssFeedID], type: 'rss' });
-		}
-	}
+	const suggestedPodcasts = state.suggestedPodcasts.map((item) => ({
+		...item,
+		type: 'podcast',
+	}));
+	const suggestedRssFeeds = state.suggestedRssFeeds.map((item) => ({
+		...item,
+		type: 'rss',
+	}));
 
 	return {
-		...ownProps,
 		suggestedPodcasts,
 		suggestedRssFeeds,
 	};

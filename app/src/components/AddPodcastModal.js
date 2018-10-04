@@ -49,7 +49,7 @@ class AddPodcastModal extends React.Component {
 			method: 'POST',
 			url: '/podcasts',
 		})
-			.then(res => {
+			.then((res) => {
 				for (let podcast of res.data) {
 					this.props.dispatch({
 						podcast,
@@ -80,13 +80,13 @@ class AddPodcastModal extends React.Component {
 			submitting: true,
 			success: false,
 		});
-
+		// TODO: FIX Dispatch
 		Promise.all(
-			this.state.checkedPodcastsToFollow.map(checkedPodcastToFollow => {
+			this.state.checkedPodcastsToFollow.map((checkedPodcastToFollow) => {
 				return fetch('post', '/follows', null, {
 					podcast: checkedPodcastToFollow,
 					type: 'podcast',
-				}).then(res => {
+				}).then((res) => {
 					this.props.dispatch({
 						podcastID: res.data.podcast,
 						type: 'FOLLOW_PODCAST',
@@ -95,7 +95,7 @@ class AddPodcastModal extends React.Component {
 					return res.data.podcast;
 				});
 			}),
-		).then(podcastIDs => {
+		).then((podcastIDs) => {
 			this.setState({
 				submitting: false,
 				success: true,
@@ -139,7 +139,7 @@ class AddPodcastModal extends React.Component {
 					<div className="input-box">
 						<input
 							autoComplete="false"
-							onChange={e => {
+							onChange={(e) => {
 								this.setState({
 									podcastInputValue: e.target.value,
 								});
@@ -190,7 +190,7 @@ class AddPodcastModal extends React.Component {
 							'We found a few podcasts with that URL. Once your selection has been made, we will begin to process the podcasts. They will be ready shortly after.'
 						}
 					</div>
-					{this.state.podcastsToFollow.map(podcastToFollow => {
+					{this.state.podcastsToFollow.map((podcastToFollow) => {
 						return (
 							<div key={podcastToFollow._id}>
 								<label>
@@ -204,7 +204,7 @@ class AddPodcastModal extends React.Component {
 											];
 
 											let index = newPodcastsToFollow.findIndex(
-												element => {
+												(element) => {
 													return (
 														element === podcastToFollow._id
 													);

@@ -1,5 +1,3 @@
-import { getPinnedArticles } from '../util/pins';
-import { getArticle } from '../selectors';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -22,29 +20,16 @@ class AllArticles extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState(
-			{
-				cursor: Math.floor(this.props.articles.length / 10),
-			},
-			() => {
-				this.getArticleFeed();
-				getPinnedArticles(this.props.dispatch);
-				this.subscription = window.streamClient
-					.feed(
-						'user_article',
-						this.props.userID,
-						this.props.userArticleStreamToken,
-					)
-					.subscribe(() => {
-						this.setState({
-							newArticlesAvailable: true,
-						});
-					});
-			},
-		);
+		this.setState({ cursor: Math.floor(this.props.articles.length / 10) }, () => {
+			this.getArticleFeed();
+		});
+
+		this.subscription = window.streamClient
+			.feed('user_article', this.props.userID, this.props.userArticleStreamToken)
+			.subscribe(() => this.setState({ newArticlesAvailable: true }));
 	}
 
-	componentWillReceiveProps() {
+	componentDidUpdate() {
 		if (this.contentsEl.current && localStorage['all-article-list-scroll-position']) {
 			this.contentsEl.current.scrollTop =
 				localStorage['all-article-list-scroll-position'];
@@ -68,20 +53,18 @@ class AllArticles extends React.Component {
 				</div>
 
 				<div className="list content" ref={this.contentsEl}>
-					{this.state.newArticlesAvailable ? (
+					{this.state.newArticlesAvailable && (
 						<div
 							className="toast"
 							onClick={() => {
 								this.getArticleFeed();
-								this.setState({
-									newArticlesAvailable: false,
-								});
+								this.setState({ newArticlesAvailable: false });
 							}}
 						>
 							New articles available - click to refresh
 						</div>
-					) : null}
-					{this.props.articles.map(article => {
+					)}
+					{this.props.articles.map((article) => {
 						return (
 							<ArticleListItem
 								key={article._id}
@@ -96,26 +79,21 @@ class AllArticles extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{"That's it! No more articles here."}</p>
+							<p>"That's it! No more articles here."</p>
 							<p>
-								{
-									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
-								}
+								"What, did you think that once you got all the way around,
+								you'd just be back at the same place that you started?
+								Sounds like some real round-feed thinking to me."
 							</p>
 						</div>
 					) : (
 						<div>
 							<Waypoint
-								onEnter={() => {
-									this.setState(
-										{
-											cursor: this.state.cursor + 1,
-										},
-										() => {
-											this.getArticleFeed();
-										},
-									);
-								}}
+								onEnter={() =>
+									this.setState({ cursor: this.state.cursor + 1 }, () =>
+										this.getArticleFeed(),
+									)
+								}
 							/>
 							<div className="end-loader">
 								<Img src={loaderIcon} />
@@ -139,35 +117,20 @@ AllArticles.propTypes = {
 	userArticleStreamToken: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
 	let articles = [];
-	let userArticleFeed = [];
 
-	if (state.feeds && state.feeds[`user_article:${localStorage['authedUser']}`]) {
-		userArticleFeed = state.feeds[`user_article:${localStorage['authedUser']}`];
-	}
-
-	for (let articleID of userArticleFeed) {
-		// need to trim the `episode:` from the episode ID
-		articles.push(getArticle(state, articleID.replace('article:', '')));
-	}
+	if (state.articles && state.feeds && state.feeds.article)
+		articles = state.feeds.article.map((id) => state.articles[id]);
 
 	for (let article of articles) {
-		// attach pinned state
 		if (state.pinnedArticles && state.pinnedArticles[article._id]) {
-			article.pinned = true;
 			article.pinID = state.pinnedArticles[article._id]._id;
-		} else {
-			article.pinned = false;
-		}
+		} else article.pinID = '';
 
 		if (
-			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
-				article._id,
-			) < 20 &&
-			state.feeds[`user_article:${localStorage['authedUser']}`].indexOf(
-				article._id,
-			) !== -1
+			state.feeds.article.indexOf(article._id) < 20 &&
+			state.feeds.article.indexOf(article._id) !== -1
 		) {
 			article.recent = true;
 		} else {
@@ -176,11 +139,9 @@ const mapStateToProps = (state, ownProps) => {
 	}
 
 	return {
-		...ownProps,
 		articles,
-		userArticleStreamToken:
-			state.users[localStorage['authedUser']].streamTokens.user_article,
-		userID: localStorage['authedUser'],
+		userArticleStreamToken: state.user.streamTokens.user_article,
+		userID: state.user._id,
 	};
 };
 

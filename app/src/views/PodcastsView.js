@@ -6,7 +6,7 @@ import BookmarkedEpisodes from '../components/PodcastPanels/BookmarkedEpisodes';
 import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import PropTypes from 'prop-types';
 import React from 'react';
-import fetch from '../util/fetch';
+import { getPodcastById } from '../api';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import AllEpisodesList from '../components/AllEpisodesList';
@@ -22,37 +22,25 @@ class PodcastsView extends React.Component {
 		};
 
 		this.container = React.createRef();
-		this.toggleNewPodcastModal = this.toggleNewPodcastModal.bind(this);
 	}
 
 	componentDidMount() {
 		this.container.current.focus();
-		if (this.props.match.params.podcastID) {
-			fetch('get', `/podcasts/${this.props.match.params.podcastID}`).then(res => {
-				this.props.dispatch({
-					podcast: res.data,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-			});
-		}
+
+		if (this.props.match.params.podcastID)
+			getPodcastById(this.props.dispatch, this.props.match.params.podcastID);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.match.params.podcastID !== nextProps.match.params.podcastID) {
-			fetch('get', `/podcasts/${nextProps.match.params.podcastID}`).then(res => {
-				this.props.dispatch({
-					podcast: res.data,
-					type: 'UPDATE_PODCAST_SHOW',
-				});
-			});
-		}
+	componentDidUpdate(prevProps) {
+		if (this.props.match.params.podcastID !== prevProps.match.params.podcastID)
+			getPodcastById(this.props.dispatch, this.props.match.params.podcastID);
 	}
 
-	toggleNewPodcastModal() {
-		this.setState({
-			newPodcastModalIsOpen: !this.state.newPodcastModalIsOpen,
-		});
-	}
+	toggleNewPodcastModal = () => {
+		this.setState((prevState) => ({
+			newPodcastModalIsOpen: !prevState.newPodcastModalIsOpen,
+		}));
+	};
 
 	render() {
 		let headerComponent = <h1>Podcasts</h1>;
@@ -109,7 +97,7 @@ class PodcastsView extends React.Component {
 
 		return (
 			<div
-				onKeyDown={e => {
+				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
 						this.props.history.goBack();
@@ -167,7 +155,7 @@ const mapStateToProps = (state, ownProps) => {
 	if (ownProps.match.params.podcastID && state.podcasts) {
 		return {
 			...ownProps,
-			podcast: { ...state.podcasts[ownProps.match.params.podcastID] },
+			podcast: state.podcasts[ownProps.match.params.podcastID],
 		};
 	} else {
 		return { ...ownProps };

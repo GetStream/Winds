@@ -41,6 +41,7 @@ $profile-padding: 20px;
 			display: flex;
 			flex-direction: row;
 			height: 100px;
+			object-fit: cover;
 			justify-content: space-between;
 			padding: $profile-padding;
 			position: relative;

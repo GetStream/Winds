@@ -12,7 +12,7 @@ import config from '../config';
 const client = Algolia(config.algolia.appId, config.algolia.searchKey);
 const index = client.initIndex(config.algolia.index);
 
-const getResourceUrl = resource => {
+const getResourceUrl = (resource) => {
 	switch (resource.type) {
 		case 'user':
 			return `/profile/${resource._id}`;
@@ -31,7 +31,7 @@ const getResourceUrl = resource => {
 	}
 };
 
-const getResourceTitle = resource => {
+const getResourceTitle = (resource) => {
 	switch (resource.type) {
 		case 'user':
 		case 'playlist':
@@ -183,7 +183,7 @@ class SearchBar extends React.Component {
 					>
 						<div className="left">
 							<Img
-								src={[result.image, getPlaceholderImageURL()]}
+								src={[result.image, getPlaceholderImageURL(result._id)]}
 								width="25"
 							/>
 						</div>
@@ -219,7 +219,7 @@ class SearchBar extends React.Component {
 							}}
 							onKeyDown={this.handleKeyDown}
 							placeholder="Search Winds..."
-							ref={element => {
+							ref={(element) => {
 								this.inputElement = element;
 							}}
 							type="text"

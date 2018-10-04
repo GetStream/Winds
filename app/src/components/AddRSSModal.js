@@ -67,7 +67,7 @@ class AddRSSModal extends React.Component {
 					}, 5000);
 				}
 			})
-			.catch(err => {
+			.catch((err) => {
 				this.setState({
 					errorMessage: err.message,
 					errored: true,
@@ -103,7 +103,7 @@ class AddRSSModal extends React.Component {
 			method: 'POST',
 			url: '/rss',
 		})
-			.then(res => {
+			.then((res) => {
 				for (let rssFeed of res.data) {
 					this.props.dispatch({
 						rssFeed,
@@ -116,7 +116,7 @@ class AddRSSModal extends React.Component {
 					submitting: false,
 				});
 			})
-			.catch(err => {
+			.catch((err) => {
 				this.setState({
 					errorMessage: 'Oops, something went wrong. Please try again later.',
 					errored: true,
@@ -146,12 +146,13 @@ class AddRSSModal extends React.Component {
 			submitting: true,
 			success: false,
 		});
+		// TODO: FIX Dispatch
 		Promise.all(
-			this.state.checkedFeedsToFollow.map(checkedFeedToFollow => {
+			this.state.checkedFeedsToFollow.map((checkedFeedToFollow) => {
 				return fetch('post', '/follows', null, {
 					rss: checkedFeedToFollow,
 					type: 'rss',
-				}).then(res => {
+				}).then((res) => {
 					this.props.dispatch({
 						rssFeedID: res.data.rss,
 						type: 'FOLLOW_RSS_FEED',
@@ -161,7 +162,7 @@ class AddRSSModal extends React.Component {
 				});
 			}),
 		)
-			.then(rssFeeds => {
+			.then((rssFeeds) => {
 				this.setState({
 					submitting: false,
 					success: true,
@@ -172,7 +173,7 @@ class AddRSSModal extends React.Component {
 					this.props.done();
 				}, 5000);
 			})
-			.catch(err => {
+			.catch((err) => {
 				this.setState({
 					errorMessage: err.message,
 					submitting: false,
@@ -226,7 +227,7 @@ class AddRSSModal extends React.Component {
 						<input
 							autoComplete="false"
 							disabled={this.state.opmlSectionExpanded}
-							onChange={e => {
+							onChange={(e) => {
 								this.setState({
 									rssInputValue: e.target.value,
 								});
@@ -271,7 +272,7 @@ class AddRSSModal extends React.Component {
 						)}
 						<button
 							className="btn link cancel"
-							onClick={e => {
+							onClick={(e) => {
 								e.preventDefault();
 								this.resetModal();
 								this.props.done();
@@ -299,7 +300,7 @@ class AddRSSModal extends React.Component {
 							'Once your selection has been made, we will begin to process the feeds. They will be ready shortly after.'
 						}
 					</div>
-					{this.state.feedsToFollow.map(feedToFollow => {
+					{this.state.feedsToFollow.map((feedToFollow) => {
 						return (
 							<div key={feedToFollow._id}>
 								<label>
@@ -313,7 +314,7 @@ class AddRSSModal extends React.Component {
 												...this.state.checkedFeedsToFollow,
 											];
 											let index = newFeedsToFollow.findIndex(
-												element => {
+												(element) => {
 													return element === feedToFollow._id;
 												},
 											);
@@ -348,7 +349,7 @@ class AddRSSModal extends React.Component {
 						</button>
 						<button
 							className="btn link cancel"
-							onClick={e => {
+							onClick={(e) => {
 								e.preventDefault();
 								this.resetModal();
 								this.props.done();

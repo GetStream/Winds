@@ -22,6 +22,8 @@ window.streamAnalyticsClient = new StreamAnalytics({
 	token: process.env.REACT_APP_STREAM_ANALYTICS,
 });
 
+if (window.console) console.log(`Version: ${packageInfo.version}`); // eslint-disable-line no-console
+
 Raven.context(() => {
 	ReactDOM.render(<App />, document.getElementById('root'));
 });

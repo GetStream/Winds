@@ -4,128 +4,37 @@ import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../../util/fetch';
 import Panel from '../Panel';
+import { getSuggestedPodcasts, followPodcast, unfollowPodcast } from '../../api';
 
 class SuggestedPodcasts extends React.Component {
 	componentDidMount() {
-		if (this.props.podcasts.length) return;
-
-		fetch('GET', '/podcasts', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcasts: res.data,
-					type: 'UPDATE_SUGGESTED_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-
-		fetch('GET', '/follows', null, { type: 'podcast' })
-			.then(res => {
-				this.props.dispatch({
-					type: 'UPDATE_USER',
-					user: res.data[0].user,
-				});
-
-				let podcasts = [];
-				let podcastFollowRelationships = [];
-
-				for (let followRelationship of res.data) {
-					podcasts.push(followRelationship.podcast);
-					podcastFollowRelationships.push({
-						podcastID: followRelationship.podcast._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				this.props.dispatch({
-					podcasts,
-					type: 'BATCH_UPDATE_PODCASTS',
-				});
-
-				this.props.dispatch({
-					podcastFollowRelationships,
-					type: 'BATCH_FOLLOW_PODCASTS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-	}
-
-	followPodcast(podcastID) {
-		this.props.dispatch({
-			podcastID,
-			type: 'FOLLOW_PODCAST',
-			userID: localStorage['authedUser'],
-		});
-
-		fetch('post', '/follows', null, {
-			podcast: podcastID,
-			type: 'podcast',
-		}).catch(() => {
-			this.props.dispatch({
-				podcastID,
-				type: 'UNFOLLOW_PODCAST',
-				userID: localStorage['authedUser'],
-			});
-		});
-	}
-
-	unfollowPodcast(podcastID) {
-		this.props.dispatch({
-			podcastID,
-			type: 'UNFOLLOW_PODCAST',
-			userID: localStorage['authedUser'],
-		});
-
-		fetch('delete', '/follows', null, {
-			podcast: podcastID,
-			type: 'podcast',
-		}).catch(() => {
-			this.props.dispatch({
-				podcastID,
-				type: 'FOLLOW_PODCAST',
-				userID: localStorage['authedUser'],
-			});
-		});
+		if (!this.props.suggestedPodcasts.length)
+			getSuggestedPodcasts(this.props.dispatch);
 	}
 
 	render() {
 		return (
 			<Panel headerText="Suggested Podcasts">
-				{this.props.podcasts.map(podcast => {
+				{this.props.suggestedPodcasts.map((podcast) => {
+					const id = podcast._id;
+					const favicon = podcast.images ? podcast.images.favicon : null;
 					return (
-						<Link key={podcast._id} to={`/podcasts/${podcast._id}`}>
+						<Link key={id} to={`/podcasts/${id}`}>
 							<Img
-								src={[podcast.images.favicon, getPlaceholderImageURL()]}
+								src={[favicon, getPlaceholderImageURL(id)]}
 								loader={<div className="placeholder" />}
 							/>
 							<div>{podcast.title}</div>
 							<div
 								className={`clickable ${
-									this.props.followedPodcasts[podcast._id]
-										? 'active'
-										: ''
+									podcast.isFollowed ? 'active' : ''
 								}`}
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
-									if (this.props.followedPodcasts[podcast._id]) {
-										this.unfollowPodcast(podcast._id);
-									} else {
-										this.followPodcast(podcast._id);
-									}
+									podcast.isFollowed
+										? unfollowPodcast(this.props.dispatch, id)
+										: followPodcast(this.props.dispatch, id);
 								}}
 							>
 								Follow
@@ -139,31 +48,36 @@ class SuggestedPodcasts extends React.Component {
 }
 
 SuggestedPodcasts.defaultProps = {
-	followedPodcasts: {},
-	podcasts: [],
+	suggestedPodcasts: [],
 };
 
 SuggestedPodcasts.propTypes = {
 	dispatch: PropTypes.func.isRequired,
-	followedPodcasts: PropTypes.shape(),
-	podcasts: PropTypes.arrayOf(PropTypes.shape()),
+	suggestedPodcasts: PropTypes.arrayOf(PropTypes.shape()),
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let podcasts = [];
-	let followedPodcasts = {};
+const mapStateToProps = (state) => {
+	if (!state.suggestedPodcasts) return { suggestedPodcasts: [] };
 
-	if (state.followedPodcasts && state.followedPodcasts[localStorage['authedUser']]) {
-		followedPodcasts = { ...state.followedPodcasts[localStorage['authedUser']] };
+	let suggestedPodcasts = state.suggestedPodcasts;
+
+	if (state.followedPodcasts) {
+		suggestedPodcasts = suggestedPodcasts.map((item) => ({
+			...item,
+			isFollowed: !!state.followedPodcasts[item._id],
+		}));
 	}
 
-	if ('suggestedPodcasts' in state) {
-		for (let podcastID of state.suggestedPodcasts) {
-			podcasts.push(state.podcasts[podcastID]);
-		}
+	if (state.aliases) {
+		suggestedPodcasts = suggestedPodcasts.map((item) => {
+			if (state.aliases[item._id]) item.title = state.aliases[item._id].alias;
+			return item;
+		});
 	}
 
-	return { ...ownProps, followedPodcasts, podcasts };
+	return {
+		suggestedPodcasts,
+	};
 };
 
 export default connect(mapStateToProps)(SuggestedPodcasts);

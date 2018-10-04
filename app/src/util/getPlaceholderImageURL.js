@@ -7,9 +7,10 @@ for (let i = 1; i <= numberOfImages; i++) {
 	squareCards.push(require(`../images/cards/pattern-${i}-square.png`));
 }
 
-export default (square = false) => {
-	const random = Math.floor(Math.random() * numberOfImages);
+export default (stringId, square = false) => {
+	let count = 0;
+	for (const char of stringId) count += char.charCodeAt(0);
 
-	if (square) return squareCards[random];
-	return cards[random];
+	if (square) return squareCards[count % numberOfImages];
+	return cards[count % numberOfImages];
 };

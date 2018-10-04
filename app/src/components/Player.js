@@ -1,19 +1,20 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Img from 'react-image';
+import ReactAudioPlayer from 'react-audio-player';
+import Slider from 'rc-slider';
+import moment from 'moment';
+import isElectron from 'is-electron';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import 'moment-duration-format'; // eslint-disable-line sort-imports
+
+import fetch from '../util/fetch';
 import nextIcon from '../images/player/next.svg';
 import forwardIcon from '../images/player/forward.svg';
 import rewindIcon from '../images/player/rewind.svg';
 import pauseIcon from '../images/icons/pause.svg';
 import playIcon from '../images/icons/play.svg';
-import React, { Component } from 'react';
-import Img from 'react-image';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import ReactAudioPlayer from 'react-audio-player';
-import Slider from 'rc-slider';
-import { connect } from 'react-redux';
-import moment from 'moment';
-import isElectron from 'is-electron';
-import 'moment-duration-format'; // eslint-disable-line sort-imports
-import fetch from '../util/fetch';
 
 class Player extends Component {
 	constructor(props) {
@@ -22,128 +23,182 @@ class Player extends Component {
 		this.state = {
 			episodeListenAnalyticsEventSent: false,
 			playbackSpeed: 1,
-			playing: false,
 			progress: 0,
 			volume: 0.5,
+			episodes: {},
+			episodesOrder: [],
 		};
 
 		this.playbackSpeedOptions = [1, 1.25, 1.5, 1.75, 2];
 		this.lastSent = 0;
-
-		this.cyclePlaybackSpeed = this.cyclePlaybackSpeed.bind(this);
-		this.setVolume = this.setVolume.bind(this);
-		this.seekTo = this.seekTo.bind(this);
-		this.togglePlayPause = this.togglePlayPause.bind(this);
-		this.incomingMediaControls = this.incomingMediaControls.bind(this);
 	}
 
 	componentDidMount() {
-		this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-		if (this.props.episode) {
-			this.audioPlayerElement.audioEl.volume = this.state.volume / 100;
-		}
-
-		if (isElectron()) {
+		if (isElectron())
 			window.ipcRenderer.on('media-controls', this.incomingMediaControls);
-		}
 	}
 
 	componentWillUnmount() {
-		if (isElectron()) {
+		if (isElectron())
 			window.ipcRenderer.removeAllListeners(
 				'media-controls',
 				this.incomingMediaControls,
 			);
-		}
 	}
 
 	componentDidUpdate(prevProps) {
-		if (!this.props.episode) {
-			return;
-		} else if (!prevProps.playing && this.props.playing) {
-			if (!prevProps.episode) {
-				window.streamAnalyticsClient.trackEngagement({
-					label: 'episode_listen_start',
-					content: {
-						foreign_id: `episodes:${this.props.episode._id}`,
-					},
-				});
+		const player = this.props.player;
 
-				fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-					res => {
-						if (res.data.length !== 0) {
-							this.setInitialPlaybackTime(res.data[0].duration).then(() => {
-								this.audioPlayerElement.audioEl.play();
-							});
-						} else {
-							this.audioPlayerElement.audioEl.play();
-						}
-					},
-				);
-			} else {
-				this.audioPlayerElement.audioEl.play();
-			}
-		} else if (prevProps.playing && !this.props.playing) {
-			this.audioPlayerElement.audioEl.pause();
-		} else if (this.props.episode._id !== prevProps.episode._id) {
-			this.setState({
-				episodeListenAnalyticsEventSent: false,
-			});
-			this.resetPlaybackSpeed();
+		if (!player) return;
+		if (player.contextID !== prevProps.player.contextID) {
+			this.getEpisodes(player.contextID, player.episodeID);
+			this.setState({ episodeListenAnalyticsEventSent: false });
+
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'episode_listen_start',
-				content: {
-					foreign_id: `episodes:${this.props.episode._id}`,
-				},
+				content: { foreign_id: `episodes:${player.episodeID}` },
+			});
+		} else if (player.episodeID !== prevProps.player.episodeID) {
+			if (!this.state.episodes[player.episodeID])
+				return this.getEpisodes(player.podcastID, player.episodeID);
+
+			this.setState({ episodeListenAnalyticsEventSent: false });
+			this.resetPlaybackSpeed();
+
+			fetch('GET', '/listens', null, {
+				episode: player.episodeID,
+			}).then((res) => {
+				if (res.data.length !== 0)
+					this.setInitialPlaybackTime(res.data[0].duration).then(() => {
+						this.audioPlayerElement.audioEl.play();
+					});
+				else this.audioPlayerElement.audioEl.play();
 			});
 
-			fetch('GET', '/listens', null, { episode: this.props.episode._id }).then(
-				res => {
-					if (res.data.length !== 0) {
-						this.setInitialPlaybackTime(res.data[0].duration).then(() => {
-							this.audioPlayerElement.audioEl.play();
-						});
-					} else {
-						this.audioPlayerElement.audioEl.play();
-					}
-				},
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'episode_listen_start',
+				content: { foreign_id: `episodes:${player.episodeID}` },
+			});
+		} else if (!prevProps.player.playing && player.playing) {
+			this.audioPlayerElement.audioEl.play();
+			this.pushNotification(this.state.episodes[player.episodeID]);
+			this.mediaControl(true, this.state.episodes[player.episodeID]);
+		} else if (prevProps.player.playing && !player.playing) {
+			this.audioPlayerElement.audioEl.pause();
+			this.mediaControl(false, this.state.episodes[player.episodeID]);
+		}
+	}
+
+	getEpisodes = async (podcastID, episodeID) => {
+		this.setState({ episodesOrder: [] });
+
+		try {
+			const res = await fetch(
+				'GET',
+				'/episodes',
+				{},
+				{ podcast: podcastID, sort_by: 'publicationDate,desc' },
 			);
-		}
-	}
 
-	togglePlayPause() {
-		if (this.props.playing) {
-			this.props.pause();
+			const episodes = res.data.reduce((result, item) => {
+				result[item._id] = item;
+				return result;
+			}, {});
+
+			const episodesOrder = res.data.map((episode) => episode._id);
+
+			this.setState({ episodes, episodesOrder }, () => {
+				this.resetPlaybackSpeed();
+				this.pushNotification(this.state.episodes[episodeID]);
+				this.mediaControl(true, this.state.episodes[episodeID]);
+			});
+
+			const listen = await fetch('GET', '/listens', null, {
+				episode: episodeID,
+			});
+
+			if (listen.data.length !== 0)
+				this.setInitialPlaybackTime(listen.data[0].duration).then(() => {
+					this.audioPlayerElement.audioEl.play();
+					this.resetPlaybackSpeed();
+				});
+			else this.audioPlayerElement.audioEl.play();
+		} catch (err) {
+			if (window.console) console.log(err); // eslint-disable-line no-console
+		}
+	};
+
+	nextTrack = () => {
+		const currentIndex = this.state.episodesOrder.findIndex(
+			(item) => this.props.player.episodeID === item,
+		);
+
+		if (currentIndex + 1 !== this.state.episodesOrder.length) {
+			this.props.playEpisode(
+				this.props.player.contextID,
+				this.state.episodesOrder[currentIndex + 1],
+				'podcast',
+			);
 		} else {
-			this.props.play();
+			this.setState({ episode: {}, episodesOrder: [] });
+			this.props.clearPlayer();
 		}
-	}
+	};
 
-	skipAhead() {
+	pushNotification = (episode) => {
+		if (!episode) return;
+		if ('Notification' in window) {
+			if (
+				Notification.permission !== 'denied' ||
+				Notification.permission === 'default'
+			)
+				Notification.requestPermission();
+
+			if (Notification.permission === 'granted') {
+				new Notification(episode.podcast.title, {
+					body: episode.title,
+					icon: episode.podcast.image,
+					silent: true,
+				});
+			}
+		}
+	};
+
+	mediaControl = (isPlaying, episode) => {
+		if (isElectron()) {
+			if (isPlaying) {
+				window.ipcRenderer.send('media-controls', {
+					type: 'play',
+					title: `${episode.title} - ${episode.podcast.title}`,
+				});
+			} else window.ipcRenderer.send('media-controls', { type: 'pause' });
+		}
+	};
+
+	togglePlayPause = () => {
+		this.props.player.playing ? this.props.pause() : this.props.play();
+	};
+
+	skipAhead = () => {
 		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
 		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition + 30;
 		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
-	}
+	};
 
-	skipBack() {
+	skipBack = () => {
 		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
 		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition - 30;
 		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
-	}
+	};
 
-	cyclePlaybackSpeed() {
-		let nextSpeed = this.playbackSpeedOptions[
+	cyclePlaybackSpeed = () => {
+		const nextSpeed = this.playbackSpeedOptions[
 			(this.playbackSpeedOptions.indexOf(this.state.playbackSpeed) + 1) %
 				this.playbackSpeedOptions.length
 		];
-
-		this.setState({
-			playbackSpeed: nextSpeed,
-		});
-
+		this.setState({ playbackSpeed: nextSpeed });
 		this.audioPlayerElement.audioEl.playbackRate = nextSpeed;
-	}
+	};
 
 	resetPlaybackSpeed = () => {
 		const resetSpeed = this.playbackSpeedOptions[0];
@@ -151,73 +206,46 @@ class Player extends Component {
 		this.audioPlayerElement.audioEl.playbackRate = resetSpeed;
 	};
 
-	setVolume(volume) {
-		this.setState({
-			volume,
-		});
-	}
-
-	seekTo(progress) {
+	seekTo = (progress) => {
 		this.audioPlayerElement.audioEl.currentTime =
 			progress * this.audioPlayerElement.audioEl.duration;
 		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
-	}
+	};
 
-	updateProgress(seconds) {
+	updateProgress = (seconds) => {
 		let progress = (seconds / this.audioPlayerElement.audioEl.duration) * 100;
 		this.setState({
 			currentTime: seconds,
 			duration: this.audioPlayerElement.audioEl.duration,
 			progress,
 		});
-	}
+	};
 
-	setInitialPlaybackTime(currentTime) {
-		return new Promise(resolve => {
+	setInitialPlaybackTime = (currentTime) => {
+		return new Promise((resolve) => {
 			this.audioPlayerElement.audioEl.currentTime = currentTime;
-			this.setState(
-				{
-					currentTime,
-				},
-				() => {
-					resolve();
-				},
-			);
+			this.setState({ currentTime }, () => resolve());
 		});
-	}
+	};
 
-	incomingMediaControls(event, args) {
-		if (args === 'togglePlayPause') {
-			this.togglePlayPause();
-		} else if (args === 'next') {
-			this.skipAhead();
-		} else if (args === 'previous') {
-			this.skipBack();
-		}
-	}
+	incomingMediaControls = (event, args) => {
+		if (args === 'togglePlayPause') this.togglePlayPause();
+		else if (args === 'next') this.skipAhead();
+		else if (args === 'previous') this.skipBack();
+	};
 
 	render() {
-		if (!this.props.episode) {
-			return null;
-		}
+		const player = this.props.player;
 
-		let playButton = (
-			<div className="btn play" onClick={this.togglePlayPause}>
-				<Img decode={false} src={playIcon} />
-			</div>
-		);
+		if (!player.episodeID || !this.state.episodesOrder.length) return null;
 
-		let pauseButton = (
-			<div className="btn pause" onClick={this.togglePlayPause}>
-				<Img decode={false} src={pauseIcon} />
-			</div>
-		);
+		const episode = this.state.episodes[player.episodeID];
 
 		let contextURL = '';
-		if (this.props.context.contextType === 'playlist') {
-			contextURL = `/playlists/${this.props.context.contextID}`;
-		} else if (this.props.context.contextType === 'podcast') {
-			contextURL = `/podcasts/${this.props.context.contextID}`;
+		if (player.contextType === 'playlist') {
+			contextURL = `/playlists/${player.contextID}`;
+		} else if (player.contextType === 'podcast') {
+			contextURL = `/podcasts/${player.contextID}`;
 		}
 
 		return (
@@ -227,24 +255,24 @@ class Player extends Component {
 						className="poster"
 						decode={false}
 						height="40"
-						src={this.props.episode.podcast.image}
+						src={episode ? episode.podcast.image : null}
 						width="40"
 					/>
-					<div
-						className="rewind"
-						onClick={() => {
-							this.skipBack();
-						}}
-					>
+					<div className="rewind" onClick={this.skipBack}>
 						<Img decode={false} src={rewindIcon} />
 					</div>
-					{this.props.playing ? pauseButton : playButton}
-					<div
-						className="forward"
-						onClick={() => {
-							this.skipAhead();
-						}}
-					>
+
+					{player.playing ? (
+						<div className="btn pause" onClick={this.togglePlayPause}>
+							<Img decode={false} src={pauseIcon} />
+						</div>
+					) : (
+						<div className="btn play" onClick={this.togglePlayPause}>
+							<Img decode={false} src={playIcon} />
+						</div>
+					)}
+
+					<div className="forward" onClick={this.skipAhead}>
 						<Img decode={false} src={forwardIcon} />
 					</div>
 					<div className="speed" onClick={this.cyclePlaybackSpeed}>
@@ -254,28 +282,24 @@ class Player extends Component {
 				<div className="middle">
 					<div
 						className="progress-bar"
-						style={{
-							width: `${this.state.progress}%`,
-						}}
+						style={{ width: `${this.state.progress}%` }}
 					/>
 					<div
 						className="progress-bar-click-catcher"
-						onClick={e => {
-							this.seekTo(e.nativeEvent.offsetX / e.target.clientWidth);
-						}}
+						onClick={(e) =>
+							this.seekTo(e.nativeEvent.offsetX / e.target.clientWidth)
+						}
 					/>
 					<div className="media">
-						<div className="title">{this.props.episode.title}</div>
-						<div className="info">
-							<span className="episode">
-								{this.props.episode.podcast.title}
-							</span>
-							<span className="date">
-								{moment(this.props.episode.publicationDate).format(
-									'MMM D YYYY',
-								)}
-							</span>
-						</div>
+						<div className="title">{episode ? episode.title : ''}</div>
+						{episode && (
+							<div className="info">
+								<span className="episode">{episode.podcast.title}</span>
+								<span className="date">
+									{moment(episode.publicationDate).format('MMM D YYYY')}
+								</span>
+							</div>
+						)}
 					</div>
 					<div className="sub-right">
 						<div className="timestamps">
@@ -295,7 +319,7 @@ class Player extends Component {
 					<Slider
 						max={1}
 						min={0}
-						onChange={this.setVolume}
+						onChange={(volume) => this.setState({ volume })}
 						step={0.1}
 						value={this.state.volume}
 					/>
@@ -305,14 +329,9 @@ class Player extends Component {
 				</div>
 				<ReactAudioPlayer
 					listenInterval={500}
-					onEnded={() => {
-						this.setState({
-							playing: false,
-						});
-
-						this.props.nextTrack();
-					}}
-					onListen={seconds => {
+					onEnded={() => this.nextTrack()}
+					onListen={(seconds) => {
+						if (!episode) return;
 						this.updateProgress(seconds);
 
 						if (
@@ -321,30 +340,25 @@ class Player extends Component {
 						) {
 							window.streamAnalyticsClient.trackEngagement({
 								label: 'episode_listen_complete',
-								content: {
-									foreign_id: `episodes:${this.props.episode._id}`,
-								},
+								content: { foreign_id: `episodes:${episode._id}` },
 							});
 
-							this.setState({
-								episodeListenAnalyticsEventSent: true,
-							});
+							this.setState({ episodeListenAnalyticsEventSent: true });
 						}
 
-						let currentTime = new Date().valueOf();
+						const currentTime = new Date().valueOf();
 						if (currentTime - this.lastSent >= 15000) {
 							this.lastSent = currentTime;
 							fetch('POST', '/listens', {
 								duration: this.audioPlayerElement.audioEl.currentTime,
-								episode: this.props.episode._id,
-								user: this.props.currentUserID,
+								episode: episode._id,
 							});
 						}
 					}}
-					ref={element => {
+					ref={(element) => {
 						this.audioPlayerElement = element;
 					}}
-					src={this.props.episode.enclosure}
+					src={episode ? episode.enclosure : null}
 					volume={this.state.volume}
 				/>
 			</div>
@@ -353,102 +367,33 @@ class Player extends Component {
 }
 
 Player.propTypes = {
-	episode: null,
-	playing: false,
-};
-
-Player.propTypes = {
-	context: PropTypes.shape({
+	player: PropTypes.shape({
 		contextID: PropTypes.string,
-		contextPosition: PropTypes.number,
 		contextType: PropTypes.string,
 		episodeID: PropTypes.string,
+		playing: PropTypes.bool,
 	}),
-	currentUserID: PropTypes.string,
-	episode: PropTypes.shape({
-		_id: PropTypes.string,
-		enclosure: PropTypes.string,
-		podcast: PropTypes.shape({
-			image: PropTypes.string,
-			title: PropTypes.string,
-		}),
-		publicationDate: PropTypes.string,
-		title: PropTypes.string,
-	}),
-	nextTrack: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
-	toggleLike: PropTypes.func,
+	clearPlayer: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
-	if (!('player' in state)) {
-		return { episode: null };
-	}
+const mapStateToProps = (state) => ({ player: state.player || {} });
 
-	let episode = { ...state.episodes[state.player.episodeID] };
-	episode.podcast = { ...state.podcasts[episode.podcast] }; // populate podcast parent too
-
-	let context = { ...state.player };
-
-	if (isElectron()) {
-		if (context.playing) {
-			window.ipcRenderer.send('media-controls', {
-				type: 'play',
-				title: `${episode.title} - ${episode.podcast.title}`,
-			});
-		} else {
-			window.ipcRenderer.send('media-controls', {
-				type: 'pause',
-			});
-		}
-	}
-
-	if (context.playing) {
-		if ('Notification' in window) {
-			if (
-				Notification.permission !== 'denied' ||
-				Notification.permission === 'default'
-			) {
-				Notification.requestPermission();
-			}
-
-			if (Notification.permission === 'granted') {
-				new Notification(episode.podcast.title, {
-					body: episode.title,
-					icon: episode.podcast.image,
-					silent: true,
-				});
-			}
-		}
-	}
-
-	let currentUserID = localStorage['authedUser'];
-
-	return {
-		context,
-		currentUserID,
-		episode,
-		playing: context.playing,
-	};
-};
-
-const mapDispatchToProps = dispatch => {
-	return {
-		nextTrack: () => {
-			dispatch({ type: 'NEXT_TRACK' });
-		},
-		pause: () => {
-			dispatch({ type: 'PAUSE_EPISODE' });
-		},
-		play: () => {
-			dispatch({ type: 'RESUME_EPISODE' });
-		},
-		toggleLike: () => {
-			dispatch({ type: 'TOGGLE_LIKE_ON_CURRENT_TRACK' });
-		},
-	};
-};
+const mapDispatchToProps = (dispatch) => ({
+	pause: () => dispatch({ type: 'PAUSE_EPISODE' }),
+	play: () => dispatch({ type: 'RESUME_EPISODE' }),
+	clearPlayer: () => dispatch({ type: 'CLEAR_PLAYER' }),
+	playEpisode: (podcastID, episodeID, type) => {
+		dispatch({
+			contextID: podcastID,
+			episodeID: episodeID,
+			contextType: type,
+			playing: true,
+			type: 'PLAY_EPISODE',
+		});
+	},
+});
 
 export default connect(
 	mapStateToProps,

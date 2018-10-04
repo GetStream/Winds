@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import EpisodeListItem from './EpisodeListItem';
 import Waypoint from 'react-waypoint';
 import { getFeed } from '../util/feeds';
-import { getPinnedEpisodes } from '../util/pins';
 
 class AllEpisodesList extends React.Component {
 	constructor(props) {
@@ -19,29 +18,16 @@ class AllEpisodesList extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState(
-			{
-				cursor: Math.floor(this.props.episodes.length / 10),
-			},
-			() => {
-				getPinnedEpisodes(this.props.dispatch);
-				this.getEpisodes();
-				this.subscription = window.streamClient
-					.feed(
-						'user_episode',
-						this.props.userID,
-						this.props.userEpisodeStreamToken,
-					)
-					.subscribe(() => {
-						this.setState({
-							newEpisodesAvailable: true,
-						});
-					});
-			},
-		);
+		this.setState({ cursor: Math.floor(this.props.episodes.length / 10) }, () => {
+			this.getEpisodeFeed();
+		});
+
+		this.subscription = window.streamClient
+			.feed('user_episode', this.props.userID, this.props.userEpisodeStreamToken)
+			.subscribe(() => this.setState({ newArticlesAvailable: true }));
 	}
 
-	getEpisodes() {
+	getEpisodeFeed() {
 		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
 	}
 
@@ -56,49 +42,37 @@ class AllEpisodesList extends React.Component {
 					<h1>Episodes</h1>
 				</div>
 				<div className="list content">
-					{this.state.newEpisodesAvailable ? (
+					{this.state.newEpisodesAvailable && (
 						<div
 							className="toast"
 							onClick={() => {
-								this.getEpisodes();
-								this.setState({
-									newEpisodesAvailable: false,
-								});
+								this.getEpisodeFeed();
+								this.setState({ newEpisodesAvailable: false });
 							}}
 						>
 							New episodes available - click to refresh
 						</div>
-					) : null}
+					)}
 
-					{this.props.episodes.map(episode => {
-						return (
-							<EpisodeListItem
-								key={episode._id}
-								playable={false}
-								{...episode}
-							/>
-						);
-					})}
+					{this.props.episodes.map((episode) => (
+						<EpisodeListItem key={episode._id} {...episode} />
+					))}
+
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>{"That's it! No more episodes here."}</p>
+							<p>That's it! No more episodes here.</p>
 							<p>
-								{
-									"What, did you think that once you got all the way around, you'd just be back at the same place that you started? Sounds like some real round-feed thinking to me."
-								}
+								What, did you think that once you got all the way around,
+								you'd just be back at the same place that you started?
+								Sounds like some real round-feed thinking to me.
 							</p>
 						</div>
 					) : (
 						<div>
 							<Waypoint
 								onEnter={() => {
-									this.setState(
-										{
-											cursor: this.state.cursor + 1,
-										},
-										() => {
-											this.getEpisodes();
-										},
+									this.setState({ cursor: this.state.cursor + 1 }, () =>
+										this.getEpisodeFeed(),
 									);
 								}}
 							/>
@@ -124,46 +98,29 @@ AllEpisodesList.propTypes = {
 	userEpisodeStreamToken: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
 	let episodes = [];
-	if (state.feeds && state.feeds[`user_episode:${localStorage['authedUser']}`]) {
-		for (let episodeID of state.feeds[`user_episode:${localStorage['authedUser']}`]) {
-			// also get RSS feed
-			let episode = {
-				...state.episodes[episodeID],
-			};
-			episode.podcast = { ...state.podcasts[episode.podcast] };
 
-			if (state.pinnedEpisodes && state.pinnedEpisodes[episode._id]) {
-				episode.pinned = true;
-				episode.pinID = state.pinnedEpisodes[episode._id]._id;
-			} else {
-				episode.pinned = false;
-			}
+	if (state.episodes && state.feeds && state.feeds.episode)
+		episodes = state.feeds.episode.map((id) => state.episodes[id]);
 
-			if (
-				state.feeds[`user_episode:${localStorage['authedUser']}`].indexOf(
-					episodeID,
-				) < 20 &&
-				state.feeds[`user_episode:${localStorage['authedUser']}`].indexOf(
-					episodeID,
-				) !== -1
-			) {
-				episode.recent = true;
-			} else {
-				episode.recent = false;
-			}
+	for (let episode of episodes) {
+		if (state.pinnedEpisodes && state.pinnedEpisodes[episode._id]) {
+			episode.pinID = state.pinnedEpisodes[episode._id]._id;
+		} else episode.pinID = '';
 
-			episodes.push(episode);
-		}
+		if (
+			state.feeds.episode.indexOf(episode._id) < 20 &&
+			state.feeds.episode.indexOf(episode._id) !== -1
+		) {
+			episode.recent = true;
+		} else episode.recent = false;
 	}
 
 	return {
-		...ownProps,
 		episodes,
-		userEpisodeStreamToken:
-			state.users[localStorage['authedUser']].streamTokens.user_episode,
-		userID: localStorage['authedUser'],
+		userEpisodeStreamToken: state.user.streamTokens.user_episode,
+		userID: state.user._id,
 	};
 };
 

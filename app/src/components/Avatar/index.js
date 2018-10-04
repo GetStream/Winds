@@ -2,7 +2,7 @@ import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-let Avatar = props => {
+let Avatar = (props) => {
 	let url;
 
 	if (props.gravatarURL) {

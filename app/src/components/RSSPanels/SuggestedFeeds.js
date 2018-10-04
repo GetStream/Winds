@@ -4,147 +4,33 @@ import Img from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../../util/fetch';
 import Panel from '../Panel';
+import { getSuggestedRss, followRss, unfollowRss } from '../../api';
 
 class SuggestedFeeds extends React.Component {
 	componentDidMount() {
-		if (this.props.rssFeeds.length) return;
-
-		fetch('get', '/rss', {}, { type: 'recommended' })
-			.then(res => {
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-				this.props.dispatch({
-					rssFeeds: res.data,
-					type: 'UPDATE_SUGGESTED_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-
-		fetch('get', '/follows', null, {
-			type: 'rss',
-			user: localStorage['authedUser'],
-		})
-			.then(res => {
-				let rssFeeds = [];
-				let rssFeedFollowRelationships = [];
-
-				this.props.dispatch({
-					type: 'UPDATE_USER',
-					user: res.data[0].user,
-				});
-
-				for (let followRelationship of res.data) {
-					rssFeeds.push(followRelationship.rss);
-					rssFeedFollowRelationships.push({
-						rssFeedID: followRelationship.rss._id,
-						userID: followRelationship.user._id,
-					});
-				}
-
-				this.props.dispatch({
-					rssFeeds,
-					type: 'BATCH_UPDATE_RSS_FEEDS',
-				});
-
-				this.props.dispatch({
-					rssFeedFollowRelationships,
-					type: 'BATCH_FOLLOW_RSS_FEEDS',
-				});
-			})
-			.catch(err => {
-				if (window.console) {
-					console.log(err); // eslint-disable-line no-console
-				}
-			});
-	}
-
-	followRssFeed(rssFeedID) {
-		this.props.dispatch({
-			rssFeedID: rssFeedID,
-			type: 'FOLLOW_RSS_FEED',
-			userID: localStorage['authedUser'],
-		});
-
-		fetch(
-			'post',
-			'/follows',
-			{},
-			{
-				rss: rssFeedID,
-				type: 'rss',
-			},
-		).catch(err => {
-			if (window.console) {
-				console.log(err); // eslint-disable-line no-console
-			}
-
-			this.props.dispatch({
-				rssFeedID: rssFeedID,
-				type: 'UNFOLLOW_RSS_FEED',
-				userID: localStorage['authedUser'],
-			});
-		});
-	}
-
-	unfollowRssFeed(rssFeedID) {
-		this.props.dispatch({
-			rssFeedID: rssFeedID,
-			type: 'UNFOLLOW_RSS_FEED',
-			userID: localStorage['authedUser'],
-		});
-		fetch(
-			'delete',
-			'/follows',
-			{},
-			{
-				rss: rssFeedID,
-				type: 'rss',
-			},
-		).catch(err => {
-			if (window.console) {
-				console.log(err); // eslint-disable-line no-console
-			}
-
-			this.props.dispatch({
-				rssFeedID: rssFeedID,
-				type: 'FOLLOW_RSS_FEED',
-				userID: localStorage['authedUser'],
-			});
-		});
+		if (!this.props.suggestedRssFeeds.length) getSuggestedRss(this.props.dispatch);
 	}
 
 	render() {
 		return (
 			<Panel headerText="Suggested Feeds">
-				{this.props.rssFeeds.map(rssFeed => {
+				{this.props.suggestedRssFeeds.map((rssFeed) => {
+					const id = rssFeed._id;
+					const favicon = rssFeed.images ? rssFeed.images.favicon : null;
 					return (
-						<Link key={rssFeed._id} to={`/rss/${rssFeed._id}`}>
-							<Img
-								src={[rssFeed.images.favicon, getPlaceholderImageURL()]}
-								loader={<div className="placeholder" />}
-							/>
+						<Link key={id} to={`/rss/${id}`}>
+							<Img src={[favicon, getPlaceholderImageURL(id)]} />
 							<div>{rssFeed.title}</div>
 							<div
 								className={`clickable ${
-									this.props.followedRssFeeds[rssFeed._id]
-										? 'active'
-										: ''
+									rssFeed.isFollowed ? 'active' : ''
 								}`}
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
-									if (this.props.followedRssFeeds[rssFeed._id]) {
-										this.unfollowRssFeed(rssFeed._id);
-									} else {
-										this.followRssFeed(rssFeed._id);
-									}
+									rssFeed.isFollowed
+										? unfollowRss(this.props.dispatch, id)
+										: followRss(this.props.dispatch, id);
 								}}
 							>
 								Follow
@@ -158,39 +44,34 @@ class SuggestedFeeds extends React.Component {
 }
 
 SuggestedFeeds.defaultProps = {
-	followedRssFeeds: {},
-	rssFeeds: [],
+	suggestedRssFeeds: [],
 };
 
 SuggestedFeeds.propTypes = {
 	dispatch: PropTypes.func.isRequired,
-	followedRssFeeds: PropTypes.shape(),
-	rssFeeds: PropTypes.arrayOf(PropTypes.shape),
+	suggestedRssFeeds: PropTypes.arrayOf(PropTypes.shape()),
 };
 
-const mapStateToProps = (state, ownProps) => {
-	let rssFeeds = [];
-	if (state.suggestedRssFeeds) {
-		for (let rssFeedID of state.suggestedRssFeeds) {
-			rssFeeds.push(state.rssFeeds[rssFeedID]);
-		}
-	}
+const mapStateToProps = (state) => {
+	if (!state.suggestedRssFeeds) return { suggestedRssFeeds: [] };
 
-	let followedRssFeeds = {};
-	if (state.followedRssFeeds && state.followedRssFeeds[localStorage['authedUser']]) {
-		followedRssFeeds = { ...state.followedRssFeeds[localStorage['authedUser']] };
+	let suggestedRssFeeds = state.suggestedRssFeeds;
+
+	if (state.followedRssFeeds) {
+		suggestedRssFeeds = suggestedRssFeeds.map((item) => ({
+			...item,
+			isFollowed: !!state.followedRssFeeds[item._id],
+		}));
 	}
 	if (state.aliases) {
-		rssFeeds = rssFeeds.map(rssFeed => {
-			if (state.aliases[rssFeed._id])
-				rssFeed.title = state.aliases[rssFeed._id].alias;
-			return rssFeed;
+		suggestedRssFeeds = suggestedRssFeeds.map((item) => {
+			if (state.aliases[item._id]) item.title = state.aliases[item._id].alias;
+			return item;
 		});
 	}
+
 	return {
-		...ownProps,
-		followedRssFeeds,
-		rssFeeds,
+		suggestedRssFeeds,
 	};
 };
 
