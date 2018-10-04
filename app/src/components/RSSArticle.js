@@ -5,6 +5,7 @@ import ReactPlayer from 'react-player';
 import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
 import { connect } from 'react-redux';
+import sanitizeHtml from 'sanitize-html';
 
 import fetch from '../util/fetch';
 import { pinArticle, unpinArticle } from '../util/pins';
@@ -148,7 +149,11 @@ class RSSArticle extends React.Component {
 
 		fetch('GET', `/articles/${articleId}`, {}, { type: 'parsed' })
 			.then((res) => {
-				this.setState({ loadingContent: false, ...res.data });
+				const content = sanitizeHtml(res.data.content, {
+					allowedAttributes: { img: ['src', 'title', 'alt'] },
+					allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+				});
+				this.setState({ loadingContent: false, content });
 			})
 			.catch(() => {
 				this.setState({
