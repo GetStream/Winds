@@ -8,6 +8,7 @@ import { EnclosureSchema } from './enclosure';
 import Cache from './cache';
 import { ParseArticle } from '../parsers/article';
 import { getUrl } from '../utils/urls';
+import sanitize from '../utils/sanitize';
 
 export const EpisodeSchema = new Schema(
 	{
@@ -169,8 +170,10 @@ EpisodeSchema.methods.getParsedEpisode = async function() {
 
 		if (!title) return null;
 
+		const content = sanitize(parsed.content);
+
 		cached = await Cache.create({
-			content: parsed.content,
+			content,
 			excerpt: excerpt,
 			image: parsed.lead_image_url || '',
 			publicationDate: parsed.date_published || this.publicationDate,
