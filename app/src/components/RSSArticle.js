@@ -98,7 +98,7 @@ class RSSArticle extends React.Component {
 			link.pathname = location.hash.slice(1);
 		}
 		const shareUrl = `https://twitter.com/intent/tweet?url=${url.format(link)}&text=${
-			this.props.title
+			this.state.article.title
 		}&hashtags=Winds,RSS`;
 
 		if (isElectron()) {
@@ -211,13 +211,10 @@ class RSSArticle extends React.Component {
 							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
+								const dispatch = this.props.dispatch;
 								pinID
-									? unpinArticle(
-										pinID,
-										article._id,
-										this.props.dispatch,
-									  )
-									: pinArticle(article._id, this.props.dispatch);
+									? unpinArticle(pinID, article._id, dispatch)
+									: pinArticle(article._id, dispatch);
 							}}
 						>
 							{pinID ? (
@@ -337,6 +334,7 @@ class RSSArticle extends React.Component {
 
 RSSArticle.propTypes = {
 	dispatch: PropTypes.func.isRequired,
+	pinnedArticles: PropTypes.shape({}),
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			articleID: PropTypes.string.isRequired,

@@ -10,7 +10,7 @@ const NotFound = (props) => {
 				<a
 					className="link"
 					href="/"
-					onClick={e => {
+					onClick={(e) => {
 						e.preventDefault();
 						props.history.goBack();
 					}}
