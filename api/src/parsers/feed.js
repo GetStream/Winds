@@ -2,6 +2,7 @@ import request from 'request';
 import entities from 'entities';
 import moment from 'moment';
 import normalize from 'normalize-url';
+import sanitizeHtml from 'sanitize-html';
 import strip from 'strip';
 import zlib from 'zlib';
 import * as urlParser from 'url';
@@ -19,7 +20,6 @@ import RSS from '../models/rss';
 import config from '../config'; // eslint-disable-line
 import logger from '../utils/logger';
 import { getStatsDClient } from '../utils/statsd';
-import sanitize from '../utils/sanitize';
 
 const WindsUserAgent =
 	'Winds: Open Source RSS & Podcast app: https://getstream.io/winds/';
@@ -28,6 +28,13 @@ const statsd = getStatsDClient();
 
 const requestTTL = 12 * 1000;
 const maxContentLengthBytes = 1024 * 1024 * 5;
+
+function sanitize(dirty) {
+	return sanitizeHtml(dirty, {
+		allowedAttributes: { img: ['src', 'title', 'alt'] },
+		allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+	});
+}
 
 export async function ParsePodcast(podcastUrl, guidStability, limit = 1000) {
 	logger.info(`Attempting to parse podcast ${podcastUrl}`);
