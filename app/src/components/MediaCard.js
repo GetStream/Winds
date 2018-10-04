@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const MediaCard = props => {
+const MediaCard = (props) => {
 	let icon;
 
 	if (props.type === 'share') {

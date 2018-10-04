@@ -3,7 +3,7 @@ import RSSArticle from '../components/RSSArticle';
 import RSSArticleList from '../components/RSSArticleList';
 import React from 'react';
 import { connect } from 'react-redux';
-import fetch from '../util/fetch';
+import { getRssById } from '../api';
 import PropTypes from 'prop-types';
 import Tabs from '../components/Tabs';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
@@ -22,40 +22,25 @@ class RSSFeedsView extends React.Component {
 		};
 
 		this.container = React.createRef();
-		this.toggleNewRSSModal = this.toggleNewRSSModal.bind(this);
 	}
 
 	componentDidMount() {
 		this.container.current.focus();
-		if (!this.props.match.params.rssFeedID) {
-			return;
-		}
-		this.fetchRSS(this.props);
+
+		if (this.props.match.params.rssFeedID)
+			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
-	fetchRSS(props) {
-		return fetch('get', `/rss/${props.match.params.rssFeedID}`)
-			.then(res => {
-				if (res.data.duplicateOf) {
-					return fetch('GET', `/rss/${res.data.duplicateOf}`);
-				}
-				return res;
-			})
-			.then(response => {
-				this.props.dispatch({ rssFeed: response.data, type: 'UPDATE_RSS_FEED' });
-			});
+	componentDidUpdate(prevProps) {
+		if (this.props.match.params.rssFeedID !== prevProps.match.params.rssFeedID)
+			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.match.params.rssFeedID === nextProps.match.params.rssFeedID) {
-			return;
-		}
-		this.fetchRSS(nextProps);
-	}
-
-	toggleNewRSSModal() {
-		this.setState({ newRSSModalIsOpen: !this.state.newRSSModalIsOpen });
-	}
+	toggleNewRSSModal = () => {
+		this.setState((prevState) => ({
+			newRSSModalIsOpen: !prevState.newRSSModalIsOpen,
+		}));
+	};
 
 	render() {
 		let leftColumn;
@@ -85,13 +70,11 @@ class RSSFeedsView extends React.Component {
 				</React.Fragment>
 			);
 		} else {
-			let headerComponent = <h1>RSS</h1>;
-
 			leftColumn = (
 				<Tabs
 					componentClass="panels"
 					headerClass="panels-header"
-					headerComponent={headerComponent}
+					headerComponent={<h1>RSS</h1>}
 					tabGroup="rss-view"
 				>
 					<div tabTitle="All Feeds">
@@ -110,7 +93,7 @@ class RSSFeedsView extends React.Component {
 
 		return (
 			<div
-				onKeyDown={e => {
+				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
 						this.props.history.goBack();

@@ -27,13 +27,13 @@ class AdminView extends React.Component {
 	}
 
 	getRssFeeds() {
-		fetch('get', '/rss').then(res => {
+		fetch('get', '/rss').then((res) => {
 			this.setState({ rssFeeds: res.data.sort(compareTitles) });
 		});
 	}
 
 	getPodcasts() {
-		fetch('get', '/podcasts').then(res => {
+		fetch('get', '/podcasts').then((res) => {
 			this.setState({ podcasts: res.data.sort(compareTitles) });
 		});
 	}
@@ -69,7 +69,7 @@ class AdminView extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{this.state.podcasts.map(podcast => {
+							{this.state.podcasts.map((podcast) => {
 								return (
 									<PodcastRow
 										{...podcast}
@@ -103,7 +103,7 @@ class AdminView extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{this.state.rssFeeds.map(rssFeed => {
+							{this.state.rssFeeds.map((rssFeed) => {
 								return (
 									<RssRow
 										key={rssFeed._id}
@@ -126,14 +126,14 @@ class AdminView extends React.Component {
 				</label>
 				<div className="collapsible-content">
 					<form
-						onSubmit={event => {
+						onSubmit={(event) => {
 							this.setState({ emailHTML: 'Loading' });
 							fetch(
 								'get',
 								`/email/${this.state.emailType}?user=${
 									this.state.userID
 								}`,
-							).then(res => {
+							).then((res) => {
 								this.setState({ emailHTML: res.data });
 							});
 							event.preventDefault();
@@ -144,7 +144,7 @@ class AdminView extends React.Component {
 							<input
 								value={this.state.userID}
 								name="user_id"
-								onChange={event => {
+								onChange={(event) => {
 									this.setState({ userID: event.target.value });
 								}}
 							/>
@@ -152,7 +152,7 @@ class AdminView extends React.Component {
 						&nbsp;
 						<select
 							value={this.state.emailType}
-							onChange={event => {
+							onChange={(event) => {
 								this.setState({
 									emailHTML: 'No content',
 									emailType: event.target.value,
@@ -217,7 +217,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								featuredImageText: e.target.value,
@@ -242,7 +242,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<select
-						onChange={e => {
+						onChange={(e) => {
 							let interest = e.target.value;
 							if (e.target.value === 'none') {
 								interest = '';
@@ -254,7 +254,7 @@ class PodcastRow extends React.Component {
 						value={this.props.interest}
 					>
 						<option value="none">None</option>
-						{onboardingTopics.map(interest => {
+						{onboardingTopics.map((interest) => {
 							return (
 								<option key={interest.name} value={interest.name}>
 									{interest.name}
@@ -265,7 +265,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								descriptionText: e.target.value,
@@ -287,7 +287,7 @@ class PodcastRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								summaryText: e.target.value,
@@ -360,7 +360,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								featuredImageText: e.target.value,
@@ -387,7 +387,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<select
-						onChange={e => {
+						onChange={(e) => {
 							let interest = e.target.value;
 							if (e.target.value === 'none') {
 								interest = '';
@@ -401,7 +401,7 @@ class RssRow extends React.Component {
 						value={this.props.interest}
 					>
 						<option value="none">None</option>
-						{onboardingTopics.map(interest => {
+						{onboardingTopics.map((interest) => {
 							return (
 								<option key={interest.name} value={interest.name}>
 									{interest.name}
@@ -412,7 +412,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								descriptionText: e.target.value,
@@ -436,7 +436,7 @@ class RssRow extends React.Component {
 				</td>
 				<td>
 					<input
-						onChange={e => {
+						onChange={(e) => {
 							this.setState({
 								changed: true,
 								summaryText: e.target.value,
@@ -486,7 +486,7 @@ RssRow.defaultProps = {
 	summary: '',
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	const userID = localStorage['authedUser'];
 
 	if (!userID) {

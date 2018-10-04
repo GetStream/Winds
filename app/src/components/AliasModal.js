@@ -5,7 +5,7 @@ import Img from 'react-image';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
-import { getAliases } from '../util/aliases';
+import { getAliases } from '../api';
 import saveIcon from '../images/icons/save.svg';
 import exitIcon from '../images/buttons/exit.svg';
 
@@ -25,7 +25,7 @@ class AliasModal extends React.Component {
 		this.props.toggleModal();
 	};
 
-	handleSubmit = e => {
+	handleSubmit = (e) => {
 		e.preventDefault();
 		const alias = new FormData(e.target).get('alias');
 
@@ -35,14 +35,14 @@ class AliasModal extends React.Component {
 
 		this.setState({ submitting: true });
 		fetch('POST', '/aliases', { alias, ...id })
-			.then(res => {
+			.then((res) => {
 				if (res.data) {
 					this.setState({ success: true, submitting: false });
 					getAliases(this.props.dispatch);
 					setTimeout(() => this.closeModal(), 500);
 				}
 			})
-			.catch(err => this.setState({ error: true, submitting: false }));
+			.catch((err) => this.setState({ error: true, submitting: false }));
 	};
 
 	render() {
@@ -99,7 +99,7 @@ class AliasModal extends React.Component {
 
 						<button
 							className="btn link cancel"
-							onClick={e => {
+							onClick={(e) => {
 								e.preventDefault();
 								this.closeModal();
 							}}

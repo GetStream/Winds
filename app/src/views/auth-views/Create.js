@@ -1,14 +1,18 @@
 import { Link, withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
+
 import config from '../../config';
 import PropTypes from 'prop-types';
 import interests from '../../static-data/onboarding-topics.js';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL.js';
+import { getAllData } from '../../api';
 
 class Create extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			stage: 'onboarding',
 		};
@@ -18,7 +22,7 @@ class Create extends Component {
 		if (this.state.stage === 'onboarding') {
 			return (
 				<OnboardingGrid
-					done={interests => {
+					done={(interests) => {
 						this.setState({
 							interests,
 							stage: 'account-details',
@@ -36,6 +40,8 @@ class Create extends Component {
 						});
 						localStorage['authedUser'] = _id;
 						localStorage['jwt'] = jwt;
+
+						getAllData(this.props.dispatch);
 						this.props.history.push('/');
 					}}
 					interests={this.state.interests}
@@ -47,11 +53,13 @@ class Create extends Component {
 
 Create.propTypes = {
 	history: PropTypes.shape({ push: PropTypes.func.isRequired }),
+	dispatch: PropTypes.func.isRequired,
 };
 
 class OnboardingGrid extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			selectedInterests: [],
 		};
@@ -59,7 +67,7 @@ class OnboardingGrid extends React.Component {
 
 	toggleInterest(interestName) {
 		let foundInterestIndex = this.state.selectedInterests.findIndex(
-			selectedInterest => {
+			(selectedInterest) => {
 				return selectedInterest === interestName;
 			},
 		);
@@ -67,9 +75,7 @@ class OnboardingGrid extends React.Component {
 		if (foundInterestIndex !== -1) {
 			let newInterests = this.state.selectedInterests.slice();
 			newInterests.splice(foundInterestIndex, 1);
-			this.setState({
-				selectedInterests: newInterests,
-			});
+			this.setState({ selectedInterests: newInterests });
 		} else {
 			this.setState({
 				selectedInterests: [...this.state.selectedInterests, interestName],
@@ -86,22 +92,22 @@ class OnboardingGrid extends React.Component {
 					<Link to="/login">Sign in</Link>.
 				</p>
 				<div className="interests-grid">
-					{interests.map((interest, i) => {
-						let isSelected =
-							this.state.selectedInterests.findIndex(selectedInterest => {
+					{interests.map((interest) => {
+						const isSelected =
+							this.state.selectedInterests.findIndex((selectedInterest) => {
 								return selectedInterest === interest.name;
 							}) !== -1;
 						return (
 							<div
 								className={`hero-card ${isSelected ? 'selected' : ''}`}
 								key={interest.name}
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
 									this.toggleInterest(interest.name);
 								}}
 								style={{
 									backgroundImage: `url(${interest.image ||
-										getPlaceholderImageURL()})`,
+										getPlaceholderImageURL(interest.name)})`,
 								}}
 							>
 								<h1>{interest.name}</h1>
@@ -114,9 +120,9 @@ class OnboardingGrid extends React.Component {
 					})}
 				</div>
 				<button
-					className={'btn primary'}
+					className="btn primary"
 					disabled={this.state.selectedInterests.length < 3}
-					onClick={e => {
+					onClick={(e) => {
 						e.preventDefault();
 						this.props.done(this.state.selectedInterests);
 					}}
@@ -127,7 +133,7 @@ class OnboardingGrid extends React.Component {
 				</button>
 				<button
 					className="btn link"
-					onClick={e => {
+					onClick={(e) => {
 						e.preventDefault();
 						this.props.done();
 					}}
@@ -146,132 +152,56 @@ OnboardingGrid.propTypes = {
 class AccountDetailsForm extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {};
-		this.validateName = this.validateName.bind(this);
-		this.validateUsername = this.validateUsername.bind(this);
-		this.validateEmail = this.validateEmail.bind(this);
-		this.validatePassword = this.validatePassword.bind(this);
-	}
-	validateForm() {
-		if (
-			this.state.username &&
-			this.state.email &&
-			this.state.password &&
-			this.state.name
-		) {
-			this.setState({ valid: true });
-		} else {
-			this.setState({ valid: false });
-		}
 	}
 
-	validateName(e) {
-		let name = e.target.value.trim();
+	validateForm = () => {
+		this.setState({
+			valid:
+				this.state.username &&
+				this.state.email &&
+				this.state.password &&
+				this.state.name,
+		});
+	};
 
-		if (name.length >= 2) {
-			this.setState(
-				{
-					name: name,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		} else {
-			this.setState(
-				{
-					name: null,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		}
-	}
+	validateName = (e) => {
+		const name = e.target.value.trim();
+		this.setState({ name: name.length >= 2 ? name : null }, () => {
+			this.validateForm();
+		});
+	};
 
-	validateUsername(e) {
-		let username = e.target.value.trim();
+	validateUsername = (e) => {
+		const username = e.target.value.trim();
+		this.setState({ username: username.length >= 2 ? username : null }, () => {
+			this.validateForm();
+		});
+	};
 
-		if (username.length >= 2) {
-			this.setState(
-				{
-					username: username,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		} else {
-			this.setState(
-				{
-					username: null,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		}
-	}
-
-	validateEmail(e) {
-		let email = e.target.value.toLowerCase().trim();
-
+	validateEmail = (e) => {
 		/* eslint-disable */
 		const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		/* eslint-enable */
 
-		if (reg.test(email)) {
-			this.setState(
-				{
-					email: email,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		} else {
-			this.setState(
-				{
-					email: null,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		}
-	}
-
-	validatePassword(e) {
-		let password = e.target.value.trim();
-
-		if (password.length >= 2) {
-			this.setState(
-				{
-					password: password,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		} else {
-			this.setState(
-				{
-					password: null,
-				},
-				() => {
-					this.validateForm();
-				},
-			);
-		}
-	}
-
-	submit(username, email, password, name) {
-		if (!this.state.valid || this.state.submitting) {
-			return;
-		}
-
-		this.setState({
-			submitting: true,
+		const email = e.target.value.toLowerCase().trim();
+		this.setState({ email: reg.test(email) ? email : null }, () => {
+			this.validateForm();
 		});
+	};
+
+	validatePassword = (e) => {
+		const password = e.target.value.trim();
+		this.setState({ password: password.length >= 2 ? password : null }, () => {
+			this.validateForm();
+		});
+	};
+
+	submit = (username, email, password, name) => {
+		if (!this.state.valid || this.state.submitting) return;
+
+		this.setState({ submitting: true });
 
 		axios
 			.post(config.api.url + '/auth/signup', {
@@ -281,14 +211,11 @@ class AccountDetailsForm extends React.Component {
 				name,
 				interests: this.props.interests,
 			})
-			.then(res => {
+			.then((res) => {
+				this.setState({ submitting: false });
 				this.props.done(res.data);
-
-				this.setState({
-					submitting: false,
-				});
 			})
-			.catch(err => {
+			.catch((err) => {
 				let errorMessage;
 
 				if (
@@ -303,12 +230,9 @@ class AccountDetailsForm extends React.Component {
 						'There was an error when attempting to create your account. Please try again later.';
 				}
 
-				this.setState({
-					errorMessage,
-					submitting: false,
-				});
+				this.setState({ errorMessage, submitting: false });
 			});
-	}
+	};
 
 	render() {
 		return (
@@ -321,7 +245,7 @@ class AccountDetailsForm extends React.Component {
 
 				<form
 					className="auth-form"
-					onSubmit={e => {
+					onSubmit={(e) => {
 						e.preventDefault();
 						this.submit(
 							this.state.username,
@@ -384,7 +308,7 @@ class AccountDetailsForm extends React.Component {
 				</form>
 				<div className="alt">
 					<p>
-						Already a Winds User? <Link to={`/login`}>Sign in here</Link>
+						Already a Winds User? <Link to="/login">Sign in here</Link>
 					</p>
 				</div>
 			</div>
@@ -392,4 +316,4 @@ class AccountDetailsForm extends React.Component {
 	}
 }
 
-export default withRouter(Create);
+export default withRouter(connect()(Create));

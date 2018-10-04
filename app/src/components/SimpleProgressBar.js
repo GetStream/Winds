@@ -8,7 +8,7 @@ class SimpleProgressBar extends React.Component {
 		return (
 			<div
 				className="simple-progress-bar"
-				onClick={e => {
+				onClick={(e) => {
 					this.props.seekTo(e.nativeEvent.offsetX / e.target.clientWidth);
 				}}
 			>

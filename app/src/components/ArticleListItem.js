@@ -13,9 +13,8 @@ class ArticleListItem extends React.Component {
 			<div
 				className="list-item"
 				onClick={() => {
-					if (this.props.onNavigation) {
-						this.props.onNavigation();
-					}
+					if (this.props.onNavigation) this.props.onNavigation();
+
 					this.props.history.push(
 						`/rss/${this.props.rss._id}/articles/${this.props._id}`,
 					);
@@ -25,31 +24,32 @@ class ArticleListItem extends React.Component {
 					<Img
 						width="75"
 						height="75"
-						src={[this.props.images.og, getPlaceholderImageURL()]}
+						src={[
+							this.props.images.og,
+							getPlaceholderImageURL(this.props._id),
+						]}
 						loader={<div className="placeholder" />}
 					/>
-					{this.props.recent ? <div className="recent-indicator" /> : null}
+					{this.props.recent && <div className="recent-indicator" />}
 				</div>
 				<div className="right">
 					<h2>{this.props.title}</h2>
 					<div className="item-info">
 						<span
 							className="bookmark"
-							onClick={e => {
+							onClick={(e) => {
 								e.preventDefault();
 								e.stopPropagation();
-								if (this.props.pinned) {
-									unpinArticle(
-										this.props.pinID,
-										this.props._id,
-										this.props.dispatch,
-									);
-								} else {
-									pinArticle(this.props._id, this.props.dispatch);
-								}
+								this.props.pinID
+									? unpinArticle(
+											this.props.pinID,
+											this.props._id,
+											this.props.dispatch,
+									  )
+									: pinArticle(this.props._id, this.props.dispatch);
 							}}
 						>
-							{this.props.pinned ? (
+							{this.props.pinID ? (
 								<i className="fas fa-bookmark" />
 							) : (
 								<i className="far fa-bookmark" />
@@ -59,12 +59,12 @@ class ArticleListItem extends React.Component {
 							<i className="fas fa-external-link-alt" />
 							<a href={this.props.url}>{this.props.rss.title}</a>
 						</span>
-						{this.props.commentUrl ? (
+						{!!this.props.commentUrl && (
 							<span>
 								<i className="fas fa-comment-alt" />
 								<a href={this.props.commentUrl}>Comments</a>
 							</span>
-						) : null}
+						)}
 						<span className="muted">
 							{'Posted '}
 							<TimeAgo timestamp={this.props.publicationDate} />
@@ -81,7 +81,7 @@ ArticleListItem.defaultProps = {
 	images: {},
 	liked: false,
 	likes: 0,
-	pinned: false,
+	pinID: '',
 	recent: false,
 };
 
@@ -98,7 +98,6 @@ ArticleListItem.propTypes = {
 	}),
 	onNavigation: PropTypes.func,
 	pinID: PropTypes.string,
-	pinned: PropTypes.bool,
 	publicationDate: PropTypes.string,
 	recent: PropTypes.bool,
 	rss: PropTypes.shape({
