@@ -6,6 +6,7 @@ import isElectron from 'is-electron';
 import Img from 'react-image';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import sanitizeHtml from 'sanitize-html';
 
 import fetch from '../util/fetch';
 import { pinEpisode, unpinEpisode } from '../util/pins';
@@ -74,7 +75,11 @@ class PodcastEpisode extends React.Component {
 
 		try {
 			const res = await fetch('GET', `/episodes/${episodeID}?type=parsed`);
-			this.setState({ content: res.data.content, loadingContent: false });
+			const content = sanitizeHtml(res.data.content, {
+				allowedAttributes: { img: ['src', 'title', 'alt'] },
+				allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+			});
+			this.setState({ content, loadingContent: false });
 		} catch (err) {
 			this.setState({ error: true, loadingContent: false });
 			if (window.console) console.log(err); // eslint-disable-line no-console

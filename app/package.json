@@ -85,6 +85,7 @@
     "react-router-dom": "^4.3.1",
     "react-waypoint": "^8.0.3",
     "redux": "^4.0.0",
+    "sanitize-html": "^1.19.1",
     "stream-analytics": "^2.7.1",
     "video-react": "^0.13.0"
   },
