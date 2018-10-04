@@ -52,11 +52,11 @@ class DiscoverSection extends React.Component {
 								}/${suggestion._id}`}
 							>
 								<Img
+									loader={<div className="placeholder" />}
 									src={[
 										suggestion.images.favicon,
 										getPlaceholderImageURL(suggestion._id),
 									]}
-									loader={<div className="placeholder" />}
 									unloader={<div />}
 								/>
 								<span>{suggestion.title}</span>

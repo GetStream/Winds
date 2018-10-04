@@ -124,7 +124,7 @@ class Player extends Component {
 				});
 			else this.audioPlayerElement.audioEl.play();
 		} catch (err) {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		}
 	};
 
@@ -375,6 +375,7 @@ Player.propTypes = {
 	}),
 	pause: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
+	playEpisode: PropTypes.func.isRequired,
 	clearPlayer: PropTypes.func.isRequired,
 };
 

@@ -79,11 +79,11 @@ class AllArticles extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>"That's it! No more articles here."</p>
+							<p>That&#39;s it! No more articles here.</p>
 							<p>
-								"What, did you think that once you got all the way around,
-								you'd just be back at the same place that you started?
-								Sounds like some real round-feed thinking to me."
+								What, did you think that once you got all the way around,
+								you&#39;d just be back at the same place that you started?
+								Sounds like some real round-feed thinking to me.
 							</p>
 						</div>
 					) : (

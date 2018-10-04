@@ -97,19 +97,19 @@ class PodcastsView extends React.Component {
 
 		return (
 			<div
-				onKeyDown={(e) => {
-					e = e || window.e;
-					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
-						this.props.history.goBack();
-				}}
-				tabIndex="-1"
-				ref={this.container}
 				className={`podcasts-view ${
 					new URLSearchParams(this.props.location.search).get('featured') ===
 					'true'
 						? 'featured'
 						: ''
 				}`}
+				onKeyDown={(e) => {
+					e = e || window.e;
+					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
+						this.props.history.goBack();
+				}}
+				ref={this.container}
+				tabIndex="-1"
 			>
 				{leftColumn}
 				<div className="border" />
@@ -132,6 +132,7 @@ PodcastsView.defaultProps = {
 
 PodcastsView.propTypes = {
 	dispatch: PropTypes.func.isRequired,
+	history: PropTypes.shape({ goBack: PropTypes.func.isRequired }).isRequired,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			podcastID: PropTypes.string,

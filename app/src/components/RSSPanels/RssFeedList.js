@@ -15,8 +15,8 @@ class RssFeedList extends React.Component {
 					this.props.match.params.rssFeedID &&
 					this.props.match.params.rssFeedID !== 'recent'
 				}
-				headerText="Feeds"
 				headerLink="/rss"
+				headerText="Feeds"
 			>
 				{this.props.rssFeeds.map((rssFeed) => {
 					const favicon = rssFeed.images ? rssFeed.images.favicon : null;
@@ -28,8 +28,8 @@ class RssFeedList extends React.Component {
 					return (
 						<Link className={clazz} key={rssId} to={`/rss/${rssId}`}>
 							<Img
-								src={[favicon, getPlaceholderImageURL(rssId)]}
 								loader={<div className="placeholder" />}
+								src={[favicon, getPlaceholderImageURL(rssId)]}
 							/>
 							<div>{rssFeed.title}</div>
 							<div>

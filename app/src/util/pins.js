@@ -9,7 +9,7 @@ const unpinArticle = (pinID, articleID, dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -27,7 +27,7 @@ const pinArticle = (articleID, dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -45,7 +45,7 @@ const pinEpisode = (episodeID, dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -58,7 +58,7 @@ const unpinEpisode = (pinID, episodeID, dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -71,7 +71,7 @@ const getPinnedArticles = (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 
@@ -84,7 +84,7 @@ const getPinnedEpisodes = (dispatch) => {
 			});
 		})
 		.catch((err) => {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		});
 };
 

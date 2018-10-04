@@ -88,7 +88,7 @@ class PodcastEpisodesView extends React.Component {
 				}),
 			)
 			.catch((err) => {
-				if (window.console) console.log(err); // eslint-disable-line no-console
+				console.log(err); // eslint-disable-line no-console
 			});
 	};
 
@@ -120,7 +120,7 @@ class PodcastEpisodesView extends React.Component {
 					}));
 			})
 			.catch((err) => {
-				if (window.console) console.log(err); // eslint-disable-line no-console
+				console.log(err); // eslint-disable-line no-console
 			});
 	};
 
@@ -189,15 +189,15 @@ class PodcastEpisodesView extends React.Component {
 		if (episodes.length === 0) {
 			rightColumn = (
 				<div>
-					<p>We haven't found any episodes for this podcast feed yet :(</p>
+					<p>We haven&#39;t found any episodes for this podcast feed yet :(</p>
 					<p>
-						It might be because the podcast feed doesn't have any episodes, or
-						because it just got added and we're still parsing them. Come check
-						back in a few minutes.
+						It might be because the podcast feed doesn&#39;t have any
+						episodes, or because it just got added and we&#39;re still parsing
+						them. Come check back in a few minutes.
 					</p>
 					<p>
-						If you're pretty sure there's supposed to be some episodes here,
-						and they aren't showing up, please file a{' '}
+						If you&#39;re pretty sure there&#39;s supposed to be some episodes
+						here, and they aren&#39;t showing up, please file a{' '}
 						<a href="https://github.com/getstream/winds/issues">
 							GitHub Issue
 						</a>
@@ -232,10 +232,10 @@ class PodcastEpisodesView extends React.Component {
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
-							<p>That's it! No more episodes here.</p>
+							<p>That&#39;s it! No more episodes here.</p>
 							<p>
 								What, did you think that once you got all the way around,
-								you'd just be back at the same place that you started?
+								you&#39;d just be back at the same place that you started?
 								Sounds like some real round-feed thinking to me.
 							</p>
 						</div>
@@ -302,10 +302,10 @@ class PodcastEpisodesView extends React.Component {
 
 				<AliasModal
 					defVal={title}
-					isOpen={this.state.aliasModal}
-					toggleModal={this.toggleAliasModal}
-					isRss={false}
 					feedID={podcast._id}
+					isOpen={this.state.aliasModal}
+					isRss={false}
+					toggleModal={this.toggleAliasModal}
 				/>
 
 				<div className="list podcast-episode-list content">
@@ -360,7 +360,7 @@ const mapStateToProps = (state) => ({
 	player: state.player || {},
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		dispatch,
 		pauseEpisode: () => dispatch({ type: 'PAUSE_EPISODE' }),

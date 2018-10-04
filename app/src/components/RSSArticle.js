@@ -139,7 +139,7 @@ class RSSArticle extends React.Component {
 				article: mergeSocialScore(res.data, { reddit, hackernews }),
 			});
 		} catch (err) {
-			if (window.console) console.log(err); // eslint-disable-line no-console
+			console.log(err); // eslint-disable-line no-console
 		}
 	}
 

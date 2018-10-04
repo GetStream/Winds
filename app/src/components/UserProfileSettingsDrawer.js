@@ -66,7 +66,7 @@ class UserProfileSettingsDrawer extends React.Component {
 				window.location.reload();
 			})
 			.catch((err) => {
-				if (window.console) console.log(err); // eslint-disable-line no-console
+				console.log(err); // eslint-disable-line no-console
 			});
 	};
 
@@ -103,12 +103,11 @@ class UserProfileSettingsDrawer extends React.Component {
 			url,
 			username,
 		})
-			.then((res) => {
-				this.props.updateUser(res.data);
-				this.props.getUserInfo();
+			.then(() => {
+				getUser(this.props.dispatch, localStorage['authedUser']);
 				this.props.closeDrawer();
 			})
-			.catch((err) => this.props.closeDrawer());
+			.catch(() => this.props.closeDrawer());
 	};
 
 	passwordIsValid = () => {
@@ -125,18 +124,13 @@ class UserProfileSettingsDrawer extends React.Component {
 			fetch('PUT', `/users/${this.props._id}`, {
 				password: this.state.password,
 			})
-				.then((res) => {
-					this.props.updateUser(res.data);
-					this.props.closeDrawer();
-				})
-				.catch((err) => {
-					this.props.closeDrawer();
-				});
+				.then(() => this.props.closeDrawer())
+				.catch(() => this.props.closeDrawer());
 		}
 	};
 
 	downloadOPML = () => {
-		fetch('GET', `/opml/download`)
+		fetch('GET', '/opml/download')
 			.then((res) => {
 				if (res.data) {
 					const link = document.createElement('a');
@@ -151,7 +145,7 @@ class UserProfileSettingsDrawer extends React.Component {
 					setTimeout(() => this.setState({ exportError: false }), 1500);
 				});
 
-				if (window.console) console.log(err); // eslint-disable-line no-console
+				console.log(err); // eslint-disable-line no-console
 			});
 	};
 
@@ -427,6 +421,7 @@ UserProfileSettingsDrawer.propTypes = {
 	url: PropTypes.string,
 	username: PropTypes.string,
 	gravatar: PropTypes.string,
+	dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ ...state.user });

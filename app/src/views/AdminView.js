@@ -43,12 +43,12 @@ class AdminView extends React.Component {
 			<div className="admin">
 				<h1>Admin View</h1>
 				<input
-					id="collapsible-podcast"
 					className="toggle"
+					id="collapsible-podcast"
 					type="checkbox"
 					value=""
 				/>
-				<label htmlFor="collapsible-podcast" className="lbl-toggle">
+				<label className="lbl-toggle" htmlFor="collapsible-podcast">
 					<h2>Podcasts</h2>
 				</label>
 				<div className="collapsible-content">
@@ -81,8 +81,8 @@ class AdminView extends React.Component {
 						</tbody>
 					</table>
 				</div>
-				<input id="collapsible-rss" className="toggle" type="checkbox" value="" />
-				<label htmlFor="collapsible-rss" className="lbl-toggle">
+				<input className="toggle" id="collapsible-rss" type="checkbox" value="" />
+				<label className="lbl-toggle" htmlFor="collapsible-rss">
 					<h2>RSS Feeds</h2>
 				</label>
 				<div className="collapsible-content">
@@ -116,12 +116,12 @@ class AdminView extends React.Component {
 					</table>
 				</div>
 				<input
-					id="collapsible-email"
 					className="toggle"
+					id="collapsible-email"
 					type="checkbox"
 					value=""
 				/>
-				<label htmlFor="collapsible-email" className="lbl-toggle">
+				<label className="lbl-toggle" htmlFor="collapsible-email">
 					<h2>Test email</h2>
 				</label>
 				<div className="collapsible-content">
@@ -142,22 +142,22 @@ class AdminView extends React.Component {
 						<label>
 							User ID:&nbsp;
 							<input
-								value={this.state.userID}
 								name="user_id"
 								onChange={(event) => {
 									this.setState({ userID: event.target.value });
 								}}
+								value={this.state.userID}
 							/>
 						</label>
 						&nbsp;
 						<select
-							value={this.state.emailType}
 							onChange={(event) => {
 								this.setState({
 									emailHTML: 'No content',
 									emailType: event.target.value,
 								});
 							}}
+							value={this.state.emailType}
 						>
 							<option value="daily">Daily digest</option>
 							<option value="weekly">Weekly digest</option>
@@ -166,8 +166,6 @@ class AdminView extends React.Component {
 						<input type="submit" value="Preview" />
 						&nbsp;
 						<input
-							type="button"
-							value="Send"
 							onClick={() => {
 								fetch(
 									'post',
@@ -176,6 +174,8 @@ class AdminView extends React.Component {
 									}`,
 								);
 							}}
+							type="button"
+							value="Send"
 						/>
 					</form>
 					<div
