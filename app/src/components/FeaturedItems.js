@@ -57,7 +57,7 @@ FeaturedItems.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-	featuredItems: state.featuredItems,
+	featuredItems: state.featuredItems || [],
 });
 
 export default connect(mapStateToProps)(FeaturedItems);

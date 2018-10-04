@@ -343,6 +343,6 @@ RSSArticle.propTypes = {
 	}),
 };
 
-const mapStateToProps = (state) => ({ pinnedArticles: state.pinnedArticles });
+const mapStateToProps = (state) => ({ pinnedArticles: state.pinnedArticles || {} });
 
 export default connect(mapStateToProps)(RSSArticle);
