@@ -6,7 +6,7 @@ import { createHashHistory, createBrowserHistory } from 'history';
 
 import AppRouter from './AppRouter.js';
 import reducer from './reducers';
-import './styles/global.css';
+import './styles/global.scss';
 
 let initialState = {};
 if ('authedUser' in localStorage) {
