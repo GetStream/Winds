@@ -9,16 +9,8 @@ import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
-import DiscoverSection from '../components/DiscoverSection';
-
-import { getSuggestedRss, getSuggestedPodcasts } from '../api';
 
 class Dashboard extends React.Component {
-	refresh = () => {
-		getSuggestedPodcasts(this.props.dispatch);
-		getSuggestedRss(this.props.dispatch);
-	};
-
 	render() {
 		if (this.props.loading) return <Loader />;
 
@@ -51,17 +43,15 @@ class Dashboard extends React.Component {
 						<RssFeedList />
 					</div>
 				</div>
-				<div className="column-header discover-header" onClick={this.refresh}>
-					<h1>Discover</h1>
+				<Link className="column-header folder-header" to="/folders">
+					<h1>Folders</h1>
 					<div className="drilldown">
-						<div>Refresh</div>
-						<i className="fas fa-sync" />
+						<div>View all</div>
+						<i className="fa fa-chevron-right" />
 					</div>
-				</div>
-				<div className="discover-section ">
-					<div className="column-content">
-						<DiscoverSection />
-					</div>
+				</Link>
+				<div className="folder-section ">
+					<div className="column-content">HERE FOLDERS </div>
 				</div>
 				<div className="border1" />
 				<div className="border2" />
