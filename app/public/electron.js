@@ -1,5 +1,3 @@
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-
 const { app, BrowserWindow, shell, ipcMain, Menu, TouchBar } = require('electron');
 const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 
@@ -10,7 +8,6 @@ let mainWindow;
 
 createWindow = () => {
 	mainWindow = new BrowserWindow({
-		vibrancy: 'ultra-dark',
 		backgroundColor: '#F7F7F7',
 		minWidth: 880,
 		show: false,
