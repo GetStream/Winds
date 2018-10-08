@@ -28,6 +28,34 @@
 				"name": "Valid Name",
 				"username": "valid",
 				"password": "valid_password"
+			},
+			{
+				"_id": "5b0f306d8e147f10f16aceae",
+				"preferences": {
+					"notifications": { "daily": false, "weekly": true, "follows": true }
+				},
+				"bio": "",
+				"url": "",
+				"twitter": "",
+				"background": 1,
+				"recoveryCode": "",
+				"active": true,
+				"admin": false,
+				"interests": [
+					"UI/UX",
+					"Startups & VC",
+					"Programming",
+					"News",
+					"Machine Learning & AI",
+					"Gaming",
+					"VR",
+					"Lifehacks",
+					"Marketing"
+				],
+				"email": "valid2@email.com",
+				"name": "Valid Name",
+				"username": "valid2",
+				"password": "valid_password"
 			}
 		],
 		"RSS": [
