@@ -31,7 +31,6 @@
   "dependencies": {
     "algoliasearch": "^3.30.0",
     "axios": "^0.18.0",
-    "electron": "^4.0.0-nightly.20180929",
     "electron-boilerplate": "^1.1.1",
     "electron-google-analytics": "^0.1.0",
     "electron-is": "^3.0.0",
@@ -78,6 +77,7 @@
     "assert": "^1.4.1",
     "concurrently": "^4.0.1",
     "cross-env": "^5.2.0",
+    "electron": "^3.0.2",
     "electron-builder": "^20.28.4",
     "node-sass": "^4.9.3",
     "prettier": "^1.14.3",
@@ -116,7 +116,7 @@
     "mas": {
       "entitlements": "assets/entitlements.mas.plist",
       "entitlementsInherit": "assets/entitlements.mas.inherit.plist",
-      "provisioningProfile": "../winds-private/embedded.provisionprofile"
+      "provisioningProfile": "../../winds-private/embedded.provisionprofile"
     },
     "win": {
       "target": "nsis",
