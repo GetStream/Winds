@@ -23,7 +23,7 @@
   "scripts": {
     "web": "react-scripts start",
     "build": "react-scripts build",
-    "start": "concurrently \"BROWSER=none yarn web\" \"wait-on http://localhost:3000 && electron .\"",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
     "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always",
     "prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\""
