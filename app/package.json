@@ -77,17 +77,17 @@
     "assert": "^1.4.1",
     "concurrently": "^4.0.1",
     "cross-env": "^5.2.0",
-    "electron": "^3.0.2",
+    "electron": "^3.0.3",
     "electron-builder": "^20.28.4",
     "node-sass": "^4.9.3",
     "prettier": "^1.14.3",
     "prettierrc": "^0.0.0-5",
-    "react-scripts": "^2.0.3",
+    "react-scripts": "^2.0.4",
     "stylelint": "^9.6.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-order": "^1.0.0",
-    "version-bump-prompt": "^4.2.0",
-    "wait-on": "^3.0.1"
+    "version-bump-prompt": "^4.2.1",
+    "wait-on": "^3.1.0"
   },
   "build": {
     "appId": "io.getstream.winds",
