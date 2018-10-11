@@ -231,5 +231,7 @@ export default (previousState = {}, action) => {
 		return { ...previousState, featuredItems: [...action.featuredItems] };
 	} else if (action.type === 'BATCH_UPDATE_ALIASES') {
 		return { ...previousState, aliases: { ...action.aliases } };
+	} else if (action.type === 'BATCH_UPDATE_FOLDERS') {
+		return { ...previousState, folders: [...action.data] };
 	} else return previousState;
 };
