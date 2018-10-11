@@ -6,6 +6,8 @@ import mongooseStringQuery from 'mongoose-string-query';
 import FollowSchema from './follow';
 import PinSchema from './pin';
 import ListenSchema from './listen';
+import AliasSchema from './alias';
+import FolderSchema from './folder';
 
 import PlaylistSchema from './playlist';
 import jwt from 'jsonwebtoken';
@@ -143,6 +145,8 @@ UserSchema.post('remove', async function(user) {
 		PlaylistSchema.remove({ user }),
 		FollowSchema.remove({ user }),
 		ListenSchema.remove({ user }),
+		AliasSchema.remove({ user }),
+		FolderSchema.remove({ user }),
 	]);
 });
 
