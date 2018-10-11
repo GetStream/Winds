@@ -232,7 +232,10 @@ class Header extends Component {
 							preferPlace="below"
 							tipSize={0.1}
 						>
-							<div className="new" onClick={this.toggleNewContentPopover}>
+							<div
+								className="btn-new"
+								onClick={this.toggleNewContentPopover}
+							>
 								<Img decode={false} src={addIcon} />
 								New
 							</div>
