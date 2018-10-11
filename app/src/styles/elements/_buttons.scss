@@ -142,3 +142,30 @@
 .red {
 	color: $alarm-red;
 }
+
+.btn-new {
+	align-items: center;
+	background-color: $medium-sea-green;
+	background-image: linear-gradient(
+		-180deg,
+		rgba(45, 206, 111, 0.5) 0%,
+		rgba(77, 182, 120, 0.5) 100%
+	);
+	border: none;
+	border-radius: 29px;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+	color: #fff;
+	cursor: pointer;
+	display: flex;
+	font-family: $primary;
+	font-size: 11px;
+	font-weight: 600;
+	height: 28px;
+	text-transform: uppercase;
+	width: 80px;
+
+	img,
+	svg {
+		margin: 0 12px 0 4px;
+	}
+}

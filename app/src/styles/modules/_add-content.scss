@@ -48,7 +48,9 @@
 				}
 			}
 
-			img {
+			img,
+			svg,
+			.icon {
 				float: right;
 				position: relative;
 				right: 5px;

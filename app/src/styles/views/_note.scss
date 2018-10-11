@@ -1,0 +1,13 @@
+.panel-element.no-notes {
+	cursor: default;
+	flex-direction: column;
+	padding-bottom: 5.6em;
+
+	&:hover {
+		margin-left: 1em;
+	}
+
+	.note-icon {
+		margin: 3em auto 1em;
+	}
+}
