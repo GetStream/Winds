@@ -36,6 +36,16 @@
 
 	.folder-header {
 		grid-area: folder-header;
+		padding: 1em;
+
+		&.center {
+			cursor: default;
+			text-align: center;
+		}
+
+		h1 {
+			margin: 0;
+		}
 	}
 
 	.podcasts-section {

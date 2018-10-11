@@ -7,8 +7,11 @@ import Loader from '../components/Loader';
 import FeaturedItems from '../components/FeaturedItems';
 import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
+import RecentNotesPanel from '../components/Notes/RecentNotesPanel';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
+import FolderList from '../components/Folder/FolderList';
+import IntroFolders from '../components/Folder/IntroFolders';
 
 class Dashboard extends React.Component {
 	render() {
@@ -43,15 +46,21 @@ class Dashboard extends React.Component {
 						<RssFeedList />
 					</div>
 				</div>
-				<Link className="column-header folder-header" to="/folders">
-					<h1>Folders</h1>
-					<div className="drilldown">
-						<div>View all</div>
-						<i className="fa fa-chevron-right" />
-					</div>
-				</Link>
+				<div className={`folder-header ${this.props.initFolders && 'center'}`}>
+					<h1>Notes & Folders</h1>
+				</div>
+
 				<div className="folder-section ">
-					<div className="column-content">HERE FOLDERS </div>
+					<div className="column-content">
+						{this.props.initFolders ? (
+							<IntroFolders />
+						) : (
+							<>
+								<RecentNotesPanel />
+								<FolderList />
+							</>
+						)}
+					</div>
 				</div>
 				<div className="border1" />
 				<div className="border2" />
@@ -62,15 +71,18 @@ class Dashboard extends React.Component {
 
 Dashboard.defaultProps = {
 	loading: true,
+	initFolders: true,
 };
 
 Dashboard.propTypes = {
 	loading: PropTypes.bool,
 	dispatch: PropTypes.func.isRequired,
+	initFolders: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
 	loading: !state.user,
+	initFolders: !state.folders,
 });
 
 export default connect(mapStateToProps)(Dashboard);
