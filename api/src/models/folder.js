@@ -3,6 +3,8 @@ import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
 
+import { getStreamClient } from '../utils/stream';
+
 export const FolderSchema = new Schema(
 	{
 		user: {
@@ -36,7 +38,23 @@ export const FolderSchema = new Schema(
 			required: true,
 		},
 	},
-	{ collection: 'folders' },
+	{
+		collection: 'folders',
+		toJSON: {
+			transform: function(doc, ret) {
+				ret.streamToken = getStreamClient()
+					.feed('folder', ret._id)
+					.getReadOnlyToken();
+			},
+		},
+		toObject: {
+			transform: function(doc, ret) {
+				ret.streamToken = getStreamClient()
+					.feed('folder', ret._id)
+					.getReadOnlyToken();
+			},
+		},
+	},
 );
 
 FolderSchema.plugin(timestamps, {

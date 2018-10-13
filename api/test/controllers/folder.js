@@ -61,19 +61,11 @@ describe('Folder controller', () => {
 
 	describe('retrieving folder feeds by id', () => {
 		it('should return 200 for valid request', async () => {
-			const feedKeys = ['articles', 'episodes'];
-
 			const response = await withLogin(
-				request(api).get(`/folders/${folder._id}/feeds`),
+				request(api).get(`/folders/${folder._id}/feed`),
 			);
-
 			expect(response).to.have.status(200);
-			expect(Object.keys(response.body)).to.include.members(keys);
-			expect(Object.keys(response.body)).to.include.members(feedKeys);
-			expect(response.body._id).to.be.equal(String(folder._id));
-			expect(response.body.name).to.be.equal(folder.name);
-			expect(response.body.articles).to.not.be.empty;
-			expect(response.body.episodes).to.not.be.empty;
+			expect(response.body).to.be.an('array');
 		});
 
 		it('should return 404 for invalid id', async () => {
@@ -128,12 +120,8 @@ describe('Folder controller', () => {
 	});
 
 	describe('updating existing folder', () => {
-		it('should add podcast/rss to folder', async () => {
-			const data = {
-				rss: rss.map((r) => String(r._id)),
-				podcast: podcasts.map((p) => String(p._id)),
-			};
-
+		it('should delete rss to folder', async () => {
+			const data = { rss: '5b0ad0baf6f89574a638887a' };
 			const response = await withLogin(
 				request(api)
 					.put(`/folders/${folder._id}`)
@@ -144,20 +132,43 @@ describe('Folder controller', () => {
 			expect(Object.keys(response.body)).to.include.members(keys);
 			expect(response.body.user._id).to.be.equal('5b0f306d8e147f10f16aceaf');
 			expect(response.body.name).to.be.equal(folder.name);
-			expect(response.body.rss.map((r) => String(r._id))).to.have.all.members(
-				data.rss,
+			expect(response.body.rss.map((r) => String(r._id))).to.not.include(data.rss);
+		});
+
+		it('should add rss to folder', async () => {
+			const data = { rss: '5b0ad0baf6f89574a638887a' };
+			const response = await withLogin(
+				request(api)
+					.put(`/folders/${folder._id}`)
+					.send(data),
 			);
-			expect(response.body.podcast.map((p) => String(p._id))).to.have.all.members(
+
+			expect(response).to.have.status(200);
+			expect(Object.keys(response.body)).to.include.members(keys);
+			expect(response.body.user._id).to.be.equal('5b0f306d8e147f10f16aceaf');
+			expect(response.body.name).to.be.equal(folder.name);
+			expect(response.body.rss.map((r) => String(r._id))).to.include(data.rss);
+		});
+
+		it('should add podcast to folder', async () => {
+			const data = { podcast: '5afb7f68fe7430d35996cc62' };
+			const response = await withLogin(
+				request(api)
+					.put(`/folders/${folder._id}`)
+					.send(data),
+			);
+
+			expect(response).to.have.status(200);
+			expect(Object.keys(response.body)).to.include.members(keys);
+			expect(response.body.user._id).to.be.equal('5b0f306d8e147f10f16aceaf');
+			expect(response.body.name).to.be.equal(folder.name);
+			expect(response.body.podcast.map((p) => String(p._id))).to.include(
 				data.podcast,
 			);
 		});
 
-		it('should delete podcast/rss from folder', async () => {
-			const data = {
-				rss: folder.rss.map((r) => String(r._id)).slice(0, 2),
-				podcast: folder.podcast.map((p) => String(p._id)).slice(0, 2),
-			};
-
+		it('should delete rss to folder', async () => {
+			const data = { podcast: '5afb7f68fe7430d35996cc62' };
 			const response = await withLogin(
 				request(api)
 					.put(`/folders/${folder._id}`)
@@ -168,10 +179,7 @@ describe('Folder controller', () => {
 			expect(Object.keys(response.body)).to.include.members(keys);
 			expect(response.body.user._id).to.be.equal('5b0f306d8e147f10f16aceaf');
 			expect(response.body.name).to.be.equal(folder.name);
-			expect(response.body.rss.map((r) => String(r._id))).to.have.all.members(
-				data.rss,
-			);
-			expect(response.body.podcast.map((p) => String(p._id))).to.have.all.members(
+			expect(response.body.podcast.map((p) => String(p._id))).to.not.include(
 				data.podcast,
 			);
 		});

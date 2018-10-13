@@ -129,6 +129,7 @@ export const EpisodeSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.type = 'episodes';
 			},
 		},
 		toObject: {
@@ -139,6 +140,7 @@ export const EpisodeSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.type = 'episodes';
 			},
 		},
 	},

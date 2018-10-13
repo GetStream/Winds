@@ -139,6 +139,7 @@ export const ArticleSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.type = 'articles';
 			},
 		},
 		toObject: {
@@ -149,6 +150,7 @@ export const ArticleSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.type = 'articles';
 			},
 		},
 	},
