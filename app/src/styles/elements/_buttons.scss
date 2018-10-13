@@ -86,6 +86,12 @@
 		}
 	}
 
+	&.alert {
+		background-color: $background-red;
+		border-color: $background-red;
+		color: $foreground-white;
+	}
+
 	&.with-icon {
 		padding-left: 0;
 		padding-right: 1em;
