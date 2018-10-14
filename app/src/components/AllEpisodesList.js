@@ -55,7 +55,11 @@ class AllEpisodesList extends React.Component {
 					)}
 
 					{this.props.episodes.map((episode) => (
-						<EpisodeListItem key={episode._id} {...episode} />
+						<EpisodeListItem
+							key={episode._id}
+							playable={false}
+							{...episode}
+						/>
 					))}
 
 					{this.state.reachedEndOfFeed ? (

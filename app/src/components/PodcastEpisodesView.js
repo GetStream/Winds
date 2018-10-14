@@ -179,7 +179,7 @@ class PodcastEpisodesView extends React.Component {
 							: followPodcast(this.props.dispatch, podcast._id)
 					}
 				>
-					{isFollowing ? <span className="red">Unfollow</span> : 'Follow'}
+					{isFollowing ? <span className="alert">Unfollow</span> : 'Follow'}
 				</div>
 			</div>
 		);
@@ -208,27 +208,8 @@ class PodcastEpisodesView extends React.Component {
 		} else {
 			rightColumn = (
 				<div>
-					{episodes.map((episode, i) => {
-						const active =
-							this.props.player.contextID === podcast._id &&
-							episode._id === this.props.player.episodeID;
-
-						return (
-							<EpisodeListItem
-								active={active}
-								key={episode._id}
-								playOrPauseEpisode={() => {
-									if (active && this.props.player.playing)
-										this.props.pauseEpisode();
-									else if (active) this.props.resumeEpisode();
-									else this.props.playEpisode(episode._id, podcast._id);
-								}}
-								playable={true}
-								playing={this.props.player.playing}
-								position={i}
-								{...episode}
-							/>
-						);
+					{episodes.map((episode) => {
+						return <EpisodeListItem key={episode._id} {...episode} />;
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
@@ -337,19 +318,13 @@ PodcastEpisodesView.defaultProps = {
 PodcastEpisodesView.propTypes = {
 	following: PropTypes.shape({}),
 	aliases: PropTypes.shape({}),
-	player: PropTypes.shape({
-		contextID: PropTypes.string,
-		playing: PropTypes.bool,
-	}),
+
 	dispatch: PropTypes.func.isRequired,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			podcastID: PropTypes.string,
 		}),
 	}),
-	pauseEpisode: PropTypes.func.isRequired,
-	playEpisode: PropTypes.func.isRequired,
-	resumeEpisode: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -357,27 +332,6 @@ const mapStateToProps = (state) => ({
 	following: state.followedPodcasts || {},
 	pinnedEpisodes: state.pinnedEpisodes || {},
 	feeds: state.feeds || {},
-	player: state.player || {},
 });
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		dispatch,
-		pauseEpisode: () => dispatch({ type: 'PAUSE_EPISODE' }),
-		resumeEpisode: () => dispatch({ type: 'RESUME_EPISODE' }),
-		playEpisode: (episodeID, podcastID) => {
-			dispatch({
-				contextID: podcastID,
-				contextType: 'podcast',
-				episodeID: episodeID,
-				playing: true,
-				type: 'PLAY_EPISODE',
-			});
-		},
-	};
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(PodcastEpisodesView);
+export default connect(mapStateToProps)(PodcastEpisodesView);

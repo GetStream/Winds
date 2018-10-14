@@ -10,15 +10,10 @@ import { pinEpisode, unpinEpisode } from '../util/pins';
 import { connect } from 'react-redux';
 
 class EpisodeListItem extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { addToPlaylistPopoverIsOpen: false };
-	}
-
-	toggleAddToPlaylistPopover = () => {
-		this.setState((prevState) => ({
-			addToPlaylistPopoverIsOpen: !prevState.addToPlaylistPopoverIsOpen,
-		}));
+	playOrPauseEpisode = () => {
+		if (this.props.active && this.props.player.playing) this.props.pauseEpisode();
+		else if (this.props.active) this.props.resumeEpisode();
+		else this.props.playEpisode(this.props._id, this.props.podcast._id);
 	};
 
 	render() {
@@ -28,7 +23,7 @@ class EpisodeListItem extends React.Component {
 			icon = (
 				<div className="pause-icon">
 					<div className="icon-container">
-						{this.props.playing ? (
+						{this.props.player.playing ? (
 							<Img decode={false} src={pauseIcon} />
 						) : (
 							<Img decode={false} src={playIcon} />
@@ -51,13 +46,11 @@ class EpisodeListItem extends React.Component {
 				<div
 					className="left"
 					onClick={() => {
-						if (this.props.playable) {
-							this.props.playOrPauseEpisode();
-						} else {
+						if (this.props.playable) this.playOrPauseEpisode();
+						else
 							this.props.history.push(
 								`/podcasts/${this.props.podcast._id}`,
 							);
-						}
 					}}
 				>
 					<Img
@@ -134,18 +127,24 @@ EpisodeListItem.defaultProps = {
 	liked: false,
 	likes: 0,
 	pinID: '',
-	playable: false,
-	playing: false,
+	playable: true,
 	recent: false,
 };
 
 EpisodeListItem.propTypes = {
 	dispatch: PropTypes.func.isRequired,
-	active: PropTypes.bool,
-	description: PropTypes.string,
+	pauseEpisode: PropTypes.func.isRequired,
+	playEpisode: PropTypes.func.isRequired,
+	resumeEpisode: PropTypes.func.isRequired,
+	player: PropTypes.shape({
+		contextID: PropTypes.string,
+		playing: PropTypes.bool,
+	}),
 	history: PropTypes.shape({
 		push: PropTypes.func.isRequired,
 	}).isRequired,
+	active: PropTypes.bool,
+	description: PropTypes.string,
 	images: PropTypes.shape({
 		og: PropTypes.string,
 	}),
@@ -153,7 +152,6 @@ EpisodeListItem.propTypes = {
 	playOrPauseEpisode: PropTypes.func,
 	_id: PropTypes.string,
 	playable: PropTypes.bool,
-	playing: PropTypes.bool,
 	link: PropTypes.string,
 	podcast: PropTypes.shape({
 		_id: PropTypes.string.isRequired,
@@ -167,4 +165,34 @@ EpisodeListItem.propTypes = {
 	title: PropTypes.string,
 };
 
-export default connect()(withRouter(EpisodeListItem));
+const mapDispatchToProps = (dispatch) => {
+	return {
+		dispatch,
+		pauseEpisode: () => dispatch({ type: 'PAUSE_EPISODE' }),
+		resumeEpisode: () => dispatch({ type: 'RESUME_EPISODE' }),
+		playEpisode: (episodeID, podcastID) => {
+			dispatch({
+				contextID: podcastID,
+				contextType: 'podcast',
+				episodeID: episodeID,
+				playing: true,
+				type: 'PLAY_EPISODE',
+			});
+		},
+	};
+};
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		active:
+			state.player &&
+			state.player.episodeID === ownProps._id &&
+			state.player.contextID === ownProps.podcast._id,
+		player: state.player || {},
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(withRouter(EpisodeListItem));
