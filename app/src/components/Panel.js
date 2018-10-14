@@ -58,7 +58,7 @@ class Panel extends React.Component {
 
 				<div className="panel-contents">
 					{children}
-					{this.props.expandable ? (
+					{this.props.expandable && (
 						<div
 							className="expander"
 							onClick={() => {
@@ -75,7 +75,7 @@ class Panel extends React.Component {
 								}`}
 							/>
 						</div>
-					) : null}
+					) }
 				</div>
 			</div>
 		);

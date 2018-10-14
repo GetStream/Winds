@@ -38,9 +38,16 @@
 			width: unset;
 
 			.algolia-logo {
+				background-color: unset;
 				height: unset;
 				width: unset;
 			}
+		}
+
+		.type {
+			background-color: rgba(0, 0, 0, 0.06);
+			border-radius: 2px;
+			padding: 3px 5px;
 		}
 	}
 }

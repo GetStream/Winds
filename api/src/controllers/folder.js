@@ -117,13 +117,13 @@ exports.put = async (req, res) => {
 	res.json(updatedFolder);
 };
 
-//TODO Unfollow Feeds+stream
+//TODO Unfollow Feeds
 exports.delete = async (req, res) => {
 	const unfollow = req.body.unfollow;
 	const folder = await Folder.findById(req.params.folderId);
 	if (!folder) return res.status(404).json({ error: 'Resource does not exist.' });
 	if (folder.user._id != req.user.sub) return res.sendStatus(403);
-	// await streamUnfollowMany(folder);
+	await streamUnfollowMany(folder);
 	await folder.remove();
 	res.sendStatus(204);
 };

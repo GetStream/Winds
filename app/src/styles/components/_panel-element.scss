@@ -53,23 +53,23 @@
 			background-color: $background-lightishgray;
 		}
 	}
-	
+
 	.panel-element {
 		align-items: center;
-		border-bottom: 1px solid $foreground-lightgray;
+		border-top: 1px solid $foreground-lightgray;
 		color: inherit;
 		cursor: pointer;
 		display: flex;
-		font-size: .98em;
+		font-size: 0.98em;
 		font-weight: 500; // TODO: @kenhoff - figure out why we have to set this explicitly, rather than with 'bolder'
 		margin: 0 1em;
 		padding: 1em 0;
 		text-decoration: inherit;
-		white-space: nowrap;
 		transition-duration: 0.2s;
 		transition-property: margin-left;
+		white-space: nowrap;
 
-		&:hover{
+		&:hover {
 			margin-left: 15px;
 		}
 
@@ -122,12 +122,26 @@
 			width: 1.5em;
 		}
 
-		&:last-child {
-			border-bottom: none;
+		&:first-child {
+			border-top: none;
 		}
 
 		&.clickable {
 			cursor: pointer;
+		}
+	}
+
+	.folder-element {
+		margin-left: 3.65em;
+
+		&:hover {
+			margin-left: 4em;
+		}
+
+		.type {
+			background-color: rgba(0, 0, 0, 0.06);
+			border-radius: 2px;
+			padding: 3px 5px;
 		}
 	}
 

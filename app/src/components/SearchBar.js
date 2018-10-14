@@ -148,7 +148,7 @@ class SearchBar extends React.Component {
 						<div className="center">
 							<span>{getResourceTitle(result)}</span>
 						</div>
-						<div className="right">
+						<div className="right type">
 							<span>{result.type.toUpperCase()}</span>
 						</div>
 					</Link>

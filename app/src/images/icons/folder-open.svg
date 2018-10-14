@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="16px" version="1.1" viewBox="0 0 18 16">
+<!--Generator: Sketch 52 (66869) - http://www.bohemiancoding.com/sketch-->
+    <title>
+        Group 110
+    </title>
+    <desc>
+        Created with Sketch.
+    </desc>
+    <g id="Page-1" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+        <g transform="translate(-135.000000, -509.000000)">
+            <g id="Group" transform="translate(105.000000, 45.000000)">
+                <g id="TODAY" transform="translate(19.000000, 368.000000)">
+                    <g id="today:-item" transform="translate(12.000000, 83.000000)">
+                        <g id="Group-110" transform="translate(0.000000, 14.000000)">
+                            <path id="Stroke-281" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M14.9966803,1.5 C15.9895432,1.48742346 16.5,2.00212181 16.5,3 L16.5,13 C16.5,13.9879192 15.9909299,14.5 15,14.5 L1,14.5 C0.00907011077,14.5 -0.5,13.9879192 -0.5,13 L-0.5,1 C-0.5,0.0120807617 0.00907011077,-0.5 1,-0.5 L3,-0.5 C3.2817372,-0.5 3.3750274,-0.395776339 3.50925925,-0.167517781 C3.55150996,-0.0956712908 3.5954869,-0.00580208469 3.64676208,0.10984617 C3.68708138,0.200784055 3.73132519,0.306317179 3.78750212,0.444380005 C3.81885218,0.52142727 3.86104685,0.626298083 3.93607069,0.812693055 C3.96303869,0.879338038 3.96303869,0.879338038 3.98990587,0.945191619 C4.09328857,1.19790514 4.17068899,1.37450702 4.23480514,1.5 L14.9966803,1.5 Z"/>
+                            <rect id="Rectangle-7" width="15" height="1" x="0" y="9" fill="#000000"/>
+                            <rect id="Rectangle" width="16" height="5" x="0" y="4" fill="#C7C7C7"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
