@@ -12,25 +12,38 @@ export const newFolder = (dispatch, data, thenFn, catchFn) => {
 	fetch('POST', '/folders', data)
 		.then((res) => {
 			getFolders(dispatch);
-			thenFn(res);
+			if (thenFn) thenFn(res);
 		})
 		.catch(catchFn);
 };
 
 export const updateFolder = (dispatch, folderID, data, thenFn, catchFn) => {
-	fetch('POST', `/folders/${folderID}`, null, data)
+	fetch('PUT', `/folders/${folderID}`, data)
 		.then((res) => {
 			getFolders(dispatch);
-			thenFn(res);
+			if (thenFn) thenFn(res);
 		})
 		.catch(catchFn);
 };
 
-export const deleteFolder = (dispatch, folderID, thenFn, catchFn) => {
-	fetch('DELETE', `/folders/${folderID}`)
+export const renameFolder = (dispatch, folderID, name, thenFn, catchFn) => {
+	fetch('PUT', `/folders/${folderID}`, { name })
 		.then((res) => {
 			getFolders(dispatch);
-			thenFn(res);
+			if (thenFn) thenFn(res);
 		})
 		.catch(catchFn);
+};
+
+export const deleteFolder = (dispatch, folderID, unfollow, thenFn, catchFn) => {
+	fetch('DELETE', `/folders/${folderID}`, { unfollow })
+		.then((res) => {
+			getFolders(dispatch);
+			if (thenFn) thenFn(res);
+		})
+		.catch(catchFn);
+};
+
+export const getFolderFeeds = (folderID, params) => {
+	return fetch('GET', `/folders/${folderID}/feed`, {}, params);
 };

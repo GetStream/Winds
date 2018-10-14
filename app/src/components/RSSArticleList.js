@@ -190,7 +190,7 @@ class RSSArticleList extends React.Component {
 							: followRss(this.props.dispatch, rssFeed._id)
 					}
 				>
-					{isFollowing ? <span className="red">Unfollow</span> : 'Follow'}
+					{isFollowing ? <span className="alert">Unfollow</span> : 'Follow'}
 				</div>
 			</div>
 		);
@@ -342,6 +342,8 @@ RSSArticleList.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 	following: PropTypes.shape({}),
 	aliases: PropTypes.shape({}),
+	pinnedArticles: PropTypes.shape({}),
+	feeds: PropTypes.shape({}),
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			rssFeedID: PropTypes.string.isRequired,

@@ -27,9 +27,7 @@ class Tabs extends React.Component {
 									key={i}
 									onClick={() => {
 										localStorage[this.props.tabGroup] = i;
-										this.setState({
-											selectedTab: i,
-										});
+										this.setState({ selectedTab: i });
 									}}
 								>
 									{element.props.tabTitle}
