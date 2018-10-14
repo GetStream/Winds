@@ -19,7 +19,7 @@ describe('Folder controller', () => {
 		await loadFixture('initial-data', 'folders');
 
 		folders = await Folder.find({ user: '5b0f306d8e147f10f16aceaf' });
-		folder = folders[0];
+		folder = await Folder.findById('5bbb10d3ec7e1d8e1c5b6705');
 		rss = await Rss.find();
 		podcasts = await Podcast.find();
 	});
@@ -29,6 +29,9 @@ describe('Folder controller', () => {
 			const response = await withLogin(request(api).get('/folders'));
 			expect(response).to.have.status(200);
 			expect(response.body.length).to.be.equal(folders.length);
+			expect(response.body.map((f) => f._id)).to.have.all.members(
+				folders.map((f) => String(f._id)),
+			);
 			for (const entry of response.body)
 				expect(Object.keys(entry)).to.include.members(keys);
 		});
