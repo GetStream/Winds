@@ -15,7 +15,7 @@ class FolderList extends React.Component {
 		return (
 			<Panel
 				className="folder-panel"
-				hasHighlight={this.props.match.params.folderID}
+				hasHighlight={!!this.props.match.params.folderID}
 				headerText="Folders"
 			>
 				{this.props.folders.map((folder) => {
@@ -99,4 +99,4 @@ const mapStateToProps = (state) => {
 	return { folders };
 };
 
-export default connect(mapStateToProps)(withRouter(FolderList));
+export default withRouter(connect(mapStateToProps)(FolderList));

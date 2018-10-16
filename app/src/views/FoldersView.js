@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Popover from 'react-popover';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import FolderFeeds from '../components/Folder/FolderFeeds';
 import RenameModal from '../components/Folder/RenameModal';
@@ -20,8 +20,8 @@ class FoldersView extends React.Component {
 		super(props);
 
 		this.state = {
-			renameModalIsOpen: false,
-			deleteModalIsOpen: false,
+			renameModal: false,
+			deleteModal: false,
 			menuPopover: false,
 		};
 	}
@@ -32,14 +32,14 @@ class FoldersView extends React.Component {
 
 	toggleRenameModal = () => {
 		this.setState((prevState) => ({
-			renameModalIsOpen: !prevState.renameModalIsOpen,
+			renameModal: !prevState.renameModal,
 			menuPopover: false,
 		}));
 	};
 
 	toggleDeleteModal = () => {
 		this.setState((prevState) => ({
-			deleteModalIsOpen: !prevState.deleteModalIsOpen,
+			deleteModal: !prevState.deleteModal,
 			menuPopover: false,
 		}));
 	};
@@ -117,14 +117,14 @@ class FoldersView extends React.Component {
 										defVal={this.props.folder.name}
 										dispatch={this.props.dispatch}
 										folderId={this.props.folder._id}
-										isOpen={this.state.renameModalIsOpen}
+										isOpen={this.state.renameModal}
 										toggleModal={this.toggleRenameModal}
 									/>
 
 									<DeleteModal
 										dispatch={this.props.dispatch}
 										folderId={this.props.folder._id}
-										isOpen={this.state.deleteModalIsOpen}
+										isOpen={this.state.deleteModal}
 										onDelete={() =>
 											this.props.history.replace('/folders')
 										}

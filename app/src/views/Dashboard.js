@@ -82,7 +82,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = (state) => ({
 	loading: !state.user,
-	initFolders: !state.folders,
+	initFolders: !(state.folders && !!state.folders.length),
 });
 
 export default connect(mapStateToProps)(Dashboard);

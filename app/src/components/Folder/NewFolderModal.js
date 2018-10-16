@@ -13,13 +13,15 @@ class NewFolderModal extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.resetState = {
 			feeds: [],
 			name: '',
 			errored: false,
 			submitting: false,
 			success: false,
 		};
+
+		this.state = { ...this.resetState };
 	}
 
 	submitNewFolder = (e) => {
@@ -42,10 +44,7 @@ class NewFolderModal extends React.Component {
 			{ name: this.state.name, rss, podcast },
 			() => {
 				this.setState({ submitting: false, success: true });
-				setTimeout(() => {
-					this.resetModal();
-					this.props.done();
-				}, 1500);
+				setTimeout(() => this.closeModal(), 1500);
 			},
 			(err) => {
 				console.log(err); // eslint-disable-line no-console
@@ -54,14 +53,9 @@ class NewFolderModal extends React.Component {
 		);
 	};
 
-	resetModal = () => {
-		this.setState({
-			feeds: [],
-			name: '',
-			errored: false,
-			submitting: false,
-			success: false,
-		});
+	closeModal = () => {
+		this.setState({ ...this.resetState });
+		this.props.toggleModal();
 	};
 
 	addFeed = (feed) => {
@@ -85,10 +79,7 @@ class NewFolderModal extends React.Component {
 				ariaHideApp={false}
 				className="modal add-new-content-modal"
 				isOpen={this.props.isOpen}
-				onRequestClose={() => {
-					this.resetModal();
-					this.props.toggleModal();
-				}}
+				onRequestClose={this.closeModal}
 				overlayClassName="modal-overlay"
 				shouldCloseOnOverlayClick={true}
 			>
@@ -151,10 +142,7 @@ class NewFolderModal extends React.Component {
 						</button>
 						<button
 							className="btn link cancel"
-							onClick={() => {
-								this.resetModal();
-								this.props.done();
-							}}
+							onClick={this.closeModal}
 							type="cancel"
 						>
 							Cancel
@@ -172,7 +160,6 @@ NewFolderModal.defaultProps = {
 
 NewFolderModal.propTypes = {
 	dispatch: PropTypes.func.isRequired,
-	done: PropTypes.func.isRequired,
 	isOpen: PropTypes.bool,
 	toggleModal: PropTypes.func.isRequired,
 };

@@ -48,7 +48,6 @@ class IntroFolders extends React.Component {
 				</div>
 
 				<NewFolderModal
-					done={this.toggleModal}
 					isOpen={this.state.modalIsOpen}
 					toggleModal={this.toggleModal}
 				/>
