@@ -123,8 +123,8 @@ describe('Folder controller', () => {
 	});
 
 	describe('updating existing folder', () => {
-		it('should delete rss to folder', async () => {
-			const data = { rss: '5b0ad0baf6f89574a638887a' };
+		it('should delete rss from folder', async () => {
+			const data = { rss: '5b0ad0baf6f89574a638887a', action: 'remove' };
 			const response = await withLogin(
 				request(api)
 					.put(`/folders/${folder._id}`)
@@ -170,8 +170,8 @@ describe('Folder controller', () => {
 			);
 		});
 
-		it('should delete rss to folder', async () => {
-			const data = { podcast: '5afb7f68fe7430d35996cc62' };
+		it('should delete rss from folder', async () => {
+			const data = { podcast: '5afb7f68fe7430d35996cc62', action: 'remove' };
 			const response = await withLogin(
 				request(api)
 					.put(`/folders/${folder._id}`)

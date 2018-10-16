@@ -76,50 +76,53 @@ exports.post = async (req, res) => {
 
 exports.put = async (req, res) => {
 	const folderId = req.params.folderId;
+	const removeFeed = req.body.action === 'remove';
 	const name = req.body.name;
 	const rss = req.body.rss;
 	const podcast = req.body.podcast;
+	const user = req.user.sub;
 
 	const folder = await Folder.findById(folderId);
+	if (!(name || rss || podcast))
+		return res.status(422).json({ error: 'You have to put {name||rss||podcast}' });
 	if (!folder) return res.status(404).json({ error: 'Resource does not exist.' });
-	if (folder.user._id != req.user.sub) return res.sendStatus(403);
+	if (folder.user._id != user) return res.sendStatus(403);
+	if ((rss || podcast) && !(await checkRssPodcast([rss], [podcast])))
+		return res.status(404).json({ error: 'Wrong feed Id provided' });
+
+	if (removeFeed) {
+		await streamUnfollow(folderId, rss ? 'rss' : 'podcast', rss ? rss : podcast);
+		const data = rss ? { $pull: { rss } } : { $pull: { podcast } };
+		const removed = await Folder.findByIdAndUpdate(folderId, data, { new: true });
+		return res.json(removed);
+	}
 
 	let data = {};
-	if (name) {
-		data = { name };
-	} else if (rss) {
-		if (!(await checkRssPodcast([rss], [])))
-			return res.status(404).json({ error: 'Wrong feed Id provided' });
-		const exist = folder.rss.find((r) => String(r._id) === rss);
-		if (exist) {
-			data = { $pull: { rss } };
-			await streamUnfollow(folderId, 'rss', rss);
-		} else {
-			data = { $push: { rss } };
-			await streamFollow(folderId, 'rss', rss);
+	if (rss) {
+		const prevFolder = await Folder.findOne({ user, rss });
+		if (prevFolder) {
+			await Folder.findByIdAndUpdate(prevFolder._id, { $pull: { rss } });
+			await streamUnfollow(prevFolder._id, 'rss', rss);
 		}
-	} else if (podcast) {
-		if (!(await checkRssPodcast([], [podcast])))
-			return res.status(404).json({ error: 'Wrong feed Id provided' });
 
-		const exist = folder.podcast.find((p) => String(p._id) === podcast);
-		if (exist) {
-			data = { $pull: { podcast } };
-			await streamUnfollow(folderId, 'podcast', podcast);
-		} else {
-			data = { $push: { podcast } };
-			await streamFollow(folderId, 'podcast', podcast);
+		await streamFollow(folderId, 'rss', rss);
+		data = { ...data, $push: { rss } };
+	} else if (podcast) {
+		const prevFolder = await Folder.findOne({ user, podcast });
+		if (prevFolder) {
+			await Folder.findByIdAndUpdate(prevFolder._id, { $pull: { podcast } });
+			await streamUnfollow(prevFolder._id, 'podcast', podcast);
 		}
-	} else
-		return res.status(422).json({ error: 'You have to put a {name||rss||podcast}' });
+		await streamFollow(folderId, 'podcast', podcast);
+		data = { ...data, $push: { podcast } };
+	}
+	if (name) data = { name };
 
 	const updatedFolder = await Folder.findByIdAndUpdate(folderId, data, { new: true });
 	res.json(updatedFolder);
 };
 
-//TODO Unfollow Feeds
 exports.delete = async (req, res) => {
-	const unfollow = req.body.unfollow;
 	const folder = await Folder.findById(req.params.folderId);
 	if (!folder) return res.status(404).json({ error: 'Resource does not exist.' });
 	if (folder.user._id != req.user.sub) return res.sendStatus(403);
@@ -129,16 +132,21 @@ exports.delete = async (req, res) => {
 };
 
 async function checkRssPodcast(rssIDs, podcastIDs) {
-	const rss = await Rss.find({
-		_id: { $in: rssIDs.map((_id) => mongoose.Types.ObjectId(_id)) },
-	});
-	if (rss.length != rssIDs.length) return false;
+	if (!rssIDs[0]) rssIDs = [];
+	if (!podcastIDs[0]) podcastIDs = [];
 
-	const podcast = await Podcast.find({
-		_id: { $in: podcastIDs.map((_id) => mongoose.Types.ObjectId(_id)) },
-	});
-	if (podcast.length != podcastIDs.length) return false;
-
+	if (rssIDs.length) {
+		const rss = await Rss.find({
+			_id: { $in: rssIDs.map((_id) => mongoose.Types.ObjectId(_id)) },
+		});
+		if (rss.length != rssIDs.length) return false;
+	}
+	if (podcastIDs.length) {
+		const podcast = await Podcast.find({
+			_id: { $in: podcastIDs.map((_id) => mongoose.Types.ObjectId(_id)) },
+		});
+		if (podcast.length != podcastIDs.length) return false;
+	}
 	return true;
 }
 
