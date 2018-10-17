@@ -1,17 +1,21 @@
-import loaderIcon from '../images/loaders/default.svg';
+import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import Img from 'react-image';
 import Waypoint from 'react-waypoint';
+import Popover from 'react-popover';
+import { connect } from 'react-redux';
+
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import EpisodeListItem from './EpisodeListItem';
-import Img from 'react-image';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from 'react-redux';
-import Popover from 'react-popover';
 import fetch from '../util/fetch';
-import moment from 'moment';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
+import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import { followPodcast, unfollowPodcast } from '../api';
+
+import { ReactComponent as FolderLogo } from '../images/icons/folder.svg';
+import loaderIcon from '../images/loaders/default.svg';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
@@ -23,6 +27,7 @@ class PodcastEpisodesView extends React.Component {
 			newEpisodesAvailable: false,
 			menuPopover: false,
 			aliasModal: false,
+			folderModal: false,
 			loading: true,
 			podcast: { images: {} },
 			episodes: [],
@@ -132,6 +137,10 @@ class PodcastEpisodesView extends React.Component {
 		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
+	toggleFolderModal = () => {
+		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
+	};
+
 	render() {
 		if (this.state.loading) return <Loader />;
 
@@ -166,8 +175,17 @@ class PodcastEpisodesView extends React.Component {
 			return episode;
 		});
 
+		const currFolder = this.props.folders.find((folder) => {
+			for (const feed of folder.podcast) if (feed._id === podcast._id) return true;
+			return false;
+		});
+
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
+				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
+					<FolderLogo />
+					<span>{currFolder ? currFolder.name : 'Folder'}</span>
+				</div>
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>
 					Rename
 				</div>
@@ -289,6 +307,14 @@ class PodcastEpisodesView extends React.Component {
 					toggleModal={this.toggleAliasModal}
 				/>
 
+				<FeedToFolderModal
+					currFolderID={currFolder ? currFolder._id : null}
+					feedID={podcast._id}
+					isOpen={this.state.folderModal}
+					isRss={false}
+					toggleModal={this.toggleFolderModal}
+				/>
+
 				<div className="list podcast-episode-list content">
 					{this.state.newEpisodesAvailable && (
 						<div
@@ -313,6 +339,7 @@ PodcastEpisodesView.defaultProps = {
 	following: {},
 	pinnedEpisodes: {},
 	feeds: {},
+	folders: [],
 };
 
 PodcastEpisodesView.propTypes = {
@@ -332,6 +359,7 @@ const mapStateToProps = (state) => ({
 	following: state.followedPodcasts || {},
 	pinnedEpisodes: state.pinnedEpisodes || {},
 	feeds: state.feeds || {},
+	folders: state.folders || [],
 });
 
 export default connect(mapStateToProps)(PodcastEpisodesView);

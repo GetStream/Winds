@@ -10,9 +10,11 @@ import fetch from '../util/fetch';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
 import AliasModal from './AliasModal';
+import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import Loader from './Loader';
 import { followRss, unfollowRss } from '../api';
 import loaderIcon from '../images/loaders/default.svg';
+import { ReactComponent as FolderLogo } from '../images/icons/folder.svg';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
@@ -24,6 +26,7 @@ class RSSArticleList extends React.Component {
 			newArticlesAvailable: false,
 			menuPopover: false,
 			aliasModal: false,
+			folderModal: false,
 			loading: true,
 			rssFeed: { images: {} },
 			articles: [],
@@ -143,6 +146,10 @@ class RSSArticleList extends React.Component {
 		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
+	toggleFolderModal = () => {
+		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
+	};
+
 	render() {
 		if (this.state.loading) return <Loader />;
 
@@ -177,8 +184,17 @@ class RSSArticleList extends React.Component {
 			return article;
 		});
 
+		const currFolder = this.props.folders.find((folder) => {
+			for (const feed of folder.rss) if (feed._id === rssFeed._id) return true;
+			return false;
+		});
+
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
+				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
+					<FolderLogo />
+					<span>{currFolder ? currFolder.name : 'Folder'}</span>
+				</div>
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>
 					Rename
 				</div>
@@ -312,6 +328,14 @@ class RSSArticleList extends React.Component {
 					toggleModal={this.toggleAliasModal}
 				/>
 
+				<FeedToFolderModal
+					currFolderID={currFolder?currFolder._id:null}
+					feedID={rssFeed._id}
+					isOpen={this.state.folderModal}
+					isRss={true}
+					toggleModal={this.toggleFolderModal}
+				/>
+
 				<div className="list content" ref={this.contentsEl}>
 					{this.state.newArticlesAvailable && (
 						<div
@@ -336,6 +360,7 @@ RSSArticleList.defaultProps = {
 	following: {},
 	pinnedArticles: {},
 	feeds: {},
+	folders: [],
 };
 
 RSSArticleList.propTypes = {
@@ -356,6 +381,7 @@ const mapStateToProps = (state) => ({
 	following: state.followedRssFeeds || {},
 	pinnedArticles: state.pinnedArticles || {},
 	feeds: state.feeds || {},
+	folders: state.folders || [],
 });
 
 export default connect(mapStateToProps)(RSSArticleList);

@@ -51,6 +51,34 @@
 			padding: 3px 5px;
 		}
 	}
+
+	.select-box {
+		align-items: center;
+		border: 1px solid $foreground-darkgray;
+		border-radius: 6px;
+		box-shadow: none;
+		display: flex;
+		font-size: 13px;
+		font-weight: 200;
+		justify-content: space-between;
+		margin-bottom: 0.5em;
+		padding: 6px;
+		padding-left: 1em;
+		padding-right: 0.5em;
+
+		.fa-sort-down {
+			color: $foreground-darkgray;
+			font-size: 1.4em;
+			margin-top: -5px;
+		}
+
+		&:focus,
+		&:hover {
+			border: 1px solid $medium-sea-green;
+			outline: none;
+			transition: all 0.4s linear;
+		}
+	}
 }
 
 .folder-feed-list {

@@ -102,6 +102,10 @@
 			padding: 0.5em;
 			text-transform: uppercase;
 
+			&.alert {
+				color: $background-red;
+			}
+
 			&.active {
 				background-color: $background-green;
 				border-radius: 4px;
