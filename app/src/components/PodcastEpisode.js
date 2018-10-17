@@ -12,8 +12,9 @@ import { pinEpisode, unpinEpisode } from '../util/pins';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
-import pauseIcon from '../images/icons/pause.svg';
-import playIcon from '../images/icons/play.svg';
+
+import { ReactComponent as PauseIcon } from '../images/icons/pause.svg';
+import { ReactComponent as PlayIcon } from '../images/icons/play.svg';
 
 class PodcastEpisode extends React.Component {
 	constructor(props) {
@@ -168,9 +169,7 @@ class PodcastEpisode extends React.Component {
 										/>
 										<div className="play-icon">
 											<div className="icon-container">
-												<Img
-													src={isPlaying ? pauseIcon : playIcon}
-												/>
+												{isPlaying ? <PauseIcon /> : <PlayIcon />}
 											</div>
 										</div>
 									</h1>
@@ -257,6 +256,7 @@ PodcastEpisode.propTypes = {
 	pauseEpisode: PropTypes.func.isRequired,
 	playEpisode: PropTypes.func.isRequired,
 	resumeEpisode: PropTypes.func.isRequired,
+	link: PropTypes.string,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			episodeID: PropTypes.string.isRequired,
@@ -284,7 +284,6 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch({
 				contextID: podcastID,
 				episodeID: episodeID,
-				contextType: 'podcast',
 				playing: true,
 				type: 'PLAY_EPISODE',
 			});

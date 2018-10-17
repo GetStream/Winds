@@ -1,13 +1,15 @@
-import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
-import Img from 'react-image';
-import PropTypes from 'prop-types';
 import React from 'react';
-import pauseIcon from '../images/icons/pause.svg';
-import playIcon from '../images/icons/play.svg';
+import PropTypes from 'prop-types';
+import Img from 'react-image';
 import { withRouter } from 'react-router-dom';
-import TimeAgo from './TimeAgo';
-import { pinEpisode, unpinEpisode } from '../util/pins';
 import { connect } from 'react-redux';
+
+import TimeAgo from './TimeAgo';
+import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
+import { pinEpisode, unpinEpisode } from '../util/pins';
+
+import { ReactComponent as PauseIcon } from '../images/icons/pause.svg';
+import { ReactComponent as PlayIcon } from '../images/icons/play.svg';
 
 class EpisodeListItem extends React.Component {
 	playOrPauseEpisode = () => {
@@ -23,11 +25,7 @@ class EpisodeListItem extends React.Component {
 			icon = (
 				<div className="pause-icon">
 					<div className="icon-container">
-						{this.props.player.playing ? (
-							<Img decode={false} src={pauseIcon} />
-						) : (
-							<Img decode={false} src={playIcon} />
-						)}
+						{this.props.player.playing ? <PauseIcon /> : <PlayIcon />}
 					</div>
 				</div>
 			);
@@ -35,7 +33,7 @@ class EpisodeListItem extends React.Component {
 			icon = (
 				<div className="play-icon">
 					<div className="icon-container">
-						<Img decode={false} src={playIcon} />
+						<PlayIcon />
 					</div>
 				</div>
 			);
@@ -173,7 +171,6 @@ const mapDispatchToProps = (dispatch) => {
 		playEpisode: (episodeID, podcastID) => {
 			dispatch({
 				contextID: podcastID,
-				contextType: 'podcast',
 				episodeID: episodeID,
 				playing: true,
 				type: 'PLAY_EPISODE',
