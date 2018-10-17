@@ -9,7 +9,7 @@ import Tabs from '../components/Tabs';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
-import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
+import BookmarkPanel from '../components/BookmarkPanel';
 import AllArticlesList from '../components/AllArticlesList';
 
 class RSSFeedsView extends React.Component {
@@ -81,7 +81,7 @@ class RSSFeedsView extends React.Component {
 						<RssFeedList />
 					</div>
 					<div tabTitle="Bookmarks">
-						<BookmarkedArticles />
+						<BookmarkPanel type="article" />
 					</div>
 					<div tabTitle="Suggestions">
 						<SuggestedFeeds />

@@ -2,7 +2,7 @@ import Tabs from '../components/Tabs';
 import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
 import SuggestedPodcasts from '../components/PodcastPanels/SuggestedPodcasts';
 import PodcastList from '../components/PodcastPanels/PodcastList';
-import BookmarkedEpisodes from '../components/PodcastPanels/BookmarkedEpisodes';
+import BookmarkPanel from '../components/BookmarkPanel';
 import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -84,7 +84,7 @@ class PodcastsView extends React.Component {
 							<PodcastList />
 						</div>
 						<div tabTitle="Bookmarks">
-							<BookmarkedEpisodes />
+							<BookmarkPanel type="episode" />
 						</div>
 						<div tabTitle="Suggestions">
 							<SuggestedPodcasts />
