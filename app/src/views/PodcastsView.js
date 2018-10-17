@@ -18,7 +18,6 @@ class PodcastsView extends React.Component {
 
 		this.state = {
 			newPodcastModalIsOpen: false,
-			selectedTab: localStorage['selectedPodcastTab'] || 'all',
 		};
 
 		this.container = React.createRef();

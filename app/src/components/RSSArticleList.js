@@ -329,7 +329,7 @@ class RSSArticleList extends React.Component {
 				/>
 
 				<FeedToFolderModal
-					currFolderID={currFolder?currFolder._id:null}
+					currFolderID={currFolder ? currFolder._id : null}
 					feedID={rssFeed._id}
 					isOpen={this.state.folderModal}
 					isRss={true}

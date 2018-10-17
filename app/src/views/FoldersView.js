@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
 import Folder from '../components/Folder/Folder';
+import RSSArticleList from '../components/RSSArticleList';
+import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import Tabs from '../components/Tabs';
 import RecentNotesPanel from '../components/Notes/RecentNotesPanel';
 import FolderList from '../components/Folder/FolderList';
@@ -36,8 +38,15 @@ class FoldersView extends React.Component {
 				<div className="border" />
 
 				<Switch>
+					<Route
+						component={PodcastEpisodesView}
+						path="/folders/:folderID/p/:podcastID"
+					/>
+					<Route
+						component={RSSArticleList}
+						path="/folders/:folderID/r/:rssFeedID"
+					/>
 					<Route component={Folder} path="/folders/:folderID" />
-
 					<Route
 						path="/folders"
 						render={() => (

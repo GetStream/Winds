@@ -18,7 +18,6 @@ class RSSFeedsView extends React.Component {
 
 		this.state = {
 			newRSSModalIsOpen: false,
-			selectedTab: localStorage['selectedRSSTab'] || 'all',
 		};
 
 		this.container = React.createRef();
