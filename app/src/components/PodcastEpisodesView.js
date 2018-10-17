@@ -48,11 +48,11 @@ class PodcastEpisodesView extends React.Component {
 
 	componentDidMount() {
 		const podcastID = this.props.match.params.podcastID;
-
-		window.streamAnalyticsClient.trackEngagement({
-			label: 'viewed_podcast',
-			content: `podcast:${podcastID}`,
-		});
+		if (window.streamAnalyticsClient.userData)
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'viewed_podcast',
+				content: `podcast:${podcastID}`,
+			});
 
 		this.getPodcast(podcastID);
 		this.getPodcastEpisodes(podcastID);

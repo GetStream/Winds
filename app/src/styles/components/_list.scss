@@ -22,10 +22,12 @@
 			&.menu {
 				cursor: pointer;
 				margin-left: auto;
+				white-space: nowrap;
 			}
 
 			&.menu-pop {
 				cursor: pointer;
+				white-space: nowrap;
 			}
 
 			&.follow {

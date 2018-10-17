@@ -42,7 +42,7 @@ class FolderList extends React.Component {
 
 					if (open) {
 						const folderView = !(params.rssFeedID || params.podcastID);
-						folder.feeds.map((f) => {
+						for (const f of folder.feeds) {
 							const feedOpen =
 								folderView ||
 								f._id === params.rssFeedID ||
@@ -70,7 +70,7 @@ class FolderList extends React.Component {
 									</div>
 								</Link>,
 							);
-						});
+						}
 					}
 
 					return result;

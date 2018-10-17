@@ -49,11 +49,12 @@ class RSSArticleList extends React.Component {
 
 	componentDidMount() {
 		const rssFeedID = this.props.match.params.rssFeedID;
-
-		window.streamAnalyticsClient.trackEngagement({
-			label: 'viewed_rss_feed',
-			content: `rss:${rssFeedID}`,
-		});
+		
+		if (window.streamAnalyticsClient.userData)
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'viewed_rss_feed',
+				content: `rss:${rssFeedID}`,
+			});
 
 		this.getRSSFeed(rssFeedID);
 		this.getRSSArticles(rssFeedID);
