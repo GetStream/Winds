@@ -3420,9 +3420,9 @@ electron-window-state@^4.1.1:
     jsonfile "^2.2.3"
     mkdirp "^0.5.1"
 
-electron@^4.0.0-nightly.20180929:
-  version "4.0.0-nightly.20180929"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-4.0.0-nightly.20180929.tgz#156fe37178dd2d1be261b3d2ff3c6050136954fe"
+electron@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-3.0.3.tgz#2857ed8d37c1b46e0a75a72684800252255f3243"
   dependencies:
     "@types/node" "^8.0.24"
     electron-download "^4.1.0"
@@ -8762,7 +8762,7 @@ react-router@^4.3.1:
     prop-types "^15.6.1"
     warning "^4.0.1"
 
-react-scripts@^2.0.3:
+react-scripts@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-2.0.4.tgz#244a69abbf5630a80ad81349a6d0d56d91583c6c"
   dependencies:
@@ -10823,9 +10823,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-version-bump-prompt@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/version-bump-prompt/-/version-bump-prompt-4.2.0.tgz#38b0e313f0fa8797859797a67fc8e239f6167a72"
+version-bump-prompt@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/version-bump-prompt/-/version-bump-prompt-4.2.1.tgz#6a4f0387c1f30e33f07d43e7d4032f93a71b8f54"
   dependencies:
     chalk "^2.4.1"
     commander "^2.18.0"
@@ -10876,9 +10876,9 @@ w3c-hr-time@^1.0.1:
   dependencies:
     browser-process-hrtime "^0.1.2"
 
-wait-on@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/wait-on/-/wait-on-3.0.1.tgz#9e3d6812c75ad9d964f15c2b536059c976166799"
+wait-on@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/wait-on/-/wait-on-3.1.0.tgz#b53da3ec2655424e4dad187d382098f337ec4d08"
   dependencies:
     core-js "^2.5.7"
     joi "^13.0.0"
