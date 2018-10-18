@@ -1,4 +1,5 @@
 import fetch from '../util/fetch';
+import { unfollowRss, unfollowPodcast } from '../api';
 
 export const getFolders = (dispatch) => {
 	fetch('GET', '/folders')
@@ -35,9 +36,13 @@ export const renameFolder = (dispatch, folderID, name, thenFn, catchFn) => {
 		.catch(catchFn);
 };
 
-export const deleteFolder = (dispatch, folderID, unfollow, thenFn, catchFn) => {
-	fetch('DELETE', `/folders/${folderID}`, { unfollow })
+export const deleteFolder = async (dispatch, folder, unfollow, thenFn, catchFn) => {
+	fetch('DELETE', `/folders/${folder._id}`)
 		.then((res) => {
+			if (unfollow) {
+				for (const feed of folder.rss) unfollowRss(dispatch, feed._id);
+				for (const feed of folder.podcast) unfollowPodcast(dispatch, feed._id);
+			}
 			getFolders(dispatch);
 			if (thenFn) thenFn(res);
 		})

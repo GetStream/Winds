@@ -89,7 +89,7 @@ class Folder extends React.Component {
 
 				<DeleteModal
 					dispatch={this.props.dispatch}
-					folderId={this.props.folder._id}
+					folder={this.props.folder}
 					isOpen={this.state.deleteModal}
 					onDelete={() => this.props.history.replace('/folders')}
 					toggleModal={this.toggleDeleteModal}

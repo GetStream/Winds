@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
-import Img from 'react-image';
 
 import { deleteFolder } from '../../api/folderAPI';
-import exitIcon from '../../images/buttons/exit.svg';
 
 class DeleteModal extends React.Component {
 	constructor(props) {
@@ -31,7 +29,7 @@ class DeleteModal extends React.Component {
 		this.setState({ submitting: true });
 		deleteFolder(
 			this.props.dispatch,
-			this.props.folderId,
+			this.props.folder,
 			this.state.unfollow,
 			() => {
 				this.setState({ success: true, submitting: false });
@@ -59,11 +57,6 @@ class DeleteModal extends React.Component {
 			>
 				<header>
 					<h1>Delete Folder</h1>
-					<Img
-						className="exit"
-						onClick={() => this.closeModal()}
-						src={exitIcon}
-					/>
 				</header>
 
 				<p>Are you sure you want to delete this folder?</p>
@@ -107,7 +100,11 @@ DeleteModal.defaultProps = {
 DeleteModal.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	toggleModal: PropTypes.func.isRequired,
-	folderId: PropTypes.string,
+	folder: PropTypes.shape({
+		_id: PropTypes.string,
+		rss: PropTypes.array,
+		podcast: PropTypes.array,
+	}),
 	dispatch: PropTypes.func.isRequired,
 	onDelete: PropTypes.func.isRequired,
 };
