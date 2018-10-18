@@ -15,16 +15,16 @@ import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import { followPodcast, unfollowPodcast } from '../api';
 
 import { ReactComponent as FolderLogo } from '../images/icons/folder.svg';
-import loaderIcon from '../images/loaders/default.svg';
+import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
+		this.resetState = {
+			cursor: 1, // mongoose-api-query starts pages at 1, not 0
 			sortBy: 'latest',
-			newEpisodesAvailable: false,
+			newEpisodes: false,
 			menuPopover: false,
 			aliasModal: false,
 			folderModal: false,
@@ -32,6 +32,8 @@ class PodcastEpisodesView extends React.Component {
 			podcast: { images: {} },
 			episodes: [],
 		};
+
+		this.state = { ...this.resetState };
 	}
 
 	subscribeToStreamFeed(podcastID, streamFeedToken) {
@@ -39,7 +41,7 @@ class PodcastEpisodesView extends React.Component {
 
 		this.subscription = window.streamClient
 			.feed('podcast', podcastID, streamFeedToken)
-			.subscribe(() => this.setState({ newEpisodesAvailable: true }));
+			.subscribe(() => this.setState({ newEpisodes: true }));
 	}
 
 	unsubscribeFromStreamFeed() {
@@ -67,9 +69,7 @@ class PodcastEpisodesView extends React.Component {
 				content: `podcast:${podcastID}`,
 			});
 
-			this.unsubscribeFromStreamFeed();
-
-			this.setState({ episodeCursor: 1 }, () => {
+			this.setState({ ...this.resetState }, () => {
 				this.getPodcast(podcastID);
 				this.getPodcastEpisodes(podcastID);
 			});
@@ -110,7 +110,7 @@ class PodcastEpisodesView extends React.Component {
 			'/episodes',
 			{},
 			{
-				page: newFeed ? 1 : this.state.episodeCursor,
+				page: newFeed ? 1 : this.state.cursor,
 				per_page: 10,
 				podcast: podcastID,
 				sort_by: 'publicationDate,desc',
@@ -145,40 +145,35 @@ class PodcastEpisodesView extends React.Component {
 		if (this.state.loading) return <Loader />;
 
 		const podcast = this.state.podcast;
-
-		const isFollowing = this.props.following[podcast._id]
-			? this.props.following[podcast._id]
-			: false;
-
 		const title = this.props.aliases[podcast._id]
 			? this.props.aliases[podcast._id].alias
 			: podcast.title;
-
-		let episodes = this.state.episodes.sort(
-			(a, b) =>
-				moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf(),
-		);
-
-		episodes = episodes.map((episode) => {
-			if (this.props.pinnedEpisodes[episode._id]) {
-				episode.pinID = this.props.pinnedEpisodes[episode._id]._id;
-			} else episode.pinID = '';
-
-			if (
-				this.props.feeds.episode &&
-				this.props.feeds.episode.indexOf(episode._id) < 20 &&
-				this.props.feeds.episode.indexOf(episode._id) !== -1
-			) {
-				episode.recent = true;
-			} else episode.recent = false;
-
-			return episode;
-		});
-
+		const isFollowing = this.props.following[podcast._id]
+			? this.props.following[podcast._id]
+			: false;
 		const currFolder = this.props.folders.find((folder) => {
 			for (const feed of folder.podcast) if (feed._id === podcast._id) return true;
 			return false;
 		});
+
+		const episodes = this.state.episodes
+			.sort(
+				(a, b) =>
+					moment(b.publicationDate).valueOf() -
+					moment(a.publicationDate).valueOf(),
+			)
+			.map((episode) => {
+				episode.pinID = this.props.pinnedEpisodes[episode._id]
+					? this.props.pinnedEpisodes[episode._id]._id
+					: '';
+
+				episode.recent =
+					this.props.feeds.episode &&
+					this.props.feeds.episode.indexOf(episode._id) < 20 &&
+					this.props.feeds.episode.indexOf(episode._id) !== -1;
+
+				return episode;
+			});
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
@@ -242,14 +237,13 @@ class PodcastEpisodesView extends React.Component {
 						<div>
 							<Waypoint
 								onEnter={() => {
-									this.setState(
-										{ episodeCursor: this.state.episodeCursor + 1 },
-										() => this.getPodcastEpisodes(podcast._id),
+									this.setState({ cursor: this.state.cursor + 1 }, () =>
+										this.getPodcastEpisodes(podcast._id),
 									);
 								}}
 							/>
 							<div className="end-loader">
-								<Img src={loaderIcon} />
+								<LoaderIcon />
 							</div>
 						</div>
 					)}
@@ -316,12 +310,12 @@ class PodcastEpisodesView extends React.Component {
 				/>
 
 				<div className="list podcast-episode-list content">
-					{this.state.newEpisodesAvailable && (
+					{this.state.newEpisodes && (
 						<div
 							className="toast"
 							onClick={() => {
 								this.getPodcastEpisodes(podcast._id, true);
-								this.setState({ newEpisodesAvailable: false });
+								this.setState({ newEpisodes: false });
 							}}
 						>
 							New Episodes Available - Click to Refresh

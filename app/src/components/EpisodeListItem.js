@@ -45,10 +45,12 @@ class EpisodeListItem extends React.Component {
 					className="left"
 					onClick={() => {
 						if (this.props.playable) this.playOrPauseEpisode();
-						else
+						else {
+							if (this.props.onNavigation) this.props.onNavigation();
 							this.props.history.push(
 								`/podcasts/${this.props.podcast._id}`,
 							);
+						}
 					}}
 				>
 					<Img
@@ -67,6 +69,7 @@ class EpisodeListItem extends React.Component {
 				<div
 					className="right"
 					onClick={() => {
+						if (this.props.onNavigation) this.props.onNavigation();
 						this.props.history.push(
 							this.props.playable
 								? `/podcasts/${this.props.podcast._id}/episodes/${
@@ -76,7 +79,7 @@ class EpisodeListItem extends React.Component {
 						);
 					}}
 				>
-					<h2>{`${this.props.title}`}</h2>
+					<h2>{this.props.title}</h2>
 					<div className="item-info">
 						<span
 							onClick={(e) => {
@@ -91,13 +94,13 @@ class EpisodeListItem extends React.Component {
 									: pinEpisode(this.props._id, this.props.dispatch);
 							}}
 						>
-							{this.props.pinID ? (
-								<i className="fas fa-bookmark" />
-							) : (
-								<i className="far fa-bookmark" />
-							)}
+							<i
+								className={`${
+									this.props.pinID ? 'fas' : 'far'
+								} fa-bookmark`}
+							/>
 						</span>
-						{this.props.link ? (
+						{this.props.link && (
 							<span>
 								<i className="fa fa-external-link-alt" />
 								<a
@@ -107,7 +110,7 @@ class EpisodeListItem extends React.Component {
 									View on site
 								</a>
 							</span>
-						) : null}
+						)}
 						<span>{this.props.podcast.title}</span>
 						<span className="date">
 							{'Posted '}
@@ -148,6 +151,7 @@ EpisodeListItem.propTypes = {
 	}),
 	pinID: PropTypes.string,
 	playOrPauseEpisode: PropTypes.func,
+	onNavigation: PropTypes.func,
 	_id: PropTypes.string,
 	playable: PropTypes.bool,
 	link: PropTypes.string,
