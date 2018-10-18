@@ -20,6 +20,6 @@ body {
 }
 
 ::selection {
-	color: #ffffff;
-	background: #44bc75;
+	background: $background-green;
+	color: $foreground-black;
 }
