@@ -60,7 +60,7 @@ class Folder extends React.Component {
 			<>
 				<div className="list-view-header content-header">
 					<div className="alignment-box">
-						<FolderIcon className="folder-icon" />
+						<FolderIcon className="header-icon" />
 						<h1>{this.props.folder.name}</h1>
 						<Popover
 							body={this.menuPopover}

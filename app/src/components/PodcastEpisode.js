@@ -42,7 +42,7 @@ class PodcastEpisode extends React.Component {
 		}
 	}
 
-	fetchAllData() {
+	fetchAllData = () => {
 		const episodeID = this.props.match.params.episodeID;
 
 		this.getEpisode(episodeID);
@@ -52,9 +52,9 @@ class PodcastEpisode extends React.Component {
 			label: 'episode_open',
 			content: { foreign_id: `episode:${episodeID}` },
 		});
-	}
+	};
 
-	async getEpisode(episodeID) {
+	getEpisode = async (episodeID) => {
 		this.setState({ loading: true });
 
 		try {
@@ -64,9 +64,9 @@ class PodcastEpisode extends React.Component {
 			this.setState({ error: true, loading: false });
 			console.log(err); // eslint-disable-line no-console
 		}
-	}
+	};
 
-	async getEpisodeContent(episodeID) {
+	getEpisodeContent = async (episodeID) => {
 		this.setState({ loadingContent: true });
 
 		try {
@@ -76,9 +76,9 @@ class PodcastEpisode extends React.Component {
 			this.setState({ errorContent: true, loadingContent: false });
 			console.log(err); // eslint-disable-line no-console
 		}
-	}
+	};
 
-	playOrPause() {
+	playOrPause = () => {
 		const episode = this.state.episode;
 		const player = this.props.player;
 		const isActive = player && player.episodeID === episode._id;
@@ -87,9 +87,9 @@ class PodcastEpisode extends React.Component {
 		if (!isActive) this.props.playEpisode(episode._id, episode.podcast._id);
 		else if (isPlaying) this.props.pauseEpisode();
 		else this.props.resumeEpisode();
-	}
+	};
 
-	tweet() {
+	tweet = () => {
 		const location = url.parse(window.location.href);
 		const link = {
 			protocol: 'https',
@@ -124,7 +124,7 @@ class PodcastEpisode extends React.Component {
 			const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
 			win.opener = null;
 		}
-	}
+	};
 
 	render() {
 		const episode = this.state.episode;
