@@ -10,7 +10,7 @@ import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import RecentNotesPanel from '../components/Notes/RecentNotesPanel';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
-import FolderList from '../components/Folder/FolderList';
+import FolderPanel from '../components/Folder/FolderPanel';
 import IntroFolders from '../components/Folder/IntroFolders';
 
 class Dashboard extends React.Component {
@@ -57,7 +57,7 @@ class Dashboard extends React.Component {
 						) : (
 							<>
 								<RecentNotesPanel />
-								<FolderList />
+								<FolderPanel />
 							</>
 						)}
 					</div>

@@ -8,7 +8,7 @@ import RSSArticleList from '../components/RSSArticleList';
 import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import Tabs from '../components/Tabs';
 import RecentNotesPanel from '../components/Notes/RecentNotesPanel';
-import FolderList from '../components/Folder/FolderList';
+import FolderPanel from '../components/Folder/FolderPanel';
 import BookmarkPanel from '../components/BookmarkPanel';
 
 class FoldersView extends React.Component {
@@ -27,7 +27,7 @@ class FoldersView extends React.Component {
 				>
 					<div tabTitle="All Folders">
 						<RecentNotesPanel />
-						<FolderList />
+						<FolderPanel />
 					</div>
 					<div tabTitle="Tags">{/* <TagsPanel /> */}</div>
 					<div tabTitle="Bookmarks">

@@ -10,7 +10,7 @@ import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import { ReactComponent as FolderLogo } from '../../images/icons/folder.svg';
 import { ReactComponent as FolderLogoOpen } from '../../images/icons/folder-open.svg';
 
-class FolderList extends React.Component {
+class FolderPanel extends React.Component {
 	render() {
 		const params = this.props.match.params;
 
@@ -80,11 +80,11 @@ class FolderList extends React.Component {
 	}
 }
 
-FolderList.defaultProps = {
+FolderPanel.defaultProps = {
 	folders: [],
 };
 
-FolderList.propTypes = {
+FolderPanel.propTypes = {
 	folders: PropTypes.arrayOf(PropTypes.shape({})),
 	match: PropTypes.shape({
 		params: PropTypes.shape({
@@ -112,4 +112,4 @@ const mapStateToProps = (state) => {
 	return { folders };
 };
 
-export default withRouter(connect(mapStateToProps)(FolderList));
+export default withRouter(connect(mapStateToProps)(FolderPanel));
