@@ -1,6 +1,7 @@
 import fetch from '../util/fetch';
 import { getPinnedArticles, getPinnedEpisodes } from '../util/pins';
 import { getFolders } from './folderAPI';
+import { getTags } from './tagAPI';
 
 export const getUser = (dispatch, userId) => {
 	fetch('GET', `/users/${userId}`)
@@ -211,5 +212,6 @@ export const getAllData = (dispatch) => {
 		getRssFollows(dispatch);
 		getPodcastsFollows(dispatch);
 		getFolders(dispatch);
+		getTags(dispatch);
 	}
 };
