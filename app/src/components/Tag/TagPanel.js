@@ -20,19 +20,26 @@ class TagPanel extends React.Component {
 				hasHighlight={!!tagID}
 				headerText="Tags"
 			>
-				{this.props.tags.map((tag) => (
-					<Link
-						className={tagID === tag._id ? 'highlighted' : ''}
-						key={tag._id}
-						to={`/tags/${tag._id}`}
-					>
-						{tagID === tag._id ? <TagIcon /> : <TagIconHighlight />}
-						<div>{tag.name}</div>
-						<div>
-							<i className="fa fa-chevron-right" />
-						</div>
-					</Link>
-				))}
+				{this.props.tags.length ? (
+					this.props.tags.map((tag) => (
+						<Link
+							className={tagID === tag._id ? 'highlighted' : ''}
+							key={tag._id}
+							to={`/tags/${tag._id}`}
+						>
+							{tagID === tag._id ? <TagIcon /> : <TagIconHighlight />}
+							<div>{tag.name}</div>
+							<div>
+								<i className="fa fa-chevron-right" />
+							</div>
+						</Link>
+					))
+				) : (
+					<div className="no-content">
+						<TagIcon />
+						<span>No Tags yet</span>
+					</div>
+				)}
 			</Panel>
 		);
 	}
@@ -51,6 +58,6 @@ TagPanel.propTypes = {
 	}),
 };
 
-const mapStateToProps = (state) => ({ tags: state.tags || [] });
+const mapStateToProps = (state) => ({ tags: [] || state.tags || [] });
 
 export default withRouter(connect(mapStateToProps)(TagPanel));

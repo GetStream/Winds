@@ -45,6 +45,7 @@ class AppRouter extends Component {
 						/>
 						<AuthedRoute component={FoldersView} path="/folders/:folderID" />
 						<AuthedRoute component={FoldersView} exact path="/folders" />
+						<AuthedRoute component={FoldersView} path="/tags/:tagID" />
 						<AuthedRoute component={AdminView} path="/admin" />
 						<UnauthedRoute component={Login} exact path="/login" />
 						<UnauthedRoute component={Create} exact path="/create-account" />

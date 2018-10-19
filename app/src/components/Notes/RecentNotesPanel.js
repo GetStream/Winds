@@ -17,8 +17,8 @@ class RecentNotesPanel extends React.Component {
 						</Link>
 					))
 				) : (
-					<div className="no-notes">
-						<NoteIcon className="note-icon" />
+					<div className="no-content">
+						<NoteIcon />
 						<span>No Notes yet</span>
 					</div>
 				)}

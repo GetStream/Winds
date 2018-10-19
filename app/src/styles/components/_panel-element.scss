@@ -133,6 +133,24 @@
 		&.clickable {
 			cursor: pointer;
 		}
+
+		&.no-content {
+			cursor: default;
+			flex-direction: column;
+			padding-bottom: 5.6em;
+
+			&:hover {
+				margin-left: 1em;
+			}
+
+			svg {
+				margin: 3em auto 1em;
+			}
+
+			span {
+				overflow: initial;
+			}
+		}
 	}
 
 	.folder-element {
