@@ -9,9 +9,11 @@ import { connect } from 'react-redux';
 import fetch from '../util/fetch';
 import { pinArticle, unpinArticle } from '../util/pins';
 import { fetchSocialScore } from '../util/social';
-
+import Tag from './Tag/Tag';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
+
+import { ReactComponent as LinkIcon } from '../images/icons/link.svg';
 
 function mergeSocialScore(article, socialScore) {
 	article.socialScore = article.socialScore || {};
@@ -90,7 +92,7 @@ class RSSArticle extends React.Component {
 		}
 	}
 
-	tweet() {
+	tweet = () => {
 		const location = url.parse(window.location.href);
 		const link = {
 			protocol: 'https',
@@ -125,9 +127,9 @@ class RSSArticle extends React.Component {
 			const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
 			win.opener = null;
 		}
-	}
+	};
 
-	async getArticle(articleID) {
+	getArticle = async (articleID) => {
 		try {
 			this.setState({ loading: true });
 			const res = await fetch('GET', `/articles/${articleID}`);
@@ -144,9 +146,9 @@ class RSSArticle extends React.Component {
 		} catch (err) {
 			console.log(err); // eslint-disable-line no-console
 		}
-	}
+	};
 
-	getRSSContent(articleId) {
+	getRSSContent = (articleId) => {
 		this.setState({ loadingContent: true });
 
 		fetch('GET', `/articles/${articleId}`, {}, { type: 'parsed' })
@@ -160,12 +162,13 @@ class RSSArticle extends React.Component {
 					loadingContent: false,
 				});
 			});
-	}
+	};
 
 	render() {
 		if (this.state.loading) return <Loader />;
 
 		const article = this.state.article;
+		const dispatch = this.props.dispatch;
 
 		const redditDataAvailable =
 			article.socialScore &&
@@ -209,106 +212,50 @@ class RSSArticle extends React.Component {
 				<div className="content-header">
 					<h1>{article.title}</h1>
 					<div className="item-info">
+						<TimeAgo className="muted" timestamp={article.publicationDate} />
+						<a href={article.url}>
+							<LinkIcon />
+						</a>
 						<span
-							className="bookmark"
-							onClick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								const dispatch = this.props.dispatch;
+							className="clickable"
+							onClick={() =>
 								pinID
 									? unpinArticle(pinID, article._id, dispatch)
-									: pinArticle(article._id, dispatch);
-							}}
+									: pinArticle(article._id, dispatch)
+							}
 						>
-							{pinID ? (
-								<i className="fas fa-bookmark" />
-							) : (
-								<i className="far fa-bookmark" />
-							)}
-						</span>{' '}
-						<span>
-							<a
-								href="tweet"
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									this.tweet();
-								}}
-							>
-								<i className="fab fa-twitter" />
-							</a>
+							<i className={`${pinID ? 'fas' : 'far'} fa-bookmark`} />
+						</span>
+						<span className="clickable" onClick={this.tweet}>
+							<i className="fab fa-twitter" />
 						</span>
 						{redditDataAvailable && (
-							<span>
-								{article.socialScore.reddit.score}
-								{isElectron() ? (
-									<a
-										href="tweet"
-										onClick={(e) => {
-											e.preventDefault();
-											e.stopPropagation();
-
-											window.ipcRenderer.send(
-												'open-external-window',
-												article.socialScore.reddit.url,
-											);
-										}}
-									>
-										<i className="fab fa-reddit-alien" />
-									</a>
-								) : (
-									<a
-										href={article.socialScore.reddit.url}
-										rel="noopener noreferrer"
-										target="_blank"
-									>
-										<i className="fab fa-reddit-alien" />
-									</a>
-								)}
-							</span>
+							<a
+								href={article.socialScore.reddit.url}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								{article.socialScore.hackernews.score}
+								<i className="fab fa-reddit-alien" />
+							</a>
 						)}
 						{hackernewsDataAvailable && (
-							<span>
+							<a
+								href={article.socialScore.hackernews.url}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
 								{article.socialScore.hackernews.score}
-								{isElectron() ? (
-									<a
-										href="tweet"
-										onClick={(e) => {
-											e.preventDefault();
-											e.stopPropagation();
 
-											window.ipcRenderer.send(
-												'open-external-window',
-												article.socialScore.hackernews.url,
-											);
-										}}
-									>
-										<i className="fab fa-hacker-news-square" />
-									</a>
-								) : (
-									<a
-										href={article.socialScore.hackernews.url}
-										rel="noopener noreferrer"
-										target="_blank"
-									>
-										<i className="fab fa-hacker-news-square" />
-									</a>
-								)}
-							</span>
+								<i className="fab fa-hacker-news-square" />
+							</a>
 						)}
-						<div>
-							<a href={article.url}>{article.rss.title}</a>
-						</div>
 						{article.commentUrl && (
-							<div>
+							<a href={article.commentUrl}>
 								<i className="fas fa-comment" />
-								<a href={article.commentUrl}>Comments</a>
-							</div>
+							</a>
 						)}
-						<span className="muted">
-							{'Posted '}
-							<TimeAgo timestamp={article.publicationDate} />
-						</span>
+						<Tag feedId={article._id} type="article" />
 					</div>
 				</div>
 

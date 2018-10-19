@@ -1,4 +1,5 @@
 .item-info {
+	align-items: center;
 	color: $foreground-darkgray;
 	display: flex;
 	flex-direction: row;
@@ -9,7 +10,7 @@
 	margin-top: 1.4em;
 	text-transform: uppercase;
 
-	.bookmark {
+	.clickable {
 		cursor: pointer;
 	}
 
@@ -35,11 +36,25 @@
 
 	a {
 		color: $foreground-green;
-		margin-left: 0.5em;
 		text-decoration: none;
 
 		&:hover {
 			text-decoration: underline;
+		}
+	}
+
+	.tag-item {
+		align-items: center;
+		background-color: rgba(68, 188, 117, 0.05);
+		border: 1px solid $background-green;
+		border-radius: 20px;
+		color: $foreground-black;
+		display: flex;
+		letter-spacing: initial;
+		padding: 2px 5px;
+
+		svg {
+			margin-left: 5px;
 		}
 	}
 }

@@ -10,11 +10,13 @@ import { Link } from 'react-router-dom';
 import fetch from '../util/fetch';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
+import Tag from './Tag/Tag';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { pinEpisode, unpinEpisode } from '../util/pins';
 
 import { ReactComponent as PauseIcon } from '../images/icons/pause.svg';
 import { ReactComponent as PlayIcon } from '../images/icons/play.svg';
+import { ReactComponent as LinkIcon } from '../images/icons/link.svg';
 
 class PodcastEpisode extends React.Component {
 	constructor(props) {
@@ -130,7 +132,7 @@ class PodcastEpisode extends React.Component {
 		const episode = this.state.episode;
 		const player = this.props.player;
 		const isPlaying = player && player.playing && player.episodeID === episode._id;
-
+		const dispatch = this.props.dispatch;
 		const pinID =
 			this.props.pinnedEpisodes && this.props.pinnedEpisodes[episode._id]
 				? this.props.pinnedEpisodes[episode._id]._id
@@ -162,52 +164,41 @@ class PodcastEpisode extends React.Component {
 							<div className="right">
 								<h1>{episode.title}</h1>
 								<div className="item-info">
+									<TimeAgo
+										className="muted"
+										timestamp={episode.publicationDate}
+									/>
+									<a href={episode.url}>
+										<LinkIcon />
+									</a>
 									<span
-										className="bookmark"
-										onClick={() => {
+										className="clickable"
+										onClick={() =>
 											pinID
 												? unpinEpisode(
 													pinID,
 													episode._id,
-													this.props.dispatch,
+													dispatch,
 												  )
-												: pinEpisode(
-													episode._id,
-													this.props.dispatch,
-												  );
-										}}
+												: pinEpisode(episode._id, dispatch)
+										}
 									>
-										{pinID ? (
-											<i className="fas fa-bookmark" />
-										) : (
-											<i className="far fa-bookmark" />
-										)}
-									</span>{' '}
-									{this.props.link && (
-										<span>
-											<i className="fa fa-external-link-alt" />
-											<a href={this.props.link}>View on site</a>
-										</span>
-									)}{' '}
-									<span>
-										<a
-											href="tweet"
-											onClick={(e) => {
-												e.preventDefault();
-												e.stopPropagation();
-												this.tweet();
-											}}
-										>
-											<i className="fab fa-twitter" />
+										<i
+											className={`${
+												pinID ? 'fas' : 'far'
+											} fa-bookmark`}
+										/>
+									</span>
+
+									<span className="clickable" onClick={this.tweet}>
+										<i className="fab fa-twitter" />
+									</span>
+									{episode.commentUrl && (
+										<a href={episode.commentUrl}>
+											<i className="fas fa-comment" />
 										</a>
-									</span>
-									<div>
-										<a href={episode.url}>{episode.podcast.title}</a>
-									</div>
-									<span className="muted">
-										{'Posted '}
-										<TimeAgo timestamp={episode.publicationDate} />
-									</span>
+									)}
+									<Tag feedId={episode._id} type="episode" />
 								</div>
 							</div>
 						</React.Fragment>
