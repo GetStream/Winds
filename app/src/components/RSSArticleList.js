@@ -14,7 +14,7 @@ import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import Loader from './Loader';
 import { followRss, unfollowRss } from '../api';
 import loaderIcon from '../images/loaders/default.svg';
-import { ReactComponent as FolderLogo } from '../images/icons/folder.svg';
+import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
@@ -49,7 +49,7 @@ class RSSArticleList extends React.Component {
 
 	componentDidMount() {
 		const rssFeedID = this.props.match.params.rssFeedID;
-		
+
 		if (window.streamAnalyticsClient.userData)
 			window.streamAnalyticsClient.trackEngagement({
 				label: 'viewed_rss_feed',
@@ -193,7 +193,7 @@ class RSSArticleList extends React.Component {
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
 				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
-					<FolderLogo />
+					<FolderIcon />
 					<span>{currFolder ? currFolder.name : 'Folder'}</span>
 				</div>
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>

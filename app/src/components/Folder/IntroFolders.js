@@ -1,7 +1,7 @@
 import React from 'react';
 
 import NewFolderModal from './NewFolderModal';
-import { ReactComponent as FolderNoteLogo } from '../../images/icons/foldernote.svg';
+import { ReactComponent as FolderNoteIcon } from '../../images/icons/foldernote.svg';
 import { ReactComponent as AddIcon } from '../../images/icons/add.svg';
 import { ReactComponent as NoteIcon } from '../../images/icons/note.svg';
 
@@ -23,7 +23,7 @@ class IntroFolders extends React.Component {
 	render() {
 		return (
 			<div className="intro-folder">
-				<FolderNoteLogo className="logo" />
+				<FolderNoteIcon className="logo" />
 
 				<div className="panel">
 					<p>

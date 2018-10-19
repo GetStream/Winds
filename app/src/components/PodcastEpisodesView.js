@@ -14,7 +14,7 @@ import AliasModal from './AliasModal';
 import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import { followPodcast, unfollowPodcast } from '../api';
 
-import { ReactComponent as FolderLogo } from '../images/icons/folder.svg';
+import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
 import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
 
 class PodcastEpisodesView extends React.Component {
@@ -178,7 +178,7 @@ class PodcastEpisodesView extends React.Component {
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
 				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
-					<FolderLogo />
+					<FolderIcon />
 					<span>{currFolder ? currFolder.name : 'Folder'}</span>
 				</div>
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>

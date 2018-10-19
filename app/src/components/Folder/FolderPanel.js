@@ -7,8 +7,8 @@ import { withRouter } from 'react-router-dom';
 
 import Panel from '../Panel';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
-import { ReactComponent as FolderLogo } from '../../images/icons/folder.svg';
-import { ReactComponent as FolderLogoOpen } from '../../images/icons/folder-open.svg';
+import { ReactComponent as FolderIcon } from '../../images/icons/folder.svg';
+import { ReactComponent as FolderIconOpen } from '../../images/icons/folder-open.svg';
 
 class FolderPanel extends React.Component {
 	render() {
@@ -30,7 +30,7 @@ class FolderPanel extends React.Component {
 							key={folder._id}
 							to={`/folders/${folder._id}`}
 						>
-							{open ? <FolderLogoOpen /> : <FolderLogo />}
+							{open ? <FolderIconOpen /> : <FolderIcon />}
 							<div>{folder.name}</div>
 							<div>
 								<i
