@@ -108,7 +108,6 @@ Folder.defaultProps = {
 Folder.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 	history: PropTypes.shape({
-		goBack: PropTypes.func.isRequired,
 		replace: PropTypes.func.isRequired,
 	}).isRequired,
 	match: PropTypes.shape({

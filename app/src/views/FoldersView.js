@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
 import Folder from '../components/Folder/Folder';
+import Tag from '../components/Tag/Tag';
 import RSSArticleList from '../components/RSSArticleList';
 import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import Tabs from '../components/Tabs';
@@ -41,6 +42,7 @@ class FoldersView extends React.Component {
 				<div className="border" />
 
 				<Switch>
+					<Route component={Tag} path="/tags/:tagID" />
 					<Route
 						component={PodcastEpisodesView}
 						path="/folders/:folderID/p/:podcastID"

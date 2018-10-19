@@ -58,6 +58,6 @@ TagPanel.propTypes = {
 	}),
 };
 
-const mapStateToProps = (state) => ({ tags: [] || state.tags || [] });
+const mapStateToProps = (state) => ({ tags: state.tags || [] });
 
 export default withRouter(connect(mapStateToProps)(TagPanel));
