@@ -10,6 +10,7 @@ import Tabs from '../components/Tabs';
 import RecentNotesPanel from '../components/Notes/RecentNotesPanel';
 import FolderPanel from '../components/Folder/FolderPanel';
 import BookmarkPanel from '../components/BookmarkPanel';
+import TagPanel from '../components/Tag/TagPanel';
 
 class FoldersView extends React.Component {
 	render() {
@@ -29,7 +30,9 @@ class FoldersView extends React.Component {
 						<RecentNotesPanel />
 						<FolderPanel />
 					</div>
-					<div tabTitle="Tags">{/* <TagsPanel /> */}</div>
+					<div tabTitle="Tags">
+						<TagPanel />
+					</div>
 					<div tabTitle="Bookmarks">
 						<BookmarkPanel />
 					</div>

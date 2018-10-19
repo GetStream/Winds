@@ -215,5 +215,7 @@ export default (previousState = {}, action) => {
 		return { ...previousState, aliases: { ...action.aliases } };
 	} else if (action.type === 'BATCH_UPDATE_FOLDERS') {
 		return { ...previousState, folders: [...action.data] };
+	} else if (action.type === 'BATCH_UPDATE_TAGS') {
+		return { ...previousState, tags: [...action.data] };
 	} else return previousState;
 };
