@@ -28,12 +28,14 @@ class RSSArticle extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.resetState = {
 			error: false,
-			loadingContent: true,
 			loading: true,
+			loadingContent: true,
 			article: {},
 		};
+
+		this.state = { ...this.resetState };
 
 		this.sentArticleReadCompleteAnalyticsEvent = false;
 		this.contentRef = React.createRef();
@@ -54,6 +56,7 @@ class RSSArticle extends React.Component {
 		const articleID = this.props.match.params.articleID;
 
 		if (articleID !== prevProps.match.params.articleID) {
+			this.setState({ ...this.resetState });
 			this.sentArticleReadCompleteAnalyticsEvent = false;
 
 			window.streamAnalyticsClient.trackEngagement({
@@ -126,7 +129,7 @@ class RSSArticle extends React.Component {
 
 	async getArticle(articleID) {
 		try {
-			this.setState({ article: {}, loading: true });
+			this.setState({ loading: true });
 			const res = await fetch('GET', `/articles/${articleID}`);
 			this.setState({ article: res.data, loading: false });
 
@@ -316,13 +319,13 @@ class RSSArticle extends React.Component {
 								(enclosure) =>
 									enclosure.type.includes('audio') ||
 									enclosure.type.includes('video') ||
-									enclosure.type.includes('youtube') ? (
-											<ReactPlayer
-												controls={true}
-												key={enclosure._id}
-												url={enclosure.url}
-											/>
-										) : null,
+									(enclosure.type.includes('youtube') && (
+										<ReactPlayer
+											controls={true}
+											key={enclosure._id}
+											url={enclosure.url}
+										/>
+									)),
 							)}
 					</div>
 					{articleContents}

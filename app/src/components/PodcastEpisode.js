@@ -1,6 +1,6 @@
-import url from 'url';
 import React from 'react';
 import PropTypes from 'prop-types';
+import url from 'url';
 import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
 import Img from 'react-image';
@@ -8,10 +8,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import fetch from '../util/fetch';
-import { pinEpisode, unpinEpisode } from '../util/pins';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
+import { pinEpisode, unpinEpisode } from '../util/pins';
 
 import { ReactComponent as PauseIcon } from '../images/icons/pause.svg';
 import { ReactComponent as PlayIcon } from '../images/icons/play.svg';
@@ -19,13 +19,16 @@ import { ReactComponent as PlayIcon } from '../images/icons/play.svg';
 class PodcastEpisode extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
+
+		this.resetState = {
 			episode: {},
 			content: '',
-			error: false,
-			loadingEpisode: true,
+			errorContent: false,
+			loading: true,
 			loadingContent: true,
 		};
+
+		this.state = { ...this.resetState };
 	}
 
 	componentDidMount() {
@@ -33,14 +36,15 @@ class PodcastEpisode extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.match.params.episodeID !== this.props.match.params.episodeID)
+		if (prevProps.match.params.episodeID !== this.props.match.params.episodeID) {
+			this.setState({ ...this.resetState });
 			this.fetchAllData();
+		}
 	}
 
 	fetchAllData() {
 		const episodeID = this.props.match.params.episodeID;
 
-		this.setState({ error: false });
 		this.getEpisode(episodeID);
 		this.getEpisodeContent(episodeID);
 
@@ -51,13 +55,13 @@ class PodcastEpisode extends React.Component {
 	}
 
 	async getEpisode(episodeID) {
-		this.setState({ loadingEpisode: true });
+		this.setState({ loading: true });
 
 		try {
 			const res = await fetch('GET', `/episodes/${episodeID}`);
-			this.setState({ episode: res.data, loadingEpisode: false });
+			this.setState({ episode: res.data, loading: false });
 		} catch (err) {
-			this.setState({ error: true, loadingEpisode: false });
+			this.setState({ error: true, loading: false });
 			console.log(err); // eslint-disable-line no-console
 		}
 	}
@@ -69,7 +73,7 @@ class PodcastEpisode extends React.Component {
 			const res = await fetch('GET', `/episodes/${episodeID}?type=parsed`);
 			this.setState({ content: res.data.content, loadingContent: false });
 		} catch (err) {
-			this.setState({ error: true, loadingContent: false });
+			this.setState({ errorContent: true, loadingContent: false });
 			console.log(err); // eslint-disable-line no-console
 		}
 	}
@@ -134,117 +138,104 @@ class PodcastEpisode extends React.Component {
 
 		return (
 			<React.Fragment>
-				{this.state.error && (
-					<div>
-						<p>There was a problem loading this episode :(</p>
-						<p>
-							Please refresh the page or go back to the{' '}
-							<Link to={`/podcasts/${episode.podcast._id}`}>
-								Podcast page
-							</Link>{' '}
-							and play it from there!
-						</p>
-					</div>
-				)}
-
-				{!this.state.error && (
-					<React.Fragment>
-						<div className="content-header episode-header">
-							{this.state.loadingEpisode ? (
-								<Loader />
-							) : (
-								<React.Fragment>
-									<h1
-										className="left"
-										onClick={() => this.playOrPause()}
-									>
-										<Img
-											className="og-image"
-											loader={<div className="placeholder" />}
-											src={[
-												episode.images.og,
-												episode.podcast.images.featured,
-												getPlaceholderImageURL(episode._id),
-											]}
-										/>
-										<div className="play-icon">
-											<div className="icon-container">
-												{isPlaying ? <PauseIcon /> : <PlayIcon />}
-											</div>
-										</div>
-									</h1>
-									<div className="right">
-										<h1>{episode.title}</h1>
-										<div className="item-info">
-											<span
-												className="bookmark"
-												onClick={() => {
-													pinID
-														? unpinEpisode(
-															pinID,
-															episode._id,
-															this.props.dispatch,
-														  )
-														: pinEpisode(
-															episode._id,
-															this.props.dispatch,
-														  );
-												}}
-											>
-												{pinID ? (
-													<i className="fas fa-bookmark" />
-												) : (
-													<i className="far fa-bookmark" />
-												)}
-											</span>{' '}
-											{this.props.link && (
-												<span>
-													<i className="fa fa-external-link-alt" />
-													<a href={this.props.link}>
-														View on site
-													</a>
-												</span>
-											)}{' '}
-											<span>
-												<a
-													href="tweet"
-													onClick={(e) => {
-														e.preventDefault();
-														e.stopPropagation();
-														this.tweet();
-													}}
-												>
-													<i className="fab fa-twitter" />
-												</a>
-											</span>
-											<div>
-												<a href={episode.url}>
-													{episode.podcast.title}
-												</a>
-											</div>
-											<span className="muted">
-												{'Posted '}
-												<TimeAgo
-													timestamp={episode.publicationDate}
-												/>
-											</span>
-										</div>
+				<div className="content-header episode-header">
+					{!this.state.error && this.state.loading ? (
+						<Loader />
+					) : (
+						<React.Fragment>
+							<h1 className="left" onClick={() => this.playOrPause()}>
+								<Img
+									className="og-image"
+									loader={<div className="placeholder" />}
+									src={[
+										episode.images.og,
+										episode.podcast.images.featured,
+										getPlaceholderImageURL(episode._id),
+									]}
+								/>
+								<div className="play-icon">
+									<div className="icon-container">
+										{isPlaying ? <PauseIcon /> : <PlayIcon />}
 									</div>
-								</React.Fragment>
-							)}
-						</div>
-
-						<div className="content">
-							{this.state.loadingContent ? (
-								<Loader />
-							) : (
-								<div className="rss-article-content">
-									{ReactHtmlParser(this.state.content)}
 								</div>
-							)}
+							</h1>
+							<div className="right">
+								<h1>{episode.title}</h1>
+								<div className="item-info">
+									<span
+										className="bookmark"
+										onClick={() => {
+											pinID
+												? unpinEpisode(
+													pinID,
+													episode._id,
+													this.props.dispatch,
+												  )
+												: pinEpisode(
+													episode._id,
+													this.props.dispatch,
+												  );
+										}}
+									>
+										{pinID ? (
+											<i className="fas fa-bookmark" />
+										) : (
+											<i className="far fa-bookmark" />
+										)}
+									</span>{' '}
+									{this.props.link && (
+										<span>
+											<i className="fa fa-external-link-alt" />
+											<a href={this.props.link}>View on site</a>
+										</span>
+									)}{' '}
+									<span>
+										<a
+											href="tweet"
+											onClick={(e) => {
+												e.preventDefault();
+												e.stopPropagation();
+												this.tweet();
+											}}
+										>
+											<i className="fab fa-twitter" />
+										</a>
+									</span>
+									<div>
+										<a href={episode.url}>{episode.podcast.title}</a>
+									</div>
+									<span className="muted">
+										{'Posted '}
+										<TimeAgo timestamp={episode.publicationDate} />
+									</span>
+								</div>
+							</div>
+						</React.Fragment>
+					)}
+				</div>
+
+				<div className="content">
+					{!this.state.errorContent && this.state.loadingContent ? (
+						<Loader />
+					) : (
+						<div className="rss-article-content">
+							{ReactHtmlParser(this.state.content)}
 						</div>
-					</React.Fragment>
-				)}
+					)}
+
+					{this.state.errorContent && (
+						<div>
+							<p>There was a problem loading this episode :(</p>
+							<p>
+								Please refresh the page or go to the{' '}
+								<Link to={`/podcasts/${episode.podcast._id}`}>
+									Podcast page
+								</Link>{' '}
+								and play it from there!
+							</p>
+						</div>
+					)}
+				</div>
 			</React.Fragment>
 		);
 	}
