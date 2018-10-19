@@ -67,7 +67,17 @@ exports.post = async (req, res) => {
 	if (!data.name) return res.status(422).json({ error: 'Missing required field' });
 
 	if (!(await checkRssPodcast(data.rss, data.podcast)))
-		return res.status(404).json({ error: 'Some wrong feed Id provided' });
+		return res.status(422).json({ error: 'Some wrong feed Id provided' });
+
+	if (
+		(data.rss.length &&
+			(await Folder.find({ user: data.user, rss: { $in: data.rss } })).length) ||
+		(data.podcast.length &&
+			(await Folder.find({ user: data.user, podcast: { $in: data.podcast } }))
+				.length)
+	) {
+		return res.status(422).json({ error: 'Feed already has a folder' });
+	}
 
 	const folder = await Folder.create(data);
 	await streamFollowMany(folder);

@@ -100,8 +100,8 @@ describe('Folder controller', () => {
 		it('should create a new folder with list of rss/podcasts', async () => {
 			const data = {
 				name: 'newNewfolder',
-				rss: rss.map((r) => String(r._id)),
-				podcast: podcasts.map((p) => String(p._id)),
+				rss: ['5b0ad0baf6f89574a638887e'],
+				podcast: ['5afb7f68fe7430d35996cc62'],
 			};
 			const response = await withLogin(
 				request(api)
