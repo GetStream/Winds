@@ -1,18 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Popover from 'react-popover';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { newTag, addTag, removeTag } from '../../api/tagAPI';
 import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
 import { ReactComponent as AddIcon } from '../../images/icons/add-green.svg';
 import { ReactComponent as XIcon } from '../../images/icons/x.svg';
+import { ReactComponent as SearchIcon } from '../../images/icons/search.svg';
 
 class Tag extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.resetState = {
 			menu: false,
+			name: '',
+			error: false,
+			submiting: false,
+		};
+
+		this.state = {
+			...this.resetState,
+			query: '',
 		};
 	}
 
@@ -20,18 +31,75 @@ class Tag extends React.Component {
 		this.setState((prevState) => ({ menu: !prevState.menu }));
 	};
 
+	handleNewSubmit = () => {
+		if (!this.state.name) return this.setState({ error: true });
+		this.setState({ submiting: true });
+		let data = { name: this.state.name };
+		data[this.props.type] = [this.props.feedId];
+		newTag(this.props.dispatch, data, () => this.setState({ ...this.resetState }));
+	};
+
+	handleAdd = (tagId) => {
+		addTag(this.props.dispatch, tagId, this.props.feedId, this.props.type);
+	};
+
+	handleRemove = (tagId) => {
+		removeTag(this.props.dispatch, tagId, this.props.feedId, this.props.type);
+	};
+
 	render() {
+		const query = this.state.query.toLowerCase();
+
+		const tags = query
+			? this.props.tags.filter((tag) => ~tag.name.toLowerCase().indexOf(query))
+			: this.props.tags;
+
 		const menu = (
-			<div className="popover-panel">
-				{this.props.tags.map((tag) => (
+			<div className="popover-panel tag-popover">
+				{!!this.props.tags.length && (
+					<div className="search-tag">
+						<input
+							onChange={(e) => this.setState({ query: e.target.value })}
+							placeholder="Search"
+							type="text"
+						/>
+						<SearchIcon />
+					</div>
+				)}
+
+				{tags.map((tag) => (
 					<div
-						className="panel-element menu-item"
+						className="panel-element"
 						key={tag._id}
-						onClick={this.toggleMenu}
+						onClick={() => this.handleAdd(tag._id)}
 					>
 						{tag.name}
 					</div>
 				))}
+
+				{this.state.newTag ? (
+					<div className="panel-element new-tag">
+						<input
+							className={
+								this.state.error && !this.state.name ? 'error' : ''
+							}
+							onChange={(e) => this.setState({ name: e.target.value })}
+							onKeyDown={(e) => e.keyCode === 13 && this.handleNewSubmit()}
+							placeholder="Name"
+							type="text"
+						/>
+						<div className="green" onClick={this.handleNewSubmit}>
+							SAVE
+						</div>
+					</div>
+				) : (
+					<div
+						className="panel-element green"
+						onClick={() => this.setState({ newTag: true })}
+					>
+						Create a new Tag
+					</div>
+				)}
 			</div>
 		);
 
@@ -49,10 +117,10 @@ class Tag extends React.Component {
 				</Popover>
 				{this.props.currentTags.map((tag) => (
 					<span className="tag-item" key={tag._id}>
-						{tag.name}
+						<Link to={`/tags/${tag._id}`}>{tag.name}</Link>
 						<XIcon
 							className="clickable"
-							onClick={() => console.log(tag._id)}
+							onClick={() => this.handleRemove(tag._id)}
 						/>
 					</span>
 				))}
@@ -67,17 +135,23 @@ Tag.defaultProps = {
 };
 
 Tag.propTypes = {
+	dispatch: PropTypes.func.isRequired,
 	feedId: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
 	tags: PropTypes.array,
 	currentTags: PropTypes.array,
 };
 
-const mapStateToProps = (state, { feedId, type }) => ({
-	tags: state.tags || [],
-	currentTags: (state.tags || []).filter((tag) =>
+const mapStateToProps = (state, { feedId, type }) => {
+	const currentTags = (state.tags || []).filter((tag) =>
 		tag[type].find((f) => f._id === feedId),
-	),
-});
+	);
+
+	const tags = (state.tags || []).filter(
+		(tag) => !currentTags.find((f) => f._id === tag._id),
+	);
+
+	return { tags, currentTags };
+};
 
 export default connect(mapStateToProps)(Tag);

@@ -35,18 +35,23 @@ exports.put = async (req, res) => {
 	const article = req.body.article;
 	const episode = req.body.episode;
 	const user = req.user.sub;
+	const remove = req.body.action === 'remove';
 
 	if (!(name || article || episode))
 		return res.status(422).json({ error: 'You have to put data' });
+	if (article && episode) return res.status(422).json({ error: 'On Feed at a time!' });
 
 	const tag = await Tag.findById(tagId);
 	if (!tag) return res.status(404).json({ error: 'Resource does not exist.' });
 	if (tag.user._id != user) return res.sendStatus(403);
 
-	if (name) data = { name };
+	let data = {};
+	if (remove) data = article ? { $pull: { article } } : { $pull: { episode } };
+	else data = article ? { $addToSet: { article } } : { $addToSet: { episode } };
 
-	const updatedTag = await Tag.findByIdAndUpdate(tagId, data, { new: true });
-	res.json(updatedTag);
+	if (name) data = { ...data, name };
+	await Tag.findByIdAndUpdate(tagId, data);
+	res.json(await Tag.findById(tagId));
 };
 
 exports.delete = async (req, res) => {

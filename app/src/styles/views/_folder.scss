@@ -166,3 +166,35 @@
 		width: 100%;
 	}
 }
+
+.tag-popover {
+	width: 230px;
+
+	.panel-element {
+		cursor: pointer;
+		font-weight: 400;
+		height: 40px;
+		margin: 0;
+		padding: 1em;
+	}
+
+	.new-tag {
+		padding-bottom: 0.5em;
+		padding-top: 0.5em;
+	}
+
+	.search-tag {
+		padding: 1em 1em 1.5em;
+		position: relative;
+
+		input {
+			width: 100%;
+		}
+
+		svg {
+			position: absolute;
+			right: 20px;
+			top: 20px;
+		}
+	}
+}

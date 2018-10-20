@@ -17,7 +17,22 @@ export const newTag = (dispatch, data, thenFn, catchFn) => {
 		.catch(catchFn);
 };
 
-export const updateTag = (dispatch, tagId, data, thenFn, catchFn) => {
+export const addTag = (dispatch, tagId, feedId, type, thenFn, catchFn) => {
+	let data = {};
+	data[type] = feedId;
+
+	fetch('PUT', `/tags/${tagId}`, data)
+		.then((res) => {
+			getTags(dispatch);
+			if (thenFn) thenFn(res);
+		})
+		.catch(catchFn);
+};
+
+export const removeTag = (dispatch, tagId, feedId, type, thenFn, catchFn) => {
+	let data = { action: 'remove' };
+	data[type] = feedId;
+
 	fetch('PUT', `/tags/${tagId}`, data)
 		.then((res) => {
 			getTags(dispatch);

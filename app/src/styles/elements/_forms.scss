@@ -25,4 +25,8 @@ textarea {
 	&[type='email'] {
 		text-transform: lowercase;
 	}
+
+	&.error {
+		border: 1px solid $foreground-red;
+	}
 }
