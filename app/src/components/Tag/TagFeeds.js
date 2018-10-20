@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { connect } from 'react-redux';
 
 import ArticleListItem from '../ArticleListItem';
@@ -7,8 +8,14 @@ import EpisodeListItem from '../EpisodeListItem';
 
 class TagFeeds extends React.Component {
 	render() {
-		const feeds = [...this.props.tag.episode, ...this.props.tag.article].map(
-			(feed) => {
+		//TODO show items based on timestamp
+		const feeds = [...this.props.tag.episode, ...this.props.tag.article]
+			.sort(
+				(a, b) =>
+					moment(b.publicationDate).valueOf() -
+					moment(a.publicationDate).valueOf(),
+			)
+			.map((feed) => {
 				if (feed.type === 'articles')
 					feed.pinID = this.props.pinnedArticles[feed._id]
 						? this.props.pinnedArticles[feed._id]._id
@@ -19,8 +26,7 @@ class TagFeeds extends React.Component {
 						: '';
 
 				return feed;
-			},
-		);
+			});
 
 		//Todo Sort feed
 
