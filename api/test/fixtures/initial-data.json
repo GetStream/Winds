@@ -30,7 +30,7 @@
 				"password": "valid_password"
 			},
 			{
-				"_id": "5b0f306d8e147f10f16aceae",
+				"_id": "5b0f306d8e147f10f16ac9c8",
 				"preferences": {
 					"notifications": { "daily": false, "weekly": true, "follows": true }
 				},

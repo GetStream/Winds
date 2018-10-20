@@ -8,7 +8,7 @@ import logger from '../../src/utils/logger';
 import { dropDBs, loadFixture, withLogin } from '../utils';
 
 describe('Playlist controller', () => {
-	const otherUserId = '4342306d8e147f10f16aceaf';
+	const otherUserId = '5b0f306d8e147f10f16ac9c8';
 	let user;
 	let playlist;
 

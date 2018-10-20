@@ -1,16 +1,12 @@
 import { expect, request } from 'chai';
 import { dropDBs, loadFixture, withLogin } from '../utils';
 
-import Podcast from '../../src/models/podcast';
-import Rss from '../../src/models/rss';
 import Folder from '../../src/models/folder';
 import api from '../../src/server';
 
 describe('Folder controller', () => {
 	const keys = ['_id', 'user', 'name', 'rss', 'podcast', 'createdAt'];
 
-	let podcasts;
-	let rss;
 	let folder;
 	let folders;
 
@@ -20,8 +16,6 @@ describe('Folder controller', () => {
 
 		folders = await Folder.find({ user: '5b0f306d8e147f10f16aceaf' });
 		folder = await Folder.findById('5bbb10d3ec7e1d8e1c5b6705');
-		rss = await Rss.find();
-		podcasts = await Podcast.find();
 	});
 
 	describe('list all folders', () => {
