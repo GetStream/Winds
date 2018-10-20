@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 
 import Tag from '../models/tag';
-import Article from '../models/article';
-import Episode from '../models/episode';
 
 exports.list = async (req, res) => {
 	res.json(await Tag.find({ user: req.user.sub }));
@@ -41,7 +39,7 @@ exports.put = async (req, res) => {
 		return res.status(422).json({ error: 'You have to put data' });
 	if (article && episode) return res.status(422).json({ error: 'On Feed at a time!' });
 
-	const tag = await Tag.findById(tagId);
+	const tag = await Tag.findById(tagId).lean();
 	if (!tag) return res.status(404).json({ error: 'Resource does not exist.' });
 	if (tag.user._id != user) return res.sendStatus(403);
 

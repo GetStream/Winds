@@ -1,0 +1,42 @@
+[
+	{
+		"Tag": [
+			{
+				"_id": "5bca58f5e4313757120c8810",
+				"user": "5b0f306d8e147f10f16aceaf",
+				"name": "BOB",
+				"article": [
+                    "5b0ad37226dc3db38194e5ec"
+                ],
+                "episode": [
+                    "5b0ad37026dc3db38194e286"
+                ],
+				"updatedAt": "2018-05-29T00:09:40.956Z",
+				"createdAt": "2018-05-29T00:09:40.956Z"
+            },
+            {
+				"_id": "5bcaf8d8dfae8e9279b71c6c",
+				"user": "5b0f306d8e147f10f16aceaf",
+				"name": "Coffee",
+				"article": [
+					"5b0ad37226dc3db38194e5ed",
+					"5b0ad37226dc3db38194e69b"
+				],
+				"episode": [
+                    "5b0ad37626dc3db38194fa73"
+                ],
+				"updatedAt": "2018-05-29T00:36:12.971Z",
+				"createdAt": "2018-05-29T00:36:12.971Z"
+			},
+            {
+				"_id": "5bcb6aa57b42899b9941c770",
+				"user": "5b0f306d8e147f10f16ac9c8",
+				"name": "Pods",
+				"article": [],
+				"episode": [],
+				"updatedAt": "2018-06-29T00:36:12.971Z",
+				"createdAt": "2018-06-29T00:36:12.971Z"
+			}
+		]
+	}
+]
