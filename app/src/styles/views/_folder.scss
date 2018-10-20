@@ -168,6 +168,8 @@
 }
 
 .tag-popover {
+	max-height: 260px;
+	overflow-y: scroll;
 	width: 230px;
 
 	.panel-element {
