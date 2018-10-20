@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import TagFeeds from './TagFeeds';
 import DeleteModal from './DeleteModal';
+import RenameModal from './RenameModal';
 import Loader from '../Loader';
 
 import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
@@ -15,6 +16,7 @@ class TagView extends React.Component {
 
 		this.state = {
 			deleteModal: false,
+			renameModal: false,
 			menuPopover: false,
 		};
 	}
@@ -30,8 +32,18 @@ class TagView extends React.Component {
 		}));
 	};
 
+	toggleRenameModal = () => {
+		this.setState((prevState) => ({
+			renameModal: !prevState.renameModal,
+			menuPopover: false,
+		}));
+	};
+
 	menuPopover = (
 		<div className="popover-panel feed-popover">
+			<div className="panel-element menu-item" onClick={this.toggleRenameModal}>
+				Rename
+			</div>
 			<div
 				className="panel-element menu-item alert"
 				onClick={this.toggleDeleteModal}
@@ -66,6 +78,15 @@ class TagView extends React.Component {
 						</Popover>
 					</div>
 				</div>
+
+				<RenameModal
+					defVal={this.props.tag.name}
+					dispatch={this.props.dispatch}
+					isOpen={this.state.renameModal}
+					onDelete={() => this.props.history.replace('/folders')}
+					tagId={this.props.tag._id}
+					toggleModal={this.toggleRenameModal}
+				/>
 
 				<DeleteModal
 					dispatch={this.props.dispatch}
