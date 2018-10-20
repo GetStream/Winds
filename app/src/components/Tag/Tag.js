@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { newTag, addTag, removeTag } from '../../api/tagAPI';
+import Loader from '../Loader';
+
 import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
 import { ReactComponent as AddIcon } from '../../images/icons/add-green.svg';
 import { ReactComponent as XIcon } from '../../images/icons/x.svg';
@@ -17,8 +19,11 @@ class Tag extends React.Component {
 		this.resetState = {
 			menu: false,
 			name: '',
+			newTag: false,
 			error: false,
-			submiting: false,
+			submittingNew: false,
+			submittingAdd: '',
+			submittingRemove: '',
 		};
 
 		this.state = {
@@ -31,20 +36,35 @@ class Tag extends React.Component {
 		this.setState((prevState) => ({ menu: !prevState.menu }));
 	};
 
+	resetStateTimeout = () => {
+		setTimeout(() => this.setState({ ...this.resetState }), 800);
+	};
+
 	handleNewSubmit = () => {
+		if (this.state.submittingNew) return;
 		if (!this.state.name) return this.setState({ error: true });
-		this.setState({ submiting: true });
+
+		this.setState({ submittingNew: true });
 		let data = { name: this.state.name };
 		data[this.props.type] = [this.props.feedId];
-		newTag(this.props.dispatch, data, () => this.setState({ ...this.resetState }));
+		newTag(this.props.dispatch, data, () => this.resetStateTimeout());
 	};
 
 	handleAdd = (tagId) => {
-		addTag(this.props.dispatch, tagId, this.props.feedId, this.props.type);
+		if (this.state.submittingAdd) return;
+		this.setState({ submittingAdd: tagId });
+
+		addTag(this.props.dispatch, tagId, this.props.feedId, this.props.type, () =>
+			this.resetStateTimeout(),
+		);
 	};
 
 	handleRemove = (tagId) => {
-		removeTag(this.props.dispatch, tagId, this.props.feedId, this.props.type);
+		this.setState({ submittingRemove: tagId });
+
+		removeTag(this.props.dispatch, tagId, this.props.feedId, this.props.type, () =>
+			this.resetStateTimeout(),
+		);
 	};
 
 	render() {
@@ -73,7 +93,10 @@ class Tag extends React.Component {
 						key={tag._id}
 						onClick={() => this.handleAdd(tag._id)}
 					>
-						{tag.name}
+						<span>{tag.name}</span>
+						{this.state.submittingAdd === tag._id && (
+							<Loader defualtLoader={false} radius={20} />
+						)}
 					</div>
 				))}
 
@@ -88,9 +111,13 @@ class Tag extends React.Component {
 							placeholder="Name"
 							type="text"
 						/>
-						<div className="green" onClick={this.handleNewSubmit}>
-							SAVE
-						</div>
+						{this.state.submittingNew ? (
+							<Loader defualtLoader={false} radius={20} />
+						) : (
+							<div className="green" onClick={this.handleNewSubmit}>
+								SAVE
+							</div>
+						)}
 					</div>
 				) : (
 					<div
@@ -115,13 +142,19 @@ class Tag extends React.Component {
 				>
 					<AddIcon className="clickable" onClick={this.toggleMenu} />
 				</Popover>
+
 				{this.props.currentTags.map((tag) => (
 					<span className="tag-item" key={tag._id}>
 						<Link to={`/tags/${tag._id}`}>{tag.name}</Link>
-						<XIcon
-							className="clickable"
-							onClick={() => this.handleRemove(tag._id)}
-						/>
+
+						{this.state.submittingRemove === tag._id ? (
+							<Loader defualtLoader={false} radius={10} />
+						) : (
+							<XIcon
+								className="clickable"
+								onClick={() => this.handleRemove(tag._id)}
+							/>
+						)}
 					</span>
 				))}
 			</React.Fragment>
