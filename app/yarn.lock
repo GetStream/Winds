@@ -8626,9 +8626,9 @@ react-app-polyfill@^0.1.3:
     raf "3.4.0"
     whatwg-fetch "3.0.0"
 
-react-audio-player@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.10.0.tgz#f08f3572028a5a56663abba6a7e8ce60ba80ded3"
+react-audio-player@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.11.0.tgz#6bf84b74dcb073936fb8f1bf9781e2535b0bcf05"
   dependencies:
     prop-types "^15.5.8"
 
