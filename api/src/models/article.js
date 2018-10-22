@@ -5,6 +5,7 @@ import autopopulate from 'mongoose-autopopulate';
 import Cache from './cache';
 import { ParseArticle } from '../parsers/article';
 import { getUrl } from '../utils/urls';
+import sanitize from '../utils/sanitize';
 
 import { createHash } from 'crypto';
 
@@ -180,7 +181,7 @@ ArticleSchema.methods.getParsedArticle = async function() {
 	} catch (e) {
 		throw new Error(`Mercury API call failed for ${this.url}: ${e.message}`);
 	}
-	let content = parsed.content;
+	let content = sanitize(parsed.content);
 
 	// XKCD doesn't like Mercury
 	if (this.url.indexOf('https://xkcd') === 0) {
