@@ -38,7 +38,7 @@ export const CacheSchema = new Schema(
 	{ collection: 'cache' },
 );
 
-CacheSchema.index({ url: 1 });
+CacheSchema.index({ url: 1 }, { unique: true });
 
 CacheSchema.plugin(timestamps, {
 	createdAt: { index: true },

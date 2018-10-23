@@ -6,7 +6,7 @@ import 'crypto';
 import { createHash } from 'crypto';
 import { EnclosureSchema } from './enclosure';
 import Cache from './cache';
-import { ParseArticle } from '../parsers/article';
+import { ParseContent } from '../parsers/content';
 import { getUrl } from '../utils/urls';
 import sanitize from '../utils/sanitize';
 
@@ -162,31 +162,30 @@ EpisodeSchema.methods.getUrl = function() {
 };
 
 EpisodeSchema.methods.getParsedEpisode = async function() {
-	let cached = await Cache.findOne({ url: this.url });
+	const url = this.url;
+	const cached = await Cache.findOne({ url });
 	if (cached) return cached;
 
 	try {
-		const parsed = await ParseArticle(this.url);
-		const excerpt = parsed.excerpt || parsed.title || this.description;
+		const parsed = await ParseContent(url);
 		const title = parsed.title || this.title;
+		const excerpt = parsed.excerpt || title || this.description;
 
 		if (!title) return null;
 
 		const content = sanitize(parsed.content);
-
-		cached = await Cache.create({
+		return await Cache.create({
 			content,
-			excerpt: excerpt,
+			title,
+			url,
+			excerpt,
 			image: parsed.lead_image_url || '',
-			publicationDate: parsed.date_published || this.publicationDate,
-			title: parsed.title || this.title,
-			url: this.url,
+			publicationDate: this.publicationDate || parsed.date_published,
 			commentUrl: this.commentUrl,
 			enclosures: this.enclosures,
 		});
-		return cached;
 	} catch (e) {
-		throw new Error(`Mercury API call failed for ${this.url}: ${e.message}`);
+		throw new Error(`Mercury API call failed for ${url}: ${e.message}`);
 	}
 };
 
