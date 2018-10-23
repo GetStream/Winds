@@ -19,7 +19,7 @@ body {
 	justify-content: center;
 }
 
-.highlighted {
+.text-highlight {
 	background: transparent;
 	background-image: linear-gradient(to right, $foreground-green 100%, $foreground-green 100%);
 	color: $foreground-black;
