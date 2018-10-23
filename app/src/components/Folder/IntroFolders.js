@@ -27,8 +27,8 @@ class IntroFolders extends React.Component {
 
 				<div className="panel">
 					<p>
-						<span className="highlited">
-							<NoteIcon className="note-icon" />
+						<NoteIcon className="note-icon" />
+						<span className="highlighted">
 							Notes, highlights, tags and folders
 						</span>{' '}
 						make it easy to organize, focus and recall the most interesting
