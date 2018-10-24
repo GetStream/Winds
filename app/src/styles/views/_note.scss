@@ -1,0 +1,69 @@
+.highlight-menu {
+	align-items: center;
+	background-color: $background-white;
+	border: 1px solid #dfe3e9;
+	border-radius: 4px;
+	box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.22);
+	display: none;
+	justify-content: center;
+	padding: 10px 12px;
+	position: absolute;
+	transition: none;
+	visibility: hidden;
+	z-index: 400;
+
+	&.active {
+		animation: pop-upwards 180ms forwards linear;
+		display: inline-flex;
+		transition: top 75ms ease-out, left 75ms ease-out;
+		visibility: visible;
+	}
+
+	.oval {
+		background-color: $background-green;
+		border-radius: 50%;
+		height: 21px;
+		margin-right: 10px;
+		width: 21px;
+	}
+
+	.pointer-down {
+		background: white;
+		border-bottom: 1px solid #dfe3e9;
+		border-radius: 1px;
+		border-right: 1px solid #dfe3e9;
+		display: block;
+		height: 10px;
+		margin-top: 21px;
+		position: absolute;
+		transform: rotate(45deg);
+		width: 10px;
+	}
+}
+
+@keyframes pop-upwards {
+	0% {
+		opacity: 0;
+		transform: matrix(0.97, 0, 0, 1, 0, 12);
+	}
+
+	20% {
+		opacity: 0.7;
+		transform: matrix(0.99, 0, 0, 1, 0, 2);
+	}
+
+	40% {
+		opacity: 1;
+		transform: matrix(1, 0, 0, 1, 0, -1);
+	}
+
+	70% {
+		opacity: 1;
+		transform: matrix(1, 0, 0, 1, 0, 0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: matrix(1, 0, 0, 1, 0, 0);
+	}
+}
