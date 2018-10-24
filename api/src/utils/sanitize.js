@@ -36,7 +36,12 @@ const options = {
 	transformTags: basicTags.reduce((acc, tag) => {
 		acc[tag] = (tagName, attribs) => ({
 			tagName,
-			attribs: { ...attribs, id: String(Math.ceil(Math.random() * 100000000)) },
+			attribs: {
+				...attribs,
+				id: Math.random()
+					.toString()
+					.substring(2, 12),
+			},
 		});
 		return acc;
 	}, {}),

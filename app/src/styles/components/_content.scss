@@ -1,0 +1,29 @@
+.feed-content {
+	-webkit-app-region: no-drag;
+	margin: auto;
+	max-width: 720px;
+	padding-bottom: 100px;
+
+	h1 {
+		font-size: 30px;
+	}
+
+	p {
+		font-size: 15px;
+		font-weight: normal;
+		line-height: 26px;
+	}
+
+	a {
+		color: $foreground-green;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	img {
+		max-width: 100%;
+	}
+}

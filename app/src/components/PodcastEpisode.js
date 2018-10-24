@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import url from 'url';
-import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
 import Img from 'react-image';
 import { connect } from 'react-redux';
@@ -11,6 +10,7 @@ import fetch from '../util/fetch';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
 import Tag from './Tag/Tag';
+import HtmlRender from './HtmlRender';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { pinEpisode, unpinEpisode } from '../util/pins';
 
@@ -209,8 +209,8 @@ class PodcastEpisode extends React.Component {
 					{!this.state.errorContent && this.state.loadingContent ? (
 						<Loader />
 					) : (
-						<div className="rss-article-content">
-							{ReactHtmlParser(this.state.content)}
+						<div className="feed-content">
+							<HtmlRender content={this.state.content} />
 						</div>
 					)}
 

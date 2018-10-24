@@ -2,7 +2,6 @@ import url from 'url';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
-import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
 import { connect } from 'react-redux';
 
@@ -12,6 +11,7 @@ import { fetchSocialScore } from '../util/social';
 import Tag from './Tag/Tag';
 import Loader from './Loader';
 import TimeAgo from './TimeAgo';
+import HtmlRender from './HtmlRender';
 
 import { ReactComponent as LinkIcon } from '../images/icons/link.svg';
 
@@ -200,11 +200,7 @@ class RSSArticle extends React.Component {
 				</div>
 			);
 		} else {
-			articleContents = (
-				<div className="rss-article-content">
-					{ReactHtmlParser(this.state.content)}
-				</div>
-			);
+			articleContents = <HtmlRender content={this.state.content} />;
 		}
 
 		return (
