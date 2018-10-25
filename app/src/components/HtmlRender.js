@@ -37,7 +37,7 @@ class HtmlRender extends React.Component {
 			this.setState({
 				showPopup: true,
 				boundsHeight: bounds.height,
-				top: bounds.top - wrapper.top - 8,
+				top: bounds.top - wrapper.top - 10,
 				left: bounds.left + bounds.width / 2 - wrapper.left,
 			});
 		} else this.setState({ showPopup: false });

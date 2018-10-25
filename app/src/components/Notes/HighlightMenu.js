@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ReactComponent as NoteIcon } from '../../images/icons/note.svg';
+import { ReactComponent as Highlight } from '../../images/icons/highlight.svg';
+import { ReactComponent as HighlightRemove } from '../../images/icons/highlight-remove.svg';
 
 class HighlightMenu extends React.Component {
 	constructor(props) {
@@ -31,13 +33,13 @@ class HighlightMenu extends React.Component {
 				}`}
 				ref={this.refCallback}
 				style={{
-					top: `${top > 0 ? top : this.props.boundsHeight + 8}px`,
+					top: `${top > 0 ? top : this.props.boundsHeight + 10}px`,
 					left: `${left > 0 ? left : 5}px`,
 				}}
 			>
-				<span className="oval" />
+				<HighlightRemove />
 				<NoteIcon />
-				<span className="pointer-down" />
+				<span className={`pointer-down ${top <= 0 && 'reverse'}`} />
 			</div>
 		);
 	}
@@ -52,7 +54,6 @@ HighlightMenu.propTypes = {
 	left: PropTypes.number,
 	boundsHeight: PropTypes.number,
 	active: PropTypes.bool,
-	getSize: PropTypes.func,
 };
 
 export default HighlightMenu;

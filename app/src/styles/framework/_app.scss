@@ -21,11 +21,6 @@ body {
 
 .text-highlight {
 	background: transparent;
-	background-image: linear-gradient(to right, $foreground-green 100%, $foreground-green 100%);
+	background-color: $highlight-color;
 	color: $foreground-black;
-}
-
-::selection {
-	// background-color: $foreground-green;
-	// color: $foreground-black;
 }

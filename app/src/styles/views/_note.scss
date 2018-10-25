@@ -19,25 +19,26 @@
 		visibility: visible;
 	}
 
-	.oval {
-		background-color: $background-green;
-		border-radius: 50%;
-		height: 21px;
-		margin-right: 10px;
-		width: 21px;
+	svg {
+		cursor: pointer;
+		margin: 0 4px;
 	}
 
 	.pointer-down {
 		background: white;
 		border-bottom: 1px solid #dfe3e9;
-		border-radius: 1px;
 		border-right: 1px solid #dfe3e9;
 		display: block;
 		height: 10px;
-		margin-top: 21px;
+		margin-top: 22px;
 		position: absolute;
 		transform: rotate(45deg);
 		width: 10px;
+
+		&.reverse {
+			margin-top: -22px;
+			transform: rotate(225deg);
+		}
 	}
 }
 
