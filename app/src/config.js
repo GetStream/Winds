@@ -12,9 +12,6 @@ export default {
 	stream: {
 		appID: process.env.REACT_APP_STREAM_APP_ID,
 	},
-	cache: {
-		uri: process.env.CACHE_URI,
-	},
 	social: {
 		reddit: {
 			username: process.env.REACT_APP_REDDIT_USERNAME,

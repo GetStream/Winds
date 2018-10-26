@@ -5,7 +5,7 @@ import autopopulate from 'mongoose-autopopulate';
 import 'crypto';
 import { createHash } from 'crypto';
 import { EnclosureSchema } from './enclosure';
-import Cache from './cache';
+import Content from './content';
 import { ParseContent } from '../parsers/content';
 import { getUrl } from '../utils/urls';
 import sanitize from '../utils/sanitize';
@@ -163,8 +163,8 @@ EpisodeSchema.methods.getUrl = function() {
 
 EpisodeSchema.methods.getParsedEpisode = async function() {
 	const url = this.url;
-	const cached = await Cache.findOne({ url });
-	if (cached) return cached;
+	const content = await Content.findOne({ url });
+	if (content) return content;
 
 	try {
 		const parsed = await ParseContent(url);
@@ -174,7 +174,7 @@ EpisodeSchema.methods.getParsedEpisode = async function() {
 		if (!title) return null;
 
 		const content = sanitize(parsed.content);
-		return await Cache.create({
+		return await Content.create({
 			content,
 			title,
 			url,

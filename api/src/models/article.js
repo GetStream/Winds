@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 import autopopulate from 'mongoose-autopopulate';
-import Cache from './cache';
+import Content from './content';
 import { ParseContent } from '../parsers/content';
 import { getUrl } from '../utils/urls';
 import sanitize from '../utils/sanitize';
@@ -172,8 +172,8 @@ ArticleSchema.methods.getUrl = function() {
 ArticleSchema.methods.getParsedArticle = async function() {
 	const url = this.url;
 
-	const cached = await Cache.findOne({ url });
-	if (cached) return cached;
+	const content = await Content.findOne({ url });
+	if (content) return content;
 
 	try {
 		const parsed = await ParseContent(url);
@@ -187,7 +187,7 @@ ArticleSchema.methods.getParsedArticle = async function() {
 		// XKCD doesn't like Mercury
 		if (this.url.indexOf('https://xkcd') === 0) content = this.content;
 
-		return await Cache.create({
+		return await Content.create({
 			content,
 			title,
 			url,
