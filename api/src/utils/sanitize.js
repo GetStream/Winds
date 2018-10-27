@@ -22,6 +22,7 @@ const basicTags = [
 	'th',
 	'td',
 	'pre',
+	'figcaption',
 ];
 const extraTags = ['b', 'br', 'i', 'strong', 'em', 'strike', 'img'];
 
@@ -48,7 +49,8 @@ const options = {
 };
 
 const sanitize = (dirty) => {
-	return sanitizeHtml(dirty, options);
+	const html = sanitizeHtml(dirty, options);
+	return html.replace(/\n|\r/g, '');
 };
 
 export default sanitize;
