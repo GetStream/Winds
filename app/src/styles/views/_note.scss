@@ -68,3 +68,40 @@
 		transform: matrix(1, 0, 0, 1, 0, 0);
 	}
 }
+
+.note-input {
+	height: 200px;
+	width: 330px;
+
+	.buttons {
+		display: flex;
+		flex-direction: row-reverse;
+		margin-top: 20px;
+	}
+
+	button {
+		border: none;
+		color: $foreground-darkgray;
+		cursor: pointer;
+
+		&:last-child {
+			margin-right: auto;
+		}
+	}
+
+	p {
+		margin: 0 0 8px;
+
+		svg {
+			margin-left: 0;
+			margin-right: 10px;
+			transform: translateY(2px);
+		}
+	}
+
+	textarea {
+		height: 100px;
+		resize: none;
+		width: 100%;
+	}
+}
