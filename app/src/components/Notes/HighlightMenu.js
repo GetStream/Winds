@@ -37,13 +37,14 @@ class HighlightMenu extends React.Component {
 
 		if (!bounds || !wrapperBounds) return null;
 
-		let top = bounds.top - wrapperBounds.top - 10 - this.state.h;
+		let top = bounds.top - wrapperBounds.top - this.state.h - 10;
 		const reverseArrow = top <= 0;
-		top = top > 0 ? top : bounds.height + 10;
+		if (top <= 0) top = bounds.height - wrapperBounds.top + bounds.top + 10;
+
 		let left = bounds.left + bounds.width / 2 - wrapperBounds.left - this.state.w / 2;
-		if (left <= 0) left = 5;
-		if (left + this.state.w > wrapperBounds.right)
-			left = wrapperBounds.right - this.state.w / 2 - 5;
+		if (left <= 0) left = 2;
+		else if (left + this.state.w > wrapperBounds.width)
+			left = wrapperBounds.width - this.state.w - 10;
 
 		return (
 			<div
