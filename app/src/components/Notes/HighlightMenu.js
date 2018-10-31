@@ -32,10 +32,10 @@ class HighlightMenu extends React.Component {
 	};
 
 	render() {
-		const bounds = this.props.bounds;
-		const wrapperBounds = this.props.wrapperBounds;
+		if (!this.props.bounds || !this.props.wrapperBounds) return null;
 
-		if (!bounds || !wrapperBounds) return null;
+		const bounds = this.props.bounds.getBoundingClientRect();
+		const wrapperBounds = this.props.wrapperBounds.getBoundingClientRect();
 
 		let top = bounds.top - wrapperBounds.top - this.state.h - 10;
 		const reverseArrow = top <= 0;
@@ -52,16 +52,19 @@ class HighlightMenu extends React.Component {
 					this.props.active || this.state.init ? 'active' : ''
 				}`}
 				ref={this.refCallback}
-				style={{ top: `${top}px`, left: `${left}px` }}
+				style={{
+					top: `${top}px`,
+					left: `${left}px`,
+				}}
 			>
 				{this.state.note ? (
 					<NoteInput />
 				) : (
 					<>
 						{this.props.highlighted ? (
-							<HighlightRemove onClick={this.props.highlighting} />
+							<HighlightRemove onClick={this.props.removeHighlight} />
 						) : (
-							<Highlight onClick={this.props.highlighting} />
+							<Highlight onClick={this.props.addHighlight} />
 						)}
 						<NoteIcon onClick={this.openNote} />
 					</>
@@ -80,11 +83,12 @@ HighlightMenu.defualtProps = {
 HighlightMenu.propTypes = {
 	top: PropTypes.number,
 	left: PropTypes.number,
-	bounds: PropTypes.shape({}),
-	wrapperBounds: PropTypes.shape({}),
+	bounds: PropTypes.shape({ getBoundingClientRect: PropTypes.func }),
+	wrapperBounds: PropTypes.shape({ getBoundingClientRect: PropTypes.func }),
 	active: PropTypes.bool,
 	highlighted: PropTypes.bool,
-	highlighting: PropTypes.func,
+	addHighlight: PropTypes.func,
+	removeHighlight: PropTypes.func,
 };
 
 export default HighlightMenu;

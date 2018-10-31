@@ -54,6 +54,7 @@
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
     "node-notifier": "^5.2.1",
+    "rangy": "^1.3.0",
     "raven-js": "^3.27.0",
     "rc-slider": "^8.6.3",
     "react": "^16.5.2",
