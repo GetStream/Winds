@@ -147,8 +147,10 @@ STREAM_API_BASE_URL=https://windspersonalization.getstream.io/personalization/v1
 
 STREAM_APP_ID=YOUR_STREAM_APP_ID
 REACT_APP_STREAM_APP_ID=YOUR_STREAM_APP_ID
+REACT_APP_STREAM_API_KEY=YOUR_STREAM_API_KEY
 STREAM_API_KEY=YOUR_STREAM_API_KEY
 STREAM_API_SECRET=YOUR_STREAM_API_SECRET
+REACT_APP_STREAM_ANALYTICS=YOUR_ANALYTICS_TOKEN
 
 REACT_APP_ALGOLIA_APP_ID=YOUR_ALGOLIA_APP_ID
 REACT_APP_ALGOLIA_SEARCH_KEY=YOUR_ALGOLIA_SEARCH_ONLY_API_KEY
@@ -470,4 +472,3 @@ RSS is an amazing open standard. It is probably the most pleasant way to stay up
 * [NewsBlur](https://newsblur.com/)
 * [Feedity](https://feedity.com/)
 * [SaveRSS](https://mg.guelker.eu/saverss/)
-
