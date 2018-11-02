@@ -5,7 +5,18 @@
 
 
 	.featured-items-header {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
 		margin-left: 2em;
+		margin-right: 2em;
+
+		span {
+			color: $dim-gray;
+			cursor: pointer;
+			font-size: 0.98em;
+			font-weight: 500;
+		}
 	}
 
 	.featured-item-list {
