@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import { ReactComponent as NoteIcon } from '../../images/icons/note.svg';
 
 class NoteInput extends React.Component {
+	close = (e) => {
+		e.preventDefault();
+		this.props.close();
+	};
+
 	render() {
 		return (
 			<form className="note-input" onSubmit={this.handleSubmit}>
@@ -12,6 +17,7 @@ class NoteInput extends React.Component {
 					Notes
 				</p>
 				<textarea
+					autoFocus
 					className="input-box"
 					defaultValue={this.props.defVal}
 					name="note"
@@ -24,7 +30,7 @@ class NoteInput extends React.Component {
 						SAVE
 					</button>
 
-					<button onClick={this.closeModal}>CANCEL</button>
+					<button onClick={this.close}>CANCEL</button>
 					<button onClick={this.handleDelete}>DELETE</button>
 				</div>
 			</form>
@@ -36,6 +42,7 @@ NoteInput.defaultProps = {};
 
 NoteInput.propTypes = {
 	defVal: PropTypes.string,
+	close: PropTypes.func,
 };
 
 export default NoteInput;

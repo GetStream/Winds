@@ -210,7 +210,11 @@ class PodcastEpisode extends React.Component {
 						<Loader />
 					) : (
 						<div className="feed-content">
-							<HtmlRender content={this.state.content} />
+							<HtmlRender
+								content={this.state.content}
+								id={episode._id}
+								type="episode"
+							/>
 						</div>
 					)}
 

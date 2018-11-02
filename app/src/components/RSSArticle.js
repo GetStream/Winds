@@ -200,7 +200,13 @@ class RSSArticle extends React.Component {
 				</div>
 			);
 		} else {
-			articleContents = <HtmlRender content={this.state.content} />;
+			articleContents = (
+				<HtmlRender
+					content={this.state.content}
+					id={article._id}
+					type="article"
+				/>
+			);
 		}
 
 		return (

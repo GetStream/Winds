@@ -11,12 +11,14 @@ class HighlightMenu extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.resetState = {
 			note: false,
 			init: true,
 			w: 0,
 			h: 0,
 		};
+
+		this.state = { ...this.resetState };
 	}
 
 	openNote = (e) => {
@@ -29,6 +31,12 @@ class HighlightMenu extends React.Component {
 		if (!element) return;
 		const bounds = element.getBoundingClientRect();
 		this.setState({ w: bounds.width, h: bounds.height, init: false });
+		console.log(element);
+	};
+
+	close = () => {
+		this.setState({ ...this.resetState });
+		this.props.close();
 	};
 
 	render() {
@@ -58,7 +66,7 @@ class HighlightMenu extends React.Component {
 				}}
 			>
 				{this.state.note ? (
-					<NoteInput />
+					<NoteInput close={this.close} />
 				) : (
 					<>
 						{this.props.highlighted ? (
@@ -89,6 +97,7 @@ HighlightMenu.propTypes = {
 	highlighted: PropTypes.bool,
 	addHighlight: PropTypes.func,
 	removeHighlight: PropTypes.func,
+	close: PropTypes.func,
 };
 
 export default HighlightMenu;
