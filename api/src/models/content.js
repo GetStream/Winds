@@ -46,4 +46,4 @@ ContentSchema.plugin(timestamps, {
 });
 ContentSchema.plugin(mongooseStringQuery);
 
-module.exports = exports = mongoose.model('Cache', ContentSchema);
+module.exports = exports = mongoose.model('Content', ContentSchema);

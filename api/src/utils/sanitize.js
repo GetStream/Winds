@@ -49,8 +49,9 @@ const options = {
 };
 
 const sanitize = (dirty) => {
-	const html = sanitizeHtml(dirty, options);
-	return html.replace(/\n|\r/g, '');
+	const html = sanitizeHtml(dirty, options).replace(/\n|\r/g, '');
+	if (html === '') return '<p></p>';
+	return html;
 };
 
 export default sanitize;
