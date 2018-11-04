@@ -4,19 +4,6 @@ import PropTypes from 'prop-types';
 import { ReactComponent as NoteIcon } from '../../images/icons/note.svg';
 
 class NoteInput extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			text: props.defVal,
-		};
-	}
-
-	componentDidUpdate(prevProps) {
-		if (prevProps.defVal !== this.props.defVal)
-			this.setState({ text: this.props.defVal });
-	}
-
 	close = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -35,7 +22,7 @@ class NoteInput extends React.Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		this.props.addNote(this.state.text);
+		this.props.addNote();
 	};
 
 	render() {
@@ -49,10 +36,10 @@ class NoteInput extends React.Component {
 					autoFocus
 					className="input-box"
 					name="note"
-					onChange={(e) => this.setState({ text: e.target.value })}
+					onChange={(e) => this.props.setNoteText(e.target.value)}
 					placeholder="Enter new note"
 					type="text"
-					value={this.state.text}
+					value={this.props.noteText}
 				/>
 
 				<div className="buttons">
@@ -70,11 +57,11 @@ class NoteInput extends React.Component {
 NoteInput.defaultProps = {};
 
 NoteInput.propTypes = {
-	defVal: PropTypes.string,
+	noteText: PropTypes.string,
 	close: PropTypes.func,
 	deleteNote: PropTypes.func,
 	addNote: PropTypes.func,
-	restoreSelection: PropTypes.func,
+	setNoteText: PropTypes.func,
 };
 
 export default NoteInput;

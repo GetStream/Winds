@@ -40,15 +40,15 @@ class HighlightMenu extends React.Component {
 				}`}
 				ref={this.refCallback}
 				style={{
-					top: `${top}px`,
-					left: `${left}px`,
+					top,
+					left,
 				}}
 			>
 				{this.props.children}
 				<span
 					className="pointer-arrow"
 					style={{
-						marginTop: `${(this.state.h / 2) * (reverseArrow ? -1 : 1)}px`,
+						marginTop: (this.state.h / 2) * (reverseArrow ? -1 : 1),
 						transform: reverseArrow ? 'rotate(225deg)' : 'rotate(45deg)',
 					}}
 				/>
