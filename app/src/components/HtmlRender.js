@@ -3,88 +3,162 @@ import PropTypes from 'prop-types';
 import rangy from 'rangy';
 import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
+import 'rangy/lib/rangy-selectionsaverestore';
 import { processNodes, htmlparser2 } from 'react-html-parser';
 
+import NoteInput from './Notes/NoteInput';
 import HighlightMenu from './Notes/HighlightMenu';
 import { getNotes, newNote, deleteNote } from '../api/noteAPI';
+
+import { ReactComponent as NoteIcon } from '../images/icons/note.svg';
+import { ReactComponent as Highlight } from '../images/icons/highlight.svg';
+import { ReactComponent as HighlightRemove } from '../images/icons/highlight-remove.svg';
 
 class HtmlRender extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			showPopup: false,
+		this.resetState = {
+			isHighlight: false,
+			isNote: false,
 			highlighted: false,
+			noteText: '',
+		};
+
+		this.state = {
+			...this.resetState,
 			highlights: [],
 		};
 
 		this.wrapper = React.createRef();
+		this.contentWrapper = React.createRef();
 	}
 
 	componentDidMount() {
 		rangy.init();
 		this.highlighter = rangy.createHighlighter();
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight'));
+		this.highlighter.addClassApplier(rangy.createClassApplier('highlight-note'));
 
 		getNotes(this.props.type, this.props.id, ({ data }) => {
 			this.setState({ highlights: data });
 			const deserialize = data.reduce(
 				(acc, h, i) =>
-					acc.concat(`|${h.start}$${h.end}$${i}$highlight$feed-content`),
+					acc.concat(
+						`|${h.start}$${h.end}$${i}$${
+							h.text ? 'highlight-note' : 'highlight'
+						}$feed-content`,
+					),
 				'type:textContent',
 			);
 			this.highlighter.deserialize(deserialize);
 		});
 
-		this.wrapper.current.addEventListener('mouseup', this.onMouseUp);
+		this.contentWrapper.current.addEventListener('mouseup', this.onMouseUp);
+		this.contentWrapper.current.addEventListener('click', this.onClick);
 	}
 
 	componentWillUnmount() {
-		this.wrapper.current.removeEventListener('mouseup', this.onMouseUp);
+		this.contentWrapper.current.removeEventListener('mouseup', this.onMouseUp);
+		this.contentWrapper.current.removeEventListener('click', this.onClick);
 	}
 
-	onMouseUp = (e) => {
-		const selection = rangy.getSelection();
-		const range = selection.rangeCount && selection.nativeSelection.getRangeAt(0);
+	saveSelection = () => {
+		if (this.savedSel) rangy.removeMarkers(this.savedSel);
+		this.savedSel = rangy.saveSelection();
+	};
 
-		if (e.target.className === 'highlight') {
+	restoreSelection = () => {
+		if (this.savedSel) rangy.restoreSelection(this.savedSel);
+	};
+
+	hideMenu = () => {
+		const selection = rangy.getSelection().nativeSelection;
+		if (this.state.isHighlight && !selection.rangeCount)
+			this.setState({ ...this.resetState });
+	};
+
+	close = () => {
+		this.setState({ isHighlight: false, isNote: false });
+		rangy.getSelection().removeAllRanges();
+	};
+
+	onClick = (e) => {
+		this.hideMenu();
+
+		const className = e.target.getAttribute('class') || '';
+		if (className === 'highlight' || className === 'highlight-note') {
 			const highlightRange = rangy.createRange();
-			highlightRange.selectNodeContents(e.target);
+			highlightRange.selectNode(e.target);
+			const bound = highlightRange.nativeRange.getBoundingClientRect();
+			this.saveSelection();
 
+			const isNote = className === 'highlight-note';
 			this.setState({
-				range: highlightRange.nativeRange,
-				showPopup: true,
-				highlighted: true,
+				rangeBounds: {
+					top: bound.top,
+					left: bound.left,
+					height: bound.height,
+					width: bound.width,
+				},
+				isHighlight: !isNote,
+				highlighted: !isNote,
+				isNote: isNote,
+				noteText: '',
 			});
-		} else if (!range.collapsed) {
-			this.setState({ range, showPopup: true, highlighted: false });
-		} else {
-			this.setState({ showPopup: false });
 		}
 	};
 
-	addHighlight = () => {
-		const highlight = this.highlighter.highlightSelection('highlight', {
-			containerElementId: 'feed-content',
-		});
+	onMouseUp = () => {
+		const selection = rangy.getSelection().nativeSelection;
+		const range = selection.rangeCount && selection.getRangeAt(0);
+		let bound = range && range.getBoundingClientRect();
+
+		if (range && range.commonAncestorContainer.className === 'note-input') return;
+		else if (range && !range.collapsed) {
+			this.setState({
+				rangeBounds: {
+					top: bound.top,
+					left: bound.left,
+					height: bound.height,
+					width: bound.width,
+				},
+				isHighlight: true,
+				isNote: false,
+				highlighted: false,
+			});
+		} else {
+			this.setState({ ...this.resetState });
+		}
+	};
+
+	addHighlight = (text) => {
+		this.restoreSelection();
+		const highlight = this.highlighter.highlightSelection(
+			text ? 'highlight-note' : 'highlight',
+			{ containerElementId: 'feed-content' },
+		);
+		if (!highlight.length) return this.hideMenu();
 		const range = highlight[0].characterRange;
 		newNote(
 			this.props.type,
 			this.props.id,
 			range.start,
 			range.end,
-			null,
+			text,
 			({ data }) =>
 				this.setState({
 					highlights: [...this.state.highlights, data],
 				}),
 		);
-		this.setState({ showPopup: false });
+		this.setState({ ...this.resetState });
 		rangy.getSelection().removeAllRanges();
 	};
 
 	removeHighlight = () => {
+		this.restoreSelection();
 		const removed = this.highlighter.unhighlightSelection();
+		if (!removed.length) return this.hideMenu();
 		const range = removed[0].characterRange;
 		const highlight = this.state.highlights.find(
 			(h) => h.start === range.start && h.end === range.end,
@@ -94,6 +168,7 @@ class HtmlRender extends React.Component {
 				highlights: this.state.highlights.filter((h) => h._id !== highlight._id),
 			}),
 		);
+		this.setState({ ...this.resetState });
 		rangy.getSelection().removeAllRanges();
 	};
 
@@ -105,19 +180,38 @@ class HtmlRender extends React.Component {
 
 		return (
 			<div className="feed-content" id="feed-content" ref={this.wrapper}>
-				{html}
+				<div ref={this.contentWrapper}>{html}</div>
+
 				<HighlightMenu
-					active={this.state.showPopup}
-					addHighlight={this.addHighlight}
-					bounds={this.state.range}
-					close={() => {
-						this.setState({ showPopup: false });
-						rangy.getSelection().removeAllRanges();
-					}}
-					highlighted={this.state.highlighted}
-					removeHighlight={this.removeHighlight}
+					active={this.state.isNote}
+					bounds={this.state.rangeBounds}
 					wrapperBounds={this.wrapper.current}
-				/>
+				>
+					<NoteInput
+						addNote={this.addHighlight}
+						close={this.close}
+						defVal={this.state.noteText}
+						deleteNote={this.removeHighlight}
+						restoreSelection={this.restoreSelection}
+					/>
+				</HighlightMenu>
+
+				<HighlightMenu
+					active={this.state.isHighlight}
+					bounds={this.state.rangeBounds}
+					wrapperBounds={this.wrapper.current}
+				>
+					{this.state.highlighted ? (
+						<HighlightRemove onClick={this.removeHighlight} />
+					) : (
+						<Highlight onClick={() => this.addHighlight(null)} />
+					)}
+					<NoteIcon
+						onClick={() =>
+							this.setState({ isNote: true, isHighlight: false })
+						}
+					/>
+				</HighlightMenu>
 			</div>
 		);
 	}

@@ -26,21 +26,15 @@
 		user-select: none;
 	}
 
-	.pointer-down {
+	.pointer-arrow {
 		background: white;
 		border-bottom: 1px solid #dfe3e9;
 		border-right: 1px solid #dfe3e9;
 		display: block;
 		height: 10px;
-		margin-top: 22px;
 		position: absolute;
-		transform: rotate(45deg);
+		user-select: none;
 		width: 10px;
-
-		&.reverse {
-			margin-top: -21px;
-			transform: rotate(225deg);
-		}
 	}
 }
 
@@ -73,12 +67,14 @@
 
 .note-input {
 	height: 200px;
+	user-select: none;
 	width: 330px;
 
 	.buttons {
 		display: flex;
 		flex-direction: row-reverse;
 		margin-top: 20px;
+		user-select: none;
 	}
 
 	button {
@@ -95,6 +91,7 @@
 		margin: 0 0 8px;
 
 		svg {
+			cursor: default;
 			margin-left: 0;
 			margin-right: 10px;
 			transform: translateY(2px);
@@ -104,6 +101,7 @@
 	textarea {
 		height: 100px;
 		resize: none;
+		user-select: none;
 		width: 100%;
 	}
 }

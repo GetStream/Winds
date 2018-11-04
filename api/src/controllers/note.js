@@ -29,7 +29,7 @@ exports.post = async (req, res) => {
 		text: req.body.text || '',
 	};
 
-	if (!data.start || !data.end)
+	if (data.start == undefined || data.end == undefined)
 		return res.status(422).json({ error: 'missing start|end offset' });
 	if (!data.article && !data.episode)
 		return res.status(422).json({ error: 'missing article||episode id' });

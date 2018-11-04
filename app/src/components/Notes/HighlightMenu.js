@@ -1,48 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import NoteInput from './NoteInput';
-
-import { ReactComponent as NoteIcon } from '../../images/icons/note.svg';
-import { ReactComponent as Highlight } from '../../images/icons/highlight.svg';
-import { ReactComponent as HighlightRemove } from '../../images/icons/highlight-remove.svg';
-
 class HighlightMenu extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.resetState = {
-			note: false,
+		this.state = {
 			init: true,
 			w: 0,
 			h: 0,
 		};
-
-		this.state = { ...this.resetState };
 	}
-
-	openNote = (e) => {
-		e.stopPropagation();
-		e.preventDefault();
-		this.setState({ note: true });
-	};
 
 	refCallback = (element) => {
 		if (!element) return;
 		const bounds = element.getBoundingClientRect();
 		this.setState({ w: bounds.width, h: bounds.height, init: false });
-		console.log(element);
-	};
-
-	close = () => {
-		this.setState({ ...this.resetState });
-		this.props.close();
 	};
 
 	render() {
 		if (!this.props.bounds || !this.props.wrapperBounds) return null;
 
-		const bounds = this.props.bounds.getBoundingClientRect();
+		const bounds = this.props.bounds;
 		const wrapperBounds = this.props.wrapperBounds.getBoundingClientRect();
 
 		let top = bounds.top - wrapperBounds.top - this.state.h - 10;
@@ -65,19 +44,14 @@ class HighlightMenu extends React.Component {
 					left: `${left}px`,
 				}}
 			>
-				{this.state.note ? (
-					<NoteInput close={this.close} />
-				) : (
-					<>
-						{this.props.highlighted ? (
-							<HighlightRemove onClick={this.props.removeHighlight} />
-						) : (
-							<Highlight onClick={this.props.addHighlight} />
-						)}
-						<NoteIcon onClick={this.openNote} />
-					</>
-				)}
-				<span className={`pointer-down ${reverseArrow && 'reverse'}`} />
+				{this.props.children}
+				<span
+					className="pointer-arrow"
+					style={{
+						marginTop: `${(this.state.h / 2) * (reverseArrow ? -1 : 1)}px`,
+						transform: reverseArrow ? 'rotate(225deg)' : 'rotate(45deg)',
+					}}
+				/>
 			</div>
 		);
 	}
@@ -85,19 +59,13 @@ class HighlightMenu extends React.Component {
 
 HighlightMenu.defualtProps = {
 	active: false,
-	highlighted: false,
 };
 
 HighlightMenu.propTypes = {
-	top: PropTypes.number,
-	left: PropTypes.number,
-	bounds: PropTypes.shape({ getBoundingClientRect: PropTypes.func }),
-	wrapperBounds: PropTypes.shape({ getBoundingClientRect: PropTypes.func }),
+	children: PropTypes.node,
 	active: PropTypes.bool,
-	highlighted: PropTypes.bool,
-	addHighlight: PropTypes.func,
-	removeHighlight: PropTypes.func,
-	close: PropTypes.func,
+	bounds: PropTypes.shape({}),
+	wrapperBounds: PropTypes.shape({ getBoundingClientRect: PropTypes.func }),
 };
 
 export default HighlightMenu;
