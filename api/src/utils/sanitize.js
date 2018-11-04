@@ -1,6 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
 
-const basicTags = [
+const allowedTags = [
 	'h2',
 	'h3',
 	'h4',
@@ -23,29 +23,22 @@ const basicTags = [
 	'td',
 	'pre',
 	'figcaption',
+	'b',
+	'br',
+	'i',
+	'strong',
+	'em',
+	'strike',
+	'img',
 ];
-const extraTags = ['b', 'br', 'i', 'strong', 'em', 'strike', 'img'];
 
 const options = {
 	allowedIframeHostnames: false,
-	allowedTags: [...basicTags, ...extraTags],
+	allowedTags,
 	allowedAttributes: {
 		a: ['href', 'target', 'id'],
 		img: ['src', 'title', 'alt', 'data-*'],
-		'*': ['id'],
 	},
-	transformTags: basicTags.reduce((acc, tag) => {
-		acc[tag] = (tagName, attribs) => ({
-			tagName,
-			attribs: {
-				...attribs,
-				id: Math.random()
-					.toString()
-					.substring(2, 12),
-			},
-		});
-		return acc;
-	}, {}),
 };
 
 const sanitize = (dirty) => {
