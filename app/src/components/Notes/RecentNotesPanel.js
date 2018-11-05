@@ -5,17 +5,49 @@ import { connect } from 'react-redux';
 
 import Panel from '../Panel';
 import { ReactComponent as NoteIcon } from '../../images/icons/note.svg';
+import { ReactComponent as RssIcon } from '../../images/icons/rss-bg.svg';
+import { ReactComponent as PodcastIcon } from '../../images/icons/podcast.svg';
+import { ReactComponent as PenIcon } from '../../images/icons/pen.svg';
+import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
 
 class RecentNotesPanel extends React.Component {
 	render() {
+		const recentNotes = this.props.recentNotes;
+		const tags = this.props.tags;
+
 		return (
-			<Panel expandable={!!this.props.notes.length} headerText="Recent Notes">
-				{this.props.notes.length ? (
-					this.props.notes.slice(0, 20).map((note) => (
-						<Link key={note._id} to={`/notes/${note._id}`}>
-							<div>{note.title}</div>
-						</Link>
-					))
+			<Panel
+				expandSize={2}
+				expandable={!!this.props.recentNotes.length}
+				headerText="Recent Notes"
+			>
+				{recentNotes.length ? (
+					recentNotes.map((n) => {
+						const isArticle = n.type === 'articles';
+						const link = isArticle
+							? `/rss/${n.rss._id}/articles/${n._id}`
+							: `/podcasts/${n.podcast._id}/episodes/${n._id}`;
+						return (
+							<Link className="notes-panel" key={n._id} to={link}>
+								<div className="title">
+									{isArticle ? <RssIcon /> : <PodcastIcon />}
+									{n.title}
+								</div>
+								<div className="numbers">
+									<span>
+										<NoteIcon /> {n.notes} Notes
+									</span>
+									<span>
+										<PenIcon /> {n.highlights} Highlights
+									</span>
+									<span>
+										<TagIcon />{' '}
+										{tags.filter((tag) => tag === n._id).length} Tags
+									</span>
+								</div>
+							</Link>
+						);
+					})
 				) : (
 					<div className="no-content">
 						<NoteIcon />
@@ -28,16 +60,22 @@ class RecentNotesPanel extends React.Component {
 }
 
 RecentNotesPanel.defaultProps = {
-	notes: [],
+	recentNotes: [],
+	tags: [],
 };
 
 RecentNotesPanel.propTypes = {
-	notes: PropTypes.arrayOf(PropTypes.shape({})),
+	recentNotes: PropTypes.arrayOf(PropTypes.shape({})),
+	tags: PropTypes.arrayOf(PropTypes.string),
 	dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-	notes: state.notes || [],
+	recentNotes: state.recentNotes || [],
+	tags: (state.tags || []).reduce((acc, tag) => {
+		acc.push(...tag.episode.map((e) => e._id), ...tag.article.map((a) => a._id));
+		return acc;
+	}, []),
 });
 
 export default connect(mapStateToProps)(RecentNotesPanel);

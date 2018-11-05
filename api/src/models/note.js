@@ -14,10 +14,12 @@ export const NoteSchema = new Schema(
 		episode: {
 			type: Schema.Types.ObjectId,
 			ref: 'Episode',
+			autopopulate: true,
 		},
 		article: {
 			type: Schema.Types.ObjectId,
 			ref: 'Article',
+			autopopulate: true,
 		},
 		start: {
 			type: Number,

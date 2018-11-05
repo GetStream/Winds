@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
+import { connect } from 'react-redux';
+
 import rangy from 'rangy';
 import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
@@ -152,6 +154,7 @@ class HtmlRender extends React.Component {
 		if (!highlight.length) return this.close();
 		const range = highlight[0].characterRange;
 		newNote(
+			this.props.dispatch,
 			this.props.type,
 			this.props.id,
 			range.start,
@@ -174,7 +177,7 @@ class HtmlRender extends React.Component {
 		const highlight = this.state.highlights.find(
 			(h) => h.start === range.start && h.end === range.end,
 		);
-		deleteNote(highlight._id, () =>
+		deleteNote(this.props.dispatch, highlight._id, () =>
 			this.setState({
 				highlights: this.state.highlights.filter((h) => h._id !== highlight._id),
 			}),
@@ -250,9 +253,10 @@ class HtmlRender extends React.Component {
 }
 
 HtmlRender.propTypes = {
+	dispatch: PropTypes.func.isRequired,
 	content: PropTypes.string,
 	type: PropTypes.string.isRequired,
 	id: PropTypes.string,
 };
 
-export default HtmlRender;
+export default connect()(HtmlRender);

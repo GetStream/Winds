@@ -110,3 +110,40 @@
 	left: 0;
 	position: absolute;
 }
+
+.panel {
+	.notes-panel {
+		flex-direction: column;
+		padding: 0.82em 0;
+
+		.title {
+			margin-bottom: 10px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 95%;
+
+			svg {
+				margin-right: 10px;
+				transform: translateY(2px);
+			}
+		}
+
+		.numbers {
+			align-items: center;
+			display: flex;
+			justify-content: space-between;
+			padding: 0 1.8em;
+			width: 100%;
+
+			svg {
+				margin-right: 3px;
+			}
+
+			span {
+				align-items: center;
+				display: inline-flex;
+			}
+		}
+	}
+}
