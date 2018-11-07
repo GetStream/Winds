@@ -1,14 +1,14 @@
 import fetch from '../util/fetch';
 
-export const getRecentNotes = (dispatch) => {
-	fetch('GET', '/notes?sort=recent')
-		.then(({ data }) => dispatch({ data, type: 'BATCH_UPDATE_RECENT_NOTES' }))
+export const getNotes = (dispatch) => {
+	fetch('GET', '/notes')
+		.then(({ data }) => dispatch({ data, type: 'BATCH_UPDATE_NOTES' }))
 		.catch((err) => {
 			console.log(err); // eslint-disable-line no-console
 		});
 };
 
-export const getNotes = (type, id, thenFn, catchFn) => {
+export const getFeedNotes = (type, id, thenFn, catchFn) => {
 	fetch('GET', `/notes/${type === 'article' ? 'article' : 'episode'}/${id}`)
 		.then(thenFn)
 		.catch(catchFn);
@@ -19,7 +19,7 @@ export const newNote = (dispatch, type, id, start, end, text, thenFn, catchFn) =
 
 	fetch('POST', '/notes', { start, end, text, ...typeId })
 		.then((res) => {
-			getRecentNotes(dispatch);
+			getNotes(dispatch);
 			if (thenFn) thenFn(res);
 		})
 		.catch(catchFn);
@@ -28,7 +28,7 @@ export const newNote = (dispatch, type, id, start, end, text, thenFn, catchFn) =
 export const deleteNote = async (dispatch, noteId, thenFn, catchFn) => {
 	fetch('DELETE', `/notes/${noteId}`)
 		.then((res) => {
-			getRecentNotes(dispatch);
+			getNotes(dispatch);
 			if (thenFn) thenFn(res);
 		})
 		.catch(catchFn);

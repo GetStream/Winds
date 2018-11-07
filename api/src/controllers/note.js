@@ -1,23 +1,7 @@
 import Note from '../models/note';
 
 exports.list = async (req, res) => {
-	const query = req.query || {};
-	if (query.sort !== 'recent') return res.json(await Note.find({ user: req.user.sub }));
-
-	const recents = await Note.find({ user: req.user.sub })
-		.sort({ updatedAt: -1 })
-		.limit(20)
-		.lean();
-
-	const articleIds = recents.filter((n) => !!n.article).map((n) => n.article);
-	const episodeIds = recents.filter((n) => !!n.episode).map((n) => n.episode);
-
-	const notes = await Note.find({
-		user: req.user.sub,
-		$or: [{ article: { $in: articleIds } }, { episode: { $in: episodeIds } }],
-	}).sort({ updatedAt: -1 });
-
-	res.json(notes);
+	res.json(await Note.find({ user: req.user.sub }).sort({ updatedAt: -1 }));
 };
 
 exports.listArticleNotes = async (req, res) => {

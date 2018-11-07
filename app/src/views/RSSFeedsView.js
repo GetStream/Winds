@@ -26,12 +26,18 @@ class RSSFeedsView extends React.Component {
 	componentDidMount() {
 		this.container.current.focus();
 
-		if (this.props.match.params.rssFeedID)
+		if (
+			this.props.location.search.includes('featured') &&
+			this.props.match.params.rssFeedID
+		)
 			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.match.params.rssFeedID !== prevProps.match.params.rssFeedID)
+		if (
+			this.props.location.search.includes('featured') &&
+			this.props.match.params.rssFeedID !== prevProps.match.params.rssFeedID
+		)
 			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
@@ -42,8 +48,10 @@ class RSSFeedsView extends React.Component {
 	};
 
 	render() {
+		const featured = this.props.location.search.includes('featured');
+
 		let leftColumn;
-		if (new URLSearchParams(this.props.location.search).get('featured') === 'true') {
+		if (featured) {
 			leftColumn = (
 				<React.Fragment>
 					<div className="panels-header">
@@ -92,12 +100,7 @@ class RSSFeedsView extends React.Component {
 
 		return (
 			<div
-				className={`rss-view ${
-					new URLSearchParams(this.props.location.search).get('featured') ===
-					'true'
-						? 'featured'
-						: ''
-				}`}
+				className={`rss-view ${featured ? 'featured' : ''}`}
 				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)

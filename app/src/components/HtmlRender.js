@@ -10,7 +10,7 @@ import 'rangy/lib/rangy-selectionsaverestore';
 
 import NoteInput from './Notes/NoteInput';
 import HighlightMenu from './Notes/HighlightMenu';
-import { getNotes, newNote, deleteNote } from '../api/noteAPI';
+import { newNote, deleteNote } from '../api/noteAPI';
 
 import { ReactComponent as NoteIcon } from '../images/icons/note.svg';
 import { ReactComponent as NoteGreenIcon } from '../images/icons/note-green.svg';
@@ -31,7 +31,6 @@ class HtmlRender extends React.Component {
 		this.state = {
 			...this.resetState,
 			html: [],
-			highlights: [],
 		};
 
 		this.wrapper = React.createRef();
@@ -39,25 +38,12 @@ class HtmlRender extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setHtml();
 		rangy.init();
 		this.highlighter = rangy.createHighlighter();
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight'));
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight-note'));
 
-		getNotes(this.props.type, this.props.id, ({ data }) => {
-			this.setState({ highlights: data });
-			const deserialize = data.reduce(
-				(acc, h, i) =>
-					acc.concat(
-						`|${h.start}$${h.end}$${i}$${
-							h.text ? 'highlight-note' : 'highlight'
-						}$feed-content`,
-					),
-				'type:textContent',
-			);
-			this.highlighter.deserialize(deserialize);
-		});
+		this.setHtml();
 
 		this.contentWrapper.current.addEventListener('mouseup', this.onMouseUp);
 		this.contentWrapper.current.addEventListener('click', this.onClick);
@@ -74,7 +60,19 @@ class HtmlRender extends React.Component {
 
 	setHtml = () => {
 		if (this.props.content)
-			this.setState({ html: ReactHtmlParser(this.props.content) });
+			this.setState({ html: ReactHtmlParser(this.props.content) }, () => {
+				const deserialize = this.props.highlights.reduce(
+					(acc, h, i) =>
+						acc.concat(
+							`|${h.start}$${h.end}$${i}$${
+								h.text ? 'highlight-note' : 'highlight'
+							}$feed-content`,
+						),
+					'type:textContent',
+				);
+				this.highlighter.deserialize(deserialize);
+				this.forceUpdate();
+			});
 	};
 
 	saveSelection = () => {
@@ -95,7 +93,7 @@ class HtmlRender extends React.Component {
 		let range = this.highlighter.getHighlightForElement(element);
 		if (!range) return null;
 		range = range.characterRange;
-		return this.state.highlights.find(
+		return this.props.highlights.find(
 			(h) => h.start === range.start && h.end === range.end,
 		);
 	};
@@ -123,7 +121,7 @@ class HtmlRender extends React.Component {
 				isHighlight: !isNote,
 				highlighted: !isNote,
 				isNote: isNote,
-				noteText: highlight.text,
+				noteText: highlight ? highlight.text : '',
 			});
 		}
 	};
@@ -169,10 +167,6 @@ class HtmlRender extends React.Component {
 			range.start,
 			range.end,
 			this.state.noteText,
-			({ data }) =>
-				this.setState({
-					highlights: [...this.state.highlights, data],
-				}),
 		);
 		this.setState({ ...this.resetState });
 		rangy.getSelection().removeAllRanges();
@@ -183,14 +177,10 @@ class HtmlRender extends React.Component {
 		const removed = this.highlighter.unhighlightSelection();
 		if (!removed.length) return this.close();
 		const range = removed[0].characterRange;
-		const highlight = this.state.highlights.find(
+		const highlight = this.props.highlights.find(
 			(h) => h.start === range.start && h.end === range.end,
 		);
-		deleteNote(this.props.dispatch, highlight._id, () =>
-			this.setState({
-				highlights: this.state.highlights.filter((h) => h._id !== highlight._id),
-			}),
-		);
+		deleteNote(this.props.dispatch, highlight._id);
 		this.setState({ ...this.resetState });
 		rangy.getSelection().removeAllRanges();
 	};
@@ -222,7 +212,9 @@ class HtmlRender extends React.Component {
 				<div id="feed-content" ref={this.contentWrapper}>
 					{this.state.html}
 				</div>
+
 				{this.renderNoteIcons()}
+
 				<HighlightMenu
 					active={this.state.isNote}
 					bounds={this.state.rangeBounds}
@@ -263,6 +255,11 @@ HtmlRender.propTypes = {
 	content: PropTypes.string,
 	type: PropTypes.string.isRequired,
 	id: PropTypes.string,
+	highlights: PropTypes.array,
 };
 
-export default connect()(HtmlRender);
+const mapStateToProps = (state, ownParams) => ({
+	highlights: (state.notes && state.notes[ownParams.id]) || [],
+});
+
+export default connect(mapStateToProps)(HtmlRender);

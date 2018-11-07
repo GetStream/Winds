@@ -217,31 +217,18 @@ export default (previousState = {}, action) => {
 		return { ...previousState, folders: [...action.data] };
 	} else if (action.type === 'BATCH_UPDATE_TAGS') {
 		return { ...previousState, tags: [...action.data] };
-	} else if (action.type === 'BATCH_UPDATE_RECENT_NOTES') {
-		const notesObj = action.data.reduce((acc, note) => {
+	} else if (action.type === 'BATCH_UPDATE_NOTES') {
+		const notes = action.data.reduce((acc, note) => {
 			const id = note.article ? note.article._id : note.episode._id;
 			if (!acc[id]) acc[id] = [];
 			acc[id].push(note);
 			return acc;
 		}, {});
 
-		const recentNotes = action.data
+		const notesOrder = action.data
 			.map((n) => (n.article ? n.article._id : n.episode._id))
-			.filter((value, index, self) => self.indexOf(value) === index)
-			.map((id) => notesObj[id])
-			.map((note) => {
-				return note.reduce((acc, note) => {
-					if (!acc._id) {
-						const data = note.article ? note.article : note.episode;
-						acc = { ...data, notes: 0, highlights: 0 };
-					}
-					if (note.text) acc.notes += 1;
-					else acc.highlights += 1;
+			.filter((value, index, self) => self.indexOf(value) === index);
 
-					return acc;
-				}, {});
-			});
-
-		return { ...previousState, recentNotes };
+		return { ...previousState, notes, notesOrder };
 	} else return previousState;
 };

@@ -12,7 +12,7 @@ import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
 
 class RecentNotesPanel extends React.Component {
 	render() {
-		const recentNotes = this.props.recentNotes;
+		const recentNotes = this.props.recentNotes.slice(0, 20);
 		const tags = this.props.tags;
 
 		return (
@@ -25,8 +25,9 @@ class RecentNotesPanel extends React.Component {
 					recentNotes.map((n) => {
 						const isArticle = n.type === 'articles';
 						const link = isArticle
-							? `/rss/${n.rss._id}/articles/${n._id}`
-							: `/podcasts/${n.podcast._id}/episodes/${n._id}`;
+							? `/rss/${n.rss}/articles/${n._id}`
+							: `/podcasts/${n.podcast}/episodes/${n._id}`;
+
 						return (
 							<Link className="notes-panel" key={n._id} to={link}>
 								<div className="title">
@@ -35,10 +36,10 @@ class RecentNotesPanel extends React.Component {
 								</div>
 								<div className="numbers">
 									<span>
-										<NoteIcon /> {n.notes} Notes
+										<NoteIcon /> {n.notes.length} Notes
 									</span>
 									<span>
-										<PenIcon /> {n.highlights} Highlights
+										<PenIcon /> {n.highlights.length} Highlights
 									</span>
 									<span>
 										<TagIcon />{' '}
@@ -70,12 +71,29 @@ RecentNotesPanel.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-	recentNotes: state.recentNotes || [],
-	tags: (state.tags || []).reduce((acc, tag) => {
-		acc.push(...tag.episode.map((e) => e._id), ...tag.article.map((a) => a._id));
-		return acc;
-	}, []),
-});
+const mapStateToProps = (state) => {
+	const recentNotes = (state.notesOrder || [])
+		.map((id) => state.notes[id])
+		.map((note) => {
+			return note.reduce((acc, note) => {
+				if (!acc._id) {
+					const data = note.article ? note.article : note.episode;
+					acc = { ...data, notes: [], highlights: [] };
+				}
+				if (note.text) acc.notes.push(note);
+				else acc.highlights.push(note);
+
+				return acc;
+			}, {});
+		});
+
+	return {
+		recentNotes,
+		tags: (state.tags || []).reduce((acc, tag) => {
+			acc.push(...tag.episode.map((e) => e._id), ...tag.article.map((a) => a._id));
+			return acc;
+		}, []),
+	};
+};
 
 export default connect(mapStateToProps)(RecentNotesPanel);

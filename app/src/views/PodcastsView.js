@@ -26,12 +26,18 @@ class PodcastsView extends React.Component {
 	componentDidMount() {
 		this.container.current.focus();
 
-		if (this.props.match.params.podcastID)
+		if (
+			this.props.location.search.includes('featured') &&
+			this.props.match.params.podcastID
+		)
 			getPodcastById(this.props.dispatch, this.props.match.params.podcastID);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.match.params.podcastID !== prevProps.match.params.podcastID)
+		if (
+			this.props.location.search.includes('featured') &&
+			this.props.match.params.podcastID !== prevProps.match.params.podcastID
+		)
 			getPodcastById(this.props.dispatch, this.props.match.params.podcastID);
 	}
 
@@ -42,10 +48,10 @@ class PodcastsView extends React.Component {
 	};
 
 	render() {
-		let headerComponent = <h1>Podcasts</h1>;
-		let leftColumn;
+		const featured = this.props.location.search.includes('featured');
 
-		if (new URLSearchParams(this.props.location.search).get('featured') === 'true') {
+		let leftColumn;
+		if (featured) {
 			leftColumn = (
 				<React.Fragment>
 					<div className="panels-header">
@@ -76,7 +82,7 @@ class PodcastsView extends React.Component {
 					<Tabs
 						componentClass="panels"
 						headerClass="panels-header"
-						headerComponent={headerComponent}
+						headerComponent={<h1>Podcasts</h1>}
 						tabGroup="podcast-view"
 					>
 						<div tabTitle="All Podcasts">
@@ -96,12 +102,7 @@ class PodcastsView extends React.Component {
 
 		return (
 			<div
-				className={`podcasts-view ${
-					new URLSearchParams(this.props.location.search).get('featured') ===
-					'true'
-						? 'featured'
-						: ''
-				}`}
+				className={`podcasts-view ${featured ? 'featured' : ''}`}
 				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
