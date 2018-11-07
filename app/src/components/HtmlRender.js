@@ -38,12 +38,10 @@ class HtmlRender extends React.Component {
 	}
 
 	componentDidMount() {
-		window.x = this.contentWrapper.current;
 		rangy.init();
 		this.highlighter = rangy.createHighlighter();
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight'));
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight-note'));
-		window.highlighter = this.highlighter;
 
 		getNotes(this.props.type, this.props.id, ({ data }) => {
 			this.setState({ highlights: data });

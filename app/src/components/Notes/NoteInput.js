@@ -27,7 +27,16 @@ class NoteInput extends React.Component {
 
 	render() {
 		return (
-			<form className="note-input" onSubmit={this.handleSubmit}>
+			<form
+				className="note-input"
+				onKeyDown={(e) => {
+					if (e.keyCode === 27) {
+						e.stopPropagation();
+						this.props.close();
+					}
+				}}
+				onSubmit={this.handleSubmit}
+			>
 				<p>
 					<NoteIcon />
 					Notes
