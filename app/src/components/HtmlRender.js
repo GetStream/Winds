@@ -30,6 +30,7 @@ class HtmlRender extends React.Component {
 
 		this.state = {
 			...this.resetState,
+			html: [],
 			highlights: [],
 		};
 
@@ -38,6 +39,7 @@ class HtmlRender extends React.Component {
 	}
 
 	componentDidMount() {
+		this.setHtml();
 		rangy.init();
 		this.highlighter = rangy.createHighlighter();
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight'));
@@ -61,10 +63,19 @@ class HtmlRender extends React.Component {
 		this.contentWrapper.current.addEventListener('click', this.onClick);
 	}
 
+	componentDidUpdate(prevProps) {
+		if (this.props.content !== prevProps.content) this.setHtml();
+	}
+
 	componentWillUnmount() {
 		this.contentWrapper.current.removeEventListener('mouseup', this.onMouseUp);
 		this.contentWrapper.current.removeEventListener('click', this.onClick);
 	}
+
+	setHtml = () => {
+		if (this.props.content)
+			this.setState({ html: ReactHtmlParser(this.props.content) });
+	};
 
 	saveSelection = () => {
 		if (this.savedSel) rangy.removeMarkers(this.savedSel);
@@ -206,15 +217,12 @@ class HtmlRender extends React.Component {
 	};
 
 	render() {
-		const html = ReactHtmlParser(this.props.content);
-		const noteIcons = this.renderNoteIcons();
-
 		return (
 			<div className="feed-content" ref={this.wrapper}>
 				<div id="feed-content" ref={this.contentWrapper}>
-					{html}
+					{this.state.html}
 				</div>
-				{noteIcons}
+				{this.renderNoteIcons()}
 				<HighlightMenu
 					active={this.state.isNote}
 					bounds={this.state.rangeBounds}
