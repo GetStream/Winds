@@ -107,7 +107,7 @@
 }
 
 .highlight-icon {
-	left: 0;
+	left: -40px;
 	position: absolute;
 }
 
@@ -115,6 +115,10 @@
 	.notes-panel {
 		flex-direction: column;
 		padding: 0.82em 0;
+
+		&:hover {
+			margin-left: 1em;
+		}
 
 		.title {
 			margin-bottom: 10px;
