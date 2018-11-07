@@ -13,24 +13,27 @@ import AliasModal from './AliasModal';
 import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import Loader from './Loader';
 import { followRss, unfollowRss } from '../api';
-import loaderIcon from '../images/loaders/default.svg';
+import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
 import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			articleCursor: 1,
+		this.resetState = {
+			cursor: 1,
 			sortBy: 'latest',
-			newArticlesAvailable: false,
+			newArticles: false,
 			menuPopover: false,
 			aliasModal: false,
 			folderModal: false,
+			reachedEndOfFeed: false,
 			loading: true,
 			rssFeed: { images: {} },
 			articles: [],
 		};
+
+		this.state = { ...this.resetState };
 
 		this.contentsEl = React.createRef();
 	}
@@ -40,7 +43,7 @@ class RSSArticleList extends React.Component {
 
 		this.subscription = window.streamClient
 			.feed('rss', rssFeedID, streamFeedToken)
-			.subscribe(() => this.setState({ newArticlesAvailable: true }));
+			.subscribe(() => this.setState({ newArticles: true }));
 	}
 
 	unsubscribeFromStreamFeed() {
@@ -68,9 +71,8 @@ class RSSArticleList extends React.Component {
 				label: 'viewed_rss_feed',
 				content: `rss:${rssFeedID}`,
 			});
-			this.unsubscribeFromStreamFeed();
 
-			this.setState({ articleCursor: 1 }, () => {
+			this.setState({ ...this.resetState }, () => {
 				this.getRSSFeed(rssFeedID);
 				this.getRSSArticles(rssFeedID);
 			});
@@ -120,7 +122,7 @@ class RSSArticleList extends React.Component {
 			'/articles',
 			{},
 			{
-				page: newFeed ? 1 : this.state.articleCursor,
+				page: newFeed ? 1 : this.state.cursor,
 				per_page: 10,
 				rss: rssFeedID,
 				sort_by: 'publicationDate,desc',
@@ -128,7 +130,7 @@ class RSSArticleList extends React.Component {
 		)
 			.then((res) => {
 				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
-				else if (newFeed) this.setState({ articles: res.data });
+				else if (newFeed) this.setState({ articles: res.data, cursor: 1 });
 				else
 					this.setState((prevState) => ({
 						articles: this.uniqueArr([...prevState.articles, ...res.data]),
@@ -155,40 +157,38 @@ class RSSArticleList extends React.Component {
 		if (this.state.loading) return <Loader />;
 
 		const rssFeed = this.state.rssFeed;
-
 		const isFollowing = this.props.following[rssFeed._id]
 			? this.props.following[rssFeed._id]
 			: false;
-
 		const title = this.props.aliases[rssFeed._id]
 			? this.props.aliases[rssFeed._id].alias
 			: rssFeed.title;
-
-		let articles = this.state.articles.sort(
-			(a, b) =>
-				moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf(),
-		);
-
-		articles = articles.map((article) => {
-			if (this.props.pinnedArticles[article._id]) {
-				article.pinID = this.props.pinnedArticles[article._id]._id;
-			} else article.pinID = '';
-
-			if (
-				this.props.feeds.article &&
-				this.props.feeds.article.indexOf(article._id) < 20 &&
-				this.props.feeds.article.indexOf(article._id) !== -1
-			) {
-				article.recent = true;
-			} else article.recent = false;
-
-			return article;
-		});
-
 		const currFolder = this.props.folders.find((folder) => {
 			for (const feed of folder.rss) if (feed._id === rssFeed._id) return true;
 			return false;
 		});
+		
+		const articles = this.state.articles
+			.sort(
+				(a, b) =>
+					moment(b.publicationDate).valueOf() -
+					moment(a.publicationDate).valueOf(),
+			)
+			.map((article) => {
+				if (this.props.pinnedArticles[article._id]) {
+					article.pinID = this.props.pinnedArticles[article._id]._id;
+				} else article.pinID = '';
+
+				if (
+					this.props.feeds.article &&
+					this.props.feeds.article.indexOf(article._id) < 20 &&
+					this.props.feeds.article.indexOf(article._id) !== -1
+				) {
+					article.recent = true;
+				} else article.recent = false;
+
+				return article;
+			});
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
@@ -263,15 +263,13 @@ class RSSArticleList extends React.Component {
 							<Waypoint
 								onEnter={() => {
 									this.setState(
-										(prevState) => ({
-											articleCursor: prevState.articleCursor + 1,
-										}),
+										(prevState) => ({ cursor: prevState.cursor + 1 }),
 										() => this.getRSSArticles(rssFeed._id),
 									);
 								}}
 							/>
 							<div className="end-loader">
-								<Img src={loaderIcon} />
+								<LoaderIcon />
 							</div>
 						</div>
 					)}
@@ -338,12 +336,12 @@ class RSSArticleList extends React.Component {
 				/>
 
 				<div className="list content" ref={this.contentsEl}>
-					{this.state.newArticlesAvailable && (
+					{this.state.newArticles && (
 						<div
 							className="toast"
 							onClick={() => {
 								this.getRSSArticles(rssFeed._id, true);
-								this.setState({ newArticlesAvailable: false });
+								this.setState({ newArticles: false });
 							}}
 						>
 							New Articles Available – Click to Refresh

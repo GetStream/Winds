@@ -28,6 +28,7 @@ class PodcastEpisodesView extends React.Component {
 			menuPopover: false,
 			aliasModal: false,
 			folderModal: false,
+			reachedEndOfFeed: false,
 			loading: true,
 			podcast: { images: {} },
 			episodes: [],
@@ -118,7 +119,7 @@ class PodcastEpisodesView extends React.Component {
 		)
 			.then((res) => {
 				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
-				else if (newFeed) this.setState({ episodes: res.data });
+				else if (newFeed) this.setState({ episodes: res.data, cursor: 1 });
 				else
 					this.setState((prevState) => ({
 						episodes: this.uniqueArr([...prevState.episodes, ...res.data]),
