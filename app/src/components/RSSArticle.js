@@ -290,7 +290,7 @@ RSSArticle.propTypes = {
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			articleID: PropTypes.string.isRequired,
-			rssFeedID: PropTypes.string.isRequired,
+			rssFeedID: PropTypes.string,
 		}),
 	}),
 };

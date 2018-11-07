@@ -24,12 +24,13 @@ class RecentNotesPanel extends React.Component {
 				{recentNotes.length ? (
 					recentNotes.map((n) => {
 						const isArticle = n.type === 'articles';
-						const link = isArticle
-							? `/rss/${n.rss}/articles/${n._id}`
-							: `/podcasts/${n.podcast}/episodes/${n._id}`;
 
 						return (
-							<Link className="notes-panel" key={n._id} to={link}>
+							<Link
+								className="notes-panel"
+								key={n._id}
+								to={`/folders/${isArticle ? 'a' : 'e'}/${n._id}`}
+							>
 								<div className="title">
 									{isArticle ? <RssIcon /> : <PodcastIcon />}
 									{n.title}

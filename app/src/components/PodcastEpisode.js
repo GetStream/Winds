@@ -209,13 +209,11 @@ class PodcastEpisode extends React.Component {
 					{!this.state.errorContent && this.state.loadingContent ? (
 						<Loader />
 					) : (
-						<div className="feed-content">
-							<HtmlRender
-								content={this.state.content}
-								id={episode._id}
-								type="episode"
-							/>
-						</div>
+						<HtmlRender
+							content={this.state.content}
+							id={episode._id}
+							type="episode"
+						/>
 					)}
 
 					{this.state.errorContent &&
@@ -250,7 +248,7 @@ PodcastEpisode.propTypes = {
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			episodeID: PropTypes.string.isRequired,
-			podcastID: PropTypes.string.isRequired,
+			podcastID: PropTypes.string,
 		}),
 	}),
 	player: PropTypes.shape({

@@ -18,9 +18,13 @@ class BookmarkPanel extends React.Component {
 
 	render() {
 		let bookmarks = [];
+		let folderView = false;
 		if (this.props.type === 'article') bookmarks = this.props.articles;
 		else if (this.props.type === 'episode') bookmarks = this.props.episodes;
-		else bookmarks = [...this.props.articles, ...this.props.episodes];
+		else {
+			bookmarks = [...this.props.articles, ...this.props.episodes];
+			folderView = true;
+		}
 
 		bookmarks = bookmarks.sort(
 			(a, b) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
@@ -33,9 +37,13 @@ class BookmarkPanel extends React.Component {
 						return (
 							<Link
 								key={bookmark.article._id}
-								to={`/rss/${bookmark.article.rss._id}/articles/${
-									bookmark.article._id
-								}`}
+								to={
+									folderView
+										? `/folders/a/${bookmark.article._id}`
+										: `/rss/${bookmark.article.rss._id}/articles/${
+											bookmark.article._id
+										  }`
+								}
 							>
 								<Img
 									loader={<div className="placeholder" />}
@@ -56,9 +64,13 @@ class BookmarkPanel extends React.Component {
 						return (
 							<Link
 								key={bookmark.episode._id}
-								to={`/podcasts/${bookmark.episode.podcast._id}/episodes/${
-									bookmark.episode._id
-								}`}
+								to={
+									folderView
+										? `/folders/e/${bookmark.episode._id}`
+										: `/podcasts/${
+											bookmark.episode.podcast._id
+										  }/episodes/${bookmark.episode._id}`
+								}
 							>
 								<Img
 									loader={<div className="placeholder" />}

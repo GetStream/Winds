@@ -69,7 +69,7 @@ class RSSFeedsView extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="panels featured-description">
+					<div className="panels">
 						<label>About {this.props.rssFeed.title}</label>
 						<h1>{this.props.rssFeed.description}</h1>
 						<div>{this.props.rssFeed.summary}</div>
@@ -100,7 +100,7 @@ class RSSFeedsView extends React.Component {
 
 		return (
 			<div
-				className={`rss-view ${featured ? 'featured' : ''}`}
+				className={`grid-view rss-view ${featured ? 'featured' : ''}`}
 				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)

@@ -5,6 +5,8 @@ import { Route, Switch } from 'react-router-dom';
 
 import Folder from '../components/Folder/Folder';
 import TagView from '../components/Tag/TagView';
+import RSSArticle from '../components/RSSArticle';
+import PodcastEpisode from '../components/PodcastEpisode';
 import RSSArticleList from '../components/RSSArticleList';
 import PodcastEpisodesView from '../components/PodcastEpisodesView';
 import Tabs from '../components/Tabs';
@@ -17,7 +19,7 @@ class FoldersView extends React.Component {
 	render() {
 		return (
 			<div
-				className="folder-view"
+				className="grid-view"
 				onKeyDown={(e) => e.keyCode === 27 && this.props.history.goBack()}
 				tabIndex="-1"
 			>
@@ -43,6 +45,8 @@ class FoldersView extends React.Component {
 
 				<Switch>
 					<Route component={TagView} path="/tags/:tagID" />
+					<Route component={RSSArticle} path="/folders/a/:articleID" />
+					<Route component={PodcastEpisode} path="/folders/e/:episodeID" />
 					<Route
 						component={PodcastEpisodesView}
 						path="/folders/:folderID/p/:podcastID"

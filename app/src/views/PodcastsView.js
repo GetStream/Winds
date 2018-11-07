@@ -55,7 +55,7 @@ class PodcastsView extends React.Component {
 			leftColumn = (
 				<React.Fragment>
 					<div className="panels-header">
-						<div className="featured-podcast">
+						<div className="featured">
 							<div
 								className="hero-card"
 								style={{
@@ -69,7 +69,7 @@ class PodcastsView extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="panels featured-description">
+					<div className="panels">
 						<label>About {this.props.podcast.title}</label>
 						<h1>{this.props.podcast.description}</h1>
 						<div>{this.props.podcast.summary}</div>
@@ -102,7 +102,7 @@ class PodcastsView extends React.Component {
 
 		return (
 			<div
-				className={`podcasts-view ${featured ? 'featured' : ''}`}
+				className={`grid-view podcasts-view ${featured ? 'featured' : ''}`}
 				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)
