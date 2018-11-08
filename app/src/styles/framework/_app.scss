@@ -26,3 +26,8 @@ body {
 	color: $foreground-black;
 	cursor: pointer;
 }
+
+.click,
+.clickable {
+	cursor: pointer;
+}

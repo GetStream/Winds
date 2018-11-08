@@ -5,77 +5,108 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
-import Panel from '../Panel';
+import NewFolderModal from './NewFolderModal';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import { ReactComponent as FolderIcon } from '../../images/icons/folder.svg';
 import { ReactComponent as FolderIconOpen } from '../../images/icons/folder-open.svg';
+import { ReactComponent as AddIcon } from '../../images/icons/add-green.svg';
 
+/* Follows the same structure of Panel component */
 class FolderPanel extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			modal: false,
+		};
+	}
+
+	toggleModal = () => {
+		this.setState((prevState) => ({ modal: !prevState.modal }));
+	};
+
 	render() {
 		const params = this.props.match.params;
 
 		return (
-			<Panel
-				className="folder-panel"
-				fragmentChild={true}
-				hasHighlight={!!params.folderID}
-				headerText="Folders"
-			>
-				{this.props.folders.reduce((result, folder) => {
-					const open = folder._id === params.folderID;
+			<>
+				<div className={`panel ${params.folderID ? 'hasHighlight' : ''}`}>
+					<div className="panel-header">
+						Folders
+						<AddIcon className="right click" onClick={this.toggleModal} />
+					</div>
 
-					result.push(
-						<Link
-							className={open ? 'highlighted' : ''}
-							key={folder._id}
-							to={`/folders/${folder._id}`}
-						>
-							{open ? <FolderIconOpen /> : <FolderIcon />}
-							<div>{folder.name}</div>
-							<div>
-								<i
-									className={`fa fa-chevron-${open ? 'down' : 'right'}`}
-								/>
-							</div>
-						</Link>,
-					);
+					<div className="panel-contents">
+						{this.props.folders.reduce((result, folder) => {
+							const open = folder._id === params.folderID;
 
-					if (open) {
-						const folderView = !(params.rssFeedID || params.podcastID);
-						for (const f of folder.feeds) {
-							const feedOpen =
-								folderView ||
-								f._id === params.rssFeedID ||
-								f._id === params.podcastID;
 							result.push(
 								<Link
-									className={`folder-element ${
-										feedOpen ? 'highlighted' : ''
+									className={`panel-element ${
+										open ? 'highlighted' : ''
 									}`}
-									key={f._id}
-									to={`/folders/${folder._id}/${
-										f.categories === 'rss' ? 'r' : 'p'
-									}/${f._id}`}
+									key={folder._id}
+									to={`/folders/${folder._id}`}
 								>
-									<Img
-										loader={<div className="placeholder" />}
-										src={[
-											f.images ? f.images.favicon : null,
-											getPlaceholderImageURL(f._id),
-										]}
-									/>
-									<div>{f.title}</div>
-									<div className="type">
-										{f.categories === 'rss' ? 'RSS' : 'PODCAST'}
+									{open ? <FolderIconOpen /> : <FolderIcon />}
+									<div>{folder.name}</div>
+									<div>
+										<i
+											className={`fa fa-chevron-${
+												open ? 'down' : 'right'
+											}`}
+										/>
 									</div>
 								</Link>,
 							);
-						}
-					}
 
-					return result;
-				}, [])}
-			</Panel>
+							if (open) {
+								const folderView = !(
+									params.rssFeedID || params.podcastID
+								);
+								for (const f of folder.feeds) {
+									const feedOpen =
+										folderView ||
+										f._id === params.rssFeedID ||
+										f._id === params.podcastID;
+									result.push(
+										<Link
+											className={`panel-element folder-element ${
+												feedOpen ? 'highlighted' : ''
+											}`}
+											key={f._id}
+											to={`/folders/${folder._id}/${
+												f.categories === 'rss' ? 'r' : 'p'
+											}/${f._id}`}
+										>
+											<Img
+												loader={<div className="placeholder" />}
+												src={[
+													f.images ? f.images.favicon : null,
+													getPlaceholderImageURL(f._id),
+												]}
+											/>
+											<div>{f.title}</div>
+											<div className="type">
+												{f.categories === 'rss'
+													? 'RSS'
+													: 'PODCAST'}
+											</div>
+										</Link>,
+									);
+								}
+							}
+
+							return result;
+						}, [])}
+					</div>
+				</div>
+
+				<NewFolderModal
+					isOpen={this.state.modal}
+					toggleModal={this.toggleModal}
+				/>
+			</>
 		);
 	}
 }

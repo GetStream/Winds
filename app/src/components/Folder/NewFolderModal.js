@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import Img from 'react-image';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
 import SearchFeed from './SearchFeed';
@@ -42,9 +43,12 @@ class NewFolderModal extends React.Component {
 		newFolder(
 			this.props.dispatch,
 			{ name: this.state.name, rss, podcast },
-			() => {
+			({ data }) => {
 				this.setState({ submitting: false, success: true });
-				setTimeout(() => this.closeModal(), 1500);
+				setTimeout(() => {
+					this.closeModal();
+					this.props.history.push(`/folders/${data._id}`);
+				}, 1500);
 			},
 			(err) => {
 				console.log(err); // eslint-disable-line no-console
@@ -159,9 +163,10 @@ NewFolderModal.defaultProps = {
 };
 
 NewFolderModal.propTypes = {
+	history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 	dispatch: PropTypes.func.isRequired,
 	isOpen: PropTypes.bool,
 	toggleModal: PropTypes.func.isRequired,
 };
 
-export default connect()(NewFolderModal);
+export default connect()(withRouter(NewFolderModal));
