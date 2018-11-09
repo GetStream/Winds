@@ -13,7 +13,7 @@ import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
 class RecentNotesPanel extends React.Component {
 	render() {
 		const recentNotes = this.props.recentNotes.slice(0, 20);
-		const tags = this.props.tags;
+		const tags = this.props.tagsFeed;
 		const foldersFeed = this.props.foldersFeed;
 
 		return (
@@ -38,10 +38,10 @@ class RecentNotesPanel extends React.Component {
 								</div>
 								<div className="numbers">
 									<span>
-										<NoteIcon /> {n.notes.length} Notes
+										<NoteIcon /> {n.notes} Notes
 									</span>
 									<span>
-										<PenIcon /> {n.highlights.length} Highlights
+										<PenIcon /> {n.highlights} Highlights
 									</span>
 									<span>
 										<TagIcon />{' '}
@@ -64,13 +64,13 @@ class RecentNotesPanel extends React.Component {
 
 RecentNotesPanel.defaultProps = {
 	recentNotes: [],
-	tags: [],
+	tagsFeed: [],
 	foldersFeed: [],
 };
 
 RecentNotesPanel.propTypes = {
 	recentNotes: PropTypes.arrayOf(PropTypes.shape({})),
-	tags: PropTypes.arrayOf(PropTypes.string),
+	tagsFeed: PropTypes.arrayOf(PropTypes.string),
 	foldersFeed: PropTypes.shape({}),
 	dispatch: PropTypes.func.isRequired,
 };
@@ -79,25 +79,15 @@ const mapStateToProps = (state) => {
 	const recentNotes = (state.notesOrder || [])
 		.map((id) => state.notes[id])
 		.map((note) => {
-			return note.reduce((acc, note) => {
-				if (!acc._id) {
-					const data = note.article ? note.article : note.episode;
-					acc = { ...data, notes: [], highlights: [] };
-				}
-				if (note.text) acc.notes.push(note);
-				else acc.highlights.push(note);
-
-				return acc;
-			}, {});
+			const data = note[0].article ? note[0].article : note[0].episode;
+			const highlights = note.filter((n) => !n.text).length;
+			return { ...data, highlights, notes: note.length - highlights };
 		});
 
 	return {
 		recentNotes,
 		foldersFeed: state.foldersFeed || {},
-		tags: (state.tags || []).reduce((acc, tag) => {
-			acc.push(...tag.episode.map((e) => e._id), ...tag.article.map((a) => a._id));
-			return acc;
-		}, []),
+		tagsFeed: state.tagsFeed || [],
 	};
 };
 

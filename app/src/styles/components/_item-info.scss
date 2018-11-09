@@ -1,11 +1,10 @@
 .item-info {
 	align-items: center;
-	color: $foreground-darkgray;
 	display: flex;
 	flex-direction: row;
-	font-size: 0.77em;
-	font-weight: bolder;
-	letter-spacing: $label-letter-spacing;
+	font-size: 0.97em;
+	font-weight: 400;
+	letter-spacing: 0.05em;
 	margin-bottom: 1.4em;
 	margin-top: 1.4em;
 	text-transform: uppercase;
@@ -31,7 +30,7 @@
 	}
 
 	a {
-		color: $foreground-green;
+		color: $foreground-black;
 		text-decoration: none;
 
 		&:hover {

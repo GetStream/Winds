@@ -222,7 +222,12 @@ export default (previousState = {}, action) => {
 
 		return { ...previousState, foldersFeed, folders: [...action.data] };
 	} else if (action.type === 'BATCH_UPDATE_TAGS') {
-		return { ...previousState, tags: [...action.data] };
+		const tagsFeed = (action.data || []).reduce((acc, tag) => {
+			acc.push(...tag.episode.map((e) => e._id), ...tag.article.map((a) => a._id));
+			return acc;
+		}, []);
+
+		return { ...previousState, tagsFeed, tags: [...action.data] };
 	} else if (action.type === 'BATCH_UPDATE_NOTES') {
 		const notes = action.data.reduce((acc, note) => {
 			const id = note.article ? note.article._id : note.episode._id;

@@ -1,11 +1,10 @@
-import { withRouter } from 'react-router-dom';
-import TimeAgo from './TimeAgo';
 import React from 'react';
-import Img from 'react-image';
 import PropTypes from 'prop-types';
-import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
-import { pinArticle, unpinArticle } from '../util/pins';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import { pinArticle, unpinArticle } from '../util/pins';
+import FeedListItem from './FeedListItem';
 
 class ArticleListItem extends React.Component {
 	render() {
@@ -14,93 +13,44 @@ class ArticleListItem extends React.Component {
 		const id = this.props._id;
 		const rssId = this.props.rss._id;
 		const folderId = this.props.foldersFeed[rssId];
+		const link =
+			folderView || tagView
+				? `/folders/${folderId}/r/${rssId}/a/${id}`
+				: `/rss/${rssId}/articles/${id}`;
+
+		const note = this.props.notes[id] || [];
+		const highlightsNo = note.filter((h) => !h.text).length;
+		const notesNo = note.length - highlightsNo;
+		const tagsNo = this.props.tagsFeed.filter((tag) => tag === id).length;
 
 		return (
-			<div
-				className="list-item"
-				onClick={() => {
-					if (this.props.onNavigation) this.props.onNavigation();
-
-					this.props.history.push(
-						folderView || tagView
-							? `/folders/${folderId}/r/${rssId}/a/${id}`
-							: `/rss/${rssId}/articles/${id}`,
-					);
-				}}
-			>
-				<div className="left">
-					<Img
-						height="75"
-						loader={<div className="placeholder" />}
-						src={[this.props.images.og, getPlaceholderImageURL(id)]}
-						width="75"
-					/>
-					{this.props.recent && <div className="recent-indicator" />}
-				</div>
-				<div className="right">
-					<h2>{this.props.title}</h2>
-					<div className="item-info">
-						<span
-							className="bookmark"
-							onClick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								this.props.pinID
-									? unpinArticle(
-										this.props.pinID,
-										id,
-										this.props.dispatch,
-									  )
-									: pinArticle(id, this.props.dispatch);
-							}}
-						>
-							{this.props.pinID ? (
-								<i className="fas fa-bookmark" />
-							) : (
-								<i className="far fa-bookmark" />
-							)}
-						</span>
-						<span>
-							<i className="fas fa-external-link-alt" />
-							<a href={this.props.url}>{this.props.rss.title}</a>
-						</span>
-						{!!this.props.commentUrl && (
-							<span>
-								<i className="fas fa-comment-alt" />
-								<a href={this.props.commentUrl}>Comments</a>
-							</span>
-						)}
-						<span className="muted">
-							{'Posted '}
-							<TimeAgo timestamp={this.props.publicationDate} />
-						</span>
-					</div>
-					<div className="description">{this.props.description}</div>
-				</div>
-			</div>
+			<FeedListItem
+				{...this.props}
+				feedTitle={this.props.rss.title}
+				highlights={highlightsNo}
+				link={link}
+				notes={notesNo}
+				onNavigation={this.props.onNavigation}
+				pin={() => pinArticle(id, this.props.dispatch)}
+				playable={false}
+				tags={tagsNo}
+				unpin={() => unpinArticle(this.props.pinID, id, this.props.dispatch)}
+			/>
 		);
 	}
 }
 
 ArticleListItem.defaultProps = {
 	images: {},
-	liked: false,
-	likes: 0,
 	pinID: '',
 	recent: false,
 };
 
 ArticleListItem.propTypes = {
 	_id: PropTypes.string.isRequired,
-	commentUrl: PropTypes.string,
 	description: PropTypes.string,
 	dispatch: PropTypes.func.isRequired,
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired,
-	}).isRequired,
-	images: PropTypes.shape({
-		og: PropTypes.string,
-	}),
+	images: PropTypes.shape({ og: PropTypes.string }),
 	onNavigation: PropTypes.func,
 	pinID: PropTypes.string,
 	publicationDate: PropTypes.string,
@@ -117,6 +67,8 @@ ArticleListItem.propTypes = {
 
 const mapStateToProps = (state) => ({
 	foldersFeed: state.foldersFeed || {},
+	tagsFeed: state.tagsFeed || [],
+	notes: state.notes || {},
 });
 
 export default connect(mapStateToProps)(withRouter(ArticleListItem));
