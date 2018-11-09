@@ -36,6 +36,14 @@ class AppRouter extends Component {
 						<AuthedRoute component={RSSFeedsView} exact path="/rss" />
 						<AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
 
+						<Route
+							component={FoldersView}
+							path="/folders/:folderID/r/:rssFeedID/a/:articleID"
+						/>
+						<Route
+							component={FoldersView}
+							path="/folders/:folderID/p/:podcastID/e/:episodeID"
+						/>
 						<AuthedRoute
 							component={FoldersView}
 							path="/folders/:folderID/p/:podcastID"

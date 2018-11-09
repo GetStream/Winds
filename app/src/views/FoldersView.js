@@ -45,8 +45,14 @@ class FoldersView extends React.Component {
 
 				<Switch>
 					<Route component={TagView} path="/tags/:tagID" />
-					<Route component={RSSArticle} path="/folders/a/:articleID" />
-					<Route component={PodcastEpisode} path="/folders/e/:episodeID" />
+					<Route
+						component={RSSArticle}
+						path="/folders/:folderID/r/:rssFeedID/a/:articleID"
+					/>
+					<Route
+						component={PodcastEpisode}
+						path="/folders/:folderID/p/:podcastID/e/:episodeID"
+					/>
 					<Route
 						component={PodcastEpisodesView}
 						path="/folders/:folderID/p/:podcastID"

@@ -39,6 +39,8 @@
 
 	.results.panel {
 		margin-top: 0;
+		max-height: 200px;
+		overflow-y: scroll;
 
 		.type {
 			background-color: rgba(0, 0, 0, 0.06);

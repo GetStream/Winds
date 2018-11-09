@@ -19,6 +19,16 @@ class EpisodeListItem extends React.Component {
 	};
 
 	render() {
+		const folderView = this.props.location.pathname.includes('folders');
+		const tagView = this.props.location.pathname.includes('tags');
+		const id = this.props._id;
+		const podcastId = this.props.podcast._id;
+		const folderId = this.props.foldersFeed[podcastId];
+		const link =
+			folderView || tagView
+				? `/folders/${folderId}/p/${podcastId}/e/${id}`
+				: `/podcasts/${podcastId}`;
+
 		let icon;
 
 		if (this.props.active) {
@@ -47,9 +57,7 @@ class EpisodeListItem extends React.Component {
 						if (this.props.playable) this.playOrPauseEpisode();
 						else {
 							if (this.props.onNavigation) this.props.onNavigation();
-							this.props.history.push(
-								`/podcasts/${this.props.podcast._id}`,
-							);
+							this.props.history.push(link);
 						}
 					}}
 				>
@@ -59,7 +67,7 @@ class EpisodeListItem extends React.Component {
 						src={[
 							this.props.images.og,
 							this.props.podcast.images.featured,
-							getPlaceholderImageURL(this.props._id),
+							getPlaceholderImageURL(id),
 						]}
 						width="75"
 					/>
@@ -71,11 +79,7 @@ class EpisodeListItem extends React.Component {
 					onClick={() => {
 						if (this.props.onNavigation) this.props.onNavigation();
 						this.props.history.push(
-							this.props.playable
-								? `/podcasts/${this.props.podcast._id}/episodes/${
-									this.props._id
-								  }`
-								: `/podcasts/${this.props.podcast._id}`,
+							this.props.playable ? link : `/podcasts/${podcastId}`,
 						);
 					}}
 				>
@@ -88,10 +92,10 @@ class EpisodeListItem extends React.Component {
 								this.props.pinID
 									? unpinEpisode(
 										this.props.pinID,
-										this.props._id,
+										id,
 										this.props.dispatch,
 									  )
-									: pinEpisode(this.props._id, this.props.dispatch);
+									: pinEpisode(id, this.props.dispatch);
 							}}
 						>
 							<i
@@ -165,6 +169,8 @@ EpisodeListItem.propTypes = {
 	publicationDate: PropTypes.string,
 	recent: PropTypes.bool,
 	title: PropTypes.string,
+	foldersFeed: PropTypes.shape({}),
+	location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -190,6 +196,7 @@ const mapStateToProps = (state, ownProps) => {
 			state.player.episodeID === ownProps._id &&
 			state.player.contextID === ownProps.podcast._id,
 		player: state.player || {},
+		foldersFeed: state.foldersFeed || {},
 	};
 };
 

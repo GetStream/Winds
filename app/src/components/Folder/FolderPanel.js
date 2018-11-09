@@ -130,15 +130,15 @@ const mapStateToProps = (state) => {
 	if (!state.folders) return { folders: [] };
 
 	const folders = state.folders.map((folder) => {
-		folder.feeds = [...folder.rss, ...folder.podcast];
+		let feeds = [...folder.rss, ...folder.podcast];
 		if (state.aliases) {
-			folder.feeds = folder.feeds.map((feed) => {
+			feeds = feeds.map((feed) => {
 				if (state.aliases[feed._id]) feed.title = state.aliases[feed._id].alias;
 				return feed;
 			});
 		}
-		folder.feeds.sort((a, b) => a.title.localeCompare(b.title));
-		return folder;
+		feeds.sort((a, b) => a.title.localeCompare(b.title));
+		return { ...folder, feeds };
 	});
 	return { folders };
 };

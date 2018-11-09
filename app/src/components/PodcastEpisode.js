@@ -50,10 +50,11 @@ class PodcastEpisode extends React.Component {
 		this.getEpisode(episodeID);
 		this.getEpisodeContent(episodeID);
 
-		window.streamAnalyticsClient.trackEngagement({
-			label: 'episode_open',
-			content: { foreign_id: `episode:${episodeID}` },
-		});
+		if (window.streamAnalyticsClient.userData)
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'episode_open',
+				content: { foreign_id: `episode:${episodeID}` },
+			});
 	};
 
 	getEpisode = async (episodeID) => {

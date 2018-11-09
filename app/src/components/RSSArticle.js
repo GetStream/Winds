@@ -45,10 +45,12 @@ class RSSArticle extends React.Component {
 
 	componentDidMount() {
 		const articleID = this.props.match.params.articleID;
-		window.streamAnalyticsClient.trackEngagement({
-			label: 'article_open',
-			content: { foreign_id: `articles:${articleID}` },
-		});
+
+		if (window.streamAnalyticsClient.userData)
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'article_open',
+				content: { foreign_id: `articles:${articleID}` },
+			});
 
 		this.getArticle(articleID);
 		this.getRSSContent(articleID);

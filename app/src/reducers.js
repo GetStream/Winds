@@ -214,7 +214,13 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'BATCH_UPDATE_ALIASES') {
 		return { ...previousState, aliases: { ...action.aliases } };
 	} else if (action.type === 'BATCH_UPDATE_FOLDERS') {
-		return { ...previousState, folders: [...action.data] };
+		const foldersFeed = action.data.reduce((acc, folder) => {
+			folder.rss.map((r) => (acc[r._id] = folder._id));
+			folder.podcast.map((p) => (acc[p._id] = folder._id));
+			return acc;
+		}, {});
+
+		return { ...previousState, foldersFeed, folders: [...action.data] };
 	} else if (action.type === 'BATCH_UPDATE_TAGS') {
 		return { ...previousState, tags: [...action.data] };
 	} else if (action.type === 'BATCH_UPDATE_NOTES') {

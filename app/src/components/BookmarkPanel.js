@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Img from 'react-image';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import TimeAgo from './TimeAgo';
 import Panel from './Panel';
@@ -18,13 +18,12 @@ class BookmarkPanel extends React.Component {
 
 	render() {
 		let bookmarks = [];
-		let folderView = false;
+		const folderView = this.props.location.pathname.includes('folders');
+		const foldersFeed = this.props.foldersFeed;
+
 		if (this.props.type === 'article') bookmarks = this.props.articles;
 		else if (this.props.type === 'episode') bookmarks = this.props.episodes;
-		else {
-			bookmarks = [...this.props.articles, ...this.props.episodes];
-			folderView = true;
-		}
+		else bookmarks = [...this.props.articles, ...this.props.episodes];
 
 		bookmarks = bookmarks.sort(
 			(a, b) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf(),
@@ -39,7 +38,11 @@ class BookmarkPanel extends React.Component {
 								key={bookmark.article._id}
 								to={
 									folderView
-										? `/folders/a/${bookmark.article._id}`
+										? `/folders/${
+											foldersFeed[bookmark.article.rss._id]
+										  }/r/${bookmark.article.rss._id}/a/${
+											bookmark.article._id
+										  }`
 										: `/rss/${bookmark.article.rss._id}/articles/${
 											bookmark.article._id
 										  }`
@@ -66,7 +69,11 @@ class BookmarkPanel extends React.Component {
 								key={bookmark.episode._id}
 								to={
 									folderView
-										? `/folders/e/${bookmark.episode._id}`
+										? `/folders/${
+											foldersFeed[bookmark.episode.podcast._id]
+										  }/p/${bookmark.episode.podcast._id}/e/${
+											bookmark.episode._id
+										  }`
 										: `/podcasts/${
 											bookmark.episode.podcast._id
 										  }/episodes/${bookmark.episode._id}`
@@ -100,14 +107,17 @@ BookmarkPanel.defaultProps = {
 
 BookmarkPanel.propTypes = {
 	dispatch: PropTypes.func.isRequired,
+	location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 	type: PropTypes.string,
 	articles: PropTypes.arrayOf(PropTypes.shape()),
 	episodes: PropTypes.arrayOf(PropTypes.shape()),
+	foldersFeed: PropTypes.shape({}),
 };
 
 const mapStateToProps = (state) => ({
 	articles: state.pinnedArticles ? Object.values(state.pinnedArticles) : [],
 	episodes: state.pinnedEpisodes ? Object.values(state.pinnedEpisodes) : [],
+	foldersFeed: state.foldersFeed || {},
 });
 
-export default connect(mapStateToProps)(BookmarkPanel);
+export default connect(mapStateToProps)(withRouter(BookmarkPanel));

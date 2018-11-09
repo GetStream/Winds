@@ -9,6 +9,12 @@ import { connect } from 'react-redux';
 
 class ArticleListItem extends React.Component {
 	render() {
+		const folderView = this.props.location.pathname.includes('folders');
+		const tagView = this.props.location.pathname.includes('tags');
+		const id = this.props._id;
+		const rssId = this.props.rss._id;
+		const folderId = this.props.foldersFeed[rssId];
+
 		return (
 			<div
 				className="list-item"
@@ -16,7 +22,9 @@ class ArticleListItem extends React.Component {
 					if (this.props.onNavigation) this.props.onNavigation();
 
 					this.props.history.push(
-						`/rss/${this.props.rss._id}/articles/${this.props._id}`,
+						folderView || tagView
+							? `/folders/${folderId}/r/${rssId}/a/${id}`
+							: `/rss/${rssId}/articles/${id}`,
 					);
 				}}
 			>
@@ -24,10 +32,7 @@ class ArticleListItem extends React.Component {
 					<Img
 						height="75"
 						loader={<div className="placeholder" />}
-						src={[
-							this.props.images.og,
-							getPlaceholderImageURL(this.props._id),
-						]}
+						src={[this.props.images.og, getPlaceholderImageURL(id)]}
 						width="75"
 					/>
 					{this.props.recent && <div className="recent-indicator" />}
@@ -43,10 +48,10 @@ class ArticleListItem extends React.Component {
 								this.props.pinID
 									? unpinArticle(
 										this.props.pinID,
-										this.props._id,
+										id,
 										this.props.dispatch,
 									  )
-									: pinArticle(this.props._id, this.props.dispatch);
+									: pinArticle(id, this.props.dispatch);
 							}}
 						>
 							{this.props.pinID ? (
@@ -106,6 +111,12 @@ ArticleListItem.propTypes = {
 	}),
 	title: PropTypes.string,
 	url: PropTypes.string,
+	foldersFeed: PropTypes.shape({}),
+	location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
-export default connect()(withRouter(ArticleListItem));
+const mapStateToProps = (state) => ({
+	foldersFeed: state.foldersFeed || {},
+});
+
+export default connect(mapStateToProps)(withRouter(ArticleListItem));

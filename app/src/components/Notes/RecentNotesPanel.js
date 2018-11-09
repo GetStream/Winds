@@ -14,6 +14,7 @@ class RecentNotesPanel extends React.Component {
 	render() {
 		const recentNotes = this.props.recentNotes.slice(0, 20);
 		const tags = this.props.tags;
+		const foldersFeed = this.props.foldersFeed;
 
 		return (
 			<Panel
@@ -24,13 +25,13 @@ class RecentNotesPanel extends React.Component {
 				{recentNotes.length ? (
 					recentNotes.map((n) => {
 						const isArticle = n.type === 'articles';
+						const feedId = isArticle ? n.rss : n.podcast;
+						const link = `/folders/${foldersFeed[feedId]}/${
+							isArticle ? 'r' : 'p'
+						}/${feedId}/${isArticle ? 'a' : 'e'}/${n._id}`;
 
 						return (
-							<Link
-								className="notes-panel"
-								key={n._id}
-								to={`/folders/${isArticle ? 'a' : 'e'}/${n._id}`}
-							>
+							<Link className="notes-panel" key={n._id} to={link}>
 								<div className="title">
 									{isArticle ? <RssIcon /> : <PodcastIcon />}
 									{n.title}
@@ -64,11 +65,13 @@ class RecentNotesPanel extends React.Component {
 RecentNotesPanel.defaultProps = {
 	recentNotes: [],
 	tags: [],
+	foldersFeed: [],
 };
 
 RecentNotesPanel.propTypes = {
 	recentNotes: PropTypes.arrayOf(PropTypes.shape({})),
 	tags: PropTypes.arrayOf(PropTypes.string),
+	foldersFeed: PropTypes.shape({}),
 	dispatch: PropTypes.func.isRequired,
 };
 
@@ -90,6 +93,7 @@ const mapStateToProps = (state) => {
 
 	return {
 		recentNotes,
+		foldersFeed: state.foldersFeed || {},
 		tags: (state.tags || []).reduce((acc, tag) => {
 			acc.push(...tag.episode.map((e) => e._id), ...tag.article.map((a) => a._id));
 			return acc;
