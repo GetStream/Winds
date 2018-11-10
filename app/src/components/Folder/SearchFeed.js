@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Algolia from 'algoliasearch';
 import Img from 'react-image';
+import { connect } from 'react-redux';
 
 import config from '../../config';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
@@ -26,10 +27,15 @@ class SearchFeed extends React.Component {
 	}
 
 	search = (query) => {
-		index.search({ query }, (err, results) => {
+		index.search({ query }, (err, result) => {
 			if (err) return console.log(err); // eslint-disable-line no-console
 
-			this.setState({ results: results.hits.slice(0, 5) });
+			const followed = this.props.followedFeeds;
+			const hits = result.hits.sort(
+				(a, b) => (followed[a._id] ? (followed[b._id] ? 0 : -1) : 1),
+			);
+
+			this.setState({ results: hits.slice(0, 8) });
 		});
 	};
 
@@ -72,6 +78,7 @@ class SearchFeed extends React.Component {
 	};
 
 	render() {
+		console.log(this.props.followedFeeds);
 		return (
 			<div className="search-feed">
 				<div className="input-box">
@@ -144,6 +151,14 @@ class SearchFeed extends React.Component {
 
 SearchFeed.propTypes = {
 	addFeed: PropTypes.func,
+	followedFeeds: PropTypes.shape({}),
 };
 
-export default SearchFeed;
+const mapStateToProps = (state) => ({
+	followedFeeds: {
+		...(state.followedRssFeeds || {}),
+		...(state.followedPodcasts || {}),
+	},
+});
+
+export default connect(mapStateToProps)(SearchFeed);

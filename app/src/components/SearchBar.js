@@ -55,7 +55,7 @@ class SearchBar extends React.Component {
 	}
 
 	search = (searchText) => {
-		index.search({ query: searchText }, (err, res) => {
+		index.search({ query: searchText }, (err, result) => {
 			if (err) return console.log(err); // eslint-disable-line no-console
 
 			const folders = this.props.folders.filter((folder) =>
@@ -64,8 +64,12 @@ class SearchBar extends React.Component {
 			const tags = this.props.tags.filter((tag) =>
 				tag.name.toLowerCase().includes(searchText.toLowerCase()),
 			);
+			const followed = this.props.followedFeeds;
+			const hits = result.hits.sort(
+				(a, b) => (followed[a._id] ? (followed[b._id] ? 0 : -1) : 1),
+			);
 
-			this.setState({ results: [...folders, ...tags, ...res.hits].slice(0, 8) });
+			this.setState({ results: [...folders, ...tags, ...hits].slice(0, 8) });
 		});
 	};
 
@@ -223,6 +227,7 @@ SearchBar.defaultProps = {
 SearchBar.propTypes = {
 	folders: PropTypes.array,
 	tags: PropTypes.array,
+	followedFeeds: PropTypes.shape({}),
 	bannerIsShown: PropTypes.bool,
 	history: PropTypes.shape({
 		push: PropTypes.func.isRequired,
@@ -232,6 +237,10 @@ SearchBar.propTypes = {
 const mapStateToProps = (state) => ({
 	folders: (state.folders || []).map((folder) => ({ ...folder, type: 'folder' })),
 	tags: (state.tags || []).map((tag) => ({ ...tag, type: 'tag' })),
+	followedFeeds: {
+		...(state.followedRssFeeds || {}),
+		...(state.followedPodcasts || {}),
+	},
 });
 
 export default connect(mapStateToProps)(withRouter(SearchBar));
