@@ -2,21 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import url from 'url';
 import isElectron from 'is-electron';
-import Img from 'react-image';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import fetch from '../util/fetch';
 import Loader from './Loader';
-import TimeAgo from './TimeAgo';
-import Tag from './Tag/Tag';
+import FeedHeader from './FeedHeader';
 import HtmlRender from './HtmlRender';
-import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import { pinEpisode, unpinEpisode } from '../util/pins';
-
-import { ReactComponent as PauseIcon } from '../images/icons/pause.svg';
-import { ReactComponent as PlayIcon } from '../images/icons/play.svg';
-import { ReactComponent as LinkIcon } from '../images/icons/link.svg';
 
 class PodcastEpisode extends React.Component {
 	constructor(props) {
@@ -81,7 +74,7 @@ class PodcastEpisode extends React.Component {
 		}
 	};
 
-	playOrPause = () => {
+	playOrPauseEpisode = () => {
 		const episode = this.state.episode;
 		const player = this.props.player;
 		const isActive = player && player.episodeID === episode._id;
@@ -130,10 +123,12 @@ class PodcastEpisode extends React.Component {
 	};
 
 	render() {
+		if (this.state.loading) return <Loader />;
+
 		const episode = this.state.episode;
 		const player = this.props.player;
 		const isPlaying = player && player.playing && player.episodeID === episode._id;
-		const dispatch = this.props.dispatch;
+
 		const pinID =
 			this.props.pinnedEpisodes && this.props.pinnedEpisodes[episode._id]
 				? this.props.pinnedEpisodes[episode._id]._id
@@ -141,70 +136,17 @@ class PodcastEpisode extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="content-header episode-header">
-					{!this.state.error && this.state.loading ? (
-						<Loader />
-					) : (
-						<React.Fragment>
-							<h1 className="left" onClick={() => this.playOrPause()}>
-								<Img
-									className="og-image"
-									loader={<div className="placeholder" />}
-									src={[
-										episode.images.og,
-										episode.podcast.images.featured,
-										getPlaceholderImageURL(episode._id),
-									]}
-								/>
-								<div className="play-icon">
-									<div className="icon-container">
-										{isPlaying ? <PauseIcon /> : <PlayIcon />}
-									</div>
-								</div>
-							</h1>
-							<div className="right">
-								<h1>{episode.title}</h1>
-								<div className="item-info">
-									<TimeAgo
-										className="muted"
-										timestamp={episode.publicationDate}
-									/>
-									<a href={episode.url}>
-										<LinkIcon />
-									</a>
-									<span
-										className="clickable"
-										onClick={() =>
-											pinID
-												? unpinEpisode(
-													pinID,
-													episode._id,
-													dispatch,
-												  )
-												: pinEpisode(episode._id, dispatch)
-										}
-									>
-										<i
-											className={`${
-												pinID ? 'fas' : 'far'
-											} fa-bookmark`}
-										/>
-									</span>
-
-									<span className="clickable" onClick={this.tweet}>
-										<i className="fab fa-twitter" />
-									</span>
-									{episode.commentUrl && (
-										<a href={episode.commentUrl}>
-											<i className="fas fa-comment" />
-										</a>
-									)}
-									<Tag feedId={episode._id} type="episode" />
-								</div>
-							</div>
-						</React.Fragment>
-					)}
-				</div>
+				<FeedHeader
+					{...episode}
+					isPlaying={isPlaying}
+					pin={() => pinEpisode(episode._id, this.props.dispatch)}
+					pinID={pinID}
+					playOrPauseEpisode={this.playOrPauseEpisode}
+					playable={true}
+					tweet={this.tweet}
+					type="episode"
+					unpin={() => unpinEpisode(pinID, episode._id, this.props.dispatch)}
+				/>
 
 				<div className="content">
 					{!this.state.errorContent && this.state.loadingContent ? (
@@ -245,7 +187,6 @@ PodcastEpisode.propTypes = {
 	pauseEpisode: PropTypes.func.isRequired,
 	playEpisode: PropTypes.func.isRequired,
 	resumeEpisode: PropTypes.func.isRequired,
-	link: PropTypes.string,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			episodeID: PropTypes.string.isRequired,

@@ -1,19 +1,16 @@
-import url from 'url';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
 import isElectron from 'is-electron';
+import url from 'url';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
 import { pinArticle, unpinArticle } from '../util/pins';
 import { fetchSocialScore } from '../util/social';
-import Tag from './Tag/Tag';
 import Loader from './Loader';
-import TimeAgo from './TimeAgo';
 import HtmlRender from './HtmlRender';
-
-import { ReactComponent as LinkIcon } from '../images/icons/link.svg';
+import FeedHeader from './FeedHeader';
 
 function mergeSocialScore(article, socialScore) {
 	article.socialScore = article.socialScore || {};
@@ -160,7 +157,6 @@ class RSSArticle extends React.Component {
 			.catch(() => {
 				this.setState({
 					error: true,
-					errorMessage: 'There was a problem loading this article. :(',
 					loadingContent: false,
 				});
 			});
@@ -170,7 +166,6 @@ class RSSArticle extends React.Component {
 		if (this.state.loading) return <Loader />;
 
 		const article = this.state.article;
-		const dispatch = this.props.dispatch;
 
 		const redditDataAvailable =
 			article.socialScore &&
@@ -183,86 +178,21 @@ class RSSArticle extends React.Component {
 
 		const pinID = this.props.pinnedArticles[article._id]
 			? this.props.pinnedArticles[article._id]._id
-			: null;
-
-		let articleContents;
-
-		if (this.state.loadingContent) {
-			articleContents = <Loader />;
-		} else if (this.state.error) {
-			articleContents = (
-				<div>
-					<p>There was a problem loading this article :(</p>
-					<p>To read the article, head on over to:</p>
-					<p>
-						<a href={article.url} rel="noopener noreferrer" target="_blank">
-							{article.title}
-						</a>
-					</p>
-				</div>
-			);
-		} else {
-			articleContents = (
-				<HtmlRender
-					content={this.state.content}
-					id={article._id}
-					type="article"
-				/>
-			);
-		}
+			: '';
 
 		return (
 			<React.Fragment>
-				<div className="content-header">
-					<h1>{article.title}</h1>
-					<div className="item-info">
-						<TimeAgo className="muted" timestamp={article.publicationDate} />
-						<a href={article.url}>
-							<LinkIcon />
-						</a>
-						<span
-							className="clickable"
-							onClick={() =>
-								pinID
-									? unpinArticle(pinID, article._id, dispatch)
-									: pinArticle(article._id, dispatch)
-							}
-						>
-							<i className={`${pinID ? 'fas' : 'far'} fa-bookmark`} />
-						</span>
-						<span className="clickable" onClick={this.tweet}>
-							<i className="fab fa-twitter" />
-						</span>
-						{redditDataAvailable && (
-							<a
-								href={article.socialScore.reddit.url}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								{article.socialScore.hackernews.score}
-								<i className="fab fa-reddit-alien" />
-							</a>
-						)}
-						{hackernewsDataAvailable && (
-							<a
-								href={article.socialScore.hackernews.url}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								{article.socialScore.hackernews.score}
-
-								<i className="fab fa-hacker-news-square" />
-							</a>
-						)}
-						{article.commentUrl && (
-							<a href={article.commentUrl}>
-								<i className="fas fa-comment" />
-							</a>
-						)}
-						<Tag feedId={article._id} type="article" />
-					</div>
-				</div>
-
+				<FeedHeader
+					{...article}
+					hackernews={hackernewsDataAvailable && article.socialScore.hackernews}
+					pin={() => pinArticle(article._id, this.props.dispatch)}
+					pinID={pinID}
+					playable={false}
+					reddit={redditDataAvailable && article.socialScore.reddit}
+					tweet={this.tweet}
+					type="article"
+					unpin={() => unpinArticle(pinID, article._id, this.props.dispatch)}
+				/>
 				<div className="content" ref={this.contentRef}>
 					<div className="enclosures">
 						{article.enclosures &&
@@ -279,7 +209,33 @@ class RSSArticle extends React.Component {
 									)),
 							)}
 					</div>
-					{articleContents}
+
+					{!this.state.error && this.state.loadingContent ? (
+						<Loader />
+					) : (
+						<HtmlRender
+							content={this.state.content}
+							id={article._id}
+							type="article"
+						/>
+					)}
+
+					{this.state.error &&
+						!this.state.loadingContent && (
+						<div>
+							<p>There was a problem loading this article :(</p>
+							<p>To read the article, head on over to:</p>
+							<p>
+								<a
+									href={article.url}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									{article.title}
+								</a>
+							</p>
+						</div>
+					)}
 				</div>
 			</React.Fragment>
 		);

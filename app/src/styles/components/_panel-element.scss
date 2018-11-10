@@ -114,11 +114,6 @@
 			}
 		}
 
-		// note from @kenhoff - this should really be moved outside of the panel element (later)
-		.muted {
-			color: $foreground-darkgray;
-		}
-
 		img,
 		.placeholder {
 			background-color: $white-smoke;
