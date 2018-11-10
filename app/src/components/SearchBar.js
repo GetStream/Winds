@@ -1,6 +1,7 @@
 import searchOpacityIcon from '../images/icons/search-opacity.svg';
 import algoliaLogo from '../images/logos/powered-by-algolia.svg';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Algolia from 'algoliasearch';
 import Img from 'react-image';
 import PropTypes from 'prop-types';
@@ -14,8 +15,8 @@ const index = client.initIndex(config.algolia.index);
 
 const getResourceUrl = (resource) => {
 	switch (resource.type) {
-	case 'user':
-		return `/profile/${resource._id}`;
+	case 'folder':
+		return `/folders/${resource._id}`;
 	case 'article':
 		return `/rss/${resource.rss}/articles/${resource._id}`;
 	case 'episode':
@@ -24,8 +25,8 @@ const getResourceUrl = (resource) => {
 		return `/rss/${resource.duplicateOf || resource._id}`;
 	case 'podcast':
 		return `/podcasts/${resource._id}`;
-	case 'playlist':
-		return `/playlists/${resource._id}`;
+	case 'tag':
+		return `/tags/${resource._id}`;
 	default:
 		console.log(resource); // eslint-disable-line no-console
 	}
@@ -33,8 +34,8 @@ const getResourceUrl = (resource) => {
 
 const getResourceTitle = (resource) => {
 	switch (resource.type) {
-	case 'user':
-	case 'playlist':
+	case 'folder':
+	case 'tag':
 		return resource.name;
 	default:
 		return resource.title;
@@ -54,10 +55,17 @@ class SearchBar extends React.Component {
 	}
 
 	search = (searchText) => {
-		index.search({ query: searchText }, (err, results) => {
+		index.search({ query: searchText }, (err, res) => {
 			if (err) return console.log(err); // eslint-disable-line no-console
 
-			this.setState({ results: results.hits.slice(0, 5) });
+			const folders = this.props.folders.filter((folder) =>
+				folder.name.toLowerCase().includes(searchText.toLowerCase()),
+			);
+			const tags = this.props.tags.filter((tag) =>
+				tag.name.toLowerCase().includes(searchText.toLowerCase()),
+			);
+
+			this.setState({ results: [...folders, ...tags, ...res.hits].slice(0, 8) });
 		});
 	};
 
@@ -118,6 +126,7 @@ class SearchBar extends React.Component {
 
 	render() {
 		let results;
+		// console.log(this.props.tags);
 
 		if (!this.state.results.length) {
 			results = (
@@ -212,10 +221,17 @@ SearchBar.defaultProps = {
 };
 
 SearchBar.propTypes = {
+	folders: PropTypes.array,
+	tags: PropTypes.array,
 	bannerIsShown: PropTypes.bool,
 	history: PropTypes.shape({
 		push: PropTypes.func.isRequired,
 	}).isRequired,
 };
 
-export default withRouter(SearchBar);
+const mapStateToProps = (state) => ({
+	folders: (state.folders || []).map((folder) => ({ ...folder, type: 'folder' })),
+	tags: (state.tags || []).map((tag) => ({ ...tag, type: 'tag' })),
+});
+
+export default connect(mapStateToProps)(withRouter(SearchBar));
