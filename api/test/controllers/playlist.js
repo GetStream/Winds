@@ -8,7 +8,7 @@ import logger from '../../src/utils/logger';
 import { dropDBs, loadFixture, withLogin } from '../utils';
 
 describe('Playlist controller', () => {
-	const otherUserId = '5b0f306d8e147f10f16ac9c8';
+	const otherUserId = '4342306d8e147f10f16aceaf';
 	let user;
 	let playlist;
 
@@ -16,7 +16,7 @@ describe('Playlist controller', () => {
 		await dropDBs();
 		await loadFixture('initial-data', 'playlists');
 
-		user = await User.findOne();
+		user = await User.findOne({ _id: '5b0f306d8e147f10f16aceaf' });
 		playlist = await Playlist.findOne();
 	});
 
@@ -90,8 +90,8 @@ describe('Playlist controller', () => {
 			expect(response.body.user._id).to.be.equal(String(playlist.user._id));
 			expect(response.body.name).to.be.equal(playlist.name);
 			//XXX: mocha seems to hang if we try to do a full compare
-			expect(response.body.episodes.map(e => e._id)).to.have.all.members(
-				playlist.episodes.map(e => String(e._id)),
+			expect(response.body.episodes.map((e) => e._id)).to.have.all.members(
+				playlist.episodes.map((e) => String(e._id)),
 			);
 		});
 
@@ -151,11 +151,11 @@ describe('Playlist controller', () => {
 			expect(response.body.name).to.be.equal(data.name);
 			expect(response.body.name).to.be.equal(newPlaylist.name);
 			//XXX: mocha seems to hang if we try to do a full compare
-			expect(response.body.episodes.map(e => e._id)).to.have.all.members(
+			expect(response.body.episodes.map((e) => e._id)).to.have.all.members(
 				data.episodes,
 			);
-			expect(response.body.episodes.map(e => e._id)).to.have.all.members(
-				newPlaylist.episodes.map(e => String(e._id)),
+			expect(response.body.episodes.map((e) => e._id)).to.have.all.members(
+				newPlaylist.episodes.map((e) => String(e._id)),
 			);
 		});
 
@@ -179,7 +179,7 @@ describe('Playlist controller', () => {
 			const data = {
 				user: user.id,
 				name: 'Episode w/ new name',
-				episodes: playlist.episodes.map(e => e._id),
+				episodes: playlist.episodes.map((e) => e._id),
 			};
 			const response = await withLogin(
 				request(api)
@@ -199,11 +199,11 @@ describe('Playlist controller', () => {
 			expect(response.body.name).to.be.equal(data.name);
 			expect(response.body.name).to.be.equal(updatedPlaylist.name);
 			//XXX: mocha seems to hang if we try to do a full compare
-			expect(response.body.episodes.map(e => e._id)).to.have.all.members(
+			expect(response.body.episodes.map((e) => e._id)).to.have.all.members(
 				data.episodes.map(String),
 			);
-			expect(response.body.episodes.map(e => e._id)).to.have.all.members(
-				updatedPlaylist.episodes.map(e => String(e._id)),
+			expect(response.body.episodes.map((e) => e._id)).to.have.all.members(
+				updatedPlaylist.episodes.map((e) => String(e._id)),
 			);
 		});
 
