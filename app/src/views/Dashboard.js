@@ -46,10 +46,20 @@ class Dashboard extends React.Component {
 						<RssFeedList />
 					</div>
 				</div>
-				<div className={`folder-header ${this.props.initFolders && 'center'}`}>
-					<h1>Notes & Folders</h1>
-				</div>
 
+				{this.props.initFolders ? (
+					<div className="folder-header center">
+						<h1>Notes & Folders</h1>
+					</div>
+				) : (
+					<Link className="column-header folder-header" to="/folders">
+						<h1>Notes & Folders</h1>
+						<div className="drilldown">
+							<div>View all</div>
+							<i className="fa fa-chevron-right" />
+						</div>
+					</Link>
+				)}
 				<div className="folder-section ">
 					<div className="column-content">
 						{this.props.initFolders ? (
