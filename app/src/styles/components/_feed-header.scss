@@ -6,6 +6,7 @@
 		'photo title'
 		'date item-info';
 	grid-template-columns: 80px auto;
+	padding-bottom: 16px;
 
 	.photo {
 		grid-area: photo;
