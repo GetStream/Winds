@@ -4,18 +4,6 @@ exports.list = async (req, res) => {
 	res.json(await Note.find({ user: req.user.sub }).sort({ updatedAt: -1 }));
 };
 
-exports.listArticleNotes = async (req, res) => {
-	res.json(
-		await Note.find({ user: req.user.sub, article: req.params.articleId }).lean(),
-	);
-};
-
-exports.listEpisodeNotes = async (req, res) => {
-	res.json(
-		await Note.find({ user: req.user.sub, episode: req.params.episodeId }).lean(),
-	);
-};
-
 exports.get = async (req, res) => {
 	const note = await Note.findById(req.params.noteId);
 	if (!note) return res.status(404).json({ error: 'Resource does not exist.' });
