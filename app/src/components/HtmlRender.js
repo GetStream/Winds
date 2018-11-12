@@ -10,7 +10,7 @@ import 'rangy/lib/rangy-selectionsaverestore';
 
 import NoteInput from './Notes/NoteInput';
 import HighlightMenu from './Notes/HighlightMenu';
-import { newNote, deleteNote } from '../api/noteAPI';
+import { newNote, deleteNote, updateNote } from '../api/noteAPI';
 
 import { ReactComponent as NoteIcon } from '../images/icons/note.svg';
 import { ReactComponent as NoteGreenIcon } from '../images/icons/note-green.svg';
@@ -50,7 +50,11 @@ class HtmlRender extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.content !== prevProps.content) this.setHtml();
+		if (
+			this.props.content !== prevProps.content ||
+			this.props.highlights !== prevProps.highlights
+		)
+			this.setHtml();
 	}
 
 	componentWillUnmount() {
@@ -70,6 +74,7 @@ class HtmlRender extends React.Component {
 						),
 					'type:textContent',
 				);
+				console.log(deserialize);
 				this.highlighter.deserialize(deserialize);
 				this.forceUpdate();
 			});
@@ -97,20 +102,21 @@ class HtmlRender extends React.Component {
 			(h) => h.start === range.start && h.end === range.end,
 		);
 	};
+
 	onClick = (e) => {
 		const selection = rangy.getSelection().nativeSelection;
 		if (this.state.isHighlight && !selection.rangeCount)
 			this.setState({ ...this.resetState });
 
 		const className = e.target.getAttribute('class') || '';
-		if (className === 'highlight' || className === 'highlight-note') {
+		if (className.includes('highlight')) {
 			const highlightRange = rangy.createRange();
 			highlightRange.selectNode(e.target);
 			const bound = highlightRange.nativeRange.getBoundingClientRect();
 			this.saveSelection();
 			const highlight = this.getHighlightObj(e.target);
 
-			const isNote = className === 'highlight-note';
+			const isNote = className.includes('highlight-note');
 			this.setState({
 				rangeBounds: {
 					top: bound.top,
@@ -152,8 +158,19 @@ class HtmlRender extends React.Component {
 		}
 	};
 
+	convertHighlightToNote = () => {
+		const node = rangy.getSelection().focusNode.parentElement;
+		const highlight = this.getHighlightObj(node);
+
+		updateNote(this.props.dispatch, highlight._id, this.state.noteText);
+		this.setState({ ...this.resetState });
+		rangy.getSelection().removeAllRanges();
+	};
+
 	addHighlight = () => {
 		this.restoreSelection();
+		if (this.state.highlighted) return this.convertHighlightToNote();
+
 		const highlight = this.highlighter.highlightSelection(
 			this.state.noteText ? 'highlight-note' : 'highlight',
 			{ containerElementId: 'feed-content' },

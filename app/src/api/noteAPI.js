@@ -24,6 +24,14 @@ export const newNote = (dispatch, type, id, start, end, text, thenFn, catchFn) =
 		})
 		.catch(catchFn);
 };
+export const updateNote = (dispatch, noteId, text, thenFn, catchFn) => {
+	fetch('PUT', `/notes/${noteId}`, { text })
+		.then((res) => {
+			getNotes(dispatch);
+			if (thenFn) thenFn(res);
+		})
+		.catch(catchFn);
+};
 
 export const deleteNote = async (dispatch, noteId, thenFn, catchFn) => {
 	fetch('DELETE', `/notes/${noteId}`)
