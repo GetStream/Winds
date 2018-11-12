@@ -74,7 +74,7 @@ class HtmlRender extends React.Component {
 						),
 					'type:textContent',
 				);
-				console.log(deserialize);
+				this.highlighter.removeAllHighlights();
 				this.highlighter.deserialize(deserialize);
 				this.forceUpdate();
 			});
@@ -158,33 +158,30 @@ class HtmlRender extends React.Component {
 		}
 	};
 
-	convertHighlightToNote = () => {
+	addHighlight = () => {
+		this.restoreSelection();
 		const node = rangy.getSelection().focusNode.parentElement;
 		const highlight = this.getHighlightObj(node);
 
-		updateNote(this.props.dispatch, highlight._id, this.state.noteText);
-		this.setState({ ...this.resetState });
-		rangy.getSelection().removeAllRanges();
-	};
+		if (highlight && (this.state.highlighted || this.state.noteText))
+			updateNote(this.props.dispatch, highlight._id, this.state.noteText);
+		else {
+			const highlighted = this.highlighter.highlightSelection(
+				this.state.noteText ? 'highlight-note' : 'highlight',
+				{ containerElementId: 'feed-content' },
+			);
+			if (!highlighted.length) return this.close();
+			const range = highlighted[0].characterRange;
+			newNote(
+				this.props.dispatch,
+				this.props.type,
+				this.props.id,
+				range.start,
+				range.end,
+				this.state.noteText,
+			);
+		}
 
-	addHighlight = () => {
-		this.restoreSelection();
-		if (this.state.highlighted) return this.convertHighlightToNote();
-
-		const highlight = this.highlighter.highlightSelection(
-			this.state.noteText ? 'highlight-note' : 'highlight',
-			{ containerElementId: 'feed-content' },
-		);
-		if (!highlight.length) return this.close();
-		const range = highlight[0].characterRange;
-		newNote(
-			this.props.dispatch,
-			this.props.type,
-			this.props.id,
-			range.start,
-			range.end,
-			this.state.noteText,
-		);
 		this.setState({ ...this.resetState });
 		rangy.getSelection().removeAllRanges();
 	};
