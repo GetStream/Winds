@@ -40,14 +40,12 @@
 
 		.enclosures {
 			margin: auto;
-			max-width: 720px;
 		}
 	}
 
 	.content-header {
 		grid-area: content-header;
-		margin: auto;
-		width: 720px;
+		margin-left: 0;
 
 		&.list-view-header {
 			margin: 0;
