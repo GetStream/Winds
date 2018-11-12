@@ -7,6 +7,7 @@ import rangy from 'rangy';
 import 'rangy/lib/rangy-classapplier';
 import 'rangy/lib/rangy-highlighter';
 import 'rangy/lib/rangy-selectionsaverestore';
+import 'rangy/lib/rangy-textrange';
 
 import NoteInput from './Notes/NoteInput';
 import HighlightMenu from './Notes/HighlightMenu';
@@ -42,7 +43,7 @@ class HtmlRender extends React.Component {
 		this.highlighter = rangy.createHighlighter();
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight'));
 		this.highlighter.addClassApplier(rangy.createClassApplier('highlight-note'));
-
+		window.highlighter = this.highlighter;
 		this.setHtml();
 
 		this.contentWrapper.current.addEventListener('mouseup', this.onMouseUp);
@@ -203,21 +204,29 @@ class HtmlRender extends React.Component {
 		const wrapper = this.contentWrapper.current;
 		if (!wrapper) return null;
 
-		const notes = wrapper.getElementsByClassName('highlight-note');
 		const wrapperTop = wrapper.getBoundingClientRect().top;
 
-		return Object.values(notes).map((note, i) => {
-			const bound = note.getBoundingClientRect();
-			return (
-				<NoteGreenIcon
-					className="highlight-icon"
-					key={i}
-					style={{
-						top: bound.top + bound.height / 2 - wrapperTop - 8,
-					}}
-				/>
-			);
-		});
+		return this.highlighter.highlights
+			.filter((h) => h.classApplier.className === 'highlight-note')
+			.map((h) => {
+				const range = rangy.createRange();
+				range.selectCharacters(
+					this.contentWrapper.current,
+					h.characterRange.start,
+					h.characterRange.end,
+				);
+
+				const bound = range.nativeRange.getBoundingClientRect();
+				return (
+					<NoteGreenIcon
+						className="highlight-icon"
+						key={h.id}
+						style={{
+							top: bound.top + bound.height / 2 - wrapperTop - 8,
+						}}
+					/>
+				);
+			});
 	};
 
 	render() {
