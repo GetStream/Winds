@@ -35,7 +35,10 @@ class FeedHeader extends React.Component {
 
 		return (
 			<div className="content-header feed-header">
-				<div className="photo" onClick={() => playable && playOrPauseEpisode()}>
+				<div
+					className={`photo ${playable ? 'clickable' : ''}`}
+					onClick={() => playable && playOrPauseEpisode()}
+				>
 					<Img
 						height="50"
 						loader={<div className="placeholder" />}

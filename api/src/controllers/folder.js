@@ -16,6 +16,10 @@ exports.feed = async (req, res) => {
 	const limit = req.query.per_page || 10;
 	const offset = req.query.page * limit || 0;
 
+	const folder = await Folder.findById(req.params.folderId);
+	if (!folder) return res.status(404).json({ error: 'Resource does not exist.' });
+	if (folder.user._id != req.user.sub) return res.sendStatus(403);
+	
 	const response = await getStreamClient()
 		.feed('folder', folderId)
 		.get({ limit, offset });
