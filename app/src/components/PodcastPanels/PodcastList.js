@@ -72,4 +72,4 @@ const mapStateToProps = (state) => {
 	return { podcasts };
 };
 
-export default connect(mapStateToProps)(withRouter(PodcastList));
+export default withRouter(connect(mapStateToProps)(PodcastList));

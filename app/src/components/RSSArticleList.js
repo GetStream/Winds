@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import Waypoint from 'react-waypoint';
 import Img from 'react-image';
 import Popover from 'react-popover';
@@ -13,8 +12,11 @@ import AliasModal from './AliasModal';
 import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import Loader from './Loader';
 import { followRss, unfollowRss } from '../api';
+
 import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
 import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
+import { ReactComponent as CircleIcon } from '../images/icons/circle.svg';
+import { ReactComponent as DotCircleIcon } from '../images/icons/dot-circle.svg';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
@@ -22,7 +24,6 @@ class RSSArticleList extends React.Component {
 
 		this.resetState = {
 			cursor: 1,
-			sortBy: 'latest',
 			newArticles: false,
 			menuPopover: false,
 			aliasModal: false,
@@ -33,7 +34,7 @@ class RSSArticleList extends React.Component {
 			articles: [],
 		};
 
-		this.state = { ...this.resetState };
+		this.state = { ...this.resetState, sortBy: 'latest' };
 
 		this.contentsEl = React.createRef();
 	}
@@ -125,7 +126,9 @@ class RSSArticleList extends React.Component {
 				page: newFeed ? 1 : this.state.cursor,
 				per_page: 10,
 				rss: rssFeedID,
-				sort_by: 'publicationDate,desc',
+				sort_by: `publicationDate${
+					this.state.sortBy === 'latest' ? ',desc' : ''
+				}`,
 			},
 		)
 			.then((res) => {
@@ -153,6 +156,15 @@ class RSSArticleList extends React.Component {
 		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
 	};
 
+	setSortBy = (sortBy) => {
+		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
+
+		const rssFeedID = this.props.match.params.rssFeedID;
+		this.setState({ articles: [], cursor: 1, menuPopover: false, sortBy }, () => {
+			this.getRSSArticles(rssFeedID);
+		});
+	};
+
 	render() {
 		if (this.state.loading) return <Loader />;
 
@@ -167,31 +179,39 @@ class RSSArticleList extends React.Component {
 			for (const feed of folder.rss) if (feed._id === rssFeed._id) return true;
 			return false;
 		});
-		
-		const articles = this.state.articles
-			.sort(
-				(a, b) =>
-					moment(b.publicationDate).valueOf() -
-					moment(a.publicationDate).valueOf(),
-			)
-			.map((article) => {
-				if (this.props.pinnedArticles[article._id]) {
-					article.pinID = this.props.pinnedArticles[article._id]._id;
-				} else article.pinID = '';
 
-				if (
-					this.props.feeds.article &&
-					this.props.feeds.article.indexOf(article._id) < 20 &&
-					this.props.feeds.article.indexOf(article._id) !== -1
-				) {
-					article.recent = true;
-				} else article.recent = false;
+		const articles = this.state.articles.map((article) => {
+			if (this.props.pinnedArticles[article._id]) {
+				article.pinID = this.props.pinnedArticles[article._id]._id;
+			} else article.pinID = '';
 
-				return article;
-			});
+			if (
+				this.props.feeds.article &&
+				this.props.feeds.article.indexOf(article._id) < 20 &&
+				this.props.feeds.article.indexOf(article._id) !== -1
+			) {
+				article.recent = true;
+			} else article.recent = false;
+
+			return article;
+		});
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('latest')}
+				>
+					{this.state.sortBy === 'latest' ? <DotCircleIcon /> : <CircleIcon />}
+					Latest
+				</div>
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('oldest')}
+				>
+					{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
+					Oldest
+				</div>
 				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
 					<FolderIcon />
 					<span>{currFolder ? currFolder.name : 'Folder'}</span>

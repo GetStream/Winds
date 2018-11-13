@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Img from 'react-image';
 import Waypoint from 'react-waypoint';
 import Popover from 'react-popover';
@@ -16,6 +15,8 @@ import { followPodcast, unfollowPodcast } from '../api';
 
 import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
 import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
+import { ReactComponent as CircleIcon } from '../images/icons/circle.svg';
+import { ReactComponent as DotCircleIcon } from '../images/icons/dot-circle.svg';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
@@ -23,7 +24,6 @@ class PodcastEpisodesView extends React.Component {
 
 		this.resetState = {
 			cursor: 1, // mongoose-api-query starts pages at 1, not 0
-			sortBy: 'latest',
 			newEpisodes: false,
 			menuPopover: false,
 			aliasModal: false,
@@ -34,7 +34,7 @@ class PodcastEpisodesView extends React.Component {
 			episodes: [],
 		};
 
-		this.state = { ...this.resetState };
+		this.state = { ...this.resetState, sortBy: 'latest' };
 	}
 
 	subscribeToStreamFeed(podcastID, streamFeedToken) {
@@ -114,7 +114,9 @@ class PodcastEpisodesView extends React.Component {
 				page: newFeed ? 1 : this.state.cursor,
 				per_page: 10,
 				podcast: podcastID,
-				sort_by: 'publicationDate,desc',
+				sort_by: `publicationDate${
+					this.state.sortBy === 'latest' ? ',desc' : ''
+				}`,
 			},
 		)
 			.then((res) => {
@@ -142,6 +144,15 @@ class PodcastEpisodesView extends React.Component {
 		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
 	};
 
+	setSortBy = (sortBy) => {
+		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
+
+		const podcastID = this.props.match.params.podcastID;
+		this.setState({ episodes: [], cursor: 1, menuPopover: false, sortBy }, () => {
+			this.getPodcastEpisodes(podcastID);
+		});
+	};
+
 	render() {
 		if (this.state.loading) return <Loader />;
 
@@ -157,27 +168,35 @@ class PodcastEpisodesView extends React.Component {
 			return false;
 		});
 
-		const episodes = this.state.episodes
-			.sort(
-				(a, b) =>
-					moment(b.publicationDate).valueOf() -
-					moment(a.publicationDate).valueOf(),
-			)
-			.map((episode) => {
-				episode.pinID = this.props.pinnedEpisodes[episode._id]
-					? this.props.pinnedEpisodes[episode._id]._id
-					: '';
+		const episodes = this.state.episodes.map((episode) => {
+			episode.pinID = this.props.pinnedEpisodes[episode._id]
+				? this.props.pinnedEpisodes[episode._id]._id
+				: '';
 
-				episode.recent =
-					this.props.feeds.episode &&
-					this.props.feeds.episode.indexOf(episode._id) < 20 &&
-					this.props.feeds.episode.indexOf(episode._id) !== -1;
+			episode.recent =
+				this.props.feeds.episode &&
+				this.props.feeds.episode.indexOf(episode._id) < 20 &&
+				this.props.feeds.episode.indexOf(episode._id) !== -1;
 
-				return episode;
-			});
+			return episode;
+		});
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('latest')}
+				>
+					{this.state.sortBy === 'latest' ? <DotCircleIcon /> : <CircleIcon />}
+					Latest
+				</div>
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('oldest')}
+				>
+					{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
+					Oldest
+				</div>
 				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
 					<FolderIcon />
 					<span>{currFolder ? currFolder.name : 'Folder'}</span>
