@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import config from '../config';
 
 import { getStreamClient } from '../utils/stream';
 import Folder from '../models/folder';
@@ -15,14 +16,19 @@ exports.feed = async (req, res) => {
 	const folderId = req.params.folderId;
 	const limit = req.query.per_page || 10;
 	const offset = req.query.page * limit || 0;
+	/* Custom ranking in Stream Pro plan
+	// Should be defined in Stream dashboard */
+	const ranking = config.stream.pro
+		? { ranking: req.query.sort_by === 'oldest' ? 'time_oldest' : '' }
+		: {};
 
 	const folder = await Folder.findById(req.params.folderId);
 	if (!folder) return res.status(404).json({ error: 'Resource does not exist.' });
 	if (folder.user._id != req.user.sub) return res.sendStatus(403);
-	
+
 	const response = await getStreamClient()
 		.feed('folder', folderId)
-		.get({ limit, offset });
+		.get({ limit, offset, ...ranking });
 
 	const streamFeeds = response.results.map((r) => {
 		const split = r.foreign_id.split(':');

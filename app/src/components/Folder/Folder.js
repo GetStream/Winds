@@ -9,15 +9,19 @@ import DeleteModal from './DeleteModal';
 import Loader from '../Loader';
 
 import { ReactComponent as FolderIcon } from '../../images/icons/folder.svg';
+import { ReactComponent as CircleIcon } from '../../images/icons/circle.svg';
+import { ReactComponent as DotCircleIcon } from '../../images/icons/dot-circle.svg';
 
 class Folder extends React.Component {
 	constructor(props) {
 		super(props);
 
+		// Folder sort requires custom ranking feature enables in Stream
 		this.state = {
 			renameModal: false,
 			deleteModal: false,
 			menuPopover: false,
+			sortBy: 'latest',
 		};
 	}
 
@@ -39,8 +43,26 @@ class Folder extends React.Component {
 		}));
 	};
 
-	menuPopover = (
+	setSortBy = (sortBy) => {
+		this.setState({ sortBy, menuPopover: false });
+	};
+
+	menuPopover = () => (
 		<div className="popover-panel feed-popover">
+			<div
+				className="panel-element menu-item sort-button"
+				onClick={() => this.setSortBy('latest')}
+			>
+				{this.state.sortBy === 'latest' ? <DotCircleIcon /> : <CircleIcon />}
+				Latest
+			</div>
+			<div
+				className="panel-element menu-item sort-button"
+				onClick={() => this.setSortBy('oldest')}
+			>
+				{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
+				Oldest
+			</div>
 			<div className="panel-element menu-item" onClick={this.toggleRenameModal}>
 				Rename
 			</div>
@@ -63,7 +85,7 @@ class Folder extends React.Component {
 						<FolderIcon className="header-icon" />
 						<h1>{this.props.folder.name}</h1>
 						<Popover
-							body={this.menuPopover}
+							body={this.menuPopover()}
 							isOpen={this.state.menuPopover}
 							onOuterAction={this.toggleMenuPopover}
 							preferPlace="below"
@@ -95,7 +117,7 @@ class Folder extends React.Component {
 					toggleModal={this.toggleDeleteModal}
 				/>
 
-				<FolderFeeds folder={this.props.folder} />
+				<FolderFeeds folder={this.props.folder} sortBy={this.state.sortBy} />
 			</>
 		);
 	}

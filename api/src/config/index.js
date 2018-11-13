@@ -74,6 +74,7 @@ const _default = {
 		apiKey: process.env.STREAM_API_KEY,
 		apiSecret: process.env.STREAM_API_SECRET,
 		baseUrl: process.env.STREAM_API_BASE_URL,
+		pro: process.env.STREAM_PLAN === 'pro',
 	},
 	analyticsDisabled: process.env.ANALYTICS_DISABLED || false,
 	statsd: {

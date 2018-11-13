@@ -21,10 +21,7 @@ class FolderFeeds extends React.Component {
 			feeds: [],
 		};
 
-		this.state = {
-			...this.resetState,
-			sortBy: 'desc',
-		};
+		this.state = { ...this.resetState };
 	}
 
 	componentDidMount() {
@@ -40,7 +37,10 @@ class FolderFeeds extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.folder._id !== this.props.folder._id) {
+		if (
+			prevProps.folder._id !== this.props.folder._id ||
+			prevProps.sortBy !== this.props.sortBy
+		) {
 			this.setState({ ...this.resetState }, () =>
 				this.getFeeds(this.props.folder._id),
 			);
@@ -66,7 +66,7 @@ class FolderFeeds extends React.Component {
 		const params = {
 			page: newFeed ? 0 : this.state.page,
 			per_page: 10,
-			sort_by: this.state.sortBy,
+			sort_by: this.props.sortBy,
 		};
 
 		getFolderFeeds(folderID, params)
@@ -165,6 +165,7 @@ class FolderFeeds extends React.Component {
 
 FolderFeeds.propTypes = {
 	dispatch: PropTypes.func.isRequired,
+	sortBy: PropTypes.string,
 	pinnedArticles: PropTypes.shape({}),
 	pinnedEpisodes: PropTypes.shape({}),
 	folder: PropTypes.shape({
