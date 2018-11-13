@@ -8,12 +8,13 @@ import EpisodeListItem from '../EpisodeListItem';
 
 class TagFeeds extends React.Component {
 	render() {
-		//TODO show items based on timestamp
+		const order = this.props.sortBy === 'oldest' ? -1 : 1;
 		const feeds = [...this.props.tag.episode, ...this.props.tag.article]
 			.sort(
 				(a, b) =>
-					moment(b.publicationDate).valueOf() -
-					moment(a.publicationDate).valueOf(),
+					order *
+					(moment(b.publicationDate).valueOf() -
+						moment(a.publicationDate).valueOf()),
 			)
 			.map((feed) => {
 				if (feed.type === 'articles')
@@ -27,8 +28,6 @@ class TagFeeds extends React.Component {
 
 				return feed;
 			});
-
-		//Todo Sort feed
 
 		return (
 			<div className="list content">
@@ -52,7 +51,7 @@ class TagFeeds extends React.Component {
 }
 
 TagFeeds.defaultProps = {
-	sortBy: 'desc',
+	sortBy: 'latest',
 };
 
 TagFeeds.propTypes = {

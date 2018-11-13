@@ -9,6 +9,8 @@ import RenameModal from './RenameModal';
 import Loader from '../Loader';
 
 import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
+import { ReactComponent as CircleIcon } from '../../images/icons/circle.svg';
+import { ReactComponent as DotCircleIcon } from '../../images/icons/dot-circle.svg';
 
 class TagView extends React.Component {
 	constructor(props) {
@@ -18,6 +20,7 @@ class TagView extends React.Component {
 			deleteModal: false,
 			renameModal: false,
 			menuPopover: false,
+			sortBy: 'latest',
 		};
 	}
 
@@ -39,8 +42,26 @@ class TagView extends React.Component {
 		}));
 	};
 
-	menuPopover = (
+	setSortBy = (sortBy) => {
+		this.setState({ sortBy, menuPopover: false });
+	};
+
+	menuPopover = () => (
 		<div className="popover-panel feed-popover">
+			<div
+				className="panel-element menu-item sort-button"
+				onClick={() => this.setSortBy('latest')}
+			>
+				{this.state.sortBy === 'latest' ? <DotCircleIcon /> : <CircleIcon />}
+				Latest
+			</div>
+			<div
+				className="panel-element menu-item sort-button"
+				onClick={() => this.setSortBy('oldest')}
+			>
+				{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
+				Oldest
+			</div>
 			<div className="panel-element menu-item" onClick={this.toggleRenameModal}>
 				Rename
 			</div>
@@ -63,7 +84,7 @@ class TagView extends React.Component {
 						<TagIcon className="header-icon" />
 						<h1>{this.props.tag.name}</h1>
 						<Popover
-							body={this.menuPopover}
+							body={this.menuPopover()}
 							isOpen={this.state.menuPopover}
 							onOuterAction={this.toggleMenuPopover}
 							preferPlace="below"
@@ -96,7 +117,7 @@ class TagView extends React.Component {
 					toggleModal={this.toggleDeleteModal}
 				/>
 
-				<TagFeeds tag={this.props.tag} />
+				<TagFeeds sortBy={this.state.sortBy} tag={this.props.tag} />
 			</>
 		);
 	}

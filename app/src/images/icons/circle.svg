@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" version="1.1" viewBox="0 0 16 16">
+    <defs>
+        <rect id="path-1" width="16" height="16" x="0" y="0" rx="8"/>
+        <linearGradient id="linearGradient-3" x1="50%" x2="50%" y1="100%" y2="0%">
+            <stop offset="0%" stop-color="#F2F4F7"/>
+            <stop offset="100%" stop-color="#FFFFFF"/>
+        </linearGradient>
+    </defs>
+    <g id="Radio-Button/Inactive" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+        <g id="UI/Container/Rounded-(100px)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"/>
+            </mask>
+            <g id="Base"/>
+            <g id="UI/Color/Gradient/Default" fill="url(#linearGradient-3)" fill-rule="evenodd" mask="url(#mask-2)">
+                <rect id="Base" width="16" height="16" x="0" y="0"/>
+            </g>
+        </g>
+        <g id="UI/Border/Rounded-(100px)/1px---10%Black" stroke="#000000" stroke-opacity="0.1">
+            <path id="Border-Shape" d="M8,0.5 C3.85786438,0.5 0.5,3.85786438 0.5,8 C0.5,12.1421356 3.85786438,15.5 8,15.5 C12.1421356,15.5 15.5,12.1421356 15.5,8 C15.5,3.85786438 12.1421356,0.5 8,0.5 Z"/>
+        </g>
+    </g>
+</svg>
