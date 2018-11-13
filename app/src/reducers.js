@@ -236,10 +236,62 @@ export default (previousState = {}, action) => {
 			return acc;
 		}, {});
 
-		const notesOrder = action.data
-			.map((n) => (n.article ? n.article._id : n.episode._id))
-			.filter((value, index, self) => self.indexOf(value) === index);
+		const notesOrder = generateNotesOrder(action.data, true);
+
+		return { ...previousState, notes, notesOrder };
+	} else if (action.type === 'NEW_NOTE') {
+		let notes = { ...previousState.notes };
+
+		const id = action.data.article
+			? action.data.article._id
+			: action.data.episode._id;
+
+		if (!notes[id]) notes[id] = [];
+		notes[id].push(action.data);
+
+		const notesOrder = generateNotesOrder(notes);
+
+		return { ...previousState, notes, notesOrder };
+	} else if (action.type === 'UPDATE_NOTE') {
+		let notes = { ...previousState.notes };
+
+		const id = action.data.article
+			? action.data.article._id
+			: action.data.episode._id;
+
+		notes[id] = notes[id].map((n) => {
+			if (n._id !== action.data._id) return n;
+			return action.data;
+		});
+
+		const notesOrder = generateNotesOrder(notes);
+
+		return { ...previousState, notes, notesOrder };
+	} else if (action.type === 'DELETE_NOTE') {
+		let notes = { ...previousState.notes };
+
+		notes[action.feedId] = notes[action.feedId].filter(
+			(n) => n._id !== action.noteId,
+		);
+
+		const notesOrder = generateNotesOrder(notes);
 
 		return { ...previousState, notes, notesOrder };
 	} else return previousState;
 };
+
+function generateNotesOrder(notes, sorted = false) {
+	// Flattening notes //
+	const notesSorted = sorted
+		? [...notes]
+		: Object.values(notes)
+			.reduce((acc, n) => acc.concat(n), [])
+			.sort(
+				(a, b) =>
+					moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf(),
+			);
+
+	return notesSorted
+		.map((n) => (n.article ? n.article._id : n.episode._id))
+		.filter((value, index, self) => self.indexOf(value) === index);
+}

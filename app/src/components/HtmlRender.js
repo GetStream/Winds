@@ -53,7 +53,7 @@ class HtmlRender extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (
 			this.props.content !== prevProps.content ||
-			this.props.highlights !== prevProps.highlights
+			this.props.notes !== prevProps.notes
 		)
 			this.setHtml();
 	}
@@ -66,7 +66,7 @@ class HtmlRender extends React.Component {
 	setHtml = () => {
 		if (this.props.content)
 			this.setState({ html: ReactHtmlParser(this.props.content) }, () => {
-				const deserialize = this.props.highlights.reduce(
+				const deserialize = this.props.notes.reduce(
 					(acc, h, i) =>
 						acc.concat(
 							`|${h.start}$${h.end}$${i}$${
@@ -99,7 +99,7 @@ class HtmlRender extends React.Component {
 		let range = this.highlighter.getHighlightForElement(element);
 		if (!range) return null;
 		range = range.characterRange;
-		return this.props.highlights.find(
+		return this.props.notes.find(
 			(h) => h.start === range.start && h.end === range.end,
 		);
 	};
@@ -192,10 +192,10 @@ class HtmlRender extends React.Component {
 		const removed = this.highlighter.unhighlightSelection();
 		if (!removed.length) return this.close();
 		const range = removed[0].characterRange;
-		const highlight = this.props.highlights.find(
+		const highlight = this.props.notes.find(
 			(h) => h.start === range.start && h.end === range.end,
 		);
-		deleteNote(this.props.dispatch, highlight._id);
+		deleteNote(this.props.dispatch, this.props.id, highlight._id);
 		this.setState({ ...this.resetState });
 		rangy.getSelection().removeAllRanges();
 	};
@@ -230,6 +230,8 @@ class HtmlRender extends React.Component {
 	};
 
 	render() {
+		// console.log(this.props.n);
+
 		return (
 			<div className="feed-content" ref={this.wrapper}>
 				<div id="feed-content" ref={this.contentWrapper}>
@@ -278,11 +280,12 @@ HtmlRender.propTypes = {
 	content: PropTypes.string,
 	type: PropTypes.string.isRequired,
 	id: PropTypes.string,
-	highlights: PropTypes.array,
+	notes: PropTypes.array,
 };
 
 const mapStateToProps = (state, ownParams) => ({
-	highlights: (state.notes && state.notes[ownParams.id]) || [],
+	notes: (state.notes && state.notes[ownParams.id]) || [],
+	n: state.notes,
 });
 
 export default connect(mapStateToProps)(HtmlRender);
