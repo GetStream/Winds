@@ -31,9 +31,9 @@ class SearchFeed extends React.Component {
 			if (err) return console.log(err); // eslint-disable-line no-console
 
 			const followed = this.props.followedFeeds;
-			const hits = result.hits.sort(
-				(a, b) => (followed[a._id] ? (followed[b._id] ? 0 : -1) : 1),
-			);
+			const hits = result.hits
+				.sort((a, b) => (followed[a._id] ? (followed[b._id] ? 0 : -1) : 1))
+				.filter((r) => !this.props.folders[r._id]);
 
 			this.setState({ results: hits.slice(0, 8) });
 		});
@@ -78,7 +78,6 @@ class SearchFeed extends React.Component {
 	};
 
 	render() {
-		console.log(this.props.followedFeeds);
 		return (
 			<div className="search-feed">
 				<div className="input-box">
@@ -151,10 +150,16 @@ class SearchFeed extends React.Component {
 
 SearchFeed.propTypes = {
 	addFeed: PropTypes.func,
+	folders: PropTypes.shape({}),
 	followedFeeds: PropTypes.shape({}),
 };
 
 const mapStateToProps = (state) => ({
+	folders: (state.folders || []).reduce((acc, f) => {
+		f.rss.map((r) => (acc[r._id] = true));
+		f.podcast.map((p) => (acc[p._id] = true));
+		return acc;
+	}, {}),
 	followedFeeds: {
 		...(state.followedRssFeeds || {}),
 		...(state.followedPodcasts || {}),
