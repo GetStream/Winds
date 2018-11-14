@@ -1,10 +1,12 @@
 .feed-content {
 	-webkit-app-region: no-drag;
 	margin: auto;
-	margin: 0 40px;
 	max-width: 100%;
-	padding-bottom: 100px;
 	position: relative;
+
+	#feed-content {
+		padding: 0 40px 100px;
+	}
 
 	h1 {
 		font-size: 30px;

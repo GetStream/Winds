@@ -35,7 +35,6 @@ class HtmlRender extends React.Component {
 		};
 
 		this.wrapper = React.createRef();
-		this.contentWrapper = React.createRef();
 	}
 
 	componentDidMount() {
@@ -46,8 +45,8 @@ class HtmlRender extends React.Component {
 		window.highlighter = this.highlighter;
 		this.setHtml();
 
-		this.contentWrapper.current.addEventListener('mouseup', this.onMouseUp);
-		this.contentWrapper.current.addEventListener('click', this.onClick);
+		this.wrapper.current.addEventListener('mouseup', this.onMouseUp);
+		this.wrapper.current.addEventListener('click', this.onClick);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -59,8 +58,8 @@ class HtmlRender extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.contentWrapper.current.removeEventListener('mouseup', this.onMouseUp);
-		this.contentWrapper.current.removeEventListener('click', this.onClick);
+		this.wrapper.current.removeEventListener('mouseup', this.onMouseUp);
+		this.wrapper.current.removeEventListener('click', this.onClick);
 	}
 
 	setHtml = () => {
@@ -201,7 +200,7 @@ class HtmlRender extends React.Component {
 	};
 
 	renderNoteIcons = () => {
-		const wrapper = this.contentWrapper.current;
+		const wrapper = this.wrapper.current;
 		if (!wrapper) return null;
 
 		const wrapperTop = wrapper.getBoundingClientRect().top;
@@ -211,7 +210,7 @@ class HtmlRender extends React.Component {
 			.map((h) => {
 				const range = rangy.createRange();
 				range.selectCharacters(
-					this.contentWrapper.current,
+					this.wrapper.current,
 					h.characterRange.start,
 					h.characterRange.end,
 				);
@@ -230,11 +229,12 @@ class HtmlRender extends React.Component {
 	};
 
 	render() {
-		// console.log(this.props.n);
+		const wrapperBounds =
+			this.wrapper.current && this.wrapper.current.getBoundingClientRect();
 
 		return (
-			<div className="feed-content" ref={this.wrapper}>
-				<div id="feed-content" ref={this.contentWrapper}>
+			<div className="feed-content">
+				<div id="feed-content" ref={this.wrapper}>
 					{this.state.html}
 				</div>
 
@@ -243,7 +243,7 @@ class HtmlRender extends React.Component {
 				<HighlightMenu
 					active={this.state.isNote}
 					bounds={this.state.rangeBounds}
-					wrapperBounds={this.wrapper.current}
+					wrapperBounds={wrapperBounds}
 				>
 					<NoteInput
 						addNote={this.addHighlight}
@@ -257,7 +257,7 @@ class HtmlRender extends React.Component {
 				<HighlightMenu
 					active={this.state.isHighlight}
 					bounds={this.state.rangeBounds}
-					wrapperBounds={this.wrapper.current}
+					wrapperBounds={wrapperBounds}
 				>
 					{this.state.highlighted ? (
 						<HighlightRemove onClick={this.removeHighlight} />
@@ -285,7 +285,6 @@ HtmlRender.propTypes = {
 
 const mapStateToProps = (state, ownParams) => ({
 	notes: (state.notes && state.notes[ownParams.id]) || [],
-	n: state.notes,
 });
 
 export default connect(mapStateToProps)(HtmlRender);

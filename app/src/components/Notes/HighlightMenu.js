@@ -19,10 +19,12 @@ class HighlightMenu extends React.Component {
 	};
 
 	render() {
-		if (!this.props.bounds || !this.props.wrapperBounds) return null;
-
-		const bounds = this.props.bounds;
-		const wrapperBounds = this.props.wrapperBounds.getBoundingClientRect();
+		const bounds = this.props.bounds
+			? this.props.bounds
+			: { top: 0, left: 0, width: 0, height: 0 };
+		const wrapperBounds = this.props.wrapperBounds
+			? this.props.wrapperBounds
+			: { top: 0, left: 0, width: 0 };
 
 		let top = bounds.top - wrapperBounds.top - this.state.h - 10;
 		const reverseArrow = top <= 0;
@@ -65,7 +67,7 @@ HighlightMenu.propTypes = {
 	children: PropTypes.node,
 	active: PropTypes.bool,
 	bounds: PropTypes.shape({}),
-	wrapperBounds: PropTypes.shape({ getBoundingClientRect: PropTypes.func }),
+	wrapperBounds: PropTypes.shape({}),
 };
 
 export default HighlightMenu;
