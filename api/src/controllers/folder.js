@@ -90,6 +90,7 @@ exports.post = async (req, res) => {
 	}
 
 	const folder = await Folder.create(data);
+	console.log(folder);
 	await streamFollowMany(folder);
 	res.json(await Folder.findById(folder._id));
 };
@@ -195,7 +196,7 @@ function generateRels(folder) {
 		source: `folder:${folder._id}`,
 		target: `rss:${r._id}`,
 	}));
-	const podcastRel = folder.rss.map((p) => ({
+	const podcastRel = folder.podcast.map((p) => ({
 		source: `folder:${folder._id}`,
 		target: `podcast:${p._id}`,
 	}));
