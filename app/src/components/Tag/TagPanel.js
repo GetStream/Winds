@@ -12,6 +12,7 @@ import { ReactComponent as TagIconHighlight } from '../../images/icons/tag-opaci
 class TagPanel extends React.Component {
 	render() {
 		const tagID = this.props.match.params.tagID;
+		const tags = this.props.tags.filter((t) => t.article.length || t.episode.length);
 
 		return (
 			<Panel
@@ -20,8 +21,8 @@ class TagPanel extends React.Component {
 				hasHighlight={!!tagID}
 				headerText="Tags"
 			>
-				{this.props.tags.length ? (
-					this.props.tags.map((tag) => (
+				{tags.length ? (
+					tags.map((tag) => (
 						<Link
 							className={tagID === tag._id ? 'highlighted' : ''}
 							key={tag._id}
