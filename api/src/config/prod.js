@@ -1,3 +1,1 @@
-module.exports = {
-	newrelic: true,
-};
+module.exports = {};
