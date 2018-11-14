@@ -19,7 +19,7 @@ const api = express();
 
 setupExpressRequestHandler(api);
 
-api.use(cors());
+api.use(cors({ maxAge: 1728000 }));
 api.use(compression());
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json({ limit: '5mb' }));
@@ -81,7 +81,7 @@ api.use(function setPoweredByHeaders(req, res, next) {
 	next();
 });
 
-fs.readdirSync(path.join(__dirname, 'routes')).map(file => {
+fs.readdirSync(path.join(__dirname, 'routes')).map((file) => {
 	require('./routes/' + file)(api);
 });
 
@@ -90,7 +90,7 @@ if (require.main === module) {
 
 	startSampling('winds.event_loop.api.delay');
 
-	api.listen(config.server.port, err => {
+	api.listen(config.server.port, (err) => {
 		if (err) {
 			logger.error({ err });
 			process.exit(1);
