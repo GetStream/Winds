@@ -19,7 +19,7 @@ class RecentNotesPanel extends React.Component {
 		return (
 			<Panel
 				expandSize={2}
-				expandable={!!this.props.recentNotes.length}
+				expandable={this.props.recentNotes.length > 2}
 				headerText="Recent Notes"
 			>
 				{recentNotes.length ? (
