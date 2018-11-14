@@ -20,6 +20,7 @@
 	.title {
 		grid-area: title;
 		margin: 16px 0 0;
+		user-select: text;
 	}
 
 	.date {
