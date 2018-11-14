@@ -1,5 +1,4 @@
 import config from './config';
-import './utils/newrelic';
 import fs from 'fs';
 import path from 'path';
 
@@ -81,7 +80,7 @@ api.use(function setPoweredByHeaders(req, res, next) {
 	next();
 });
 
-fs.readdirSync(path.join(__dirname, 'routes')).map(file => {
+fs.readdirSync(path.join(__dirname, 'routes')).map((file) => {
 	require('./routes/' + file)(api);
 });
 
@@ -90,7 +89,7 @@ if (require.main === module) {
 
 	startSampling('winds.event_loop.api.delay');
 
-	api.listen(config.server.port, err => {
+	api.listen(config.server.port, (err) => {
 		if (err) {
 			logger.error({ err });
 			process.exit(1);
