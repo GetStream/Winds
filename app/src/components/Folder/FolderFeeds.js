@@ -15,6 +15,8 @@ class FolderFeeds extends React.Component {
 		super(props);
 
 		this.resetState = {
+			loading: true,
+			error: false,
 			page: 0,
 			newFeeds: false,
 			reachedEndOfFeed: false,
@@ -63,6 +65,8 @@ class FolderFeeds extends React.Component {
 	}
 
 	getFeeds = (folderID, newFeed = false) => {
+		this.setState({ loading: true, error: false });
+
 		const params = {
 			page: newFeed ? 0 : this.state.page,
 			per_page: 10,
@@ -74,9 +78,12 @@ class FolderFeeds extends React.Component {
 				if (data.length === 0) return this.setState({ reachedEndOfFeed: true });
 				this.setState(({ feeds }) => ({
 					feeds: newFeed ? data : [...feeds, ...data],
+					loading: false,
+					error: false,
 				}));
 			})
 			.catch((err) => {
+				this.setState({ loading: false, error: true });
 				console.log(err); // eslint-disable-line no-console
 			});
 	};
@@ -96,7 +103,7 @@ class FolderFeeds extends React.Component {
 			return feed;
 		});
 
-		if (!feeds.length && !this.state.reachedEndOfFeed) return <Loader />;
+		if (this.state.loading && !feeds.length) return <Loader />;
 
 		return (
 			<div className="list content">
@@ -112,7 +119,14 @@ class FolderFeeds extends React.Component {
 					</div>
 				)}
 
-				{!feeds.length && (
+				{this.state.error && (
+					<div className="end">
+						<p>Something went wrong! please try again.</p>
+					</div>
+				)}
+
+				{!this.state.error &&
+					!feeds.length && (
 					<div className="end">
 						<p>We haven&#39;t found any feeds for this Folder yet :(</p>
 					</div>
