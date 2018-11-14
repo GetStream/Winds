@@ -26,6 +26,7 @@ class RecentNotesPanel extends React.Component {
 					recentNotes.map((n) => {
 						const isArticle = n.type === 'articles';
 						const feedId = isArticle ? n.rss : n.podcast;
+						const tagsNo = tags.filter((tag) => tag === n._id).length;
 						const link = `/folders/${foldersFeed[feedId]}/${
 							isArticle ? 'r' : 'p'
 						}/${feedId}/${isArticle ? 'a' : 'e'}/${n._id}`;
@@ -38,14 +39,16 @@ class RecentNotesPanel extends React.Component {
 								</div>
 								<div className="numbers">
 									<span>
-										<NoteIcon /> {n.notes} Notes
+										<NoteIcon /> {n.notes} Note
+										{n.notes > 1 && 's'}
 									</span>
 									<span>
-										<PenIcon /> {n.highlights} Highlights
+										<PenIcon /> {n.highlights} Highlight
+										{n.highlights > 1 && 's'}
 									</span>
 									<span>
-										<TagIcon />{' '}
-										{tags.filter((tag) => tag === n._id).length} Tags
+										<TagIcon /> {tagsNo} Tag
+										{tagsNo > 1 && 's'}
 									</span>
 								</div>
 							</Link>

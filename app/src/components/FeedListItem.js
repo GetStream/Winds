@@ -81,13 +81,16 @@ class FeedListItem extends React.Component {
 							{pinID ? <BookmarkedIcon /> : <BookmarkIcon />}
 						</span>
 						<span>
-							<NoteIcon /> {notes} Notes
+							<NoteIcon /> {notes} Note
+							{notes > 1 && 's'}
 						</span>
 						<span>
-							<PenIcon /> {highlights} Highlights
+							<PenIcon /> {highlights} Highlight
+							{highlights > 1 && 's'}
 						</span>
 						<span>
-							<TagIcon /> {tags} Tags
+							<TagIcon /> {tags} Tag
+							{tags > 1 && 's'}
 						</span>
 					</div>
 
