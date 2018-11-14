@@ -30,6 +30,7 @@ class PodcastEpisodesView extends React.Component {
 			folderModal: false,
 			reachedEndOfFeed: false,
 			loading: true,
+			loadingEpisodes: true,
 			podcast: { images: {} },
 			episodes: [],
 		};
@@ -106,6 +107,8 @@ class PodcastEpisodesView extends React.Component {
 	};
 
 	getPodcastEpisodes = (podcastID, newFeed = false) => {
+		this.setState({ loadingEpisodes: true });
+
 		fetch(
 			'GET',
 			'/episodes',
@@ -120,6 +123,7 @@ class PodcastEpisodesView extends React.Component {
 			},
 		)
 			.then((res) => {
+				this.setState({ loadingEpisodes: false });
 				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
 				else if (newFeed) this.setState({ episodes: res.data, cursor: 1 });
 				else
@@ -128,6 +132,7 @@ class PodcastEpisodesView extends React.Component {
 					}));
 			})
 			.catch((err) => {
+				this.setState({ loadingEpisodes: false, error: true });
 				console.log(err); // eslint-disable-line no-console
 			});
 	};
@@ -228,7 +233,9 @@ class PodcastEpisodesView extends React.Component {
 
 		let rightColumn;
 
-		if (episodes.length === 0) {
+		if (this.state.loadingEpisodes && !episodes.length) {
+			rightColumn = <Loader />;
+		} else if (episodes.length === 0) {
 			rightColumn = (
 				<div>
 					<p>We haven&#39;t found any episodes for this podcast feed yet :(</p>

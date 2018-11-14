@@ -30,6 +30,7 @@ class RSSArticleList extends React.Component {
 			folderModal: false,
 			reachedEndOfFeed: false,
 			loading: true,
+			loadingArticles: true,
 			rssFeed: { images: {} },
 			articles: [],
 		};
@@ -118,6 +119,8 @@ class RSSArticleList extends React.Component {
 	};
 
 	getRSSArticles = (rssFeedID, newFeed = false) => {
+		this.setState({ loadingArticles: true });
+
 		fetch(
 			'GET',
 			'/articles',
@@ -132,6 +135,7 @@ class RSSArticleList extends React.Component {
 			},
 		)
 			.then((res) => {
+				this.setState({ loadingArticles: false });
 				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
 				else if (newFeed) this.setState({ articles: res.data, cursor: 1 });
 				else
@@ -140,6 +144,7 @@ class RSSArticleList extends React.Component {
 					}));
 			})
 			.catch((err) => {
+				this.setState({ loadingArticles: false, error: true });
 				console.log(err); // eslint-disable-line no-console
 			});
 	};
@@ -242,7 +247,9 @@ class RSSArticleList extends React.Component {
 		);
 
 		let rightContents;
-		if (articles.length === 0) {
+		if (this.state.loadingArticles && !articles.length) {
+			rightContents = <Loader />;
+		} else if (articles.length === 0) {
 			rightContents = (
 				<div>
 					<p>We haven&#39;t found any articles for this RSS feed yet :(</p>
