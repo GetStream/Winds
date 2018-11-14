@@ -160,9 +160,18 @@ class RSSArticleList extends React.Component {
 		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
 
 		const rssFeedID = this.props.match.params.rssFeedID;
-		this.setState({ articles: [], cursor: 1, menuPopover: false, sortBy }, () => {
-			this.getRSSArticles(rssFeedID);
-		});
+		this.setState(
+			{
+				articles: [],
+				cursor: 1,
+				menuPopover: false,
+				reachedEndOfFeed: false,
+				sortBy,
+			},
+			() => {
+				this.getRSSArticles(rssFeedID);
+			},
+		);
 	};
 
 	render() {

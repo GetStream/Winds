@@ -148,9 +148,18 @@ class PodcastEpisodesView extends React.Component {
 		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
 
 		const podcastID = this.props.match.params.podcastID;
-		this.setState({ episodes: [], cursor: 1, menuPopover: false, sortBy }, () => {
-			this.getPodcastEpisodes(podcastID);
-		});
+		this.setState(
+			{
+				episodes: [],
+				cursor: 1,
+				menuPopover: false,
+				reachedEndOfFeed: false,
+				sortBy,
+			},
+			() => {
+				this.getPodcastEpisodes(podcastID);
+			},
+		);
 	};
 
 	render() {
