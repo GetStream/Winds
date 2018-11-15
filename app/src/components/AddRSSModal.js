@@ -1,20 +1,21 @@
-import { connect } from 'react-redux';
-import exitIcon from '../images/buttons/exit.svg';
-import config from '../config';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import Img from 'react-image';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import fetch from '../util/fetch';
+
 import saveIcon from '../images/icons/save.svg';
 import rssIcon from '../images/icons/rss.svg';
-import { withRouter } from 'react-router-dom';
+import exitIcon from '../images/buttons/exit.svg';
 
 class AddRSSModal extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
+
+		this.resetState = {
 			checkedFeedsToFollow: [],
 			errorMessage: '',
 			errored: false,
@@ -25,67 +26,12 @@ class AddRSSModal extends React.Component {
 			success: false,
 		};
 
-		this.submitRSSFeedURL = this.submitRSSFeedURL.bind(this);
-		this.submitFeedSelections = this.submitFeedSelections.bind(this);
-		this.resetModal = this.resetModal.bind(this);
-		this.sendOMPLFileToAPI = this.sendOMPLFileToAPI.bind(this);
-		this.handleStageOneFormSubmit = this.handleStageOneFormSubmit.bind(this);
-		this.stageOneFormIsValid = this.stageOneFormIsValid.bind(this);
+		this.state = { ...this.resetState };
 	}
 
-	sendOMPLFileToAPI() {
-		this.setState({
-			errorMessage: '',
-			errored: false,
-			submitting: true,
-			success: false,
-		});
-
-		let fd = new FormData();
-
-		fd.append('opml', this.state.file);
-
-		axios({
-			baseURL: config.api.url,
-			data: fd,
-			headers: {
-				'Authorization': `Bearer ${localStorage['jwt']}`,
-				'Content-Type': 'multipart/form-data',
-			},
-			method: 'POST',
-			url: '/opml/upload',
-		})
-			.then(() => {
-				this.setState({
-					submitting: false,
-					success: true,
-				});
-
-				if (this.props.done) {
-					setTimeout(() => {
-						this.props.done();
-					}, 5000);
-				}
-			})
-			.catch((err) => {
-				this.setState({
-					errorMessage: err.message,
-					errored: true,
-					submitting: false,
-				});
-			});
-	}
-
-	handleStageOneFormSubmit(e) {
+	handleStageOneFormSubmit = (e) => {
 		e.preventDefault();
-		if (this.state.opmlSectionExpanded) {
-			this.sendOMPLFileToAPI();
-		} else {
-			this.submitRSSFeedURL();
-		}
-	}
 
-	submitRSSFeedURL() {
 		this.setState({
 			errorMessage: '',
 			errored: false,
@@ -93,16 +39,7 @@ class AddRSSModal extends React.Component {
 			success: false,
 		});
 
-		axios({
-			baseURL: config.api.url,
-			data: { feedUrl: this.state.rssInputValue },
-			headers: {
-				'Authorization': `Bearer ${localStorage['jwt']}`,
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-			url: '/rss',
-		})
+		fetch('POST', '/rss', { feedUrl: this.state.rssInputValue })
 			.then((res) => {
 				for (let rssFeed of res.data) {
 					this.props.dispatch({
@@ -123,29 +60,22 @@ class AddRSSModal extends React.Component {
 					submitting: false,
 				});
 			});
-	}
+	};
 
-	resetModal() {
-		this.setState({
-			checkedFeedsToFollow: [],
-			errorMessage: '',
-			errored: false,
-			feedsToFollow: [],
-			rssInputValue: '',
-			stage: 'submit-rss-url',
-			submitting: false,
-			success: false,
-		});
-	}
+	resetModal = () => {
+		this.setState({ ...this.resetState });
+	};
 
-	submitFeedSelections(e) {
+	submitFeedSelections = (e) => {
 		e.preventDefault();
+
 		this.setState({
 			errorMessage: '',
 			errored: false,
 			submitting: true,
 			success: false,
 		});
+
 		// TODO: FIX Dispatch
 		Promise.all(
 			this.state.checkedFeedsToFollow.map((checkedFeedToFollow) => {
@@ -156,7 +86,6 @@ class AddRSSModal extends React.Component {
 					this.props.dispatch({
 						rssFeedID: res.data.rss,
 						type: 'FOLLOW_RSS_FEED',
-						userID: res.data.user,
 					});
 					return res.data.rss;
 				});
@@ -171,7 +100,7 @@ class AddRSSModal extends React.Component {
 				setTimeout(() => {
 					this.resetModal();
 					this.props.done();
-				}, 5000);
+				}, 1500);
 			})
 			.catch((err) => {
 				this.setState({
@@ -180,44 +109,12 @@ class AddRSSModal extends React.Component {
 					success: false,
 				});
 			});
-	}
+	};
 
-	stageOneFormIsValid() {
-		if (this.state.opmlSectionExpanded && this.state.file) {
-			return true;
-		} else if (
-			!this.state.opmlSectionExpanded &&
-			this.state.rssInputValue.trim() !== ''
-		) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	render() {
-		let dropzoneContents; // eslint-disable-line
-
-		if (this.state.file) {
-			dropzoneContents = <div>{this.state.file.name}</div>;
-		} else {
-			dropzoneContents = (
-				<div className="dropzone-container">
-					<button className="btn secondary" type="button">
-						Select File
-					</button>
-					<span>or drag your file here</span>
-				</div>
-			);
-		}
-		let buttonText;
-		if (this.state.submitting) {
-			buttonText = 'Submitting...';
-		} else if (this.state.success) {
-			buttonText = 'Success!';
-		} else {
-			buttonText = 'Submit';
-		}
+	render = () => {
+		let buttonText = 'Submit';
+		if (this.state.submitting) buttonText = 'Submitting...';
+		else if (this.state.success) buttonText = 'Success!';
 
 		let currentView = null;
 		if (this.state.stage === 'submit-rss-url') {
@@ -226,12 +123,9 @@ class AddRSSModal extends React.Component {
 					<div className="input-box">
 						<input
 							autoComplete="false"
-							disabled={this.state.opmlSectionExpanded}
-							onChange={(e) => {
-								this.setState({
-									rssInputValue: e.target.value,
-								});
-							}}
+							onChange={(e) =>
+								this.setState({ rssInputValue: e.target.value })
+							}
 							placeholder="Enter URL"
 							type="text"
 							value={this.state.rssInputValue}
@@ -243,33 +137,19 @@ class AddRSSModal extends React.Component {
 					</div>
 					<div className="error-message">{this.state.errorMessage}</div>
 					<div className="buttons">
-						{this.state.opmlSectionExpanded ? (
-							<button
-								className="btn primary alt with-circular-icon"
-								disabled={
-									this.state.submitting ||
-									this.state.success ||
-									!this.stageOneFormIsValid()
-								}
-								type="submit"
-							>
-								<Img src={saveIcon} />
-								<span className="button-text">Import OPML</span>
-							</button>
-						) : (
-							<button
-								className="btn primary alt with-circular-icon"
-								disabled={
-									this.state.submitting ||
-									this.state.success ||
-									!this.stageOneFormIsValid()
-								}
-								type="submit"
-							>
-								<Img src={saveIcon} />
-								<span className="button-text">Add RSS</span>
-							</button>
-						)}
+						<button
+							className="btn primary alt with-circular-icon"
+							disabled={
+								this.state.submitting ||
+								this.state.success ||
+								this.state.rssInputValue.trim() === ''
+							}
+							type="submit"
+						>
+							<Img src={saveIcon} />
+							<span className="button-text">Add RSS</span>
+						</button>
+
 						<button
 							className="btn link cancel"
 							onClick={(e) => {
@@ -296,9 +176,8 @@ class AddRSSModal extends React.Component {
 						<Img src={rssIcon} />
 					</div>
 					<div className="info">
-						{
-							'Once your selection has been made, we will begin to process the feeds. They will be ready shortly after.'
-						}
+						Once your selection has been made, we will begin to process the
+						feeds. They will be ready shortly after.
 					</div>
 					{this.state.feedsToFollow.map((feedToFollow) => {
 						return (
@@ -341,7 +220,11 @@ class AddRSSModal extends React.Component {
 					<div className="buttons">
 						<button
 							className="btn primary alt with-circular-icon"
-							disabled={this.state.submitting || this.state.success}
+							disabled={
+								this.state.submitting ||
+								this.state.success ||
+								!this.state.checkedFeedsToFollow.length
+							}
 							type="submit"
 						>
 							<Img src={saveIcon} />
@@ -385,7 +268,7 @@ class AddRSSModal extends React.Component {
 				{currentView}
 			</ReactModal>
 		);
-	}
+	};
 }
 
 AddRSSModal.defaultProps = {
