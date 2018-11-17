@@ -1,17 +1,16 @@
-import url from 'url';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
-import ReactHtmlParser from 'react-html-parser';
 import isElectron from 'is-electron';
+import url from 'url';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';
 import { pinArticle, unpinArticle } from '../util/pins';
 import { fetchSocialScore } from '../util/social';
-
 import Loader from './Loader';
-import TimeAgo from './TimeAgo';
+import HtmlRender from './HtmlRender';
+import FeedHeader from './FeedHeader';
 
 function mergeSocialScore(article, socialScore) {
 	article.socialScore = article.socialScore || {};
@@ -28,12 +27,14 @@ class RSSArticle extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.resetState = {
 			error: false,
-			loadingContent: true,
 			loading: true,
+			loadingContent: true,
 			article: {},
 		};
+
+		this.state = { ...this.resetState };
 
 		this.sentArticleReadCompleteAnalyticsEvent = false;
 		this.contentRef = React.createRef();
@@ -41,10 +42,12 @@ class RSSArticle extends React.Component {
 
 	componentDidMount() {
 		const articleID = this.props.match.params.articleID;
-		window.streamAnalyticsClient.trackEngagement({
-			label: 'article_open',
-			content: { foreign_id: `articles:${articleID}` },
-		});
+
+		if (window.streamAnalyticsClient.userData)
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'article_open',
+				content: { foreign_id: `articles:${articleID}` },
+			});
 
 		this.getArticle(articleID);
 		this.getRSSContent(articleID);
@@ -54,6 +57,7 @@ class RSSArticle extends React.Component {
 		const articleID = this.props.match.params.articleID;
 
 		if (articleID !== prevProps.match.params.articleID) {
+			this.setState({ ...this.resetState });
 			this.sentArticleReadCompleteAnalyticsEvent = false;
 
 			window.streamAnalyticsClient.trackEngagement({
@@ -87,7 +91,7 @@ class RSSArticle extends React.Component {
 		}
 	}
 
-	tweet() {
+	tweet = () => {
 		const location = url.parse(window.location.href);
 		const link = {
 			protocol: 'https',
@@ -122,11 +126,11 @@ class RSSArticle extends React.Component {
 			const win = window.open(shareUrl, 'Share on Twitter', getWindowOptions());
 			win.opener = null;
 		}
-	}
+	};
 
-	async getArticle(articleID) {
+	getArticle = async (articleID) => {
 		try {
-			this.setState({ article: {}, loading: true });
+			this.setState({ loading: true });
 			const res = await fetch('GET', `/articles/${articleID}`);
 			this.setState({ article: res.data, loading: false });
 
@@ -141,9 +145,9 @@ class RSSArticle extends React.Component {
 		} catch (err) {
 			console.log(err); // eslint-disable-line no-console
 		}
-	}
+	};
 
-	getRSSContent(articleId) {
+	getRSSContent = (articleId) => {
 		this.setState({ loadingContent: true });
 
 		fetch('GET', `/articles/${articleId}`, {}, { type: 'parsed' })
@@ -153,11 +157,10 @@ class RSSArticle extends React.Component {
 			.catch(() => {
 				this.setState({
 					error: true,
-					errorMessage: 'There was a problem loading this article. :(',
 					loadingContent: false,
 				});
 			});
-	}
+	};
 
 	render() {
 		if (this.state.loading) return <Loader />;
@@ -175,140 +178,21 @@ class RSSArticle extends React.Component {
 
 		const pinID = this.props.pinnedArticles[article._id]
 			? this.props.pinnedArticles[article._id]._id
-			: null;
-
-		let articleContents;
-
-		if (this.state.loadingContent) {
-			articleContents = <Loader />;
-		} else if (this.state.error) {
-			articleContents = (
-				<div>
-					<p>There was a problem loading this article :(</p>
-					<p>To read the article, head on over to:</p>
-					<p>
-						<a href={article.url} rel="noopener noreferrer" target="_blank">
-							{article.title}
-						</a>
-					</p>
-				</div>
-			);
-		} else {
-			articleContents = (
-				<div className="rss-article-content">
-					{ReactHtmlParser(this.state.content)}
-				</div>
-			);
-		}
+			: '';
 
 		return (
 			<React.Fragment>
-				<div className="content-header">
-					<h1>{article.title}</h1>
-					<div className="item-info">
-						<span
-							className="bookmark"
-							onClick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								const dispatch = this.props.dispatch;
-								pinID
-									? unpinArticle(pinID, article._id, dispatch)
-									: pinArticle(article._id, dispatch);
-							}}
-						>
-							{pinID ? (
-								<i className="fas fa-bookmark" />
-							) : (
-								<i className="far fa-bookmark" />
-							)}
-						</span>{' '}
-						<span>
-							<a
-								href="tweet"
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									this.tweet();
-								}}
-							>
-								<i className="fab fa-twitter" />
-							</a>
-						</span>
-						{redditDataAvailable && (
-							<span>
-								{article.socialScore.reddit.score}
-								{isElectron() ? (
-									<a
-										href="tweet"
-										onClick={(e) => {
-											e.preventDefault();
-											e.stopPropagation();
-
-											window.ipcRenderer.send(
-												'open-external-window',
-												article.socialScore.reddit.url,
-											);
-										}}
-									>
-										<i className="fab fa-reddit-alien" />
-									</a>
-								) : (
-									<a
-										href={article.socialScore.reddit.url}
-										rel="noopener noreferrer"
-										target="_blank"
-									>
-										<i className="fab fa-reddit-alien" />
-									</a>
-								)}
-							</span>
-						)}
-						{hackernewsDataAvailable && (
-							<span>
-								{article.socialScore.hackernews.score}
-								{isElectron() ? (
-									<a
-										href="tweet"
-										onClick={(e) => {
-											e.preventDefault();
-											e.stopPropagation();
-
-											window.ipcRenderer.send(
-												'open-external-window',
-												article.socialScore.hackernews.url,
-											);
-										}}
-									>
-										<i className="fab fa-hacker-news-square" />
-									</a>
-								) : (
-									<a
-										href={article.socialScore.hackernews.url}
-										rel="noopener noreferrer"
-										target="_blank"
-									>
-										<i className="fab fa-hacker-news-square" />
-									</a>
-								)}
-							</span>
-						)}
-						<div>
-							<a href={article.url}>{article.rss.title}</a>
-						</div>
-						{article.commentUrl && (
-							<div>
-								<i className="fas fa-comment" />
-								<a href={article.commentUrl}>Comments</a>
-							</div>
-						)}
-						<span className="muted">
-							{'Posted '}
-							<TimeAgo timestamp={article.publicationDate} />
-						</span>
-					</div>
-				</div>
-
+				<FeedHeader
+					{...article}
+					hackernews={hackernewsDataAvailable && article.socialScore.hackernews}
+					pin={() => pinArticle(article._id, this.props.dispatch)}
+					pinID={pinID}
+					playable={false}
+					reddit={redditDataAvailable && article.socialScore.reddit}
+					tweet={this.tweet}
+					type="article"
+					unpin={() => unpinArticle(pinID, article._id, this.props.dispatch)}
+				/>
 				<div className="content" ref={this.contentRef}>
 					<div className="enclosures">
 						{article.enclosures &&
@@ -316,16 +200,42 @@ class RSSArticle extends React.Component {
 								(enclosure) =>
 									enclosure.type.includes('audio') ||
 									enclosure.type.includes('video') ||
-									enclosure.type.includes('youtube') ? (
-											<ReactPlayer
-												controls={true}
-												key={enclosure._id}
-												url={enclosure.url}
-											/>
-										) : null,
+									(enclosure.type.includes('youtube') && (
+										<ReactPlayer
+											controls={true}
+											key={enclosure._id}
+											url={enclosure.url}
+										/>
+									)),
 							)}
 					</div>
-					{articleContents}
+
+					{!this.state.error && this.state.loadingContent ? (
+						<Loader />
+					) : (
+						<HtmlRender
+							content={this.state.content}
+							id={article._id}
+							type="article"
+						/>
+					)}
+
+					{this.state.error &&
+						!this.state.loadingContent && (
+						<div>
+							<p>There was a problem loading this article :(</p>
+							<p>To read the article, head on over to:</p>
+							<p>
+								<a
+									href={article.url}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									{article.title}
+								</a>
+							</p>
+						</div>
+					)}
 				</div>
 			</React.Fragment>
 		);
@@ -338,7 +248,7 @@ RSSArticle.propTypes = {
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			articleID: PropTypes.string.isRequired,
-			rssFeedID: PropTypes.string.isRequired,
+			rssFeedID: PropTypes.string,
 		}),
 	}),
 };

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21px" height="21px" version="1.1" viewBox="0 0 21 21">
+    <g id="Page-1" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+        <g transform="translate(-712.000000, -633.000000)">
+            <g id="highlight-tool" transform="translate(703.000000, 623.000000)">
+                <g id="remove" transform="translate(9.000000, 10.000000)">
+                    <circle id="Oval" cx="10.5" cy="10.5" r="10.5" fill="#3EC074"/>
+                    <path id="Stroke-3809" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M15.242,6 L6,15.241"/>
+                    <path id="Stroke-3810" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M6.0003,6 L15.2423,15.241"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

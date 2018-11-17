@@ -57,17 +57,13 @@ class AliasModal extends React.Component {
 			<ReactModal
 				className="modal add-new-content-modal"
 				isOpen={this.props.isOpen}
-				onRequestClose={() => this.closeModal()}
+				onRequestClose={this.closeModal}
 				overlayClassName="modal-overlay"
 				shouldCloseOnOverlayClick={true}
 			>
 				<header>
 					<h1>Rename Feed</h1>
-					<Img
-						className="exit"
-						onClick={() => this.closeModal()}
-						src={exitIcon}
-					/>
+					<Img className="exit" onClick={this.closeModal} src={exitIcon} />
 				</header>
 
 				<form onSubmit={this.handleSubmit}>
@@ -99,10 +95,7 @@ class AliasModal extends React.Component {
 
 						<button
 							className="btn link cancel"
-							onClick={(e) => {
-								e.preventDefault();
-								this.closeModal();
-							}}
+							onClick={this.closeModal}
 							type="cancel"
 						>
 							Cancel

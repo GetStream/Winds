@@ -18,7 +18,7 @@ const api = express();
 
 setupExpressRequestHandler(api);
 
-api.use(cors());
+api.use(cors({ maxAge: 1728000 }));
 api.use(compression());
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json({ limit: '5mb' }));

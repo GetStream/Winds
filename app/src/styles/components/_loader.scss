@@ -1,4 +1,5 @@
 .loader {
+	display: flex;
 	height: 100%;
 
 	img {
@@ -7,4 +8,26 @@
 		margin: auto;
 		max-width: 100%;
 	}
+}
+
+@keyframes lds-dual-ring {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.loader-roll {
+	animation: lds-dual-ring 1.2s linear infinite;
+	border: 1px solid $background-green;
+	border-bottom-color: transparent;
+	border-radius: 50%;
+	display: inline-block;
+	flex-grow: 0 !important;
+	height: 16px;
+	min-width: unset !important;
+	width: 16px;
 }

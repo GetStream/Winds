@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import Waypoint from 'react-waypoint';
 import Img from 'react-image';
 import Popover from 'react-popover';
@@ -10,24 +9,33 @@ import fetch from '../util/fetch';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
 import AliasModal from './AliasModal';
+import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import Loader from './Loader';
 import { followRss, unfollowRss } from '../api';
-import loaderIcon from '../images/loaders/default.svg';
+
+import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
+import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
+import { ReactComponent as CircleIcon } from '../images/icons/circle.svg';
+import { ReactComponent as DotCircleIcon } from '../images/icons/dot-circle.svg';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			articleCursor: 1,
-			sortBy: 'latest',
-			newArticlesAvailable: false,
+		this.resetState = {
+			cursor: 1,
+			newArticles: false,
 			menuPopover: false,
 			aliasModal: false,
+			folderModal: false,
+			reachedEndOfFeed: false,
 			loading: true,
+			loadingArticles: true,
 			rssFeed: { images: {} },
 			articles: [],
 		};
+
+		this.state = { ...this.resetState, sortBy: 'latest' };
 
 		this.contentsEl = React.createRef();
 	}
@@ -37,7 +45,7 @@ class RSSArticleList extends React.Component {
 
 		this.subscription = window.streamClient
 			.feed('rss', rssFeedID, streamFeedToken)
-			.subscribe(() => this.setState({ newArticlesAvailable: true }));
+			.subscribe(() => this.setState({ newArticles: true }));
 	}
 
 	unsubscribeFromStreamFeed() {
@@ -47,10 +55,11 @@ class RSSArticleList extends React.Component {
 	componentDidMount() {
 		const rssFeedID = this.props.match.params.rssFeedID;
 
-		window.streamAnalyticsClient.trackEngagement({
-			label: 'viewed_rss_feed',
-			content: `rss:${rssFeedID}`,
-		});
+		if (window.streamAnalyticsClient.userData)
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'viewed_rss_feed',
+				content: `rss:${rssFeedID}`,
+			});
 
 		this.getRSSFeed(rssFeedID);
 		this.getRSSArticles(rssFeedID);
@@ -64,9 +73,8 @@ class RSSArticleList extends React.Component {
 				label: 'viewed_rss_feed',
 				content: `rss:${rssFeedID}`,
 			});
-			this.unsubscribeFromStreamFeed();
 
-			this.setState({ articleCursor: 1 }, () => {
+			this.setState({ ...this.resetState }, () => {
 				this.getRSSFeed(rssFeedID);
 				this.getRSSArticles(rssFeedID);
 			});
@@ -111,26 +119,32 @@ class RSSArticleList extends React.Component {
 	};
 
 	getRSSArticles = (rssFeedID, newFeed = false) => {
+		this.setState({ loadingArticles: true });
+
 		fetch(
 			'GET',
 			'/articles',
 			{},
 			{
-				page: newFeed ? 1 : this.state.articleCursor,
+				page: newFeed ? 1 : this.state.cursor,
 				per_page: 10,
 				rss: rssFeedID,
-				sort_by: 'publicationDate,desc',
+				sort_by: `publicationDate${
+					this.state.sortBy === 'latest' ? ',desc' : ''
+				}`,
 			},
 		)
 			.then((res) => {
+				this.setState({ loadingArticles: false });
 				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
-				else if (newFeed) this.setState({ articles: res.data });
+				else if (newFeed) this.setState({ articles: res.data, cursor: 1 });
 				else
 					this.setState((prevState) => ({
 						articles: this.uniqueArr([...prevState.articles, ...res.data]),
 					}));
 			})
 			.catch((err) => {
+				this.setState({ loadingArticles: false, error: true });
 				console.log(err); // eslint-disable-line no-console
 			});
 	};
@@ -143,25 +157,44 @@ class RSSArticleList extends React.Component {
 		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
+	toggleFolderModal = () => {
+		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
+	};
+
+	setSortBy = (sortBy) => {
+		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
+
+		const rssFeedID = this.props.match.params.rssFeedID;
+		this.setState(
+			{
+				articles: [],
+				cursor: 1,
+				menuPopover: false,
+				reachedEndOfFeed: false,
+				sortBy,
+			},
+			() => {
+				this.getRSSArticles(rssFeedID);
+			},
+		);
+	};
+
 	render() {
 		if (this.state.loading) return <Loader />;
 
 		const rssFeed = this.state.rssFeed;
-
 		const isFollowing = this.props.following[rssFeed._id]
 			? this.props.following[rssFeed._id]
 			: false;
-
 		const title = this.props.aliases[rssFeed._id]
 			? this.props.aliases[rssFeed._id].alias
 			: rssFeed.title;
+		const currFolder = this.props.folders.find((folder) => {
+			for (const feed of folder.rss) if (feed._id === rssFeed._id) return true;
+			return false;
+		});
 
-		let articles = this.state.articles.sort(
-			(a, b) =>
-				moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf(),
-		);
-
-		articles = articles.map((article) => {
+		const articles = this.state.articles.map((article) => {
 			if (this.props.pinnedArticles[article._id]) {
 				article.pinID = this.props.pinnedArticles[article._id]._id;
 			} else article.pinID = '';
@@ -179,6 +212,24 @@ class RSSArticleList extends React.Component {
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('latest')}
+				>
+					{this.state.sortBy === 'latest' ? <DotCircleIcon /> : <CircleIcon />}
+					Latest
+				</div>
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('oldest')}
+				>
+					{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
+					Oldest
+				</div>
+				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
+					<FolderIcon />
+					<span>{currFolder ? currFolder.name : 'Folder'}</span>
+				</div>
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>
 					Rename
 				</div>
@@ -190,13 +241,15 @@ class RSSArticleList extends React.Component {
 							: followRss(this.props.dispatch, rssFeed._id)
 					}
 				>
-					{isFollowing ? <span className="red">Unfollow</span> : 'Follow'}
+					{isFollowing ? <span className="alert">Unfollow</span> : 'Follow'}
 				</div>
 			</div>
 		);
 
 		let rightContents;
-		if (articles.length === 0) {
+		if (this.state.loadingArticles && !articles.length) {
+			rightContents = <Loader />;
+		} else if (articles.length === 0) {
 			rightContents = (
 				<div>
 					<p>We haven&#39;t found any articles for this RSS feed yet :(</p>
@@ -246,15 +299,13 @@ class RSSArticleList extends React.Component {
 							<Waypoint
 								onEnter={() => {
 									this.setState(
-										(prevState) => ({
-											articleCursor: prevState.articleCursor + 1,
-										}),
+										(prevState) => ({ cursor: prevState.cursor + 1 }),
 										() => this.getRSSArticles(rssFeed._id),
 									);
 								}}
 							/>
 							<div className="end-loader">
-								<Img src={loaderIcon} />
+								<LoaderIcon />
 							</div>
 						</div>
 					)}
@@ -312,13 +363,21 @@ class RSSArticleList extends React.Component {
 					toggleModal={this.toggleAliasModal}
 				/>
 
+				<FeedToFolderModal
+					currFolderID={currFolder ? currFolder._id : null}
+					feedID={rssFeed._id}
+					isOpen={this.state.folderModal}
+					isRss={true}
+					toggleModal={this.toggleFolderModal}
+				/>
+
 				<div className="list content" ref={this.contentsEl}>
-					{this.state.newArticlesAvailable && (
+					{this.state.newArticles && (
 						<div
 							className="toast"
 							onClick={() => {
 								this.getRSSArticles(rssFeed._id, true);
-								this.setState({ newArticlesAvailable: false });
+								this.setState({ newArticles: false });
 							}}
 						>
 							New Articles Available – Click to Refresh
@@ -336,12 +395,15 @@ RSSArticleList.defaultProps = {
 	following: {},
 	pinnedArticles: {},
 	feeds: {},
+	folders: [],
 };
 
 RSSArticleList.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 	following: PropTypes.shape({}),
 	aliases: PropTypes.shape({}),
+	pinnedArticles: PropTypes.shape({}),
+	feeds: PropTypes.shape({}),
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			rssFeedID: PropTypes.string.isRequired,
@@ -354,6 +416,7 @@ const mapStateToProps = (state) => ({
 	following: state.followedRssFeeds || {},
 	pinnedArticles: state.pinnedArticles || {},
 	feeds: state.feeds || {},
+	folders: state.folders || [],
 });
 
 export default connect(mapStateToProps)(RSSArticleList);

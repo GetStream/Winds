@@ -4,13 +4,14 @@
 	grid-column-gap: $gutters / 2;
 	grid-template-areas:
 		'featured featured featured featured featured'
-		'podcast-header border1 rss-header border2 discover-header'
-		'podcast-content border1 rss-content border2 discover-content';
+		'podcast-header border1 rss-header border2 folder-header'
+		'podcast-content border1 rss-content border2 folder-content';
 	grid-template-columns: 1fr auto 1fr auto 1fr;
 	grid-template-rows: auto auto 1fr;
 	height: 100%;
 	max-width: 100%;
 	overflow-y: hidden;
+	user-select: none;
 
 	.border1 {
 		grid-area: border1;
@@ -34,8 +35,18 @@
 		grid-area: rss-header;
 	}
 
-	.discover-header {
-		grid-area: discover-header;
+	.folder-header {
+		grid-area: folder-header;
+		padding: 1em;
+
+		&.center {
+			cursor: default;
+			text-align: center;
+		}
+
+		h1 {
+			margin: 0;
+		}
 	}
 
 	.podcasts-section {
@@ -46,13 +57,13 @@
 		grid-area: rss-content;
 	}
 
-	.discover-section {
-		grid-area: discover-content;
+	.folder-section {
+		grid-area: folder-content;
 	}
 
 	.podcasts-section,
 	.rss-section,
-	.discover-section {
+	.folder-section {
 		min-width: 0;
 		overflow-y: scroll;
 	}
@@ -62,8 +73,8 @@
 		margin-left: ($gutters / 2);
 	}
 
-	.discover-header,
-	.discover-section {
+	.folder-header,
+	.folder-section {
 		margin-right: ($gutters / 2);
 	}
 

@@ -48,7 +48,9 @@
 				}
 			}
 
-			img {
+			img,
+			svg,
+			.icon {
 				float: right;
 				position: relative;
 				right: 5px;
@@ -93,19 +95,19 @@
 			font-weight: 400;
 			text-transform: none;
 		}
+	}
 
-		.error-message {
-			color: $foreground-red;
-		}
+	.error-message {
+		color: $foreground-red;
+	}
 
-		.buttons {
-			display: flex;
-			flex-direction: row-reverse;
-			margin-top: 1em;
-		}
+	.buttons {
+		display: flex;
+		flex-direction: row-reverse;
+		margin-top: 1em;
+	}
 
-		label {
-			cursor: pointer;
-		}
+	label {
+		cursor: pointer;
 	}
 }

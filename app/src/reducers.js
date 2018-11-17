@@ -3,15 +3,6 @@ import moment from 'moment';
 export default (previousState = {}, action) => {
 	if (action.type === 'UPDATE_USER') {
 		return { ...previousState, user: { ...action.user } };
-	} else if (action.type === 'UPDATE_EPISODE') {
-		let episode = { ...action.episode };
-		episode.podcast = episode.podcast._id;
-		episode.favicon = episode.images ? episode.images.favicon : null;
-
-		let episodes = { ...previousState.episodes };
-		episodes[episode._id] = episode;
-
-		return { ...previousState, episodes };
 	} else if (action.type === 'BATCH_UPDATE_EPISODES') {
 		let episodes = action.episodes.reduce((result, item) => {
 			result[item._id] = {
@@ -140,15 +131,6 @@ export default (previousState = {}, action) => {
 		}
 
 		return { ...previousState, rssFeeds };
-	} else if (action.type === 'UPDATE_ARTICLE') {
-		let articles = { ...previousState.articles };
-		articles[action.rssArticle._id] = { ...action.rssArticle };
-		articles[action.rssArticle._id]['rss'] = action.rssArticle.rss._id;
-		articles[action.rssArticle._id]['favicon'] = action.rssArticle.rssimages
-			? action.rssArticle.rssimages.favicon
-			: null;
-
-		return { ...previousState, articles };
 	} else if (action.type === 'UPDATE_SUGGESTED_PODCASTS') {
 		return { ...previousState, suggestedPodcasts: [...action.podcasts] };
 	} else if (action.type === 'UPDATE_SUGGESTED_RSS_FEEDS') {
@@ -231,5 +213,85 @@ export default (previousState = {}, action) => {
 		return { ...previousState, featuredItems: [...action.featuredItems] };
 	} else if (action.type === 'BATCH_UPDATE_ALIASES') {
 		return { ...previousState, aliases: { ...action.aliases } };
+	} else if (action.type === 'BATCH_UPDATE_FOLDERS') {
+		const foldersFeed = action.data.reduce((acc, folder) => {
+			folder.rss.map((r) => (acc[r._id] = folder._id));
+			folder.podcast.map((p) => (acc[p._id] = folder._id));
+			return acc;
+		}, {});
+
+		return { ...previousState, foldersFeed, folders: [...action.data] };
+	} else if (action.type === 'BATCH_UPDATE_TAGS') {
+		const tagsFeed = (action.data || []).reduce((acc, tag) => {
+			acc.push(...tag.episode.map((e) => e._id), ...tag.article.map((a) => a._id));
+			return acc;
+		}, []);
+
+		return { ...previousState, tagsFeed, tags: [...action.data] };
+	} else if (action.type === 'BATCH_UPDATE_NOTES') {
+		const notes = action.data.reduce((acc, note) => {
+			const id = note.article ? note.article._id : note.episode._id;
+			if (!acc[id]) acc[id] = [];
+			acc[id].push(note);
+			return acc;
+		}, {});
+
+		const notesOrder = generateNotesOrder(action.data, true);
+
+		return { ...previousState, notes, notesOrder };
+	} else if (action.type === 'NEW_NOTE') {
+		let notes = { ...previousState.notes };
+
+		const id = action.data.article
+			? action.data.article._id
+			: action.data.episode._id;
+
+		if (!notes[id]) notes[id] = [];
+		notes[id].push(action.data);
+
+		const notesOrder = generateNotesOrder(notes);
+
+		return { ...previousState, notes, notesOrder };
+	} else if (action.type === 'UPDATE_NOTE') {
+		let notes = { ...previousState.notes };
+
+		const id = action.data.article
+			? action.data.article._id
+			: action.data.episode._id;
+
+		notes[id] = notes[id].map((n) => {
+			if (n._id !== action.data._id) return n;
+			return action.data;
+		});
+
+		const notesOrder = generateNotesOrder(notes);
+
+		return { ...previousState, notes, notesOrder };
+	} else if (action.type === 'DELETE_NOTE') {
+		let notes = { ...previousState.notes };
+
+		notes[action.feedId] = notes[action.feedId].filter(
+			(n) => n._id !== action.noteId,
+		);
+
+		const notesOrder = generateNotesOrder(notes);
+
+		return { ...previousState, notes, notesOrder };
 	} else return previousState;
 };
+
+function generateNotesOrder(notes, sorted = false) {
+	// Flattening notes //
+	const notesSorted = sorted
+		? [...notes]
+		: Object.values(notes)
+			.reduce((acc, n) => acc.concat(n), [])
+			.sort(
+				(a, b) =>
+					moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf(),
+			);
+
+	return notesSorted
+		.map((n) => (n.article ? n.article._id : n.episode._id))
+		.filter((value, index, self) => self.indexOf(value) === index);
+}

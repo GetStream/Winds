@@ -39,7 +39,7 @@ class Panel extends React.Component {
 			!this.state.expanded &&
 			Array.isArray(this.props.children)
 		) {
-			children = children.slice(0, 3);
+			children = children.slice(0, this.props.expandSize);
 		}
 
 		return (
@@ -58,7 +58,7 @@ class Panel extends React.Component {
 
 				<div className="panel-contents">
 					{children}
-					{this.props.expandable ? (
+					{this.props.expandable && (
 						<div
 							className="expander"
 							onClick={() => {
@@ -75,7 +75,7 @@ class Panel extends React.Component {
 								}`}
 							/>
 						</div>
-					) : null}
+					)}
 				</div>
 			</div>
 		);
@@ -84,6 +84,7 @@ class Panel extends React.Component {
 
 Panel.defaultProps = {
 	expandable: false,
+	expandSize: 3,
 };
 
 Panel.propTypes = {
@@ -95,6 +96,7 @@ Panel.propTypes = {
 	hasHighlight: PropTypes.bool,
 	headerLink: PropTypes.string,
 	headerText: PropTypes.string,
+	expandSize: PropTypes.number,
 };
 
 export default Panel;

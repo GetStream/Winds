@@ -1,0 +1,143 @@
+.feed-list-item {
+	color: inherit;
+	cursor: pointer;
+	display: flex;
+	margin-bottom: 2em;
+	text-decoration: inherit;
+
+	.recent-indicator {
+		background-color: $foreground-green;
+		border-radius: 10000px;
+		height: 8px;
+		left: 83px;
+		position: absolute;
+		top: 6px;
+		width: 8px;
+	}
+
+	.left {
+		margin-right: 2em;
+		position: relative;
+
+		img,
+		.placeholder {
+			background-color: $white-smoke;
+			background-position: center;
+			background-size: cover;
+			border-radius: $border-radius;
+			box-shadow: $box-shadow;
+			height: 100px;
+			object-fit: cover;
+			width: 100px;
+		}
+
+		.play-icon,
+		.pause-icon {
+			align-items: center;
+			display: flex;
+			height: 100px;
+			justify-content: center;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+
+			.icon-container {
+				align-items: center;
+				background-color: $background-black;
+				border-radius: 10000px;
+				display: flex;
+				height: 3em;
+				justify-content: center;
+				width: 3em;
+			}
+		}
+
+		.play-icon {
+			display: none;
+		}
+	}
+
+	.right {
+		border-bottom: 1px solid $foreground-lightgray;
+		max-width: 90%;
+		padding-bottom: 2.5em;
+
+		@media only screen and (max-width: 1400px) {
+			width: 80%;
+		}
+
+		@media only screen and (max-width: 970px) {
+			width: 70%;
+		}
+
+		h2 {
+			font-weight: 600; // TODO: asdfasdfasdf @kenhoff
+			margin-bottom: 0;
+			margin-top: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 100%;
+		}
+
+		.item-action {
+			align-items: center;
+			display: flex;
+			display: none;
+
+			span {
+				margin-right: 1.5em;
+
+				svg {
+					transform: translateY(2px);
+				}
+			}
+		}
+
+		.item-action,
+		.item-info {
+			height: 50px;
+			margin: 0;
+			overflow: hidden;
+		}
+
+		.info {
+			align-items: center;
+			color: $foreground-darkgray;
+			display: flex;
+			font-family: $primary;
+			font-size: 11px;
+			font-weight: bold;
+			letter-spacing: 0.1em;
+			margin-bottom: 0.5em;
+			text-transform: uppercase;
+
+			.date {
+				font-size: 11px;
+			}
+
+			> * {
+				margin-right: 1em;
+			}
+		}
+	}
+
+	&:hover {
+		.left {
+			.play-icon {
+				display: flex;
+			}
+		}
+
+		.right {
+			.item-action {
+				display: flex;
+			}
+
+			.item-info {
+				display: none;
+			}
+		}
+	}
+}

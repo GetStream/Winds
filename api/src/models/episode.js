@@ -5,8 +5,8 @@ import autopopulate from 'mongoose-autopopulate';
 import 'crypto';
 import { createHash } from 'crypto';
 import { EnclosureSchema } from './enclosure';
-import Cache from './cache';
-import { ParseArticle } from '../parsers/article';
+import Content from './content';
+import { ParseContent } from '../parsers/content';
 import { getUrl } from '../utils/urls';
 import sanitize from '../utils/sanitize';
 
@@ -130,6 +130,7 @@ export const EpisodeSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.type = 'episodes';
 			},
 		},
 		toObject: {
@@ -140,6 +141,7 @@ export const EpisodeSchema = new Schema(
 				}
 				ret.images.favicon = ret.images.favicon || '';
 				ret.images.og = ret.images.og || '';
+				ret.type = 'episodes';
 			},
 		},
 	},
@@ -160,31 +162,30 @@ EpisodeSchema.methods.getUrl = function() {
 };
 
 EpisodeSchema.methods.getParsedEpisode = async function() {
-	let cached = await Cache.findOne({ url: this.url });
-	if (cached) return cached;
+	const url = this.url;
+	const content = await Content.findOne({ url });
+	if (content) return content;
 
 	try {
-		const parsed = await ParseArticle(this.url);
-		const excerpt = parsed.excerpt || parsed.title || this.description;
+		const parsed = await ParseContent(url);
 		const title = parsed.title || this.title;
+		const excerpt = parsed.excerpt || title || this.description;
 
 		if (!title) return null;
 
 		const content = sanitize(parsed.content);
-
-		cached = await Cache.create({
+		return await Content.create({
 			content,
-			excerpt: excerpt,
+			title,
+			url,
+			excerpt,
 			image: parsed.lead_image_url || '',
-			publicationDate: parsed.date_published || this.publicationDate,
-			title: parsed.title || this.title,
-			url: this.url,
+			publicationDate: this.publicationDate || parsed.date_published,
 			commentUrl: this.commentUrl,
 			enclosures: this.enclosures,
 		});
-		return cached;
 	} catch (e) {
-		throw new Error(`Mercury API call failed for ${this.url}: ${e.message}`);
+		throw new Error(`Mercury API call failed for ${url}: ${e.message}`);
 	}
 };
 

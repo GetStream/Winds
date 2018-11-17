@@ -14,7 +14,7 @@ exports.list = async (req, res) => {
 		return res.json(await Alias.find(obj).sort({ _id: -1 }));
 	}
 
-	res.json(await Alias.apiQuery({ user: req.user.sub }));
+	res.json(await Alias.find({ user: req.user.sub }));
 };
 
 exports.get = async (req, res) => {

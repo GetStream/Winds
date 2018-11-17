@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../../config';
 
-const fetch = (method, path, data, params) => {
+const fetch = (method, path, data, params, headers) => {
 	if (!method) throw new Error('Method is a required field.');
 	if (!path) throw new Error('Path is a required field.');
 
@@ -12,8 +12,9 @@ const fetch = (method, path, data, params) => {
 		data: data || {},
 		params: params || {},
 		headers: {
-			Authorization: `Bearer ${localStorage['jwt']}`,
+			'Authorization': `Bearer ${localStorage['jwt']}`,
 			'Content-Type': 'application/json',
+			...headers,
 		},
 	};
 

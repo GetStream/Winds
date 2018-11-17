@@ -1,27 +1,26 @@
-import { diff, detailedDiff } from 'deep-object-diff';
-import stream from 'getstream';
-import moment from 'moment';
-import normalize from 'normalize-url';
+import { diff } from 'deep-object-diff';
 
-import RSS from '../models/rss';
 import Article from '../models/article';
-import Podcast from '../models/podcast';
 import Episode from '../models/episode';
-
-import config from '../config';
-import logger from '../utils/logger';
 
 import { getStatsDClient, timeIt } from '../utils/statsd';
 
 const duplicateKeyError = 11000;
-const immutableFields = ['publicationDate', 'createdAt', 'updatedAt', 'id', '_id'];
+const immutableFields = [
+	'publicationDate',
+	'createdAt',
+	'updatedAt',
+	'id',
+	'_id',
+	'type',
+];
 
 const statsd = getStatsDClient();
 
 // upsertManyPosts at once at super speed
 export async function upsertManyPosts(publicationID, newPosts, schemaField) {
 	// step 1: get the existing objects in mongodb
-	const fingerprints = newPosts.map(p => p.fingerprint);
+	const fingerprints = newPosts.map((p) => p.fingerprint);
 	const lookup = { [schemaField]: publicationID, fingerprint: { $in: fingerprints } };
 	const schema = schemaField == 'rss' ? Article : Episode;
 	const existingPosts = await schema.find(lookup).lean();

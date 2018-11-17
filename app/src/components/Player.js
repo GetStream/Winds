@@ -10,11 +10,12 @@ import { Link } from 'react-router-dom';
 import 'moment-duration-format'; // eslint-disable-line sort-imports
 
 import fetch from '../util/fetch';
-import nextIcon from '../images/player/next.svg';
-import forwardIcon from '../images/player/forward.svg';
-import rewindIcon from '../images/player/rewind.svg';
-import pauseIcon from '../images/icons/pause.svg';
-import playIcon from '../images/icons/play.svg';
+
+import { ReactComponent as RewindIcon } from '../images/player/rewind.svg';
+import { ReactComponent as ForwardIcon } from '../images/player/forward.svg';
+import { ReactComponent as NextIcon } from '../images/player/next.svg';
+import { ReactComponent as PauseIcon } from '../images/icons/pause.svg';
+import { ReactComponent as PlayIcon } from '../images/icons/play.svg';
 
 class Player extends Component {
 	constructor(props) {
@@ -137,7 +138,6 @@ class Player extends Component {
 			this.props.playEpisode(
 				this.props.player.contextID,
 				this.state.episodesOrder[currentIndex + 1],
-				'podcast',
 			);
 		} else {
 			this.setState({ episode: {}, episodesOrder: [] });
@@ -241,12 +241,14 @@ class Player extends Component {
 
 		const episode = this.state.episodes[player.episodeID];
 
-		let contextURL = '';
-		if (player.contextType === 'playlist') {
-			contextURL = `/playlists/${player.contextID}`;
-		} else if (player.contextType === 'podcast') {
-			contextURL = `/podcasts/${player.contextID}`;
-		}
+		const poster =
+			episode &&
+			(episode.podcast.images.banner ||
+				episode.podcast.images.feature ||
+				episode.podcast.images.og ||
+				episode.images.banner ||
+				episode.images.feature ||
+				episode.images.og);
 
 		return (
 			<div className="player">
@@ -255,25 +257,25 @@ class Player extends Component {
 						className="poster"
 						decode={false}
 						height="40"
-						src={episode ? episode.podcast.image : null}
+						src={poster}
 						width="40"
 					/>
 					<div className="rewind" onClick={this.skipBack}>
-						<Img decode={false} src={rewindIcon} />
+						<RewindIcon />
 					</div>
 
 					{player.playing ? (
 						<div className="btn pause" onClick={this.togglePlayPause}>
-							<Img decode={false} src={pauseIcon} />
+							<PauseIcon />
 						</div>
 					) : (
 						<div className="btn play" onClick={this.togglePlayPause}>
-							<Img decode={false} src={playIcon} />
+							<PlayIcon />
 						</div>
 					)}
 
 					<div className="forward" onClick={this.skipAhead}>
-						<Img decode={false} src={forwardIcon} />
+						<ForwardIcon />
 					</div>
 					<div className="speed" onClick={this.cyclePlaybackSpeed}>
 						{this.state.playbackSpeed}x
@@ -323,8 +325,8 @@ class Player extends Component {
 						step={0.1}
 						value={this.state.volume}
 					/>
-					<Link className="next" to={contextURL}>
-						<Img src={nextIcon} />
+					<Link className="next" to={`/podcasts/${player.contextID}`}>
+						<NextIcon />
 					</Link>
 				</div>
 				<ReactAudioPlayer
@@ -369,7 +371,6 @@ class Player extends Component {
 Player.propTypes = {
 	player: PropTypes.shape({
 		contextID: PropTypes.string,
-		contextType: PropTypes.string,
 		episodeID: PropTypes.string,
 		playing: PropTypes.bool,
 	}),
@@ -385,11 +386,10 @@ const mapDispatchToProps = (dispatch) => ({
 	pause: () => dispatch({ type: 'PAUSE_EPISODE' }),
 	play: () => dispatch({ type: 'RESUME_EPISODE' }),
 	clearPlayer: () => dispatch({ type: 'CLEAR_PLAYER' }),
-	playEpisode: (podcastID, episodeID, type) => {
+	playEpisode: (podcastID, episodeID) => {
 		dispatch({
 			contextID: podcastID,
 			episodeID: episodeID,
-			contextType: type,
 			playing: true,
 			type: 'PLAY_EPISODE',
 		});

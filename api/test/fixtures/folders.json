@@ -1,0 +1,39 @@
+[
+	{
+		"Folder": [
+			{
+				"_id": "5bbb10d3ec7e1d8e1c5b6705",
+				"user": "5b0f306d8e147f10f16aceaf",
+				"name": "Cool Folder",
+				"podcast": [
+                    "5afb7fedfe7430d35996d66e"
+                ],
+                "rss": [
+                    "5b0ad0baf6f89574a638887a"
+                ],
+				"updatedAt": "2018-05-29T00:09:40.956Z",
+				"createdAt": "2018-05-29T00:09:40.956Z"
+            },
+            {
+				"_id": "5b9b7dcedb7bb3077f9c8c6a",
+				"user": "5b0f306d8e147f10f16aceaf",
+				"name": "another Folder",
+				"podcast": [],
+				"rss": [
+                    "5b0ad0baf6f89574a638887b"
+                ],
+				"updatedAt": "2018-05-29T00:36:12.971Z",
+				"createdAt": "2018-05-29T00:36:12.971Z"
+			},
+            {
+				"_id": "5b9b7dcedb7bb3077f9c8c6b",
+				"user": "5b0f306d8e147f10f16ac9c8",
+				"name": "another Folder by another user",
+				"podcast": [],
+				"rss": [],
+				"updatedAt": "2018-06-29T00:36:12.971Z",
+				"createdAt": "2018-06-29T00:36:12.971Z"
+			}
+		]
+	}
+]

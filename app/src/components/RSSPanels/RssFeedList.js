@@ -70,4 +70,4 @@ const mapStateToProps = (state) => {
 	return { rssFeeds };
 };
 
-export default connect(mapStateToProps)(withRouter(RssFeedList));
+export default withRouter(connect(mapStateToProps)(RssFeedList));

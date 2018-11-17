@@ -19,7 +19,19 @@ body {
 	justify-content: center;
 }
 
-::selection {
-	color: #ffffff;
-	background: #44bc75;
+.highlight,
+.highlight-note {
+	background: transparent;
+	background-color: $highlight-color;
+	color: $foreground-black;
+	cursor: pointer;
+}
+
+.click,
+.clickable {
+	cursor: pointer;
+}
+
+.muted {
+	color: $foreground-darkgray;
 }

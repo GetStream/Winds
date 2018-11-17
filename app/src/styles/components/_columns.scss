@@ -7,13 +7,6 @@
 	position: relative;
 }
 
-a.column-header:hover, .column-header:hover {
-	background-color: $background-lightishgray;
-	border-radius: $border-radius;
-	transition: all 0.22s ease-in-out;
-	cursor: pointer;
-}
-
 .column-header {
 	align-items: center;
 	color: $foreground-black;
@@ -62,6 +55,19 @@ a.column-header:hover, .column-header:hover {
 			width: 2em;
 		}
 	}
+}
+
+a.column-header:hover,
+.column-header:hover {
+	background-color: $background-lightishgray;
+	border-radius: $border-radius;
+	cursor: pointer;
+	transition: all 0.22s ease-in-out;
+}
+
+.header-center {
+	justify-content: center;
+	margin: 0;
 }
 
 .column {

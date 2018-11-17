@@ -1,19 +1,20 @@
-import exitIcon from '../images/buttons/exit.svg';
-import config from '../config';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import Img from 'react-image';
-import axios from 'axios';
-import fetch from '../util/fetch';
-import saveIcon from '../images/icons/save.svg';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
+import fetch from '../util/fetch';
+
+import saveIcon from '../images/icons/save.svg';
+import exitIcon from '../images/buttons/exit.svg';
 
 class AddPodcastModal extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
+
+		this.resetState = {
 			checkedPodcastsToFollow: [],
 			errorMessage: '',
 			errored: false,
@@ -24,12 +25,14 @@ class AddPodcastModal extends React.Component {
 			success: false,
 		};
 
-		this.submitPodcastURL = this.submitPodcastURL.bind(this);
-		this.resetModal = this.resetModal.bind(this);
-		this.submitPodcastSelections = this.submitPodcastSelections.bind(this);
+		this.state = { ...this.resetState };
 	}
 
-	submitPodcastURL(e) {
+	resetModal = () => {
+		this.setState({ ...this.resetState });
+	};
+
+	submitPodcastURL = (e) => {
 		e.preventDefault();
 
 		this.setState({
@@ -39,16 +42,7 @@ class AddPodcastModal extends React.Component {
 			success: false,
 		});
 
-		axios({
-			baseURL: config.api.url,
-			data: { feedUrl: this.state.podcastInputValue },
-			headers: {
-				'Authorization': `Bearer ${localStorage['jwt']}`,
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-			url: '/podcasts',
-		})
+		fetch('POST', '/podcasts', { feedUrl: this.state.podcastInputValue })
 			.then((res) => {
 				for (let podcast of res.data) {
 					this.props.dispatch({
@@ -69,9 +63,9 @@ class AddPodcastModal extends React.Component {
 					submitting: false,
 				});
 			});
-	}
+	};
 
-	submitPodcastSelections(e) {
+	submitPodcastSelections = (e) => {
 		e.preventDefault();
 
 		this.setState({
@@ -90,7 +84,6 @@ class AddPodcastModal extends React.Component {
 					this.props.dispatch({
 						podcastID: res.data.podcast,
 						type: 'FOLLOW_PODCAST',
-						userID: res.data.user,
 					});
 					return res.data.podcast;
 				});
@@ -104,33 +97,14 @@ class AddPodcastModal extends React.Component {
 			setTimeout(() => {
 				this.resetModal();
 				this.props.done();
-			}, 5000);
+			}, 1500);
 		});
-	}
-
-	resetModal() {
-		this.setState({
-			checkedPodcastsToFollow: [],
-			errorMessage: '',
-			errored: false,
-			feedsToFollow: [],
-			podcastInputValue: '',
-			stage: 'submit-podcast-url',
-			submitting: false,
-			success: false,
-		});
-	}
+	};
 
 	render() {
-		let buttonText;
-
-		if (this.state.submitting) {
-			buttonText = 'Submitting...';
-		} else if (this.state.success) {
-			buttonText = 'Success!';
-		} else {
-			buttonText = 'Submit';
-		}
+		let buttonText = 'Submit';
+		if (this.state.submitting) buttonText = 'Submitting...';
+		else if (this.state.success) buttonText = 'Success!';
 
 		let currentView = null;
 		if (this.state.stage === 'submit-podcast-url') {
@@ -139,11 +113,9 @@ class AddPodcastModal extends React.Component {
 					<div className="input-box">
 						<input
 							autoComplete="false"
-							onChange={(e) => {
-								this.setState({
-									podcastInputValue: e.target.value,
-								});
-							}}
+							onChange={(e) =>
+								this.setState({ podcastInputValue: e.target.value })
+							}
 							placeholder="Enter URL"
 							type="text"
 							value={this.state.podcastInputValue}
@@ -156,7 +128,11 @@ class AddPodcastModal extends React.Component {
 					<div className="buttons">
 						<button
 							className="btn primary alt with-circular-icon"
-							disabled={this.state.submitting || this.state.success}
+							disabled={
+								this.state.submitting ||
+								this.state.success ||
+								this.state.podcastInputValue.trim() === ''
+							}
 							type="submit"
 						>
 							<Img decode={false} src={saveIcon} />
@@ -186,9 +162,9 @@ class AddPodcastModal extends React.Component {
 						/>
 					</div>
 					<div className="info">
-						{
-							'We found a few podcasts with that URL. Once your selection has been made, we will begin to process the podcasts. They will be ready shortly after.'
-						}
+						We found a few podcasts with that URL. Once your selection has
+						been made, we will begin to process the podcasts. They will be
+						ready shortly after.
 					</div>
 					{this.state.podcastsToFollow.map((podcastToFollow) => {
 						return (
@@ -233,7 +209,11 @@ class AddPodcastModal extends React.Component {
 					<div className="buttons">
 						<button
 							className="btn primary alt with-circular-icon"
-							disabled={this.state.submitting || this.state.success}
+							disabled={
+								this.state.submitting ||
+								this.state.success ||
+								!this.state.checkedPodcastsToFollow.length
+							}
 							type="submit"
 						>
 							<Img src={saveIcon} />

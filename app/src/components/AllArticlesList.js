@@ -20,9 +20,7 @@ class AllArticles extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState({ cursor: Math.floor(this.props.articles.length / 10) }, () => {
-			this.getArticleFeed();
-		});
+		this.getArticleFeed();
 
 		this.subscription = window.streamClient
 			.feed('user_article', this.props.userID, this.props.userArticleStreamToken)
@@ -37,12 +35,12 @@ class AllArticles extends React.Component {
 		}
 	}
 
-	getArticleFeed() {
-		getFeed(this.props.dispatch, 'article', this.state.cursor, 10);
-	}
-
 	componentWillUnmount() {
 		this.subscription.cancel();
+	}
+
+	getArticleFeed() {
+		getFeed(this.props.dispatch, 'article', this.state.cursor, 10);
 	}
 
 	render() {

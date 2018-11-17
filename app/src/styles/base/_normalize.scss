@@ -21,3 +21,10 @@ div[tabindex="-1"]:focus {
 	outline: 0;
 }
 
+code,
+pre,
+xmp,
+plaintext,
+listing {
+	white-space: normal;
+}

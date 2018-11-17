@@ -175,7 +175,7 @@ class Header extends Component {
 			<header className="header">
 				<div className="title">
 					<a href="https://getstream.io/?utm_source=Winds&utm_medium=Winds&utm_content=winds_homepage">
-						Winds 2.0 – Powered by GetStream.io
+						Winds 3.0 – Powered by GetStream.io
 					</a>
 				</div>
 				<div className="header-content">
@@ -232,7 +232,10 @@ class Header extends Component {
 							preferPlace="below"
 							tipSize={0.1}
 						>
-							<div className="new" onClick={this.toggleNewContentPopover}>
+							<div
+								className="btn-new"
+								onClick={this.toggleNewContentPopover}
+							>
 								<Img decode={false} src={addIcon} />
 								New
 							</div>

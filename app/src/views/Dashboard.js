@@ -7,18 +7,13 @@ import Loader from '../components/Loader';
 import FeaturedItems from '../components/FeaturedItems';
 import RecentEpisodesPanel from '../components/PodcastPanels/RecentEpisodesPanel';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
+import RecentNotesPanel from '../components/Notes/RecentNotesPanel';
 import PodcastList from '../components/PodcastPanels/PodcastList';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
-import DiscoverSection from '../components/DiscoverSection';
-
-import { getSuggestedRss, getSuggestedPodcasts } from '../api';
+import FolderPanel from '../components/Folder/FolderPanel';
+import IntroFolders from '../components/Folder/IntroFolders';
 
 class Dashboard extends React.Component {
-	refresh = () => {
-		getSuggestedPodcasts(this.props.dispatch);
-		getSuggestedRss(this.props.dispatch);
-	};
-
 	render() {
 		if (this.props.loading) return <Loader />;
 
@@ -51,16 +46,30 @@ class Dashboard extends React.Component {
 						<RssFeedList />
 					</div>
 				</div>
-				<div className="column-header discover-header" onClick={this.refresh}>
-					<h1>Discover</h1>
-					<div className="drilldown">
-						<div>Refresh</div>
-						<i className="fas fa-sync" />
+
+				{this.props.initFolders ? (
+					<div className="folder-header center">
+						<h1>Notes & Folders</h1>
 					</div>
-				</div>
-				<div className="discover-section ">
+				) : (
+					<Link className="column-header folder-header" to="/folders">
+						<h1>Notes & Folders</h1>
+						<div className="drilldown">
+							<div>View all</div>
+							<i className="fa fa-chevron-right" />
+						</div>
+					</Link>
+				)}
+				<div className="folder-section ">
 					<div className="column-content">
-						<DiscoverSection />
+						{this.props.initFolders ? (
+							<IntroFolders />
+						) : (
+							<>
+								<RecentNotesPanel />
+								<FolderPanel />
+							</>
+						)}
 					</div>
 				</div>
 				<div className="border1" />
@@ -72,15 +81,18 @@ class Dashboard extends React.Component {
 
 Dashboard.defaultProps = {
 	loading: true,
+	initFolders: true,
 };
 
 Dashboard.propTypes = {
 	loading: PropTypes.bool,
 	dispatch: PropTypes.func.isRequired,
+	initFolders: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
 	loading: !state.user,
+	initFolders: !(state.folders && !!state.folders.length),
 });
 
 export default connect(mapStateToProps)(Dashboard);

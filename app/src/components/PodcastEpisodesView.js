@@ -1,32 +1,41 @@
-import loaderIcon from '../images/loaders/default.svg';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Img from 'react-image';
 import Waypoint from 'react-waypoint';
+import Popover from 'react-popover';
+import { connect } from 'react-redux';
+
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import EpisodeListItem from './EpisodeListItem';
-import Img from 'react-image';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from 'react-redux';
-import Popover from 'react-popover';
 import fetch from '../util/fetch';
-import moment from 'moment';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
+import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
 import { followPodcast, unfollowPodcast } from '../api';
+
+import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
+import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
+import { ReactComponent as CircleIcon } from '../images/icons/circle.svg';
+import { ReactComponent as DotCircleIcon } from '../images/icons/dot-circle.svg';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			episodeCursor: 1, // mongoose-api-query starts pages at 1, not 0
-			sortBy: 'latest',
-			newEpisodesAvailable: false,
+		this.resetState = {
+			cursor: 1, // mongoose-api-query starts pages at 1, not 0
+			newEpisodes: false,
 			menuPopover: false,
 			aliasModal: false,
+			folderModal: false,
+			reachedEndOfFeed: false,
 			loading: true,
+			loadingEpisodes: true,
 			podcast: { images: {} },
 			episodes: [],
 		};
+
+		this.state = { ...this.resetState, sortBy: 'latest' };
 	}
 
 	subscribeToStreamFeed(podcastID, streamFeedToken) {
@@ -34,7 +43,7 @@ class PodcastEpisodesView extends React.Component {
 
 		this.subscription = window.streamClient
 			.feed('podcast', podcastID, streamFeedToken)
-			.subscribe(() => this.setState({ newEpisodesAvailable: true }));
+			.subscribe(() => this.setState({ newEpisodes: true }));
 	}
 
 	unsubscribeFromStreamFeed() {
@@ -43,11 +52,11 @@ class PodcastEpisodesView extends React.Component {
 
 	componentDidMount() {
 		const podcastID = this.props.match.params.podcastID;
-
-		window.streamAnalyticsClient.trackEngagement({
-			label: 'viewed_podcast',
-			content: `podcast:${podcastID}`,
-		});
+		if (window.streamAnalyticsClient.userData)
+			window.streamAnalyticsClient.trackEngagement({
+				label: 'viewed_podcast',
+				content: `podcast:${podcastID}`,
+			});
 
 		this.getPodcast(podcastID);
 		this.getPodcastEpisodes(podcastID);
@@ -62,9 +71,7 @@ class PodcastEpisodesView extends React.Component {
 				content: `podcast:${podcastID}`,
 			});
 
-			this.unsubscribeFromStreamFeed();
-
-			this.setState({ episodeCursor: 1 }, () => {
+			this.setState({ ...this.resetState }, () => {
 				this.getPodcast(podcastID);
 				this.getPodcastEpisodes(podcastID);
 			});
@@ -100,26 +107,32 @@ class PodcastEpisodesView extends React.Component {
 	};
 
 	getPodcastEpisodes = (podcastID, newFeed = false) => {
+		this.setState({ loadingEpisodes: true });
+
 		fetch(
 			'GET',
 			'/episodes',
 			{},
 			{
-				page: newFeed ? 1 : this.state.episodeCursor,
+				page: newFeed ? 1 : this.state.cursor,
 				per_page: 10,
 				podcast: podcastID,
-				sort_by: 'publicationDate,desc',
+				sort_by: `publicationDate${
+					this.state.sortBy === 'latest' ? ',desc' : ''
+				}`,
 			},
 		)
 			.then((res) => {
+				this.setState({ loadingEpisodes: false });
 				if (res.data.length === 0) this.setState({ reachedEndOfFeed: true });
-				else if (newFeed) this.setState({ episodes: res.data });
+				else if (newFeed) this.setState({ episodes: res.data, cursor: 1 });
 				else
 					this.setState((prevState) => ({
 						episodes: this.uniqueArr([...prevState.episodes, ...res.data]),
 					}));
 			})
 			.catch((err) => {
+				this.setState({ loadingEpisodes: false, error: true });
 				console.log(err); // eslint-disable-line no-console
 			});
 	};
@@ -132,42 +145,76 @@ class PodcastEpisodesView extends React.Component {
 		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
+	toggleFolderModal = () => {
+		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
+	};
+
+	setSortBy = (sortBy) => {
+		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
+
+		const podcastID = this.props.match.params.podcastID;
+		this.setState(
+			{
+				episodes: [],
+				cursor: 1,
+				menuPopover: false,
+				reachedEndOfFeed: false,
+				sortBy,
+			},
+			() => {
+				this.getPodcastEpisodes(podcastID);
+			},
+		);
+	};
+
 	render() {
 		if (this.state.loading) return <Loader />;
 
 		const podcast = this.state.podcast;
-
-		const isFollowing = this.props.following[podcast._id]
-			? this.props.following[podcast._id]
-			: false;
-
 		const title = this.props.aliases[podcast._id]
 			? this.props.aliases[podcast._id].alias
 			: podcast.title;
+		const isFollowing = this.props.following[podcast._id]
+			? this.props.following[podcast._id]
+			: false;
+		const currFolder = this.props.folders.find((folder) => {
+			for (const feed of folder.podcast) if (feed._id === podcast._id) return true;
+			return false;
+		});
 
-		let episodes = this.state.episodes.sort(
-			(a, b) =>
-				moment(b.publicationDate).valueOf() - moment(a.publicationDate).valueOf(),
-		);
+		const episodes = this.state.episodes.map((episode) => {
+			episode.pinID = this.props.pinnedEpisodes[episode._id]
+				? this.props.pinnedEpisodes[episode._id]._id
+				: '';
 
-		episodes = episodes.map((episode) => {
-			if (this.props.pinnedEpisodes[episode._id]) {
-				episode.pinID = this.props.pinnedEpisodes[episode._id]._id;
-			} else episode.pinID = '';
-
-			if (
+			episode.recent =
 				this.props.feeds.episode &&
 				this.props.feeds.episode.indexOf(episode._id) < 20 &&
-				this.props.feeds.episode.indexOf(episode._id) !== -1
-			) {
-				episode.recent = true;
-			} else episode.recent = false;
+				this.props.feeds.episode.indexOf(episode._id) !== -1;
 
 			return episode;
 		});
 
 		const menuPopover = (
 			<div className="popover-panel feed-popover">
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('latest')}
+				>
+					{this.state.sortBy === 'latest' ? <DotCircleIcon /> : <CircleIcon />}
+					Latest
+				</div>
+				<div
+					className="panel-element menu-item sort-button"
+					onClick={() => this.setSortBy('oldest')}
+				>
+					{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
+					Oldest
+				</div>
+				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
+					<FolderIcon />
+					<span>{currFolder ? currFolder.name : 'Folder'}</span>
+				</div>
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>
 					Rename
 				</div>
@@ -179,14 +226,16 @@ class PodcastEpisodesView extends React.Component {
 							: followPodcast(this.props.dispatch, podcast._id)
 					}
 				>
-					{isFollowing ? <span className="red">Unfollow</span> : 'Follow'}
+					{isFollowing ? <span className="alert">Unfollow</span> : 'Follow'}
 				</div>
 			</div>
 		);
 
 		let rightColumn;
 
-		if (episodes.length === 0) {
+		if (this.state.loadingEpisodes && !episodes.length) {
+			rightColumn = <Loader />;
+		} else if (episodes.length === 0) {
 			rightColumn = (
 				<div>
 					<p>We haven&#39;t found any episodes for this podcast feed yet :(</p>
@@ -208,27 +257,8 @@ class PodcastEpisodesView extends React.Component {
 		} else {
 			rightColumn = (
 				<div>
-					{episodes.map((episode, i) => {
-						const active =
-							this.props.player.contextID === podcast._id &&
-							episode._id === this.props.player.episodeID;
-
-						return (
-							<EpisodeListItem
-								active={active}
-								key={episode._id}
-								playOrPauseEpisode={() => {
-									if (active && this.props.player.playing)
-										this.props.pauseEpisode();
-									else if (active) this.props.resumeEpisode();
-									else this.props.playEpisode(episode._id, podcast._id);
-								}}
-								playable={true}
-								playing={this.props.player.playing}
-								position={i}
-								{...episode}
-							/>
-						);
+					{episodes.map((episode) => {
+						return <EpisodeListItem key={episode._id} {...episode} />;
 					})}
 					{this.state.reachedEndOfFeed ? (
 						<div className="end">
@@ -243,14 +273,13 @@ class PodcastEpisodesView extends React.Component {
 						<div>
 							<Waypoint
 								onEnter={() => {
-									this.setState(
-										{ episodeCursor: this.state.episodeCursor + 1 },
-										() => this.getPodcastEpisodes(podcast._id),
+									this.setState({ cursor: this.state.cursor + 1 }, () =>
+										this.getPodcastEpisodes(podcast._id),
 									);
 								}}
 							/>
 							<div className="end-loader">
-								<Img src={loaderIcon} />
+								<LoaderIcon />
 							</div>
 						</div>
 					)}
@@ -308,13 +337,21 @@ class PodcastEpisodesView extends React.Component {
 					toggleModal={this.toggleAliasModal}
 				/>
 
+				<FeedToFolderModal
+					currFolderID={currFolder ? currFolder._id : null}
+					feedID={podcast._id}
+					isOpen={this.state.folderModal}
+					isRss={false}
+					toggleModal={this.toggleFolderModal}
+				/>
+
 				<div className="list podcast-episode-list content">
-					{this.state.newEpisodesAvailable && (
+					{this.state.newEpisodes && (
 						<div
 							className="toast"
 							onClick={() => {
 								this.getPodcastEpisodes(podcast._id, true);
-								this.setState({ newEpisodesAvailable: false });
+								this.setState({ newEpisodes: false });
 							}}
 						>
 							New Episodes Available - Click to Refresh
@@ -332,24 +369,19 @@ PodcastEpisodesView.defaultProps = {
 	following: {},
 	pinnedEpisodes: {},
 	feeds: {},
+	folders: [],
 };
 
 PodcastEpisodesView.propTypes = {
 	following: PropTypes.shape({}),
 	aliases: PropTypes.shape({}),
-	player: PropTypes.shape({
-		contextID: PropTypes.string,
-		playing: PropTypes.bool,
-	}),
+
 	dispatch: PropTypes.func.isRequired,
 	match: PropTypes.shape({
 		params: PropTypes.shape({
 			podcastID: PropTypes.string,
 		}),
 	}),
-	pauseEpisode: PropTypes.func.isRequired,
-	playEpisode: PropTypes.func.isRequired,
-	resumeEpisode: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -357,27 +389,7 @@ const mapStateToProps = (state) => ({
 	following: state.followedPodcasts || {},
 	pinnedEpisodes: state.pinnedEpisodes || {},
 	feeds: state.feeds || {},
-	player: state.player || {},
+	folders: state.folders || [],
 });
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		dispatch,
-		pauseEpisode: () => dispatch({ type: 'PAUSE_EPISODE' }),
-		resumeEpisode: () => dispatch({ type: 'RESUME_EPISODE' }),
-		playEpisode: (episodeID, podcastID) => {
-			dispatch({
-				contextID: podcastID,
-				contextType: 'podcast',
-				episodeID: episodeID,
-				playing: true,
-				type: 'PLAY_EPISODE',
-			});
-		},
-	};
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(PodcastEpisodesView);
+export default connect(mapStateToProps)(PodcastEpisodesView);

@@ -275,6 +275,7 @@ A "feed group" defines a certain type of feed within your application. Use the "
 | `rss`           | flat            |
 | `user`          | flat            |
 | `timeline`      | flat            |
+| `folder`        | flat            |
 | `user_episode`  | flat            |
 | `user_article`  | flat            |
 
@@ -444,13 +445,14 @@ Thank you to all of the maintainers and contributors who've helped Winds become 
 ### Primary Maintainers
 
 *   [Nick Parsons](https://github.com/nparsons08)
-*   [Ken Hoff](https://github.com/kenhoff)
+*   [Amin Mahboubi](https://github.com/mahboubii)
 *   [Thierry Schellenbach](https://github.com/tschellenbach)
 *   [Josh Tilton](https://github.com/tilton)
 
 ### Contributors
 
 *   [Tommaso Barbugli](https://github.com/tbarbugli)
+*   [Ken Hoff](https://github.com/kenhoff)
 *   [Dwight Gunning](https://github.com/dwightgunning)
 *   [Matt Gauger](https://github.com/mathias)
 *   [Max Klyga](https://github.com/nekuromento)

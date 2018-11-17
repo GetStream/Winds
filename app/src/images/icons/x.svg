@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="10px" version="1.1" viewBox="0 0 6 8">
+    <g id="Symbols" fill="none" fill-rule="evenodd" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+        <g id="tag" stroke="#3EC074" transform="translate(-54.000000, -4.000000)">
+            <g id="x">
+                <g transform="translate(54.000000, 5.000000)">
+                    <path id="Stroke-3809" d="M5.77764,0.22908 L0.23244,5.77368"/>
+                    <path id="Stroke-3810" d="M0.23262,0.22908 L5.77782,5.77368"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,38 +1,48 @@
-import loaderIcon from '../images/loaders/default.svg';
-import Img from 'react-image';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import EpisodeListItem from './EpisodeListItem';
 import Waypoint from 'react-waypoint';
+
+import EpisodeListItem from './EpisodeListItem';
 import { getFeed } from '../util/feeds';
+
+import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
 
 class AllEpisodesList extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			newEpisodesAvailable: false,
 			cursor: 0,
 			reachedEndOfFeed: false,
 		};
+
+		this.contentsEl = React.createRef();
 	}
 
 	componentDidMount() {
-		this.setState({ cursor: Math.floor(this.props.episodes.length / 10) }, () => {
-			this.getEpisodeFeed();
-		});
+		this.getEpisodeFeed();
 
 		this.subscription = window.streamClient
 			.feed('user_episode', this.props.userID, this.props.userEpisodeStreamToken)
-			.subscribe(() => this.setState({ newArticlesAvailable: true }));
+			.subscribe(() => this.setState({ newEpisodesAvailable: true }));
 	}
 
-	getEpisodeFeed() {
-		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
+	componentDidUpdate() {
+		if (this.contentsEl.current && localStorage['all-episode-list-scroll-position']) {
+			this.contentsEl.current.scrollTop =
+				localStorage['all-episode-list-scroll-position'];
+			delete localStorage['all-episode-list-scroll-position'];
+		}
 	}
 
 	componentWillUnmount() {
 		this.subscription.cancel();
+	}
+
+	getEpisodeFeed() {
+		getFeed(this.props.dispatch, 'episode', this.state.cursor, 10);
 	}
 
 	render() {
@@ -41,7 +51,7 @@ class AllEpisodesList extends React.Component {
 				<div className="list-view-header content-header">
 					<h1>Episodes</h1>
 				</div>
-				<div className="list content">
+				<div className="list content" ref={this.contentsEl}>
 					{this.state.newEpisodesAvailable && (
 						<div
 							className="toast"
@@ -55,7 +65,16 @@ class AllEpisodesList extends React.Component {
 					)}
 
 					{this.props.episodes.map((episode) => (
-						<EpisodeListItem key={episode._id} {...episode} />
+						<EpisodeListItem
+							key={episode._id}
+							onNavigation={() => {
+								localStorage[
+									'all-episode-list-scroll-position'
+								] = this.contentsEl.current.scrollTop;
+							}}
+							playable={false}
+							{...episode}
+						/>
 					))}
 
 					{this.state.reachedEndOfFeed ? (
@@ -77,7 +96,7 @@ class AllEpisodesList extends React.Component {
 								}}
 							/>
 							<div className="end-loader">
-								<Img src={loaderIcon} />
+								<LoaderIcon />
 							</div>
 						</div>
 					)}

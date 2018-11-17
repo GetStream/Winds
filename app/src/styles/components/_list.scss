@@ -22,10 +22,12 @@
 			&.menu {
 				cursor: pointer;
 				margin-left: auto;
+				white-space: nowrap;
 			}
 
 			&.menu-pop {
 				cursor: pointer;
+				white-space: nowrap;
 			}
 
 			&.follow {
@@ -69,89 +71,6 @@
 
 		> * {
 			margin: 2em;
-		}
-	}
-
-	.list-item {
-		border-bottom: 1px solid $foreground-lightgray;
-		color: inherit;
-		cursor: pointer;
-		display: flex;
-		padding: 2em 0;
-		text-decoration: inherit;
-
-		&:first-child {
-			padding-top: 0;
-		}
-
-		.recent-indicator {
-			background-color: $foreground-green;
-			border-radius: 10000px;
-			height: 8px;
-			left: 83px;
-			position: absolute;
-			top: 6px;
-			width: 8px;
-		}
-
-		.left {
-			margin-right: 2em;
-			position: relative;
-
-			> img,
-			> .background-image,
-			> .placeholder {
-				background-color: $white-smoke;
-				background-position: center;
-				background-size: cover;
-				border-radius: $border-radius;
-				box-shadow: $box-shadow;
-				height: 75px;
-				object-fit: cover;
-				width: 75px;
-			}
-		}
-
-		.right {
-			max-width: 90%;
-
-			@media only screen and (max-width: 1400px) {
-				width: 80%;
-			}
-
-			@media only screen and (max-width: 970px) {
-				width: 70%;
-			}
-
-			h2 {
-				font-weight: 600; // TODO: asdfasdfasdf @kenhoff
-				margin-bottom: 0;
-				margin-top: 0;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				width: 100%;
-			}
-
-			.info {
-				align-items: center;
-				color: $foreground-darkgray;
-				display: flex;
-				font-family: $primary;
-				font-size: 11px;
-				font-weight: bold;
-				letter-spacing: 0.1em;
-				margin-bottom: 0.5em;
-				text-transform: uppercase;
-
-				.date {
-					font-size: 11px;
-				}
-
-				> * {
-					margin-right: 1em;
-				}
-			}
 		}
 	}
 }

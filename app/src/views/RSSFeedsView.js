@@ -9,7 +9,7 @@ import Tabs from '../components/Tabs';
 import RecentArticlesPanel from '../components/RSSPanels/RecentArticlesPanel';
 import RssFeedList from '../components/RSSPanels/RssFeedList';
 import SuggestedFeeds from '../components/RSSPanels/SuggestedFeeds';
-import BookmarkedArticles from '../components/RSSPanels/BookmarkedArticles';
+import BookmarkPanel from '../components/BookmarkPanel';
 import AllArticlesList from '../components/AllArticlesList';
 
 class RSSFeedsView extends React.Component {
@@ -18,7 +18,6 @@ class RSSFeedsView extends React.Component {
 
 		this.state = {
 			newRSSModalIsOpen: false,
-			selectedTab: localStorage['selectedRSSTab'] || 'all',
 		};
 
 		this.container = React.createRef();
@@ -27,12 +26,18 @@ class RSSFeedsView extends React.Component {
 	componentDidMount() {
 		this.container.current.focus();
 
-		if (this.props.match.params.rssFeedID)
+		if (
+			this.props.location.search.includes('featured') &&
+			this.props.match.params.rssFeedID
+		)
 			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.match.params.rssFeedID !== prevProps.match.params.rssFeedID)
+		if (
+			this.props.location.search.includes('featured') &&
+			this.props.match.params.rssFeedID !== prevProps.match.params.rssFeedID
+		)
 			getRssById(this.props.dispatch, this.props.match.params.rssFeedID);
 	}
 
@@ -43,8 +48,10 @@ class RSSFeedsView extends React.Component {
 	};
 
 	render() {
+		const featured = this.props.location.search.includes('featured');
+
 		let leftColumn;
-		if (new URLSearchParams(this.props.location.search).get('featured') === 'true') {
+		if (featured) {
 			leftColumn = (
 				<React.Fragment>
 					<div className="panels-header">
@@ -62,7 +69,7 @@ class RSSFeedsView extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="panels featured-description">
+					<div className="panels">
 						<label>About {this.props.rssFeed.title}</label>
 						<h1>{this.props.rssFeed.description}</h1>
 						<div>{this.props.rssFeed.summary}</div>
@@ -82,7 +89,7 @@ class RSSFeedsView extends React.Component {
 						<RssFeedList />
 					</div>
 					<div tabTitle="Bookmarks">
-						<BookmarkedArticles />
+						<BookmarkPanel type="article" />
 					</div>
 					<div tabTitle="Suggestions">
 						<SuggestedFeeds />
@@ -93,12 +100,7 @@ class RSSFeedsView extends React.Component {
 
 		return (
 			<div
-				className={`rss-view ${
-					new URLSearchParams(this.props.location.search).get('featured') ===
-					'true'
-						? 'featured'
-						: ''
-				}`}
+				className={`grid-view rss-view ${featured ? 'featured' : ''}`}
 				onKeyDown={(e) => {
 					e = e || window.e;
 					if (('key' in e && e.key === 'Escape') || e.keyCode === 27)

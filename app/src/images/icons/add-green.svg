@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" version="1.1" viewBox="0 0 20 20">
+    <g id="Page-1" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+        <g id="Electron---RSS" transform="translate(-1239.000000, -106.000000)">
+            <g id="Header-Controls" transform="translate(125.000000, 102.000000)">
+                <g id="Button" transform="translate(1110.000000, 0.000000)">
+                    <g id="add-1" transform="translate(2.000000, 2.000000)">
+                        <g id="frames-24px">
+                            <rect id="Rectangle-path" width="24" height="24" x="0" y="0"/>
+                        </g>
+                        <g id="Nova_line" fill="#44bc75" transform="translate(2.000000, 2.000000)">
+                            <circle id="Oval-9" cx="10" cy="10" r="9" fill-opacity="0.05" stroke="#44bc75" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polygon id="Shape" fill-rule="nonzero" points="16 9 11 9 11 4 9 4 9 9 4 9 4 11 9 11 9 16 11 16 11 11 16 11"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -35,6 +35,7 @@
 		padding: 1em;
 		position: sticky;
 		top: 0;
+		z-index: 1;
 
 		.aside {
 			color: $foreground-darkgray;
@@ -53,23 +54,23 @@
 			background-color: $background-lightishgray;
 		}
 	}
-	
+
 	.panel-element {
 		align-items: center;
-		border-bottom: 1px solid $foreground-lightgray;
+		border-top: 1px solid $foreground-lightgray;
 		color: inherit;
 		cursor: pointer;
 		display: flex;
-		font-size: .98em;
+		font-size: 0.98em;
 		font-weight: 500; // TODO: @kenhoff - figure out why we have to set this explicitly, rather than with 'bolder'
 		margin: 0 1em;
 		padding: 1em 0;
 		text-decoration: inherit;
-		white-space: nowrap;
 		transition-duration: 0.2s;
 		transition-property: margin-left;
+		white-space: nowrap;
 
-		&:hover{
+		&:hover {
 			margin-left: 15px;
 		}
 
@@ -102,16 +103,15 @@
 			padding: 0.5em;
 			text-transform: uppercase;
 
+			&.alert {
+				color: $background-red;
+			}
+
 			&.active {
 				background-color: $background-green;
 				border-radius: 4px;
 				color: white;
 			}
-		}
-
-		// note from @kenhoff - this should really be moved outside of the panel element (later)
-		.muted {
-			color: $foreground-darkgray;
 		}
 
 		img,
@@ -122,12 +122,40 @@
 			width: 1.5em;
 		}
 
-		&:last-child {
-			border-bottom: none;
+		&:first-child {
+			border-top: none;
 		}
 
-		&.clickable {
-			cursor: pointer;
+		&.no-content {
+			cursor: default;
+			flex-direction: column;
+			padding-bottom: 5.6em;
+
+			&:hover {
+				margin-left: 1em;
+			}
+
+			svg {
+				margin: 3em auto 1em;
+			}
+
+			span {
+				overflow: initial;
+			}
+		}
+	}
+
+	.folder-element {
+		margin-left: 3.65em;
+
+		&:hover {
+			margin-left: 4em;
+		}
+
+		.type {
+			background-color: rgba(0, 0, 0, 0.06);
+			border-radius: 2px;
+			padding: 3px 5px;
 		}
 	}
 

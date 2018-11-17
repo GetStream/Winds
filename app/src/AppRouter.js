@@ -8,6 +8,7 @@ import UnauthedRoute from './UnauthedRoute';
 import Dashboard from './views/Dashboard';
 import PodcastsView from './views/PodcastsView.js';
 import RSSFeedsView from './views/RSSFeedsView.js';
+import FoldersView from './views/FoldersView.js';
 import AdminView from './views/AdminView';
 import NotFound from './views/404View';
 import Header from './components/Header';
@@ -34,6 +35,26 @@ class AppRouter extends Component {
 						/>
 						<AuthedRoute component={RSSFeedsView} exact path="/rss" />
 						<AuthedRoute component={RSSFeedsView} path="/rss/:rssFeedID" />
+
+						<Route
+							component={FoldersView}
+							path="/folders/:folderID/r/:rssFeedID/a/:articleID"
+						/>
+						<Route
+							component={FoldersView}
+							path="/folders/:folderID/p/:podcastID/e/:episodeID"
+						/>
+						<AuthedRoute
+							component={FoldersView}
+							path="/folders/:folderID/p/:podcastID"
+						/>
+						<AuthedRoute
+							component={FoldersView}
+							path="/folders/:folderID/r/:rssFeedID"
+						/>
+						<AuthedRoute component={FoldersView} path="/folders/:folderID" />
+						<AuthedRoute component={FoldersView} exact path="/folders" />
+						<AuthedRoute component={FoldersView} path="/tags/:tagID" />
 						<AuthedRoute component={AdminView} path="/admin" />
 						<UnauthedRoute component={Login} exact path="/login" />
 						<UnauthedRoute component={Create} exact path="/create-account" />

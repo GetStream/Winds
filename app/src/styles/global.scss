@@ -47,6 +47,9 @@
 @import 'components/_simple-progress-bar.scss';
 @import 'components/_tiny-list.scss';
 @import 'components/_github.scss';
+@import 'components/_content.scss';
+@import 'components/_feed-header.scss';
+@import 'components/_feed-list-item.scss';
 
 /* MODULES - Re-usable site elements.
 ========================================================================== */
@@ -72,7 +75,10 @@
 @import 'views/_dashboard.scss';
 @import 'views/_onboarding.scss';
 @import 'views/_profile.scss';
+@import 'views/_grid.scss';
 @import 'views/_playlist.scss';
 @import 'views/_podcast.scss';
 @import 'views/_rss.scss';
 @import 'views/_admin.scss';
+@import 'views/folder.scss';
+@import 'views/note.scss';

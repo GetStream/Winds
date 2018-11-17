@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import timestamps from 'mongoose-timestamp';
 import mongooseStringQuery from 'mongoose-string-query';
 
-export const CacheSchema = new Schema(
+export const ContentSchema = new Schema(
 	{
 		url: {
 			type: String,
@@ -35,15 +35,15 @@ export const CacheSchema = new Schema(
 		},
 		enclosures: [],
 	},
-	{ collection: 'cache' },
+	{ collection: 'content' },
 );
 
-CacheSchema.index({ url: 1 });
+ContentSchema.index({ url: 1 }, { unique: true });
 
-CacheSchema.plugin(timestamps, {
+ContentSchema.plugin(timestamps, {
 	createdAt: { index: true },
 	updatedAt: { index: true },
 });
-CacheSchema.plugin(mongooseStringQuery);
+ContentSchema.plugin(mongooseStringQuery);
 
-module.exports = exports = mongoose.model('Cache', CacheSchema);
+module.exports = exports = mongoose.model('Content', ContentSchema);

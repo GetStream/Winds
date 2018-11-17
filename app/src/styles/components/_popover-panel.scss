@@ -6,6 +6,10 @@
 	display: block;
 	text-decoration: inherit;
 
+	&.feed-popover {
+		min-width: 120px;
+	}
+
 	.panel-element {
 		align-items: center;
 		border-bottom: 1px solid $foreground-lightgray;
@@ -36,5 +40,20 @@
 		&:last-child {
 			border-bottom: none;
 		}
+	}
+
+	.sort-button {
+		svg {
+			margin-right: 8px !important;
+			min-width: auto !important;
+		}
+	}
+
+	.alert {
+		color: $background-red;
+	}
+
+	.green {
+		color: $foreground-green;
 	}
 }
