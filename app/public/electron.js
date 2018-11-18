@@ -6,7 +6,7 @@ const isDev = require('electron-is-dev');
 
 let mainWindow;
 
-createWindow = () => {
+const createWindow = () => {
 	mainWindow = new BrowserWindow({
 		backgroundColor: '#F7F7F7',
 		minWidth: 880,
@@ -21,14 +21,10 @@ createWindow = () => {
 	});
 
 	mainWindow.loadURL(
-		isDev
-			? 'http://localhost:3000'
-			: `file://${path.join(__dirname, '../build/index.html')}`,
+		isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/index.html')}`,
 	);
 
-	if (isDev) {
-		mainWindow.webContents.openDevTools();
-	}
+	if (isDev) mainWindow.webContents.openDevTools();
 
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show();
@@ -43,7 +39,7 @@ createWindow = () => {
 	});
 };
 
-generateMenu = () => {
+const generateMenu = () => {
 	let template = [
 		{
 			label: 'File',
@@ -140,7 +136,7 @@ generateMenu = () => {
 	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 };
 
-mediaControls = (event, args) => {
+const mediaControls = (event, args) => {
 	let next = new TouchBarButton({
 		icon: `${__dirname}/static/next.png`,
 		click: () => {
@@ -194,7 +190,7 @@ app.on('ready', () => {
 	generateMenu();
 });
 
-app.on('close', event => {
+app.on('close', (event) => {
 	event.preventDefault();
 	mainWindow.hide();
 });

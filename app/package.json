@@ -10,7 +10,7 @@
     "url": "https://github.com/getstream/winds/issues"
   },
   "homepage": "https://winds.getstream.io",
-  "main": "public/electron.js",
+  "main": "build/electron.js",
   "keywords": [
     "Winds",
     "RSS",
@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "start": "concurrently \"yarn web\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always",
+    "dist": "PUBLIC_URL=./ react-scripts build && electron-builder -mwl -p always",
     "prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\""
   },
   "dependencies": {
