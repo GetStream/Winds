@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "start": "concurrently \"yarn web\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "PUBLIC_URL=./ react-scripts build && build --x64 --mac --linux --windows -p always",
+    "dist": "PUBLIC_URL=./ react-scripts build && electron-builder --x64 --mac --linux --win -p always",
     "prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\""
   },
   "dependencies": {
@@ -94,8 +94,7 @@
       "type": "distribution",
       "target": [
         "pkg",
-        "dmg",
-        "mas"
+        "dmg"
       ],
       "publish": {
         "provider": "s3",
