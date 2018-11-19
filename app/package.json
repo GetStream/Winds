@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "start": "concurrently \"yarn web\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "PUBLIC_URL=./ react-scripts build && electron-builder -mwl -p always",
+    "dist": "PUBLIC_URL=./ react-scripts build && build --x64 --mac --linux --windows -p always",
     "prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\""
   },
   "dependencies": {
@@ -38,7 +38,6 @@
     "electron-log": "^2.2.17",
     "electron-notifications": "^1.0.0",
     "electron-open-link-in-browser": "^1.0.2",
-    "electron-publisher-s3": "^20.17.2",
     "electron-remote": "^1.3.0",
     "electron-updater": "^4.0.4",
     "getstream": "^3.23.0",
@@ -70,6 +69,7 @@
     "cross-env": "^5.2.0",
     "electron": "^3.0.9",
     "electron-builder": "^20.36.2",
+    "electron-publisher-s3": "^20.17.2",
     "node-sass": "^4.10.0",
     "prettier": "^1.15.2",
     "prettierrc": "^0.0.0-5",
@@ -119,9 +119,10 @@
       }
     },
     "linux": {
-      "icon": "assets/icon-256x256.png",
+      "icon": "assets/icon.png",
       "target": [
         "snap",
+        "deb",
         "AppImage"
       ],
       "description": "Winds is a beautiful open-source RSS Reader and Podcast application provided by GetStream.io.",
@@ -134,9 +135,7 @@
     }
   },
   "files": [
-    "*.js",
-    "build",
-    "node_modules"
+    "build"
   ],
   "babel": {
     "presets": [
