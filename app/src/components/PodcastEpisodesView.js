@@ -10,13 +10,13 @@ import EpisodeListItem from './EpisodeListItem';
 import fetch from '../util/fetch';
 import Loader from './Loader';
 import AliasModal from './AliasModal';
-import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
+import FolderPopover from '../components/Folder/FolderPopover';
 import { followPodcast, unfollowPodcast } from '../api';
 
-import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
 import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
 import { ReactComponent as CircleIcon } from '../images/icons/circle.svg';
 import { ReactComponent as DotCircleIcon } from '../images/icons/dot-circle.svg';
+import { ReactComponent as SettingIcon } from '../images/icons/settings.svg';
 
 class PodcastEpisodesView extends React.Component {
 	constructor(props) {
@@ -27,7 +27,6 @@ class PodcastEpisodesView extends React.Component {
 			newEpisodes: false,
 			menuPopover: false,
 			aliasModal: false,
-			folderModal: false,
 			reachedEndOfFeed: false,
 			loading: true,
 			loadingEpisodes: true,
@@ -101,8 +100,8 @@ class PodcastEpisodesView extends React.Component {
 
 	uniqueArr = (array) => {
 		const seen = {};
-		return array.filter(
-			(item) => (seen.hasOwnProperty(item._id) ? false : (seen[item._id] = true)),
+		return array.filter((item) =>
+			seen.hasOwnProperty(item._id) ? false : (seen[item._id] = true),
 		);
 	};
 
@@ -145,10 +144,6 @@ class PodcastEpisodesView extends React.Component {
 		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
-	toggleFolderModal = () => {
-		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
-	};
-
 	setSortBy = (sortBy) => {
 		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
 
@@ -170,6 +165,7 @@ class PodcastEpisodesView extends React.Component {
 	render() {
 		if (this.state.loading) return <Loader />;
 
+		const dispatch = this.props.dispatch;
 		const podcast = this.state.podcast;
 		const title = this.props.aliases[podcast._id]
 			? this.props.aliases[podcast._id].alias
@@ -177,10 +173,6 @@ class PodcastEpisodesView extends React.Component {
 		const isFollowing = this.props.following[podcast._id]
 			? this.props.following[podcast._id]
 			: false;
-		const currFolder = this.props.folders.find((folder) => {
-			for (const feed of folder.podcast) if (feed._id === podcast._id) return true;
-			return false;
-		});
 
 		const episodes = this.state.episodes.map((episode) => {
 			episode.pinID = this.props.pinnedEpisodes[episode._id]
@@ -211,10 +203,7 @@ class PodcastEpisodesView extends React.Component {
 					{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
 					Oldest
 				</div>
-				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
-					<FolderIcon />
-					<span>{currFolder ? currFolder.name : 'Folder'}</span>
-				</div>
+
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>
 					Rename
 				</div>
@@ -222,8 +211,8 @@ class PodcastEpisodesView extends React.Component {
 					className="panel-element menu-item"
 					onClick={() =>
 						isFollowing
-							? unfollowPodcast(this.props.dispatch, podcast._id)
-							: followPodcast(this.props.dispatch, podcast._id)
+							? unfollowPodcast(dispatch, podcast._id)
+							: followPodcast(dispatch, podcast._id)
 					}
 				>
 					{isFollowing ? <span className="alert">Unfollow</span> : 'Follow'}
@@ -301,31 +290,30 @@ class PodcastEpisodesView extends React.Component {
 							/>
 						</div>
 						<h1>{title}</h1>
-						{!isFollowing && (
-							<div
-								className="follow menu"
-								onClick={() =>
-									followPodcast(this.props.dispatch, podcast._id)
-								}
-							>
-								FOLLOW
-							</div>
-						)}
+						<div className="right">
+							{!isFollowing && (
+								<div
+									className="follow"
+									onClick={() => followPodcast(dispatch, podcast._id)}
+								>
+									FOLLOW
+								</div>
+							)}
 
-						<Popover
-							body={menuPopover}
-							isOpen={this.state.menuPopover}
-							onOuterAction={this.toggleMenuPopover}
-							preferPlace="below"
-							tipSize={0.1}
-						>
-							<div
-								className={isFollowing ? 'menu' : 'menu-pop'}
-								onClick={this.toggleMenuPopover}
+							<FolderPopover feedID={podcast._id} isRss={false} />
+
+							<Popover
+								body={menuPopover}
+								isOpen={this.state.menuPopover}
+								onOuterAction={this.toggleMenuPopover}
+								preferPlace="below"
+								tipSize={0.1}
 							>
-								&bull; &bull; &bull;
-							</div>
-						</Popover>
+								<div onClick={this.toggleMenuPopover}>
+									<SettingIcon />
+								</div>
+							</Popover>
+						</div>
 					</div>
 				</div>
 
@@ -335,14 +323,6 @@ class PodcastEpisodesView extends React.Component {
 					isOpen={this.state.aliasModal}
 					isRss={false}
 					toggleModal={this.toggleAliasModal}
-				/>
-
-				<FeedToFolderModal
-					currFolderID={currFolder ? currFolder._id : null}
-					feedID={podcast._id}
-					isOpen={this.state.folderModal}
-					isRss={false}
-					toggleModal={this.toggleFolderModal}
 				/>
 
 				<div className="list podcast-episode-list content">
@@ -369,7 +349,6 @@ PodcastEpisodesView.defaultProps = {
 	following: {},
 	pinnedEpisodes: {},
 	feeds: {},
-	folders: [],
 };
 
 PodcastEpisodesView.propTypes = {
@@ -389,7 +368,6 @@ const mapStateToProps = (state) => ({
 	following: state.followedPodcasts || {},
 	pinnedEpisodes: state.pinnedEpisodes || {},
 	feeds: state.feeds || {},
-	folders: state.folders || [],
 });
 
 export default connect(mapStateToProps)(PodcastEpisodesView);
