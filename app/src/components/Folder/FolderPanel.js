@@ -64,11 +64,13 @@ class FolderPanel extends React.Component {
 								const folderView = !(
 									params.rssFeedID || params.podcastID
 								);
+
 								for (const f of folder.feeds) {
 									const feedOpen =
 										folderView ||
 										f._id === params.rssFeedID ||
 										f._id === params.podcastID;
+									const isRss = f.categories.toLowerCase() === 'rss';
 									result.push(
 										<Link
 											className={`panel-element folder-element ${
@@ -76,7 +78,7 @@ class FolderPanel extends React.Component {
 											}`}
 											key={f._id}
 											to={`/folders/${folder._id}/${
-												f.categories === 'rss' ? 'r' : 'p'
+												isRss ? 'r' : 'p'
 											}/${f._id}`}
 										>
 											<Img
@@ -88,9 +90,7 @@ class FolderPanel extends React.Component {
 											/>
 											<div>{f.title}</div>
 											<div className="type">
-												{f.categories === 'rss'
-													? 'RSS'
-													: 'PODCAST'}
+												{isRss ? 'RSS' : 'PODCAST'}
 											</div>
 										</Link>,
 									);
