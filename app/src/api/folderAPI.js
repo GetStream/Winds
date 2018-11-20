@@ -27,6 +27,34 @@ export const updateFolder = (dispatch, folderID, data, thenFn, catchFn) => {
 		.catch(catchFn);
 };
 
+export const upsertFolder = async (
+	dispatch,
+	folderId = '',
+	isRss,
+	feedID,
+	name,
+	thenFn,
+	catchFn,
+) => {
+	try {
+		// Remove Feed from its current folder //
+		if (folderId) {
+			let data = { action: 'remove' };
+			data[isRss ? 'rss' : 'podcast'] = feedID;
+			await fetch('PUT', `/folders/${folderId}`, data);
+		}
+		// Create a new folder with the feed //
+		let data = { name };
+		data[isRss ? 'rss' : 'podcast'] = [feedID];
+		const res = await fetch('POST', '/folders', data);
+
+		getFolders(dispatch);
+		if (thenFn) thenFn(res);
+	} catch (e) {
+		if (catchFn) thenFn(catchFn);
+	}
+};
+
 export const renameFolder = (dispatch, folderID, name, thenFn, catchFn) => {
 	fetch('PUT', `/folders/${folderID}`, { name })
 		.then((res) => {
