@@ -11,6 +11,7 @@ import Loader from '../Loader';
 import { ReactComponent as TagIcon } from '../../images/icons/tag-simple.svg';
 import { ReactComponent as CircleIcon } from '../../images/icons/circle.svg';
 import { ReactComponent as DotCircleIcon } from '../../images/icons/dot-circle.svg';
+import { ReactComponent as SettingIcon } from '../../images/icons/settings.svg';
 
 class TagView extends React.Component {
 	constructor(props) {
@@ -83,20 +84,20 @@ class TagView extends React.Component {
 					<div className="alignment-box">
 						<TagIcon className="header-icon" />
 						<h1>{this.props.tag.name}</h1>
-						<Popover
-							body={this.menuPopover()}
-							isOpen={this.state.menuPopover}
-							onOuterAction={this.toggleMenuPopover}
-							preferPlace="below"
-							tipSize={0.1}
-						>
-							<div
-								className="menu"
-								onClick={() => this.toggleMenuPopover()}
+
+						<div className="right">
+							<Popover
+								body={this.menuPopover()}
+								isOpen={this.state.menuPopover}
+								onOuterAction={this.toggleMenuPopover}
+								preferPlace="below"
+								tipSize={0.1}
 							>
-								&bull; &bull; &bull;
-							</div>
-						</Popover>
+								<div onClick={this.toggleMenuPopover}>
+									<SettingIcon />
+								</div>
+							</Popover>
+						</div>
 					</div>
 				</div>
 
