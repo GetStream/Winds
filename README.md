@@ -66,7 +66,6 @@ Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/Ge
 *   [ ] Playlist support (partially implemented)
 *   [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
 *   [ ] Mobile application powered by React Native
-*   [ ] Folder Support
 
 ## Powered By
 
