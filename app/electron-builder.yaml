@@ -1,0 +1,44 @@
+
+appId: io.getstream.winds
+copyright: Copyright © 2018 Stream.io Inc. All rights reserved.
+productName: Winds
+compression: normal
+directories:
+  buildResources: build
+  output: dist
+files:
+  - "!node_modules"
+mac:
+  category: public.app-category.news
+  entitlements: build/entitlements.mac.plist
+  provisioningProfile: embedded.provisionprofile
+  icon: build/favicons/icon.icns
+  identity: EHV7XZLAHA
+  target:
+    - pkg
+    - dmg
+    - mas
+  publish:
+    provider: s3
+    bucket: winds-2.0-releases
+    path: releases
+mas:
+  entitlements: build/entitlements.mas.plist
+win:
+  target: nsis
+  icon: build/favicons/icon.ico
+  publish:
+    provider: s3
+    bucket: winds-2.0-releases
+    path: releases
+linux:
+  description: Winds is a beautiful open-source RSS Reader and Podcast application
+    provided by GetStream.io.
+  category: Network;Feed
+  target:
+    - snap
+    - AppImage
+  publish:
+    provider: s3
+    bucket: winds-2.0-releases
+    path: releases
