@@ -11,7 +11,7 @@ files:
 mac:
   category: public.app-category.news
   entitlements: build/entitlements.mac.plist
-  provisioningProfile: embedded.provisionprofile
+  provisioningProfile: ../../winds-private/electron/embedded.provisionprofile
   icon: build/favicons/icon.icns
   identity: EHV7XZLAHA
   target:

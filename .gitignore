@@ -101,6 +101,6 @@ process_prod.json
 embedded.provisionprofile
 sign.js
 *.p12
-
+app/latest.html
 #IDE
 .vscode
