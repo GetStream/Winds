@@ -9,14 +9,14 @@ import fetch from '../util/fetch';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 import ArticleListItem from './ArticleListItem';
 import AliasModal from './AliasModal';
-import FeedToFolderModal from '../components/Folder/FeedToFolderModal';
+import FolderPopover from '../components/Folder/FolderPopover';
 import Loader from './Loader';
 import { followRss, unfollowRss } from '../api';
 
 import { ReactComponent as LoaderIcon } from '../images/loaders/default.svg';
-import { ReactComponent as FolderIcon } from '../images/icons/folder.svg';
 import { ReactComponent as CircleIcon } from '../images/icons/circle.svg';
 import { ReactComponent as DotCircleIcon } from '../images/icons/dot-circle.svg';
+import { ReactComponent as SettingIcon } from '../images/icons/settings.svg';
 
 class RSSArticleList extends React.Component {
 	constructor(props) {
@@ -27,7 +27,6 @@ class RSSArticleList extends React.Component {
 			newArticles: false,
 			menuPopover: false,
 			aliasModal: false,
-			folderModal: false,
 			reachedEndOfFeed: false,
 			loading: true,
 			loadingArticles: true,
@@ -113,8 +112,8 @@ class RSSArticleList extends React.Component {
 
 	uniqueArr = (array) => {
 		const seen = {};
-		return array.filter(
-			(item) => (seen.hasOwnProperty(item._id) ? false : (seen[item._id] = true)),
+		return array.filter((item) =>
+			seen.hasOwnProperty(item._id) ? false : (seen[item._id] = true),
 		);
 	};
 
@@ -157,10 +156,6 @@ class RSSArticleList extends React.Component {
 		this.setState((prevState) => ({ aliasModal: !prevState.aliasModal }));
 	};
 
-	toggleFolderModal = () => {
-		this.setState((prevState) => ({ folderModal: !prevState.folderModal }));
-	};
-
 	setSortBy = (sortBy) => {
 		if (this.state.sortBy === sortBy) return this.setState({ menuPopover: false });
 
@@ -182,6 +177,7 @@ class RSSArticleList extends React.Component {
 	render() {
 		if (this.state.loading) return <Loader />;
 
+		const dispatch = this.props.dispatch;
 		const rssFeed = this.state.rssFeed;
 		const isFollowing = this.props.following[rssFeed._id]
 			? this.props.following[rssFeed._id]
@@ -189,10 +185,6 @@ class RSSArticleList extends React.Component {
 		const title = this.props.aliases[rssFeed._id]
 			? this.props.aliases[rssFeed._id].alias
 			: rssFeed.title;
-		const currFolder = this.props.folders.find((folder) => {
-			for (const feed of folder.rss) if (feed._id === rssFeed._id) return true;
-			return false;
-		});
 
 		const articles = this.state.articles.map((article) => {
 			if (this.props.pinnedArticles[article._id]) {
@@ -226,10 +218,6 @@ class RSSArticleList extends React.Component {
 					{this.state.sortBy === 'oldest' ? <DotCircleIcon /> : <CircleIcon />}
 					Oldest
 				</div>
-				<div className="panel-element menu-item" onClick={this.toggleFolderModal}>
-					<FolderIcon />
-					<span>{currFolder ? currFolder.name : 'Folder'}</span>
-				</div>
 				<div className="panel-element menu-item" onClick={this.toggleAliasModal}>
 					Rename
 				</div>
@@ -237,8 +225,8 @@ class RSSArticleList extends React.Component {
 					className="panel-element menu-item"
 					onClick={() =>
 						isFollowing
-							? unfollowRss(this.props.dispatch, rssFeed._id)
-							: followRss(this.props.dispatch, rssFeed._id)
+							? unfollowRss(dispatch, rssFeed._id)
+							: followRss(dispatch, rssFeed._id)
 					}
 				>
 					{isFollowing ? <span className="alert">Unfollow</span> : 'Follow'}
@@ -327,31 +315,31 @@ class RSSArticleList extends React.Component {
 							/>
 						</div>
 						<h1>{title}</h1>
-						{!isFollowing && (
-							<div
-								className="follow menu"
-								onClick={() =>
-									followRss(this.props.dispatch, rssFeed._id)
-								}
-							>
-								FOLLOW
-							</div>
-						)}
 
-						<Popover
-							body={menuPopover}
-							isOpen={this.state.menuPopover}
-							onOuterAction={this.toggleMenuPopover}
-							preferPlace="below"
-							tipSize={0.1}
-						>
-							<div
-								className={isFollowing ? 'menu' : 'menu-pop'}
-								onClick={() => this.toggleMenuPopover()}
+						<div className="right">
+							{!isFollowing && (
+								<div
+									className="follow"
+									onClick={() => followRss(dispatch, rssFeed._id)}
+								>
+									FOLLOW
+								</div>
+							)}
+
+							<FolderPopover feedID={rssFeed._id} isRss={true} />
+
+							<Popover
+								body={menuPopover}
+								isOpen={this.state.menuPopover}
+								onOuterAction={this.toggleMenuPopover}
+								preferPlace="below"
+								tipSize={0.1}
 							>
-								&bull; &bull; &bull;
-							</div>
-						</Popover>
+								<div onClick={this.toggleMenuPopover}>
+									<SettingIcon />
+								</div>
+							</Popover>
+						</div>
 					</div>
 				</div>
 
@@ -361,14 +349,6 @@ class RSSArticleList extends React.Component {
 					isOpen={this.state.aliasModal}
 					isRss={true}
 					toggleModal={this.toggleAliasModal}
-				/>
-
-				<FeedToFolderModal
-					currFolderID={currFolder ? currFolder._id : null}
-					feedID={rssFeed._id}
-					isOpen={this.state.folderModal}
-					isRss={true}
-					toggleModal={this.toggleFolderModal}
 				/>
 
 				<div className="list content" ref={this.contentsEl}>
@@ -395,7 +375,6 @@ RSSArticleList.defaultProps = {
 	following: {},
 	pinnedArticles: {},
 	feeds: {},
-	folders: [],
 };
 
 RSSArticleList.propTypes = {
@@ -416,7 +395,6 @@ const mapStateToProps = (state) => ({
 	following: state.followedRssFeeds || {},
 	pinnedArticles: state.pinnedArticles || {},
 	feeds: state.feeds || {},
-	folders: state.folders || [],
 });
 
 export default connect(mapStateToProps)(RSSArticleList);
