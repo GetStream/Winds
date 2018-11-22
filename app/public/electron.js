@@ -1,8 +1,18 @@
-const { app, BrowserWindow, shell, ipcMain, Menu, TouchBar } = require('electron');
-const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
+const {
+	app,
+	BrowserWindow,
+	shell,
+	ipcMain,
+	Menu,
+	TouchBar,
+	remote,
+} = require('electron');
 
-const path = require('path');
-const isDev = require('electron-is-dev');
+const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
+const isDev =
+	'ELECTRON_IS_DEV' in process.env
+		? parseInt(process.env.ELECTRON_IS_DEV, 10) === 1
+		: !(app || remote.app).isPackaged;
 
 let mainWindow;
 
@@ -21,7 +31,7 @@ const createWindow = () => {
 	});
 
 	mainWindow.loadURL(
-		isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '/index.html')}`,
+		isDev ? 'http://localhost:3000' : `file://${__dirname}/index.html`,
 	);
 
 	if (isDev) mainWindow.webContents.openDevTools();
@@ -82,17 +92,13 @@ const generateMenu = () => {
 			submenu: [
 				{
 					click() {
-						require('electron').shell.openExternal(
-							'https://getstream.io/winds',
-						);
+						shell.openExternal('https://getstream.io/winds');
 					},
 					label: 'Learn More',
 				},
 				{
 					click() {
-						require('electron').shell.openExternal(
-							'https://github.com/GetStream/Winds/issues',
-						);
+						shell.openExternal('https://github.com/GetStream/Winds/issues');
 					},
 					label: 'File Issue on GitHub',
 				},

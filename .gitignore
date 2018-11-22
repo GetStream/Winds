@@ -100,6 +100,7 @@ deploy.sh
 process_prod.json
 embedded.provisionprofile
 sign.js
+*.p12
 
 #IDE
 .vscode
