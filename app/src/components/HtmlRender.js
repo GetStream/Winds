@@ -162,13 +162,22 @@ class HtmlRender extends React.Component {
 		this.restoreSelection();
 		const node = rangy.getSelection().focusNode.parentElement;
 		const highlight = this.getHighlightObj(node);
+		const charRange = rangy
+			.getSelection()
+			.getRangeAt(0)
+			.toCharacterRange(this.wrapper.current);
 
-		if (highlight && (this.state.highlighted || this.state.noteText))
+		if (
+			highlight &&
+			highlight.start <= charRange.start &&
+			this.state.isNote &&
+			(this.state.highlighted || this.state.noteText)
+		) {
 			updateNote(this.props.dispatch, highlight._id, this.state.noteText);
-		else {
+		} else {
 			const highlighted = this.highlighter.highlightSelection(
 				this.state.noteText ? 'highlight-note' : 'highlight',
-				{ containerElementId: 'feed-content' },
+				{ containerElementId: 'feed-content', exclusive: false },
 			);
 			if (!highlighted.length) return this.close();
 			const range = highlighted[0].characterRange;
