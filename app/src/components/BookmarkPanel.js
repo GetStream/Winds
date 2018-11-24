@@ -18,7 +18,9 @@ class BookmarkPanel extends React.Component {
 
 	render() {
 		let bookmarks = [];
-		const folderView = this.props.location.pathname.includes('folders');
+		const folderView =
+			this.props.location.pathname.includes('folders') ||
+			this.props.location.pathname.includes('tags');
 		const foldersFeed = this.props.foldersFeed;
 
 		if (this.props.type === 'article') bookmarks = this.props.articles;

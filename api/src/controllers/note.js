@@ -25,9 +25,32 @@ exports.post = async (req, res) => {
 		return res.status(422).json({ error: 'missing start|end offset' });
 	if (!data.article && !data.episode)
 		return res.status(422).json({ error: 'missing article||episode id' });
+	if (data.article && data.episode)
+		return res.status(422).json({ error: 'both article||episode id' });
+
+	const overlaps = await Note.find({
+		user: data.user,
+		article: data.article,
+		episode: data.episode,
+		$nor: [{ end: { $lte: data.start } }, { start: { $gte: data.end } }],
+	})
+		.sort({ start: 1 })
+		.lean();
+
+	const mergedNotes = overlaps.map((n) => n._id);
+
+	if (overlaps.length) {
+		for (const note of overlaps) {
+			if (note.start < data.start) data.start = note.start;
+			if (note.end > data.end) data.end = note.end;
+			if (note.text) data.text = data.text + '\n' + note.text;
+		}
+		await Note.deleteMany({ _id: { $in: mergedNotes } });
+	}
 
 	const note = await Note.create(data);
-	res.json(await Note.findById(note._id));
+	const noteJson = (await Note.findById(note._id)).toJSON();
+	res.json({ ...noteJson, mergedNotes });
 };
 
 exports.put = async (req, res) => {

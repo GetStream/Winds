@@ -3,9 +3,7 @@ import fetch from '../util/fetch';
 export const getNotes = (dispatch) => {
 	fetch('GET', '/notes')
 		.then(({ data }) => dispatch({ data, type: 'BATCH_UPDATE_NOTES' }))
-		.catch((err) => {
-			console.log(err); // eslint-disable-line no-console
-		});
+		.catch((err) => console.log(err)); // eslint-disable-line no-console
 };
 
 export const newNote = (dispatch, type, id, start, end, text, thenFn, catchFn) => {

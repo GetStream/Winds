@@ -242,12 +242,14 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'NEW_NOTE') {
 		let notes = { ...previousState.notes };
 
-		const id = action.data.article
-			? action.data.article._id
-			: action.data.episode._id;
+		const note = action.data;
+		const id = note.article ? note.article._id : note.episode._id;
 
 		if (!notes[id]) notes[id] = [];
-		notes[id].push(action.data);
+		if (note.mergedNotes.length)
+			notes[id] = notes[id].filter((n) => !note.mergedNotes.includes(n._id));
+
+		notes[id].push(note);
 
 		const notesOrder = generateNotesOrder(notes);
 
@@ -255,13 +257,12 @@ export default (previousState = {}, action) => {
 	} else if (action.type === 'UPDATE_NOTE') {
 		let notes = { ...previousState.notes };
 
-		const id = action.data.article
-			? action.data.article._id
-			: action.data.episode._id;
+		const note = action.data;
+		const id = note.article ? note.article._id : note.episode._id;
 
 		notes[id] = notes[id].map((n) => {
-			if (n._id !== action.data._id) return n;
-			return action.data;
+			if (n._id !== note._id) return n;
+			return note;
 		});
 
 		const notesOrder = generateNotesOrder(notes);
