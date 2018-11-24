@@ -5,8 +5,8 @@
 				"_id": "5bca58f5e4313757120cabc5",
 				"user": "5b0f306d8e147f10f16aceaf",
 				"article":  "5b0ad37226dc3db38194e5ec",
-				"start": 100,
-				"end": 280,
+				"start": 111,
+				"end": 333,
 				"text": "Some notes and comments",
 				"updatedAt": "2018-05-29T00:09:40.956Z",
 				"createdAt": "2018-05-29T00:09:40.956Z"
@@ -16,8 +16,8 @@
 				"user": "5b0f306d8e147f10f16aceaf",
 				"article":  "5b0ad37226dc3db38194e5ec",
 				"text": "Some notes and comments",
-				"start": 333,
-				"end": 444,
+				"start": 444,
+				"end": 555,
 				"updatedAt": "2018-05-29T00:09:40.956Z",
 				"createdAt": "2018-05-29T00:09:40.956Z"
 			},
@@ -26,8 +26,8 @@
 				"user": "5b0f306d8e147f10f16aceaf",
 				"episode": "5b0ad37626dc3db38194fa73",
 				"text": "",
-				"start":22,
-				"end":120,
+				"start": 666,
+				"end": 777,
 				"updatedAt": "2018-05-29T00:36:12.971Z",
 				"createdAt": "2018-05-29T00:36:12.971Z"
 			},
@@ -36,8 +36,8 @@
 				"user": "5b0f306d8e147f10f16ac9c8",
 				"episode": "5b0ad37626dc3db38194fa73",
 				"text": "Some notes and comments",
-				"start": 100,
-				"end": 280,
+				"start": 888,
+				"end": 999,
 				"updatedAt": "2018-06-29T00:36:12.971Z",
 				"createdAt": "2018-06-29T00:36:12.971Z"
 			}

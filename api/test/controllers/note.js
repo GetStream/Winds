@@ -64,7 +64,11 @@ describe('Note controller', () => {
 
 	describe('creating new notes', () => {
 		it('should create a new highlight', async () => {
-			const data = { start: 123, end: 222, article: String(note.article._id) };
+			const data = {
+				start: 11,
+				end: 22,
+				article: String(note.article._id),
+			};
 			const response = await withLogin(
 				request(api)
 					.post('/notes')
@@ -83,8 +87,8 @@ describe('Note controller', () => {
 
 		it('should create a new note', async () => {
 			const data = {
-				start: 123,
-				end: 222,
+				start: 33,
+				end: 44,
 				text: 'note',
 				article: String(note.article._id),
 			};
@@ -104,11 +108,88 @@ describe('Note controller', () => {
 			expect(response.body.article._id).to.be.equal(data.article);
 			expect(response.body.episode).to.be.undefined;
 		});
+
+		it('should create a new highlight and merge overlaps', async () => {
+			const data = {
+				start: 1,
+				end: 30,
+				text: '',
+				article: String(note.article._id),
+			};
+			const overlaps = await Note.find({
+				user: authedUser,
+				article: data.article,
+				$nor: [{ end: { $lte: data.start } }, { start: { $gte: data.end } }],
+			}).lean();
+
+			const response = await withLogin(
+				request(api)
+					.post('/notes')
+					.send(data),
+			);
+
+			for (const note of overlaps) {
+				if (note.start < data.start) data.start = note.start;
+				if (note.end > data.end) data.end = note.end;
+				if (note.text) data.text = data.text + '\n' + note.text;
+			}
+
+			expect(response).to.have.status(200);
+			expect(Object.keys(response.body)).to.include.members(keys);
+			expect(response.body.user).to.be.equal(authedUser);
+			expect(response.body.start).to.be.equal(data.start);
+			expect(response.body.end).to.be.equal(data.end);
+			expect(response.body.mergedNotes.sort()).to.deep.equal(
+				overlaps.map((n) => String(n._id)).sort(),
+			);
+			expect(response.body.text).to.be.equal(data.text);
+			expect(response.body.article._id).to.be.equal(data.article);
+			expect(response.body.episode).to.be.undefined;
+		});
+
+		it('should create a new note and merge overlaps', async () => {
+			const data = {
+				start: 22,
+				end: 44,
+				text: 'note',
+				article: String(note.article._id),
+			};
+
+			const overlaps = await Note.find({
+				user: authedUser,
+				article: data.article,
+				$nor: [{ end: { $lte: data.start } }, { start: { $gte: data.end } }],
+			}).lean();
+
+			const response = await withLogin(
+				request(api)
+					.post('/notes')
+					.send(data),
+			);
+
+			for (const note of overlaps) {
+				if (note.start < data.start) data.start = note.start;
+				if (note.end > data.end) data.end = note.end;
+				if (note.text) data.text = data.text + '\n' + note.text;
+			}
+
+			expect(response).to.have.status(200);
+			expect(Object.keys(response.body)).to.include.members(keys);
+			expect(response.body.user).to.be.equal(authedUser);
+			expect(response.body.start).to.be.equal(data.start);
+			expect(response.body.end).to.be.equal(data.end);
+			expect(response.body.mergedNotes.sort()).to.deep.equal(
+				overlaps.map((n) => String(n._id)).sort(),
+			);
+			expect(response.body.text).to.be.equal(data.text);
+			expect(response.body.article._id).to.be.equal(data.article);
+			expect(response.body.episode).to.be.undefined;
+		});
 	});
 
 	describe('updating existing notes', () => {
 		it('should update a note', async () => {
-			const data = { start: 300, end: 400, text: 'new text' };
+			const data = { text: 'new text' };
 
 			const response = await withLogin(
 				request(api)
@@ -119,8 +200,8 @@ describe('Note controller', () => {
 			expect(response).to.have.status(200);
 			expect(Object.keys(response.body)).to.include.members(keys);
 			expect(response.body.user).to.be.equal(authedUser);
-			expect(response.body.start).to.be.equal(data.start);
-			expect(response.body.end).to.be.equal(data.end);
+			expect(response.body.start).to.be.equal(note.start);
+			expect(response.body.end).to.be.equal(note.end);
 			expect(response.body.text).to.be.equal(data.text);
 			expect(response.body.article._id).to.be.equal(String(note.article._id));
 			expect(response.body.episode).to.be.undefined;
