@@ -129,20 +129,17 @@ FolderPanel.propTypes = {
 const mapStateToProps = (state) => {
 	if (!state.folders) return { folders: [] };
 
-	const folders = state.folders
-		.filter((folder) => folder.rss.length || folder.podcast.length)
-		.map((folder) => {
-			let feeds = [...folder.rss, ...folder.podcast];
-			if (state.aliases) {
-				feeds = feeds.map((feed) => {
-					if (state.aliases[feed._id])
-						feed.title = state.aliases[feed._id].alias;
-					return feed;
-				});
-			}
-			feeds.sort((a, b) => a.title.localeCompare(b.title));
-			return { ...folder, feeds };
-		});
+	const folders = state.folders.map((folder) => {
+		let feeds = [...folder.rss, ...folder.podcast];
+		if (state.aliases) {
+			feeds = feeds.map((feed) => {
+				if (state.aliases[feed._id]) feed.title = state.aliases[feed._id].alias;
+				return feed;
+			});
+		}
+		feeds.sort((a, b) => a.title.localeCompare(b.title));
+		return { ...folder, feeds };
+	});
 	return { folders };
 };
 

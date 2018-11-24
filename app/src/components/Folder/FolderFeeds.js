@@ -75,12 +75,12 @@ class FolderFeeds extends React.Component {
 
 		getFolderFeeds(folderID, params)
 			.then(({ data }) => {
-				if (data.length === 0) return this.setState({ reachedEndOfFeed: true });
-				this.setState(({ feeds }) => ({
-					feeds: newFeed ? data : [...feeds, ...data],
-					loading: false,
-					error: false,
-				}));
+				this.setState({ loading: false, error: false });
+				if (data.length === 0) this.setState({ reachedEndOfFeed: true });
+				else
+					this.setState(({ feeds }) => ({
+						feeds: newFeed ? data : [...feeds, ...data],
+					}));
 			})
 			.catch((err) => {
 				this.setState({ loading: false, error: true });
@@ -125,8 +125,7 @@ class FolderFeeds extends React.Component {
 					</div>
 				)}
 
-				{!this.state.error &&
-					!feeds.length && (
+				{!this.state.error && !feeds.length && (
 					<div className="end">
 						<p>We haven&#39;t found any feeds for this Folder yet :(</p>
 					</div>
@@ -134,13 +133,12 @@ class FolderFeeds extends React.Component {
 
 				{!!feeds.length && (
 					<>
-						{feeds.map(
-							(feed) =>
-								feed.type === 'articles' ? (
-									<ArticleListItem key={feed._id} {...feed} />
-								) : (
-									<EpisodeListItem key={feed._id} {...feed} />
-								),
+						{feeds.map((feed) =>
+							feed.type === 'articles' ? (
+								<ArticleListItem key={feed._id} {...feed} />
+							) : (
+								<EpisodeListItem key={feed._id} {...feed} />
+							),
 						)}
 
 						{this.state.reachedEndOfFeed ? (
