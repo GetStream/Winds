@@ -175,7 +175,7 @@ class Header extends Component {
 			<header className="header">
 				<div className="title">
 					<a href="https://getstream.io/?utm_source=Winds&utm_medium=Winds&utm_content=winds_homepage">
-						Winds 3.0 – Powered by GetStream.io
+						Winds {process.env.REACT_APP_VERSION} – Powered by GetStream.io
 					</a>
 				</div>
 				<div className="header-content">
