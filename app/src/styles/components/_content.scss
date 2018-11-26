@@ -1,3 +1,10 @@
+.feed-content-wrapper {
+	background-color: #FFFFFF;
+	border-radius: 6px;
+	box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.08);
+	margin-bottom: 1em;
+}
+
 .feed-content {
 	-webkit-app-region: no-drag;
 	margin: auto;
@@ -5,7 +12,7 @@
 	position: relative;
 
 	#feed-content {
-		padding: 0 40px 100px;
+		padding: 0 60px 100px;
 	}
 
 	h1 {
