@@ -4,8 +4,8 @@ import Img from 'react-image';
 
 import defaultLoader from '../images/loaders/default.svg';
 
-const Loader = ({ defualtLoader, radius }) =>
-	defualtLoader ? (
+const Loader = ({ defaultLoader, radius }) =>
+	defaultLoader ? (
 		<div className="loader">
 			<Img src={defaultLoader} />
 		</div>
@@ -14,12 +14,12 @@ const Loader = ({ defualtLoader, radius }) =>
 	);
 
 Loader.defaultProps = {
-	defualtLoader: true,
+	defaultLoader: true,
 	radius: 16,
 };
 
 Loader.propTypes = {
-	defualtLoader: PropTypes.bool,
+	defaultLoader: PropTypes.bool,
 	radius: PropTypes.number,
 };
 
