@@ -193,7 +193,7 @@ class RSSArticle extends React.Component {
 					type="article"
 					unpin={() => unpinArticle(pinID, article._id, this.props.dispatch)}
 				/>
-				<div className="content" ref={this.contentRef}>
+				<div className="content feed-content-wrapper" ref={this.contentRef}>
 					<div className="enclosures">
 						{article.enclosures &&
 							article.enclosures.map(
@@ -220,8 +220,7 @@ class RSSArticle extends React.Component {
 						/>
 					)}
 
-					{this.state.error &&
-						!this.state.loadingContent && (
+					{this.state.error && !this.state.loadingContent && (
 						<div>
 							<p>There was a problem loading this article :(</p>
 							<p>To read the article, head on over to:</p>

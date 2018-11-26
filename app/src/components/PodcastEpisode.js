@@ -148,7 +148,7 @@ class PodcastEpisode extends React.Component {
 					unpin={() => unpinEpisode(pinID, episode._id, this.props.dispatch)}
 				/>
 
-				<div className="content">
+				<div className="content feed-content-wrapper">
 					{!this.state.errorContent && this.state.loadingContent ? (
 						<Loader />
 					) : (
@@ -159,19 +159,18 @@ class PodcastEpisode extends React.Component {
 						/>
 					)}
 
-					{this.state.errorContent &&
-						!this.state.loadingContent && (
+					{this.state.errorContent && !this.state.loadingContent && (
 						<div>
 							<p>There was a problem loading this episode :(</p>
 							<p>
-									Please refresh the page or go to the{' '}
+								Please refresh the page or go to the{' '}
 								<Link
 									to={`/podcasts/${!!episode.podcast &&
-											episode.podcast._id}`}
+										episode.podcast._id}`}
 								>
-										Podcast page
+									Podcast page
 								</Link>{' '}
-									and play it from there!
+								and play it from there!
 							</p>
 						</div>
 					)}
