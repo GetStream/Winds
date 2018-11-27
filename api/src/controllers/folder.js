@@ -90,7 +90,6 @@ exports.post = async (req, res) => {
 	}
 
 	const folder = await Folder.create(data);
-	console.log(folder);
 	await streamFollowMany(folder);
 	res.json(await Folder.findById(folder._id));
 };
