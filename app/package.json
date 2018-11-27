@@ -61,7 +61,7 @@
     "react-router-dom": "^4.3.1",
     "react-waypoint": "^8.1.0",
     "redux": "^4.0.1",
-    "stream-analytics": "^2.7.1"
+    "stream-analytics": "^2.7.2"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",

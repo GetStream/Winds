@@ -246,7 +246,7 @@ export default (previousState = {}, action) => {
 		const id = note.article ? note.article._id : note.episode._id;
 
 		if (!notes[id]) notes[id] = [];
-		if (note.mergedNotes.length)
+		if (note.mergedNotes && note.mergedNotes.length)
 			notes[id] = notes[id].filter((n) => !note.mergedNotes.includes(n._id));
 
 		notes[id].push(note);
