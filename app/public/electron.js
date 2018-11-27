@@ -202,20 +202,12 @@ app.on('close', (event) => {
 });
 
 app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
-		app.quit();
-	} else {
-		mainWindow.hide();
-	}
+	app.quit();
 });
 
 app.on('activate', () => {
-	if (mainWindow === null) {
-		createWindow();
-	}
+	if (mainWindow === null) createWindow();
 });
-
-app.on('activate', createWindow);
 
 ipcMain.on('load-page', (event, arg) => {
 	mainWindow.loadURL(arg);
