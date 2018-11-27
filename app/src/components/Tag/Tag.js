@@ -95,7 +95,7 @@ class Tag extends React.Component {
 					>
 						<span>{tag.name}</span>
 						{this.state.submittingAdd === tag._id && (
-							<Loader defualtLoader={false} radius={20} />
+							<Loader defaultLoader={false} radius={20} />
 						)}
 					</div>
 				))}
@@ -112,7 +112,7 @@ class Tag extends React.Component {
 							type="text"
 						/>
 						{this.state.submittingNew ? (
-							<Loader defualtLoader={false} radius={20} />
+							<Loader defaultLoader={false} radius={20} />
 						) : (
 							<div className="green" onClick={this.handleNewSubmit}>
 								SAVE
@@ -148,7 +148,7 @@ class Tag extends React.Component {
 						<Link to={`/tags/${tag._id}`}>{tag.name}</Link>
 
 						{this.state.submittingRemove === tag._id ? (
-							<Loader defualtLoader={false} radius={10} />
+							<Loader defaultLoader={false} radius={10} />
 						) : (
 							<XIcon
 								className="clickable"

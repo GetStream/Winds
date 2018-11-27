@@ -105,7 +105,7 @@ class FolderPopover extends React.Component {
 				>
 					<div onClick={this.toggleFolderPopover}>
 						{this.state.loading ? (
-							<Loader defualtLoader={false} radius={18} />
+							<Loader defaultLoader={false} radius={18} />
 						) : (
 							<FolderIcon />
 						)}
