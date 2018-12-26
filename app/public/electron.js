@@ -47,6 +47,14 @@ const createWindow = () => {
 			mediaControls(event, args);
 		});
 	});
+
+	mainWindow.on('close', (event) => {
+		if (app.quitting) mainWindow = null;
+		else {
+			event.preventDefault();
+			mainWindow.hide();
+		}
+	});
 };
 
 const generateMenu = () => {
@@ -132,12 +140,24 @@ const generateMenu = () => {
 	);
 
 	template[3].submenu = [
-		{ role: 'close' },
-		{ role: 'minimize' },
+		{ role: 'reload' },
+		{ role: 'forcereload' },
+		{ role: 'toggleDevTools' },
+		{ type: 'separator' },
 		{ role: 'zoom' },
 		{ type: 'separator' },
 		{ role: 'front' },
 	];
+
+	template[4].submenu.push(
+		{ type: 'separator' },
+		{
+			label: 'Winds',
+			click() {
+				mainWindow.show();
+			},
+		},
+	);
 
 	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 };
@@ -196,18 +216,16 @@ app.on('ready', () => {
 	generateMenu();
 });
 
-app.on('close', (event) => {
-	event.preventDefault();
-	mainWindow.hide();
-});
-
 app.on('window-all-closed', () => {
-	app.quit();
+	if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', () => {
 	if (mainWindow === null) createWindow();
+	else mainWindow.show();
 });
+
+app.on('before-quit', () => (app.quitting = true));
 
 ipcMain.on('load-page', (event, arg) => {
 	mainWindow.loadURL(arg);

@@ -10,7 +10,7 @@
     "url": "https://github.com/getstream/winds/issues"
   },
   "homepage": "https://winds.getstream.io",
-  "main": "build/electron.js",
+  "main": "public/electron.js",
   "keywords": [
     "Winds",
     "RSS",
