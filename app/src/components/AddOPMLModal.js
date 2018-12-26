@@ -90,22 +90,30 @@ class AddOPMLModal extends React.Component {
 						<div className="expander-content">
 							<div className="input-box">
 								<Dropzone
-									className="dropzone"
 									onDrop={(file) => this.setState({ file: file[0] })}
 								>
-									{this.state.file ? (
-										<div>{this.state.file.name}</div>
-									) : (
-										<div className="dropzone-container">
-											<button
-												className="btn secondary"
-												type="button"
-											>
-												Select File
-											</button>
-											<span>or drag your file here</span>
-										</div>
-									)}
+									{({ getRootProps, getInputProps }) => {
+										return (
+											<div {...getRootProps()} className="dropzone">
+												<input {...getInputProps()} />
+												{this.state.file ? (
+													<div>{this.state.file.name}</div>
+												) : (
+													<div className="dropzone-container">
+														<button
+															className="btn secondary"
+															type="button"
+														>
+															Select File
+														</button>
+														<span>
+															or drag your file here
+														</span>
+													</div>
+												)}
+											</div>
+										);
+									}}
 								</Dropzone>
 							</div>
 							<div className="info">
