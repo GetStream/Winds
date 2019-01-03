@@ -28,6 +28,7 @@ const createWindow = () => {
 		},
 		height: 860,
 		width: 1280,
+		autoHideMenuBar: true
 	});
 
 	mainWindow.loadURL(
