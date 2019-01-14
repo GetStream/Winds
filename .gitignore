@@ -60,7 +60,8 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-# .env
+.env
+.env.*
 
 # System
 .DS_Store
@@ -91,9 +92,6 @@ dump.rdb
 
 # local mongo
 mongo-db
-
-# dotenv
-.env
 
 # Deployment Configurations
 deploy.sh
