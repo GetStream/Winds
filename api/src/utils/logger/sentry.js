@@ -12,7 +12,7 @@ const winstonLevelToSentryLevel = {
 /**
  * @param {Error} error
  */
-const errorHandler = error => {
+const errorHandler = (error) => {
 	console.log(error);
 };
 
@@ -25,7 +25,7 @@ let isError = function(e) {
  * @param {string} info.level
  * @return {{}}
  */
-const prepareMeta = info => {
+const prepareMeta = (info) => {
 	let msg = info.message;
 	let extra = Object.assign({}, info.extra || {});
 	let hasError = false;

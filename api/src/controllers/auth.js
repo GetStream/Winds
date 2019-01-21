@@ -87,7 +87,7 @@ exports.signup = async (req, res) => {
 
 	const whitelist = Object.assign(
 		{},
-		...['name', 'email', 'username', 'password', 'interests'].map(key => ({
+		...['name', 'email', 'username', 'password', 'interests'].map((key) => ({
 			[key]: data[key],
 		})),
 	);
@@ -105,7 +105,7 @@ exports.signup = async (req, res) => {
 		}
 	}
 
-	let followCommands = interestFollow.map(interest => {
+	let followCommands = interestFollow.map((interest) => {
 		return {
 			type: interest.type,
 			publicationID: interest._id,

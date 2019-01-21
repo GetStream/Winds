@@ -23,14 +23,14 @@ exports.list = async (req, res) => {
 		data = [];
 
 		const rss = await RSS.find({ featured: true });
-		rss.map(doc => {
+		rss.map((doc) => {
 			let r = doc.toObject();
 			r.type = 'rss';
 			data.push(r);
 		});
 
 		const podcasts = await Podcast.find({ featured: true });
-		podcasts.map(doc => {
+		podcasts.map((doc) => {
 			let p = doc.toObject();
 			p.type = 'podcast';
 			data.push(p);
@@ -40,9 +40,9 @@ exports.list = async (req, res) => {
 	}
 
 	let shuffled = data
-		.map(a => [Math.random(), a])
+		.map((a) => [Math.random(), a])
 		.sort((a, b) => a[0] - b[0])
-		.map(a => a[1]);
+		.map((a) => a[1]);
 
 	res.json(shuffled);
 };

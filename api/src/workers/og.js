@@ -75,7 +75,7 @@ export async function handleOg(job) {
 		// best effort at escaping urls found in the wild
 		if (!!job.data.urls) {
 			originalPayload.urls = job.data.urls;
-			job.data.urls = job.data.urls.map(u => ensureEncoded(u));
+			job.data.urls = job.data.urls.map((u) => ensureEncoded(u));
 		} else {
 			originalPayload.url = job.data.url;
 			job.data.url = ensureEncoded(job.data.url);
@@ -128,16 +128,16 @@ export async function handleOg(job) {
 
 		logger.debug(`found ${instances.length} to update with url ${url}`);
 
-		const needUpdate = instances.filter(i => !i.images.og || !i.canonicalUrl);
+		const needUpdate = instances.filter((i) => !i.images.og || !i.canonicalUrl);
 		if (!needUpdate.length && !update) {
-			for (const instance of instances.filter(i => !!i.images.og)) {
+			for (const instance of instances.filter((i) => !!i.images.og)) {
 				logger.debug(
 					`instance already has an image '${
 						instance.images.og
 					}': ${jobType} with lookup ${field}: '${url}'`,
 				);
 			}
-			for (const instance of instances.filter(i => !!i.canonicalUrl)) {
+			for (const instance of instances.filter((i) => !!i.canonicalUrl)) {
 				logger.debug(
 					`instance already has a canonical URL '${
 						instance.canonicalUrl

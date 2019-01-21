@@ -5,7 +5,7 @@ export async function IsPodcastStream(feedStream) {
 	let posts = await ReadFeedStream(feedStream);
 	let isPodcast = false;
 	if (posts) {
-		isPodcast = posts.slice(0, 10).every(post => {
+		isPodcast = posts.slice(0, 10).every((post) => {
 			return (
 				post.enclosures.length && post.enclosures[0].type.indexOf('audio') != -1
 			);

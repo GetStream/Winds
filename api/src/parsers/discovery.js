@@ -10,10 +10,10 @@ import logger from '../utils/logger';
 import { extractHostname } from '../utils/urls';
 
 /*
-* Based on the awesome work of rssfinder
-* https://github.com/ggkovacs/rss-finder
-* By @ggkovacs
-*/
+ * Based on the awesome work of rssfinder
+ * https://github.com/ggkovacs/rss-finder
+ * By @ggkovacs
+ */
 
 const rssMap = {
 	'application/rss+xml': 1,
@@ -44,7 +44,7 @@ function readRequestBody(stream, url) {
 		const strings = [];
 
 		stream
-			.on('response', response => {
+			.on('response', (response) => {
 				const contentLength = parseInt(response.headers['content-length'], 10);
 				if (contentLength > maxContentLengthBytes) {
 					stream.abort();
@@ -54,7 +54,7 @@ function readRequestBody(stream, url) {
 				}
 				res = response;
 			})
-			.on('data', data => {
+			.on('data', (data) => {
 				if (bodyLength + data.length <= maxContentLengthBytes) {
 					bodyLength += data.length;
 					if (!Buffer.isBuffer(data)) {

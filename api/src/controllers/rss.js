@@ -113,7 +113,7 @@ exports.post = async (req, res) => {
 	}
 
 	let promises = [];
-	insertedFeeds.map(f => {
+	insertedFeeds.map((f) => {
 		promises.push(search(f.searchDocument()));
 		let rssScrapingPromise = RssQueueAdd(
 			{
@@ -146,7 +146,7 @@ exports.post = async (req, res) => {
 
 	res.status(201);
 	res.json(
-		feeds.map(f => {
+		feeds.map((f) => {
 			return f.serialize();
 		}),
 	);

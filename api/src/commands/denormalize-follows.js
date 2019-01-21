@@ -41,7 +41,7 @@ async function main() {
 	}
 	// update time
 	for (let group of Object.values(grouped)) {
-		let publicationIDs = group.map(c => {
+		let publicationIDs = group.map((c) => {
 			return c.publicationID;
 		});
 		let schema = group[0].type == 'rss' ? RSS : Podcast;
@@ -80,9 +80,9 @@ async function main() {
 }
 
 main()
-	.then(result => {
+	.then((result) => {
 		logger.info('completed it all, open the test page to see queue status');
 	})
-	.catch(err => {
+	.catch((err) => {
 		logger.info(`failed with err ${err}`, { err });
 	});

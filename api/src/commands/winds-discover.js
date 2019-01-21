@@ -39,7 +39,7 @@ main()
 		console.info('done');
 		process.exit(0);
 	})
-	.catch(err => {
+	.catch((err) => {
 		console.info(`failed with err ${err}`);
 		process.exit(1);
 	});

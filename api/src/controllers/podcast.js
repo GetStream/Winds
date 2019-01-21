@@ -123,7 +123,7 @@ exports.post = async (req, res) => {
 	}
 
 	let promises = [];
-	insertedPodcasts.map(p => {
+	insertedPodcasts.map((p) => {
 		let scrapingPromise = PodcastQueueAdd(
 			{
 				podcast: p._id,
@@ -160,7 +160,7 @@ exports.post = async (req, res) => {
 	await Promise.all(promises);
 
 	res.status(200).json(
-		podcasts.map(p => {
+		podcasts.map((p) => {
 			return p.serialize();
 		}),
 	);

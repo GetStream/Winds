@@ -14,7 +14,7 @@ async function getContentFeed(req, res, type, model) {
 		.feed(`user_${type}`, req.params.userId)
 		.get({ limit, offset });
 
-	let articleIDs = response.results.map(r => {
+	let articleIDs = response.results.map((r) => {
 		return r.foreign_id.split(':')[1];
 	});
 

@@ -11,7 +11,7 @@ function isError(e) {
 	return e && e.stack && e.message;
 }
 
-const warnAboutWinston = format(info => {
+const warnAboutWinston = format((info) => {
 	if (isError(info)) {
 		console.log(
 			'You should use logger.error(err). Please use logger.error({err}) instead.',
@@ -21,7 +21,7 @@ const warnAboutWinston = format(info => {
 	return info;
 });
 
-const sillyWinstonConsoleFormatter = format.printf(info => {
+const sillyWinstonConsoleFormatter = format.printf((info) => {
 	let message = info.message;
 	if (isError(message)) {
 		message = `${message.stack}`;

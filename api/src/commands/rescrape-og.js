@@ -65,17 +65,17 @@ async function main() {
 				.lean();
 			completed += chunkSize;
 
-			const instances = chunk.filter(instance => {
+			const instances = chunk.filter((instance) => {
 				const missingImage = !instance.images || !instance.images.og;
 				return (missingImage || program.all) && instance[field];
 			});
-			const partitions = partitionBy(instances, i => i[feedIdField]);
-			const promises = partitions.map(partition => {
+			const partitions = partitionBy(instances, (i) => i[feedIdField]);
+			const promises = partitions.map((partition) => {
 				return OgQueueAdd(
 					{
 						type: contentType,
 						[feedField]: partition[0][feedIdField],
-						urls: partition.map(i => i[field]),
+						urls: partition.map((i) => i[field]),
 						update: true,
 					},
 					{ removeOnComplete: true, removeOnFail: true },
@@ -91,11 +91,11 @@ async function main() {
 }
 
 main()
-	.then(result => {
+	.then((result) => {
 		console.log('completed it all, open the test page to see queue status');
 		process.exit(0);
 	})
-	.catch(err => {
+	.catch((err) => {
 		console.log(`failed: ${err.stack}`);
 		process.exit(1);
 	});

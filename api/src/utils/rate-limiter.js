@@ -33,7 +33,7 @@ redis.defineCommand('rateLimit', {
 });
 
 function sleep(time) {
-	return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 export async function tick(userID, requestsPerDay = 3000) {

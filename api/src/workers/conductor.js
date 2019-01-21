@@ -28,7 +28,7 @@ function forever() {
 		.then(() => {
 			logger.info('Conductor iteration completed...');
 		})
-		.catch(err => {
+		.catch((err) => {
 			logger.error('Conductor broke down', { err });
 		});
 	timeout = setTimeout(forever, conductorInterval * 1000);
@@ -53,7 +53,7 @@ async function getPublications(
 	exclude = [],
 ) {
 	const busy = await getQueueFlagSetMembers(schema == RSS ? 'rss' : 'podcast');
-	const ids = busy.map(v => v.split(':')[0]);
+	const ids = busy.map((v) => v.split(':')[0]);
 	const time = moment()
 		.subtract(interval, 'minutes')
 		.toDate();
@@ -100,7 +100,7 @@ export async function conduct() {
 			100,
 			scrapeInterval,
 			limit,
-			popular.map(p => p._id),
+			popular.map((p) => p._id),
 		);
 		logger.info(
 			`found ${popular.length} popular publications of type ${type} that ` +
@@ -110,17 +110,17 @@ export async function conduct() {
 		const publications = popular.concat(other);
 
 		const updated = await Promise.all(
-			publications.map(p => tryAddToQueueFlagSet(type, type, p._id)),
+			publications.map((p) => tryAddToQueueFlagSet(type, type, p._id)),
 		);
 		logger.info(
 			`marked ${
-				updated.filter(u => !!u).length
+				updated.filter((u) => !!u).length
 			} of type ${type} publications as isParsing`,
 		);
 		logger.info(`conductor found ${publications.length} of type ${type} to scrape`);
-		const validPublications = publications.filter(p => isURL(p.feedUrl));
+		const validPublications = publications.filter((p) => isURL(p.feedUrl));
 		await Promise.all(
-			validPublications.map(publication => {
+			validPublications.map((publication) => {
 				const job = { [type]: publication._id, url: publication.feedUrl };
 				return enqueue(job, publicationOptions);
 			}),

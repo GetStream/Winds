@@ -19,7 +19,7 @@ export function isURL(url) {
 	} catch (e) {
 		logger.info(`normalization failed for url ${url}`);
 	}
-	let valid = variations.some(v => {
+	let valid = variations.some((v) => {
 		let ok = validator.isURL(v, {
 			allow_underscores: true,
 			allow_trailing_dot: true,

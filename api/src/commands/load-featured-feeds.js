@@ -28,7 +28,7 @@ program
 	.option('--task', 'Create a task on bull or not')
 	.parse(process.argv);
 
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
 	console.error(err);
 	process.exit(1);
 });
@@ -55,7 +55,7 @@ function main() {
 					loopCb();
 					return;
 				})
-				.then(feeds => {
+				.then((feeds) => {
 					if (!feeds.feedUrls.length) {
 						logger.warn(
 							`We couldn't find any feeds for that RSS feed URL :( ${
@@ -99,7 +99,7 @@ function main() {
 							);
 
 							promise
-								.then(rss => {
+								.then((rss) => {
 									if (rss.lastErrorObject.updatedExisting) {
 										cb(null, rss.value);
 									} else {
@@ -120,12 +120,12 @@ function main() {
 											.then(() => {
 												cb(null, rss.value);
 											})
-											.catch(err => {
+											.catch((err) => {
 												cb(err);
 											});
 									}
 								})
-								.catch(err => {
+								.catch((err) => {
 									logger.warn('broken', err);
 									cb(err);
 								});
@@ -152,11 +152,11 @@ function main() {
 			logger.info(`Now Handling Podcast ${featuredPodcast.name}`);
 
 			podcastFinder(normalizeUrl(featuredPodcast.feedUrl))
-				.catch(err => {
+				.catch((err) => {
 					logger.error(`podcastFinder broke ${featuredPodcast.feedUrl}`);
 					loopCb();
 				})
-				.then(feeds => {
+				.then((feeds) => {
 					if (!feeds || !feeds.feedUrls.length) {
 						logger.error(`no feeds found for ${featuredPodcast.feedUrl}`);
 						return loopCb();
@@ -205,7 +205,7 @@ function main() {
 										upsert: true,
 									},
 								)
-									.then(podcast => {
+									.then((podcast) => {
 										if (podcast.lastErrorObject.updatedExisting) {
 											cb(null, podcast.value);
 										} else {
@@ -249,12 +249,12 @@ function main() {
 														cb(null, podcast.value);
 													}
 												})
-												.catch(err => {
+												.catch((err) => {
 													cb(err);
 												});
 										}
 									})
-									.catch(err => {
+									.catch((err) => {
 										logger.error(
 											`Podcast parsing broke for ${feed.url}`,
 										);

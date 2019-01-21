@@ -109,7 +109,7 @@ exports.put = async (req, res) => {
 			'preferences',
 			'recoveryCode',
 			'active',
-		].map(key => ({
+		].map((key) => ({
 			[key]: data[key],
 		})),
 	);

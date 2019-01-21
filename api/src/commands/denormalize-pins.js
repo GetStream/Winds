@@ -73,9 +73,9 @@ async function main() {
 }
 
 main()
-	.then(result => {
+	.then((result) => {
 		logger.info('completed it all, open the test page to see queue status');
 	})
-	.catch(err => {
+	.catch((err) => {
 		logger.info(`failed with err ${err}`, { err });
 	});

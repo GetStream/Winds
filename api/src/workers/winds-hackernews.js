@@ -70,7 +70,7 @@ main()
 		console.info('done');
 		process.exit(0);
 	})
-	.catch(err => {
+	.catch((err) => {
 		console.info(`failed with err ${err.stack}`);
 		process.exit(1);
 	});

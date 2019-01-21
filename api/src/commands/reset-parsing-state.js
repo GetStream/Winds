@@ -33,6 +33,6 @@ main()
 	.then(() => {
 		logger.info('Finished reset for podcast and rss feeds');
 	})
-	.catch(err => {
+	.catch((err) => {
 		logger.error(`Something went wrong with the reset ${err}`);
 	});
