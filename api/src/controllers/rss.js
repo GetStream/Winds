@@ -42,18 +42,23 @@ exports.get = async (req, res) => {
 
 exports.post = async (req, res) => {
 	const data = req.body || {};
-	let normalizedUrl;
-	// TODO: refactor this url check in utitlies
-	try {
-		normalizedUrl = normalizeUrl(data.feedUrl);
-	} catch (e) {
-		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
-	}
-	if (!data.feedUrl || !isURL(normalizedUrl)) {
+
+	if (!data.feedUrl) {
 		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
 	}
 
-	let foundRSS = await discoverRSS(normalizeUrl(data.feedUrl));
+	let normalizedUrl;
+	try {
+		normalizedUrl = normalizeUrl(data.feedUrl, { stripWWW: false });
+	} catch (e) {
+		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
+	}
+
+	if (!isURL(normalizedUrl)) {
+		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
+	}
+
+	const foundRSS = await discoverRSS(normalizedUrl);
 
 	if (!foundRSS.feedUrls.length) {
 		return res
@@ -113,7 +118,7 @@ exports.post = async (req, res) => {
 	}
 
 	let promises = [];
-	insertedFeeds.map(f => {
+	insertedFeeds.map((f) => {
 		promises.push(search(f.searchDocument()));
 		let rssScrapingPromise = RssQueueAdd(
 			{
@@ -145,11 +150,7 @@ exports.post = async (req, res) => {
 	await Promise.all(promises);
 
 	res.status(201);
-	res.json(
-		feeds.map(f => {
-			return f.serialize();
-		}),
-	);
+	res.json(feeds.map((f) => f.serialize()));
 };
 
 exports.put = async (req, res) => {

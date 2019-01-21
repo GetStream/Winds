@@ -42,24 +42,28 @@ exports.get = async (req, res) => {
 };
 
 exports.post = async (req, res) => {
-	const data = Object.assign(req.body, { user: req.user.sub }) || {};
+	const data = req.body || {};
 
-	// todo refactor this check for validating partial urls like google.com
-	let url;
+	if (!data.feedUrl) {
+		return res.status(400).json({ error: 'Please provide a valid Podcast URL.' });
+	}
 
+	let normalizedUrl;
 	try {
-		url = normalizeUrl(data.feedUrl);
+		normalizedUrl = normalizeUrl(data.feedUrl, { stripWWW: false });
 	} catch (e) {
-		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
+		return res.status(400).json({ error: 'Please provide a valid Podcast URL.' });
 	}
 
-	if (!data.feedUrl || !isURL(url)) {
-		return res.status(400).json({ error: 'Please provide a valid podcast URL.' });
+	if (!isURL(normalizedUrl)) {
+		return res.status(400).json({ error: 'Please provide a valid Podcast URL.' });
 	}
 
-	let foundPodcasts = await discoverRSS(normalizeUrl(data.feedUrl));
+	let foundPodcasts = await discoverRSS(normalizedUrl);
 	if (!foundPodcasts.feedUrls.length) {
-		return res.status(404).json({ error: `Can't find any podcasts.` });
+		return res
+			.status(404)
+			.json({ error: "We couldn't find any episodes for that Podcast URL :(" });
 	}
 
 	let insertedPodcasts = [];
@@ -123,7 +127,7 @@ exports.post = async (req, res) => {
 	}
 
 	let promises = [];
-	insertedPodcasts.map(p => {
+	insertedPodcasts.map((p) => {
 		let scrapingPromise = PodcastQueueAdd(
 			{
 				podcast: p._id,
@@ -160,7 +164,7 @@ exports.post = async (req, res) => {
 	await Promise.all(promises);
 
 	res.status(200).json(
-		podcasts.map(p => {
+		podcasts.map((p) => {
 			return p.serialize();
 		}),
 	);
