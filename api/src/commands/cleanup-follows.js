@@ -62,9 +62,9 @@ async function main() {
 }
 
 main()
-	.then(result => {
+	.then((result) => {
 		logger.info('completed it all, we should now have a unique contraint');
 	})
-	.catch(err => {
+	.catch((err) => {
 		logger.info(`failed with err ${err}`, { err });
 	});

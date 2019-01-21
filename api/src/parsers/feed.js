@@ -63,7 +63,7 @@ export async function ParseFeed(feedURL, guidStability, limit = 1000) {
 }
 
 export function ComputeHash(post) {
-	const enclosureUrls = post.enclosures.map(e => e.url);
+	const enclosureUrls = post.enclosures.map((e) => e.url);
 	const enclosureString = enclosureUrls.join(',') || '';
 	//XXX: ignore post.content for now, it changes too often
 	const data = `${post.title}:${post.description}:${post.link}:${enclosureString}`;
@@ -75,8 +75,8 @@ export function ComputeHash(post) {
 export function ComputePublicationHash(posts, limit = 20) {
 	const fingerprints = posts
 		.slice(0, limit)
-		.filter(p => !!p.fingerprint)
-		.map(p => p.fingerprint);
+		.filter((p) => !!p.fingerprint)
+		.map((p) => p.fingerprint);
 	if (fingerprints.length != Math.min(posts.length, limit)) {
 		throw Error('Missing post fingerprints');
 	}
@@ -224,7 +224,7 @@ function sleep(time) {
 	if (time <= 0) {
 		return Promise.resolve();
 	}
-	return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 function checkHeaders(stream, url, checkContenType = false) {
@@ -238,7 +238,7 @@ function checkHeaders(stream, url, checkContenType = false) {
 		stream.pipe(dummy);
 
 		stream
-			.on('response', response => {
+			.on('response', (response) => {
 				if (checkContenType) {
 					const contentType = response.headers['content-type'];
 					if (
@@ -275,14 +275,14 @@ function checkHeaders(stream, url, checkContenType = false) {
 				if (inflater) {
 					dummy = dummy.pipe(inflater);
 				}
-				dummy.on('error', err => {
+				dummy.on('error', (err) => {
 					if (!resolved) {
 						reject(err);
 					}
 					stream.abort();
 				});
 			})
-			.on('error', err => {
+			.on('error', (err) => {
 				if (!resolved) {
 					reject(err);
 				} else {
@@ -290,7 +290,7 @@ function checkHeaders(stream, url, checkContenType = false) {
 				}
 				stream.abort();
 			})
-			.on('data', data => {
+			.on('data', (data) => {
 				resolved = true;
 				resolve(dummy);
 
@@ -359,7 +359,7 @@ export function ReadFeedStream(feedStream) {
 			const parser = new FeedParser();
 			let resolved = false;
 
-			feedStream.on('error', err => {
+			feedStream.on('error', (err) => {
 				if (!resolved) {
 					reject(err);
 				}
@@ -367,12 +367,12 @@ export function ReadFeedStream(feedStream) {
 			});
 
 			parser
-				.on('data', data => posts.push(data))
+				.on('data', (data) => posts.push(data))
 				.on('end', () => {
 					resolved = true;
 					resolve(posts);
 				})
-				.on('error', err => {
+				.on('error', (err) => {
 					if (!resolved) {
 						reject(err);
 					}

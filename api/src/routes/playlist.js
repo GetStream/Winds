@@ -1,7 +1,7 @@
 import Playlist from '../controllers/playlist';
 import { wrapAsync } from '../utils/controllers';
 
-module.exports = api => {
+module.exports = (api) => {
 	api.route('/playlists').get(wrapAsync(Playlist.list));
 	api.route('/playlists/:playlistId').get(wrapAsync(Playlist.get));
 	api.route('/playlists').post(wrapAsync(Playlist.post));

@@ -19,7 +19,7 @@ exports.list = async (req, res) => {
 		articles = await Article.apiQuery(req.query);
 	}
 
-	res.json(articles.filter(a => a.valid));
+	res.json(articles.filter((a) => a.valid));
 };
 
 exports.get = async (req, res) => {

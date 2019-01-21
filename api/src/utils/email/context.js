@@ -33,13 +33,15 @@ export async function dailyContextUser(user) {
 }
 
 function getRedirectUrl(url, id, userID, position) {
-	return getStreamClient().createRedirectUrl(url, userID, [{
-		content: id,
-		label: 'click',
-		user_data: userID,
-		location: 'email',
-		position,
-	}]);
+	return getStreamClient().createRedirectUrl(url, userID, [
+		{
+			content: id,
+			label: 'click',
+			user_data: userID,
+			location: 'email',
+			position,
+		},
+	]);
 }
 
 export async function weeklyContextUser(user) {
@@ -55,16 +57,28 @@ export async function weeklyContextUser(user) {
 
 		let position = 0;
 		for (const episode of episodes) {
-			episode.trackingUrl = getRedirectUrl(episode.getUrl(), `episode:${episode._id}`, user._id, ++position);
+			episode.trackingUrl = getRedirectUrl(
+				episode.getUrl(),
+				`episode:${episode._id}`,
+				user._id,
+				++position,
+			);
 		}
 		for (const article of articles) {
-			article.trackingUrl = getRedirectUrl(article.getUrl(), `article:${article._id}`, user._id, ++position);
+			article.trackingUrl = getRedirectUrl(
+				article.getUrl(),
+				`article:${article._id}`,
+				user._id,
+				++position,
+			);
 		}
 	} catch (e) {
 		logger.warn(`Content recommendations failed for ${userID}: ${e.stack}`);
 
 		if (e.request) {
-			logger.warn(`Failed with code ${e.response.status} for path ${e.request.path}`);
+			logger.warn(
+				`Failed with code ${e.response.status} for path ${e.request.path}`,
+			);
 		}
 	}
 

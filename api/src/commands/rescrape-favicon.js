@@ -98,9 +98,9 @@ async function main() {
 }
 
 main()
-	.then(result => {
+	.then((result) => {
 		logger.info('completed it all');
 	})
-	.catch(err => {
+	.catch((err) => {
 		logger.warn(`failed with err ${err}`);
 	});

@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 import User from '../models/user';
 
 import {
-    dailyContextGlobal,
-    dailyContextUser,
-    weeklyContextGlobal,
-    weeklyContextUser
+	dailyContextGlobal,
+	dailyContextUser,
+	weeklyContextGlobal,
+	weeklyContextUser,
 } from '../utils/email/context';
 import { CreateDailyEmail, CreateWeeklyEmail, SendEmail } from '../utils/email/send';
 
@@ -16,9 +16,10 @@ exports.list = async (req, res) => {
 
 async function createEmail(type, user) {
 	const create = { daily: CreateDailyEmail, weekly: CreateWeeklyEmail };
-	const context = { // storing as lambda to defer evaluation
-		daily: () => [ dailyContextGlobal(), dailyContextUser(user) ],
-		weekly: () => [ weeklyContextGlobal(), weeklyContextUser(user) ]
+	const context = {
+		// storing as lambda to defer evaluation
+		daily: () => [dailyContextGlobal(), dailyContextUser(user)],
+		weekly: () => [weeklyContextGlobal(), weeklyContextUser(user)],
 	};
 	const emailContext = await Promise.all(context[type]());
 	return create[type](Object.assign({}, ...emailContext));
@@ -61,4 +62,4 @@ exports.post = async (req, res) => {
 	const result = await SendEmail(email);
 
 	return res.status(200).json(result);
-}
+};

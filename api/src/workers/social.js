@@ -80,14 +80,14 @@ export async function handleSocial(job) {
 	}
 
 	const socialBatch = Article.collection.initializeUnorderedBulkOp();
-	const articles = job.data.articles.filter(a => !joi.validate(a, itemSchema).error);
+	const articles = job.data.articles.filter((a) => !joi.validate(a, itemSchema).error);
 	if (!articles.length) {
 		const errors = job.data.articles
-			.map(a => joi.validate(a, itemSchema))
-			.filter(r => !!r.error);
+			.map((a) => joi.validate(a, itemSchema))
+			.filter((r) => !!r.error);
 		logger.warn(
 			`No article passed validation: ${errors.map(
-				r => r.error.message,
+				(r) => r.error.message,
 			)} for '${JSON.stringify(job.data)}'`,
 		);
 		return;
@@ -98,7 +98,7 @@ export async function handleSocial(job) {
 	let updatingSocialScore = false;
 	await timeIt('winds.handle_social.update_social_score', () => {
 		return Promise.all(
-			articles.map(async article => {
+			articles.map(async (article) => {
 				const socialScore = await fetchSocialScore(article);
 				if (Object.keys(socialScore).length) {
 					updatingSocialScore = true;

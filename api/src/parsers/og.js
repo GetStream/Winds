@@ -13,7 +13,7 @@ export function IsValidOGUrl(url) {
 	if (!url) {
 		return false;
 	}
-	const invalid = invalidExtensions.some(extension => {
+	const invalid = invalidExtensions.some((extension) => {
 		if (url.endsWith(`.${extension}`)) {
 			return extension;
 		}
@@ -76,7 +76,7 @@ export function ParseOGStream(pageStream, pageURL) {
 
 	return new Promise((resolve, reject) => {
 		pageStream
-			.on('data', data => {
+			.on('data', (data) => {
 				const html = data.toString('utf8');
 				for (const extractor of [parseImage, parseCanonicalUrl]) {
 					result = Object.assign(result, extractor(html));

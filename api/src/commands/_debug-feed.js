@@ -89,10 +89,10 @@ export async function debugFeed(feedType, feedUrls) {
 
 				schema
 					.findOne(lookup)
-					.catch(err => {
+					.catch((err) => {
 						console.log('failed', err);
 					})
-					.then(instance => {
+					.then((instance) => {
 						let queuePromise;
 
 						if (!instance) {
@@ -140,7 +140,7 @@ export async function debugFeed(feedType, feedUrls) {
 									);
 								}
 							})
-							.catch(err => {
+							.catch((err) => {
 								logger.error('Failed to schedule task on og queue');
 							});
 					});

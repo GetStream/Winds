@@ -20,7 +20,7 @@ async function loadModel(Model) {
 	// XXX: enter Mongoose genius: { timeout: true } means disabling cursor timeouts
 	await Model.find({ followerCount: { $gte: 1 } }, {}, { timeout: true })
 		.cursor()
-		.eachAsync(async d => {
+		.eachAsync(async (d) => {
 			accumulatedDocs.push(d.searchDocument());
 			if (accumulatedDocs.length >= batchSize) {
 				await indexMany(accumulatedDocs);
@@ -47,7 +47,7 @@ main()
 		console.info('done');
 		process.exit(0);
 	})
-	.catch(err => {
+	.catch((err) => {
 		console.info(`failed with err ${err}`);
 		process.exit(1);
 	});

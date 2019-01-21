@@ -17,7 +17,7 @@ async function rehashModel(Model) {
 
 	await Model.find({}, { rss: 0 }, { timeout: true })
 		.cursor()
-		.eachAsync(async d => {
+		.eachAsync(async (d) => {
 			d.computeContentHash();
 			promises.push(d.save());
 			indexed += 1;
@@ -37,7 +37,7 @@ main()
 		console.info('done');
 		process.exit(0);
 	})
-	.catch(err => {
+	.catch((err) => {
 		console.info(`failed with err ${err}`);
 		process.exit(1);
 	});

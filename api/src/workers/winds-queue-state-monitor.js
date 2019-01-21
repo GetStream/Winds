@@ -14,8 +14,8 @@ function countLockTypes(pattern) {
 	return new Promise((resolve, reject) => {
 		const result = {};
 		const stream = redis.scanStream({ match: `${pattern}:*`, count: 100 });
-		stream.on('data', data => {
-			const types = data.map(key => key.split(':')[3]);
+		stream.on('data', (data) => {
+			const types = data.map((key) => key.split(':')[3]);
 			for (const type of types) {
 				result[type] = result[type] || 0;
 				result[type] += 1;
@@ -53,7 +53,7 @@ main()
 		console.info('done');
 		setTimeout(process.exit.bind(process, 0), 2000);
 	})
-	.catch(err => {
+	.catch((err) => {
 		console.info(`failed with err ${err.stack}`);
 		setTimeout(process.exit.bind(process, 1), 2000);
 	});

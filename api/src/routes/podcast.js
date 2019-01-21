@@ -2,7 +2,7 @@ import Podcast from '../controllers/podcast';
 import Episode from '../controllers/episode';
 import { wrapAsync } from '../utils/controllers';
 
-module.exports = api => {
+module.exports = (api) => {
 	api.route('/podcasts').get(wrapAsync(Podcast.list));
 	api.route('/podcasts/:podcastId').get(wrapAsync(Podcast.get));
 	api.route('/podcasts').post(wrapAsync(Podcast.post));

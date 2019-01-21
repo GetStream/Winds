@@ -38,7 +38,7 @@ const secondaryCheckDelay = 240000; // 4 minutes
 const statsd = getStatsDClient();
 
 function sleep(time) {
-	return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 export async function podcastProcessor(job) {
@@ -78,7 +78,7 @@ const chunkSize = 100;
 async function updateFeed(podcastID, update, episodes) {
 	for (let i = 0, j = episodes.length; i < j; i += chunkSize) {
 		const chunk = episodes.slice(i, i + chunkSize);
-		const streamEpisodes = chunk.map(episode => {
+		const streamEpisodes = chunk.map((episode) => {
 			return {
 				actor: podcastID,
 				foreign_id: `episodes:${episode._id}`,
@@ -88,7 +88,9 @@ async function updateFeed(podcastID, update, episodes) {
 			};
 		});
 
-		await timeIt('winds.handle_podcast.send_to_collections', () => update(streamEpisodes));
+		await timeIt('winds.handle_podcast.send_to_collections', () =>
+			update(streamEpisodes),
+		);
 	}
 }
 
@@ -226,10 +228,18 @@ export async function handlePodcast(job) {
 	const streamClient = getStreamClient();
 	const podcastFeed = streamClient.feed('podcast', podcastID);
 	if (operationMap.new.length) {
-		await updateFeed(podcastID, podcastFeed.addActivities.bind(podcastFeed), operationMap.new);
+		await updateFeed(
+			podcastID,
+			podcastFeed.addActivities.bind(podcastFeed),
+			operationMap.new,
+		);
 	}
 	if (operationMap.changed.length) {
-		await updateFeed(podcastID, streamClient.updateActivities.bind(streamClient), operationMap.changed);
+		await updateFeed(
+			podcastID,
+			streamClient.updateActivities.bind(streamClient),
+			operationMap.changed,
+		);
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
@@ -240,7 +250,7 @@ export async function handlePodcast(job) {
 				{
 					type: 'episode',
 					podcast: podcastID,
-					urls: updatedEpisodes.map(e => e.link),
+					urls: updatedEpisodes.map((e) => e.link),
 				},
 				queueOpts,
 			),
@@ -250,7 +260,7 @@ export async function handlePodcast(job) {
 	if (allowedLanguage) {
 		tasks.push(
 			StreamQueueAdd(
-				{ podcast: podcastID, contentIds: updatedEpisodes.map(e => e._id) },
+				{ podcast: podcastID, contentIds: updatedEpisodes.map((e) => e._id) },
 				queueOpts,
 			),
 		);

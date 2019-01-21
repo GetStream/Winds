@@ -38,7 +38,7 @@ const secondaryCheckDelay = 240000; // 4 minutes
 const statsd = getStatsDClient();
 
 function sleep(time) {
-	return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 export async function rssProcessor(job) {
@@ -81,7 +81,7 @@ async function updateFeed(rssID, update, articles) {
 	for (let offset = 0; offset < articles.length; offset += chunkSize) {
 		const limit = offset + chunkSize;
 		const chunk = articles.slice(offset, limit);
-		const streamArticles = chunk.map(article => {
+		const streamArticles = chunk.map((article) => {
 			return {
 				actor: rssID,
 				foreign_id: `articles:${article._id}`,
@@ -90,7 +90,9 @@ async function updateFeed(rssID, update, articles) {
 				verb: 'rss_article',
 			};
 		});
-		await timeIt('winds.handle_rss.send_to_collections', () => update(streamArticles));
+		await timeIt('winds.handle_rss.send_to_collections', () =>
+			update(streamArticles),
+		);
 	}
 }
 
@@ -201,7 +203,7 @@ export async function handleRSS(job) {
 	const operationMap = await upsertManyPosts(rssID, rssContent.articles, 'rss');
 	const updatedArticles = operationMap.new
 		.concat(operationMap.changed)
-		.filter(a => !!a.url);
+		.filter((a) => !!a.url);
 	logger.info(
 		`Finished updating. ${updatedArticles.length} out of ${
 			rssContent.articles.length
@@ -227,10 +229,18 @@ export async function handleRSS(job) {
 	const streamClient = getStreamClient();
 	const rssFeed = streamClient.feed('rss', rssID);
 	if (operationMap.new.length) {
-		await updateFeed(rssID, rssFeed.addActivities.bind(rssFeed), operationMap.new.filter(a => !!a.url));
+		await updateFeed(
+			rssID,
+			rssFeed.addActivities.bind(rssFeed),
+			operationMap.new.filter((a) => !!a.url),
+		);
 	}
 	if (operationMap.changed.length) {
-		await updateFeed(rssID, streamClient.updateActivities.bind(streamClient), operationMap.changed.filter(a => !!a.url));
+		await updateFeed(
+			rssID,
+			streamClient.updateActivities.bind(streamClient),
+			operationMap.changed.filter((a) => !!a.url),
+		);
 	}
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
@@ -240,7 +250,7 @@ export async function handleRSS(job) {
 			SocialQueueAdd(
 				{
 					rss: rssID,
-					articles: updatedArticles.map(a => ({
+					articles: updatedArticles.map((a) => ({
 						id: a._id,
 						link: a.link,
 						commentUrl: a.commentUrl,
@@ -253,7 +263,7 @@ export async function handleRSS(job) {
 	if (await tryCreateQueueFlag('og', 'rss', rssID)) {
 		tasks.push(
 			OgQueueAdd(
-				{ type: 'article', rss: rssID, urls: updatedArticles.map(a => a.url) },
+				{ type: 'article', rss: rssID, urls: updatedArticles.map((a) => a.url) },
 				queueOpts,
 			),
 		);
@@ -262,7 +272,7 @@ export async function handleRSS(job) {
 	if (allowedLanguage) {
 		tasks.push(
 			StreamQueueAdd(
-				{ rss: rssID, contentIds: updatedArticles.map(a => a._id) },
+				{ rss: rssID, contentIds: updatedArticles.map((a) => a._id) },
 				queueOpts,
 			),
 		);

@@ -33,7 +33,7 @@ exports.get = async (req, res) => {
 		title: `Subscriptions in Winds - Powered by ${config.product.author}`,
 	};
 
-	let outlines = follows.map(follow => {
+	let outlines = follows.map((follow) => {
 		let feed = follow.rss ? follow.rss : follow.podcast;
 		let feedType = follow.rss ? 'rss' : 'podcast';
 		let obj = {
@@ -111,17 +111,17 @@ async function getOrCreateManyPublications(feeds) {
 		return [];
 	}
 
-	const feedUrls = feeds.map(p => p.url);
+	const feedUrls = feeds.map((p) => p.url);
 	const instances = await feeds[0].schema.find({ feedUrl: { $in: feedUrls } });
 
-	const existingFeedUrls = new Set(instances.map(i => i.feedUrl));
-	const newPublications = feeds.filter(p => !existingFeedUrls.has(p.url));
+	const existingFeedUrls = new Set(instances.map((i) => i.feedUrl));
+	const newPublications = feeds.filter((p) => !existingFeedUrls.has(p.url));
 
 	if (!newPublications.length) {
 		return instances;
 	}
 
-	const newInstanceData = newPublications.map(p => {
+	const newInstanceData = newPublications.map((p) => {
 		const title = entities.decodeHTML(p.feed.title);
 		return {
 			categories: p.publicationType,
@@ -140,12 +140,15 @@ async function getOrCreateManyPublications(feeds) {
 
 	const queue =
 		feeds[0].publicationType.toLowerCase() == 'rss' ? RssQueueAdd : PodcastQueueAdd;
-	const queueData = newInstances.map(i => ({ [i.categories]: i._id, url: i.feedUrl }));
+	const queueData = newInstances.map((i) => ({
+		[i.categories]: i._id,
+		url: i.feedUrl,
+	}));
 
-	const enqueues = queueData.map(d =>
+	const enqueues = queueData.map((d) =>
 		queue(d, { priority: 1, removeOnComplete: true, removeOnFail: true }),
 	);
-	const indexing = newInstances.map(i => search(i.searchDocument()));
+	const indexing = newInstances.map((i) => search(i.searchDocument()));
 
 	await Promise.all(enqueues.concat(indexing));
 
@@ -187,7 +190,7 @@ exports.post = async (req, res) => {
 	}
 
 	const feedIdentities = await Promise.all(
-		feeds.map(async f => {
+		feeds.map(async (f) => {
 			try {
 				return { result: await identifyFeedType(f) };
 			} catch (err) {
@@ -196,15 +199,15 @@ exports.post = async (req, res) => {
 		}),
 	);
 
-	const failedFeeds = feedIdentities.filter(f => !!f.error);
-	const feedSchemas = feedIdentities.filter(f => !f.error).map(f => f.result);
+	const failedFeeds = feedIdentities.filter((f) => !!f.error);
+	const feedSchemas = feedIdentities.filter((f) => !f.error).map((f) => f.result);
 
 	feedSchemas.sort((lhs, rhs) =>
 		lhs.publicationType.localeCompare(rhs.publicationType),
 	);
 
 	//XXX: process podcasts first, then rss to allow bulk operations
-	const partitions = partitionBy(feedSchemas, p => p.schema);
+	const partitions = partitionBy(feedSchemas, (p) => p.schema);
 
 	let publications = [];
 	const chunkSize = 1000;
@@ -224,7 +227,7 @@ exports.post = async (req, res) => {
 
 		await rateLimit.tick(req.user.sub);
 
-		const followInstructions = chunk.map(p => ({
+		const followInstructions = chunk.map((p) => ({
 			type: p.categories.toLowerCase(),
 			userID: req.user.sub,
 			publicationID: p._id,
@@ -235,7 +238,7 @@ exports.post = async (req, res) => {
 		);
 	}
 
-	const errors = failedFeeds.map(f => ({ ...f, follow: {} }));
+	const errors = failedFeeds.map((f) => ({ ...f, follow: {} }));
 
 	return res.json(follows.concat(errors));
 };

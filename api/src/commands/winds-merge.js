@@ -9,10 +9,10 @@ import Article from '../models/article';
 import Episode from '../models/episode';
 
 function sleep(time) {
-	return new Promise(resolve => setTimeout(resolve, time));
+	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-process.on('unhandledRejection', error => console.error(error.message));
+process.on('unhandledRejection', (error) => console.error(error.message));
 
 const feedModels = {
 	rss: { feed: RSS, content: Article },
@@ -172,7 +172,7 @@ main()
 		console.log('\ndone');
 		process.exit(0);
 	})
-	.catch(err => {
+	.catch((err) => {
 		console.error(`\nfailed with err ${err.stack}`);
 		process.exit(1);
 	});

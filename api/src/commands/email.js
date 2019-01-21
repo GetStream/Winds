@@ -27,7 +27,7 @@ async function main() {
 	let globalContext = await weeklyContextGlobal();
 
 	let users = await User.find({});
-	let enabledUsers = users.filter(u => {
+	let enabledUsers = users.filter((u) => {
 		return u.weeklyEmail || u.admin;
 	});
 	logger.info(`going to email ${enabledUsers.length} users`);
@@ -44,9 +44,9 @@ async function main() {
 }
 
 main()
-	.then(result => {
+	.then((result) => {
 		logger.info('all done sending emails');
 	})
-	.catch(err => {
+	.catch((err) => {
 		logger.info(`failed with err ${err}`, { err });
 	});
