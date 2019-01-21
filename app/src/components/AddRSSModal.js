@@ -53,9 +53,12 @@ class AddRSSModal extends React.Component {
 					submitting: false,
 				});
 			})
-			.catch(() => {
+			.catch((err) => {
 				this.setState({
-					errorMessage: 'Oops, something went wrong. Please try again later.',
+					errorMessage:
+						err.response && err.response.data.error
+							? err.response.data.error
+							: 'Oops, something went wrong. Please try again later.',
 					errored: true,
 					submitting: false,
 				});
