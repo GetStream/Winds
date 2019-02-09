@@ -15,6 +15,7 @@ export const RSSSchema = new Schema(
 		url: {
 			type: String,
 			trim: true,
+			index: true,
 		},
 		canonicalUrl: {
 			type: String,

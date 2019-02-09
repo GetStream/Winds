@@ -164,6 +164,7 @@ ArticleSchema.plugin(autopopulate);
 
 ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
 ArticleSchema.index({ rss: 1, publicationDate: -1 });
+ArticleSchema.index({ publicationDate: -1 });
 
 ArticleSchema.methods.getUrl = function() {
 	return getUrl('article_detail', this.rss._id, this._id);
