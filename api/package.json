@@ -25,6 +25,9 @@
 		"Podcast",
 		"Podcast Player"
 	],
+	"engines": {
+        "node": "11.10.0"
+    },
 	"dependencies": {
 		"@postlight/mercury-parser": "^2.0.0",
 		"@sendgrid/mail": "^6.3.1",
