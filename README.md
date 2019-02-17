@@ -126,11 +126,9 @@ Commands:
 *   `brew install redis mongodb`
 *   `brew services start mongodb`
 *   `brew services start redis`
-*   `yarn global add babel-cli`
-*   `cd winds/api`
-*   `yarn`
-*   `cd ../app`
-*   `yarn`
+*   `cd Winds`
+*   `cd api && yarn`
+*   `cd ../app && yarn`
 
 
 Sign up for both Stream and Algolia, and create the following `.env` file in the `app` directory, replacing the keys where indicated:
