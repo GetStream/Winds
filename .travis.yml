@@ -1,14 +1,14 @@
 dist: xenial
 language: node_js
 node_js:
-  - "10"
+  - "11"
 services:
   - redis
   - mongodb
-cache: npm
+cache: yarn
 install:
-    - "cd api && npm install"
+    - "cd api && yarn install"
 script:
-    - "npm test"
+    - "yarn run test"
 after_success:
-    - "npm run coverage"
+    - "yarn run coverage"
