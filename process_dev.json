@@ -2,51 +2,51 @@
 	"apps": [
 		{
 			"name": "api",
-			"cwd": "api/src",
-			"interpreter": "babel-node",
-			"script": "./server.js",
+			"cwd": "api",
+			"exec_interpreter": "./node_modules/.bin/babel-node",
+			"script": "./src/server.js",
 			"watch": true
 		},
 		{
 			"name": "conductor",
-			"cwd": "api/src/workers",
-			"interpreter": "babel-node",
-			"script": "./conductor.js",
+			"cwd": "api",
+			"exec_interpreter": "./node_modules/.bin/babel-node",
+			"script": "./src/workers/conductor.js",
 			"watch": true
 		},
 		{
 			"name": "stream",
-			"cwd": "api/src/workers",
-			"interpreter": "babel-node",
-			"script": "./stream.js",
+			"cwd": "api",
+			"exec_interpreter": "./node_modules/.bin/babel-node",
+			"script": "./src/workers/stream.js",
 			"watch": true
 		},
 		{
 			"name": "social",
-			"cwd": "api/src/workers",
-			"interpreter": "babel-node",
-			"script": "./social.js",
+			"cwd": "api",
+			"exec_interpreter": "./node_modules/.bin/babel-node",
+			"script": "./src/workers/social.js",
 			"watch": true
 		},
 		{
 			"name": "rss",
-			"cwd": "api/src/workers",
-			"interpreter": "babel-node",
-			"script": "./rss.js",
+			"cwd": "api",
+			"exec_interpreter": "./node_modules/.bin/babel-node",
+			"script": "./src/workers/rss.js",
 			"watch": true
 		},
 		{
 			"name": "podcast",
-			"cwd": "api/src/workers",
-			"interpreter": "babel-node",
-			"script": "./podcast.js",
+			"cwd": "api",
+			"exec_interpreter": "./node_modules/.bin/babel-node",
+			"script": "./src/workers/podcast.js",
 			"watch": true
 		},
 		{
 			"name": "og",
-			"cwd": "api/src/workers",
-			"interpreter": "babel-node",
-			"script": "./og.js",
+			"cwd": "api",
+			"exec_interpreter": "./node_modules/.bin/babel-node",
+			"script": "./src/workers/og.js",
 			"watch": true
 		}
 	]
