@@ -1,14 +1,5 @@
-import request from 'request-promise-native';
-import config from '../config';
+import Mercury from '@postlight/mercury-parser';
 
 export async function ParseContent(url) {
-	return await request({
-		json: true,
-		uri: 'https://mercury.postlight.com/parser',
-		headers: {
-			'Content-Type': 'application/json',
-			'x-api-key': config.mercury.key,
-		},
-		qs: { url },
-	});
+	return await Mercury.parse(url);
 }

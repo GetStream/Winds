@@ -36,9 +36,6 @@ const _default = {
 	cache: {
 		uri: process.env.CACHE_URI,
 	},
-	mercury: {
-		key: process.env.MERCURY_KEY,
-	},
 	algolia: {
 		appId: process.env.REACT_APP_ALGOLIA_APP_ID,
 		writeKey: process.env.ALGOLIA_WRITE_KEY,

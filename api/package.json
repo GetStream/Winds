@@ -26,6 +26,7 @@
 		"Podcast Player"
 	],
 	"dependencies": {
+		"@postlight/mercury-parser": "^2.0.0",
 		"@sendgrid/mail": "^6.3.1",
 		"algoliasearch": "^3.30.0",
 		"bcryptjs": "^2.4.3",
@@ -107,7 +108,6 @@
 		"nock": "^10.0.1",
 		"nyc": "^13.0.1",
 		"prettier": "^1.14.3",
-		"prettierrc": "^0.0.0-5",
 		"redis": "^2.8.0",
 		"sinon": "^6.3.5",
 		"trace": "^3.1.0"

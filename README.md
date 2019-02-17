@@ -154,8 +154,6 @@ STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 REACT_APP_ALGOLIA_APP_ID=YOUR_ALGOLIA_APP_ID
 REACT_APP_ALGOLIA_SEARCH_KEY=YOUR_ALGOLIA_SEARCH_ONLY_API_KEY
 ALGOLIA_WRITE_KEY=YOUR_ALGOLIA_ADMIN_API_KEY
-
-MERCURY_KEY=YOUR_KEY_HERE
 ```
 
 > Note: If you are running the test suite, you will need to have a test version of the `.env` file inside of the `api/test` directory.
