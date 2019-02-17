@@ -32,13 +32,12 @@ class TagFeeds extends React.Component {
 		return (
 			<div className="list content">
 				{feeds.length ? (
-					feeds.map(
-						(feed) =>
-							feed.type === 'articles' ? (
-								<ArticleListItem key={feed._id} {...feed} />
-							) : (
-								<EpisodeListItem key={feed._id} {...feed} />
-							),
+					feeds.map((feed) =>
+						feed.type === 'articles' ? (
+							<ArticleListItem key={feed._id} {...feed} />
+						) : (
+							<EpisodeListItem key={feed._id} {...feed} />
+						),
 					)
 				) : (
 					<div className="end">

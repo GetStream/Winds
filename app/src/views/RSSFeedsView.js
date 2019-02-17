@@ -143,7 +143,7 @@ RSSFeedsView.propTypes = {
 		_id: PropTypes.string,
 		duplicateOf: PropTypes.string,
 		description: PropTypes.string,
-		featured: PropTypes.boolean,
+		featured: PropTypes.bool,
 		images: PropTypes.shape({
 			featured: PropTypes.string,
 		}),

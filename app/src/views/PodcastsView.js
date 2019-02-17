@@ -142,12 +142,12 @@ PodcastsView.propTypes = {
 	podcast: PropTypes.shape({
 		_id: PropTypes.string,
 		description: PropTypes.string,
-		featured: PropTypes.boolean,
+		featured: PropTypes.bool,
 		images: PropTypes.shape({
 			featured: PropTypes.string,
 		}),
 		summary: PropTypes.string,
-		title: PropTypes.title,
+		title: PropTypes.string,
 	}),
 	selectedPodcast: PropTypes.string,
 };
