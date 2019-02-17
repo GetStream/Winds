@@ -186,7 +186,7 @@ EpisodeSchema.methods.getParsedEpisode = async function() {
 			enclosures: this.enclosures,
 		});
 	} catch (e) {
-		throw new Error(`Mercury API call failed for ${url}: ${e.message}`);
+		throw new Error(`Mercury call failed for ${url}: ${e.message}`);
 	}
 };
 

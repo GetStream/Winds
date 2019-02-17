@@ -199,7 +199,7 @@ ArticleSchema.methods.getParsedArticle = async function() {
 			enclosures: this.enclosures,
 		});
 	} catch (e) {
-		throw new Error(`Mercury API call failed for ${this.url}: ${e.message}`);
+		throw new Error(`Mercury call failed for ${this.url}: ${e.message}`);
 	}
 };
 
