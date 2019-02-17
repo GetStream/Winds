@@ -4,6 +4,7 @@
 	"license": "BSD-3-Clause",
 	"scripts": {
 		"start": "cd dist && node server.js",
+		"build": "npx babel ./src --out-dir ./dist ",
 		"watch": "nodemon start",
 		"prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\"",
 		"test": "NODE_ENV=test node --max-old-space-size=16384 --optimize-for-size node_modules/nyc/bin/nyc.js node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\"",
@@ -26,8 +27,8 @@
 		"Podcast Player"
 	],
 	"engines": {
-        "node": "11.10.0"
-    },
+		"node": "11"
+	},
 	"dependencies": {
 		"@postlight/mercury-parser": "^2.0.0",
 		"@sendgrid/mail": "^6.3.1",
@@ -60,7 +61,7 @@
 		"md5": "^2.2.1",
 		"moment": "^2.22.2",
 		"mongodb": "^3.1.7",
-		"mongoose": "^5.3.14",
+		"mongoose": "^5.4.13",
 		"mongoose-autopopulate": "^0.8.1",
 		"mongoose-bcrypt": "^1.6.0",
 		"mongoose-string-query": "^0.2.5",
@@ -92,15 +93,13 @@
 		"zlib": "^1.0.5"
 	},
 	"devDependencies": {
-		"babel-cli": "^6.26.0",
-		"babel-core": "^6.26.3",
-		"babel-plugin-istanbul": "^4.1.6",
-		"babel-plugin-shebang": "^0.0.0",
-		"babel-plugin-transform-async-generator-functions": "^6.24.1",
-		"babel-plugin-transform-object-rest-spread": "^6.26.0",
-		"babel-polyfill": "^6.26.0",
-		"babel-preset-env": "^1.7.0",
-		"babel-register": "^6.26.0",
+		"@babel/cli": "^7.2.3",
+		"@babel/core": "^7.2.2",
+		"@babel/node": "^7.2.2",
+		"@babel/preset-env": "^7.3.1",
+		"@babel/register": "^7.0.0",
+		"babel-plugin-istanbul": "^5.1.0",
+		"babel-plugin-shebang": "^1.0.0",
 		"chai": "^4.2.0",
 		"chai-http": "^4.2.0",
 		"clarify": "^2.1.0",

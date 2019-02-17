@@ -1,17 +1,4 @@
 {
-	"plugins": [
-		"shebang",
-		"transform-async-generator-functions",
-		"transform-object-rest-spread"
-	],
-	"presets": [
-		[
-			"env",
-			{
-				"targets": {
-					"node": "current"
-				}
-			}
-		]
-	]
+	"plugins": [ "shebang"],
+	"presets": [["@babel/preset-env", { "targets": { "node": "current" } }]]
 }

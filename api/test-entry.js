@@ -1,17 +1,7 @@
-require('babel-register')({
-	presets: [
-		[
-			'env',
-			{
-				targets: {
-					node: 'current',
-				},
-			},
-		],
-	],
+require('@babel/register')({
+	presets: [['@babel/preset-env', { targets: { node: 'current' } }]],
 	plugins: [
 		'shebang',
-		'transform-async-generator-functions',
 		[
 			'istanbul',
 			{
