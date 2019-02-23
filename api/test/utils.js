@@ -68,14 +68,14 @@ export function getTestPage(name) {
 
 export async function loadFixture(...fixtures) {
 	const filters = {
-		Article: articles => {
+		Article: (articles) => {
 			for (const article of articles) {
 				article.enclosures = article.enclosures || [];
 			}
 			CreateFingerPrints(articles, 'STABLE');
 			return articles;
 		},
-		Episode: episodes => {
+		Episode: (episodes) => {
 			for (const episode of episodes) {
 				episode.enclosures = episode.enclosures || [];
 			}
@@ -89,7 +89,7 @@ export async function loadFixture(...fixtures) {
 
 		for (const models of batch) {
 			for (const modelName in models) {
-				const fixedData = models[modelName].map(data => {
+				const fixedData = models[modelName].map((data) => {
 					//XXX: cloning loaded json to enable filtering without thinking about module cache
 					data = Object.assign({}, data);
 					//XXX: convert things that look like ObjectID to actual ObjectID
@@ -105,7 +105,7 @@ export async function loadFixture(...fixtures) {
 					}
 					return data;
 				});
-				const filter = filters[modelName] || (x => x);
+				const filter = filters[modelName] || ((x) => x);
 				const filteredData = filter(fixedData);
 
 				const modulePath = `../src/models/${modelName.toLowerCase()}`;
@@ -116,7 +116,7 @@ export async function loadFixture(...fixtures) {
 				const cachedModule = require.cache[require.resolve(modulePath)];
 				const model = cachedModule ? cachedModule.exports : require(modulePath);
 				await Promise.all(
-					filteredData.map(f => {
+					filteredData.map((f) => {
 						return model.create(f);
 					}),
 				);

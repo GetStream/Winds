@@ -9,10 +9,7 @@ import asyncTasks from '../asyncTasks';
 import stream from 'getstream';
 import config from '../config';
 
-const streamClient = stream.connect(
-	config.stream.apiKey,
-	config.stream.apiSecret,
-);
+const streamClient = stream.connect(config.stream.apiKey, config.stream.apiSecret);
 
 program.parse(process.argv);
 

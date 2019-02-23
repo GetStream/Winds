@@ -5,17 +5,14 @@ import logger from '../logger';
 
 mongoose.Promise = global.Promise;
 
-const connection = mongoose.connect(
-	config.database.uri,
-	{
-		autoIndex: true,
-		reconnectTries: Number.MAX_VALUE,
-		reconnectInterval: 500,
-		poolSize: 50,
-		bufferMaxEntries: 0,
-		keepAlive: 120,
-	},
-);
+const connection = mongoose.connect(config.database.uri, {
+	autoIndex: true,
+	reconnectTries: Number.MAX_VALUE,
+	reconnectInterval: 500,
+	poolSize: 50,
+	bufferMaxEntries: 0,
+	keepAlive: 120,
+});
 
 connection
 	.then((db) => {
