@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import ArticleListItem from './ArticleListItem';
-import Waypoint from 'react-waypoint';
+import { Waypoint } from 'react-waypoint';
 import loaderIcon from '../images/loaders/default.svg';
 import Img from 'react-image';
 import { getFeed } from '../util/feeds';

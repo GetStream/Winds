@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Waypoint from 'react-waypoint';
+import { Waypoint } from 'react-waypoint';
 import { connect } from 'react-redux';
 
 import ArticleListItem from '../ArticleListItem';

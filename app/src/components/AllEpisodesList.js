@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Waypoint from 'react-waypoint';
+import { Waypoint } from 'react-waypoint';
 
 import EpisodeListItem from './EpisodeListItem';
 import { getFeed } from '../util/feeds';
