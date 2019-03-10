@@ -12,6 +12,7 @@ const connection = mongoose.connect(config.database.uri, {
 	poolSize: 50,
 	bufferMaxEntries: 0,
 	keepAlive: 120,
+	useNewUrlParser: true,
 });
 
 connection
