@@ -39,6 +39,7 @@ api.use(
 		path: [
 			'/',
 			'/health',
+			/\/bull*/,
 			'/email/weekly',
 			'/status',
 			'/queue',

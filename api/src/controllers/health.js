@@ -6,6 +6,7 @@ import moment from 'moment';
 import config from '../config';
 import { Throw } from '../utils/errors';
 import Queue from 'bull';
+import Arena from 'bull-arena';
 import logger from '../utils/logger';
 
 let version;
@@ -132,3 +133,33 @@ exports.sentryLog = async (req, res) => {
 
 	res.status(200).send('{}');
 };
+
+exports.bullArena = Arena({
+	queues: [
+		{
+			hostId: 'local',
+			name: 'rss',
+			url: config.cache.uri,
+		},
+		{
+			hostId: 'local',
+			name: 'podcast',
+			url: config.cache.uri,
+		},
+		{
+			hostId: 'local',
+			name: 'og',
+			url: config.cache.uri,
+		},
+		{
+			hostId: 'local',
+			name: 'social',
+			url: config.cache.uri,
+		},
+		{
+			hostId: 'local',
+			name: 'stream',
+			url: config.cache.uri,
+		},
+	],
+});
