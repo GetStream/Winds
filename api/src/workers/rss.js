@@ -14,7 +14,6 @@ import {
 	ShutDownRssQueue,
 	OgQueueAdd,
 	StreamQueueAdd,
-	SocialQueueAdd,
 } from '../asyncTasks';
 import { getStatsDClient, timeIt } from '../utils/statsd';
 import { getStreamClient } from '../utils/stream';
@@ -245,21 +244,7 @@ export async function handleRSS(job) {
 
 	const queueOpts = { removeOnComplete: true, removeOnFail: true };
 	const tasks = [];
-	if (await tryCreateQueueFlag('social', 'rss', rssID)) {
-		tasks.push(
-			SocialQueueAdd(
-				{
-					rss: rssID,
-					articles: updatedArticles.map((a) => ({
-						id: a._id,
-						link: a.link,
-						commentUrl: a.commentUrl,
-					})),
-				},
-				queueOpts,
-			),
-		);
-	}
+
 	if (await tryCreateQueueFlag('og', 'rss', rssID)) {
 		tasks.push(
 			OgQueueAdd(
