@@ -22,13 +22,6 @@
 			"watch": true
 		},
 		{
-			"name": "social",
-			"cwd": "src",
-			"exec_interpreter": "../node_modules/.bin/babel-node",
-			"script": "./workers/social.js",
-			"watch": true
-		},
-		{
 			"name": "rss",
 			"cwd": "src",
 			"exec_interpreter": "../node_modules/.bin/babel-node",
