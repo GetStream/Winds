@@ -22,7 +22,7 @@ UnauthedRoute.defaultProps = {
 };
 
 UnauthedRoute.propTypes = {
-	component: PropTypes.func,
+	component: PropTypes.elementType,
 };
 
 export default withRouter(UnauthedRoute);

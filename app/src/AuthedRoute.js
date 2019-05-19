@@ -40,7 +40,7 @@ AuthedRoute.defaultProps = {
 };
 
 AuthedRoute.propTypes = {
-	component: PropTypes.func,
+	component: PropTypes.elementType,
 	redirect: PropTypes.bool,
 	showLoader: PropTypes.bool,
 	user: PropTypes.shape({}),
