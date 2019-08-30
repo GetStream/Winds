@@ -1,3 +1,4 @@
+import config from '../config';
 import UserProfileSettingsDrawer from './UserProfileSettingsDrawer';
 import octocatDarkIcon from '../images/logos/octocat-dark.svg';
 import backIcon from '../images/icons/back.svg';
@@ -175,7 +176,7 @@ class Header extends Component {
 			<header className="header">
 				<div className="title">
 					<a href="https://getstream.io/?utm_source=Winds&utm_medium=Winds&utm_content=winds_homepage">
-						Winds {process.env.REACT_APP_VERSION} – Powered by GetStream.io
+						Winds {config.version} – Powered by GetStream.io
 					</a>
 				</div>
 				<div className="header-content">

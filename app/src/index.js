@@ -5,19 +5,17 @@ import Raven from 'raven-js';
 import stream from 'getstream';
 import StreamAnalytics from 'stream-analytics';
 
-Raven.config(process.env.REACT_APP_SENTRY_DSN, {
-	release: process.env.REACT_APP_VERSION,
+import config from './config';
+
+Raven.config(config.sentry, {
+	release: config.version,
 }).install();
 
-window.streamClient = stream.connect(
-	process.env.REACT_APP_STREAM_API_KEY,
-	null,
-	process.env.REACT_APP_STREAM_APP_ID,
-);
+window.streamClient = stream.connect(config.stream.apiKey, null, config.stream.appID);
 
 window.streamAnalyticsClient = new StreamAnalytics({
-	apiKey: process.env.REACT_APP_STREAM_API_KEY,
-	token: process.env.REACT_APP_STREAM_ANALYTICS,
+	apiKey: config.stream.apiKey,
+	token: config.stream.analyticsKey,
 });
 
 Raven.context(() => {

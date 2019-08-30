@@ -11,6 +11,8 @@ export default {
 	},
 	stream: {
 		appID: process.env.REACT_APP_STREAM_APP_ID,
+		apiKey: process.env.REACT_APP_STREAM_API_KEY,
+		analyticsKey: process.env.REACT_APP_STREAM_ANALYTICS,
 	},
 	social: {
 		reddit: {
@@ -21,4 +23,6 @@ export default {
 		},
 	},
 	url: process.env.BASE_URL,
+	version: process.env.REACT_APP_VERSION,
+	sentry: process.env.REACT_APP_SENTRY_DSN,
 };
