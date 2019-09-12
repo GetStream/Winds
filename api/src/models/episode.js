@@ -174,7 +174,8 @@ EpisodeSchema.methods.getParsedEpisode = async function() {
 
 		if (!title) return null;
 
-		const content = sanitize(parsed.content);
+		const sanitizedContent = sanitize(parsed.content);
+		const content = sanitizedContent != 'undefined' ? sanitizedContent : '<p></p>';
 		return await Content.create({
 			content,
 			title,
