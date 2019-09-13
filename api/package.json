@@ -50,7 +50,7 @@
 		"favicon": "^0.0.2",
 		"feedparser": "^2.2.9",
 		"franc-min": "^4.1.0",
-		"getstream": "^4.2.6",
+		"getstream": "^4.2.5",
 		"gravatar": "^1.8.0",
 		"inflate-auto": "^1.0.0",
 		"ioredis": "^4.11.1",

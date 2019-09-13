@@ -32,7 +32,7 @@
     "algoliasearch": "^3.33.0",
     "axios": "^0.19.0",
     "electron-updater": "^4.0.14",
-    "getstream": "^4.2.6",
+    "getstream": "^4.2.5",
     "history": "^4.9.0",
     "is-electron": "^2.2.0",
     "moment": "^2.24.0",
