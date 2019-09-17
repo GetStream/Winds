@@ -59,7 +59,7 @@ class HighlightMenu extends React.Component {
 	}
 }
 
-HighlightMenu.defualtProps = {
+HighlightMenu.defaultProps = {
 	active: false,
 };
 
