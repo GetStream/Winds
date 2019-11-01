@@ -57,7 +57,7 @@
 		"joi": "^13.7.0",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.24.0",
-		"mongoose": "^5.6.3",
+		"mongoose": "^5.7.5",
 		"mongoose-autopopulate": "^0.9.1",
 		"mongoose-bcrypt": "^1.6.0",
 		"mongoose-string-query": "^0.2.7",
