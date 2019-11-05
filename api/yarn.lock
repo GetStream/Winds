@@ -3525,10 +3525,10 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-getstream@^4.2.4:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/getstream/-/getstream-4.2.4.tgz#08b07032daeea1c1fc45a624f7017063d058d9a6"
-  integrity sha512-oEzzeCs7sMhn8bpw7Hey1XUS2+ha9feu7Jh6NLlT60p6eHr3o2cAiaEVTBnpM3lI2AJtKxJqGVCn/i9lsWfMVw==
+getstream@^4.2.5:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/getstream/-/getstream-4.3.0.tgz#f6783c3f1f26a7dad1e88782ca251156dd525389"
+  integrity sha512-sdiDMmo4Whr4pxl96V9wki7/zJEK7kxC+3/CMH3D0HX22B5FIRyFUt01XA++GUK2I253BNRgXSTLpH2aG+QqZQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@stream-io/cross-fetch" "^3.0.1"
@@ -4878,9 +4878,9 @@ lodash.merge@^4.4.0:
   integrity sha512-AOYza4+Hf5z1/0Hztxpm2/xiPZgi/cjMqdnKTUWTBSKchJlxXXuUSxCCl8rJlf4g6yww/j6mA8nC8Hw/EZWxKQ==
 
 lodash.mergewith@^4.6.1:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
-  integrity sha512-eWw5r+PYICtEBgrBE5hhlT6aAa75f411bgDz/ZL2KZqYV03USvucsxcHUIlGTDTECs1eunpI7HOV7U+WLDvNdQ==
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.2.tgz#617121f89ac55f59047c7aec1ccd6654c6590f55"
+  integrity sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==
 
 lodash.once@^4.0.0:
   version "4.1.1"
