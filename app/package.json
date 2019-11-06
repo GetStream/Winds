@@ -45,6 +45,7 @@
     "react-audio-player": "^0.11.1",
     "react-dom": "^16.11.0",
     "react-dropzone": "^10.1.10",
+    "react-hot-loader": "^4.12.15",
     "react-html-parser": "^2.0.2",
     "react-image": "^2.2.1",
     "react-modal": "^3.11.1",
