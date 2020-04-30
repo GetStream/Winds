@@ -3525,10 +3525,10 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-getstream@^4.2.4:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/getstream/-/getstream-4.2.4.tgz#08b07032daeea1c1fc45a624f7017063d058d9a6"
-  integrity sha512-oEzzeCs7sMhn8bpw7Hey1XUS2+ha9feu7Jh6NLlT60p6eHr3o2cAiaEVTBnpM3lI2AJtKxJqGVCn/i9lsWfMVw==
+getstream@^4.2.5:
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/getstream/-/getstream-4.5.1.tgz#5cf310eab73715a6ccfdb83e9cf4447abd27938a"
+  integrity sha512-mxvrG8tTF4rcoe/rZvdKl219SJba/zJt8bG2+B8RPB6z6MkCeGao07n3WUWEC4KRiz+RsrgF33SOEg3SKb5bfw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@stream-io/cross-fetch" "^3.0.1"
@@ -4446,9 +4446,9 @@ joi@^13.7.0:
     topo "3.x.x"
 
 jquery@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
-  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.0.tgz#9980b97d9e4194611c36530e7dc46a58d7340fc9"
+  integrity sha512-Xb7SVYMvygPxbFMpTFQiHh1J7HClEaThguL15N/Gg37Lri/qKyhRGZYzHRyLH8Stq3Aow0LsHO2O2ci86fCrNQ==
 
 js-levenshtein@^1.1.3:
   version "1.1.6"
