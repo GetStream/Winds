@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "web": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run build:add-custom-sw",
+    "build:add-custom-sw": "rm -f build/precache-manifest.*.js && rm -f build/service-worker.js && cp public/service-worker.js build/service-worker.js",
     "start": "concurrently \"yarn web\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
     "dist": "PUBLIC_URL=./ react-scripts build &&  electron-builder --mac --linux --win -p always",
@@ -65,6 +66,7 @@
     "electron-builder": "^22.1.0",
     "electron-publisher-s3": "^20.17.2",
     "prettier": "^1.18.2",
+    "serve": "^11.3.0",
     "stylelint": "^11.1.1",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
