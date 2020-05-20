@@ -27,7 +27,7 @@
 		"Podcast Player"
 	],
 	"engines": {
-		"node": ">=10"
+		"node": ">=13"
 	},
 	"dependencies": {
 		"@postlight/mercury-parser": "^2.1.1",
