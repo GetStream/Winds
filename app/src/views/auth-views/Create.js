@@ -106,8 +106,10 @@ class OnboardingGrid extends React.Component {
 									this.toggleInterest(interest.name);
 								}}
 								style={{
-									backgroundImage: `url(${interest.image ||
-										getPlaceholderImageURL(interest.name)})`,
+									backgroundImage: `url(${
+										interest.image ||
+										getPlaceholderImageURL(interest.name)
+									})`,
 								}}
 							>
 								<h1>{interest.name}</h1>

@@ -19,9 +19,7 @@ class RecentEpisodesPanel extends React.Component {
 					return (
 						<Link
 							key={episode._id}
-							to={`/podcasts/${episode.podcast._id}/episodes/${
-								episode._id
-							}`}
+							to={`/podcasts/${episode.podcast._id}/episodes/${episode._id}`}
 						>
 							<Img
 								loader={<div className="placeholder" />}

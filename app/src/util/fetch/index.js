@@ -12,7 +12,7 @@ const fetch = (method, path, data, params, headers) => {
 		data: data || {},
 		params: params || {},
 		headers: {
-			'Authorization': `Bearer ${localStorage['jwt']}`,
+			Authorization: `Bearer ${localStorage['jwt']}`,
 			'Content-Type': 'application/json',
 			...headers,
 		},

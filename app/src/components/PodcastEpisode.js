@@ -102,7 +102,7 @@ class PodcastEpisode extends React.Component {
 		if (isElectron()) {
 			window.ipcRenderer.send('open-external-window', shareUrl);
 		} else {
-			const getWindowOptions = function() {
+			const getWindowOptions = function () {
 				const width = 500;
 				const height = 350;
 				const left = window.innerWidth / 2 - width / 2;
@@ -165,8 +165,9 @@ class PodcastEpisode extends React.Component {
 							<p>
 								Please refresh the page or go to the{' '}
 								<Link
-									to={`/podcasts/${!!episode.podcast &&
-										episode.podcast._id}`}
+									to={`/podcasts/${
+										!!episode.podcast && episode.podcast._id
+									}`}
 								>
 									Podcast page
 								</Link>{' '}
@@ -220,7 +221,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(PodcastEpisode);
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastEpisode);

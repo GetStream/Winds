@@ -16,8 +16,9 @@ class SimpleProgressBar extends React.Component {
 					<div
 						className="progress"
 						style={{
-							width: `${(this.props.currentTime / this.props.duration) *
-								100}%`,
+							width: `${
+								(this.props.currentTime / this.props.duration) * 100
+							}%`,
 						}}
 					/>
 					<div className="background" />

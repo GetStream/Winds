@@ -59,9 +59,7 @@ class RSSFeedsView extends React.Component {
 							<div
 								className="hero-card"
 								style={{
-									backgroundImage: `linear-gradient(to top, black, transparent), url(${
-										this.props.rssFeed.images.featured
-									})`,
+									backgroundImage: `linear-gradient(to top, black, transparent), url(${this.props.rssFeed.images.featured})`,
 								}}
 							>
 								<h1>{this.props.rssFeed.title}</h1>

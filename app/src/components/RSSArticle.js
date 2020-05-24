@@ -108,7 +108,7 @@ class RSSArticle extends React.Component {
 		if (isElectron()) {
 			window.ipcRenderer.send('open-external-window', shareUrl);
 		} else {
-			const getWindowOptions = function() {
+			const getWindowOptions = function () {
 				const width = 500;
 				const height = 350;
 				const left = window.innerWidth / 2 - width / 2;

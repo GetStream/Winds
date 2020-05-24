@@ -286,11 +286,11 @@ function generateNotesOrder(notes, sorted = false) {
 	const notesSorted = sorted
 		? [...notes]
 		: Object.values(notes)
-			.reduce((acc, n) => acc.concat(n), [])
-			.sort(
-				(a, b) =>
-					moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf(),
-			);
+				.reduce((acc, n) => acc.concat(n), [])
+				.sort(
+					(a, b) =>
+						moment(b.updatedAt).valueOf() - moment(a.updatedAt).valueOf(),
+				);
 
 	return notesSorted
 		.map((n) => (n.article ? n.article._id : n.episode._id))

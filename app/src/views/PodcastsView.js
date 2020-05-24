@@ -59,9 +59,7 @@ class PodcastsView extends React.Component {
 							<div
 								className="hero-card"
 								style={{
-									backgroundImage: `linear-gradient(to top, black, transparent), url(${
-										this.props.podcast.images.featured
-									})`,
+									backgroundImage: `linear-gradient(to top, black, transparent), url(${this.props.podcast.images.featured})`,
 								}}
 							>
 								<h1>{this.props.podcast.title}</h1>

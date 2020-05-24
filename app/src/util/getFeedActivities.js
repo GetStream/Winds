@@ -10,7 +10,7 @@ const getFeedActivities = (feedID, jwt) => {
 		axios({
 			baseURL: config.api.url,
 			headers: {
-				'Authorization': `Bearer ${jwt}`,
+				Authorization: `Bearer ${jwt}`,
 				'Content-Type': 'application/json',
 			},
 			method: 'GET',

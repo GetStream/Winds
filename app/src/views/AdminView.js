@@ -130,9 +130,7 @@ class AdminView extends React.Component {
 							this.setState({ emailHTML: 'Loading' });
 							fetch(
 								'get',
-								`/email/${this.state.emailType}?user=${
-									this.state.userID
-								}`,
+								`/email/${this.state.emailType}?user=${this.state.userID}`,
 							).then((res) => {
 								this.setState({ emailHTML: res.data });
 							});
@@ -169,9 +167,7 @@ class AdminView extends React.Component {
 							onClick={() => {
 								fetch(
 									'post',
-									`/email/${this.state.emailType}?user=${
-										this.state.userID
-									}`,
+									`/email/${this.state.emailType}?user=${this.state.userID}`,
 								);
 							}}
 							type="button"

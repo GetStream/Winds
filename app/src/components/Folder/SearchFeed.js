@@ -108,8 +108,9 @@ class SearchFeed extends React.Component {
 							{this.state.results.length ? (
 								this.state.results.map((result, i) => (
 									<div
-										className={`panel-element ${this.state
-											.selectedIndex === i && 'selected'}`}
+										className={`panel-element ${
+											this.state.selectedIndex === i && 'selected'
+										}`}
 										key={result._id}
 										onClick={() => {
 											this.props.addFeed(result);

@@ -70,7 +70,7 @@ async function tryRedditAPI(path, retries = 3, backoffDelay = 20) {
 	const options = {
 		headers: {
 			'User-Agent': userAgent,
-			'Authorization': `bearer ${accessToken}`,
+			Authorization: `bearer ${accessToken}`,
 		},
 	};
 	let currentDelay = 0,

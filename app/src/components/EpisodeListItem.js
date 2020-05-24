@@ -112,7 +112,4 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(withRouter(EpisodeListItem));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EpisodeListItem));
