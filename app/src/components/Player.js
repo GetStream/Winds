@@ -71,9 +71,9 @@ class Player extends Component {
 			}).then((res) => {
 				if (res.data.length !== 0)
 					this.setInitialPlaybackTime(res.data[0].duration).then(() => {
-						this.audioPlayerElement.audioEl.play();
+						this.audioPlayerElement.audioEl.current.play();
 					});
-				else this.audioPlayerElement.audioEl.play();
+				else this.audioPlayerElement.audioEl.current.play();
 			});
 
 			window.streamAnalyticsClient.trackEngagement({
@@ -81,11 +81,11 @@ class Player extends Component {
 				content: { foreign_id: `episodes:${player.episodeID}` },
 			});
 		} else if (!prevProps.player.playing && player.playing) {
-			this.audioPlayerElement.audioEl.play();
+			this.audioPlayerElement.audioEl.current.play();
 			this.pushNotification(this.state.episodes[player.episodeID]);
 			this.mediaControl(true, this.state.episodes[player.episodeID]);
 		} else if (prevProps.player.playing && !player.playing) {
-			this.audioPlayerElement.audioEl.pause();
+			this.audioPlayerElement.audioEl.current.pause();
 			this.mediaControl(false, this.state.episodes[player.episodeID]);
 		}
 	}
@@ -120,10 +120,10 @@ class Player extends Component {
 
 			if (listen.data.length !== 0)
 				this.setInitialPlaybackTime(listen.data[0].duration).then(() => {
-					this.audioPlayerElement.audioEl.play();
+					this.audioPlayerElement.audioEl.current.play();
 					this.resetPlaybackSpeed();
 				});
-			else this.audioPlayerElement.audioEl.play();
+			else this.audioPlayerElement.audioEl.current.play();
 		} catch (err) {
 			console.log(err); // eslint-disable-line no-console
 		}
@@ -180,15 +180,17 @@ class Player extends Component {
 	};
 
 	skipAhead = () => {
-		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
-		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition + 30;
-		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
+		let currentPlaybackPosition = this.audioPlayerElement.audioEl.current.currentTime;
+		this.audioPlayerElement.audioEl.current.currentTime =
+			currentPlaybackPosition + 30;
+		this.updateProgress(this.audioPlayerElement.audioEl.current.currentTime);
 	};
 
 	skipBack = () => {
-		let currentPlaybackPosition = this.audioPlayerElement.audioEl.currentTime;
-		this.audioPlayerElement.audioEl.currentTime = currentPlaybackPosition - 30;
-		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
+		let currentPlaybackPosition = this.audioPlayerElement.audioEl.current.currentTime;
+		this.audioPlayerElement.audioEl.current.currentTime =
+			currentPlaybackPosition - 30;
+		this.updateProgress(this.audioPlayerElement.audioEl.current.currentTime);
 	};
 
 	cyclePlaybackSpeed = () => {
@@ -197,33 +199,33 @@ class Player extends Component {
 				this.playbackSpeedOptions.length
 		];
 		this.setState({ playbackSpeed: nextSpeed });
-		this.audioPlayerElement.audioEl.playbackRate = nextSpeed;
+		this.audioPlayerElement.audioEl.current.playbackRate = nextSpeed;
 	};
 
 	resetPlaybackSpeed = () => {
 		const resetSpeed = this.playbackSpeedOptions[0];
 		this.setState({ playbackSpeed: resetSpeed });
-		this.audioPlayerElement.audioEl.playbackRate = resetSpeed;
+		this.audioPlayerElement.audioEl.current.playbackRate = resetSpeed;
 	};
 
 	seekTo = (progress) => {
-		this.audioPlayerElement.audioEl.currentTime =
-			progress * this.audioPlayerElement.audioEl.duration;
-		this.updateProgress(this.audioPlayerElement.audioEl.currentTime);
+		this.audioPlayerElement.audioEl.current.currentTime =
+			progress * this.audioPlayerElement.audioEl.current.duration;
+		this.updateProgress(this.audioPlayerElement.audioEl.current.currentTime);
 	};
 
 	updateProgress = (seconds) => {
-		let progress = (seconds / this.audioPlayerElement.audioEl.duration) * 100;
+		let progress = (seconds / this.audioPlayerElement.audioEl.current.duration) * 100;
 		this.setState({
 			currentTime: seconds,
-			duration: this.audioPlayerElement.audioEl.duration,
+			duration: this.audioPlayerElement.audioEl.current.duration,
 			progress,
 		});
 	};
 
 	setInitialPlaybackTime = (currentTime) => {
 		return new Promise((resolve) => {
-			this.audioPlayerElement.audioEl.currentTime = currentTime;
+			this.audioPlayerElement.audioEl.current.currentTime = currentTime;
 			this.setState({ currentTime }, () => resolve());
 		});
 	};
@@ -338,7 +340,8 @@ class Player extends Component {
 
 						if (
 							!this.state.episodeListenAnalyticsEventSent *
-							(seconds / this.audioPlayerElement.audioEl.duration > 0.8)
+							(seconds / this.audioPlayerElement.audioEl.current.duration >
+								0.8)
 						) {
 							window.streamAnalyticsClient.trackEngagement({
 								label: 'episode_listen_complete',
@@ -352,7 +355,8 @@ class Player extends Component {
 						if (currentTime - this.lastSent >= 15000) {
 							this.lastSent = currentTime;
 							fetch('POST', '/listens', {
-								duration: this.audioPlayerElement.audioEl.currentTime,
+								duration: this.audioPlayerElement.audioEl.current
+									.currentTime,
 								episode: episode._id,
 							});
 						}
@@ -396,7 +400,4 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(Player);
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
