@@ -18,9 +18,7 @@ const connection = mongoose.connect(config.database.uri, {
 connection
 	.then((db) => {
 		logger.info(
-			`Successfully connected to ${config.database.uri} MongoDB cluster in ${
-				config.env
-			} mode.`,
+			`Successfully connected to ${config.database.uri} MongoDB cluster in ${config.env} mode.`,
 		);
 		return db;
 	})

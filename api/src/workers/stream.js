@@ -48,11 +48,7 @@ const schema = joi
 	.keys({
 		rss: joiObjectId,
 		podcast: joiObjectId,
-		contentIds: joi
-			.array()
-			.items(joiObjectId)
-			.min(1)
-			.required(),
+		contentIds: joi.array().items(joiObjectId).min(1).required(),
 	})
 	.xor('rss', 'podcast');
 

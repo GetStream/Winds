@@ -18,7 +18,7 @@ let ravenInstance;
 function sendSourceMaps(data) {
 	var stacktrace = data.exception && data.exception[0].stacktrace;
 	if (stacktrace && stacktrace.frames) {
-		stacktrace.frames.forEach(function(frame) {
+		stacktrace.frames.forEach(function (frame) {
 			if (
 				frame.filename.indexOf('/api/dist/') !== -1 &&
 				frame.filename.indexOf('/node_modules/') === -1
@@ -59,7 +59,7 @@ exports.setupExpressErrorHandler = (app) => {
 	if (config.sentry.dsn) {
 		app.use(ravenInstance.errorHandler());
 	}
-	app.use(function(err, req, res, next) {
+	app.use(function (err, req, res, next) {
 		var status =
 			err.status ||
 			err.statusCode ||

@@ -58,10 +58,7 @@ const schema = joi
 		update: joi.boolean().default(false),
 		rss: joiObjectId,
 		podcast: joiObjectId,
-		type: joi
-			.string()
-			.valid(validTypes)
-			.required(),
+		type: joi.string().valid(validTypes).required(),
 		url: joiUrl,
 		urls: joi.array().min(1),
 	})
@@ -132,16 +129,12 @@ export async function handleOg(job) {
 		if (!needUpdate.length && !update) {
 			for (const instance of instances.filter((i) => !!i.images.og)) {
 				logger.debug(
-					`instance already has an image '${
-						instance.images.og
-					}': ${jobType} with lookup ${field}: '${url}'`,
+					`instance already has an image '${instance.images.og}': ${jobType} with lookup ${field}: '${url}'`,
 				);
 			}
 			for (const instance of instances.filter((i) => !!i.canonicalUrl)) {
 				logger.debug(
-					`instance already has a canonical URL '${
-						instance.canonicalUrl
-					}': ${jobType} with lookup ${field}: '${url}'`,
+					`instance already has a canonical URL '${instance.canonicalUrl}': ${jobType} with lookup ${field}: '${url}'`,
 				);
 			}
 			continue;

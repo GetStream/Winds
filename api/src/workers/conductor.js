@@ -54,9 +54,7 @@ async function getPublications(
 ) {
 	const busy = await getQueueFlagSetMembers(schema == RSS ? 'rss' : 'podcast');
 	const ids = busy.map((v) => v.split(':')[0]);
-	const time = moment()
-		.subtract(interval, 'minutes')
-		.toDate();
+	const time = moment().subtract(interval, 'minutes').toDate();
 	return await schema
 		.find({
 			_id: { $nin: exclude.concat(ids) },

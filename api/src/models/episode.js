@@ -123,7 +123,7 @@ export const EpisodeSchema = new Schema(
 	{
 		collection: 'episodes',
 		toJSON: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -134,7 +134,7 @@ export const EpisodeSchema = new Schema(
 			},
 		},
 		toObject: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -158,11 +158,11 @@ EpisodeSchema.index({ podcast: 1, fingerprint: 1 }, { unique: true });
 EpisodeSchema.index({ podcast: 1, publicationDate: -1 });
 EpisodeSchema.index({ publicationDate: -1 });
 
-EpisodeSchema.methods.getUrl = function() {
+EpisodeSchema.methods.getUrl = function () {
 	return getUrl('episode_detail', this.podcast._id, this._id);
 };
 
-EpisodeSchema.methods.getParsedEpisode = async function() {
+EpisodeSchema.methods.getParsedEpisode = async function () {
 	const url = this.url;
 	const content = await Content.findOne({ url });
 	if (content) return content;

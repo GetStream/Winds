@@ -34,9 +34,7 @@ async function rescrapeFavicon(publicationType, instance) {
 		}
 	} catch (err) {
 		logger.warn(
-			`rescraping failed with error for url ${instance.url} with instance id ${
-				instance._id
-			}`,
+			`rescraping failed with error for url ${instance.url} with instance id ${instance._id}`,
 		);
 	}
 }

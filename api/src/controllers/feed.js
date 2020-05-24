@@ -33,9 +33,7 @@ async function getContentFeed(req, res, type, model) {
 
 		if (!article) {
 			logger.error(
-				`Failed to load article ${articleID} specified in feed user_${type}:${
-					req.params.userId
-				}`,
+				`Failed to load article ${articleID} specified in feed user_${type}:${req.params.userId}`,
 			);
 			continue;
 		}

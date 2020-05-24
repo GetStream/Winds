@@ -131,7 +131,7 @@ export const ArticleSchema = new Schema(
 		collection: 'articles',
 
 		toJSON: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -142,7 +142,7 @@ export const ArticleSchema = new Schema(
 			},
 		},
 		toObject: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -166,11 +166,11 @@ ArticleSchema.index({ rss: 1, fingerprint: 1 }, { unique: true });
 ArticleSchema.index({ rss: 1, publicationDate: -1 });
 ArticleSchema.index({ publicationDate: -1 });
 
-ArticleSchema.methods.getUrl = function() {
+ArticleSchema.methods.getUrl = function () {
 	return getUrl('article_detail', this.rss._id, this._id);
 };
 
-ArticleSchema.methods.getParsedArticle = async function() {
+ArticleSchema.methods.getParsedArticle = async function () {
 	const url = this.url;
 
 	const content = await Content.findOne({ url });

@@ -130,9 +130,7 @@ export async function debugFeed(feedType, feedUrls) {
 							.then(() => {
 								if (feedType === 'rss') {
 									logger.info(
-										`Scheduled RSS feed to the queue for parsing ${target} with id ${
-											instance._id
-										}`,
+										`Scheduled RSS feed to the queue for parsing ${target} with id ${instance._id}`,
 									);
 								} else {
 									logger.info(

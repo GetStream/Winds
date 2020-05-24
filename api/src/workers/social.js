@@ -35,10 +35,7 @@ const joiUrl = joi
 
 const schema = joi.object().keys({
 	rss: joiObjectId.required(),
-	articles: joi
-		.array()
-		.min(1)
-		.required(),
+	articles: joi.array().min(1).required(),
 });
 const itemSchema = joi.object().keys({
 	id: joiObjectId.required(),

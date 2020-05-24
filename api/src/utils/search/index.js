@@ -22,7 +22,7 @@ if (config.algolia.appId && config.algolia.writeKey && config.algolia.index) {
 		logger.info('Faking search indexing');
 	};
 
-	module.exports.indexMany = function() {
+	module.exports.indexMany = function () {
 		logger.info('Faking search indexing');
 	};
 }

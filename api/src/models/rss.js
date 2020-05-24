@@ -130,7 +130,7 @@ export const RSSSchema = new Schema(
 	{
 		collection: 'rss',
 		toJSON: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -143,7 +143,7 @@ export const RSSSchema = new Schema(
 			},
 		},
 		toObject: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -163,25 +163,25 @@ RSSSchema.plugin(timestamps, {
 	updatedAt: { index: true },
 });
 
-RSSSchema.statics.incrScrapeFailures = async function(id) {
+RSSSchema.statics.incrScrapeFailures = async function (id) {
 	await this.findOneAndUpdate(
 		{ _id: id },
 		{ $inc: { consecutiveScrapeFailures: 1 } },
 	).exec();
 };
 
-RSSSchema.statics.resetScrapeFailures = async function(id) {
+RSSSchema.statics.resetScrapeFailures = async function (id) {
 	await this.findOneAndUpdate(
 		{ _id: id },
 		{ $set: { consecutiveScrapeFailures: 0 } },
 	).exec();
 };
 
-RSSSchema.methods.getUrl = function() {
+RSSSchema.methods.getUrl = function () {
 	return getUrl('rss_detail', this._id);
 };
 
-RSSSchema.methods.searchDocument = function() {
+RSSSchema.methods.searchDocument = function () {
 	return {
 		_id: this._id,
 		objectID: this._id,
@@ -197,13 +197,11 @@ RSSSchema.methods.searchDocument = function() {
 
 RSSSchema.methods.serialize = function serialize() {
 	const serialized = this.toObject();
-	serialized.streamToken = getStreamClient()
-		.feed('rss', this._id)
-		.getReadOnlyToken();
+	serialized.streamToken = getStreamClient().feed('rss', this._id).getReadOnlyToken();
 	return serialized;
 };
 
-RSSSchema.statics.findFeatured = function() {
+RSSSchema.statics.findFeatured = function () {
 	const query = [
 		{ featured: true },
 		{ interest: 'UI/UX' },

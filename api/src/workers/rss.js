@@ -204,9 +204,7 @@ export async function handleRSS(job) {
 		.concat(operationMap.changed)
 		.filter((a) => !!a.url);
 	logger.info(
-		`Finished updating. ${updatedArticles.length} out of ${
-			rssContent.articles.length
-		} changed for RSS with ID ${rssID}`,
+		`Finished updating. ${updatedArticles.length} out of ${rssContent.articles.length} changed for RSS with ID ${rssID}`,
 	);
 
 	await RSS.update(

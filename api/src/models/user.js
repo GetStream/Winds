@@ -99,7 +99,7 @@ export const UserSchema = new Schema(
 	{
 		collection: 'users',
 		toJSON: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				delete ret.password;
 				if (ret.email) {
 					ret.gravatar = gravatar.url(ret.email, {
@@ -110,15 +110,13 @@ export const UserSchema = new Schema(
 				}
 				ret.streamTokens = {};
 				for (const k of ['timeline', 'user_article', 'user_episode']) {
-					let token = getStreamClient()
-						.feed(k, ret._id)
-						.getReadOnlyToken();
+					let token = getStreamClient().feed(k, ret._id).getReadOnlyToken();
 					ret.streamTokens[k] = token;
 				}
 			},
 		},
 		toObject: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				delete ret.password;
 				if (ret.email) {
 					ret.gravatar = gravatar.url(ret.email, {
@@ -129,9 +127,7 @@ export const UserSchema = new Schema(
 				}
 				ret.streamTokens = {};
 				for (const k of ['timeline', 'user_article', 'user_episode']) {
-					let token = getStreamClient()
-						.feed(k, ret._id)
-						.getReadOnlyToken();
+					let token = getStreamClient().feed(k, ret._id).getReadOnlyToken();
 					ret.streamTokens[k] = token;
 				}
 			},
@@ -139,7 +135,7 @@ export const UserSchema = new Schema(
 	},
 );
 
-UserSchema.post('remove', async function(user) {
+UserSchema.post('remove', async function (user) {
 	return await Promise.all([
 		PinSchema.remove({ user }),
 		PlaylistSchema.remove({ user }),
@@ -165,9 +161,7 @@ UserSchema.methods.serializeAuthenticatedUser = function serializeAuthenticatedU
 
 	let streamTokens = {};
 	for (const k of ['timeline', 'user_article', 'user_episode']) {
-		let token = getStreamClient()
-			.feed(k, user._id)
-			.getReadOnlyToken();
+		let token = getStreamClient().feed(k, user._id).getReadOnlyToken();
 		streamTokens[k] = token;
 	}
 

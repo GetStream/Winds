@@ -16,7 +16,7 @@ const errorHandler = (error) => {
 	console.log(error);
 };
 
-let isError = function(e) {
+let isError = function (e) {
 	return e && e.stack && e.message;
 };
 

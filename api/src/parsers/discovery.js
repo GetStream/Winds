@@ -129,7 +129,7 @@ export function discoverFromHTML(body) {
 
 	const parser = new HtmlParser(
 		{
-			onopentag: function(name, attr) {
+			onopentag: function (name, attr) {
 				if (name === 'link' && attr.type && attr.type.toLowerCase() in rssMap) {
 					feeds.push({
 						title: attr.title || null,
@@ -150,12 +150,12 @@ export function discoverFromHTML(body) {
 					isSiteTitle = true;
 				}
 			},
-			ontext: function(text) {
+			ontext: function (text) {
 				if (isSiteTitle) {
 					siteTitle = text;
 				}
 			},
-			onclosetag: function(name) {
+			onclosetag: function (name) {
 				if (name === 'title') {
 					isSiteTitle = false;
 				}
@@ -243,15 +243,15 @@ async function fixData(res, uri) {
 }
 
 export function discoverFromFeed(body) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function (resolve, reject) {
 		const feedParser = new FeedParser();
 
-		feedParser.on('error', function(err) {
+		feedParser.on('error', function (err) {
 			reject(err);
 		});
 
 		let feedMeta;
-		feedParser.on('readable', function() {
+		feedParser.on('readable', function () {
 			if (!feedMeta) {
 				feedMeta = this.meta;
 			}
@@ -259,7 +259,7 @@ export function discoverFromFeed(body) {
 
 		feedParser.write(body);
 
-		feedParser.end(function() {
+		feedParser.end(function () {
 			if (feedMeta) {
 				return resolve({
 					site: {

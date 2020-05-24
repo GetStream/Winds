@@ -20,10 +20,7 @@ async function main() {
 	let chunkSize = 500;
 
 	for (let i = 0, j = followCount; i < j; i += chunkSize) {
-		let follows = await Follow.find({})
-			.skip(i)
-			.limit(chunkSize)
-			.lean();
+		let follows = await Follow.find({}).skip(i).limit(chunkSize).lean();
 		logger.info(`found ${follows.length} follows`);
 		let feedRelations = [];
 		for (let f of follows) {

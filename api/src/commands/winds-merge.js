@@ -145,9 +145,7 @@ async function main() {
 							articlesSynced = true;
 						} catch (err) {
 							console.error(
-								`\n\terror processing content: ${
-									err.message
-								}\nresuming from ${lastId}`,
+								`\n\terror processing content: ${err.message}\nresuming from ${lastId}`,
 							);
 						}
 					}
@@ -158,9 +156,7 @@ async function main() {
 				feedsSynced = true;
 			} catch (err) {
 				console.error(
-					`\n\terror processing feed: ${
-						err.message
-					}\nresuming from ${lastFeedId}`,
+					`\n\terror processing feed: ${err.message}\nresuming from ${lastFeedId}`,
 				);
 			}
 		}

@@ -47,9 +47,7 @@ async function main() {
 		let schema = group[0].type == 'rss' ? RSS : Podcast;
 		let followerCount = group[0].followers;
 		logger.info(
-			`Starting update of ${publicationIDs.length} publications of type ${
-				group[0].type
-			} to count ${followerCount}`,
+			`Starting update of ${publicationIDs.length} publications of type ${group[0].type} to count ${followerCount}`,
 		);
 		let result = await schema.update(
 			{

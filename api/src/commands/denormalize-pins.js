@@ -54,9 +54,7 @@ async function main() {
 				data[postType] = newInstance._id;
 				let result = await Pin.updateOne({ _id: p._id }, data);
 				logger.info(
-					`found a new instance for ${p._id}: ${p.url} with id ${
-						newInstance._id
-					}`,
+					`found a new instance for ${p._id}: ${p.url} with id ${newInstance._id}`,
 				);
 				counts.normalized += 1;
 			} else {

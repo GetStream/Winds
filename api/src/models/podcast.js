@@ -123,7 +123,7 @@ export const PodcastSchema = new Schema(
 	{
 		collection: 'podcasts',
 		toJSON: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -136,7 +136,7 @@ export const PodcastSchema = new Schema(
 			},
 		},
 		toObject: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				// Frontend breaks if images is null, should be {} instead
 				if (!ret.images) {
 					ret.images = {};
@@ -161,21 +161,21 @@ PodcastSchema.plugin(timestamps, {
 
 PodcastSchema.plugin(mongooseStringQuery);
 
-PodcastSchema.statics.incrScrapeFailures = async function(id) {
+PodcastSchema.statics.incrScrapeFailures = async function (id) {
 	await this.findOneAndUpdate(
 		{ _id: id },
 		{ $inc: { consecutiveScrapeFailures: 1 } },
 	).exec();
 };
 
-PodcastSchema.statics.resetScrapeFailures = async function(id) {
+PodcastSchema.statics.resetScrapeFailures = async function (id) {
 	await this.findOneAndUpdate(
 		{ _id: id },
 		{ $set: { consecutiveScrapeFailures: 0 } },
 	).exec();
 };
 
-PodcastSchema.methods.searchDocument = function() {
+PodcastSchema.methods.searchDocument = function () {
 	return {
 		_id: this._id,
 		objectID: this._id,
@@ -189,7 +189,7 @@ PodcastSchema.methods.searchDocument = function() {
 	};
 };
 
-PodcastSchema.methods.getUrl = function() {
+PodcastSchema.methods.getUrl = function () {
 	return getUrl('podcast_detail', this._id);
 };
 
@@ -201,7 +201,7 @@ PodcastSchema.methods.serialize = function serialize() {
 	return serialized;
 };
 
-PodcastSchema.statics.findFeatured = function() {
+PodcastSchema.statics.findFeatured = function () {
 	const query = [
 		{ featured: true },
 		{ interest: 'UI/UX' },

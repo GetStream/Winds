@@ -76,16 +76,12 @@ exports.status = async (req, res) => {
 
 	if (output.rss.parsing > 2000) {
 		output.code = 500;
-		output.error = `There are too many RSS feeds currently parsing ${
-			output.rssCurrentlyParsing
-		}`;
+		output.error = `There are too many RSS feeds currently parsing ${output.rssCurrentlyParsing}`;
 	}
 
 	if (output.podcast.parsing > 500) {
 		output.code = 500;
-		output.error = `There are too many Podcast feeds currently parsing ${
-			output.podcastCurrentlyParsing
-		}`;
+		output.error = `There are too many Podcast feeds currently parsing ${output.podcastCurrentlyParsing}`;
 	}
 
 	res.status(output.code).json(output);
@@ -99,9 +95,7 @@ exports.queue = async (req, res) => {
 		output[key] = queueStatus;
 		if (queueStatus.waiting > 2500) {
 			output.code = 500;
-			output.error = `Queue ${key} has more than 2500 items waiting to be processed: ${
-				queueStatus.waiting
-			} are waiting`;
+			output.error = `Queue ${key} has more than 2500 items waiting to be processed: ${queueStatus.waiting} are waiting`;
 		}
 	}
 

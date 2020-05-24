@@ -48,7 +48,7 @@ function main() {
 			logger.info(`Now Handling RSS Feed ${featuredRSS.name}`);
 
 			rssFinder(normalizeUrl(featuredRSS.feedUrl))
-				.catch(function(err) {
+				.catch(function (err) {
 					logger.warn(
 						`RSS Finder broke ${featuredRSS.feedUrl} with err ${err}`,
 					);
@@ -58,9 +58,7 @@ function main() {
 				.then((feeds) => {
 					if (!feeds.feedUrls.length) {
 						logger.warn(
-							`We couldn't find any feeds for that RSS feed URL :( ${
-								featuredRSS.feedUrl
-							}`,
+							`We couldn't find any feeds for that RSS feed URL :( ${featuredRSS.feedUrl}`,
 						);
 						return loopCb();
 					}
@@ -140,7 +138,7 @@ function main() {
 					);
 				});
 		},
-		function() {
+		function () {
 			logger.info('Finished with Feeds');
 		},
 	);
@@ -167,7 +165,7 @@ function main() {
 						feeds.feedUrls.length,
 						(feed, cb) => {
 							// Get more metadata
-							ParsePodcast(feed.url, function(err, podcastContents) {
+							ParsePodcast(feed.url, function (err, podcastContents) {
 								let title, url, images, description;
 								if (podcastContents) {
 									title =
@@ -225,9 +223,7 @@ function main() {
 												})
 												.then(() => {
 													logger.info(
-														`api is scheduling ${
-															podcast.value.url
-														} for og scraping`,
+														`api is scheduling ${podcast.value.url} for og scraping`,
 													);
 													if (!podcast.value.images.og) {
 														asyncTasks
@@ -274,7 +270,7 @@ function main() {
 					);
 				});
 		},
-		function() {
+		function () {
 			logger.info('finished with podcasts');
 		},
 	);

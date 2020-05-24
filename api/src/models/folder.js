@@ -41,14 +41,14 @@ export const FolderSchema = new Schema(
 	{
 		collection: 'folders',
 		toJSON: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				ret.streamToken = getStreamClient()
 					.feed('folder', ret._id)
 					.getReadOnlyToken();
 			},
 		},
 		toObject: {
-			transform: function(doc, ret) {
+			transform: function (doc, ret) {
 				ret.streamToken = getStreamClient()
 					.feed('folder', ret._id)
 					.getReadOnlyToken();
