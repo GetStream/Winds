@@ -129,11 +129,10 @@ FollowSchema.statics.getOrCreateMany = async function getOrCreateMany(follows) {
 	const followInstances = await Promise.all(
 		follows.map(async (f) => {
 			const query = { [f.type]: f.publicationID, user: f.userID };
-			let instance = await this.findOne(query).lean();
-			if (!instance) {
-				instance = await this.create(query);
-			}
-			return instance;
+			return this.findOneAndUpdate(query, query, {
+				upsert: true,
+				new: true,
+			}).lean();
 		}),
 	);
 

@@ -1,12 +1,10 @@
 import request from 'request';
-import htmlparser from 'htmlparser2';
 import normalize from 'normalize-url';
-import rssFinder from 'rss-finder';
 import url from 'url';
 import FeedParser from 'feedparser';
 import { Buffer } from 'safe-buffer';
+import { Parser as HtmlParser } from 'htmlparser2';
 
-import logger from '../utils/logger';
 import { extractHostname } from '../utils/urls';
 
 /*
@@ -125,14 +123,11 @@ export async function discoverRSS(uri) {
 export function discoverFromHTML(body) {
 	let rs = {};
 	let feeds = [];
-	let parser;
-	let isFeeds;
 	let favicon;
 	let isSiteTitle;
 	let siteTitle;
-	let feedParser;
 
-	parser = new htmlparser.Parser(
+	const parser = new HtmlParser(
 		{
 			onopentag: function(name, attr) {
 				if (name === 'link' && attr.type && attr.type.toLowerCase() in rssMap) {
