@@ -3,6 +3,8 @@
 	"description": "https://getstream.io/winds",
 	"license": "BSD-3-Clause",
 	"scripts": {
+		"preinstall": "yarn global add pm2",
+		"postinstall": "yarn build",
 		"start": "cd dist && node server.js",
 		"build": "npx babel ./src --out-dir ./dist ",
 		"watch": "nodemon start",
