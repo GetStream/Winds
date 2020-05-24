@@ -10,7 +10,7 @@ import addIcon from '../images/icons/add.svg';
 import { Link, withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 import Avatar from './Avatar';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import PropTypes from 'prop-types';
 import SearchBar from './SearchBar';
 import { connect } from 'react-redux';

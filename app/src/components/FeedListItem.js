@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import { Link } from 'react-router-dom';
 
 import TimeAgo from './TimeAgo';

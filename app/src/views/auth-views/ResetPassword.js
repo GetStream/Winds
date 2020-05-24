@@ -1,6 +1,6 @@
 import { Link, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import axios from 'axios';
 import backArrow from '../../images/icons/back-arrow.svg';
 import lock from '../../images/icons/lock.svg';

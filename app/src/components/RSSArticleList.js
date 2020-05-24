@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Waypoint } from 'react-waypoint';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import Popover from 'react-popover';
 
 import fetch from '../util/fetch';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
-import Img from 'react-image';
+import { Img } from 'react-image';
 
 import { renameTag } from '../../api/tagAPI';
 import saveIcon from '../../images/icons/save.svg';

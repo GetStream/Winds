@@ -1,4 +1,4 @@
-import Img from 'react-image';
+import { Img } from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 

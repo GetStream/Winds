@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import Dropzone from 'react-dropzone';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 

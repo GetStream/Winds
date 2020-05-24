@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import getPlaceholderImageURL from '../../util/getPlaceholderImageURL';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';

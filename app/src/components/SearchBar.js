@@ -3,7 +3,7 @@ import algoliaLogo from '../images/logos/powered-by-algolia.svg';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Algolia from 'algoliasearch';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';

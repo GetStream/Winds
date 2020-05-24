@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Algolia from 'algoliasearch';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import { connect } from 'react-redux';
 
 import config from '../../config';

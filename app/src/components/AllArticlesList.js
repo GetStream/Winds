@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ArticleListItem from './ArticleListItem';
 import { Waypoint } from 'react-waypoint';
 import loaderIcon from '../images/loaders/default.svg';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import { getFeed } from '../util/feeds';
 
 class AllArticles extends React.Component {

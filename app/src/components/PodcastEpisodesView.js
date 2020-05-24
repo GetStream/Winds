@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import { Waypoint } from 'react-waypoint';
 import Popover from 'react-popover';
 import { connect } from 'react-redux';

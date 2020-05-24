@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import ReactAudioPlayer from 'react-audio-player';
 import Slider from 'rc-slider';
 import moment from 'moment';

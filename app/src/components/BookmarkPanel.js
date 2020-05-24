@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 

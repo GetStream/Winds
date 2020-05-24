@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import { connect } from 'react-redux';
 
 import fetch from '../util/fetch';

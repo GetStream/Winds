@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Tag from './Tag/Tag';
 import TimeAgo from './TimeAgo';
-import Img from 'react-image';
+import { Img } from 'react-image';
 import getPlaceholderImageURL from '../util/getPlaceholderImageURL';
 
 import { ReactComponent as LinkIcon } from '../images/icons/link.svg';
