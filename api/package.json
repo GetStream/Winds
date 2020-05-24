@@ -8,6 +8,7 @@
 		"start": "cd dist && node server.js",
 		"build": "npx babel ./src --out-dir ./dist ",
 		"watch": "nodemon start",
+		"dev": "pm2 start ecosystem.dev.config.js && pm2 log",
 		"prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\"",
 		"test": "NODE_ENV=test node --max-old-space-size=16384 --optimize-for-size node_modules/nyc/bin/nyc.js node_modules/mocha/bin/_mocha --timeout 15000 --require test-entry.js \"test/**/*.js\"",
 		"coverage": "NODE_ENV=test node_modules/nyc/bin/nyc.js report --reporter=text-lcov > coverage.lcov && node_modules/codecov/bin/codecov",
