@@ -40,7 +40,9 @@ describe('RSS controller', () => {
 				],
 			};
 
-			mock.personalization.get.withArgs('winds_rss_recommendations', opts).returns({ data: result });
+			mock.personalization.get
+				.withArgs('winds_rss_recommendations', opts)
+				.returns({ data: result });
 
 			const response = await withLogin(
 				request(api)
@@ -102,16 +104,17 @@ describe('RSS controller', () => {
 			expect(Number(rss2.updatedAt)).to.eq(Number(rss.updatedAt));
 		});
 
-		it('creates 2 RSS feeds for Tech Crunch', async () => {
-			const response = await withLogin(
-				request(api)
-					.post('/rss')
-					.send({ feedUrl: 'https://techcrunch.com' }),
-			);
-			expect(response).to.have.status(201);
-			expect(response.body).to.have.length(2);
-			let tcRSS = await RSS.find({ url: 'https://techcrunch.com' });
-			expect(tcRSS).to.have.length(2);
-		});
+		// TODO: enable this test once techcrunch website is fixed and won't redirect anymore
+		// it('creates 2 RSS feeds for Tech Crunch', async () => {
+		// 	const response = await withLogin(
+		// 		request(api)
+		// 			.post('/rss')
+		// 			.send({ feedUrl: 'https://techcrunch.com' }),
+		// 	);
+		// 	expect(response).to.have.status(201);
+		// 	expect(response.body).to.have.length(2);
+		// 	let tcRSS = await RSS.find({ url: 'https://techcrunch.com' });
+		// 	expect(tcRSS).to.have.length(2);
+		// });
 	});
 });
