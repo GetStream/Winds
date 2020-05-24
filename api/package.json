@@ -52,6 +52,7 @@
 		"franc-min": "^4.1.0",
 		"getstream": "^4.5.1",
 		"gravatar": "^1.8.0",
+		"htmlparser2": "^4.1.0",
 		"inflate-auto": "^1.0.0",
 		"ioredis": "^4.17.1",
 		"joi": "^13.7.0",
