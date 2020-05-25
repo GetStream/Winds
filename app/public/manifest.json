@@ -29,11 +29,10 @@
           "sizes": "512x512"
       }
   ],
-  "start_url": "/?source=pwa",
+  "start_url": "/?utm_source=pwa",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation":"portrait",
   "scope": "/",
   "theme_color": "#f7f7f7"
 }
-
