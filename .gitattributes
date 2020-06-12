@@ -1,0 +1,2 @@
+* linguist-vendored
+*.js linguist-vendored=false
