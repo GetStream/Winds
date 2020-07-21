@@ -96,7 +96,7 @@
 		"chai": "^4.2.0",
 		"chai-http": "^4.3.0",
 		"clarify": "^2.1.0",
-		"codecov": "^3.7.0",
+		"codecov": "^3.7.1",
 		"flatted": "^2.0.2",
 		"mocha": "^7.2.0",
 		"mock-require": "^3.0.3",
