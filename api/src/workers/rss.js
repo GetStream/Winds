@@ -21,6 +21,7 @@ import { startSampling } from '../utils/watchdog';
 import { upsertManyPosts } from '../utils/upsert';
 import { ensureEncoded } from '../utils/urls';
 import { tryCreateQueueFlag, removeFromQueueFlagSet } from '../utils/queue';
+import { isBlockedURLs } from '../utils/blockedURLs';
 
 if (require.main === module) {
 	EventEmitter.defaultMaxListeners = 128;
@@ -42,6 +43,12 @@ function sleep(time) {
 
 export async function rssProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
+
+	if (isBlockedURLs(job.data.url)) {
+		logger.info(`${job.data.url} is in block list and ignored.`);
+		return;
+	}
+
 	try {
 		await handleRSS(job);
 	} catch (err) {

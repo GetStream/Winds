@@ -7,6 +7,7 @@ import db from '../utils/db';
 import logger from '../utils/logger';
 import { startSampling } from '../utils/watchdog';
 import { removeQueueFlag } from '../utils/queue';
+import { isBlockedURLs } from '../utils/blockedURLs';
 import RSS from '../models/rss'; // eslint-disable-line
 import Podcast from '../models/podcast'; // eslint-disable-line
 import Article from '../models/article';
@@ -24,14 +25,20 @@ if (require.main === module) {
 }
 
 export async function ogProcessor(job) {
-	logger.info(`OG image scraping: ${job.data.url || job.data.urls}`);
+	const JobURL = job.data.url || job.data.urls;
+	logger.info(`OG image scraping: ${JobURL}`);
+
+	if (isBlockedURLs(JobURL)) {
+		logger.info(`${JobURL} is in block list and ignored.`);
+		return;
+	}
 
 	try {
 		await handleOg(job);
 	} catch (err) {
 		const tags = { queue: 'og' };
 		const extra = {
-			JobURL: job.data.url || job.data.urls,
+			JobURL,
 			JobType: job.data.type,
 		};
 		logger.error('OG job encountered an error', { err, tags, extra });

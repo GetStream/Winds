@@ -22,6 +22,7 @@ import { getStreamClient } from '../utils/stream';
 import { startSampling } from '../utils/watchdog';
 import { ensureEncoded } from '../utils/urls';
 import { getStatsDClient, timeIt } from '../utils/statsd';
+import { isBlockedURLs } from '../utils/blockedURLs';
 import { tryCreateQueueFlag, removeFromQueueFlagSet } from '../utils/queue';
 
 if (require.main === module) {
@@ -43,6 +44,12 @@ function sleep(time) {
 
 export async function podcastProcessor(job) {
 	logger.info(`Processing ${job.data.url}`);
+
+	if (isBlockedURLs(job.data.url)) {
+		logger.info(`${job.data.url} is in block list and ignored.`);
+		return;
+	}
+
 	try {
 		await handlePodcast(job);
 	} catch (err) {
