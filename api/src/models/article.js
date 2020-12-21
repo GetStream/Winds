@@ -6,6 +6,7 @@ import Content from './content';
 import { ParseContent } from '../parsers/content';
 import { getUrl } from '../utils/urls';
 import sanitize from '../utils/sanitize';
+import { isBlockedURLs } from '../utils/blockedURLs';
 
 import { EnclosureSchema } from './enclosure';
 
@@ -175,6 +176,10 @@ ArticleSchema.methods.getParsedArticle = async function () {
 
 	const content = await Content.findOne({ url });
 	if (content) return content;
+
+	if (isBlockedURLs(url)) {
+		throw new Error(`Blocked URL: ${this.url}`);
+	}
 
 	try {
 		const parsed = await ParseContent(url);
