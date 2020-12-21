@@ -13,6 +13,7 @@ import Follow from '../models/follow';
 import User from '../models/user';
 
 import config from '../config';
+import { isBlockedURLs } from '../utils/blockedURLs';
 import * as rateLimit from '../utils/rate-limiter';
 import { RssQueueAdd, PodcastQueueAdd } from '../asyncTasks';
 import { IsPodcastURL } from '../parsers/detect-type';
@@ -192,6 +193,9 @@ exports.post = async (req, res) => {
 	const feedIdentities = await Promise.all(
 		feeds.map(async (f) => {
 			try {
+				if (isBlockedURLs(feeds.feedUrl)) {
+					return { feedUrl: f.feedUrl, error: "this feed can't be added" };
+				}
 				return { result: await identifyFeedType(f) };
 			} catch (err) {
 				return { feedUrl: f.feedUrl, error: err.message };

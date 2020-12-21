@@ -8,6 +8,7 @@ import RSS from '../models/rss';
 import { discoverRSS } from '../parsers/discovery';
 
 import search from '../utils/search';
+import { isBlockedURLs } from '../utils/blockedURLs';
 import { isURL } from '../utils/validation';
 import { RssQueueAdd, OgQueueAdd } from '../asyncTasks';
 import { getRSSRecommendations } from '../utils/personalization';
@@ -51,6 +52,10 @@ exports.post = async (req, res) => {
 	}
 	if (!data.feedUrl || !isURL(normalizedUrl)) {
 		return res.status(400).json({ error: 'Please provide a valid RSS URL.' });
+	}
+
+	if (isBlockedURLs(data.feedUrl)) {
+		return res.status(400).json({ error: 'This feed can not be added.' });
 	}
 
 	let foundRSS = await discoverRSS(normalizeUrl(data.feedUrl));
