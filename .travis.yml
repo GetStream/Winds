@@ -1,7 +1,6 @@
 dist: xenial
 language: node_js
 node_js:
-  - "13"
   - "14"
 services:
   - redis
