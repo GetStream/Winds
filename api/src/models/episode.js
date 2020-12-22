@@ -78,7 +78,7 @@ export const EpisodeSchema = new Schema(
 		description: {
 			type: String,
 			trim: true,
-			maxLength: 240,
+			// maxLength: 240,
 			default: '',
 		},
 		images: {
