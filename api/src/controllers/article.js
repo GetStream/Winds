@@ -37,7 +37,13 @@ exports.get = async (req, res) => {
 	}
 
 	if (req.query && req.query.type === 'parsed') {
-		let parsed = await article.getParsedArticle();
+		let parsed;
+		try {
+			parsed = await article.getParsedArticle();
+		} catch (err) {
+			return res.status(400).json({ error: 'Failed to parse the article.' });
+		}
+
 		if (!parsed) {
 			return res.status(400).json({ error: 'Failed to parse the article.' });
 		}
