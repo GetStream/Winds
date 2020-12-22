@@ -78,7 +78,9 @@ function main() {
 								{
 									interest: featuredRSS.category,
 									categories: 'RSS',
-									description: entities.decodeHTML(feed.title),
+									description: (
+										entities.decodeHTML(feed.title) || ''
+									).substring(0, 240),
 									featured: false,
 									feedUrl: feed.url,
 									images: {
@@ -188,7 +190,10 @@ function main() {
 									{
 										interest: featuredPodcast.category,
 										categories: 'podcast',
-										description: description,
+										description: (description || '').substring(
+											0,
+											240,
+										),
 										featured: false,
 										feedUrl: feed.url,
 										images: images,

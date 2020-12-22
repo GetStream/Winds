@@ -92,7 +92,10 @@ exports.post = async (req, res) => {
 				{ feedUrl: feedUrl },
 				{
 					categories: 'RSS',
-					description: entities.decodeHTML(feed.title),
+					description: (entities.decodeHTML(feed.title) || '').substring(
+						0,
+						240,
+					),
 					feedUrl: feedUrl,
 					images: {
 						favicon: foundRSS.site.favicon,

@@ -60,7 +60,7 @@ export async function sendFeedToCollections(type, feed, content) {
 			id: feed.id,
 			title: feed.title,
 			language: feed.language,
-			description: feed.description,
+			description: (feed.description || '').substring(0, 240),
 			articleCount: content.length,
 			mostRecentPublicationDate,
 		},
@@ -80,7 +80,7 @@ export async function sendFeedToCollections(type, feed, content) {
 				title: source.title,
 				likes: source.likes,
 				socialScore: source.socialScore,
-				description: source.description,
+				description: (source.description || '').substring(0, 240),
 				publicationDate: source.publicationDate,
 				[type]: feed.id,
 			};

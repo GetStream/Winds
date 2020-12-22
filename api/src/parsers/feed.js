@@ -172,7 +172,7 @@ export function ParsePodcastPosts(domain, posts, guidStability, limit = 1000) {
 			moment(post.pubdate).toISOString() ||
 			moment().subtract(i, 'minutes').toISOString();
 		let episode = new Episode({
-			description: strip(post.description).substring(0, 280),
+			description: (strip(post.description) || '').substring(0, 240),
 			duration: post.duration,
 			guid: post.guid,
 			link: post.link,
@@ -417,7 +417,7 @@ export function ParseFeedPosts(domain, posts, guidStability, limit = 1000) {
 			const content = sanitize(post.summary);
 			article = new Article({
 				content: content,
-				description: description,
+				description: (description || '').substring(0, 240),
 				enclosures: post.enclosures,
 				fingerprint: post.fingerprint,
 				guid: post.guid,

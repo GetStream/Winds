@@ -123,10 +123,10 @@ async function getOrCreateManyPublications(feeds) {
 	}
 
 	const newInstanceData = newPublications.map((p) => {
-		const title = entities.decodeHTML(p.feed.title);
+		const title = entities.decodeHTML(p.feed.title) || '';
 		return {
 			categories: p.publicationType,
-			description: title,
+			description: title.substring(0, 240),
 			favicon: p.feed.favicon,
 			feedUrl: p.url,
 			lastScraped: moment().subtract(12, 'hours'),

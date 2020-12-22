@@ -98,7 +98,10 @@ async function main() {
 									title: source.title,
 									likes: source.likes,
 									socialScore: source.socialScore,
-									description: source.description,
+									description: (source.description || '').substring(
+										0,
+										240,
+									),
 									publicationDate: source.publicationDate,
 									[type]: source[type],
 								};
@@ -134,7 +137,10 @@ async function main() {
 										id: feed._id,
 										title: feed.title,
 										language: feed.language,
-										description: feed.description,
+										description: (feed.description || '').substring(
+											0,
+											240,
+										),
 										articleCount: content.length,
 										mostRecentPublicationDate,
 									},

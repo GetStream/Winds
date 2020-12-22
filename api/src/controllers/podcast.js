@@ -102,7 +102,7 @@ exports.post = async (req, res) => {
 				{ feedUrl: feedUrl },
 				{
 					categories: 'podcast',
-					description: description,
+					description: (description || '').substring(0, 240),
 					feedUrl: feedUrl,
 					images: images,
 					lastScraped: new Date(0),
