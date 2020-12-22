@@ -23,6 +23,7 @@ const socialQueue = new Queue('socail', config.cache.uri);
 const streamQueue = new Queue('stream', config.cache.uri);
 
 const tooOld = 3 * 60 * 60 * 1000;
+const queueTTL = 24 * 60 * 60 * 1000; // 1 day
 
 const queues = {
 	'RSS Queue': rssQueue,
@@ -31,6 +32,26 @@ const queues = {
 	'Social Score Queue': socialQueue,
 	'Personalisation-sync Queue': streamQueue,
 };
+
+const queueCompletedCleanup = async (queue) => {
+	await queue.clean(queueTTL, 'completed'); // cleans all jobs that completed over 1 days ago.
+};
+
+const queueFailedCleanup = async (queue) => {
+	await queue.clean(queueTTL * 7, 'failed'); // clean all jobs that failed over 1 week ago.
+};
+
+queueCompletedCleanup(rssQueue);
+queueCompletedCleanup(ogQueue);
+queueCompletedCleanup(podcastQueue);
+queueCompletedCleanup(socialQueue);
+queueCompletedCleanup(streamQueue);
+
+queueFailedCleanup(rssQueue);
+queueFailedCleanup(ogQueue);
+queueFailedCleanup(podcastQueue);
+queueFailedCleanup(socialQueue);
+queueFailedCleanup(streamQueue);
 
 exports.health = async (req, res) => {
 	res.status(200).send({ version, healthy: '100%' });
