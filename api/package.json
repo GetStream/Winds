@@ -6,7 +6,7 @@
 		"preinstall": "yarn global add pm2",
 		"postinstall": "yarn build",
 		"start": "cd dist && node server.js",
-		"build": "npx babel ./src --out-dir ./dist ",
+		"build": "npx babel ./src --out-dir ./dist --ignore '**/node_modules/**/*'",
 		"watch": "nodemon start",
 		"dev": "pm2 start ecosystem.dev.config.js && pm2 log",
 		"prettier": "prettier --config ../.prettierrc --write \"src/**/*.js\"",
