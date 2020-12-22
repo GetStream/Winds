@@ -4415,10 +4415,10 @@ indent-string@^4.0.0:
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-4.0.0.tgz#624f8f4497d619b2d9768531d58f4122854d7251"
   integrity sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==
 
-inflate-auto@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/inflate-auto/-/inflate-auto-2.0.0.tgz#923e43ddaf7a3459ddbd082e11feca40d07c84ec"
-  integrity sha512-hO/tnedpLTQ6Ce1IMRXzJWwcukgtTL/zFXf+uoPVxTcSQRspdRCIENF3YTm06BJk7yXkK11qusM4UVnH06WODA==
+inflate-auto@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/inflate-auto/-/inflate-auto-1.0.0.tgz#c8bd87194c729c3f8307e831dee118dcff46a6e4"
+  integrity sha1-yL2HGUxynD+DB+gx3uEY3P9GpuQ=
 
 inflight@^1.0.4:
   version "1.0.6"
