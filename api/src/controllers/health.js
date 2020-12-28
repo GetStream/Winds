@@ -150,32 +150,41 @@ exports.sentryLog = async (req, res) => {
 	res.status(200).send('{}');
 };
 
-exports.bullArena = Arena({
-	queues: [
-		{
-			hostId: 'local',
-			name: 'rss',
-			url: config.cache.uri,
-		},
-		{
-			hostId: 'local',
-			name: 'podcast',
-			url: config.cache.uri,
-		},
-		{
-			hostId: 'local',
-			name: 'og',
-			url: config.cache.uri,
-		},
-		{
-			hostId: 'local',
-			name: 'social',
-			url: config.cache.uri,
-		},
-		{
-			hostId: 'local',
-			name: 'stream',
-			url: config.cache.uri,
-		},
-	],
-});
+exports.bullArena = Arena(
+	{
+		Bull: Queue,
+		queues: [
+			{
+				type: 'bull',
+				hostId: 'local',
+				name: 'rss',
+				url: config.cache.uri,
+			},
+			{
+				type: 'bull',
+				hostId: 'local',
+				name: 'podcast',
+				url: config.cache.uri,
+			},
+			{
+				type: 'bull',
+				hostId: 'local',
+				name: 'og',
+				url: config.cache.uri,
+			},
+			{
+				type: 'bull',
+				hostId: 'local',
+				name: 'social',
+				url: config.cache.uri,
+			},
+			{
+				type: 'bull',
+				hostId: 'local',
+				name: 'stream',
+				url: config.cache.uri,
+			},
+		],
+	},
+	{ disableListen: true },
+);
