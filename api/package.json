@@ -74,7 +74,7 @@
 		"request": "^2.88.2",
 		"request-promise-native": "^1.0.8",
 		"rss-finder": "^2.1.3",
-		"sanitize-html": "^1.24.0",
+		"sanitize-html": "^2.3.2",
 		"stream-analytics": "^2.8.0",
 		"strip": "^3.0.0",
 		"uuid": "^8.1.0",
