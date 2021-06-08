@@ -67,7 +67,7 @@
 		"multer": "^1.4.2",
 		"node-opml-parser": "^1.0.0",
 		"node-statsd": "^0.1.1",
-		"normalize-url": "^5.0.0",
+		"normalize-url": "^5.3.1",
 		"opml-generator": "^1.1.1",
 		"progress": "^2.0.3",
 		"raven": "^2.6.4",
