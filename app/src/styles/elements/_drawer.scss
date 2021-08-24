@@ -1,7 +1,7 @@
 .drawer {
 	background-color: $background-white;
 	bottom: 0;
-	box-shadow: $box-shadow;
+	box-shadow: $mega-box-shadow;
 	color: $foreground-black;
 	padding: 2em;
 	padding-bottom: 0;
@@ -111,6 +111,8 @@
 	right: 0;
 	top: 0;
 	z-index: 100000;
+	background: rgba(0,0,0,0.48);
+	
 }
 
 .delete-account-confirmation-popover,
