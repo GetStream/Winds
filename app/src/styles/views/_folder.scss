@@ -40,7 +40,7 @@
 	.results.panel {
 		margin-top: 0;
 		max-height: 200px;
-		overflow-y: scroll;
+		overflow-y: auto;
 
 		.type {
 			background-color: rgba(0, 0, 0, 0.06);
@@ -107,7 +107,7 @@
 
 .tag-popover {
 	max-height: 260px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	width: 230px;
 
 	.panel-element {
