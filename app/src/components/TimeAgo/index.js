@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 moment.updateLocale('en', {
 	relativeTime: {
-		past: '%s Ago',
+		past: '%s ago',
 		s: 's',
 		ss: '%ds',
 		m: '%dmin',
