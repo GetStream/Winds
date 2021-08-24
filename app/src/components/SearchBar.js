@@ -186,7 +186,7 @@ class SearchBar extends React.Component {
 									this.setState({ displayResults: true });
 							}}
 							onKeyDown={this.handleKeyDown}
-							placeholder="Search Winds..."
+							placeholder="Search for shows, articles, or sources"
 							ref={(element) => {
 								this.inputElement = element;
 							}}
