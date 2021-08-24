@@ -99,21 +99,20 @@
 
 			.logo {
 				opacity: 0.5;
-				transition: 0.3s ease-in-out;
+				transition: 0.15s ease-in-out;
 
-				&:hover {
+				&:
+				{
 					opacity: 1;
-					transition: 0.3s ease-in-out;
 				}
 			}
 
 			.refresh {
 				opacity: 0.5;
-				transition: 0.3s ease-in-out;
+				transition: 0.15s ease-in-out;
 
 				&:hover {
 					opacity: 1;
-					transition: 0.3s ease-in-out;
 				}
 			}
 
@@ -167,6 +166,7 @@
 					position: absolute;
 					right: 8px;
 					top: 6px;
+					filter: brightness(0.5);
 				}
 			}
 		}
