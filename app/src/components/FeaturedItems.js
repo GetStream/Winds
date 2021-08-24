@@ -54,7 +54,6 @@ class FeaturedItems extends React.Component {
 									to={linkURL}
 								>
 									<h1>{featuredItem.title}</h1>
-									<p />
 									<label>{featuredItem.type}</label>
 								</Link>
 							);
