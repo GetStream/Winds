@@ -74,7 +74,7 @@ a.column-header:hover,
 	border-image: linear-gradient(to top, #ebebeb, #f7f7f7) 1 100%;
 	border-right-style: solid;
 	border-right-width: 5px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding-left: 20px;
 	padding-right: 20px;
 	width: 33.33333%;
@@ -138,7 +138,7 @@ a.column-header:hover,
 
 	.column-content {
 		height: 100%;
-		overflow-y: scroll;
+		overflow-y: auto;
 
 		&::-webkit-scrollbar {
 			display: none;
