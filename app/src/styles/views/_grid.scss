@@ -25,7 +25,7 @@
 	.panels {
 		grid-area: panels;
 		min-width: 0;
-		overflow-y: scroll;
+		overflow-y: auto;
 		user-select: none;
 	}
 
@@ -38,7 +38,7 @@
 	.content {
 		grid-area: content;
 		max-width: 100%;
-		overflow-y: scroll;
+		overflow-y: auto;
 
 		.enclosures {
 			margin: auto;
