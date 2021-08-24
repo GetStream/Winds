@@ -13,7 +13,7 @@
 
 	.drawer-container {
 		height: 100%;
-		overflow-y: scroll;
+		overflow-y: auto;
 
 		.form-section {
 			h2 {
@@ -87,7 +87,7 @@
 		footer {
 			align-items: center;
 			bottom: 0;
-			box-shadow: $box-shadow;
+			border-top: 1px solid $foreground-mediumgray;
 			display: flex;
 			height: 60px;
 			left: 0;
