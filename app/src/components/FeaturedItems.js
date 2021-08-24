@@ -48,7 +48,7 @@ class FeaturedItems extends React.Component {
 									className="featured-item"
 									key={featuredItem._id}
 									style={{
-										backgroundImage: `linear-gradient(to top, black, transparent),
+										backgroundImage: `linear-gradient(0deg, #00000088 30%, #ffffff44 100%),
 										url(${featuredItem.images.featured || getPlaceholderImageURL(featuredItem._id)})`,
 									}}
 									to={linkURL}
