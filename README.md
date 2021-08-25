@@ -60,8 +60,6 @@ Winds is packed full of awesome features behind a beautiful user interface and u
 
 ## Roadmap
 
-Help us improve Winds and/or vote on the [Roadmap for 2.1](https://github.com/GetStream/Winds/issues/191)
-
 *   [ ] Search detail screen
 *   [ ] Playlist support (partially implemented)
 *   [ ] Team support (share an activity feed with colleagues or friends to discover and collaborate)
