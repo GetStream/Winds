@@ -1,0 +1,30 @@
+name: Test
+on: push
+
+defaults:
+  run:
+    working-directory: api
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:14
+    env:
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+      redis:
+        image: redis
+          - 6379:6379
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Test
+        run: yarn test
