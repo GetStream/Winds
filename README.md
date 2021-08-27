@@ -1,4 +1,4 @@
-> Deprecation Notice: This repository is deprecated; No further Issues or Pull Requests will be considered or approved.
+> 🛑 Deprecation Notice: This repository is deprecated; No further Issues or Pull Requests will be considered or approved.
 
 # Winds - A Beautiful Open Source RSS & Podcast App Powered by GetStream.io
 
