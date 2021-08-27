@@ -217,7 +217,7 @@ export async function handlePodcast(job) {
 	await Podcast.update(
 		{ _id: podcastID },
 		{
-			postCount: await Episode.count({ podcast: podcastID }),
+			// postCount: await Episode.count({ podcast: podcastID }),
 			fingerprint: podcastContent.fingerprint,
 			guidStability: guidStability || podcast.guidStability,
 		},

@@ -217,7 +217,7 @@ export async function handleRSS(job) {
 	await RSS.update(
 		{ _id: rssID },
 		{
-			postCount: await Article.count({ rss: rssID }),
+			// postCount: await Article.count({ rss: rssID }),
 			fingerprint: rssContent.fingerprint,
 			guidStability: guidStability || rss.guidStability,
 		},

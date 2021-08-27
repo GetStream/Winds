@@ -106,6 +106,7 @@ export const PodcastSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		// @deprecated: considering the huge collection size the count op is really slow
 		postCount: {
 			type: Number,
 			default: 0,
