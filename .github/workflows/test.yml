@@ -9,7 +9,6 @@ jobs:
   container-job:
     runs-on: ubuntu-latest
     container: node:14
-    env:
     services:
       mongodb:
         image: mongo
