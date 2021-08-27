@@ -1,3 +1,5 @@
+> Deprecation Notice: This repository is deprecated; No further Issues or Pull Requests will be considered or approved.
+
 # Winds - A Beautiful Open Source RSS & Podcast App Powered by GetStream.io
 
 [![Slack Community](https://img.shields.io/badge/Slack%20Community-Get%20Invite-green.svg)](https://communityinviter.com/apps/winds-community-hq/winds-2-0)
