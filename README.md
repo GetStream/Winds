@@ -18,10 +18,6 @@ Winds is a beautiful open-source RSS and Podcast app created using React & Redux
 
 To get started with Winds, please download [the latest release](https://s3.amazonaws.com/winds-2.0-releases/latest.html)
 
-## What's New
-
-In addition to the desktop apps for [macOS](https://s3.amazonaws.com/winds-2.0-releases/latest.html), [Linux](https://s3.amazonaws.com/winds-2.0-releases/latest.html), and [Windows](https://s3.amazonaws.com/winds-2.0-releases/latest.html), there's now a web version of Winds available at [https://winds.getstream.io/](https://winds.getstream.io/)
-
 ## Featured RSS & Podcasts
 
 Have a popular RSS or Podcast and want to be featured? Reach out to winds@getstream.io. We reply to every message.
