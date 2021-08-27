@@ -20,8 +20,7 @@ jobs:
           - 6379:6379
 
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Install dependencies
         run: yarn install
