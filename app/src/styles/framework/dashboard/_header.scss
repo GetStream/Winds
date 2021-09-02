@@ -43,7 +43,7 @@
 
 .header {
 	background-color: $foreground-white;
-	padding-top: 0.5em;
+	// padding-top: 0.5em;
 	top: 0;
 	user-select: none;
 	width: 100%;
@@ -68,6 +68,19 @@
 			cursor: pointer;
 			font-weight: inherit;
 			text-decoration: inherit;
+		}
+	}
+
+	.notice {
+		width: 100%;
+		font-size: 16px;
+		padding: 24px;
+		background-color: rgb(255, 251, 230);
+		border: 1px solid rgb(255, 229, 143);
+		text-align: center;
+
+		.export {
+			cursor: pointer;
 		}
 	}
 
