@@ -1,4 +1,4 @@
-import config from '../config';
+// import config from '../config';
 import UserProfileSettingsDrawer from './UserProfileSettingsDrawer';
 import octocatDarkIcon from '../images/logos/octocat-dark.svg';
 import backIcon from '../images/icons/back.svg';
@@ -18,6 +18,7 @@ import Popover from 'react-popover';
 import AddRSSModal from './AddRSSModal';
 import AddPodcastModal from './AddPodcastModal';
 import AddOPMLModal from './AddOPMLModal';
+import fetch from '../util/fetch';
 
 class Header extends Component {
 	constructor(props) {
@@ -83,6 +84,23 @@ class Header extends Component {
 
 	openDrawer = () => {
 		this.setState({ editProfileDrawerIsOpen: true });
+	};
+
+	downloadOPML = () => {
+		fetch('GET', '/opml/download')
+			.then((res) => {
+				if (res.data) {
+					const link = document.createElement('a');
+					const blob = new Blob([res.data], { type: 'text/xml' });
+					link.href = URL.createObjectURL(blob);
+					link.download = 'export.xml';
+					link.click();
+				}
+			})
+			.catch((err) => {
+				window.alert(JSON.stringify(err));
+				console.log(err); // eslint-disable-line no-console
+			});
 	};
 
 	render() {
@@ -174,10 +192,18 @@ class Header extends Component {
 
 		return (
 			<header className="header">
-				<div className="title">
+				{/* <div className="title">
 					<a href="https://getstream.io/?utm_source=Winds&utm_medium=Winds&utm_content=winds_homepage">
 						Winds {config.version} – Powered by GetStream.io
 					</a>
+				</div> */}
+				<div className="notice">
+					<b>Notice</b>: The hosted version of Winds will be shut down on
+					31/10/2021.<br></br> You can export your RSS + Podcast data in OPML
+					format by
+					<span className="export" onClick={this.downloadOPML}>
+						<b> CLICKING HERE.</b>
+					</span>
 				</div>
 				<div className="header-content">
 					<div className="left">
